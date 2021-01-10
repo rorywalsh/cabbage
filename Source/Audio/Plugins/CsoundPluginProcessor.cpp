@@ -392,6 +392,16 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     csound->SetChannel ("IS_EDITOR_OPEN", 0.0);
     csdFilePath.setAsCurrentWorkingDirectory();
 
+
+    time_t seconds_past_epoch = time(0);
+    csound->SetChannel("SECONDS_SINCE_EPOCH", (intmax_t)seconds_past_epoch);
+    // convert now to string form
+    char* dt = ctime(&seconds_past_epoch);
+    std::stringstream strStream;
+    strStream << dt << endl;
+    csound->SetStringChannel("CURRENT_DATE_TIME", String(strStream.str()).toUTF8().getAddress());
+
+
 	if((SystemStats::getOperatingSystemType() & SystemStats::OperatingSystemType::Linux) != 0)
     {
 		csound->SetChannel ("LINUX", 1.0);

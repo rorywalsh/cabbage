@@ -36,3 +36,7 @@ Cabbage reserves several channels which are used to send information to Csound f
 **Mac** Returns 1 if Cabbage is running on a Mac OS. 
 
 **Windows** Returns 1 Cabbage is running on a Windows OS. 
+
+**SECONDS_SINCE_EPOCH** Return the number of seconds since the 1st of Jaunary 1970
+
+**CURRENT_DATE_TIME** Returns the current date and time in a string, e.g., "Sun Jan 10 09:36:02 2021" 
