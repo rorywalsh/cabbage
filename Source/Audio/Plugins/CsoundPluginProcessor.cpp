@@ -811,9 +811,10 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
         return false;
     }
 
-
-
-    
+#if defined(Cabbage_IDE_Build) && defined(Cabbage_Lite)
+    if(mainInput.size() == numCsoundInputChannels && mainOutput.size() == numCsoundOutputChannels)
+        return true;
+#endif
     
     if ((mainInput.size() == numCsoundInputChannels - numSideChainChannels || mainInput.size() == mainOutput.size()) 
         && mainOutput.size() == numCsoundOutputChannels)

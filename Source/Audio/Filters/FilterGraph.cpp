@@ -420,8 +420,9 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 			auto layout = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid))->getProcessor()->getBusesLayout();
             auto pluginProcessor = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid))->getProcessor();
             
-			readBusLayoutFromXml(layout, pluginProcessor, *layoutEntity, true);
-			readBusLayoutFromXml(layout, pluginProcessor, *layoutEntity, false);
+            readBusLayoutFromXml(layout, pluginProcessor, *layoutEntity, false);
+            readBusLayoutFromXml(layout, pluginProcessor, *layoutEntity, true);
+
 
 			pluginProcessor->setBusesLayout(layout);
 		}
