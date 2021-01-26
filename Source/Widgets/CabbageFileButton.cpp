@@ -71,10 +71,20 @@ lAndF()
 //===============================================================================
 void CabbageFileButton::buttonClicked (Button* button)
 {
+    String workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::workingdir);
+    File currentDir;
+    if (workingDir.isNotEmpty())
+        currentDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
+    else
+        currentDir = File::getCurrentWorkingDirectory();
+    
     if (mode == "file")
     {
         const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), filetype, CabbageUtilities::shouldUseNativeBrowser());
+        if(lastKnownDirectory.isNotEmpty())
+            currentDir = File(lastKnownDirectory);
+            
+        FileChooser fc ("Choose File", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToOpen())
         {
@@ -89,7 +99,10 @@ void CabbageFileButton::buttonClicked (Button* button)
     else if (mode == "save")
     {
         const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), filetype, CabbageUtilities::shouldUseNativeBrowser());
+        if(lastKnownDirectory.isNotEmpty())
+            currentDir = File(lastKnownDirectory);
+        
+        FileChooser fc ("Choose File", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToSave(true))
         {
