@@ -23,7 +23,8 @@
 CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owner)
     : TextButton(),
     owner (owner),
-    widgetData (wData)
+    widgetData (wData),
+lAndF()
 {
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
@@ -141,11 +142,12 @@ void CabbageFileButton::buttonClicked (Button* button)
         
 #if JUCE_MODAL_LOOPS_PERMITTED
         String presetname;
-        AlertWindow w ("Preset",
-                       "Set preset name (warning, will overwrite previous preset of same name)",
+        AlertWindow w ("Set Preset Name",
+                       "(warning, will overwrite previous presets of the same name)",
                        AlertWindow::NoIcon);
-        w.setLookAndFeel(&getLookAndFeel());
-        w.setSize(100, 100);
+        w.setLookAndFeel(&lAndF);
+        //w.getLookAndFeel().setColour(AlertWindow::ColourIds::backgroundColourId, Colour(43, 43, 43));
+        //w.setSize(8500, 300);
         w.addTextEditor ("text", "enter name here", "");
         w.addButton ("OK",     1, KeyPress (KeyPress::returnKey, 0, 0));
         w.addButton ("Cancel", 0, KeyPress (KeyPress::escapeKey, 0, 0));
@@ -154,6 +156,8 @@ void CabbageFileButton::buttonClicked (Button* button)
         {
             presetname = w.getTextEditorContents ("text");
         }
+        else
+            return;
 #endif
         
         owner->sendChannelStringDataToCsound (getChannel(), newFileName);

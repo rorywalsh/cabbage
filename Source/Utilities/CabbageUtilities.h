@@ -1126,7 +1126,7 @@ public:
 		std::unique_ptr<XmlElement> data(valueTree.createXml());
         // only works when there are no objects in the array...
         //write new xml settings files based on data from user settings file, but using ValueTree
-        data->writeTo (File (filePath));
+        //data->writeTo (File (filePath));
     }
 
     //======= method for replacing the contents of an identifier with new values..

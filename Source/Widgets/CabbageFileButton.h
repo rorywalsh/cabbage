@@ -23,7 +23,7 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 #include "../LookAndFeel/FlatButtonLookAndFeel.h"
-
+#include "../LookAndFeel/CabbageIDELookAndFeel.h"
 class CabbagePluginEditor;
 
 class CabbageFileButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase, public Button::Listener, public Timer
@@ -52,6 +52,7 @@ public:
     void timerCallback() override;
 
     FlatButtonLookAndFeel flatLookAndFeel;
+    LookAndFeel_V4 lAndF;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageFileButton);
 };
