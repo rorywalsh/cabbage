@@ -774,11 +774,14 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     {
 #if  JucePlugin_IsSynth
         //synth can only be mono or stereo...
-        if (mainInput.size() == 0 && mainOutput.size() == 1)
+//        if (mainInput.size() == 0 && mainOutput.size() == 1)
+//            return true;
+//        if (mainInput.size() == 0 && mainOutput.size() == 2)
+//            return true;
+        if (mainInput.size() == 0 && mainOutput.size() == numCsoundOutputChannels)
             return true;
-        if (mainInput.size() == 0 && mainOutput.size() == 2)
-            return true;
-#else        
+
+#else
 #if !defined(Cabbage_IDE_Build) && !defined(Cabbage_Lite)
         if (PluginHostType().isReaper())
         {
