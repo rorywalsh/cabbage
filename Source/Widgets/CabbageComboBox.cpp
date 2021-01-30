@@ -64,11 +64,34 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
 
         currentValueAsText = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::value).toString();
-        const int index = stringItems.indexOf (currentValueAsText);
-		owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().getCharPointer());
-
-        if (index != -1)  
-            setSelectedItemIndex (index+1, dontSendNotification);
+        workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::workingdir);
+        int index = 0;
+        if (workingDir.isNotEmpty())
+            pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
+        else
+            pluginDir = File::getCurrentWorkingDirectory();
+        
+        if(pluginDir.getChildFile(currentValueAsText).existsAsFile())
+        {
+            currentValueAsText = pluginDir.getChildFile(currentValueAsText).getFileNameWithoutExtension();
+            index = stringItems.indexOf (currentValueAsText);
+        }
+        else
+        {
+            index = stringItems.indexOf (currentValueAsText);
+        }
+        //this index if different for strings and files?
+        if (index >= 0)
+            setSelectedItemIndex (index, dontSendNotification);
+        
+        owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().getCharPointer());
+        
+//        currentValueAsText = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::value).toString();
+//        const int index = stringItems.indexOf (currentValueAsText);
+//        owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().getCharPointer());
+//
+//        if (index != -1)
+//            setSelectedItemIndex (index, dontSendNotification);
     }
     else
     {
@@ -207,7 +230,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 
         filetype = CabbageWidgetData::getStringProp (wData, "filetype");
         pluginDir.findChildFiles (dirFiles, 2, false, filetype);
-        addItem ("Select..", 1);
+        //addItem ("Select..", 1);
 
         for (int i = 0; i < dirFiles.size(); ++i)
             folderFiles.add (dirFiles[i]);
@@ -217,10 +240,10 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         for ( int i = 0; i < folderFiles.size(); i++)
         {
 			stringItems.add(folderFiles[i].getFileNameWithoutExtension());
-            addItem (folderFiles[i].getFileNameWithoutExtension(), i + 2);
+            addItem (folderFiles[i].getFileNameWithoutExtension(), i + 1);
         }
 
-        setSelectedItemIndex(getNumItems()-1, dontSendNotification);
+        //setSelectedItemIndex(getNumItems()-1, dontSendNotification);
 
     }
 
@@ -260,12 +283,16 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
 
 		if (fileType.isNotEmpty())
 		{
-			String test = folderFiles[index - 1].getFullPathName();
-			owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index - 1].getFullPathName().replaceCharacters("\\", "/"));
+			String test = folderFiles[index].getFullPathName();
+			owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().replaceCharacters("\\", "/"));
+            CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, folderFiles[index].getFullPathName().replaceCharacters("\\", "/"));
 		}
         else
+        {
             owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
-
+            CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, stringItems[index]);
+        }
+        
     }
 }
 
@@ -287,11 +314,25 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             else
             {
                 currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString();
-                const int index = stringItems.indexOf (currentValueAsText);
-
-                if (index != -1)
+                workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
+                int index = 0;
+                if (workingDir.isNotEmpty())
+                    pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
+                else
+                    pluginDir = File::getCurrentWorkingDirectory();
+                
+                if(pluginDir.getChildFile(currentValueAsText).existsAsFile())
+                {
+                    currentValueAsText = File(currentValueAsText).getFileNameWithoutExtension();
+                    index = stringItems.indexOf (currentValueAsText)+1;
+                }
+                else
+                    index = stringItems.indexOf (currentValueAsText);
+                //this index if different for strings and files?
+                if (index >= 0)
                     setSelectedItemIndex (index, dontSendNotification);
-
+    
+                
                 CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }
