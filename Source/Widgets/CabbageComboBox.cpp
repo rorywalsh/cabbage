@@ -55,6 +55,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
 
     addItemsToCombobox (widgetData);
 
+    
     if (CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::channeltype) == "string" &&
 		!CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::filetype).contains("snaps"))
     {
@@ -101,9 +102,12 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
             isPresetCombo = true;  
             getProperties().set("isPresetCombo", true);
             String presetName = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::value).toString();
-
+            
             const int index = presets.indexOf(presetName);
+
+            //owner->currentPresetName =
             //don't send notification here, otherwise the saved session settings will be overwriten by the presets...
+            owner->currentPresetName = getItemText((index-1 >= 0 ? index : 0));
             setSelectedItemIndex ((index-1 >= 0 ? index : 0), dontSendNotification);
         }
         else
@@ -122,14 +126,26 @@ CabbageComboBox::~CabbageComboBox()
 
 void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 {
+    Justification justify (Justification::centred);
+    
+    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align) == "left")
+        justify = Justification::left;
+    else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align) == "centre")
+        justify = Justification::centred;
+    else
+        justify = Justification::right;
+    
+    setJustificationType (justify);
+    
     Array<File> dirFiles;
     presets.clear();
-    clear (dontSendNotification);
     folderFiles.clear();
 
     //load items from text file
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
+        clear (dontSendNotification);
+            stringItems.clear();
         auto tempFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file));
         String comboFile = tempFile.loadFileAsString();
         StringArray lines = StringArray::fromLines (comboFile);
@@ -149,6 +165,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     {
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
         PopupMenu subMenu;
+            stringItems.clear();
+        clear (dontSendNotification);
         vector<StringArray> menus;
         int menuIndex = -1;
         for( int i = 0 ; i < items.size(); i++)
@@ -199,7 +217,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
              || CabbageWidgetData::getStringProp (wData, "filetype") == "snaps") //load items from directory
     {
         const File fileName = File (getCsdFile()).withFileExtension (".snaps");
-
+        clear (dontSendNotification);
+        stringItems.clear();
         if (fileName.existsAsFile())
         {
             std::unique_ptr<XmlElement> xmlElement = XmlDocument::parse (fileName);
@@ -210,8 +229,11 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
                 {
                     forEachXmlChildElement (*xmlElement, e)
                     {
-                        presets.add (e->getStringAttribute ("PresetName"));
-                        addItem (e->getStringAttribute ("PresetName"), itemIndex++);
+                        if(e->getStringAttribute ("PresetName").isNotEmpty())
+                        {
+                            presets.add (e->getStringAttribute ("PresetName"));
+                            addItem (e->getStringAttribute ("PresetName"), itemIndex++);
+                        }
                     }
                 }
 
@@ -222,7 +244,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     {
         
         workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
-
+       
+        
         if (workingDir.isNotEmpty())
             pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
         else
@@ -231,32 +254,32 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         filetype = CabbageWidgetData::getStringProp (wData, "filetype");
         pluginDir.findChildFiles (dirFiles, 2, false, filetype);
         //addItem ("Select..", 1);
-
-        for (int i = 0; i < dirFiles.size(); ++i)
+        StringArray tempStrings;
+        for (int i = 0; i < dirFiles.size(); ++i){
             folderFiles.add (dirFiles[i]);
+            tempStrings.add(dirFiles[i].getFileNameWithoutExtension());
+        }
 
         folderFiles.sort();
-
+        
+        if(stringItems == tempStrings)
+            return;
+        else
+        {
+            clear (dontSendNotification);
+            stringItems.clear();
+        }
+        
         for ( int i = 0; i < folderFiles.size(); i++)
         {
 			stringItems.add(folderFiles[i].getFileNameWithoutExtension());
             addItem (folderFiles[i].getFileNameWithoutExtension(), i + 1);
         }
 
+
         //setSelectedItemIndex(getNumItems()-1, dontSendNotification);
 
     }
-
-    Justification justify (Justification::centred);
-
-    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align) == "left")
-        justify = Justification::left;
-    else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align) == "centre")
-        justify = Justification::centred;
-    else
-        justify = Justification::right;
-
-    setJustificationType (justify);
 }
 
 void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only enabled when combo is loading presets or strings...

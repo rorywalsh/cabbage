@@ -1045,16 +1045,32 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
     return cabbageProcessor;
 }
 
-void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String presetName)
+void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String presetName, bool removePreset)
 {
     XmlElement xml = cabbageProcessor.savePluginState (instrumentName.replace (" ", "_"), snapshotFile, presetName);
+    
+    if(removePreset == true)
+    {
+        XmlElement* child = xml.getFirstChildElement();
+        
+        while (child != nullptr)
+        {
+            if(child->getStringAttribute("PresetName") == presetName)
+            {
+                xml.removeChildElement(child, true);
+                break;
+            }
+            child = child->getNextElement();
+        }
+    }
+    
     xml.writeTo (snapshotFile);
 }
 
 void CabbagePluginEditor::restorePluginStateFrom (String childPreset, File xmlFile)
 {
     std::unique_ptr<XmlElement> xmlElement (XmlDocument::parse (xmlFile));
-
+    currentPresetName = childPreset;
     if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
     {
         forEachXmlChildElement (*xmlElement, e)

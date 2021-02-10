@@ -1151,58 +1151,60 @@ void CabbageLookAndFeel2::drawFromSVG(Graphics& g, File svgFile, int x, int y, i
     }
 }
 
-void CabbageLookAndFeel2::drawAlertBox(Graphics& g,
-    AlertWindow& alert,
-    const Rectangle<int>& textArea,
-    TextLayout& textLayout)
+void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
+                                          AlertWindow& alert,
+                                          const Rectangle<int>& textArea,
+                                          TextLayout& textLayout)
 {
-    g.fillAll(Colour(250, 250, 250));
-
+    g.fillAll (Colour::fromString("2ff52636a"));
+    
     int iconSpaceUsed = 160;
-
+    
     if (alert.getAlertType() != AlertWindow::NoIcon)
     {
         Path icon;
-
+        
         if (alert.getAlertType() == AlertWindow::WarningIcon)
         {
-            const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
+            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed).toFloat());
+            
+            const Image warningImage = ImageCache::getFromMemory (CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
             //g.drawImage(warningImage, rect.reduced(20));
         }
-
+        
         if (alert.getAlertType() == AlertWindow::QuestionIcon)
         {
-
-            const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
+            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).toFloat());
+            const Image warningImage = ImageCache::getFromMemory (CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
             //g.drawImage(warningImage, rect.reduced(25));
         }
-
-        MemoryInputStream svgStream(CabbageBinaryData::processstop_svg, CabbageBinaryData::processstop_svgSize, false);
-        std::unique_ptr<XmlElement> svg(XmlDocument::parse(svgStream.readString()));
-
+        
+        MemoryInputStream svgStream (CabbageBinaryData::processstop_svg, CabbageBinaryData::processstop_svgSize, false);
+        std::unique_ptr<XmlElement> svg (XmlDocument::parse (svgStream.readString()));
+        
         if (svg == nullptr)
-            jassert(false);
-
+            jassert (false);
+        
         std::unique_ptr<Drawable> drawable;
-
+        
         if (svg != nullptr)
         {
-            drawable = Drawable::createFromSVG(*svg);
-            Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed - 20).toFloat());
-            drawable->setTransformToFit(rect.reduced(30), RectanglePlacement::stretchToFit);
-            drawable->draw(g, 1.f, AffineTransform());
+            drawable = Drawable::createFromSVG (*svg);
+            Rectangle<float> rect (20, 20, 80, 80);//alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).withHeight(130).toFloat());
+            drawable->setTransformToFit (rect, RectanglePlacement::stretchToFit);
+            drawable->draw (g, 1.f, AffineTransform());
         }
     }
-
-    g.setColour(alert.findColour(AlertWindow::textColourId));
-
-    textLayout.draw(g, Rectangle<int>(textArea.getX() + iconSpaceUsed - 50,
-        textArea.getY(),
-        textArea.getWidth() - iconSpaceUsed - 40,
-        textArea.getHeight()).toFloat());
-
-    g.setColour(alert.findColour(AlertWindow::outlineColourId));
-    g.drawRect(0, 0, alert.getWidth(), alert.getHeight());
+    
+    
+    g.setColour (alert.findColour (AlertWindow::textColourId));
+    textLayout.draw (g, Rectangle<int> (textArea.getX() + iconSpaceUsed - 50,
+                                        textArea.getY(),
+                                        textArea.getWidth() - iconSpaceUsed - 40,
+                                        textArea.getHeight()).toFloat());
+    
+    g.setColour (alert.findColour (AlertWindow::outlineColourId));
+    g.drawRect (0, 0, alert.getWidth(), alert.getHeight());
 }
 
 

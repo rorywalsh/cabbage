@@ -834,6 +834,45 @@ public:
         return result;
 
     }
+    
+    static int showAlertMessageWithTextEditor (String message, LookAndFeel* feel, String* presetName)
+    {
+
+        AlertWindow w ("Set Preset Name",
+                       "(warning, will overwrite previous presets of the same name)",
+                       AlertWindow::NoIcon);
+        w.setLookAndFeel(feel);
+        //w.getLookAndFeel().setColour(AlertWindow::ColourIds::backgroundColourId, Colour(43, 43, 43));
+        //w.setSize(8500, 300);
+        w.addTextEditor ("text", "enter name here", "");
+        w.addButton ("OK",     1, KeyPress (KeyPress::returnKey, 0, 0));
+        w.addButton ("Cancel", 0, KeyPress (KeyPress::escapeKey, 0, 0));
+        
+//        if (w.runModalLoop() != 0) // if they picked 'ok'
+//        {
+//
+//        }
+        
+//        AlertWindow alert ("Cabbage Message", message, AlertWindow::WarningIcon, 0);
+//        alert.setLookAndFeel (feel);
+//        alert.addButton ("Yes", 1);
+//        alert.addButton ("No", 2);
+//        alert.setAlwaysOnTop(true);
+//        if (cancel == 1)
+//            alert.addButton ("Cancel", 0);
+//
+        int result;
+#if !defined(AndroidBuild)
+        result = w.runModalLoop();
+        *presetName = w.getTextEditorContents ("text");
+#else
+        result = w.showYesNoCancelBox (AlertWindow::QuestionIcon, "Warning", message, "Yes", "No", "Cancel", nullptr, nullptr);
+#endif
+        return result;
+        
+    }
+    
+
 
     //==========================================================================================
     static String cabbageString (String input, Font font, float availableWidth)

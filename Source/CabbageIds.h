@@ -552,6 +552,7 @@ namespace CabbageIdentifierIds
 	static const Identifier cropx = "cropx";
 	static const Identifier cropy = "cropy";
 	static const Identifier currenttext = "currenttext";
+    static const Identifier currentPresetName = "currentpresetname";
 	static const Identifier decimalplaces = "decimalplaces";
 	static const Identifier displaytype = "displaytype";
 	static const Identifier drawmode = "drawmode";

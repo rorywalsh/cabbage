@@ -951,7 +951,8 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 		xml->createNewChildElement(presetName);
 
 	xml->getChildByName(presetName)->setAttribute("PresetName", childName);
-
+   
+    
 	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
 		const String channelName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 			CabbageIdentifierIds::channel);
@@ -1029,6 +1030,12 @@ void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
 		//else dealing with preset files loaded in editor...
 		else {
 			//            xmlState->writeTo(File("/Users/walshr/Desktop/test.txt"));
+           
+            if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (this->getActiveEditor()))
+            {
+                DBG( xmlState->getStringAttribute("PresetName"));
+                editor->currentPresetName =  xmlState->getStringAttribute("PresetName");;
+            }
 			setParametersFromXml(xmlState);
 		}
 
