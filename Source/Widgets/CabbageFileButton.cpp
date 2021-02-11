@@ -163,7 +163,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         tempLAF->setColour (TextButton::ColourIds::textColourOffId, Colour (150, 150, 150));
         tempLAF->setColour (TextButton::ColourIds::buttonOnColourId, Colour (150, 150, 150));
         tempLAF->setColour (TextButton::ColourIds::textColourOnId, Colour (250, 250, 250));
-        const int result = CabbageUtilities::showYesNoMessage("Are you sure you wish to remove\nthis preset?", tempLAF, 1);
+        const int result = CabbageUtilities::showYesNoMessage("Are you sure you wish to remove\nthis preset?", tempLAF);
         if(result == 1)
         {
             owner->savePluginStateToFile (File (newFileName), owner->currentPresetName, true);
@@ -182,26 +182,17 @@ void CabbageFileButton::buttonClicked (Button* button)
         
 #if JUCE_MODAL_LOOPS_PERMITTED
         String presetname;
-//        AlertWindow w ("Set Preset Name",
-//                       "(warning, will overwrite previous presets of the same name)",
-//                       AlertWindow::NoIcon);
-//        w.setLookAndFeel(&lAndF);
-//        //w.getLookAndFeel().setColour(AlertWindow::ColourIds::backgroundColourId, Colour(43, 43, 43));
-//        //w.setSize(8500, 300);
-//        w.addTextEditor ("text", "enter name here", "");
-//        w.addButton ("OK",     1, KeyPress (KeyPress::returnKey, 0, 0));
-//        w.addButton ("Cancel", 0, KeyPress (KeyPress::escapeKey, 0, 0));
 
         CabbageLookAndFeel2* tempLAF = static_cast<CabbageLookAndFeel2*>(&owner->getLookAndFeel());
-        
         tempLAF->setColour (AlertWindow::ColourIds::textColourId, Colour (255, 255, 255));
-        tempLAF->setColour (TextEditor::ColourIds::highlightedTextColourId, Colour (90, 90, 90));
+        tempLAF->setColour (TextEditor::ColourIds::highlightColourId, Colour (185, 185, 185));
+        tempLAF->setColour (TextEditor::ColourIds::highlightedTextColourId, Colour (50, 50, 50));
         tempLAF->setColour (TextButton::ColourIds::buttonColourId, Colour (50, 50, 50));
         tempLAF->setColour (TextButton::ColourIds::textColourOffId, Colour (150, 150, 150));
         tempLAF->setColour (TextButton::ColourIds::buttonOnColourId, Colour (150, 150, 150));
         tempLAF->setColour (TextButton::ColourIds::textColourOnId, Colour (250, 250, 250));
         String presetName;
-        const int result = CabbageUtilities::showAlertMessageWithTextEditor("Are you sure you wish to remove\nthis preset?", tempLAF, &presetName);
+        const int result = CabbageUtilities::showAlertMessageWithTextEditor("Set Preset Name", "Warning: This will overwrite any\npreviously saved presets of the same name.", tempLAF, &presetName);
         
         
         if (result == 1)

@@ -835,12 +835,12 @@ public:
 
     }
     
-    static int showAlertMessageWithTextEditor (String message, LookAndFeel* feel, String* presetName)
+    static int showAlertMessageWithTextEditor (String title, String message, LookAndFeel* feel, String* presetName)
     {
 
-        AlertWindow w ("Set Preset Name",
-                       "(warning, will overwrite previous presets of the same name)",
-                       AlertWindow::NoIcon);
+        AlertWindow w (title,
+                       message,
+                       AlertWindow::WarningIcon);
         w.setLookAndFeel(feel);
         //w.getLookAndFeel().setColour(AlertWindow::ColourIds::backgroundColourId, Colour(43, 43, 43));
         //w.setSize(8500, 300);
