@@ -25,12 +25,13 @@
 #include <csdebug.h>
 #include "csdl.h"
 #include <cwindow.h>
-#include "../../Opcodes/channelStateOpcodes.cpp"
+#include "../../Opcodes/strToFile.hpp"
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"
 #ifdef CabbagePro
 #include "../../Utilities/encrypt.h"
 #endif
+
 
 //==============================================================================
 class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater
