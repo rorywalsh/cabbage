@@ -371,7 +371,7 @@
         <MODULEPATH id="juce_audio_basics" path="../JUCE/"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1"
+    <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;"
             externalLibraries="csound64.lib" windowsTargetPlatformVersion="10.0.17763.0"
             smallIcon="vNeY7N" bigIcon="vNeY7N" vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK">
       <CONFIGURATIONS>
@@ -415,7 +415,7 @@
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
       </MODULEPATHS>
     </CLION>
-    <VS2019 targetFolder="Builds/VisualStudio2019" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1"
+    <VS2019 targetFolder="Builds/VisualStudio2019" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;"
             vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK" smallIcon="vNeY7N"
             bigIcon="vNeY7N" externalLibraries="csound64.lib">
       <CONFIGURATIONS>
