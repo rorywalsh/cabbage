@@ -345,7 +345,7 @@
     <XCODE_MAC targetFolder="Builds/MacOSX" extraFrameworks="/Library/Frameworks/CsoundLib64"
                extraDefs="MACOSX=1&#10;Cabbage_IDE_Build=1" smallIcon="QPQoQ0"
                bigIcon="QPQoQ0" vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK" vst3Folder="~/SDKs/VST_SDK"
-               microphonePermissionNeeded="1" extraLinkerFlags="-v">
+               microphonePermissionNeeded="1">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Cabbage"
                        libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
