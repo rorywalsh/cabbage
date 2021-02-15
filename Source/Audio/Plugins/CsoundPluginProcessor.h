@@ -25,7 +25,7 @@
 #include <csdebug.h>
 #include "csdl.h"
 #include <cwindow.h>
-#include "../../Opcodes/strToFile.hpp"
+#include "../../Opcodes/opcodes.hpp"
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"
 #ifdef CabbagePro

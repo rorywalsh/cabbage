@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.15"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.16"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -17,6 +17,9 @@
               pluginAAXDisableMultiMono="0">
   <MAINGROUP id="MmKYZk" name="CabbagePlugin">
     <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
+      <GROUP id="{155EB1FE-8C62-16E7-B9F7-B0982065BB1C}" name="Opcodes">
+        <FILE id="IttIyl" name="opcodes.hpp" compile="0" resource="0" file="Source/Opcodes/opcodes.hpp"/>
+      </GROUP>
       <GROUP id="{61A1582E-02D7-BC73-16CA-AB70EAB7BBA0}" name="Audio">
         <GROUP id="{4B714BDB-49F2-8D6E-A0E6-DD0C6491ADBA}" name="Plugins">
           <FILE id="LTlu6o" name="CabbageCsoundBreakpointData.h" compile="0"

@@ -145,10 +145,25 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 	csound->SetHostImplementedAudioIO(1, 0);
 	csound->SetHostData(this);
 
-   if (csnd::plugin<StrToFile>((csnd::Csound*) csound->GetCsound(), "strToFile.SSO", "i", "SSO", csnd::thread::i) != 0)
+    if (csnd::plugin<StrToFile>((csnd::Csound*) csound->GetCsound(), "strToFile.SSO", "i", "SSO", csnd::thread::i) != 0)
        jassertfalse;
-
-
+    if (csnd::plugin<ChannelStateSave>((csnd::Csound*) csound->GetCsound(), "channelStateSave.i", "i", "S", csnd::thread::i) != 0)
+        jassertfalse;
+    if (csnd::plugin<ChannelStateSave>((csnd::Csound*) csound->GetCsound(), "channelStateSave.k", "k", "S", csnd::thread::k) != 0)
+        jassertfalse;
+    if (csnd::plugin<ChannelStateRecall>((csnd::Csound*) csound->GetCsound(), "channelStateRecall.i", "i", "S", csnd::thread::i) != 0)
+        jassertfalse;
+    if (csnd::plugin<ChannelStateRecall>((csnd::Csound*) csound->GetCsound(), "channelStateRecall.k", "k", "SO", csnd::thread::k) != 0)
+        jassertfalse;
+    if (csnd::plugin<ChannelStateRecall>((csnd::Csound*) csound->GetCsound(), "channelStateRecall.k", "k", "SS[]", csnd::thread::k) != 0)
+        jassertfalse;
+    if (csnd::plugin<FileToStr>((csnd::Csound*) csound->GetCsound(), "fileToStr.i", "S", "S", csnd::thread::i) != 0)
+        jassertfalse;
+    if (csnd::plugin<StrToArray>((csnd::Csound*) csound->GetCsound(), "strToArray.ii", "S[]", "SS", csnd::thread::i) != 0)
+        jassertfalse;
+    if (csnd::plugin<StrRemove>((csnd::Csound*) csound->GetCsound(), "strRemove.ii", "S", "SSo", csnd::thread::i) != 0)
+        jassertfalse;
+    
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
 	csound->SetExternalMidiReadCallback(ReadMidiData);
