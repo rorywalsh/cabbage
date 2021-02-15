@@ -145,6 +145,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 	csound->SetHostImplementedAudioIO(1, 0);
 	csound->SetHostData(this);
 
+   /* if (csnd::plugin<channelStateSave>((csnd::Csound*) csound->GetCsound(), "channelStateSave.i", "i", "S", csnd::thread::i) != 0)
+        printf("Warning: could not add channelStateSave i-rate opcode\n");*/
+
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
 	csound->SetExternalMidiReadCallback(ReadMidiData);

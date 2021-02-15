@@ -5,6 +5,11 @@
               jucerVersion="5.4.7" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="14" companyCopyright="">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
+    <GROUP id="{79BAF709-725B-0011-2B8F-19764599A5F1}" name="Opcodes">
+      <FILE id="y1DDcl" name="channelStateOpcodes.cpp" compile="1" resource="0"
+            file="Source/Opcodes/channelStateOpcodes.cpp"/>
+      <FILE id="U0GyFg" name="json.hpp" compile="0" resource="0" file="Source/Opcodes/json.hpp"/>
+    </GROUP>
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{EFD0F6CA-6C41-91A9-F9C2-8DB9116E5A2D}" name="Application">
         <FILE id="LrRPa8" name="FileTab.h" compile="0" resource="0" file="Source/Application/FileTab.h"/>

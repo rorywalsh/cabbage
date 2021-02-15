@@ -25,6 +25,7 @@
 #include <csdebug.h>
 #include "csdl.h"
 #include <cwindow.h>
+#include "../../Opcodes/channelStateOpcodes.cpp"
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"
 #ifdef CabbagePro
