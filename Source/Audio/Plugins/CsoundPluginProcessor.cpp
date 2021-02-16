@@ -163,7 +163,13 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
         jassertfalse;
     if (csnd::plugin<StrRemove>((csnd::Csound*) csound->GetCsound(), "strRemove.ii", "S", "SSo", csnd::thread::i) != 0)
         jassertfalse;
-    
+    if (csnd::plugin<WriteJSONToChannel>((csnd::Csound*) csound->GetCsound(), "writeJSONToChannel.ss", "i", "iSS", csnd::thread::i) != 0)
+        jassertfalse;
+    if (csnd::plugin<GetJSONFloatValue>((csnd::Csound*) csound->GetCsound(), "getJSONFloatValue.ss", "k", "SS", csnd::thread::i) != 0)
+        jassertfalse;
+    if (csnd::plugin<GetJSONFloatValue>((csnd::Csound*) csound->GetCsound(), "getJSONFloatValue.ss", "i", "SS", csnd::thread::i) != 0)
+        jassertfalse;
+
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
 	csound->SetExternalMidiReadCallback(ReadMidiData);
