@@ -18,27 +18,61 @@
 using json = nlohmann::json;
 
 
-struct WriteJSONToChannel : csnd::Plugin<1, 3>
+class CabbagePersistentData
+{
+public:
+    
+    CabbagePersistentData(){}
+    
+    std::string data = "";
+    int size = 0;
+};
+
+
+struct DumpJSONData : csnd::Plugin<1, 1>
 {
     int init()
     {
-        writeDataToChannel();
+        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+        if(*pd != nullptr)
+        {
+            auto perData = *pd;
+            csound->message(perData->data);
+        }
+        
+        return OK;
+    }
+};
+
+struct WriteJSONData : csnd::Plugin<1, 3>
+{
+    int init()
+    {
+        writeJsonDataToGlobalVar();
         return OK;
     }
 
-    void writeDataToChannel()
+    void writeJsonDataToGlobalVar()
     {
 
-        std::string channelName(inargs.str_data(1).data);
-        std::string jsonData(inargs.str_data(2).data);
-        std::string channelData;
+        std::string jsonString(inargs.str_data(1).data);
+        std::string jsonData;
         int mode = inargs[0];
         json j;
 
-        MYFLT* value;
-        char* chString;
+        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+        auto perData = *pd;
+        if(perData != nullptr)
+        {
+            jsonData = perData->data;
+        }
+        else
+        {
+            csound->message("Internal JSON global var is not valid.");
+            return;
+        }
 
-        if (json::accept(jsonData) == false)
+        if (json::accept(jsonString) == false)
         {
             csound->message("Invalid JSON data");
             outargs[0] = -1;
@@ -47,45 +81,16 @@ struct WriteJSONToChannel : csnd::Plugin<1, 3>
 
         if (mode == 1)
         {
-            if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
-                CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-            {
-                chString = ((STRINGDAT*)value)->data;
-                channelData = std::string(chString);
-                j = json::parse(channelData);
-                auto j2 = json::parse(jsonData);
+                j = json::parse(jsonData);
+                auto j2 = json::parse(jsonString);
                 j.update(j2);
-            }
         }
         else
         {
-            j = json::parse(jsonData);
+            j = json::parse(jsonString);
         }
 
-        for (json::iterator it = j.begin(); it != j.end(); ++it)
-        {
-            bool ignore = false;
-            csound->message(it.key());
-            if (it.value().is_number_float())
-            {
-                csound->message(it.value().dump());
-            }
-            else if (it.value().is_boolean())
-            {
-                csound->message(it.value().dump());
-            }
-            else if (it.value().is_string())
-            {
-                csound->message(it.value().dump());
-            }
-        }
-
-        if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
-            CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-        {
-            std::string string = j.dump();
-            ((STRINGDAT*)value)->data = csound->strdup((char*)string.c_str());
-        }
+        perData->data = j.dump();
     }
 };
 

@@ -1208,7 +1208,7 @@ CabbagePluginProcessor* CabbageMainComponent::getCabbagePluginProcessor()
             return processor;
     }
 
-    return nullptr;
+    return nullptr;  
 }
 //==================================================================================
 int CabbageMainComponent::getStatusbarYPos()

@@ -163,13 +163,22 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
         jassertfalse;
     if (csnd::plugin<StrRemove>((csnd::Csound*) csound->GetCsound(), "strRemove.ii", "S", "SSo", csnd::thread::i) != 0)
         jassertfalse;
-    if (csnd::plugin<WriteJSONToChannel>((csnd::Csound*) csound->GetCsound(), "writeJSONToChannel.ss", "i", "iSS", csnd::thread::i) != 0)
+    if (csnd::plugin<WriteJSONData>((csnd::Csound*) csound->GetCsound(), "writeJSONData.ss", "i", "iS", csnd::thread::i) != 0)
         jassertfalse;
     if (csnd::plugin<GetJSONFloatValue>((csnd::Csound*) csound->GetCsound(), "getJSONFloatValue.ss", "k", "SS", csnd::thread::i) != 0)
         jassertfalse;
     if (csnd::plugin<GetJSONFloatValue>((csnd::Csound*) csound->GetCsound(), "getJSONFloatValue.ss", "i", "SS", csnd::thread::i) != 0)
         jassertfalse;
+    if (csnd::plugin<DumpJSONData>((csnd::Csound*) csound->GetCsound(), "dumpJsonData.i", "i", "", csnd::thread::i) != 0)
+        jassertfalse;
+    
 
+    csound->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
+    CabbagePersistentData** pd = (CabbagePersistentData**)csound->QueryGlobalVariable("cabbageData");
+    *pd = new CabbagePersistentData();
+    auto pdClass = *pd;
+    pdClass->data = "";
+    
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
 	csound->SetExternalMidiReadCallback(ReadMidiData);
@@ -314,6 +323,10 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
         if (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channeltype) == "string")
         {
+            if (typeOfWidget == CabbageWidgetTypes::json)
+            {
+                
+            }
             if (typeOfWidget == CabbageWidgetTypes::filebutton)
             {
                 csound->SetStringChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),

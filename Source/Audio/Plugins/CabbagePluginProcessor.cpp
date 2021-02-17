@@ -951,7 +951,11 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 		xml->createNewChildElement(presetName);
 
 	xml->getChildByName(presetName)->setAttribute("PresetName", childName);
-   
+
+    CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+    auto pdClass = *pd;
+    if(pdClass!=nullptr)
+        xml->getChildByName(presetName)->setAttribute("cabbageJSONData", pdClass->data);
     
 	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
 		const String channelName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
@@ -1050,7 +1054,15 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 		for (int i = 1; i < e->getNumAttributes(); i++)
 		{
 			//none of these are being updated in their respective valueTreeChanged listeners..
-
+            if(e->getAttributeName(i) == "cabbageJSONData")
+            {
+                CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+                auto pdClass = *pd;
+                if(pdClass!=nullptr)
+                    pdClass->data = e->getStringAttribute("cabbageJSONData").toStdString();
+            }
+            
+            
 			ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, e->getAttributeName(i), true);
 
 
@@ -1062,6 +1074,8 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			{
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
 			}
+
+            
 			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 			{
 				const String stringComboItem = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).existsAsFile() ?

@@ -484,6 +484,7 @@ namespace CabbageWidgetTypes
     static const String light = "light";
 
     static const String infobutton = "infobutton";
+    static const String json = "json";
 	static const String keyboard = "keyboard";
 	static const String keyboarddisplay = "keyboarddisplay";
 	static const String label = "label";
