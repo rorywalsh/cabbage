@@ -42,7 +42,7 @@ endin
 instr UpdateData
     iRes writeStateData 1, {{
         { 
-        "happy": true, "pi": 1.141, "test": "hello", "list":[1, 0, 2, 3, 4, 5, 2, 3, 6], "stringList":["hi", "who", "goes", "there"]
+        "happy": true, "pi": 1.141, "test": "hello", "list":[1, 0, 2, 3, 4, 5, 2, 3, 6], "stringList":["hi", "who", "goes", "there]
         }
     }}
     if iRes == -1 then
@@ -82,6 +82,11 @@ instr SetFloatArrayValue
     kArr[] fillarray 1, 2, 3, 4
     kRes setStateValue "list", kArr
 endin
+
+instr SetStringArrayValue
+    SArr[] fillarray "1", "2", "3", "4"
+    kRes setStateValue "stringList", SArr
+endin
 </CsInstruments>
 <CsScore>
 ;causes Csound to run for about 7000 years...
@@ -90,15 +95,15 @@ i2 0 z
 ;starts instrument 1 and runs it for a week
 ;i"WriteData" 0 1
 ;i"ShowData" + 1  
-;i"UpdateData" 0 1
+i"UpdateData" 0 1
 ;i"ShowData" 2 1
 ;i"GetFloatValue" 3 1
 ;i"GetFloatArrayValue" 4 1
 ;i"GetStringValue" 5 1
 ;i"GetStringArrayValue" 6 1
 ;i"SetFloatValue" 2 1
-i"SetFloatArrayValue" 1 1
+i"SetStringArrayValue" 1 1
 i"ShowData" 3 1
-i"GetFloatArrayValue" 4 1
+i"GetStringArrayValue" 4 1
 </CsScore>
 </CsoundSynthesizer>
