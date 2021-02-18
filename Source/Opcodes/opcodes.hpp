@@ -322,7 +322,7 @@ struct SetStateStringArrayData : csnd::Plugin<1, 2>
 
         std::string newData = "{ \"" + jsonKeyName + "\" : [";
         for (int i = 0; i < strs.len(); i++) {
-            newData += (strs[i] + (i < strs.len() - 1 ? ", " : ""));
+            newData += (strs[i].data + std::string(i < strs.len() - 1 ? ", " : ""));
         }
         newData += "]}";
 
