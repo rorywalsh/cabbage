@@ -162,22 +162,23 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<WriteStateData>((csnd::Csound*) csound->GetCsound(), "writeStateData.ss", "i", "iS", csnd::thread::i);
     csnd::plugin<ReadStateData>((csnd::Csound*) csound->GetCsound(), "readStateData.i", "S", "", csnd::thread::i);
 
+    csnd::plugin<GetStateFloatValue>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "i", "S", csnd::thread::i);
     csnd::plugin<GetStateFloatValue>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "k", "S", csnd::thread::ik);
     csnd::plugin<GetStateFloatValueArray>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "k[]", "S", csnd::thread::ik);
     csnd::plugin<GetStateStringValue>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "S", "S", csnd::thread::i);
     csnd::plugin<GetStateStringValueArray>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "S[]", "S", csnd::thread::ik);
 
-    csnd::plugin<SetStateFloatData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "Sk", csnd::thread::k);
+    csnd::plugin<SetStateFloatData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "Sk", csnd::thread::ik);
     csnd::plugin<SetStateFloatData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "i", "Si", csnd::thread::i);
 
-    csnd::plugin<SetStateFloatArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "i", "Sk[]", csnd::thread::i);
-    csnd::plugin<SetStateFloatArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "Sk[]", csnd::thread::k);
+    csnd::plugin<SetStateFloatArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "i", "Si[]", csnd::thread::i);
+    csnd::plugin<SetStateFloatArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "Sk[]", csnd::thread::ik);
 
     csnd::plugin<SetStateStringData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "i", "SS", csnd::thread::i);
-    csnd::plugin<SetStateStringData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "SS", csnd::thread::k);
+    csnd::plugin<SetStateStringData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "SS", csnd::thread::ik);
 
     csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "i", "SS[]", csnd::thread::i);
-    csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "SS[]", csnd::thread::k);
+    csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "SS[]", csnd::thread::ik);
 
 
 
