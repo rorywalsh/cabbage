@@ -1,7 +1,7 @@
-<Cabbage>
-form caption("Untitled") size(400, 300), colour(58, 110, 182), pluginid("def1")
-rslider bounds(296, 162, 100, 100), channel("gain"), range(0, 1, 0.5, 1, .01), text("Gain"), trackercolour("lime"), outlinecolour(0, 0, 0, 50), textcolour("black")
-rslider bounds(192, 162, 100, 100), channel("feedback"), range(0, 0.5, 0, 1, 0.01), text("Feed"), trackercolour(0, 255, 0, 255), outlinecolour(0, 0, 0, 50), textcolour(0, 0, 0, 255)
+ <Cabbage>
+form caption("Untitled") size(400, 300), colour(60, 60, 60), pluginid("def1")
+rslider bounds(14, 14, 100, 100), channel("sliderValue"), range(0, 1, 0.5, 1, 0.01), text("SliderValue"), trackercolour(0, 255, 0, 255), outlinecolour(0, 0, 0, 50), textcolour(0, 0, 0, 255)
+button bounds(122, 16, 120, 40), channel("showData"), text("Print State Data")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -13,50 +13,92 @@ ksmps = 32
 nchnls = 2
 0dbfs = 1
 
+instr 1
+    a1 oscili 1, 200
+    outs a1, a1
+endin
 
+instr 2
 
-instr WriteJSON
+kSlider chnget "sliderValue"
 
-    iRes writeJSONToChannel 0, "dataChan", "{ \"happy\": true, \"pi\": 3.141}"
+if changed2(kSlider) == 1 then
+    event "i", "SetFloatValue", 0, 0
+endif
 
-    if iRes == -1 then
-        prints "Couldn't write JSON data"
-    endif
+if changed:k(chnget:k("showData")) == 1 then
+    event "i", "ShowData", 0, 0
+endif
 
 endin
 
-instr UpdateJSON
+;instr WriteData
+;    iRes writeStateData 0, "{ \"happy\": true, \"pi\": 3.141, \"list\":[1, 0, 2, 3, 4, 5, 2, 3, 6], \"stringList\":[\"Hi\", \"who\", \"goes\", \"there\"]}"
+;    if iRes == -1 then
+;        prints "Couldn't write JSON data"
+;    endif
+;endin
 
-    iRes writeJSONToChannel 1, "dataChan", {{
+instr UpdateData
+    iRes writeStateData 1, {{
         { 
-        "happy": true, "pi": 1.141, "test": 12
+        "happy": true, "pi": 1.141, "test": "hello", "list":[1, 0, 2, 3, 4, 5, 2, 3, 6], "stringList":["hi", "who", "goes", "there"]
         }
     }}
-
     if iRes == -1 then
         prints "Couldn't write JSON data"
     endif
-
 endin
 
-instr ShowJSON
-    prints chnget:S("dataChan")
+instr ShowData
+    prints readStateData()
 endin
 
-instr GetJSONFloatValue
-    kVal getJSONFloatValue "dataChan", "pi3"
+instr GetFloatValue
+    kVal getStateValue "pi"
     printk2 kVal
 endin
 
+instr GetFloatArrayValue
+    kVal[] getStateValue "list"
+    printarray kVal, 1, "%d"
+endin
+
+instr GetStringValue
+    SVal getStateValue "test"
+    prints SVal
+endin
+
+instr GetStringArrayValue
+    SVal[] getStateValue "stringList"
+    printarray SVal, 1, "%s"
+endin
+
+instr SetFloatValue
+    iRes setStateValue "pi", chnget:i("sliderValue")
+endin
+
+instr SetFloatArrayValue
+    kArr[] fillarray 1, 2, 3, 4
+    kRes setStateValue "list", kArr
+endin
 </CsInstruments>
 <CsScore>
 ;causes Csound to run for about 7000 years...
 f0 z
+i2 0 z
 ;starts instrument 1 and runs it for a week
-i"WriteJSON" 0 1
-i"ShowJSON" 1 1
-i"UpdateJSON" 2 1
-i"ShowJSON" 2 1
-i"GetJSONFloatValue" 3 1
+;i"WriteData" 0 1
+;i"ShowData" + 1  
+;i"UpdateData" 0 1
+;i"ShowData" 2 1
+;i"GetFloatValue" 3 1
+;i"GetFloatArrayValue" 4 1
+;i"GetStringValue" 5 1
+;i"GetStringArrayValue" 6 1
+;i"SetFloatValue" 2 1
+i"SetFloatArrayValue" 1 1
+i"ShowData" 3 1
+i"GetFloatArrayValue" 4 1
 </CsScore>
 </CsoundSynthesizer>

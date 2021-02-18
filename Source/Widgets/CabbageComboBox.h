@@ -23,6 +23,7 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
+
 class CabbagePluginEditor;
 class CabbageComboBox
     : public ComboBox,

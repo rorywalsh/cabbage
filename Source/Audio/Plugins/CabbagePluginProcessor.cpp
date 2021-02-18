@@ -953,9 +953,14 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 	xml->getChildByName(presetName)->setAttribute("PresetName", childName);
 
     CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-    auto pdClass = *pd;
-    if(pdClass!=nullptr)
-        xml->getChildByName(presetName)->setAttribute("cabbageJSONData", pdClass->data);
+
+	if (pd != nullptr)
+	{
+		auto pdClass = *pd;
+		xml->getChildByName(presetName)->setAttribute("cabbageJSONData", pdClass->data);
+	}
+
+        
     
 	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
 		const String channelName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
@@ -1056,10 +1061,13 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			//none of these are being updated in their respective valueTreeChanged listeners..
             if(e->getAttributeName(i) == "cabbageJSONData")
             {
-                CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-                auto pdClass = *pd;
-                if(pdClass!=nullptr)
-                    pdClass->data = e->getStringAttribute("cabbageJSONData").toStdString();
+				/*getCsound()->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
+				CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+				*pd = new CabbagePersistentData();
+				auto pdClass = *pd;
+				pdClass->data = e->getStringAttribute("cabbageJSONData").toStdString();*/
+				setInternalState(e->getStringAttribute("cabbageJSONData"));
+				DBG(e->getStringAttribute("cabbageJSONData"));
             }
             
             

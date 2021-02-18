@@ -145,39 +145,49 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 	csound->SetHostImplementedAudioIO(1, 0);
 	csound->SetHostData(this);
 
-    if (csnd::plugin<StrToFile>((csnd::Csound*) csound->GetCsound(), "strToFile.SSO", "i", "SSO", csnd::thread::i) != 0)
-       jassertfalse;
-    if (csnd::plugin<ChannelStateSave>((csnd::Csound*) csound->GetCsound(), "channelStateSave.i", "i", "S", csnd::thread::i) != 0)
-        jassertfalse;
-    if (csnd::plugin<ChannelStateSave>((csnd::Csound*) csound->GetCsound(), "channelStateSave.k", "k", "S", csnd::thread::k) != 0)
-        jassertfalse;
-    if (csnd::plugin<ChannelStateRecall>((csnd::Csound*) csound->GetCsound(), "channelStateRecall.i", "i", "S", csnd::thread::i) != 0)
-        jassertfalse;
-    if (csnd::plugin<ChannelStateRecall>((csnd::Csound*) csound->GetCsound(), "channelStateRecall.k", "k", "SO", csnd::thread::k) != 0)
-        jassertfalse;
-    if (csnd::plugin<ChannelStateRecall>((csnd::Csound*) csound->GetCsound(), "channelStateRecall.k", "k", "SS[]", csnd::thread::k) != 0)
-        jassertfalse;
-    if (csnd::plugin<FileToStr>((csnd::Csound*) csound->GetCsound(), "fileToStr.i", "S", "S", csnd::thread::i) != 0)
-        jassertfalse;
-    if (csnd::plugin<StrToArray>((csnd::Csound*) csound->GetCsound(), "strToArray.ii", "S[]", "SS", csnd::thread::i) != 0)
-        jassertfalse;
-    if (csnd::plugin<StrRemove>((csnd::Csound*) csound->GetCsound(), "strRemove.ii", "S", "SSo", csnd::thread::i) != 0)
-        jassertfalse;
-    if (csnd::plugin<WriteJSONData>((csnd::Csound*) csound->GetCsound(), "writeJSONData.ss", "i", "iS", csnd::thread::i) != 0)
-        jassertfalse;
-    if (csnd::plugin<GetJSONFloatValue>((csnd::Csound*) csound->GetCsound(), "getJSONFloatValue.ss", "k", "SS", csnd::thread::i) != 0)
-        jassertfalse;
-    if (csnd::plugin<GetJSONFloatValue>((csnd::Csound*) csound->GetCsound(), "getJSONFloatValue.ss", "i", "SS", csnd::thread::i) != 0)
-        jassertfalse;
-    if (csnd::plugin<DumpJSONData>((csnd::Csound*) csound->GetCsound(), "dumpJsonData.i", "i", "", csnd::thread::i) != 0)
-        jassertfalse;
+    csnd::plugin<StrToFile>((csnd::Csound*) csound->GetCsound(), "strToFile.SSO", "i", "SSO", csnd::thread::i);
+    csnd::plugin<FileToStr>((csnd::Csound*) csound->GetCsound(), "fileToStr.i", "S", "S", csnd::thread::i);
+
+    csnd::plugin<ChannelStateSave>((csnd::Csound*) csound->GetCsound(), "channelStateSave.i", "i", "S", csnd::thread::i);
+    csnd::plugin<ChannelStateSave>((csnd::Csound*) csound->GetCsound(), "channelStateSave.k", "k", "S", csnd::thread::k);
+
+    csnd::plugin<ChannelStateRecall>((csnd::Csound*) csound->GetCsound(), "channelStateRecall.i", "i", "S", csnd::thread::i);
+    csnd::plugin<ChannelStateRecall>((csnd::Csound*) csound->GetCsound(), "channelStateRecall.k", "k", "SO", csnd::thread::k);
+    csnd::plugin<ChannelStateRecall>((csnd::Csound*) csound->GetCsound(), "channelStateRecall.k", "k", "SS[]", csnd::thread::k);
+
+    
+    csnd::plugin<StrToArray>((csnd::Csound*) csound->GetCsound(), "strToArray.ii", "S[]", "SS", csnd::thread::i);
+    csnd::plugin<StrRemove>((csnd::Csound*) csound->GetCsound(), "strRemove.ii", "S", "SSo", csnd::thread::i);
+
+    csnd::plugin<WriteStateData>((csnd::Csound*) csound->GetCsound(), "writeStateData.ss", "i", "iS", csnd::thread::i);
+    csnd::plugin<ReadStateData>((csnd::Csound*) csound->GetCsound(), "readStateData.i", "S", "", csnd::thread::i);
+
+    csnd::plugin<GetStateFloatValue>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "k", "S", csnd::thread::ik);
+    csnd::plugin<GetStateFloatValueArray>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "k[]", "S", csnd::thread::ik);
+    csnd::plugin<GetStateStringValue>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "S", "S", csnd::thread::i);
+    csnd::plugin<GetStateStringValueArray>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "S[]", "S", csnd::thread::ik);
+
+    csnd::plugin<SetStateFloatData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "Sk", csnd::thread::k);
+    csnd::plugin<SetStateFloatData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "i", "Si", csnd::thread::i);
+
+    csnd::plugin<SetStateFloatArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "i", "Sk[]", csnd::thread::i);
+    csnd::plugin<SetStateFloatArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "Sk[]", csnd::thread::k);
+
+    csnd::plugin<SetStateStringData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "i", "SS", csnd::thread::i);
+    csnd::plugin<SetStateStringData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "SS", csnd::thread::k);
+
+    csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "i", "SS[]", csnd::thread::i);
+    csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "SS[]", csnd::thread::k);
+
+
+
     
 
-    csound->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
-    CabbagePersistentData** pd = (CabbagePersistentData**)csound->QueryGlobalVariable("cabbageData");
-    *pd = new CabbagePersistentData();
-    auto pdClass = *pd;
-    pdClass->data = "";
+    //csound->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
+    //CabbagePersistentData** pd = (CabbagePersistentData**)csound->QueryGlobalVariable("cabbageData");
+    //*pd = new CabbagePersistentData();
+    //auto pdClass = *pd;
+    //pdClass->data = "{}";
     
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
@@ -312,6 +322,13 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         return;
     }
     
+    getCsound()->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
+    CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+    *pd = new CabbagePersistentData();
+    auto pdClass = *pd;
+    pdClass->data = getInternalState().toStdString();
+
+
     for (int i = 0; i < cabbageData.getNumChildren(); i++)
     {
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type);

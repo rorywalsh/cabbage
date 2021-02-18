@@ -1430,6 +1430,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
     StringArray pluginFiles;
     Result res = getFilterGraph()->loadDocument (fileToOpen);
     
+    //getFilterGraph()->closeAnyOpenPluginWindows();
     for ( int i = 0 ; i < files.size() ; i++)
     {
 		String fileName = files[i].getFullPathName();
@@ -1444,6 +1445,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
             File file = openFile (files[i].getFullPathName());
             fileTabs[getTabFileIndex(files[i])]->uniqueFileId = uuids[i+uidOffset];
 			fileTabs[getTabFileIndex(files[i])]->getPlayButton().setToggleState(true, dontSendNotification);
+            //runCsoundForNode(files[i].getFullPathName());
        }
     }
 	

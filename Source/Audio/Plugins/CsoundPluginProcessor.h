@@ -256,6 +256,16 @@ public:
     OwnedArray <SignalDisplay, CriticalSection> signalArrays;   //holds values from FFT function table created using dispfft
     CsoundPluginProcessor::SignalDisplay* getSignalArray (String variableName, String displayType = "");
 
+    String getInternalState()
+    {
+        return internalStateData;
+    }
+
+    void setInternalState(String stateData)
+    {
+        internalStateData = stateData;
+    }
+
 private:
     //==============================================================================
     MidiBuffer midiOutputBuffer;
@@ -282,6 +292,7 @@ private:
     int busIndex = 0;
     bool disableLogging = false;
 	int preferredLatency = 32;
+    String internalStateData = {};
 
 
 

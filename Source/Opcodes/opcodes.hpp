@@ -28,23 +28,36 @@ public:
     int size = 0;
 };
 
-
-struct DumpJSONData : csnd::Plugin<1, 1>
+//====================================================================================================
+// ReadStateData
+//====================================================================================================
+struct ReadStateData : csnd::Plugin<1, 1>
 {
     int init()
     {
         CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
-        if(*pd != nullptr)
+        if(pd != nullptr)
         {
             auto perData = *pd;
-            csound->message(perData->data);
+            //csound->message(perData->data);
+            if (perData->data.empty())
+            {
+                csound->message("No data, temporary or persistent, has been written to internal state...");
+            }
+
+            outargs.str_data(0).data = csound->strdup((char*)perData->data.c_str());
+            return OK;
         }
         
+        csound->message("There was a problem reading internal state data");
         return OK;
     }
 };
 
-struct WriteJSONData : csnd::Plugin<1, 3>
+//====================================================================================================
+// Write State Data
+//====================================================================================================
+struct WriteStateData : csnd::Plugin<1, 3>
 {
     int init()
     {
@@ -56,7 +69,7 @@ struct WriteJSONData : csnd::Plugin<1, 3>
     {
 
         std::string jsonString(inargs.str_data(1).data);
-        std::string jsonData;
+        std::string jsonData = "";
         int mode = inargs[0];
         json j;
 
@@ -94,53 +107,550 @@ struct WriteJSONData : csnd::Plugin<1, 3>
     }
 };
 
-
-struct GetJSONFloatValue : csnd::Plugin<1, 2>
+//====================================================================================================
+// Set float values 
+//====================================================================================================
+struct SetStateFloatData : csnd::Plugin<1, 2>
 {
     int init()
     {
-        readDataFromChannel();
+        writeJsonDataToGlobalVar();
         return OK;
     }
 
     int kperf()
     {
-        readDataFromChannel();
+        writeJsonDataToGlobalVar();
+        return OK;
+    }
+    void writeJsonDataToGlobalVar()
+    {
+        std::string jsonKeyName(inargs.str_data(0).data);
+        std::string jsonData;
+        MYFLT value = inargs[1];
+
+        json j;
+
+        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+        CabbagePersistentData* perData;
+        if (pd != nullptr)
+        {
+            perData = *pd;
+            jsonData = perData->data;
+        }
+        else
+        {
+            csound->create_global_variable("cabbageData", sizeof(CabbagePersistentData*));
+            CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+            *pd = new CabbagePersistentData();
+            perData = *pd;
+            csound->message("Creating new internal state object...");
+            jsonData = "{}";
+        }
+
+        std::string newData = "{ \"" + jsonKeyName + "\" : " + std::to_string(value) + "}";
+
+        if (json::accept(newData) == false)
+        {
+            csound->message("Invalid JSON data");
+            outargs[0] = -1;
+            return;
+        }
+
+        j = json::parse(jsonData.empty() ? "{}" : jsonData);
+        auto j2 = json::parse(newData);
+        j.update(j2);
+
+        perData->data = j.dump();
+    }
+};
+
+struct SetStateFloatArrayData : csnd::Plugin<1, 2>
+{
+    int init()
+    {
+        writeJsonDataToGlobalVar();
         return OK;
     }
 
-    void readDataFromChannel()
+    int kperf()
     {
-        std::string channelName(inargs.str_data(0).data);
-        std::string channelKey(inargs.str_data(1).data);
+        writeJsonDataToGlobalVar();
+        return OK;
+    }
+    void writeJsonDataToGlobalVar()
+    {
+        std::string jsonKeyName(inargs.str_data(0).data);
+        std::string jsonData;
+        csnd::Vector<MYFLT>& args = inargs.myfltvec_data(1);
+
+        json j;
+
+        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+        CabbagePersistentData* perData;
+        if (pd != nullptr)
+        {
+            perData = *pd;
+            jsonData = perData->data;
+        }
+        else
+        {
+            csound->create_global_variable("cabbageData", sizeof(CabbagePersistentData*));
+            CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+            *pd = new CabbagePersistentData();
+            perData = *pd;
+            csound->message("Creating new internal state object...");
+            jsonData = "{}";
+        }
+
+        std::string newData = "{ \"" + jsonKeyName + "\" : [";
+        for (int i = 0; i < args.len(); i++) {
+            newData += std::to_string(args[i]) + (i < args.len() - 1 ? ", " : "");
+        }
+        newData += "]}";
+
+        if (json::accept(newData) == false)
+        {
+            csound->message("Invalid JSON data");
+            outargs[0] = -1;
+            return;
+        }
+
+        j = json::parse(jsonData.empty() ? "{}" : jsonData);
+        auto j2 = json::parse(newData);
+        j.update(j2);
+
+        perData->data = j.dump();
+    }
+};
+
+//====================================================================================================
+// Set float values 
+//====================================================================================================
+struct SetStateStringData : csnd::Plugin<1, 2>
+{
+    int init()
+    {
+        writeJsonDataToGlobalVar();
+        return OK;
+    }
+
+    int kperf()
+    {
+        writeJsonDataToGlobalVar();
+        return OK;
+    }
+    void writeJsonDataToGlobalVar()
+    {
+        std::string jsonKeyName(inargs.str_data(0).data);
+        std::string jsonData;
+        std::string value(inargs.str_data(1).data);
+
+        json j;
+
+        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+        CabbagePersistentData* perData;
+        if (pd != nullptr)
+        {
+            perData = *pd;
+            jsonData = perData->data;
+        }
+        else
+        {
+            csound->create_global_variable("cabbageData", sizeof(CabbagePersistentData*));
+            CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+            *pd = new CabbagePersistentData();
+            perData = *pd;
+            csound->message("Creating new internal state object...");
+            jsonData = "{}";
+        }
+
+        std::string newData = "{ \"" + jsonKeyName + "\" : " + value + "}";
+
+        if (json::accept(newData) == false)
+        {
+            csound->message("Invalid JSON data");
+            outargs[0] = -1;
+            return;
+        }
+
+        j = json::parse(jsonData.empty() ? "{}" : jsonData);
+        auto j2 = json::parse(newData);
+        j.update(j2);
+
+        perData->data = j.dump();
+    }
+};
+
+struct SetStateStringArrayData : csnd::Plugin<1, 2>
+{
+    int init()
+    {
+        writeJsonDataToGlobalVar();
+        return OK;
+    }
+
+    int kperf()
+    {
+        writeJsonDataToGlobalVar();
+        return OK;
+    }
+    void writeJsonDataToGlobalVar()
+    {
+        std::string jsonKeyName(inargs.str_data(0).data);
+        std::string jsonData;
+        csnd::Vector<STRINGDAT>& strs = outargs.vector_data<STRINGDAT>(1);
+
+        json j;
+
+        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+        CabbagePersistentData* perData;
+        if (pd != nullptr)
+        {
+            perData = *pd;
+            jsonData = perData->data;
+        }
+        else
+        {
+            csound->create_global_variable("cabbageData", sizeof(CabbagePersistentData*));
+            CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+            *pd = new CabbagePersistentData();
+            perData = *pd;
+            csound->message("Creating new internal state object...");
+            jsonData = "{}";
+        }
+
+        std::string newData = "{ \"" + jsonKeyName + "\" : [";
+        for (int i = 0; i < strs.len(); i++) {
+            newData += (strs[i] + (i < strs.len() - 1 ? ", " : ""));
+        }
+        newData += "]}";
+
+        if (json::accept(newData) == false)
+        {
+            csound->message("Invalid JSON data");
+            outargs[0] = -1;
+            return;
+        }
+
+        j = json::parse(jsonData.empty() ? "{}" : jsonData);
+        auto j2 = json::parse(newData);
+        j.update(j2);
+
+        perData->data = j.dump();
+    }
+};
+//====================================================================================================
+// Get string values..
+//====================================================================================================
+struct GetStateStringValue : csnd::Plugin<1, 1>
+{
+    int init()
+    {
+        if (in_count() == 0)
+        {
+            csound->message("Please pass a valid key...");
+            return NOTOK;
+        }
+        readData();
+        return OK;
+    }
+
+    int kperf()
+    {
+        if (in_count() == 0)
+        {
+            csound->message("Please pass a valid key...");
+            return NOTOK;
+        }
+        readData();
+        return OK;
+    }
+
+    void readData()
+    {
+        std::string chString;
+        json j;
+        bool firstTimeSuccess = false;
+        std::string channelKey(inargs.str_data(0).data);
+        std::string jsonData;
+
+        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+        auto perData = *pd;
+        if (perData != nullptr)
+        {
+            jsonData = perData->data;
+        }
+        else
+        {
+            csound->message("Internal JSON global var is not valid.");
+            return;
+        }
+
+        if (json::accept(jsonData) == false)
+        {
+            csound->message("Invalid JSON data");
+            outargs.str_data(0).data = "";
+            return;
+        }
+
+        j = json::parse(jsonData);
+
+        for (json::iterator it = j.begin(); it != j.end(); ++it)
+        {
+            if (it.key() == channelKey && it.value().is_string())
+            {
+                outargs.str_data(0).data = csound->strdup((char*)it.value().dump().c_str());
+                firstTimeSuccess = true;
+            }
+        }
+
+        if (firstTimeSuccess == false)
+        {
+            csound->message("Could not find value for " + channelKey + "?\nCheck JSON channel data.");
+            firstTimeSuccess = true;
+        }
+    }
+};
+
+struct GetStateStringValueArray : csnd::Plugin<1, 1>
+{
+    int init()
+    {
+        if (in_count() == 0)
+        {
+            csound->message("Please pass a valid key...");
+            return NOTOK;
+        }
+        readData();
+        return OK;
+    }
+
+    int kperf()
+    {
+        if (in_count() == 0)
+        {
+            csound->message("Please pass a valid key...");
+            return NOTOK;
+        }
+        readData();
+        return OK;
+    }
+
+    void readData()
+    {
         std::string chString;
         json j;
         MYFLT* value;
-        bool success = false;
+        bool firstTimeSuccess = false;
+        std::string channelKey(inargs.str_data(0).data);
+        std::string jsonData;
 
-        if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
-            CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+        csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
+
+
+        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+        auto perData = *pd;
+        if (perData != nullptr)
         {
-            chString = ((STRINGDAT*)value)->data;
-            std::string channelData(chString);
-            j = json::parse(channelData);
+            jsonData = perData->data;
         }
+        else
+        {
+            csound->message("Internal JSON global var is not valid.");
+            return;
+        }
+
+
+        if (json::accept(jsonData) == false)
+        {
+            csound->message("Invalid JSON data");
+            out.init(csound, 1);
+            out[0].data = "";
+            return;
+        }
+
+        j = json::parse(jsonData);
+
+        for (json::iterator it = j.begin(); it != j.end(); ++it)
+        {
+            if (it.key() == channelKey && it.value().is_array())
+            {
+                out.init(csound, (int)it.value().size());
+                int index = 0;
+                for (json::iterator tt = it.value().begin(); tt != it.value().end(); ++tt)
+                {
+                    if (tt.value().is_string())
+                        out[index++].data = csound->strdup((char*)tt.value().dump().c_str());
+                }
+                firstTimeSuccess = true;
+            }
+        }
+
+        if (firstTimeSuccess == false)
+        {
+            csound->message("Could not find value for " + channelKey + "?\nCheck JSON channel data.");
+            firstTimeSuccess = true;
+        }
+    }
+};
+
+//====================================================================================================
+// Get numberic values..
+//====================================================================================================
+struct GetStateFloatValue : csnd::Plugin<1, 1>
+{
+    int init()
+    {
+        if (in_count() == 0)
+        {
+            csound->message("Please pass a valid key...");
+            return NOTOK;
+        }
+        readData();
+        return OK;
+    }
+
+    int kperf()
+    {
+        if (in_count() == 0)
+        {
+            csound->message("Please pass a valid key...");
+            return NOTOK;
+        }
+        readData();
+        return OK;
+    }
+
+    void readData()
+    {
+        std::string chString;
+        json j;
+        MYFLT* value;
+        bool firstTimeSuccess = false;
+        std::string channelKey(inargs.str_data(0).data);
+        std::string jsonData;
+
+        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+        auto perData = *pd;
+        if (perData != nullptr)
+        {
+            jsonData = perData->data;
+        }
+        else
+        {
+            csound->message("Internal JSON global var is not valid.");
+            return;
+        }
+
+        
+        if (json::accept(jsonData) == false)
+        {
+            csound->message("Invalid JSON data");
+            outargs[0] = -1;
+            return;
+        }
+
+        j = json::parse(jsonData);
 
         for (json::iterator it = j.begin(); it != j.end(); ++it)
         {
             if (it.key() == channelKey && it.value().is_number_float())
             {
                 outargs[0] = it.value();
-                success = true;
+                firstTimeSuccess = true;
             }
         }
 
-        if (success == false)
+        if (firstTimeSuccess == false)
         {
-            csound->message("Could not find value for "+ channelKey + "? Check JSON channel data.");
+            csound->message("Could not find value for "+ channelKey + "?\nCheck JSON channel data.");
+            firstTimeSuccess = true;
         }
     }
 };
+
+struct GetStateFloatValueArray : csnd::Plugin<1, 1>
+{
+    int init()
+    {
+        if (in_count() == 0)
+        {
+            csound->message("Please pass a valid key...");
+            return NOTOK;
+        }
+        readData();
+        return OK;
+    }
+
+    int kperf()
+    {
+        if (in_count() == 0)
+        {
+            csound->message("Please pass a valid key...");
+            return NOTOK;
+        }
+        readData();
+        return OK;
+    }
+
+    void readData()
+    {
+        std::string chString;
+        json j;
+        MYFLT* value;
+        bool firstTimeSuccess= false;
+        std::string channelKey(inargs.str_data(0).data);
+        std::string jsonData;
+
+        csnd::Vector<MYFLT>& out = outargs.myfltvec_data(0);
+
+
+        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+        auto perData = *pd;
+        if (perData != nullptr)
+        {
+            jsonData = perData->data;
+        }
+        else
+        {
+            csound->message("Internal JSON global var is not valid.");
+            return;
+        }
+
+
+        if (json::accept(jsonData) == false)
+        {
+            csound->message("Invalid JSON data");
+            out.init(csound, 1);
+            out[0] = -1;
+            return;
+        }
+
+        j = json::parse(jsonData);
+
+        for (json::iterator it = j.begin(); it != j.end(); ++it)
+        {
+            if (it.key() == channelKey && it.value().is_array())
+            {
+                out.init(csound, (int)it.value().size());
+                int index = 0;
+                for (json::iterator tt = it.value().begin(); tt != it.value().end(); ++tt)
+                {
+                    out[index++] = tt.value();
+                }
+                firstTimeSuccess = true;
+            }
+        }
+
+        if (firstTimeSuccess == false)
+        {
+            csound->message("Could not find value for " + channelKey + "?\nCheck JSON channel data.");
+            firstTimeSuccess = true;
+        }
+    }
+};
+
 
 //===========================================================================
 // Channel State Save/Recall

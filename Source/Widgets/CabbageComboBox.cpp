@@ -55,7 +55,6 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
 
     addItemsToCombobox (widgetData);
 
-    
     if (CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::channeltype) == "string" &&
 		!CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::filetype).contains("snaps"))
     {
@@ -109,6 +108,16 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
             //don't send notification here, otherwise the saved session settings will be overwriten by the presets...
             owner->currentPresetName = getItemText((index-1 >= 0 ? index : 0));
             setSelectedItemIndex ((index-1 >= 0 ? index : 0), dontSendNotification);
+            //onChange = [this] 
+            //{
+            //    if (getSelectedItemIndex() >= 0)
+            //    {
+            //        setTextWhenNothingSelected(presets[getSelectedItemIndex()]);
+            //        DBG(presets[getSelectedItemIndex()]);
+            //        setSelectedId(0);
+            //    }
+            //};
+
         }
         else
         {
@@ -149,7 +158,6 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         auto tempFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file));
         String comboFile = tempFile.loadFileAsString();
         StringArray lines = StringArray::fromLines (comboFile);
-
         for (int i = 0; i < lines.size(); ++i)
         {
             if (lines[i].isNotEmpty()) 
@@ -222,6 +230,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         if (fileName.existsAsFile())
         {
             std::unique_ptr<XmlElement> xmlElement = XmlDocument::parse (fileName);
+
             int itemIndex = 1;
 
             if (xmlElement)
@@ -298,6 +307,30 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
         owner->restorePluginStateFrom (presets[combo->getSelectedItemIndex()], presetFilename);
         owner->sendChannelStringDataToCsound (getChannel(), presets[combo->getSelectedItemIndex()]);
         CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, presets[combo->getSelectedItemIndex()]);
+
+        auto menu = getRootMenu();
+        auto id = getSelectedId();
+
+        juce::PopupMenu::MenuItemIterator iterator(*menu);
+
+        while (iterator.next())
+        {
+            auto item = &iterator.getItem();
+
+            if (item->itemID == id)
+            {
+                item->setAction([this, combo, presetFilename] { 
+                    owner->restorePluginStateFrom(presets[combo->getSelectedItemIndex()], presetFilename);
+                    owner->sendChannelStringDataToCsound(getChannel(), presets[combo->getSelectedItemIndex()]);
+                    CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::value, presets[combo->getSelectedItemIndex()]); 
+                });
+            }
+            else
+            {
+                item->setAction(nullptr);
+            }
+        }
+
     }
     else if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))
     {

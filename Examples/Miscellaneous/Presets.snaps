@@ -7,4 +7,6 @@
   <PRESET1 PresetName="Presets 1" att="1.00000000000000000000" dec="0.40000000596046447754"
            sus="1.00000000000000000000" rel="0.80000001192092895508" combochan="-1.00000000000000000000"
            filebutton="0.00000000000000000000" checkchan9="0.00000000000000000000"/>
+  <PRESET2 PresetName="Presets 2" cabbageJSONData="" att="1.0" dec="1.0"
+           sus="1.0" rel="1.0" combochan="1.0" filebutton="0.0" checkchan9="0.0"/>
 </CABBAGE_PRESETS>
