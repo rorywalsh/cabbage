@@ -1485,6 +1485,9 @@ void CabbageMainComponent::saveGraph (bool saveAs)
 //==================================================================================
 void CabbageMainComponent::openFolder ()
 {
+    char* badPtr = 0;
+    *badPtr = 1;
+    
     FileChooser fc ("Open File", cabbageSettings->getMostRecentFile (0).getParentDirectory(), "*.csd;*", CabbageUtilities::shouldUseNativeBrowser());
     
     if (fc.browseForDirectory())
