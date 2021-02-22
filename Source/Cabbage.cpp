@@ -47,7 +47,7 @@ void Cabbage::initialise (const String& commandLine)
     SystemStats::setApplicationCrashHandler ([](void*) {        
         ofstream myfile;
         String rootDir = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName();
-        myfile.open(rootDir+"/CabbageDump.txt");
+        myfile.open(String(rootDir+"/CabbageDump.txt").toStdString());
         myfile << SystemStats::getStackBacktrace();
         myfile.close();
         
