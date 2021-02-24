@@ -1096,13 +1096,17 @@ void CabbagePluginEditor::refreshComboListBoxContents()
 
             if (CabbageComboBox* combo = dynamic_cast<CabbageComboBox*> (getComponentFromName (name)))
             {
+                const int numPresets = combo->getNumItems();
+                const int currentIndex = combo->getSelectedItemIndex();
                 if (fileType.isNotEmpty())
                 {
                     combo->addItemsToCombobox (cabbageProcessor.cabbageWidgets.getChild (i));
                 }
 
-                if(bool(combo->getProperties().getWithDefault("isPresetCombo", false)) == true)
-                   combo->setSelectedItemIndex(combo->getNumItems()-1);
+                if(bool(combo->getProperties().getWithDefault("isPresetCombo", false)) == true && numPresets < combo->getNumItems())
+                    combo->setSelectedItemIndex(combo->getNumItems()-1);
+                else
+                    combo->setSelectedItemIndex(currentIndex);
             }
 
             else if (CabbageListBox* listbox = dynamic_cast<CabbageListBox*> (getComponentFromName (name)))
