@@ -38,6 +38,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, "resize", 0);
     setProperty (widgetData, "automation", 0);
     setProperty (widgetData, CabbageIdentifierIds::active, 1);
+    setProperty (widgetData, CabbageIdentifierIds::isparent, 0);
     setProperty (widgetData, CabbageIdentifierIds::automatable, 0);
     setProperty (widgetData, CabbageIdentifierIds::parentdir, "");
     setProperty (widgetData, CabbageIdentifierIds::manufacturer, "CabbageAudio");

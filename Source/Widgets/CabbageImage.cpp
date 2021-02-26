@@ -33,10 +33,14 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
     widgetData (wData),
     outlineColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::outlinecolour))),
     mainColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour))),
-    isLineWidget (isLineWidget)
+    isLineWidget (isLineWidget),
+    isParent(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::isparent))
 {
+    prevWidth = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::width);
+    prevHeight = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::height);
     widgetData.addListener (this);
 	
+    //int isParent = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::isparent);
     String fileBase64 = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
 	if (fileBase64.isNotEmpty()) {
 		MemoryOutputStream out;
@@ -124,7 +128,6 @@ void CabbageImage::changeListenerCallback (ChangeBroadcaster* source)
 //==============================================================================
 void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-
     if (CabbagePluginEditor::PopupDocumentWindow* parentComp = dynamic_cast<CabbagePluginEditor::PopupDocumentWindow*> (getParentComponent()))
     {
         const int isParentvisible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);
@@ -138,7 +141,10 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
         else
             parentComp->setVisible (false);
     }
-
+    
+    if((prop.toString() == "width" || prop.toString() == "height") && isParent)
+        resizeAllChildren(valueTree);
+    
     lineThickness = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::outlinethickness);
     outlineColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::outlinecolour));
     mainColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
@@ -152,6 +158,26 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     repaint();
 }
 
+void CabbageImage::resizeAllChildren(ValueTree& valueTree)
+{
+    
+    const double newWidth = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::width);
+    const double newHeight = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::height);
+    if(newWidth < 30 || newHeight < 30)
+        return;
+    
+    const double xScale = newWidth/prevWidth;
+    const double yScale = newHeight/prevHeight;
+    for( auto comp : this->getChildren())
+    {
+        const Point<int> compSize(comp->getWidth(), comp->getHeight());
+        const Point<int> compPos(comp->getX(), comp->getY());
+        comp->setBounds(compPos.getX()*xScale, compPos.getY()*yScale, compSize.getX()*xScale, compSize.getY()*yScale);
+    }
+ 
+    prevWidth = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::width);
+    prevHeight = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::height);
+}
 void CabbageImage::updateImage(ValueTree& valueTree)
 {
 	String fileBase64 = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);

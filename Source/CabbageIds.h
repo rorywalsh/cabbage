@@ -404,6 +404,7 @@ public:
         add ("velocity");
         add ("amprange");
         add ("celldata");
+        add ("isparent");
         add ("latency");
         add ("cvinput");
         add ("color:0");
@@ -593,6 +594,7 @@ namespace CabbageIdentifierIds
 	static const Identifier import = "import";
 	static const Identifier importfiles = "importfiles";
 	static const Identifier increment = "increment";
+    static const Identifier isparent = "isparent";
 	static const Identifier items = "items";
 	static const Identifier keypressbaseoctave = "keypressbaseoctave";
 	static const Identifier keyseparatorcolour = "keyseparatorcolour";

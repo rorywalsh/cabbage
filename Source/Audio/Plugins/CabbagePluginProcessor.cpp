@@ -310,10 +310,18 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 		CabbageWidgetData::setStringProp(tempWidget, "precedingCharacters", precedingCharacters);
 
 		const String widgetName = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::name);
-
+        
 		if (widgetName.isNotEmpty())
 			cabbageWidgets.addChild(tempWidget, -1, 0);
 
+        if (isWidgetPlantParent(linesFromCsd, lineNumber) &&
+            currentLineOfCabbageCode.removeCharacters(" ").removeCharacters("\t").substring(0, 1) != "{") {
+            //CabbageUtilities::debug (CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::name).toString());
+            parents.add(CabbageWidgetData::getProperty(tempWidget, CabbageIdentifierIds::name).toString());
+            auto currentChild = cabbageWidgets.getChild(cabbageWidgets.getNumChildren()-1);
+            CabbageWidgetData::setNumProp(currentChild, CabbageIdentifierIds::isparent, 1);
+        }
+        
 		if (CabbageWidgetData::getProperty(tempWidget, CabbageIdentifierIds::widgetarray).size() > 0 &&
 			CabbageWidgetData::getProperty(tempWidget, CabbageIdentifierIds::identchannelarray).size() > 0) {
 			for (int i = 0;
@@ -337,11 +345,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 		}
 
 
-		if (isWidgetPlantParent(linesFromCsd, lineNumber) &&
-			currentLineOfCabbageCode.removeCharacters(" ").removeCharacters("\t").substring(0, 1) != "{") {
-			//CabbageUtilities::debug (CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::name).toString());
-			parents.add(CabbageWidgetData::getProperty(tempWidget, CabbageIdentifierIds::name).toString());
-		}
+
 
 
 	}
