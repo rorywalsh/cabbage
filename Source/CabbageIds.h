@@ -431,6 +431,7 @@ public:
         add ("active");
         add ("shape");
         add ("screw");
+        add ("scale");
         add ("popup");
         add ("alpha");
         add ("items");
@@ -658,7 +659,7 @@ namespace CabbageIdentifierIds
 	static const Identifier rangey = "rangey";
 	static const Identifier readonly = "readonly";
 	static const Identifier refreshfiles = "refreshfiles";
-	static const Identifier rescale = "scale";
+	static const Identifier scale = "scale";
 	static const Identifier resize = "resize";
 	static const Identifier resizemode = "resizemode";
 	static const Identifier rotate = "rotate";

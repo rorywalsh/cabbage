@@ -77,6 +77,8 @@ public:
     //==============================================================================
     void setupWindow (ValueTree cabbageWidgetData);
 
+    Component* getMainComponent(){  return &mainComponent;   }
+    
     void insertWidget (ValueTree cabbageWidgetData);
     // the following methods instantiate controls that CAN
     // be automated in a host...

@@ -434,6 +434,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("value"):
             case HashStringToInt ("valuetextbox"):
             case HashStringToInt ("valuex"):
+            case HashStringToInt ("scale"):
             case HashStringToInt ("valuey"):
             case HashStringToInt ("velocity"):
             case HashStringToInt ("visible"):
@@ -481,6 +482,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
 
             case HashStringToInt ("rescale"):
+                
                 setProperty (widgetData, CabbageIdentifierIds::scalex, strTokens[0].trim().getFloatValue());
                 setProperty (widgetData, CabbageIdentifierIds::scaley, strTokens[1].trim().getFloatValue());
                 break;
