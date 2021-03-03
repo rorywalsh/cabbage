@@ -255,7 +255,7 @@ public:
 private:
 	  
     //---- main component that holds widgets -----
-    class MainComponent : public Component, public FileDragAndDropTarget
+    class MainComponent : public Component, public FileDragAndDropTarget, public TextDragAndDropTarget
     {
         Colour colour;
         CabbagePluginEditor* owner;
@@ -273,6 +273,8 @@ private:
             //g.setOpacity (0);
             g.fillAll (colour);
         }
+        
+        bool isInterestedInFileDrag (const StringArray& /*files*/) override{ return true; }
         void fileDragEnter (const StringArray& /*files*/, int /*x*/, int /*y*/) override{}
         void fileDragMove (const StringArray& /*files*/, int /*x*/, int /*y*/) override {}
         void fileDragExit (const StringArray& /*files*/) override {}
@@ -282,7 +284,20 @@ private:
 			owner->sendChannelDataToCsound(CabbageIdentifierIds::mousey, y); 
             owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastFileDropped, files[0]);
         }
-        bool isInterestedInFileDrag (const StringArray& /*files*/) override{ return true; }
+        
+        bool isInterestedInTextDrag (const String& /*files*/) override{ return true; }
+        void textDragEnter (const String& /*files*/, int /*x*/, int /*y*/) override {}
+        void textDragMove (const String& /*files*/, int /*x*/, int /*y*/) override {}
+        void textDragExit (const String& /*files*/) override {}
+        void textDropped (const String& text, int x, int y) override
+        {
+            owner->sendChannelDataToCsound(CabbageIdentifierIds::mousex, x);
+            owner->sendChannelDataToCsound(CabbageIdentifierIds::mousey, y);
+            owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastFileDropped, text);
+        }
+        
+        
+        
     };
 
     class ViewportContainer : public Component

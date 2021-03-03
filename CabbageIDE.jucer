@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.5.16"
+<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.5.17"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
               jucerVersion="5.4.7" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="14" companyCopyright="">
@@ -351,7 +351,7 @@
                        libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
                        osxCompatibility="10.8 SDK" osxArchitecture="64BitIntel" enablePluginBinaryCopyStep="1"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Cabbage"
+        <CONFIGURATION name="Release" isDebug="1" optimisation="3" targetName="Cabbage"
                        libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
                        osxCompatibility="10.8 SDK" osxArchitecture="64BitIntel" enablePluginBinaryCopyStep="1"/>
