@@ -18,7 +18,7 @@
 using json = nlohmann::json;
 
 
-class CabbagePersistentData
+class CabbagePersistentData 
 {
 public:
     

@@ -80,6 +80,8 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **LAST_FILE_DROPPED** This will hold the name of the last file dragged and released on the plugin window. 
 
+**LAST_TEXT_DROPPED** This will hold the string of the last piece of text that was dragged and released on the plugin window. 
+
 **IS_A_PLUGIN** Returns 1 if the instrument is running as an audio plugin, and 0 if the instrument is running as a standalone. 
 
 **IS_EDITOR_OPEN** Returns 1 if the plugin editor window is currently open, or 0 if the user has closed it. 
