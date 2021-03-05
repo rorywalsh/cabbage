@@ -127,6 +127,12 @@ void Soundfiler::scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRan
         setRange (visibleRange.movedToStartAt (newRangeStart));
 }
 
+void Soundfiler::showScrollbars (bool show)
+{
+    if(scrollbar)
+        scrollbar->setVisible(false);
+}
+
 void Soundfiler::setFile (const File& file)
 {
     if (! file.isDirectory())

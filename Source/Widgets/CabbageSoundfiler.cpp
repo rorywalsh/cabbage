@@ -67,7 +67,18 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
         setWaveform(sampleBuffer, 1);
     }
     
-
+    if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::startpos) > -1 && CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::endpos) > 0)
+    {
+        Range<double> newRange;
+        
+        newRange.setStart(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::startpos)/sampleRate);
+        newRange.setEnd(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::endpos)/sampleRate);
+        soundfiler.setRange (newRange);
+    }
+    
+    const int scrollbars = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrollbars);
+    if(scrollbars == 0)
+        soundfiler.showScrollbars(false);
 }
 
 void CabbageSoundfiler::changeListenerCallback (ChangeBroadcaster* source)
@@ -122,6 +133,17 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
         soundfiler.setZoomFactor (zoom);
     }
 
+    if(prop == CabbageIdentifierIds::startpos || prop == CabbageIdentifierIds::endpos)
+    {
+        if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::startpos) > -1 && CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::endpos) > 0)
+        {
+            Range<double> newRange;
+            newRange.setStart(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::startpos)/sampleRate);
+            newRange.setEnd(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::endpos)/sampleRate);
+            soundfiler.setRange (newRange);
+        }
+    }
+    
     soundfiler.setScrubberPos (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition));
     soundfiler.setWaveformColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
     soundfiler.setBackgroundColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour));

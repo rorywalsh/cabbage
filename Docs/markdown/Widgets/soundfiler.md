@@ -19,6 +19,8 @@ soundfiler WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/zoom.md !}  
 
+{! ./markdown/Widgets/Properties/samplerange.md !}  
+
 ### Common Identifiers
 
 {! ./markdown/Widgets/Properties/active.md !} 

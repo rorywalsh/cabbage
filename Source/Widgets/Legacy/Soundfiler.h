@@ -88,6 +88,8 @@ public:
     void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel) override;
     void setWaveform (AudioSampleBuffer buffer, int channels);
     void createImage (String filename);
+    void setRange (Range<double> newRange);
+    void showScrollbars (bool show);
 
 private:
     Image img;
@@ -99,7 +101,7 @@ private:
     double zoom;
     std::unique_ptr<DrawableRectangle> currentPositionMarker;
     std::unique_ptr<ScrollBar> scrollbar;
-    void setRange (Range<double> newRange);
+    
     void resized() override;
     void paint (Graphics& g) override;
     void mouseDown (const MouseEvent& e) override;
