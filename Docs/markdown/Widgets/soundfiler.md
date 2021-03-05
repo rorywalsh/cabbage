@@ -21,6 +21,8 @@ soundfiler WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/samplerange.md !}  
 
+{! ./markdown/Widgets/Properties/scrollbars.md !}  
+
 ### Common Identifiers
 
 {! ./markdown/Widgets/Properties/active.md !} 
