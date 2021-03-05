@@ -399,7 +399,6 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
 			if (index != -1)
 				setSelectedItemIndex(index, dontSendNotification);
-
 			//CabbageWidgetData::setProperty(valueTree, CabbageIdentifierIds::value, currentValueAsText);
 		}
 
@@ -420,6 +419,10 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
         }
 
+        if(prop == CabbageIdentifierIds::text && isStringCombo == true)
+        {
+                addItemsToCombobox(valueTree);
+        }
 
         if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles)==1)
         {

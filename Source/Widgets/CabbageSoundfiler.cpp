@@ -49,8 +49,24 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
 
     soundfiler.setFile (File::getCurrentWorkingDirectory().getChildFile(file));
     soundfiler.addChangeListener (this);
+    
+    var tables = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablenumber);
+    
+    for (int y = 0; y < tables.size(); y++)
+    {
+        int tableNumber = tables[y];
+        tableValues.clear();
+        tableValues = owner->getTableFloats (tableNumber);
+        AudioBuffer<float> sampleBuffer;
+        sampleBuffer.setSize(1, tableValues.size());
+        //has to be a quicker way of doing this...
+        for ( int i = 0 ; i < tableValues.size() ; i++){
+            sampleBuffer.setSample(0, i, tableValues[i]);
+        }
 
-
+        setWaveform(sampleBuffer, 1);
+    }
+    
 
 }
 

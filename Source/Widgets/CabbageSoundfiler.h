@@ -39,6 +39,8 @@ class CabbageSoundfiler : public Component, public ValueTree::Listener, public C
     float scrubberPos;
 
     CabbagePluginEditor* owner;
+    Array <float, CriticalSection> tableValues;
+    
 public:
 
     CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _owner, int sr);
