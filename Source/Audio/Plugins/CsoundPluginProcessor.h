@@ -131,9 +131,9 @@ public:
         return breakPointData.valueTree;
     }
 
-    int getAutomationMode()
+    int getChnsetGestureMode()
     {
-       return csound->GetControlChannel("AUTOMATION");
+       return csound->GetChannel("CHNSET_GESTURES");
     }
     StringArray getTableStatement (int tableNum);
     const Array<float, CriticalSection> getTableFloats (int tableNum);

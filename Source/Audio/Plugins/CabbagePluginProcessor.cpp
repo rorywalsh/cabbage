@@ -1153,6 +1153,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 	if (!getCsound())
 		return;
 
+    const int chnsetGestureMode = getChnsetGestureMode();
 	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
 	{
 		const var chanArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
@@ -1190,8 +1191,8 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value,
 						getCsound()->GetChannel(channels[0].toUTF8()));
 					//now update plugin parameters..
-					//const int automationMode = getAutomationMode();
-					if (automationMode == 1)
+					
+					if (chnsetGestureMode == 1) // by default, we don't call beginChangeGesture()...
 					{
 						for (auto cabbageParam : getCabbageParameters())
 						{
