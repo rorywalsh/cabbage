@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="id6VOA" name="CabbageLite" displaySplashScreen="0" reportAppUsage="1"
-              splashScreenColour="Dark" projectType="guiapp" version="2.5.18"
+              splashScreenColour="Dark" projectType="guiapp" version="2.5.19"
               bundleIdentifier="com.yourcompany.CabbageLite" includeBinaryInAppConfig="1"
               cppLanguageStandard="11" jucerVersion="5.4.7" companyCopyright="">
   <MAINGROUP id="CfT7TE" name="CabbageLite">
