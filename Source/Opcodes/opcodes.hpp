@@ -779,12 +779,13 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
         std::string filename(inargs.str_data(0).data);
         std::vector<std::string> ignoreStrings;
 
-        if (inargs[1] != 0)
+        if (in_count() == 2)
         {
             csnd::Vector<STRINGDAT>& in = inargs.vector_data<STRINGDAT>(1);
             for (int i = 0; i < in.len(); i++)
             {
                 ignoreStrings.push_back(std::string(in[i].data));
+                DBG(in[i].data);
             }
         }
 
@@ -797,6 +798,13 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
         }
 
         j << file;
+        if (json::accept(j.dump()) == false) 
+        {
+            csound->message("Found invalid JSON data in "+filename);
+            return;
+        }
+
+
         MYFLT* value;
 
         for (json::iterator it = j.begin(); it != j.end(); ++it)
@@ -817,6 +825,7 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
                     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
                         CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
                     {
+                        DBG(channelName);
                         *value = it.value();
                     }
                 }
@@ -825,6 +834,7 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
                     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
                         CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
                     {
+                        DBG(channelName);
                         std::string string = it.value();
                         ((STRINGDAT*)value)->data = csound->strdup((char*)string.c_str());
                     }
@@ -833,7 +843,7 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
         }
         outargs[0] = 1;
         file.close();
-        csound->message(j.dump());
+        //csound->message(j.dump());
     }
 
 };
