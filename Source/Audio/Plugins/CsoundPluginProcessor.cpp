@@ -347,8 +347,12 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
             }
             if (typeOfWidget == CabbageWidgetTypes::filebutton)
             {
-                csound->SetStringChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
+                const String mode = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::mode);
+                if( mode == "file" || mode == "save" || mode == "directory")
+                {
+                    csound->SetStringChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
                                           CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::file).toUTF8().getAddress());
+                }
             }
 
             else

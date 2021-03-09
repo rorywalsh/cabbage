@@ -979,7 +979,7 @@ float CabbagePluginEditor::getChannelDataFromCsound (String channel)
 void CabbagePluginEditor::sendChannelStringDataToCsound (String channel, String value)
 {
     if (cabbageProcessor.csdCompiledWithoutError() && cabbageProcessor.getCsound())
-        cabbageProcessor.getCsound()->SetChannel (channel.getCharPointer(), value.toUTF8().getAddress());
+        cabbageProcessor.getCsound()->SetStringChannel (channel.getCharPointer(), value.toUTF8().getAddress());
 }
 
 void CabbagePluginEditor::sendScoreEventToCsound (String scoreEvent)

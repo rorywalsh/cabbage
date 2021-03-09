@@ -36,7 +36,7 @@ lAndF()
     
     setButtonText (getText());
 
-    mode = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mode);
+    
     filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).replaceCharacters (" ", ";");
 
     setImgProperties (*this, wData, "buttonon");
@@ -64,7 +64,9 @@ lAndF()
         setLookAndFeel(&flatLookAndFeel);
     }
     
-    setFile(wData);
+    mode = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mode);
+    if( mode == "file" || mode == "save" || mode == "directory")
+        setFile(wData);
     
 }
 
@@ -166,6 +168,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         const int result = CabbageUtilities::showYesNoMessage("Are you sure you wish to remove\nthis preset?", tempLAF);
         if(result == 1)
         {
+            owner->sendChannelStringDataToCsound (getChannel(), owner->currentPresetName);
             owner->savePluginStateToFile (File (newFileName), owner->currentPresetName, true);
             owner->refreshComboListBoxContents();
         }
@@ -197,7 +200,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         
         if (result == 1)
         {
-            owner->sendChannelStringDataToCsound (getChannel(), newFileName);
+            owner->sendChannelStringDataToCsound (getChannel(), presetName);
             owner->savePluginStateToFile (File (newFileName), presetName, false);
             owner->refreshComboListBoxContents();
         }
@@ -247,6 +250,7 @@ void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Id
     setLookAndFeelColours (valueTree);
     handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     setButtonText (getText());
-    setFile(valueTree);
+    if( mode == "file" || mode == "save" || mode == "directory")
+        setFile(valueTree);
     setTooltip(getCurrentPopupText(valueTree));
 }
