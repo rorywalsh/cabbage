@@ -17,6 +17,14 @@
 #include "../CabbageCommonHeaders.h"
 using json = nlohmann::json;
 
+#include "../Widgets/CabbageWidgetData.h"
+#include "../JuceLibraryCode/JuceHeader.h"
+
+//====================================================================================================
+// Set Widget Attribute
+//====================================================================================================
+
+
 
 class CabbagePersistentData 
 {

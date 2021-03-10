@@ -22,6 +22,65 @@
 #include "../../Utilities/CabbageUtilities.h"
 #include "../../Widgets/CabbageWidgetData.h"
 
+class CabbageWidgetIdentifiers
+{
+public:
+    
+    CabbageWidgetIdentifiers(){}
+    ValueTree data;
+};
+struct SetCabbageIdentifier : csnd::Plugin<1, 64>
+{
+    int perfCycles = 0;
+    int init()
+    {
+        CabbageWidgetIdentifiers** vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+        if(vt != nullptr)
+        {
+            
+        }
+        return OK;
+    }
+    
+    int kperf()
+    {
+        setAttribute();
+        return OK;
+    }
+    
+    int setAttribute()
+    {
+        if(perfCycles == 128)
+        {
+            String channel(inargs.str_data(0).data);
+            String identifier(inargs.str_data(1).data);
+            const int argsCount = in_count();
+            const MessageManagerLock lock;
+            CabbageWidgetIdentifiers** vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+            if(vt != nullptr)
+            {
+                auto valueTree = *vt;
+                auto cabbageWidgets = valueTree->data;
+                for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
+                {
+                    const String identChannel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
+                    if(channel == identChannel)
+                    {
+                        if(identifier == "pos")
+                        {
+                            CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::top, inargs[2]);
+                            CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::left, inargs[3]);
+                        }
+                    }
+                    
+                }
+            }
+        }
+        perfCycles = (perfCycles > 128 ? 0 : perfCycles+1);
+        //csound->message("Something went wrong\n");
+        return OK;
+    }
+};
 
 //==============================================================================
 CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSet ins, const AudioChannelSet outs)
@@ -83,9 +142,16 @@ void CsoundPluginProcessor::resetCsound()
 
 	CabbageUtilities::debug("Plugin destructor");
 	Logger::setCurrentLogger(nullptr);
-
 	if (csound)
 	{
+        CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+        if(pd != nullptr)
+            getCsound()->DestroyGlobalVariable("cabbageData");
+        
+        CabbageWidgetIdentifiers** wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
+        if(wi != nullptr)
+            getCsound()->DestroyGlobalVariable("cabbageWidgetData");
+        
 #if !defined(Cabbage_Lite)
 		csound = nullptr;
 #endif
@@ -180,7 +246,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "i", "SS[]", csnd::thread::i);
     csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "SS[]", csnd::thread::ik);
 
-
+    csnd::plugin<SetCabbageIdentifier>((csnd::Csound*) csound->GetCsound(), "setCabbageIdentifier", "k", "SSN", csnd::thread::ik);
 
     
 
@@ -436,8 +502,12 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     }
 
-
-
+    getCsound()->CreateGlobalVariable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
+    CabbageWidgetIdentifiers** vt = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
+    *vt = new CabbageWidgetIdentifiers();
+    auto valueTree = *vt;
+    valueTree->data = cabbageData;
+    
     if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win32)
     {
         csound->SetChannel ("CSD_PATH", csdFilePath.getParentDirectory().getFullPathName().replace ("\\", "\\\\").toUTF8().getAddress());
