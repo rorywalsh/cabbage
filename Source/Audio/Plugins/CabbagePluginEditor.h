@@ -294,10 +294,7 @@ private:
             owner->sendChannelDataToCsound(CabbageIdentifierIds::mousex, x);
             owner->sendChannelDataToCsound(CabbageIdentifierIds::mousey, y);
             owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastTextDropped, text);
-        }
-        
-        
-        
+        }       
     };
 
     class ViewportContainer : public Component

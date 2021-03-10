@@ -407,10 +407,17 @@ public:
 
 		if (auto* plugin = graph.getNodeForId(nodeId))
 		{
+			plugin->getProcessor()->suspendProcessing(true);
+			auto pluginProcessor = dynamic_cast<CsoundPluginProcessor*>(plugin->getProcessor());
+			if (pluginProcessor)
+			{
+				pluginProcessor->resetCsound();
+			}
+
 			std::unique_ptr<XmlElement> xml (createConnectionsXml());
 			graph.disconnectNode(nodeId);
 			plugin->getProcessor()->editorBeingDeleted(plugin->getProcessor()->getActiveEditor());
-         
+			
             graph.removeNode(nodeId);
 			graph.releaseResources();
 
@@ -419,11 +426,7 @@ public:
 			// Normally this is done in the plugin processor destructor when Juce cleans up dead graph nodes, but the
 			// new plugin processor instance will start Csound before the old one is destroyed, so we need to release
 			// Csound resources here instead of waiting until later.
-			auto pluginProcessor = dynamic_cast<CsoundPluginProcessor*>(plugin->getProcessor());
-			if (pluginProcessor)
-			{
-				pluginProcessor->resetCsound();
-			}
+
 
 			if (auto node = graph.addNode(std::move(processor), nodeId))
 			{

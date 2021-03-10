@@ -32,12 +32,13 @@ public:
 struct SetCabbageIdentifier : csnd::Plugin<1, 64>
 {
     int perfCycles = 0;
+    CabbageWidgetIdentifiers** vt = nullptr;
     int init()
     {
-        CabbageWidgetIdentifiers** vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        if(vt != nullptr)
+        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+        if(vt == nullptr)
         {
-            
+            csound->message("Could not find Cabbage Widget Data...\n");
         }
         return OK;
     }
@@ -50,34 +51,32 @@ struct SetCabbageIdentifier : csnd::Plugin<1, 64>
     
     int setAttribute()
     {
-        if(perfCycles == 128)
+        String channel(inargs.str_data(0).data);
+        String identifier(inargs.str_data(1).data);
+        const int argsCount = in_count();
+        const MessageManagerLock lock;
+        //CabbageWidgetIdentifiers** vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+        if (vt != nullptr)
         {
-            String channel(inargs.str_data(0).data);
-            String identifier(inargs.str_data(1).data);
-            const int argsCount = in_count();
-            const MessageManagerLock lock;
-            CabbageWidgetIdentifiers** vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-            if(vt != nullptr)
+            auto valueTree = *vt;
+            auto cabbageWidgets = valueTree->data;
+            for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
             {
-                auto valueTree = *vt;
-                auto cabbageWidgets = valueTree->data;
-                for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
+                const String identChannel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
+                if (channel == identChannel)
                 {
-                    const String identChannel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
-                    if(channel == identChannel)
+                    if (identifier == "pos")
                     {
-                        if(identifier == "pos")
-                        {
-                            CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::top, inargs[2]);
-                            CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::left, inargs[3]);
-                        }
+                        cabbageWidgets.getChild(i).setProperty(CabbageIdentifierIds::left, inargs[2], nullptr);
+                        cabbageWidgets.getChild(i).setProperty(CabbageIdentifierIds::top, inargs[3], nullptr);
+                        //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::top, inargs[2]);
+                        //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::left, inargs[3]);
                     }
-                    
                 }
+
             }
         }
-        perfCycles = (perfCycles > 128 ? 0 : perfCycles+1);
-        //csound->message("Something went wrong\n");
+
         return OK;
     }
 };
@@ -1021,13 +1020,13 @@ void CsoundPluginProcessor::performCsoundKsmps()
 	if (result == 0)
 	{
 		//slow down calls to these functions, no need for them to be firing at k-rate
-		if (guiCycles > guiRefreshRate)
-		{
-			guiCycles = 0;
-			triggerAsyncUpdate();
-		}
-		else
-			++guiCycles;
+		//if (guiCycles > guiRefreshRate)
+		//{
+		//	guiCycles = 0;
+		//	triggerAsyncUpdate();
+		//}
+		//else
+		//	++guiCycles;
 
 		//trigger any Csound score event on each k-boundary
 		triggerCsoundEvents();

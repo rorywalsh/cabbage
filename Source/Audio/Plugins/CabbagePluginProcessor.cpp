@@ -956,12 +956,15 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 
 	xml->getChildByName(presetName)->setAttribute("PresetName", childName);
 
-    CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-
-	if (pd != nullptr)
+	if (getCsound())
 	{
-		auto pdClass = *pd;
-		xml->getChildByName(presetName)->setAttribute("cabbageJSONData", pdClass->data);
+		CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+
+		if (pd != nullptr)
+		{
+			auto pdClass = *pd;
+			xml->getChildByName(presetName)->setAttribute("cabbageJSONData", pdClass->data);
+		}
 	}
 
         
