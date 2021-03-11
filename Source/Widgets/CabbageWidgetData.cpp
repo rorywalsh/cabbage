@@ -85,9 +85,6 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::rslider))
         setRSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::json))
-        setJSONProperties (widgetData, ID);
-    
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::groupbox))
         setGroupBoxProperties (widgetData, ID);
 

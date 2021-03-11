@@ -270,84 +270,94 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 
 		const String comments = currentLineOfCabbageCode.indexOf(";") == -1 ? "" : currentLineOfCabbageCode.substring(
 			currentLineOfCabbageCode.indexOf(";"));
+        
+        
+        
 		CabbageWidgetData::setWidgetState(tempWidget, currentLineOfCabbageCode.trimCharactersAtStart(" \t") + comments,
 			lineNumber);
+        String widgetNameId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::name);
+        //if no name is specified use generic name
+        if(widgetNameId.isEmpty())
+            widgetNameId = widgetTreeIdentifier;
+        
+        ValueTree newWidget(widgetNameId);
+        newWidget.copyPropertiesFrom(tempWidget, nullptr);
+        
 
 
 		if (shouldClosePlant(linesFromCsd, lineNumber))
 			parents.remove(parents.size() - 1);
 
 		if (parents.size() > 0)
-			CabbageWidgetData::setStringProp(tempWidget, CabbageIdentifierIds::parentcomponent,
+			CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::parentcomponent,
 				parents[parents.size() - 1]);
 
-		CabbageWidgetData::setNumProp(tempWidget, CabbageIdentifierIds::linenumber, lineNumber - linesToSkip);
-		CabbageWidgetData::setStringProp(tempWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
+		CabbageWidgetData::setNumProp(newWidget, CabbageIdentifierIds::linenumber, lineNumber - linesToSkip);
+		CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
 
 
-		CabbageWidgetData::setProperty(tempWidget, CabbageIdentifierIds::macronames, macroNames);
-		CabbageWidgetData::setProperty(tempWidget, CabbageIdentifierIds::macrostrings, macroStrings);
+		CabbageWidgetData::setProperty(newWidget, CabbageIdentifierIds::macronames, macroNames);
+		CabbageWidgetData::setProperty(newWidget, CabbageIdentifierIds::macrostrings, macroStrings);
 
 
-		const String typeOfWidget = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::type);
+		const String typeOfWidget = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::type);
 		for (int i = 0; i < plantStructs.size(); i++) {
 			if (plantStructs[i].name == typeOfWidget)
 				linesToSkip += plantStructs[i].cabbageCode.size() + 1;
 		}
 
 		if (typeOfWidget == CabbageWidgetTypes::form) {
-			const String caption = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::caption);
+			const String caption = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::caption);
 			setPluginName(caption.length() > 0 ? caption : "Untitled");
 
-			if (CabbageWidgetData::getNumProp(tempWidget, CabbageIdentifierIds::logger) == 1)
+			if (CabbageWidgetData::getNumProp(newWidget, CabbageIdentifierIds::logger) == 1)
 				createFileLogger(this->csdFile);
 
-			setGUIRefreshRate(CabbageWidgetData::getNumProp(tempWidget, CabbageIdentifierIds::guirefresh));
+			setGUIRefreshRate(CabbageWidgetData::getNumProp(newWidget, CabbageIdentifierIds::guirefresh));
 		}
 
 		const String precedingCharacters = currentLineOfCabbageCode.substring(0, currentLineOfCabbageCode.indexOf(
 			typeOfWidget));
-		CabbageWidgetData::setStringProp(tempWidget, "precedingCharacters", precedingCharacters);
+		CabbageWidgetData::setStringProp(newWidget, "precedingCharacters", precedingCharacters);
 
-		const String widgetName = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::name);
+		const String widgetName = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name);
         
 		if (widgetName.isNotEmpty())
-			cabbageWidgets.addChild(tempWidget, -1, 0);
+			cabbageWidgets.addChild(newWidget, -1, 0);
 
         if (isWidgetPlantParent(linesFromCsd, lineNumber) &&
             currentLineOfCabbageCode.removeCharacters(" ").removeCharacters("\t").substring(0, 1) != "{") {
             //CabbageUtilities::debug (CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::name).toString());
-            parents.add(CabbageWidgetData::getProperty(tempWidget, CabbageIdentifierIds::name).toString());
+            parents.add(CabbageWidgetData::getProperty(newWidget, CabbageIdentifierIds::name).toString());
             auto currentChild = cabbageWidgets.getChild(cabbageWidgets.getNumChildren()-1);
             CabbageWidgetData::setNumProp(currentChild, CabbageIdentifierIds::isparent, 1);
         }
         
-		if (CabbageWidgetData::getProperty(tempWidget, CabbageIdentifierIds::widgetarray).size() > 0 &&
-			CabbageWidgetData::getProperty(tempWidget, CabbageIdentifierIds::identchannelarray).size() > 0) {
+		if (CabbageWidgetData::getProperty(newWidget, CabbageIdentifierIds::widgetarray).size() > 0 &&
+			CabbageWidgetData::getProperty(newWidget, CabbageIdentifierIds::identchannelarray).size() > 0) {
 			for (int i = 0;
-				i < CabbageWidgetData::getProperty(tempWidget, CabbageIdentifierIds::widgetarray).size(); i++) {
-				ValueTree copy = tempWidget.createCopy();
-				const String chan = CabbageWidgetData::getProperty(tempWidget,
+				i < CabbageWidgetData::getProperty(newWidget, CabbageIdentifierIds::widgetarray).size(); i++) {
+				
+				const String chan = CabbageWidgetData::getProperty(newWidget,
 					CabbageIdentifierIds::widgetarray)[i].toString();
-				const String iChan = CabbageWidgetData::getProperty(tempWidget,
+				const String iChan = CabbageWidgetData::getProperty(newWidget,
 					CabbageIdentifierIds::identchannelarray)[i].toString();
 				const String name =
-					CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::name) + String(9999 + i);
+					CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name) + String(9999 + i);
+                
+                //using identifier channels as names for widget arrays..
+                ValueTree copy(iChan);
+                copy.copyPropertiesFrom(newWidget, nullptr);
 				CabbageWidgetData::setStringProp(copy, CabbageIdentifierIds::name, name);
 				CabbageWidgetData::setStringProp(copy, CabbageIdentifierIds::channel,
-					CabbageWidgetData::getProperty(tempWidget,
+					CabbageWidgetData::getProperty(newWidget,
 						CabbageIdentifierIds::widgetarray)[i]);
 				CabbageWidgetData::setStringProp(copy, CabbageIdentifierIds::identchannel,
-					CabbageWidgetData::getProperty(tempWidget,
+					CabbageWidgetData::getProperty(newWidget,
 						CabbageIdentifierIds::identchannelarray)[i]);
 				cabbageWidgets.addChild(copy, -1, 0);
 			}
 		}
-
-
-
-
-
 	}
 }
 
@@ -1159,9 +1169,16 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
             for( int i = 0 ; i < perData->data.size() ; i++)
             {
                 const String identifier = perData->data[0].identifier.toString();
-                const String channel = perData->data[0].channel.toString();
-				cabbageWidgets.getChild(1).setProperty(CabbageIdentifierIds::left, Random::getSystemRandom().nextInt(200), nullptr);
-				cabbageWidgets.getChild(1).setProperty(CabbageIdentifierIds::top, Random::getSystemRandom().nextInt(200), nullptr);
+                auto name = perData->data[0].name.toString();
+//                for (int x = 0; x < cabbageWidgets.getNumChildren(); x++)
+//                {
+//                    DBG(cabbageWidgets.getChild(x).getType().toString());
+//                }
+                if(name.isNotEmpty())
+                {
+                cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::left, Random::getSystemRandom().nextInt(200), nullptr);
+                cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::top, Random::getSystemRandom().nextInt(200), nullptr);
+                }
                 //for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
                 //{
                 //    const String identChannel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);

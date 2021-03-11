@@ -65,7 +65,6 @@ public:
     static void setEncoderProperties (ValueTree widgetData, int ID);
     static void setSoundfilerProperties (ValueTree widgetData, int ID);
     static void setButtonProperties (ValueTree widgetData, int ID);
-    static void setJSONProperties (ValueTree widgetData, int ID);
     static void setFileButtonProperties (ValueTree widgetData, int ID);
     static void setInfoButtonProperties (ValueTree widgetData, int ID);
     static void setLoadButtonProperties (ValueTree widgetDatta, int ID);

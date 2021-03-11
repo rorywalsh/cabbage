@@ -212,18 +212,6 @@ void CabbageWidgetData::setScrewProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
 }
 
-void CabbageWidgetData::setJSONProperties (ValueTree widgetData, int ID)
-{
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "abstract");
-    setProperty (widgetData, CabbageIdentifierIds::top, 10);
-    setProperty (widgetData, CabbageIdentifierIds::left, 10);
-    setProperty (widgetData, CabbageIdentifierIds::width, 30);
-    setProperty (widgetData, CabbageIdentifierIds::height, 30);
-    setProperty (widgetData, CabbageIdentifierIds::type, "json");
-    setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
-    setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
-    setProperty (widgetData, CabbageIdentifierIds::visible, 0);
-}
 
 void CabbageWidgetData::setPortProperties (ValueTree widgetData, int ID, const String type)
 {

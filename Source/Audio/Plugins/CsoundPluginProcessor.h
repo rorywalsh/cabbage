@@ -37,12 +37,12 @@ class CabbageWidgetIdentifiers
 public:
     struct IdentifierData
     {
-        Identifier identifier, channel;
+        Identifier identifier, name;
         var data;
     };
     
     CabbageWidgetIdentifiers(){}
-    Array<IdentifierData> data;
+    Array<IdentifierData, CriticalSection> data;
 };
 
 //==============================================================================

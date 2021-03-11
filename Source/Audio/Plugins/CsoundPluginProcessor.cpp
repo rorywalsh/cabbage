@@ -72,11 +72,11 @@ struct SetCabbageIdentifier : csnd::Plugin<1, 64>
         
         CabbageWidgetIdentifiers::IdentifierData data;
 
-        String channel(inargs.str_data(0).data);
+        String name(inargs.str_data(0).data);
         String identifier(inargs.str_data(1).data);
         const int argsCount = in_count();
         data.identifier = identifier;
-        data.channel = channel;
+        data.name = name;
         //const MessageManagerLock lock;
         if (identifier == "pos")
         {
@@ -1021,8 +1021,8 @@ void CsoundPluginProcessor::triggerCsoundEvents()
 
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
-    getIdentifierDataFromCsound();
-    //getChannelDataFromCsound();
+    //getIdentifierDataFromCsound();
+    getChannelDataFromCsound();
     sendChannelDataToCsound();
 }
 
