@@ -71,7 +71,9 @@ public:
     ~CabbagePluginProcessor();
 
     ValueTree cabbageWidgets;
+    CachedValue<var> cachedValue;
     void getChannelDataFromCsound() override;
+    void getIdentifierDataFromCsound() override;
     void triggerCsoundEvents() override;
     void setWidthHeight();
     bool addImportFiles (StringArray& lineFromCsd);

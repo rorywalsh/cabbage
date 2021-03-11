@@ -108,6 +108,7 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet i
 	cabbageWidgets("CabbageWidgetData"),
 	csdFile(inputFile)
 {
+    
 	createCsound(inputFile);
 }
 
@@ -1147,6 +1148,39 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 	}
 }
 
+void CabbagePluginProcessor::getIdentifierDataFromCsound()
+{
+    if(getCsound())
+    {
+        CabbageWidgetIdentifiers** pd = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
+        CabbageWidgetIdentifiers* perData;
+        if (pd != nullptr)
+        {
+            perData = *pd;
+            for( int i = 0 ; i < perData->data.size() ; i++)
+            {
+                const String identifier = perData->data[0].identifier.toString();
+                const String channel = perData->data[0].channel.toString();
+                for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
+                {
+                    const String identChannel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
+                    if (channel == identChannel)
+                    {
+                        if (identifier == "pos")
+                        {
+                            cabbageWidgets.getChild(i).setProperty(CabbageIdentifierIds::left, Random::getSystemRandom().nextInt(100), nullptr);
+                            cabbageWidgets.getChild(i).setProperty(CabbageIdentifierIds::top, Random::getSystemRandom().nextInt(100), nullptr);
+                            //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::top, inargs[2]);
+                            //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::left, inargs[3]);
+                        }
+                    }
+                }
+            }
+            perData->data.clear();
+        }
+    }
+    
+}
 //==============================================================================
 // This method is responsible for updating widget valuetrees based on the current
 // data stored in each widget's software channel bus. 

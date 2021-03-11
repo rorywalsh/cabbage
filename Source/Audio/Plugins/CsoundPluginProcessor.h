@@ -32,6 +32,18 @@
 #include "../../Utilities/encrypt.h"
 #endif
 
+class CabbageWidgetIdentifiers
+{
+public:
+    struct IdentifierData
+    {
+        Identifier identifier, channel;
+        var data;
+    };
+    
+    CabbageWidgetIdentifiers(){}
+    Array<IdentifierData> data;
+};
 
 //==============================================================================
 class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater
@@ -167,6 +179,7 @@ public:
     //as is done in CabbagePluginprocessor.
     virtual void triggerCsoundEvents();
     virtual void sendChannelDataToCsound() {};
+    virtual void getIdentifierDataFromCsound() {};
     void sendHostDataToCsound();
     virtual void getChannelDataFromCsound() {};
     virtual void initAllCsoundChannels (ValueTree cabbageData);
