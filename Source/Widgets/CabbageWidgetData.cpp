@@ -922,8 +922,7 @@ void CabbageWidgetData::setColourArrays (StringArray strTokens, ValueTree widget
 
     for (int i = newColours.size(); i < colourIndex + 1; i++){
         newColours.append ("0");
-    }
-    
+    }    
 
     newColours[colourIndex] = getColourFromText (strTokens.joinIntoString (",")).toString();
     setProperty (widgetData, isTable == true ? CabbageIdentifierIds::tablecolour : CabbageIdentifierIds::metercolour, newColours);

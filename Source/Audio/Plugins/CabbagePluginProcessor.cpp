@@ -253,7 +253,6 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 					currentLineOfCabbageCode += linesFromCsd[index];
 					break;
 				}
-
 			}
 		}
 
@@ -1161,20 +1160,22 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
             {
                 const String identifier = perData->data[0].identifier.toString();
                 const String channel = perData->data[0].channel.toString();
-                for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
-                {
-                    const String identChannel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
-                    if (channel == identChannel)
-                    {
-                        if (identifier == "pos")
-                        {
-                            cabbageWidgets.getChild(i).setProperty(CabbageIdentifierIds::left, Random::getSystemRandom().nextInt(100), nullptr);
-                            cabbageWidgets.getChild(i).setProperty(CabbageIdentifierIds::top, Random::getSystemRandom().nextInt(100), nullptr);
-                            //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::top, inargs[2]);
-                            //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::left, inargs[3]);
-                        }
-                    }
-                }
+				cabbageWidgets.getChild(1).setProperty(CabbageIdentifierIds::left, Random::getSystemRandom().nextInt(200), nullptr);
+				cabbageWidgets.getChild(1).setProperty(CabbageIdentifierIds::top, Random::getSystemRandom().nextInt(200), nullptr);
+                //for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
+                //{
+                //    const String identChannel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
+                //    if (channel == identChannel)
+                //    {
+                //        if (identifier == "pos")
+                //        {
+                //            cabbageWidgets.getChild(i).setProperty(CabbageIdentifierIds::left, Random::getSystemRandom().nextInt(200), nullptr);
+                //            cabbageWidgets.getChild(i).setProperty(CabbageIdentifierIds::top, Random::getSystemRandom().nextInt(200), nullptr);
+                //            //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::top, inargs[2]);
+                //            //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::left, inargs[3]);
+                //        }
+                //    }
+                //}
             }
             perData->data.clear();
         }

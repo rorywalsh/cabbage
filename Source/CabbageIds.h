@@ -446,6 +446,7 @@ public:
         add ("wrap");
         add ("text");
         add ("crop");
+        add ("name");
         add ("zoom");
         add ("size");
         add ("show");
