@@ -82,6 +82,15 @@ struct GetCabbageIdentifierSingle : csnd::Plugin<1, 2>
     int getAttribute();
 };
 
+struct GetCabbageIdentifierArray : csnd::Plugin<1, 2>
+{
+    MYFLT* value;
+    CabbageWidgetsValueTree** vt = nullptr;
+    int init(){ getAttribute(); return OK;};
+    int kperf(){ getAttribute(); return OK;};
+    int getAttribute();
+};
+
 struct GetCabbageStringIdentifierSingle : csnd::Plugin<1, 2>
 {
     MYFLT* value;
@@ -91,4 +100,11 @@ struct GetCabbageStringIdentifierSingle : csnd::Plugin<1, 2>
     int getAttribute();
 };
 
-    
+struct GetCabbageStringIdentifierArray : csnd::Plugin<1, 2>
+{
+    MYFLT* value;
+    CabbageWidgetsValueTree** vt = nullptr;
+    int init(){ getAttribute(); return OK;};
+    int kperf(){ getAttribute(); return OK;};
+    int getAttribute();
+};

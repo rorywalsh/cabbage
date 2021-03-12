@@ -13,25 +13,84 @@
 
 int GetCabbageStringIdentifierSingle::getAttribute()
 {
-    //    CabbageWidgetIdentifiers::IdentifierData data;
-    //    if(in_count() == 0)
-    //        return NOTOK;
-    //
-    //    String channelName(inargs.str_data(0).data);
-    //
-    //    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.getCharPointer(),
-    //                                            CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-    //    {
-    //        outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
-    //    }
-    //
+    String name(inargs.str_data(0).data);
+    String identifier(inargs.str_data(1).data);
+    
+    vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+    CabbageWidgetsValueTree* varData;
+    
+    if (vt != nullptr)
+    {
+        varData = *vt;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
+        vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+        *vt = new CabbageWidgetsValueTree();
+        varData = *vt;
+        csound->message("Creating new internal state object...\n");
+    }
+    
+    const auto child = varData->data.getChildWithName(name);
+    const String data = child.getProperty(identifier)[0].toString();
+    outargs.str_data(0).data = csound->strdup(data.toUTF8().getAddress());
+    
     
     return OK;
 }
 
 //====================================================================================================
 
+int GetCabbageIdentifierArray::getAttribute()
+{
+    csnd::Vector<MYFLT>& out = outargs.myfltvec_data(0);
+    String name(inargs.str_data(0).data);
+    String identifier(inargs.str_data(1).data);
+    
+    vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+    CabbageWidgetsValueTree* varData;
+    
+    if (vt != nullptr)
+    {
+        varData = *vt;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
+        vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+        *vt = new CabbageWidgetsValueTree();
+        varData = *vt;
+        csound->message("Creating new internal state object...\n");
+    }
+    
+    const auto child = varData->data.getChildWithName(name);
+    
+    var args = child.getProperty(identifier);
+    
+    if(Identifier(identifier) == CabbageIdentifierIds::bounds)
+    {
+        out.init(csound, 4);
+        out[0] = child.getProperty(CabbageIdentifierIds::left);
+        out[1] = child.getProperty(CabbageIdentifierIds::top);
+        out[2] = child.getProperty(CabbageIdentifierIds::width);
+        out[3] = child.getProperty(CabbageIdentifierIds::height);
+    }
+    else if(identifier.contains("colour"))
+    {
+        out.init(csound, 4);
+        const Colour colour = Colour::fromString(args.toString());
+        out[0] = colour.getRed();
+        out[1] = colour.getGreen();
+        out[2] = colour.getBlue();
+        out[3] = colour.getAlpha();
+    }
+    
+    
+    return OK;
+}
 
+//=================================================================================================
 int GetCabbageIdentifierSingle::getAttribute()
 {
     String name(inargs.str_data(0).data);
@@ -60,6 +119,46 @@ int GetCabbageIdentifierSingle::getAttribute()
     return OK;
 }
 
+int GetCabbageStringIdentifierArray::getAttribute()
+{
+    csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
+    String name(inargs.str_data(0).data);
+    String identifier(inargs.str_data(1).data);
+    
+    vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+    CabbageWidgetsValueTree* varData;
+    
+    if (vt != nullptr)
+    {
+        varData = *vt;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
+        vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+        *vt = new CabbageWidgetsValueTree();
+        varData = *vt;
+        csound->message("Creating new internal state object...\n");
+    }
+    
+    const auto child = varData->data.getChildWithName(name);
+    
+    var args = child.getProperty(identifier);
+    
+    if(Identifier(identifier) == CabbageIdentifierIds::text)
+    {
+        const int size = args.size();
+        out.init(csound, size);
+        for ( int i = 0 ; i < size ; i++)
+        {
+            out[i].data = csound->strdup(args[i].toString().toUTF8().getAddress());
+        }
+        
+    }
+    
+    
+    return OK;
+}
 //====================================================================================================
 
 
