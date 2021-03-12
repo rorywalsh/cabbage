@@ -198,7 +198,7 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
 
     else
     {
-        handleCommonUpdates (this, valueTree);
+        handleCommonUpdates (this, valueTree, false, prop);
         highlightColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour);
         colour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour);
         fontColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour);

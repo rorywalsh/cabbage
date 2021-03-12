@@ -248,7 +248,7 @@ void CabbageFileButton::setLookAndFeelColours (ValueTree wData)
 void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
     setLookAndFeelColours (valueTree);
-    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     setButtonText (getText());
     if( mode == "file" || mode == "save" || mode == "directory")
         setFile(valueTree);

@@ -46,7 +46,7 @@ void CabbageKeyboard::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     const int width = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::keywidth);
     setKeyWidth(jmax(1, width));
     updateColours(valueTree);
-    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 
 }
 

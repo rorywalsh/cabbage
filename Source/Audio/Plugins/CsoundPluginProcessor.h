@@ -26,24 +26,14 @@
 #include "csdl.h"
 #include <cwindow.h>
 #include "../../Opcodes/opcodes.hpp"
+#include "../../Opcodes/CabbageIdentifierOpcodes.h"
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"
 #ifdef CabbagePro
 #include "../../Utilities/encrypt.h"
 #endif
 
-class CabbageWidgetIdentifiers
-{
-public:
-    struct IdentifierData
-    {
-        Identifier identifier, name;
-        var data;
-    };
-    
-    CabbageWidgetIdentifiers(){}
-    Array<IdentifierData, CriticalSection> data;
-};
+
 
 //==============================================================================
 class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater

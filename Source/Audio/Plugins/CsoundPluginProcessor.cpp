@@ -22,99 +22,7 @@
 #include "../../Utilities/CabbageUtilities.h"
 #include "../../Widgets/CabbageWidgetData.h"
 
-//class CabbageWidgetIdentifiers
-//{
-//public:
-//    struct IdentifierData
-//    {
-//        Identifier identifier;
-//        var data;
-//    };
-//
-//    CabbageWidgetIdentifiers(){}
-//    Array<IdentifierData> data;
-//};
 
-struct SetCabbageIdentifier : csnd::Plugin<1, 64>
-{
-    int perfCycles = 0;
-    CabbageWidgetIdentifiers** vt = nullptr;
-    
-    int init()
-    {
-        //setAttribute();
-        return OK;
-    }
-    
-    int kperf()
-    {
-        setAttribute();
-        return OK;
-    }
-    
-    int setAttribute()
-    {
-        Array<CabbageWidgetIdentifiers::IdentifierData> identData;
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        CabbageWidgetIdentifiers* varData;
-        if (vt != nullptr)
-        {
-            varData = *vt;
-        }
-        else
-        {
-            csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-            vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-            *vt = new CabbageWidgetIdentifiers();
-            varData = *vt;
-            csound->message("Creating new internal state object...\n");
-        }
-        
-        CabbageWidgetIdentifiers::IdentifierData data;
-
-        String name(inargs.str_data(0).data);
-        String identifier(inargs.str_data(1).data);
-        const int argsCount = in_count();
-        data.identifier = identifier;
-        data.name = name;
-        //const MessageManagerLock lock;
-        if (identifier == "pos")
-        {
-            data.data.append(inargs[2]);
-            data.data.append(inargs[3]);
-            //varData.data.setProperty(CabbageIdentifierIds::left, inargs[2], nullptr);
-            //varData.getChild(i).setProperty(CabbageIdentifierIds::top, inargs[3], nullptr);
-            //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::top, inargs[2]);
-            //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::left, inargs[3]);
-        }
-        
-        varData->data.add(data);
-        
-        //CabbageWidgetIdentifiers** vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        //if (vt != nullptr)
-//        {
-//            auto valueTree = *vt;
-//            auto cabbageWidgets = valueTree->data;
-//            for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
-//            {
-//                const String identChannel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
-//                if (channel == identChannel)
-//                {
-//                    if (identifier == "pos")
-//                    {
-//                        cabbageWidgets.getChild(i).setProperty(CabbageIdentifierIds::left, inargs[2], nullptr);
-//                        cabbageWidgets.getChild(i).setProperty(CabbageIdentifierIds::top, inargs[3], nullptr);
-//                        //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::top, inargs[2]);
-//                        //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::left, inargs[3]);
-//                    }
-//                }
-//
-//            }
-//        }
-
-        return OK;
-    }
-};
 
 //==============================================================================
 CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSet ins, const AudioChannelSet outs)
@@ -280,7 +188,15 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "i", "SS[]", csnd::thread::i);
     csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "SS[]", csnd::thread::ik);
 
-    csnd::plugin<SetCabbageIdentifier>((csnd::Csound*) csound->GetCsound(), "setCabbageIdentifier", "k", "SSN", csnd::thread::ik);
+    csnd::plugin<SetCabbageIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSN", csnd::thread::ik);
+    csnd::plugin<SetCabbageValueIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSetValue", "", "SkP", csnd::thread::ik);
+    
+    csnd::plugin<GetCabbageValueIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "k", "S", csnd::thread::ik);
+    csnd::plugin<GetCabbageValueIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "i", "S", csnd::thread::ik);
+    csnd::plugin<GetCabbageStringValueIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "S", "S", csnd::thread::ik);
+
+    csnd::plugin<GetCabbageIdentifierSingle>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "k", "SS", csnd::thread::ik);
+    csnd::plugin<GetCabbageStringIdentifierSingle>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "S", "SS", csnd::thread::ik);
 
     
 
@@ -536,11 +452,11 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     }
 
-//    getCsound()->CreateGlobalVariable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-//    CabbageWidgetIdentifiers** vt = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
-//    *vt = new CabbageWidgetIdentifiers();
-//    auto valueTree = *vt;
-//    valueTree->data = cabbageData;
+    getCsound()->CreateGlobalVariable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
+    CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
+    *vt = new CabbageWidgetsValueTree();
+    auto valueTree = *vt;
+    valueTree->data = cabbageData;
     
     if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win32)
     {
@@ -1021,8 +937,8 @@ void CsoundPluginProcessor::triggerCsoundEvents()
 
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
-    //getIdentifierDataFromCsound();
-    getChannelDataFromCsound();
+    getIdentifierDataFromCsound();
+    //getChannelDataFromCsound();
     sendChannelDataToCsound();
 }
 

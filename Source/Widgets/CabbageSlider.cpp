@@ -640,7 +640,7 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
         getSlider().getProperties().set("trackerinnerradius", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackerinsideradius));
         getSlider().getProperties().set("trackerouterradius", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackeroutsideradius));
 
-        handleCommonUpdates(this, valueTree);
+        handleCommonUpdates(this, valueTree, false, prop);
         setLookAndFeelColours(valueTree);
 
         const String popup = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);

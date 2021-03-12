@@ -196,7 +196,7 @@ void CabbageRangeSlider::valueTreePropertyChanged (ValueTree& valueTree, const I
         textLabel.setText (getCurrentText (valueTree), dontSendNotification);
         textLabel.setVisible (getCurrentText (valueTree).isNotEmpty() ? true : false);
         slider.setTooltip (getCurrentPopupText (valueTree));
-        handleCommonUpdates (this, valueTree);
+        handleCommonUpdates (this, valueTree, false, prop);
         setLookAndFeelColours (valueTree);
     }
 }

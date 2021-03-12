@@ -397,6 +397,7 @@ public:
 		add ("fontsize");
         add ("cvoutput");
         add ("imgdebug");
+        add ("position");
         add ("colour:0");
         add ("colour:1");
         add ("typeface");
@@ -408,6 +409,7 @@ public:
         add ("latency");
         add ("cvinput");
         add ("color:0");
+        add ("color:1");
         add ("caption");
         add ("textbox");
         add ("corners");
@@ -538,6 +540,7 @@ namespace CabbageIdentifierIds
     static const Identifier blacknotecolour = "blacknotecolour";
     static const Identifier keydowncolour = "keydowncolour";
 	static const Identifier bold = "bold";
+    static const Identifier bounds = "bounds";
 	static const Identifier bpm = "bpm";
 	static const Identifier bundle = "bundle";
 	static const Identifier caption = "caption";
@@ -546,6 +549,8 @@ namespace CabbageIdentifierIds
 	static const Identifier channeltype = "channeltype";
 	static const Identifier child = "child";
 	static const Identifier colour = "colour";
+    static const Identifier colouroff = "colour:0";
+    static const Identifier colouron = "colour:1";
 	static const Identifier colprefix = "colprefix";
 	static const Identifier comborange = "comborange";
 	static const Identifier comboindex = "comboindex";
@@ -651,6 +656,8 @@ namespace CabbageIdentifierIds
 	static const Identifier pluginid = "pluginid";
 	static const Identifier populate = "populate";
 	static const Identifier popup = "popup";
+    static const Identifier pos = "pos";
+    static const Identifier position = "position";
 	static const Identifier popuppostfix = "popuppostfix";
 	static const Identifier popupprefix = "popupprefix";
 	static const Identifier popuptext = "popuptext";
@@ -676,6 +683,7 @@ namespace CabbageIdentifierIds
 	static const Identifier show = "show";
 	static const Identifier sidechain = "sidechain";
 	static const Identifier signalvariable = "signalvariable";
+    static const Identifier size = "size";
 	static const Identifier sliderrange = "sliderrange";
 	static const Identifier sliderskew = "sliderskew";
 	static const Identifier socketaddress = "socketaddress";
@@ -1012,7 +1020,7 @@ static const char* const CsoundKeywords[] =
     "tab2pvs", "tab_i", "tabifd", "table3kt", "tablefilter", "tablefilteri", "tableshuffle", "tableshufflei", "tabmorph", "tabmorpha", "tabmorphak", "tabmorphi", "tabplay", "tabsum", "tabw", "tabw_i", "tb0", "tb0_init",
     "tb1", "tb10", "tb11", "tb12", "tb13", "tb14", "tb15", "tb1_init", "tb2", "tb2_init", "tb3", "tb4", "tb5", "tb6", "tb7", "tb8", "tb9", "temposcal", "trandom", "transegb", "transegr", "trcross", "trfilter", "trhighest",
     "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "valuepostfix", "valueprefix", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i",
-    "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", "then", "while", "od", "do", "endwhile",
+    "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", "then", "while", "od", "do", "endwhile", "trigexpseg", "triglinseg", "setStateValue", "writeStateValue", "writeStateData", "readStateData", "channelStateRecall", "channelStateSave", "cabbageSetValue", "cabbageGetValue", "cabbageGet", "cabbageSet",
     0
 };
 #endif  // CABBAGECOMMANDIDS_H_INCLUDED

@@ -275,7 +275,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
         
 		CabbageWidgetData::setWidgetState(tempWidget, currentLineOfCabbageCode.trimCharactersAtStart(" \t") + comments,
 			lineNumber);
-        String widgetNameId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::name);
+        String widgetNameId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel);
         //if no name is specified use generic name
         if(widgetNameId.isEmpty())
             widgetNameId = widgetTreeIdentifier;
@@ -1033,7 +1033,8 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 				CabbageIdentifierIds::channeltype) == "string")
 			{
 				char tmp_str[4096] = { 0 };
-				getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
+				if(getCsound())
+                    getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
 				const String file(tmp_str);
 				xml->getChildByName(presetName)->setAttribute(channelName, file);
 			}
@@ -1159,44 +1160,55 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 
 void CabbagePluginProcessor::getIdentifierDataFromCsound()
 {
-    if(getCsound())
+    
+    if(!getCsound())
+        return;
+    
+    const int chnsetGestureMode = getChnsetGestureMode();
+    CabbageWidgetIdentifiers** pd = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* identData;
+    
+    if (pd == nullptr)
+        return;
+    
+    identData = *pd;
+    for( int i = 0 ; i < identData->data.size() ; i++)
     {
-        CabbageWidgetIdentifiers** pd = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
-        CabbageWidgetIdentifiers* perData;
-        if (pd != nullptr)
+        const auto identifier = identData->data[i].identifier;
+        const auto name = identData->data[i].name;
+        
+        if(cabbageWidgets.getChildWithName(name).isValid())
         {
-            perData = *pd;
-            for( int i = 0 ; i < perData->data.size() ; i++)
+            if(!identData->data[i].args.isUndefined())
             {
-                const String identifier = perData->data[0].identifier.toString();
-                auto name = perData->data[0].name.toString();
-//                for (int x = 0; x < cabbageWidgets.getNumChildren(); x++)
-//                {
-//                    DBG(cabbageWidgets.getChild(x).getType().toString());
-//                }
-                if(name.isNotEmpty())
+                if(identData->data[i].isSingleIdent)
                 {
-                cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::left, Random::getSystemRandom().nextInt(200), nullptr);
-                cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::top, Random::getSystemRandom().nextInt(200), nullptr);
+                    cabbageWidgets.getChildWithName(name).setProperty(identifier,identData->data[i].args, nullptr);
+                    if(identifier == CabbageIdentifierIds::value && chnsetGestureMode == 1)
+                    {
+                        var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
+                        for (auto cabbageParam : getCabbageParameters())
+                        {
+                            if (cabbageParam->getChannel() == channels[0].toString())
+                            {
+                                cabbageParam->beginChangeGesture();
+                                cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(getCsound()->GetChannel(channels[0].toString().toUTF8())));
+                                cabbageParam->endChangeGesture();
+                            }
+                        }
+                    }
                 }
-                //for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
-                //{
-                //    const String identChannel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::identchannel);
-                //    if (channel == identChannel)
-                //    {
-                //        if (identifier == "pos")
-                //        {
-                //            cabbageWidgets.getChild(i).setProperty(CabbageIdentifierIds::left, Random::getSystemRandom().nextInt(200), nullptr);
-                //            cabbageWidgets.getChild(i).setProperty(CabbageIdentifierIds::top, Random::getSystemRandom().nextInt(200), nullptr);
-                //            //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::top, inargs[2]);
-                //            //CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::left, inargs[3]);
-                //        }
-                //    }
-                //}
+                else
+                {
+                    DBG(identData->data[i].args.toString());
+                    CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), " " + identData->data[i].args.toString());
+                }
             }
-            perData->data.clear();
         }
     }
+    identData->data.clear();
+
+
     
 }
 //==============================================================================
@@ -1306,7 +1318,8 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 
 			const String identifierText(tmp_string);
 			//CabbageUtilities::debug(identifierText);
-			if (identifierText.isNotEmpty() && identifierText != identChannelMessage) {
+			if (identifierText.isNotEmpty() && identifierText != identChannelMessage)
+            {
                 CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChild(i), " " + identifierText);
                 
                 if(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type) == CabbageWidgetTypes::form)

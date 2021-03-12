@@ -114,7 +114,7 @@ void CabbageTextEditor::valueTreePropertyChanged (ValueTree& valueTree, const Id
     textEditor.setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
     lookAndFeelChanged();
     repaint();
-    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     textEditor.setText (getCurrentText(valueTree), dontSendNotification);
     sendTextToCsound();
 }

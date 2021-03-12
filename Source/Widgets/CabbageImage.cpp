@@ -154,7 +154,7 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     cropx = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropx);
     cropwidth = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropwidth);
     cropheight = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropheight);
-    handleCommonUpdates (this, valueTree);
+    handleCommonUpdates (this, valueTree, false, prop);
     repaint();
 }
 

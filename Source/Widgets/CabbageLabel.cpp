@@ -99,7 +99,7 @@ void CabbageLabel::valueTreePropertyChanged (ValueTree& valueTree, const Identif
         fontcolour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour);
     }
 
-    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 
     repaint();
 
