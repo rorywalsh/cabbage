@@ -935,11 +935,28 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 
 
 	String presetName = "PRESET" + String(xml->getNumChildElements());
+    XmlElement* child = xml->getFirstChildElement();
+    StringArray currentTags;
+    while (child != nullptr)
+    {
+        currentTags.add(child->getTagName());
+        child = child->getNextElement();
+    }
+    
+    int id = 0;
+    while(currentTags.contains("PRESET"+String(id)))
+    {
+        id++;
+    }
+    //generate unique ID for preset tag...
+    presetName = "PRESET"+String(id);
+    
+    
 	const String childName = newPresetName.isNotEmpty() ? newPresetName : xmlTag + " " + String(xml->getNumChildElements());
 	bool presetNameExists = false;
 	for (int i = 0; i < xml->getNumChildElements(); i++)
 	{
-		String preset = "PRESET" + String(i);
+		String preset = "PRESET" + String(i);;
 		if (auto e = xml->getChildByName(preset))
 		{
 			if (e->getStringAttribute("PresetName") == childName)
