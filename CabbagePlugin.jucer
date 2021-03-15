@@ -355,7 +355,7 @@
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
   <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0"
-               JUCE_USE_OGGVORBIS="0" JUCE_USE_FLAC="0"/>
+               JUCE_USE_OGGVORBIS="1" JUCE_USE_FLAC="1"/>
   <LIVE_SETTINGS>
     <LINUX/>
     <OSX/>
