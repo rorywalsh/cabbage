@@ -609,6 +609,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt( ("matrixsize")):
                 setMatrixSize(strTokens, widgetData);
             default:
+                setProperty (widgetData, identifier, strTokens);
                 break;
 
         }
