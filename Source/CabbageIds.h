@@ -184,6 +184,7 @@ public:
         add ("hrange");
         add ("vrange");
         add ("vslider3");
+        add ("optionbutton");
         add ("combobox");
         add ("checkbox");
         add ("encoder");
@@ -463,6 +464,7 @@ namespace CabbageWidgetTypes
 {
     //list of static consts for types of widgets
 	static const String button = "button";
+    static const String optionbutton = "optionbutton";
 	static const String checkbox = "checkbox";
 	static const String combobox = "combobox";
 	static const String csoundoutput = "csoundoutput";
@@ -792,6 +794,7 @@ public:
         set ("Vertical Meter", CabbageWidgetTypes::vmeter);             //28
         set ("XY Pad", CabbageWidgetTypes::xypad);                      //29
         set ("Listbox", CabbageWidgetTypes::listbox);                   //30
+        set ("Button - Option", CabbageWidgetTypes::optionbutton);                   //30
 
     }
 };
@@ -930,7 +933,7 @@ static const char* const CsoundKeywords[] =
     "popup", "popuptext", "popuppostfix", "popupprefix", "range", "rangex", "rangey", "rotate", "samplerange", "scrubberpos", "scrubberposition", "shape", "show", "size", "sliderincr", "svgfile", "svgpath", "tablebackgroundcolour", "tablecolour",
     "tablegridcolour", "tablenumber", "text", "textcolour", "textbox", "trackercolour", "trackerthickness", "trackerouterradius", "trackerinnerradius", "typeface", "widgetarray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
     "od", "gentable", "texteditor", "textbox", "sprintfk", "strcpyk", "sprintf", "strcmpk", "strcmp", "a", "abetarand", "abexprnd", "infobutton", "groupbox", "do", "popupmenu", "filebutton", "until",
-    "enduntil", "soundfiler", "combobox", "vslider", "vslider2", "vslider3", "hslider2", "define", "hslider3", "hslider", "rslider", "groupbox", "combobox", "xypad", "image", "plant", "csoundoutput", "button", "form", "checkbox",
+    "enduntil", "soundfiler", "combobox", "vslider", "vslider2", "vslider3", "hslider2", "define", "hslider3", "hslider", "rslider", "groupbox", "combobox", "xypad", "image", "plant", "csoundoutput", "button", "optionbutton", "form", "checkbox",
     "tab", "abs", "acauchy", "active", "adsr", "adsyn", "adsynt", "adsynt2", "aexprand", "aftouch", "agauss", "agogobel", "alinrand", "alpass", "ampdb", "ampdbfs", "ampmidi", "apcauchy", "apoisson", "apow", "areson",
     "aresonk", "atone", "atonek", "atonex", "atrirand", "aunirand", "aweibull", "babo", "balance", "bamboo", "bbcutm", "bbcuts", "betarand", "bexprnd", "bformenc", "bformdec", "biquad", "biquada", "birnd",
     "bqrez", "butbp", "butbr", "buthp", "butlp", "butterbp", "butterbr", "butterhp", "butterlp", "button", "buzz", "cabasa", "cauchy",

@@ -828,7 +828,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 						addCabbageParameter(std::move(maxParam));
 					}
 				}
-				else if (typeOfWidget == CabbageWidgetTypes::combobox && channel.isNotEmpty())
+				else if ((typeOfWidget == CabbageWidgetTypes::combobox || typeOfWidget == CabbageWidgetTypes::optionbutton ) && channel.isNotEmpty())
 				{
 					//string combobox need to have their range known when creating the plugin parameter... 
 					if (CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channeltype) == "string")
@@ -848,7 +848,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 							min, max, value, 1, 1, automatable, "", "");
 						addCabbageParameter(std::move(param));
 					}
-					else
+					else //comboboxes and options button are both set up with the same type of host parameter mapping...
 					{
 						const float min = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 							CabbageIdentifierIds::min);

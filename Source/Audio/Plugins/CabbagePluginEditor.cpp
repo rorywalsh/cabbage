@@ -311,6 +311,9 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
     else if (widgetType == CabbageWidgetTypes::infobutton)
         insertInfoButton (cabbageWidgetData);
 
+    else if (widgetType == CabbageWidgetTypes::optionbutton)
+        insertOptionButton (cabbageWidgetData);
+    
     else if (widgetType == CabbageWidgetTypes::signaldisplay)
         insertSignalDisplay (cabbageWidgetData);
 
@@ -343,6 +346,8 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
         insertRangeSlider (cabbageWidgetData);
 
 }
+
+/* these could be replaced with a templated function */
 
 void CabbagePluginEditor::insertCheckbox (ValueTree cabbageWidgetData)
 {
@@ -475,6 +480,15 @@ void CabbagePluginEditor::insertInfoButton (ValueTree cabbageWidgetData)
     components.add (infoButton = new CabbageInfoButton (cabbageWidgetData, globalStyle));
     addToEditorAndMakeVisible (infoButton, cabbageWidgetData);
     addMouseListenerAndSetVisibility (infoButton, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertOptionButton (ValueTree cabbageWidgetData)
+{
+    CabbageOptionButton* optionButton;
+    components.add (optionButton = new CabbageOptionButton (cabbageWidgetData, this));
+    optionButton->addListener (this);
+    addToEditorAndMakeVisible (optionButton, cabbageWidgetData);
+    addMouseListenerAndSetVisibility (optionButton, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertButton (ValueTree cabbageWidgetData)
@@ -665,7 +679,23 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 		toggleButtonState(button, buttonState);
 		return;
 	}
-
+    else if (CabbageOptionButton* optionButton = dynamic_cast<CabbageOptionButton*> (button))
+    {
+        const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageProcessor.cabbageWidgets, optionButton->getName());
+        int value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
+        var textArray = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::text);
+        int comboRange = textArray.size();
+        value = (value < comboRange -1 ? value + 1 : 0);
+        //CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value, value);
+        if (CabbagePluginParameter* param = getParameterForComponent(button->getName()))
+        {
+            param->beginChangeGesture();
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (value));
+            param->endChangeGesture();
+        }
+        
+        return;
+    }
 
 }
 

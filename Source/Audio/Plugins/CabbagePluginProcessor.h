@@ -347,7 +347,7 @@ private:
     
     bool isCombo(const String name)
     {
-        if(name.contains("combobox"))
+        if(name.contains("combobox") || name.contains("optionbutton"))
             return true;
         return false;
     }
