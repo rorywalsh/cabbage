@@ -1048,26 +1048,8 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
 void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String presetName, bool removePreset)
 {
     //the error happens when we create a new preset not when we modify or delete one...
-    XmlElement xml = cabbageProcessor.savePluginState (instrumentName.replace (" ", "_"), snapshotFile, presetName);
-    
-    if(removePreset == true)
-    {
-        XmlElement* child = xml.getFirstChildElement();
-        
-        while (child != nullptr)
-        {
-            if(child->getStringAttribute("PresetName") == presetName)
-            {
-                xml.removeChildElement(child, false);
-                break;
-            }
-             child = child->getNextElement();
-        }
-    }
-    
+    XmlElement xml = cabbageProcessor.savePluginState (instrumentName.replace (" ", "_"), snapshotFile, presetName, removePreset);
     xml.writeTo (snapshotFile);
-    
-    DBG(snapshotFile.loadFileAsString());
 }
 
 void CabbagePluginEditor::restorePluginStateFrom (String childPreset, File xmlFile)

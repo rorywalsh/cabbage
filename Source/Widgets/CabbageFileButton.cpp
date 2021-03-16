@@ -73,9 +73,7 @@ lAndF()
 //===============================================================================
 void CabbageFileButton::buttonClicked (Button* button)
 {
-    DBG(owner->currentPresetName);
-    
-    
+   
     String workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::workingdir);
     File currentDir;
     if (workingDir.isNotEmpty())

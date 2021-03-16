@@ -289,6 +289,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         //setSelectedItemIndex(getNumItems()-1, dontSendNotification);
 
     }
+    
+    comboBoxChanged(this);
 }
 
 void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only enabled when combo is loading presets or strings...

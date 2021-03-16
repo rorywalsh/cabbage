@@ -919,7 +919,7 @@ void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInByt
 }
 
 //==============================================================================
-XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, String newPresetName)
+XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, String newPresetName, bool removePreset)
 {
 	std::unique_ptr<XmlElement> xml;
 
@@ -934,6 +934,25 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 		xml = std::unique_ptr<XmlElement>(new XmlElement("CABBAGE_PRESETS"));
 
 
+    if(removePreset == true)
+    {
+        DBG("removing:"+newPresetName);
+        XmlElement* child = xml->getFirstChildElement();
+
+        while (child != nullptr)
+        {
+            if(child->getStringAttribute("PresetName") == newPresetName)
+            {
+                //DBG("found: "+newPresetName+" add removing " + child->getTagName() +" from XML tree");
+                xml->removeChildElement(child, true);
+                break;
+            }
+            child = child->getNextElement();
+        }
+        
+        return *xml;
+    }
+    
 	String presetName = "PRESET" + String(xml->getNumChildElements());
     XmlElement* child = xml->getFirstChildElement();
     StringArray currentTags;
@@ -952,6 +971,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
     presetName = "PRESET"+String(id);
     
     
+    
 	const String childName = newPresetName.isNotEmpty() ? newPresetName : xmlTag + " " + String(xml->getNumChildElements());
 	bool presetNameExists = false;
 	for (int i = 0; i < xml->getNumChildElements(); i++)
@@ -968,9 +988,11 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 
 	}
 
-	if (presetNameExists == false)
-		xml->createNewChildElement(presetName);
-
+    //this is called whenever the session xml is being saved....
+    if (presetNameExists == false && !currentTags.contains(presetName)){
+        DBG("Creating new preset:"+presetName);
+        xml->createNewChildElement(presetName);
+    }
 	xml->getChildByName(presetName)->setAttribute("PresetName", childName);
 
     CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
@@ -1063,7 +1085,6 @@ void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
            
             if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (this->getActiveEditor()))
             {
-                DBG( xmlState->getStringAttribute("PresetName"));
                 editor->currentPresetName =  xmlState->getStringAttribute("PresetName");;
             }
 			setParametersFromXml(xmlState);
