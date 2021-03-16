@@ -1012,7 +1012,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 
 		const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
 		const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
-
+        
 		//only write values for widgets that have channels
 		if (channelName.isNotEmpty()) {
 			if (type == CabbageWidgetTypes::texteditor) {

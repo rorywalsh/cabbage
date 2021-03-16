@@ -52,6 +52,12 @@ lAndF()
     getProperties().set("corners", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
     
     const String globalStyle = owner->globalStyle;
+    
+    mode = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mode);
+    if( mode == "file" || mode == "save" || mode == "directory")
+        setFile(wData);
+    
+    
     if(globalStyle == "legacy")
     {
         return;
@@ -64,10 +70,7 @@ lAndF()
         setLookAndFeel(&flatLookAndFeel);
     }
     
-    mode = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mode);
-    if( mode == "file" || mode == "save" || mode == "directory")
-        setFile(wData);
-    
+
 }
 
 //===============================================================================
