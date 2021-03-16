@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.5.21"
+<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.5.22"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
               jucerVersion="5.4.7" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="14" companyCopyright="">
@@ -189,14 +189,6 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{75DB6341-3F9B-0D75-CA59-C9FD48A46CD2}" name="Widgets">
-        <FILE id="ato7Fa" name="CabbageRackWidgets.cpp" compile="1" resource="0"
-              file="Source/Widgets/CabbageRackWidgets.cpp"/>
-        <FILE id="Mx9IuR" name="CabbageRackWidgets.h" compile="0" resource="0"
-              file="Source/Widgets/CabbageRackWidgets.h"/>
-        <FILE id="jaBD7N" name="CabbageKeyboardDisplay.cpp" compile="1" resource="0"
-              file="Source/Widgets/CabbageKeyboardDisplay.cpp"/>
-        <FILE id="dpqsn7" name="CabbageKeyboardDisplay.h" compile="0" resource="0"
-              file="Source/Widgets/CabbageKeyboardDisplay.h"/>
         <GROUP id="{39718DAA-6F71-5044-A75A-E63898BD3051}" name="Legacy">
           <FILE id="xwsGZ8" name="FrequencyRangeDisplayComponent.h" compile="0"
                 resource="0" file="Source/Widgets/Legacy/FrequencyRangeDisplayComponent.h"/>
@@ -262,7 +254,19 @@
               file="Source/Widgets/CabbageKeyboard.h"/>
         <FILE id="LO1QxG" name="CabbageLabel.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageLabel.cpp"/>
+        <FILE id="ato7Fa" name="CabbageRackWidgets.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageRackWidgets.cpp"/>
+        <FILE id="Mx9IuR" name="CabbageRackWidgets.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageRackWidgets.h"/>
+        <FILE id="jaBD7N" name="CabbageKeyboardDisplay.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageKeyboardDisplay.cpp"/>
+        <FILE id="dpqsn7" name="CabbageKeyboardDisplay.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageKeyboardDisplay.h"/>
         <FILE id="QBhCqn" name="CabbageLabel.h" compile="0" resource="0" file="Source/Widgets/CabbageLabel.h"/>
+        <FILE id="wQpBtV" name="CabbageOptionButton.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageOptionButton.cpp"/>
+        <FILE id="Rt2XYC" name="CabbageOptionButton.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageOptionButton.h"/>
         <FILE id="Qn4aP7" name="CabbageRangeSlider.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageRangeSlider.cpp"/>
         <FILE id="RVtSKH" name="CabbageRangeSlider.h" compile="0" resource="0"
