@@ -203,7 +203,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         {
             owner->sendChannelStringDataToCsound (getChannel(), presetName);
             owner->savePluginStateToFile (File (newFileName), presetName, false);
-            owner->refreshComboListBoxContents();
+            owner->refreshComboListBoxContents(presetName);
         }
         else
             return;

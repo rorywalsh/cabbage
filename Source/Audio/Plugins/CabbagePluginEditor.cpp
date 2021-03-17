@@ -1084,6 +1084,8 @@ void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String prese
 
 void CabbagePluginEditor::restorePluginStateFrom (String childPreset, File xmlFile)
 {
+    if(File(xmlFile).existsAsFile())
+    {
     std::unique_ptr<XmlElement> xmlElement (XmlDocument::parse (xmlFile));
     currentPresetName = childPreset;
     if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
@@ -1094,10 +1096,11 @@ void CabbagePluginEditor::restorePluginStateFrom (String childPreset, File xmlFi
                 cabbageProcessor.restorePluginState (e);
         }
     }
+    }
 
 }
 
-void CabbagePluginEditor::refreshComboListBoxContents()
+void CabbagePluginEditor::refreshComboListBoxContents(String presetName)
 {
     for ( int i = 0 ; i < cabbageProcessor.cabbageWidgets.getNumChildren() ; i++)
     {
@@ -1121,7 +1124,17 @@ void CabbagePluginEditor::refreshComboListBoxContents()
                 if(bool(combo->getProperties().getWithDefault("isPresetCombo", false)) == true && numPresets < combo->getNumItems())
                     combo->setSelectedItemIndex(combo->getNumItems()-1);
                 else
-                    combo->setSelectedItemIndex(currentIndex);
+                {
+                    StringArray items;
+                    for( int i = 0 ; i < combo->getNumItems() ; i++){
+                        items.add(combo->getItemText(i));
+                    }
+                    if(items.contains(presetName)){
+                        combo->setSelectedItemIndex(items.indexOf(presetName));
+                    }
+                    else
+                        combo->setSelectedItemIndex(currentIndex);
+                }
             }
 
             else if (CabbageListBox* listbox = dynamic_cast<CabbageListBox*> (getComponentFromName (name)))

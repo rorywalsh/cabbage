@@ -174,7 +174,7 @@ public:
     String createNewGenericNameForPresetFile();
     void addNewWidget (String widgetType, juce::Point<int> point, bool isPlant = false);
     //=============================================================================
-    void refreshComboListBoxContents();
+    void refreshComboListBoxContents(String presetName = "");
     void enableEditMode (bool enable);
     void setCurrentlySelectedComponents (StringArray componentNames);  
     void resetCurrentlySelectedComponents();
