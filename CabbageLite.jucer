@@ -116,6 +116,10 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{FE7B8445-EC0A-528F-DC90-0F4F2117A865}" name="Widgets">
+        <FILE id="dJcXQb" name="CabbageOptionButton.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageOptionButton.cpp"/>
+        <FILE id="Wzn0MC" name="CabbageOptionButton.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageOptionButton.h"/>
         <FILE id="OSwm8Y" name="CabbageRackWidgets.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageRackWidgets.cpp"/>
         <FILE id="ZMPPxj" name="CabbageRackWidgets.h" compile="0" resource="0"
