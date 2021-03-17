@@ -445,9 +445,9 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
             }
             else
             {
-                const var value = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::value);
+                const float value = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::value);
                 csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
-                                    float (value));
+                                    value);
             }
 
         }

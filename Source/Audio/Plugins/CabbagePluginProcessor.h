@@ -105,7 +105,7 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     void setParametersFromXml (XmlElement* e);
-    XmlElement savePluginState (String tag, File xmlFile = File(), String presetName="");
+    XmlElement savePluginState (String tag, File xmlFile = File(), String presetName="", bool removePlugin = false);
     void restorePluginState (XmlElement* xmlElement);
     //==============================================================================
     StringArray cabbageScriptGeneratedCode;
@@ -349,7 +349,7 @@ private:
     
     bool isCombo(const String name)
     {
-        if(name.contains("combobox"))
+        if(name.contains("combobox") || name.contains("optionbutton"))
             return true;
         return false;
     }

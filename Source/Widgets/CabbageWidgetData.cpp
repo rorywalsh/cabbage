@@ -134,6 +134,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::button))
         setButtonProperties (widgetData, ID);
 
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::optionbutton))
+        setOptionButtonProperties (widgetData, ID);
+    
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::soundfiler))
         setSoundfilerProperties (widgetData, ID);
 

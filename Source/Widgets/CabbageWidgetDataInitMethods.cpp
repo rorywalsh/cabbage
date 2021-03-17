@@ -505,6 +505,39 @@ void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
 	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
 }
+
+void CabbageWidgetData::setOptionButtonProperties (ValueTree widgetData, int ID)
+{
+    setProperty (widgetData, "basetype", "interactive");
+    setProperty (widgetData, CabbageIdentifierIds::top, 10);
+    setProperty (widgetData, CabbageIdentifierIds::left, 10);
+    setProperty (widgetData, CabbageIdentifierIds::width, 80);
+    setProperty (widgetData, CabbageIdentifierIds::height, 40);
+    var textArray;
+    textArray.append("Item 1");
+    textArray.append("Item 2");
+    textArray.append("Item 3");
+    setProperty (widgetData, CabbageIdentifierIds::text, textArray);
+    setProperty (widgetData, CabbageIdentifierIds::caption, "");
+    setProperty(widgetData, CabbageIdentifierIds::popuptext, "");
+    setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
+    setProperty (widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
+    setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
+    setProperty (widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::type, "optionbutton");
+    setProperty (widgetData, CabbageIdentifierIds::name, "optionbutton");
+    setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
+    setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
+    setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
+    setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
+    setProperty (widgetData, CabbageIdentifierIds::comborange, 3);
+    setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
+    setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
+    setProperty(widgetData, CabbageIdentifierIds::style, "flat");
+}
+
 void CabbageWidgetData::setTextBoxProperties (ValueTree widgetData, int ID)
 {
     setProperty (widgetData, "basetype", "layout");

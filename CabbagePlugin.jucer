@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.20"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.22"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -93,6 +93,10 @@
         <FILE id="GGg8Tq" name="TableManager.h" compile="0" resource="0" file="Source/Widgets/Legacy/TableManager.h"/>
       </GROUP>
       <GROUP id="{06A9B370-E21A-01CA-7B69-FE3EB35876DF}" name="Widgets">
+        <FILE id="N7QXMo" name="CabbageOptionButton.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageOptionButton.cpp"/>
+        <FILE id="tLG3Oi" name="CabbageOptionButton.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageOptionButton.h"/>
         <FILE id="ZEyV21" name="CabbageRackWidgets.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageRackWidgets.cpp"/>
         <FILE id="vHAVok" name="CabbageRackWidgets.h" compile="0" resource="0"
@@ -355,7 +359,7 @@
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
   <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0"
-               JUCE_USE_OGGVORBIS="0" JUCE_USE_FLAC="0"/>
+               JUCE_USE_OGGVORBIS="1" JUCE_USE_FLAC="1"/>
   <LIVE_SETTINGS>
     <LINUX/>
     <OSX/>

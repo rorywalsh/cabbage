@@ -1703,7 +1703,6 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
 			stopCsoundForNode(getCurrentCsdFile().getFullPathName());;
 			isGUIEnabled = false;
-			int modifiedFileIndex = -1;
 
 			if (getCabbagePluginEditor() != nullptr)
 				getCabbagePluginEditor()->enableEditMode(false);

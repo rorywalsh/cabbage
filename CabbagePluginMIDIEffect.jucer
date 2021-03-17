@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.20"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.22"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="0"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -79,6 +79,10 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{06A9B370-E21A-01CA-7B69-FE3EB35876DF}" name="Widgets">
+        <FILE id="jLJBul" name="CabbageOptionButton.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageOptionButton.cpp"/>
+        <FILE id="DlrrVv" name="CabbageOptionButton.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageOptionButton.h"/>
         <FILE id="mh3EGC" name="CabbageRackWidgets.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageRackWidgets.cpp"/>
         <FILE id="SJ0akt" name="CabbageRackWidgets.h" compile="0" resource="0"

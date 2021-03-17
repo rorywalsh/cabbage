@@ -420,7 +420,14 @@ public:
 	//==============================================================
 	static int getHeaderInfo(String csdText, String headerString)
 	{
-
+        
+        const int start = csdText.indexOf("/*");
+        const int end = csdText.indexOf("*/");
+        
+        //special case where users has misplaced a closing comment */
+        if(end < start)
+            csdText = csdText.replaceFirstOccurrenceOf("*/", "");
+        
 		while (csdText.indexOf("/*") != -1 && csdText.indexOf("*/") != -1)
 		{
 			const String comments = csdText.substring(csdText.indexOf("/*"), csdText.indexOf("*/") + 2);

@@ -43,6 +43,7 @@
 #include "../../Widgets/CabbageTextEditor.h"
 #include "../../Widgets/CabbageCsoundConsole.h"
 #include "../../Widgets/CabbageLabel.h"
+#include "../../Widgets/CabbageOptionButton.h"
 #include "../../Widgets/CabbageXYPad.h"
 #include "../../Widgets/CabbageKeyboard.h"
 #include "../../Widgets/CabbageKeyboardDisplay.h"
@@ -85,6 +86,7 @@ public:
     void insertSlider (ValueTree cabbageWidgetData);
     void insertComboBox (ValueTree cabbageWidgetData);
     void insertButton (ValueTree cabbageWidgetData);
+    void insertOptionButton (ValueTree cabbageWidgetData);
     void insertCheckbox (ValueTree cabbageWidgetData);
     void insertXYPad (ValueTree cabbageWidgetData);
     void insertRangeSlider (ValueTree cabbageWidgetData);
@@ -172,7 +174,7 @@ public:
     String createNewGenericNameForPresetFile();
     void addNewWidget (String widgetType, juce::Point<int> point, bool isPlant = false);
     //=============================================================================
-    void refreshComboListBoxContents();
+    void refreshComboListBoxContents(String presetName = "");
     void enableEditMode (bool enable);
     void setCurrentlySelectedComponents (StringArray componentNames);  
     void resetCurrentlySelectedComponents();

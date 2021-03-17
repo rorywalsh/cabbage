@@ -59,11 +59,13 @@ public:
     static void setCsoundOutputProperties (ValueTree widgetData, int ID);
     static void setKeyboardProperties (ValueTree widgetData, int ID, bool displayOnly);
     static void setTextBoxProperties (ValueTree widgetData, int ID);
+    static void setOptionBoxProperties (ValueTree widgetData, int ID);
     static void setLabelProperties (ValueTree widgetData, int ID);
     static void setListBoxProperties (ValueTree widgetData, int ID);
     static void setTextEditorProperties (ValueTree widgetData, int ID);
     static void setEncoderProperties (ValueTree widgetData, int ID);
     static void setSoundfilerProperties (ValueTree widgetData, int ID);
+    static void setOptionButtonProperties (ValueTree widgetData, int ID);
     static void setButtonProperties (ValueTree widgetData, int ID);
     static void setFileButtonProperties (ValueTree widgetData, int ID);
     static void setInfoButtonProperties (ValueTree widgetData, int ID);
