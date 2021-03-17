@@ -63,6 +63,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
     if(cabbageProcessor.getCsound())
         cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 1.0);
+
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -148,6 +149,11 @@ void CabbagePluginEditor::mouseUp (const MouseEvent& e)
 
 void CabbagePluginEditor::handleMouseMovement (const MouseEvent& e)
 {
+    if(e.eventComponent->getName().isNotEmpty())
+    {
+        const ValueTree vt = getValueTreeForComponent(e.eventComponent->getName());
+        sendChannelStringDataToCsound(CabbageIdentifierIds::currentWidgetChannel.toString(), CabbageWidgetData::getStringProp(vt, CabbageIdentifierIds::channel));
+    }
     int x = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().x;
     int yOffset = (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE ? 27 : 0 );
     int y = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().y - yOffset; //27 is the height of the standalone window frame

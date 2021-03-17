@@ -40,3 +40,5 @@ Cabbage reserves several channels which are used to send information to Csound f
 **SECONDS_SINCE_EPOCH** Return the number of seconds since the 1st of Jaunary 1970
 
 **CURRENT_DATE_TIME** Returns the current date and time in a string, e.g., "Sun Jan 10 09:36:02 2021" 
+
+**CURRENT_WIDGET** Returns the channel string of the widget currently under the mouse - if a channel has been assigned.

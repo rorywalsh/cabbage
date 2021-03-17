@@ -150,7 +150,7 @@ private:
         //this list of keywords is not completely up to date!
         const char* const* k;
 
-        if (tokenLength < 2 || tokenLength > 16)
+        if (tokenLength < 2 || tokenLength > 24)
             return false;
 
         else
@@ -174,20 +174,20 @@ private:
     int parseIdentifier (CodeDocument::Iterator& source) noexcept
     {
         int tokenLength = 0;
-        String::CharPointerType::CharType possibleIdentifier [20];
+        String::CharPointerType::CharType possibleIdentifier [24];
         String::CharPointerType possible (possibleIdentifier);
 
         while (isIdentifierBody (source.peekNextChar()))
         {
             const juce_wchar c = source.nextChar();
 
-            if (tokenLength < 20)
+            if (tokenLength < 24)
                 possible.write (c);
 
             ++tokenLength;
         }
 
-        if (tokenLength > 1 && tokenLength <= 16)
+        if (tokenLength > 1 && tokenLength <= 24)
         {
             possible.writeNull();
 

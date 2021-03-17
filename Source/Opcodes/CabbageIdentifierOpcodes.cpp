@@ -164,7 +164,7 @@ int GetCabbageStringIdentifierArray::getAttribute()
 
 int GetCabbageStringValueIdentifier::getAttribute()
 {
-    CabbageWidgetIdentifiers::IdentifierData data;
+
     if(in_count() == 0)
         return NOTOK;
     
@@ -285,3 +285,77 @@ int SetCabbageIdentifier::setAttribute()
     return OK;
 }
 
+//====================================================================================================
+int GetCabbageReservedChannelStringWithTrigger::getAttribute()
+{
+       
+    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
+                                            CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+    {
+      
+        if(!channelString){
+            channelString = csound->strdup(((STRINGDAT*)value)->data);
+        }
+        
+        if(strcmp(channelString, ((STRINGDAT*)value)->data) != 0)
+        {
+            channelString = csound->strdup(((STRINGDAT*)value)->data);
+            outargs[1] = 1;
+        }
+        else
+            outargs[1] = 0;
+        
+        outargs.str_data(0).data = csound->strdup(channelString);
+    }
+    return OK;
+}
+
+//-----------------------------------------------------------------------------------------------------
+int GetCabbageReservedChannelDataWithTrigger::getAttribute()
+{
+    
+    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
+                                            CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+    {
+        
+        if(!currentValue){
+            currentValue = *value;
+        }
+        
+        if(*value != currentValue)
+        {
+            currentValue = *value;
+            outargs[1] = 1;
+        }
+        else
+            outargs[1] = 0;
+        
+        outargs[0] = currentValue;
+    }
+    return OK;
+}
+
+//====================================================================================================
+int GetCabbageReservedChannelString::getAttribute()
+{
+    
+    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
+                                            CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+    {
+        
+        outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
+    }
+    return OK;
+}
+
+//-----------------------------------------------------------------------------------------------------
+int GetCabbageReservedChannelData::getAttribute()
+{
+    
+    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
+                                            CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+    {
+        outargs[0] = *value;
+    }
+    return OK;
+}

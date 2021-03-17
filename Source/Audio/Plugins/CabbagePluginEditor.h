@@ -122,6 +122,7 @@ public:
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
     //=============================================================================
 	void refreshValueTreeListeners();
+
 	//=============================================================================
     // all these methods expose public methods in CabagePluginProcessor
     void sendChannelDataToCsound (String channel, float value);
@@ -171,6 +172,7 @@ public:
 	}
 	//=============================================================================
 
+    
     String createNewGenericNameForPresetFile();
     void addNewWidget (String widgetType, juce::Point<int> point, bool isPlant = false);
     //=============================================================================

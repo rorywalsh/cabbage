@@ -37,8 +37,7 @@ public:
     Array<IdentifierData, CriticalSection> data;
 };
 
-//Some of these classes use a revered input/output system to get around the issue of 0 outputs..
-
+//Some of these classes use a reversed input/output system to get around the issue of 0 outputs..
 struct SetCabbageValueIdentifier : csnd::Plugin<3, 0>
 {
     CabbageWidgetIdentifiers** vt = nullptr;
@@ -58,7 +57,6 @@ struct SetCabbageIdentifier : csnd::Plugin<64, 0>
 struct GetCabbageValueIdentifier : csnd::Plugin<1, 1>
 {
     MYFLT* value;
-    CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ getAttribute(); return OK;};
     int kperf(){ getAttribute(); return OK;};
     int getAttribute();
@@ -67,7 +65,6 @@ struct GetCabbageValueIdentifier : csnd::Plugin<1, 1>
 struct GetCabbageStringValueIdentifier : csnd::Plugin<1, 1>
 {
     MYFLT* value;
-    CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ getAttribute(); return OK;};
     int kperf(){ getAttribute(); return OK;};
     int getAttribute();
@@ -106,5 +103,47 @@ struct GetCabbageStringIdentifierArray : csnd::Plugin<1, 2>
     CabbageWidgetsValueTree** vt = nullptr;
     int init(){ getAttribute(); return OK;};
     int kperf(){ getAttribute(); return OK;};
+    int getAttribute();
+};
+
+//================================================================================================================
+struct GetCabbageReservedChannelStringWithTrigger : csnd::Plugin<2, 1>
+{
+    MYFLT *value;
+    char* channelString;
+    int init(){ getAttribute(); return OK;};
+    int kperf(){ getAttribute(); return OK;};
+    int deinit(){ free(channelString);  return OK;  }
+    int getAttribute();
+};
+
+struct GetCabbageReservedChannelDataWithTrigger : csnd::Plugin<2, 1>
+{
+    MYFLT *value;
+    MYFLT currentValue;
+    int init(){ getAttribute(); return OK;};
+    int kperf(){ getAttribute(); return OK;};
+    int deinit(){ return OK;  }
+    int getAttribute();
+};
+
+//================================================================================================================
+struct GetCabbageReservedChannelString : csnd::Plugin<1, 1>
+{
+    MYFLT *value;
+    char* channelString;
+    int init(){ getAttribute(); return OK;};
+    int kperf(){ getAttribute(); return OK;};
+    int deinit(){ free(channelString);  return OK;  }
+    int getAttribute();
+};
+
+struct GetCabbageReservedChannelData : csnd::Plugin<1, 1>
+{
+    MYFLT *value;
+    MYFLT* currentValue;
+    int init(){ getAttribute(); return OK;};
+    int kperf(){ getAttribute(); return OK;};
+    int deinit(){ return OK;  }
     int getAttribute();
 };
