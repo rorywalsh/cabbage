@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.22"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.23"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -18,6 +18,10 @@
   <MAINGROUP id="MmKYZk" name="CabbagePlugin">
     <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
       <GROUP id="{155EB1FE-8C62-16E7-B9F7-B0982065BB1C}" name="Opcodes">
+        <FILE id="w2N3oL" name="CabbageIdentifierOpcodes.cpp" compile="1" resource="0"
+              file="Source/Opcodes/CabbageIdentifierOpcodes.cpp"/>
+        <FILE id="Xvau9T" name="CabbageIdentifierOpcodes.h" compile="0" resource="0"
+              file="Source/Opcodes/CabbageIdentifierOpcodes.h"/>
         <FILE id="IttIyl" name="opcodes.hpp" compile="0" resource="0" file="Source/Opcodes/opcodes.hpp"/>
       </GROUP>
       <GROUP id="{61A1582E-02D7-BC73-16CA-AB70EAB7BBA0}" name="Audio">

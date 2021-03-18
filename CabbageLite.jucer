@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="id6VOA" name="CabbageLite" displaySplashScreen="0" reportAppUsage="1"
-              splashScreenColour="Dark" projectType="guiapp" version="2.5.22"
+              splashScreenColour="Dark" projectType="guiapp" version="2.5.23"
               bundleIdentifier="com.yourcompany.CabbageLite" includeBinaryInAppConfig="1"
               cppLanguageStandard="11" jucerVersion="5.4.7" companyCopyright="">
   <MAINGROUP id="CfT7TE" name="CabbageLite">
     <GROUP id="{E4950169-7245-8252-D27F-2344F45CAF99}" name="Source">
       <GROUP id="{5C46BA91-ABD7-FFC2-4F16-FF6452893BE7}" name="Opcodes">
+        <FILE id="C6Drz2" name="CabbageIdentifierOpcodes.cpp" compile="1" resource="0"
+              file="Source/Opcodes/CabbageIdentifierOpcodes.cpp"/>
+        <FILE id="fj4P1Q" name="CabbageIdentifierOpcodes.h" compile="0" resource="0"
+              file="Source/Opcodes/CabbageIdentifierOpcodes.h"/>
         <FILE id="c5eFfl" name="opcodes.hpp" compile="0" resource="0" file="Source/Opcodes/opcodes.hpp"/>
       </GROUP>
       <GROUP id="{4AFC1EE2-9934-F4AA-4ECD-50660152DD13}" name="BinaryData">
