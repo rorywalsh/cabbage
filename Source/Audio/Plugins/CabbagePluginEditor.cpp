@@ -644,7 +644,7 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
     if(mode == "resize")
     {
         double scale = (combo->getSelectedItemIndex()+1)/2.f;
-        
+          
 #ifdef Cabbage_IDE_Build
         double pluginWidth = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::width);
         double pluginHeight = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::height);
