@@ -943,8 +943,8 @@ void CsoundPluginProcessor::triggerCsoundEvents()
 
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
-    getIdentifierDataFromCsound();
-    //getChannelDataFromCsound();
+    //getIdentifierDataFromCsound();
+    getChannelDataFromCsound();
     sendChannelDataToCsound();
 }
 

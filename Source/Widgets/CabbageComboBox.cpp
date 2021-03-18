@@ -126,6 +126,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         }
     }
 
+
 }
 //---------------------------------------------
 CabbageComboBox::~CabbageComboBox()
@@ -289,8 +290,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         //setSelectedItemIndex(getNumItems()-1, dontSendNotification);
 
     }
-    
-    comboBoxChanged(this);
+
 }
 
 void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only enabled when combo is loading presets or strings...
@@ -321,7 +321,7 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
 
             if (item->itemID == id)
             {
-                item->setAction([this, combo, presetFilename] { 
+                item->setAction([this, combo, presetFilename] {
                     owner->restorePluginStateFrom(presets[combo->getSelectedItemIndex()], presetFilename);
                     owner->sendChannelStringDataToCsound(getChannel(), presets[combo->getSelectedItemIndex()]);
                     CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::value, presets[combo->getSelectedItemIndex()]); 

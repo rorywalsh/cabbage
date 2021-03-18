@@ -36,13 +36,13 @@ public:
                                 "nchnls = 2\n"
                                 "0dbfs = 1\n"
                                 "\n"
-                                "instr 1\n"
+                                "instr 99\n"
                                 "\n"
                                 "endin\n"
                                 "\n"
                                 "</CsInstruments>\n"
                                 "<CsScore>\n"
-                                "i1 0 10\n"
+                                "i99 0 10\n"
                                 "</CsScore>\n"
                                 "</CsoundSynthesizer>";
         return newCsoundFile;
