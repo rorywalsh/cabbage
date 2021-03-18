@@ -57,12 +57,6 @@ void SliderThumb::mouseEnter(const MouseEvent& e)
 
     }
 }
-
-void SliderThumb::mouseUp(const MouseEvent& e)
-{
-    owner->getEditor()->sliderDragEnded(&owner->getSlider());
-}
-
 void SliderThumb::mouseDrag(const MouseEvent& e)
 {
     if(isEnabled())
@@ -78,9 +72,8 @@ void SliderThumb::mouseDrag(const MouseEvent& e)
 
             const auto prop = jmap(jlimit(0.f, (float)owner->getHeight() - getHeight(), (float)yPos), (float)0, (float)owner->getHeight() - getHeight(), 1.f, 0.f);
             const auto value = owner->getSlider().proportionOfLengthToValue(prop);
-            
-            //this should be calling paramete gesture changes I think...
 
+            //this should be calling paramete gesture changes I think...
             owner->getSlider().setValue(value, sendNotification);
         }
 
@@ -114,10 +107,6 @@ void SliderThumb::mouseDown(const MouseEvent& e)
         {
             xOffset = getX() - e.getEventRelativeTo(owner).getPosition().getX();
         }
-        
-        owner->getEditor()->sliderDragStarted(&owner->getSlider());
-
-
     }
 }
 

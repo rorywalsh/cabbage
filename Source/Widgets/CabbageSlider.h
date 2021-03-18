@@ -93,6 +93,7 @@ public:
     void mouseDown(const MouseEvent& e) override;
     void mouseMove(const MouseEvent& e) override;
     void mouseEnter(const MouseEvent& e) override;
+    void mouseUp (const MouseEvent& event) override;
     void move(double value, Range<double> range);
     int yOffset = 0, xOffset = 0;
     CabbageSlider* owner;
@@ -120,6 +121,7 @@ class CabbageSlider
     void mouseMove (const MouseEvent& event) override;
     void mouseEnter (const MouseEvent& event) override;
     void mouseExit (const MouseEvent& event) override;
+ 
     void createPopupBubble();
    
     void setLookAndFeelColours (ValueTree wData);
@@ -149,6 +151,10 @@ public:
     void setSliderVelocity (ValueTree wData);
     void resized() override;
     void initialiseSlider (ValueTree wData, Slider& currentSlider);
+    
+    CabbagePluginEditor* getEditor(){
+        return owner;
+    }
 
     void setTextBoxOrientation (String type, int textBox);
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop) override;
