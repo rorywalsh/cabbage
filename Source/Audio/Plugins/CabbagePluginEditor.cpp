@@ -638,32 +638,37 @@ CabbagePluginParameter* CabbagePluginEditor::getParameterForComponent (const Str
 }
 
 //======================================================================================================
+void CabbagePluginEditor::resizePlugin (int sizeIndex)
+{
+    float sizes[] = {.5, .75, 1, 1.25, 1.50, 1.75, 2};
+    double scale =  sizes[sizeIndex];
+    //param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
+    
+    setScaleFactor(scale);
+    resized();
+}
+//======================================================================================================
 void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 {
     const String mode = CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::mode);
-    if(mode == "resize")
-    {
-        double scale = (combo->getSelectedItemIndex()+1)/(2.5f);
-          
-#ifdef Cabbage_IDE_Build
-        double pluginWidth = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::width);
-        double pluginHeight = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::height);
-        setSize(pluginWidth*scale, pluginHeight*scale);
-#endif
-        setScaleFactor(scale);
-        resized();
-        
-    }
-    else if (CabbagePluginParameter* param = getParameterForComponent (combo->getName()))
+   
+    if (CabbagePluginParameter* param = getParameterForComponent (combo->getName()))
     {
         param->beginChangeGesture();
 
-        //preset combos work with 0 index, Cabbage string combos start at 1..
-        if (CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::filetype).contains ("snaps"))
-            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()));
-        else
+        if(mode == "resize")
+        {
             param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
-
+            resizePlugin(combo->getSelectedItemIndex());            
+        }
+        else
+        {
+            //preset combos work with 0 index, Cabbage string combos start at 1..
+            if (CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::filetype).contains ("snaps"))
+                param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()));
+            else
+                param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
+        }
         param->endChangeGesture();
     }
 }

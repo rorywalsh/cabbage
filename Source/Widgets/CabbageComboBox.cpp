@@ -55,6 +55,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
 
     addItemsToCombobox (widgetData);
 
+        
     if (CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::channeltype) == "string" &&
 		!CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::filetype).contains("snaps"))
     {
@@ -146,6 +147,21 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         justify = Justification::right;
     
     setJustificationType (justify);
+    
+    
+    if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::mode) == "resize")
+    {
+        StringArray sizeItems = {"50%", "75%", "100%", "125%", "150%", "175%", "200%"};
+        for (int i = 0; i < sizeItems.size(); ++i)
+        {
+            addItem (sizeItems[i], i + 1);
+        }
+        
+        const int currentSize = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
+        setSelectedItemIndex(currentSize, sendNotification);
+        owner->resizePlugin(currentSize-1);
+        return;
+    }
     
     Array<File> dirFiles;
     presets.clear();
@@ -296,7 +312,6 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only enabled when combo is loading presets or strings...
 {
     //check here to see if string has changed, if so update XML :|
-    
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps")
         || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype) == ("preset"))
     {

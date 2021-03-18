@@ -933,6 +933,10 @@ void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
     array.append ("Item 2");
     array.append ("Item 3");
     array.append ("Item 4");
+    array.append ("Item 5");
+    array.append ("Item 6");
+    array.append ("Item 7");
+    
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 80);
@@ -952,7 +956,7 @@ void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::menucolour, Colours::whitesmoke.toString());
     setProperty (widgetData, CabbageIdentifierIds::type, "combobox");
-    setProperty (widgetData, CabbageIdentifierIds::comborange, 4);
+    setProperty (widgetData, CabbageIdentifierIds::comborange, 7);
     setProperty (widgetData, CabbageIdentifierIds::file, "");
     var populate;
     //populate.append (String::empty);
