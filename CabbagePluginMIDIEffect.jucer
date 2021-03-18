@@ -16,6 +16,10 @@
   <MAINGROUP id="MmKYZk" name="CabbagePlugin">
     <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
       <GROUP id="{6A31004D-07E6-4A44-AEEC-B2D20C2F6B21}" name="Opcodes">
+        <FILE id="SQ8iQn" name="CabbageIdentifierOpcodes.cpp" compile="1" resource="0"
+              file="Source/Opcodes/CabbageIdentifierOpcodes.cpp"/>
+        <FILE id="mn17yl" name="CabbageIdentifierOpcodes.h" compile="0" resource="0"
+              file="Source/Opcodes/CabbageIdentifierOpcodes.h"/>
         <FILE id="xhqYnf" name="opcodes.hpp" compile="0" resource="0" file="Source/Opcodes/opcodes.hpp"/>
       </GROUP>
       <GROUP id="{61A1582E-02D7-BC73-16CA-AB70EAB7BBA0}" name="Audio">

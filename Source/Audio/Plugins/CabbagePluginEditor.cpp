@@ -640,7 +640,21 @@ CabbagePluginParameter* CabbagePluginEditor::getParameterForComponent (const Str
 //======================================================================================================
 void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 {
-    if (CabbagePluginParameter* param = getParameterForComponent (combo->getName()))
+    const String mode = CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::mode);
+    if(mode == "resize")
+    {
+        double scale = (combo->getSelectedItemIndex()+1)/2.f;
+        
+#ifdef Cabbage_IDE_Build
+        double pluginWidth = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::width);
+        double pluginHeight = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::height);
+        setSize(pluginWidth*scale, pluginHeight*scale);
+#endif
+        setScaleFactor(scale);
+        resized();
+        
+    }
+    else if (CabbagePluginParameter* param = getParameterForComponent (combo->getName()))
     {
         param->beginChangeGesture();
 
