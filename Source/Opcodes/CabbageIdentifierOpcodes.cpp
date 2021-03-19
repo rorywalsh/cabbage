@@ -161,8 +161,7 @@ int GetCabbageStringIdentifierArray::getAttribute()
 }
 //====================================================================================================
 
-
-int GetCabbageStringValueIdentifier::getAttribute()
+int GetCabbageStringValue::getAttribute()
 {
 
     if(in_count() == 0)
@@ -180,9 +179,7 @@ int GetCabbageStringValueIdentifier::getAttribute()
     return OK;
 }
 
-//====================================================================================================
-
-int GetCabbageValueIdentifier::getAttribute()
+int GetCabbageValue::getAttribute()
 {
     CabbageWidgetIdentifiers::IdentifierData data;
     if(in_count() == 0)
@@ -194,6 +191,61 @@ int GetCabbageValueIdentifier::getAttribute()
                                             CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
         outargs[0] = *value;
+    }
+    
+    return OK;
+}
+//-------------------------------------------------------------------------------------------
+int GetCabbageStringValueWithTrigger::getAttribute()
+{
+    
+    if(in_count() == 0)
+        return NOTOK;
+    
+    String channelName(inargs.str_data(0).data);
+    
+    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.getCharPointer(),
+                                            CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+    {
+        if(!currentString){
+            currentString = csound->strdup(((STRINGDAT*)value)->data);
+        }
+        
+        if(strcmp(currentString, ((STRINGDAT*)value)->data) != 0)
+        {
+            currentString = csound->strdup(((STRINGDAT*)value)->data);
+            outargs[1] = 1;
+        }
+        else
+            outargs[1] = 0;
+        
+        outargs.str_data(0).data = csound->strdup(currentString);
+    }
+    
+    
+    return OK;
+}
+
+int GetCabbageValueWithTrigger::getAttribute()
+{
+    if(in_count() == 0)
+        return NOTOK;
+    
+    String channelName(inargs.str_data(0).data);
+    
+    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.getCharPointer(),
+                                            CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+    {
+
+        if(*value != currentValue)
+        {
+            currentValue = *value;
+            outargs[1] = 1;
+        }
+        else
+            outargs[1] = 0;
+        
+        outargs[0] = currentValue;
     }
     
     return OK;
@@ -317,10 +369,6 @@ int GetCabbageReservedChannelDataWithTrigger::getAttribute()
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
-        
-        if(!currentValue){
-            currentValue = *value;
-        }
         
         if(*value != currentValue)
         {

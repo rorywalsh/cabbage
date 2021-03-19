@@ -54,7 +54,8 @@ struct SetCabbageIdentifier : csnd::Plugin<64, 0>
     int setAttribute();
 };
 
-struct GetCabbageValueIdentifier : csnd::Plugin<1, 1>
+//================================================================
+struct GetCabbageValue : csnd::Plugin<1, 1>
 {
     MYFLT* value;
     int init(){ getAttribute(); return OK;};
@@ -62,7 +63,7 @@ struct GetCabbageValueIdentifier : csnd::Plugin<1, 1>
     int getAttribute();
 };
 
-struct GetCabbageStringValueIdentifier : csnd::Plugin<1, 1>
+struct GetCabbageStringValue : csnd::Plugin<1, 1>
 {
     MYFLT* value;
     int init(){ getAttribute(); return OK;};
@@ -70,6 +71,24 @@ struct GetCabbageStringValueIdentifier : csnd::Plugin<1, 1>
     int getAttribute();
 };
 
+struct GetCabbageValueWithTrigger : csnd::Plugin<2, 1>
+{
+    MYFLT* value;
+    MYFLT currentValue;
+    int init(){ getAttribute(); return OK;};
+    int kperf(){ getAttribute(); return OK;};
+    int getAttribute();
+};
+
+struct GetCabbageStringValueWithTrigger : csnd::Plugin<2, 1>
+{
+    MYFLT* value;
+    char* currentString;
+    int init(){ getAttribute(); return OK;};
+    int kperf(){ getAttribute(); return OK;};
+    int getAttribute();
+};
+//================================================================
 struct GetCabbageIdentifierSingle : csnd::Plugin<1, 2>
 {
     MYFLT* value;
@@ -107,6 +126,7 @@ struct GetCabbageStringIdentifierArray : csnd::Plugin<1, 2>
 };
 
 //================================================================================================================
+// Opcodes to get reserved channel data with optional trigger signal output
 struct GetCabbageReservedChannelStringWithTrigger : csnd::Plugin<2, 1>
 {
     MYFLT *value;
@@ -128,6 +148,7 @@ struct GetCabbageReservedChannelDataWithTrigger : csnd::Plugin<2, 1>
 };
 
 //================================================================================================================
+// Opcodes to get reserved channel data
 struct GetCabbageReservedChannelString : csnd::Plugin<1, 1>
 {
     MYFLT *value;
