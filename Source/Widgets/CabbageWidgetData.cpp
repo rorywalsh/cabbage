@@ -36,7 +36,8 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, "scalex", 1);
     setProperty (widgetData, "scaley", 1);
     setProperty (widgetData, "resize", 0);
-    setProperty (widgetData, "automation", 0);
+    setProperty (widgetData, CabbageIdentifierIds::guimode, CabbageIdentifierIds::polling.toString());
+    setProperty (widgetData, CabbageIdentifierIds::automation, 0);
     setProperty (widgetData, CabbageIdentifierIds::active, 1);
     setProperty (widgetData, CabbageIdentifierIds::isparent, 0);
     setProperty (widgetData, CabbageIdentifierIds::automatable, 0);
@@ -335,6 +336,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("show"):
             case HashStringToInt ("child"):
             case HashStringToInt ("typeface"):
+            case HashStringToInt ("guimode"):
             case HashStringToInt ("manufacturer"):
             case HashStringToInt ("logger"):
             case HashStringToInt ("namespace"):

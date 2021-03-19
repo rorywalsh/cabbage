@@ -93,7 +93,7 @@ public:
     String getPluginName() { return pluginName;  }
     void expandMacroText (String &line, ValueTree wData);
 	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
-	void setCabbageParameter(String channel, float value);
+	void setCabbageParameter(String channel, float value, ValueTree& wData);
     CabbagePluginParameter* getParameterForXYPad (String name);
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
@@ -250,7 +250,7 @@ private:
         void setValue(float newValue) override
         {
             currentValue = isCombo ? juce::roundToInt(range.convertFrom0to1 (newValue)) : range.convertFrom0to1 (newValue);
-            processor->setCabbageParameter(channel, currentValue);
+            processor->setCabbageParameter(channel, currentValue, valueTree);
         }
         
         String getText(float normalizedValue, int length) const override
@@ -320,7 +320,8 @@ private:
         currentValue(def),
         isCombo(isCombo),
         owner(owner),
-        processor(proc)
+        processor(proc),
+        valueTree(wData)
         {
             
         }
@@ -333,6 +334,7 @@ private:
         
         CabbagePluginParameter& owner;
         CabbagePluginProcessor* processor;
+        ValueTree valueTree;
         
         mutable bool showingAffixes = true;
         

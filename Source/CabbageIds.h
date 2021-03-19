@@ -424,7 +424,7 @@ public:
         add ("latched");
         add ("rescale");
         add ("tofront");
-        add ("polling");
+        add ("guimode");
         add ("bundle");
         add ("import");
         add ("bounds");
@@ -588,6 +588,9 @@ namespace CabbageIdentifierIds
 	static const Identifier fontsize = "fontsize";
 	static const Identifier gradient = "gradient";
 	static const Identifier guirefresh = "guirefresh";
+    static const Identifier guimode = "guimode";
+    static const Identifier polling = "polling";
+    static const Identifier queue = "queue";
 	static const Identifier height = "height";
 	static const Identifier highlightcolour = "highlightcolour";
 	static const Identifier identchannel = "identchannel";

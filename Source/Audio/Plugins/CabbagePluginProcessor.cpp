@@ -309,7 +309,10 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 		if (typeOfWidget == CabbageWidgetTypes::form) {
 			const String caption = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::caption);
 			setPluginName(caption.length() > 0 ? caption : "Untitled");
-
+            
+            if(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::guimode) != CabbageIdentifierIds::polling.toString())
+                pollingChannels(false);
+            
 			if (CabbageWidgetData::getNumProp(newWidget, CabbageIdentifierIds::logger) == 1)
 				createFileLogger(this->csdFile);
 
@@ -1507,11 +1510,19 @@ CabbagePluginParameter* CabbagePluginProcessor::getParameterForXYPad(String name
 }
 
 //==============================================================================
-void CabbagePluginProcessor::setCabbageParameter(String channel, float value) {
-	if (!getCsound())
-		return;
+void CabbagePluginProcessor::setCabbageParameter(String channel, float value, ValueTree& wData) {
+    
+    if(pollingChannels() == false){
+        MessageManager::callAsync ([this, wData, value](){
+            CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, value);
+        });
+    }
+    
+    if (getCsound())
+		getCsound()->SetChannel(channel.toUTF8().getAddress(), value);
+    
 
-	getCsound()->SetChannel(channel.toUTF8().getAddress(), value);
+    
 }
 
 void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)

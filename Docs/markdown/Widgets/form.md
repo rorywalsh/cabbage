@@ -15,6 +15,8 @@ form WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/guirefresh.md !}     
 
+{! ./markdown/Widgets/Properties/guimode.md !}   
+
 {! ./markdown/Widgets/Properties/import.md !}  
 
 {! ./markdown/Widgets/Properties/bundle.md !}  
