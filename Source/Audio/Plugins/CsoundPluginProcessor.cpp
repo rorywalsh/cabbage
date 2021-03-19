@@ -594,11 +594,10 @@ void CsoundPluginProcessor::addMacros (String csdText)
             if (csdArray[i].trim().substring (0, 7) == "#define")
             {
 			    StringArray tokens;
-//              CabbageUtilities::debug(csdArray[i]);
+                //CabbageUtilities::debug(csdArray[i]);
                 tokens.addTokens (csdArray[i].replace ("#", "").trim() , " ");
-//              CabbageUtilities::debug(tokens[0]);
-                macroName = tokens[1];
-                tokens.remove (0);
+                tokens.removeEmptyStrings();
+                macroName = tokens[1].trim();
                 tokens.remove (0);
                 macroText = "\"" + tokens.joinIntoString (" ").replace (" ", "\ ").replace("\"", "\\\"")+"\"";
                 macroText = tokens.joinIntoString(" ");

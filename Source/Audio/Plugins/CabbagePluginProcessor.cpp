@@ -647,8 +647,10 @@ void CabbagePluginProcessor::getMacros(const StringArray& linesFromCsd) {
 	{
 		StringArray tokens;
 		csdLine = csdLine.replace("\n", " ");
-		tokens.addTokens(csdLine, ", ");
 
+		tokens.addTokens(csdLine, ", ");
+        tokens.removeEmptyStrings();
+        
 		bool commented = false;
 
 		if (csdLine.indexOf(";") > -1)
@@ -658,9 +660,8 @@ void CabbagePluginProcessor::getMacros(const StringArray& linesFromCsd) {
 			//tokens.removeEmptyStrings();
 
 			if (tokens.size() > 1) {
-				const String currentMacroText = commented ? " " :
-					csdLine.substring(csdLine.indexOf(tokens[1]) + tokens[1].length()) + " ";
-				macroText.set("$" + tokens[1], " " + currentMacroText);
+				const String currentMacroText = commented ? " " : csdLine.substring(csdLine.indexOf(tokens[1]) + tokens[1].length()) + " ";
+				macroText.set("$" + tokens[1], " " + currentMacroText);              
 				tempMacroNames.append("$" + tokens[1]);
 				tempMacroStrings.append(" " + currentMacroText.trim());
 				macroNames = tempMacroNames;
