@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Presets") size(360, 200), colour(34, 34, 34), pluginid("MPre"), scale(1), identchannel("formIdent")
+form caption("Presets") size(360, 200), colour(34, 34, 34), pluginid("MPre")
 image bounds(0, 0, 366, 229), colour(0, 0, 0, 0)
 keyboard bounds(10, 103, 350, 70)
 rslider bounds(12, 9, 86, 90), channel("att"), range(0, 1, 0.01, 1, 0.001), text("Att.")
