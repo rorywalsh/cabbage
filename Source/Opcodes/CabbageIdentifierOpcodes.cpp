@@ -11,6 +11,45 @@
 #include "../Audio/Plugins/CsoundPluginProcessor.h"
 #include "CabbageIdentifierOpcodes.h"
 
+
+
+//====================================================================================================
+int CreateCabbageWidget::createWidget()
+{
+    vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+    CabbageWidgetsValueTree* varData;
+    
+    if (vt != nullptr)
+    {
+        varData = *vt;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
+        vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+        *vt = new CabbageWidgetsValueTree();
+        varData = *vt;
+        csound->message("Creating new internal state object...\n");
+    }
+    
+    const String widgetTreeIdentifier = "TempWidget";
+    ValueTree tempWidget(widgetTreeIdentifier);
+    String cabbageCode(outargs.str_data(0).data);
+    CabbageWidgetData::setWidgetState(tempWidget, cabbageCode.trimCharactersAtStart(" \t"),
+                                      varData->data.getNumChildren()+1);
+    
+    String widgetNameId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel);
+    //if no name is specified use generic name
+    if(widgetNameId.isEmpty())
+        widgetNameId = widgetTreeIdentifier;
+    
+    ValueTree newWidget(widgetNameId);
+    newWidget.copyPropertiesFrom(tempWidget, nullptr);
+    varData->data.addChild(newWidget, -1,  nullptr);
+    
+    return OK;
+}
+//====================================================================================================
 int GetCabbageStringIdentifierSingle::getAttribute()
 {
     String name(inargs.str_data(0).data);
@@ -39,8 +78,6 @@ int GetCabbageStringIdentifierSingle::getAttribute()
     
     return OK;
 }
-
-//====================================================================================================
 
 int GetCabbageIdentifierArray::getAttribute()
 {

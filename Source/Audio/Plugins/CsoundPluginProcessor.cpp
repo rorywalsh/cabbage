@@ -209,6 +209,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<GetCabbageReservedChannelDataWithTrigger>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "kk", "S", csnd::thread::ik);
     csnd::plugin<GetCabbageReservedChannelData>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "k", "S", csnd::thread::ik);
 
+    csnd::plugin<CreateCabbageWidget>((csnd::Csound*) csound->GetCsound(), "cabbageCreate", "", "S", csnd::thread::i);
     //csound->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
     //CabbagePersistentData** pd = (CabbagePersistentData**)csound->QueryGlobalVariable("cabbageData");
     //*pd = new CabbagePersistentData();

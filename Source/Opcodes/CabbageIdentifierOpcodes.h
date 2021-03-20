@@ -88,7 +88,16 @@ struct GetCabbageStringValueWithTrigger : csnd::Plugin<2, 1>
     int kperf(){ getAttribute(); return OK;};
     int getAttribute();
 };
-//================================================================
+
+//================================================================================================================
+struct CreateCabbageWidget : csnd::Plugin<1, 0>
+{
+    MYFLT* value;
+    CabbageWidgetsValueTree** vt = nullptr;
+    int init(){ createWidget(); return OK;};
+    int createWidget();
+};
+//================================================================================================================
 struct GetCabbageIdentifierSingle : csnd::Plugin<1, 2>
 {
     MYFLT* value;

@@ -128,7 +128,7 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
 		setWidthHeight();
 		StringArray linesFromCsd;
 		linesFromCsd.addLines(inputFile.loadFileAsString());
-
+        
 		//only create extended temp file if imported plants are being added...
 		if (addImportFiles(linesFromCsd) == true)
 		{
@@ -159,12 +159,14 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
 				this->suspendProcessing(true);
 		}
 
+        initAllCsoundChannels(cabbageWidgets);
+        
 		if (shouldCreateParameters)
 			createCabbageParameters();
 
 		csoundChanList = NULL;
 
-		initAllCsoundChannels(cabbageWidgets);
+		
 
 		csdLastModifiedAt = csdFile.getLastModificationTime().toMilliseconds();
 
