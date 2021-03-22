@@ -684,6 +684,7 @@ void CabbageWidgetData::setSoundfilerProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::scrubberposition, 0);
+    setProperty (widgetData, CabbageIdentifierIds::showscrubber, 1);
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::zoom, -1);
     setProperty (widgetData, CabbageIdentifierIds::startpos, 0);

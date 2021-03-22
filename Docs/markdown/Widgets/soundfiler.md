@@ -15,6 +15,8 @@ soundfiler WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/scrubberposition.md !} 
 
+{! ./markdown/Widgets/Properties/showscrubber.md !} 
+
 {! ./markdown/Widgets/Properties/tablenumber.md  !}
 
 {! ./markdown/Widgets/Properties/zoom.md !}  

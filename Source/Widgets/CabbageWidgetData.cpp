@@ -310,7 +310,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 
         strTokens = CabbageUtilities::getTokens (identifierValueSet.parameter[indx], ',');
 
-
+        bool isCabbageWidget = (identifier.indexOf("_") != -1 ? false : true);
 
         switch (HashStringToInt (identifier.toStdString().c_str()))
         {
@@ -442,6 +442,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("visible"):
             case HashStringToInt ("wrap"):
             case HashStringToInt ("zoom"):
+            case HashStringToInt ("showscrubber"):
                 if (getStringProp (widgetData, CabbageIdentifierIds::channeltype) == "string")
                     setProperty (widgetData, identifier, strTokens[0].trim());
                 else
@@ -611,10 +612,11 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
 			case HashStringToInt("colprefix"):
 				setMatrixPrefix(strTokens, identifierValueSet.parameter[indx], widgetData, identifierValueSet.identifier[indx]);
 				break;
-            case HashStringToInt( ("matrixsize")):
+            case HashStringToInt("matrixsize"):
                 setMatrixSize(strTokens, widgetData);
             default:
-                setProperty (widgetData, identifier, strTokens);
+                if(!isCabbageWidget)
+                    setProperty (widgetData, identifier, strTokens);
                 break;
 
         }

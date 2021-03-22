@@ -79,6 +79,8 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
     const int scrollbars = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrollbars);
     if(scrollbars == 0)
         soundfiler.showScrollbars(false);
+    
+    soundfiler.shouldShowScrubber(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::showscrubber) == 1 ? true : false );
 }
 
 void CabbageSoundfiler::changeListenerCallback (ChangeBroadcaster* source)

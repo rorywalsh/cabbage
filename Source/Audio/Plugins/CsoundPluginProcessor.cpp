@@ -987,6 +987,7 @@ void CsoundPluginProcessor::performCsoundKsmps()
 	if (result == 0)
 	{
         //slow down calls to these functions, no need for them to be firing at k-rate
+        if(polling == true){
         if (guiCycles > guiRefreshRate)
         {
             guiCycles = 0;
@@ -994,9 +995,12 @@ void CsoundPluginProcessor::performCsoundKsmps()
         }
         else
             ++guiCycles;
-
+        }
+        else{
+            triggerAsyncUpdate();
+        }
 		//trigger any Csound score event on each k-boundary
-		triggerCsoundEvents();
+		//triggerCsoundEvents();
 		sendHostDataToCsound();
 
 		disableLogging = false;

@@ -883,8 +883,11 @@ ValueTree CabbagePluginEditor::getValueTreeForComponent (String compName)
         resetCurrentlySelectedComponents();
         return CabbageWidgetData::getValueTreeForComponent (cabbageProcessor.cabbageWidgets, "form");
     }
-    else
+    else if(getComponentFromName (compName))
         return CabbageWidgetData::getValueTreeForComponent (cabbageProcessor.cabbageWidgets, getComponentFromName (compName)->getName());
+    
+    else
+        return ValueTree();
 }
 
 void CabbagePluginEditor::updateLayoutEditorFrames()

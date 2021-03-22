@@ -91,6 +91,7 @@ public:
     void setRange (Range<double> newRange);
     void showScrollbars (bool show);
 
+
 private:
     Image img;
     bool selectableRange;
