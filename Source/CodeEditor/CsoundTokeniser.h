@@ -150,7 +150,7 @@ private:
         //this list of keywords is not completely up to date!
         const char* const* k;
 
-        if (tokenLength < 2 || tokenLength > 24)
+        if (tokenLength < 2 || tokenLength > 32)
             return false;
 
         else
@@ -174,7 +174,7 @@ private:
     int parseIdentifier (CodeDocument::Iterator& source) noexcept
     {
         int tokenLength = 0;
-        String::CharPointerType::CharType possibleIdentifier [24];
+        String::CharPointerType::CharType possibleIdentifier [32];
         String::CharPointerType possible (possibleIdentifier);
 
         while (isIdentifierBody (source.peekNextChar()))

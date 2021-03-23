@@ -213,7 +213,7 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     if (fontColourString != "")
         defaultFontColour = false;
 
-    lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);  
+    lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);
     mainComponent.setColour (backgroundColour);
     instrumentBounds.setXY(width, height);
     setSize (width, height);
