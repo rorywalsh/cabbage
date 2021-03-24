@@ -1131,7 +1131,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
             
             while(iter.getNextEvent (message, samplePos))
             {
-                //if current sample position matches time code for MIDI event, add it to buffer...
+                //if current sample position matches time code for MIDI event, add it to buffer that gets sent to Csound as incoming MIDI...
                 if(samplePos == i)
                     midiBuffer.addEvent(message, samplePos);
             }

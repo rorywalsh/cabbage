@@ -150,7 +150,7 @@ private:
         //this list of keywords is not completely up to date!
         const char* const* k;
 
-        if (tokenLength < 2 || tokenLength > 32)
+        if (tokenLength < 2)
             return false;
 
         else
@@ -181,13 +181,13 @@ private:
         {
             const juce_wchar c = source.nextChar();
 
-            if (tokenLength < 24)
+            if (tokenLength < 32)
                 possible.write (c);
 
             ++tokenLength;
         }
 
-        if (tokenLength > 1 && tokenLength <= 24)
+        if (tokenLength > 1 && tokenLength <= 32)
         {
             possible.writeNull();
 
