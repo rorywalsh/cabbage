@@ -99,7 +99,8 @@ void CabbageButton::valueTreePropertyChanged(ValueTree& valueTree, const Identif
 	{
 		CabbageUtilities::debug(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name));
 		CabbageUtilities::debug(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value));
-		setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value));
+        const int newValue = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
+        setValue(newValue > 0.99 ? 1 : 0);
 		setToggleState(getValue() == 0 ? false : true, dontSendNotification);
 		setButtonText(getTextArray()[getValue()]);
 	}
