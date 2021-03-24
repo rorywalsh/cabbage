@@ -1,6 +1,6 @@
 # Signal Display
 
-Displays a graphical representation of a signal. Must be used with the **display** or **dispfft** opcodes in Csound. 
+Displays a graphical representation of a signal. Must be used with the **display** or **dispfft** opcodes in Csound. You must pass a Csound a-rate variable to the `signalvariable()` identifier, and you must enable `--displays` in the Csound options. Please see the SignalDisplay example csd for more details. 
 
 <big></pre>
 signaldisplay WIDGET_SYNTAX
