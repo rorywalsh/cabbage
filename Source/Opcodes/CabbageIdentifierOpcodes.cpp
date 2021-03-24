@@ -37,14 +37,30 @@ int CreateCabbageWidget::createWidget()
     String cabbageCode(outargs.str_data(0).data);
     CabbageWidgetData::setWidgetState(tempWidget, cabbageCode.trimCharactersAtStart(" \t"),
                                       varData->data.getNumChildren()+1);
-    
+
     String widgetNameId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel);
     //if no name is specified use generic name
     if(widgetNameId.isEmpty())
         widgetNameId = widgetTreeIdentifier;
     
     ValueTree newWidget(widgetNameId);
+
     newWidget.copyPropertiesFrom(tempWidget, nullptr);
+    
+    const String typeOfWidget = CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::type);
+    CabbageControlWidgetStrings widgets;
+    if(widgets.contains(typeOfWidget))
+    {
+        MYFLT* value;
+        const double widgetValue = CabbageWidgetData::getNumProp (newWidget, CabbageIdentifierIds::value);
+        const String channel = CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::channel);
+        if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channel.getCharPointer(),
+                                                CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+        {
+            *value = widgetValue;
+        }
+        
+    }
     varData->data.addChild(newWidget, -1,  nullptr);
     
     return OK;
