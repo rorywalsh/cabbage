@@ -74,7 +74,7 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
     if (prop == CabbageIdentifierIds::value)
     {
-        const int newValue = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)  > 0.99 ? 1 : 0;
+        const int newValue = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)  > 0.9 ? 1 : 0;
         bool state = newValue == 1 ? true : false;
         setToggleState (state, sendNotification);
     }
