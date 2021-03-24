@@ -4,8 +4,8 @@ form caption("Soundfiler") size(430, 240), colour(58, 110, 182), pluginid("Sflr"
 combobox bounds(324, 188, 100, 25), channel("presetsCombo"), populate("*.snaps")
 filebutton bounds(262, 188, 60, 25) value(0) text("Save", "Save") mode("snapshot") 
 
-soundfiler bounds(6, 4, 417, 178) identchannel("soundfiler1") tablenumber(-1) 
-filebutton bounds(8, 188, 81, 27) channel("filebutton1") value(0) text("Open file", "Open file") 
+soundfiler bounds(6, 4, 417, 178) identchannel("soundfiler1") tablebackgroundcolour(255, 0, 0), tablenumber(-1)
+filebutton bounds(8, 188, 81, 27) channel("filebutton1") value(0) text("Open file", "Open file")
 button bounds(90, 188, 81, 27) channel("playbutton1") text("Play file", "Stop file") 
 </Cabbage>
 <CsoundSynthesizer>
