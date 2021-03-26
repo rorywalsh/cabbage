@@ -1,7 +1,7 @@
 <Cabbage>
-form size(520, 300), colour(20, 20, 20), caption("Too many sliders!"), pluginid("TMSd")
+form size(520, 300), colour(20, 20, 20), caption("Too many sliders!"), pluginId("TMSd")
 
-image bounds(0, 8, 500, 206), colour(0,0,0,0), plant("sliders"), identchannel("slidersPlant"){
+image bounds(0, 8, 500, 206), colour(0,0,0,0), plant("sliders"), identChannel("slidersPlant"){
 vslider bounds(10,  10, 30, 200), text("1"), range(0, 100, 10), channel("s1")
 vslider bounds(40,  10, 30, 200), text("2"), range(0, 100, 20), channel("s2")
 vslider bounds(70,  10, 30, 200), text("3"), range(0, 100, 30), channel("s3")
@@ -37,7 +37,7 @@ vslider bounds(940, 10, 30, 200), text("32"), range(0, 100, 40), channel("1s1")
 }
 
 ;slider to move plant left...
-hslider bounds(24, 216, 473, 30), channel("scrollSlider"), popuptext(0), range(0, 1, 0.001)
+hslider bounds(24, 216, 473, 30), channel("scrollSlider"), popupText(0), range(0, 1, 0.001)
 ;block off outer edges of plant when it moves
 image bounds(500, 4, 20, 218), colour(20, 20, 20)
 image bounds(0, 0, 20, 218), colour(20, 20, 20)

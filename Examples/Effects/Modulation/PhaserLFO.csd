@@ -2,21 +2,21 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Phaser LFO") size(580, 95), pluginid("phsr") style("legacy")
-image          bounds(0, 0, 580, 95), colour( 100, 110, 130), shape("rounded"), outlinecolour("white"), outlinethickness(4)
-label    bounds(10,  8, 75, 10), text("INPUT"), fontcolour(0,10,30)
+form caption("Phaser LFO") size(580, 95), pluginId("phsr") style("legacy")
+image          bounds(0, 0, 580, 95), colour( 100, 110, 130), shape("rounded"), outlineColour("white"), outlineThickness(4)
+label    bounds(10,  8, 75, 10), text("INPUT"), fontColour(0,10,30)
 combobox bounds(10, 18, 75, 20), channel("input"), value(1), text("Live","Tone","Noise")
-label    bounds(10, 43, 75, 10), text("LFO SHAPE"), fontcolour(0,10,30)
+label    bounds(10, 43, 75, 10), text("LFO SHAPE"), fontColour(0,10,30)
 combobox bounds(10, 53, 75, 20), channel("shape"), value(1), text("Triangle","Sine","Square","Saw Up","Saw Down","Rand.Int","Rand.S&H")
 line	bounds( 95, 10,190,  2)
-label   bounds(155,  7, 70, 10), text("MODULATION"), fontcolour("white"), colour(100,110,130)
-rslider bounds( 85, 20, 70, 70), text("Rate"), 		channel("rate"), 	range(0,100.00,0.5,0.5, 0.0001),    colour(50,40,110), textcolour(0,10,30), trackercolour(255,255,200), midiCtrl(1,1)
-rslider bounds(155, 20, 70, 70), text("Depth"), 	channel("depth"), 	range(0, 1.00, 0.5, 1, .01),       colour(50,40,110), textcolour(0,10,30), trackercolour(255,255,200)
-rslider bounds(225, 20, 70, 70), text("Offset"), 	channel("freq"), 	range(0, 1.00, 0.4, 1, .01),       colour(50,40,110), textcolour(0,10,30), trackercolour(255,255,200)
-rslider bounds(295, 20, 70, 70), text("Feedback"), 	channel("fback"), 	range(0, 1.00, 0.4, 1, .01),       colour(50,40,110), textcolour(0,10,30), trackercolour(255,255,200)
-rslider bounds(365, 20, 70, 70), text("Stages"),	channel("stages"), 	range(1, 64,8, 1, 1),              colour(50,40,110), textcolour(0,10,30), trackercolour(255,255,200)
-rslider bounds(435, 20, 70, 70), text("Mix"), 	        channel("mix"), 	range(0, 1.00,0.5, 1, .01),        colour(50,40,110), textcolour(0,10,30), trackercolour(255,255,200)
-rslider bounds(505, 20, 70, 70), text("Level"), 	channel("level"), 	range(0, 1.00, 1, 1, .01),         colour(50,40,110), textcolour(0,10,30), trackercolour(255,255,200)
+label   bounds(155,  7, 70, 10), text("MODULATION"), fontColour("white"), colour(100,110,130)
+rslider bounds( 85, 20, 70, 70), text("Rate"), 		channel("rate"), 	range(0,100.00,0.5,0.5, 0.0001),    colour(50,40,110), textColour(0,10,30), trackerColour(255,255,200), midiCtrl(1,1)
+rslider bounds(155, 20, 70, 70), text("Depth"), 	channel("depth"), 	range(0, 1.00, 0.5, 1, .01),       colour(50,40,110), textColour(0,10,30), trackerColour(255,255,200)
+rslider bounds(225, 20, 70, 70), text("Offset"), 	channel("freq"), 	range(0, 1.00, 0.4, 1, .01),       colour(50,40,110), textColour(0,10,30), trackerColour(255,255,200)
+rslider bounds(295, 20, 70, 70), text("Feedback"), 	channel("fback"), 	range(0, 1.00, 0.4, 1, .01),       colour(50,40,110), textColour(0,10,30), trackerColour(255,255,200)
+rslider bounds(365, 20, 70, 70), text("Stages"),	channel("stages"), 	range(1, 64,8, 1, 1),              colour(50,40,110), textColour(0,10,30), trackerColour(255,255,200)
+rslider bounds(435, 20, 70, 70), text("Mix"), 	        channel("mix"), 	range(0, 1.00,0.5, 1, .01),        colour(50,40,110), textColour(0,10,30), trackerColour(255,255,200)
+rslider bounds(505, 20, 70, 70), text("Level"), 	channel("level"), 	range(0, 1.00, 1, 1, .01),         colour(50,40,110), textColour(0,10,30), trackerColour(255,255,200)
 </Cabbage>
 
 <CsoundSynthesizer>

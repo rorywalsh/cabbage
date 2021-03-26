@@ -550,9 +550,12 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
 
 void CabbageMainComponent::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
-    int index = comboBoxThatHasChanged->getSelectedId();
-    const int lineToScrollTo = getCurrentCodeEditor()->instrumentsAndRegions.getValueAt (index - 1);
-    getCurrentCodeEditor()->scrollToLine (lineToScrollTo);
+    if(editorAndConsole.size() > 0)
+    {
+        int index = comboBoxThatHasChanged->getSelectedId();
+        const int lineToScrollTo = getCurrentCodeEditor()->instrumentsAndRegions.getValueAt (index - 1);
+        getCurrentCodeEditor()->scrollToLine (lineToScrollTo);
+    }
 }
 
 //==============================================================================
@@ -1801,6 +1804,9 @@ void CabbageMainComponent::closeDocument()
     }
 
     cabbageSettings->setProperty ("NumberOfOpenFiles", int (editorAndConsole.size()));
+    
+    if(editorAndConsole.size()==0)
+        factory.combo->clearItemsFromComboBox();
 
 }
 //==================================================================================
@@ -1922,6 +1928,26 @@ int CabbageMainComponent::testFileForErrors (String file)
     return 0;
 
 }
+
+void CabbageMainComponent::covertToCamelCase()
+{
+    String currentFileText = getCurrentCsdFile().loadFileAsString();
+    
+    CabbageIdentifierStringsNonCamelCase identifiers;
+    CabbageIdentifierStrings camelCaseIdentifiers;
+    for ( int i = identifiers.size() ; i >=0 ; i--)
+    {
+        if(currentFileText.contains(identifiers[i]))
+        {
+            DBG("Replacing"+identifiers[i] + " with " + camelCaseIdentifiers[i]);
+            currentFileText = currentFileText.replace(identifiers[i], camelCaseIdentifiers[i]);
+        }
+    }
+    
+    getCurrentCodeEditor()->setAllText(currentFileText);
+           
+}
+
 void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
 {
     startFilterGraph();
@@ -1930,6 +1956,33 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
         if (File (file).existsAsFile())
         {
             auto fileContents = File(file).loadFileAsString();
+            
+            DBG(fileContents);
+            
+            CabbageIdentifierStringsNonCamelCase identifiers;
+            CabbageIdentifierStrings camelCaseIdentifiers;
+            StringArray nonCamelCaseIdentifiers;
+            identifiers.removeEmptyStrings();
+            camelCaseIdentifiers.removeEmptyStrings();
+            for ( int i = identifiers.size() ; i >=0 ; i--)
+            {
+                if(fileContents.contains(identifiers[i]) && camelCaseIdentifiers.contains(identifiers[i]) == false && identifiers[i].isNotEmpty())
+                {
+                    const String test = identifiers[i];
+                    nonCamelCaseIdentifiers.add(identifiers[i]);
+                }
+            }
+            
+            
+            if(nonCamelCaseIdentifiers.size() > 0)
+            {
+                const String infoText = "This instrument seems to ignore camelCase for the following identifiers:" + nonCamelCaseIdentifiers.joinIntoString("\n")+ "\nCabbage now uses camelCase for all identifiers, i.e, trackercolour() is now trackerColour(). Please use \"Convert Identifiers to camelCase\" from the File menu option to update your code. Or manually change the identifer listed";
+                CabbageUtilities::showMessage ("Warning", infoText, lookAndFeel.get());
+            }
+            
+            
+            
+            
             if(!fileContents.contains("<Cabbage>") || !fileContents.contains("</Cabbage>")){
                 CabbageUtilities::showMessage ("Warning", "Please make sure your Cabbage section is wrapped in <Cabbage> and </Cabbage> tags", lookAndFeel.get());
             }
@@ -2061,3 +2114,4 @@ void CabbageMainComponent::resized()
 
     arrangeFileTabs();
 }
+

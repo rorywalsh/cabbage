@@ -1,11 +1,11 @@
 <Cabbage>
-form size(410, 330), caption("Text Editor"), pluginid("TxEd")
-texteditor bounds(12, 34, 387, 20), channel("texteditor"), text("Type here...."), color(20, 20, 20), fontcolour(0, 0, 0, 255), 
+form size(410, 330), caption("Text Editor"), pluginId("TxEd")
+texteditor bounds(12, 34, 387, 20), channel("texteditor"), text("Type here...."), color(20, 20, 20), fontColour(0, 0, 0, 255), 
 csoundoutput bounds(12, 60, 387, 149)
-label bounds(12, 8, 387, 20), text("Enter some text and hit enter"), align("centre"),  colour(60, 0, 0), fontcolour(255, 255, 255, 255)
-label bounds(12, 208, 387, 20), text("Pressing the up/down keys when the"), align("centre"), visible(0) colour(60, 0, 0), identchannel("label2")
-label bounds(12, 230, 387, 20), text("editor is focused toggles through the"), align("centre"), visible(0), colour(60, 0, 0), identchannel("label3")
-label bounds(12, 252, 387, 20), text("previous entries."), align("centre"),  colour(60, 0, 0), visible(0), identchannel("label4")
+label bounds(12, 8, 387, 20), text("Enter some text and hit enter"), align("centre"),  colour(60, 0, 0), fontColour(255, 255, 255, 255)
+label bounds(12, 208, 387, 20), text("Pressing the up/down keys when the"), align("centre"), visible(0) colour(60, 0, 0), identChannel("label2")
+label bounds(12, 230, 387, 20), text("editor is focused toggles through the"), align("centre"), visible(0), colour(60, 0, 0), identChannel("label3")
+label bounds(12, 252, 387, 20), text("previous entries."), align("centre"),  colour(60, 0, 0), visible(0), identChannel("label4")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

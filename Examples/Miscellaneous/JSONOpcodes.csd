@@ -1,6 +1,6 @@
  <Cabbage>
-form caption("Untitled") size(400, 300), colour(60, 60, 60), pluginid("def1")
-rslider bounds(14, 14, 100, 100), channel("sliderValue"), range(0, 1, 0.5, 1, 0.01), text("SliderValue"), trackercolour(0, 255, 0, 255), outlinecolour(0, 0, 0, 50), textcolour(0, 0, 0, 255)
+form caption("Untitled") size(400, 300), colour(60, 60, 60), pluginId("def1")
+rslider bounds(14, 14, 100, 100), channel("sliderValue"), range(0, 1, 0.5, 1, 0.01), text("SliderValue"), trackerColour(0, 255, 0, 255), outlineColour(0, 0, 0, 50), textColour(0, 0, 0, 255)
 button bounds(122, 16, 120, 40), channel("showData"), text("Print State Data")
 </Cabbage>
 <CsoundSynthesizer>

@@ -2,11 +2,11 @@
 ; Written by Iain McCurdy, 2012
 
 <Cabbage>
-form caption("vocoder"), size(530, 230), pluginid("voco") style("legacy")
+form caption("vocoder"), size(530, 230), pluginId("voco") style("legacy")
 
-image pos(0, 0), size(530, 200), colour(255,255,150), shape("rounded"), outlinecolour("white"), line(1)
+image pos(0, 0), size(530, 200), colour(255,255,150), shape("rounded"), outlineColour("white"), line(1)
 
-image 	bounds(140,  6,180, 31), colour( 10,225, 90,100), shape("ellipse"), outlinecolour(205,205, 70), line(1)
+image 	bounds(140,  6,180, 31), colour( 10,225, 90,100), shape("ellipse"), outlineColour(205,205, 70), line(1)
 label   bounds(158,  5, 33, 33), text("v"), FontColour(100,100,100)
 label   bounds(178,  5, 33, 33), text("o"), FontColour(100,100,100)
 label   bounds(198,  5, 33, 33), text("c"), FontColour(100,100,100)
@@ -24,26 +24,26 @@ label   bounds(281,  4, 30, 30), text("r"), FontColour(135,  0,120)
 
 label    bounds( 12,  9, 75, 11), text("Carrier Source"), FontColour("black")
 image 	 bounds(  9, 20, 87, 18), colour("black"), shape("sharp")
-combobox bounds( 10, 21, 85, 16), channel("CarSource"), value(1), text("synth","external"), fontcolour(black), colour(255,255,200)
+combobox bounds( 10, 21, 85, 16), channel("CarSource"), value(1), text("synth","external"), fontColour(black), colour(255,255,200)
 label    bounds( 10, 39, 85, 11), text("Filter Steepness"), FontColour("black")
 image 	 bounds(  9, 50, 87, 18), colour("black"), shape("sharp")
-combobox bounds( 10, 51, 85, 16), channel("steepness"), value(2), text("12dB/oct","24dB/oct"), fontcolour(black), colour(255,255,200)
+combobox bounds( 10, 51, 85, 16), channel("steepness"), value(2), text("12dB/oct","24dB/oct"), fontColour(black), colour(255,255,200)
 label    bounds( 20, 69, 60, 11), text("Synth Type"), FontColour("black")
 image 	 bounds(  9, 80, 87, 18), colour("black"), shape("sharp")
-combobox bounds( 10, 81, 85, 16), channel("SynType"), value(1), text("saw","square","pulse","noise"), fontcolour(black), colour(255,255,200)
+combobox bounds( 10, 81, 85, 16), channel("SynType"), value(1), text("saw","square","pulse","noise"), fontColour(black), colour(255,255,200)
 
-rslider bounds(105, 38, 70, 70), text("Base"),    colour( 55,105,50), textcolour("Black"), channel("base"),  range(24, 80, 40,1,1),  trackercolour(150,255,150)
-rslider bounds(165, 38, 70, 70), text("Num."),    colour( 55,105,50), textcolour("Black"), channel("num"),   range(1, 100, 16,1,1),  trackercolour(150,255,150)
-rslider bounds(225, 38, 70, 70), text("B.width"), colour( 55,105,50), textcolour("Black"), channel("bw"),    range(0.01, 1, 0.1,0.5),  trackercolour(150,255,150)
-rslider bounds(285, 38, 70, 70), text("Spacing"), colour( 55,105,50), textcolour("Black"), channel("incr"),  range(1, 12, 5,0.5),  trackercolour(150,255,150)
-rslider bounds(445, 38, 70, 70), text("Level"),   colour( 55,105,50), textcolour("Black"), channel("level"), range(0, 5.00, 1,0.5),  trackercolour(150,255,150)
+rslider bounds(105, 38, 70, 70), text("Base"),    colour( 55,105,50), textColour("Black"), channel("base"),  range(24, 80, 40,1,1),  trackerColour(150,255,150)
+rslider bounds(165, 38, 70, 70), text("Num."),    colour( 55,105,50), textColour("Black"), channel("num"),   range(1, 100, 16,1,1),  trackerColour(150,255,150)
+rslider bounds(225, 38, 70, 70), text("B.width"), colour( 55,105,50), textColour("Black"), channel("bw"),    range(0.01, 1, 0.1,0.5),  trackerColour(150,255,150)
+rslider bounds(285, 38, 70, 70), text("Spacing"), colour( 55,105,50), textColour("Black"), channel("incr"),  range(1, 12, 5,0.5),  trackerColour(150,255,150)
+rslider bounds(445, 38, 70, 70), text("Level"),   colour( 55,105,50), textColour("Black"), channel("level"), range(0, 5.00, 1,0.5),  trackerColour(150,255,150)
 
-vslider bounds(350, 10, 50, 90), colour( 55,105,50), textcolour("Black"), channel("BPGain"), range(0, 1, 0.6, 0.5),  trackercolour(150,255,150)
-vslider bounds(400, 10, 50, 90), colour( 55,105,50), textcolour("Black"), channel("HPGain"), range(0, 1, 0.25, 0.5), trackercolour(150,255,150)
+vslider bounds(350, 10, 50, 90), colour( 55,105,50), textColour("Black"), channel("BPGain"), range(0, 1, 0.6, 0.5),  trackerColour(150,255,150)
+vslider bounds(400, 10, 50, 90), colour( 55,105,50), textColour("Black"), channel("HPGain"), range(0, 1, 0.25, 0.5), trackerColour(150,255,150)
 label   bounds(365, 95, 25, 12), text("BPF"), FontColour("black")
 label   bounds(415, 95, 25, 12), text("HPF"), FontColour("black")
 
-checkbox bounds(440, 10, 80, 13), channel("gate"), text("Gate Input"), value(0), shape("square"), fontcolour("black")
+checkbox bounds(440, 10, 80, 13), channel("gate"), text("Gate Input"), value(0), shape("square"), fontColour("black")
 
 keyboard bounds(10, 112, 510,80)
 infobutton bounds(5,205, 100, 20), text("Help"), file("VocoderHelp.html")

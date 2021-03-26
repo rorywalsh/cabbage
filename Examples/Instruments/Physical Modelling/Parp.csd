@@ -16,40 +16,40 @@
 
 
 <Cabbage>
-#define	SLIDER_STYLE # trackercolour( 50, 50,155), fontcolour("black"), textcolour("black") #
+#define	SLIDER_STYLE # trackerColour( 50, 50,155), fontColour("black"), textColour("black") #
 #define	CHECKBOX_STYLE # colour(255,255,100) #
 
-form caption("Parp") size(980,221), pluginid("Parp"), colour(170,170,170) style("legacy")
+form caption("Parp") size(980,221), pluginId("Parp"), colour(170,170,170) style("legacy")
 
-image      bounds(  2,  2,976,130), colour(220,220,220), outlinecolour("black"), outlinethickness(1)
-rslider    bounds(  0, 25, 90, 90), valuetextbox(1), textbox(1), text("Breath"),     channel("amp"),      range(0.001,10,1,0.5),        $SLIDER_STYLE
+image      bounds(  2,  2,976,130), colour(220,220,220), outlineColour("black"), outlineThickness(1)
+rslider    bounds(  0, 25, 90, 90), valueTextBox(1), textBox(1), text("Breath"),     channel("amp"),      range(0.001,10,1,0.5),        $SLIDER_STYLE
 line       bounds( 85,  5,  2,126)
 image      bounds( 80, 10,230,105), colour(0,0,0,0), plant("Tension") { 
-label      bounds(  0,  0,230, 12), text("T E N S I O N"), fontcolour( 70, 70, 70)
-rslider    bounds(  0, 15, 90, 90), valuetextbox(1), textbox(1), text("Offset"),  channel("tens"),     range(0,5,0.75),                $SLIDER_STYLE
-rslider    bounds( 70, 15, 90, 90), valuetextbox(1), textbox(1), text("Mod.Dep"),  channel("TRndDep"),  range(0,0.8,0.1,0.5,0.001),              $SLIDER_STYLE
-rslider    bounds(140, 15, 90, 90), valuetextbox(1), textbox(1), text("Mod.Rate"),  channel("TRndRte"),  range(0.01,100,8,0.5,0.01),      $SLIDER_STYLE
+label      bounds(  0,  0,230, 12), text("T E N S I O N"), fontColour( 70, 70, 70)
+rslider    bounds(  0, 15, 90, 90), valueTextBox(1), textBox(1), text("Offset"),  channel("tens"),     range(0,5,0.75),                $SLIDER_STYLE
+rslider    bounds( 70, 15, 90, 90), valueTextBox(1), textBox(1), text("Mod.Dep"),  channel("TRndDep"),  range(0,0.8,0.1,0.5,0.001),              $SLIDER_STYLE
+rslider    bounds(140, 15, 90, 90), valueTextBox(1), textBox(1), text("Mod.Rate"),  channel("TRndRte"),  range(0.01,100,8,0.5,0.01),      $SLIDER_STYLE
 }
 line       bounds(305,  5,  2,126)
 
 button     bounds(320, 60, 50, 20), text("Mono","Poly"), channel("MonoPoly"), value(1)
-rslider    bounds(365, 25, 90, 90), valuetextbox(1), textbox(1), text("Port.Time"), channel("PortTime"),  range(0, 5, 0.9), identchannel("PortTimeID"), visible(1), $SLIDER_STYLE
+rslider    bounds(365, 25, 90, 90), valueTextBox(1), textBox(1), text("Port.Time"), channel("PortTime"),  range(0, 5, 0.9), identChannel("PortTimeID"), visible(1), $SLIDER_STYLE
 
-rslider    bounds(435, 25, 90, 90), valuetextbox(1), textbox(1), text("Spread"),   channel("PanDep"),   range(0,1,1),                 $SLIDER_STYLE
-rslider    bounds(505, 25, 90, 90), valuetextbox(1), textbox(1), text("Stereo"),   channel("Stereo"),   range(0,1,1),                 $SLIDER_STYLE
+rslider    bounds(435, 25, 90, 90), valueTextBox(1), textBox(1), text("Spread"),   channel("PanDep"),   range(0,1,1),                 $SLIDER_STYLE
+rslider    bounds(505, 25, 90, 90), valueTextBox(1), textBox(1), text("Stereo"),   channel("Stereo"),   range(0,1,1),                 $SLIDER_STYLE
 
 image      bounds(585,  0,227,131), colour(0,0,0,0), plant("Reverb") { 
-label bounds(  0, 10,227, 12), text("R E V E R B"), fontcolour( 70, 70, 70) 
+label bounds(  0, 10,227, 12), text("R E V E R B"), fontColour( 70, 70, 70) 
 line bounds(  5,  5,  2,126) 
-rslider    bounds(  0, 25, 90, 90), valuetextbox(1), textbox(1), text("Mix"),      channel("RvbMix"),   range(0,1,0.5), $SLIDER_STYLE 
-rslider    bounds( 70, 25, 90, 90), valuetextbox(1), textbox(1), text("Size"), channel("RvbSize"),  range(0,1,0.005,0.5,0.001),   $SLIDER_STYLE 
-rslider    bounds(140, 25, 90, 90), valuetextbox(1), textbox(1), text("Damp"),     channel("RvbDamp"), range(0,1,1),                 $SLIDER_STYLE 
+rslider    bounds(  0, 25, 90, 90), valueTextBox(1), textBox(1), text("Mix"),      channel("RvbMix"),   range(0,1,0.5), $SLIDER_STYLE 
+rslider    bounds( 70, 25, 90, 90), valueTextBox(1), textBox(1), text("Size"), channel("RvbSize"),  range(0,1,0.005,0.5,0.001),   $SLIDER_STYLE 
+rslider    bounds(140, 25, 90, 90), valueTextBox(1), textBox(1), text("Damp"),     channel("RvbDamp"), range(0,1,1),                 $SLIDER_STYLE 
 line       bounds(225,  5,  2,126) 
 }
 
-label      bounds(820, 46, 75, 12), text("Preset"), fontcolour("black")
+label      bounds(820, 46, 75, 12), text("Preset"), fontColour("black")
 combobox   bounds(820, 60, 75, 20), text("Preset 1","Preset 2","Preset 3","Preset 4","Preset 5"),    channel("Preset"), value(1)
-rslider    bounds(885, 25, 90, 90), valuetextbox(1), textbox(1), text("Level"),    channel("outamp"),   range(0.001,100,3,0.5,0.001), $SLIDER_STYLE
+rslider    bounds(885, 25, 90, 90), valueTextBox(1), textBox(1), text("Level"),    channel("outamp"),   range(0.001,100,3,0.5,0.001), $SLIDER_STYLE
 
 keyboard   bounds(  2,134,976, 85)
 

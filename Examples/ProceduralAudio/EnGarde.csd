@@ -22,29 +22,29 @@
 ; Ring Gain			-	amplitude gain for the ringing resonance part of the sound
 
 <Cabbage>
-form caption("En garde!") size(600, 310), colour(58, 110, 182), pluginid("EnGa") style("legacy")
+form caption("En garde!") size(600, 310), colour(58, 110, 182), pluginId("EnGa") style("legacy")
 button bounds(5,5,590,30) channel("PlaySound") text("Draw Sword") latched(0)
-groupbox bounds(5,40,590,130) outlinethickness(1) outlinecolour(200,200,200) colour(0,0,0,100) plant("Drawing") text("Drawing Sword")
+groupbox bounds(5,40,590,130) outlineThickness(1) outlineColour(200,200,200) colour(0,0,0,100) plant("Drawing") text("Drawing Sword")
 {
-rslider bounds(5,25,70,90) channel("TexturalDensity") text("Density") valuetextbox(1) range(100,10000,1000,0.5,1)
-rslider bounds(75,25,70,90) channel("DrawDuration") text("Duration") valuetextbox(1) range(0.01,2,0.7,0.5,0.001)
-image   bounds(148,30,292,90) outlinethickness(1) outlinecolour(200,200,200) colour(0,0,0,50) shape("rounded")
-hslider bounds(150,35,300,20) channel("Freq1a") text("Freq. 1 [Start]") valuetextbox(1) range(100,3000,300,0.5,1)
-hslider bounds(150,55,300,20) channel("Freq1b") text("Freq. 1 [End]") valuetextbox(1) range(100,3000,811,0.5,1)
-hslider bounds(150,75,300,20) channel("Freq2a") text("Freq. 2 [Start]") valuetextbox(1) range(100,3000,717,0.5,1)
-hslider bounds(150,95,300,20) channel("Freq2b") text("Freq. 2 [End]") valuetextbox(1) range(100,3000,933,0.5,1)
-rslider bounds(440,25,70,90) channel("Feedback") text("Feedback") valuetextbox(1) range(0.0,0.249,0.17.0)
-rslider bounds(510,25,70,90) channel("DrawGain") text("Draw Gain") valuetextbox(1) range(0,2,1,0.5,0.001)
+rslider bounds(5,25,70,90) channel("TexturalDensity") text("Density") valueTextBox(1) range(100,10000,1000,0.5,1)
+rslider bounds(75,25,70,90) channel("DrawDuration") text("Duration") valueTextBox(1) range(0.01,2,0.7,0.5,0.001)
+image   bounds(148,30,292,90) outlineThickness(1) outlineColour(200,200,200) colour(0,0,0,50) shape("rounded")
+hslider bounds(150,35,300,20) channel("Freq1a") text("Freq. 1 [Start]") valueTextBox(1) range(100,3000,300,0.5,1)
+hslider bounds(150,55,300,20) channel("Freq1b") text("Freq. 1 [End]") valueTextBox(1) range(100,3000,811,0.5,1)
+hslider bounds(150,75,300,20) channel("Freq2a") text("Freq. 2 [Start]") valueTextBox(1) range(100,3000,717,0.5,1)
+hslider bounds(150,95,300,20) channel("Freq2b") text("Freq. 2 [End]") valueTextBox(1) range(100,3000,933,0.5,1)
+rslider bounds(440,25,70,90) channel("Feedback") text("Feedback") valueTextBox(1) range(0.0,0.249,0.17.0)
+rslider bounds(510,25,70,90) channel("DrawGain") text("Draw Gain") valueTextBox(1) range(0,2,1,0.5,0.001)
 }
-groupbox bounds(5,175,590,130) outlinethickness(1) outlinecolour(200,200,200) colour(0,0,0,100) plant("Ringing") text("Ringing")
+groupbox bounds(5,175,590,130) outlineThickness(1) outlineColour(200,200,200) colour(0,0,0,100) plant("Ringing") text("Ringing")
 {
-rslider bounds(15,25,70,90) channel("Seed") text("Seed") valuetextbox(1) range(0,1000,879,1,1)
-rslider bounds(95,25,70,90) channel("RingFreqBase") text("Freq. Base") valuetextbox(1) range(500,6000,1400,0.5,1)
-rslider bounds(175,25,70,90) channel("RingFreqRange") text("Freq. Range") valuetextbox(1) range(500,12000,5880,0.5,1)
-rslider bounds(255,25,70,90) channel("Resonance") text("Resonance") valuetextbox(1) range(1,8000,800,0.5,1)
-rslider bounds(335,25,70,90) channel("ResOffset") text("Res. Offset") valuetextbox(1) range(0,4,2,0.5,0.01)
-rslider bounds(415,25,70,90) channel("NPartials") text("N.Partials") valuetextbox(1) range(1,50,20,1,1)
-rslider bounds(495,25,70,90) channel("RingGain") text("Ring Gain") valuetextbox(1) range(0,2,1,0.5,0.001)
+rslider bounds(15,25,70,90) channel("Seed") text("Seed") valueTextBox(1) range(0,1000,879,1,1)
+rslider bounds(95,25,70,90) channel("RingFreqBase") text("Freq. Base") valueTextBox(1) range(500,6000,1400,0.5,1)
+rslider bounds(175,25,70,90) channel("RingFreqRange") text("Freq. Range") valueTextBox(1) range(500,12000,5880,0.5,1)
+rslider bounds(255,25,70,90) channel("Resonance") text("Resonance") valueTextBox(1) range(1,8000,800,0.5,1)
+rslider bounds(335,25,70,90) channel("ResOffset") text("Res. Offset") valueTextBox(1) range(0,4,2,0.5,0.01)
+rslider bounds(415,25,70,90) channel("NPartials") text("N.Partials") valueTextBox(1) range(1,50,20,1,1)
+rslider bounds(495,25,70,90) channel("RingGain") text("Ring Gain") valueTextBox(1) range(0,2,1,0.5,0.001)
 }
 
 </Cabbage>

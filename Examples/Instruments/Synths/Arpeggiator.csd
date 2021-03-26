@@ -1,7 +1,7 @@
 <Cabbage>
-form caption("Arpeggiator") size(700, 440), pluginid("arpe") style("legacy")
+form caption("Arpeggiator") size(700, 440), pluginId("arpe") style("legacy")
 
-#define RSliderStyle #trackercolour(0,255,255), colour(100,100,140), outlinecolour(20,20,20)#
+#define RSliderStyle #trackerColour(0,255,255), colour(100,100,140), outlineColour(20,20,20)#
                       
 groupbox bounds( 5,  0, 690, 100), text("Arpeggiator"),{
 rslider  bounds( 10, 30, 60, 60), text("Interval"), channel("intvl"), range(-36, 36, 7, 1, 1), $RSliderStyle
@@ -77,7 +77,7 @@ rslider  bounds(630,250, 60, 60), text("F.back"), channel("DlyFB"),	range(0,  1.
 keyboard pos(5, 330), size(690, 80)
 infobutton bounds(5,415, 70, 20), text("Help"), file("ArpeggiatorHelp.html")
 image bounds(80, 415, 215, 20), colour(50,50,50), plant("credit"), line(0){
-label bounds(5, 2,200, 14), text("Author: Iain McCurdy |2012|"), fontcolour("white"), colour(50,50,50)
+label bounds(5, 2,200, 14), text("Author: Iain McCurdy |2012|"), fontColour("white"), colour(50,50,50)
 }
 </Cabbage>
 

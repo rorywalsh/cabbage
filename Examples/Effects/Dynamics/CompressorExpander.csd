@@ -19,21 +19,21 @@
 ; Level		-	Output level
 
 <Cabbage>
-form caption("Compressor/Expander") size(890, 100), pluginid("CoEx") style("legacy")
-image                       bounds(0, 0, 890, 100), colour("tan"), shape("rounded"), outlinecolour("white"), outlinethickness(6)
-rslider  bounds( 10, 13, 75, 75), text("Threshold"), channel("thresh"), range(0,1,0.143,0.5,0.001),     textcolour("black"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds( 80, 13, 75, 75), text("Compress"),  channel("comp"),   range(0,1,0.25),               textcolour("black"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(150, 13, 75, 75), text("Curve"),     channel("curve"),  range(-20,20,2.6),             textcolour("black"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(220, 13, 75, 75), text("Ceiling"),   channel("ceil"),   range(0,1,0),                 textcolour("black"), colour(37,59,59), trackercolour("Silver")
-gentable bounds(300, 10, 80, 80), tablenumber(1), tablecolour("black"), identchannel("table"), amprange(0,1,-1), zoom(-1), tablegridcolour(white), tablebackgroundcolour(white), outlinethickness(1)
-image    bounds(0, 0, 6, 6), colour("black"), shape("ellipse"), outlinethickness(0), identchannel("Dot")
-rslider  bounds(385, 13, 75, 75), text("Attack"),    channel("att"),    range(0.01,1,0.3,0.5,0.01),   textcolour("black"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(455, 13, 75, 75), text("Release"),   channel("rel"),    range(0.01,1,0.3,0.5,0.01),   textcolour("black"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(525, 13, 75, 75), text("Smoothing"), channel("smooth"), range(0.01,1,0.1,0.5,0.001),  textcolour("black"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(595, 13, 75, 75), text("Pre-gain"),  channel("PreGain"),range(0.5,10,2.4,0.5,0.001),  textcolour("black"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(665, 13, 75, 75), text("Sensitivity"),channel("sense"), range(1,10,3),               textcolour("black"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(735, 13, 75, 75), text("Mix"),       channel("mix"),    range(0,1,1),                 textcolour("black"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(805, 13, 75, 75), text("Level"),     channel("lev"),    range(0,5,0.5,0.5,0.001),     textcolour("black"), colour(37,59,59), trackercolour("Silver")
+form caption("Compressor/Expander") size(890, 100), pluginId("CoEx") style("legacy")
+image                       bounds(0, 0, 890, 100), colour("tan"), shape("rounded"), outlineColour("white"), outlineThickness(6)
+rslider  bounds( 10, 13, 75, 75), text("Threshold"), channel("thresh"), range(0,1,0.143,0.5,0.001),     textColour("black"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds( 80, 13, 75, 75), text("Compress"),  channel("comp"),   range(0,1,0.25),               textColour("black"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(150, 13, 75, 75), text("Curve"),     channel("curve"),  range(-20,20,2.6),             textColour("black"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(220, 13, 75, 75), text("Ceiling"),   channel("ceil"),   range(0,1,0),                 textColour("black"), colour(37,59,59), trackerColour("Silver")
+gentable bounds(300, 10, 80, 80), tableNumber(1), tableColour("black"), identChannel("table"), ampRange(0,1,-1), zoom(-1), tableGridColour(white), tableBackgroundColour(white), outlineThickness(1)
+image    bounds(0, 0, 6, 6), colour("black"), shape("ellipse"), outlineThickness(0), identChannel("Dot")
+rslider  bounds(385, 13, 75, 75), text("Attack"),    channel("att"),    range(0.01,1,0.3,0.5,0.01),   textColour("black"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(455, 13, 75, 75), text("Release"),   channel("rel"),    range(0.01,1,0.3,0.5,0.01),   textColour("black"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(525, 13, 75, 75), text("Smoothing"), channel("smooth"), range(0.01,1,0.1,0.5,0.001),  textColour("black"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(595, 13, 75, 75), text("Pre-gain"),  channel("PreGain"),range(0.5,10,2.4,0.5,0.001),  textColour("black"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(665, 13, 75, 75), text("Sensitivity"),channel("sense"), range(1,10,3),               textColour("black"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(735, 13, 75, 75), text("Mix"),       channel("mix"),    range(0,1,1),                 textColour("black"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(805, 13, 75, 75), text("Level"),     channel("lev"),    range(0,5,0.5,0.5,0.001),     textColour("black"), colour(37,59,59), trackerColour("Silver")
 
 </Cabbage>
 
@@ -80,7 +80,7 @@ instr 1
  irem2		=	irem-irem1
  icomp		=	i(kcomp)
  giTransferFunc	ftgen 1, 0, iTabLen, 16, 0, ithreshi, 0, ithresh*icomp, irem1, icurve, 1, irem2, 0, 1
- chnset	"tablenumber(1)","table"
+ chnset	"tableNumber(1)","table"
  
  aL,aR	ins
  ;aL,aR	diskin2	"ClassicalGuitar.wav",1,0,1

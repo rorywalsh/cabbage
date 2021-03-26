@@ -61,68 +61,68 @@
 
 
 <Cabbage>
-form caption("Oscillator Bank Synth") size(595, 335), pluginid("oscb") style("legacy")
+form caption("Oscillator Bank Synth") size(595, 335), pluginId("oscb") style("legacy")
 
 ;OSCILLATOR
-groupbox bounds(  0,  0,595, 85), text("Oscillators"), fontcolour("white") plant("oscillators"){
-rslider  bounds(  5, 25, 55, 55), text("Amp."),    channel("amp"),   range(0, 1.00, 0.4),                 trackercolour("white") colour(LightBlue)
-rslider  bounds( 55, 25, 55, 55), text("N.Oscs."), channel("NOscs"), range(1, 100, 10, 1, 1),             trackercolour("white") colour(LightBlue)
-rslider  bounds(105, 25, 55, 55), text("Spread"),  channel("fmd"),   range(0,10.00, 0.005,0.25,0.000001), trackercolour("white") colour(LightBlue)
-rslider  bounds(155, 25, 55, 55), text("Speed"),   channel("mvt"),   range(0,1000.000, 1, 0.25,0.0001),   trackercolour("white") colour(LightBlue)
-rslider  bounds(205, 25, 55, 55), text("Width"),   channel("width"), range(0, 1.000, 1, 1,0.001),         trackercolour("white") colour(LightBlue)
+groupbox bounds(  0,  0,595, 85), text("Oscillators"), fontColour("white") plant("oscillators"){
+rslider  bounds(  5, 25, 55, 55), text("Amp."),    channel("amp"),   range(0, 1.00, 0.4),                 trackerColour("white") colour(LightBlue)
+rslider  bounds( 55, 25, 55, 55), text("N.Oscs."), channel("NOscs"), range(1, 100, 10, 1, 1),             trackerColour("white") colour(LightBlue)
+rslider  bounds(105, 25, 55, 55), text("Spread"),  channel("fmd"),   range(0,10.00, 0.005,0.25,0.000001), trackerColour("white") colour(LightBlue)
+rslider  bounds(155, 25, 55, 55), text("Speed"),   channel("mvt"),   range(0,1000.000, 1, 0.25,0.0001),   trackerColour("white") colour(LightBlue)
+rslider  bounds(205, 25, 55, 55), text("Width"),   channel("width"), range(0, 1.000, 1, 1,0.001),         trackerColour("white") colour(LightBlue)
 combobox bounds(270, 25, 80, 20), channel("waveform"), value(1), text("saw", "square", "organ", "Clarinet","Bass Clarinet", "C.Bass Clarinet","Oboe","Bassoon","C.Bassoon","Violin","Cello","Piccolo","Flute","Alto Flute","Bass Flute", "Ahh", "Ooh", "Eee", "Horn P", "Horn F", "B.Tbn.Harmon", "B.Tbn.Straight", "B.Tbn.Open")
 checkbox bounds(270, 50, 85, 13), text("Legato"), colour("yellow"), channel("legato"),  value(0)
 checkbox bounds(270, 65, 85, 13), text("Mono"), colour("yellow"), channel("mono"),  value(0)
-rslider  bounds(322, 44, 38, 38), text("Time"),    channel("LegTim"),      range(0, 4.00, 0.09, 0.5, 0.01), trackercolour("white") colour(LightBlue)
-rslider  bounds(355, 25, 55, 55), text("T.Shift"), channel("WTableShift"), range(-36, 36, 0, 1,0.001),      trackercolour("white") colour(LightBlue)
+rslider  bounds(322, 44, 38, 38), text("Time"),    channel("LegTim"),      range(0, 4.00, 0.09, 0.5, 0.01), trackerColour("white") colour(LightBlue)
+rslider  bounds(355, 25, 55, 55), text("T.Shift"), channel("WTableShift"), range(-36, 36, 0, 1,0.001),      trackerColour("white") colour(LightBlue)
 ;PITCH BEND
-rslider  bounds(405, 25, 55, 55), text("P.Bend"),    channel("PBend"),    range(-1,1, 0), trackercolour("white") colour(LightBlue)
-rslider  bounds(455, 25, 55, 55), text("Bend Rng."), channel("BendRange"),   range(1, 24, 12, 1,1),   trackercolour("white") colour(LightBlue)
+rslider  bounds(405, 25, 55, 55), text("P.Bend"),    channel("PBend"),    range(-1,1, 0), trackerColour("white") colour(LightBlue)
+rslider  bounds(455, 25, 55, 55), text("Bend Rng."), channel("BendRange"),   range(1, 24, 12, 1,1),   trackerColour("white") colour(LightBlue)
 label    bounds(505, 31, 80, 12), text("Random Seed")
 combobox bounds(505, 45, 80, 20), text("Clock M.","Clock St.","Note M.","Note St.","Fixed M","Fixed St"), value(2), channel("seed")
 }
 
 ;FILTER ENVELOPE
-groupbox bounds(  0, 85,380, 85), text("Filter"), fontcolour("white"), plant("FilterEnvelope") {
-rslider  bounds(  5, 25, 55, 55), text("Manual"), channel("cf"), range(0, 10.00, 8),     trackercolour("white") colour(LightBlue)
-rslider  bounds( 55, 25, 55, 55), text("Env."), channel("FEnvAmt"), range(0, 10.00, 1.16), trackercolour("white") colour(LightBlue)
-rslider  bounds(105, 25, 55, 55), text("Att."), channel("FAtt"), range(0, 8.00, 0.1,0.5),  trackercolour("white") colour(LightBlue)
-rslider  bounds(155, 25, 55, 55), text("Dec."), channel("FDec"), range(0, 8.00, 1,0.5),    trackercolour("white") colour(LightBlue)
-rslider  bounds(205, 25, 55, 55), text("Sus."), channel("FSus"), range(0, 1.00, 4, 0.5),   trackercolour("white") colour(LightBlue)
-rslider  bounds(255, 25, 55, 55), text("Rel."), channel("FRel"), range(0.01, 8, 1.3, 0.5), trackercolour("white") colour(LightBlue)
+groupbox bounds(  0, 85,380, 85), text("Filter"), fontColour("white"), plant("FilterEnvelope") {
+rslider  bounds(  5, 25, 55, 55), text("Manual"), channel("cf"), range(0, 10.00, 8),     trackerColour("white") colour(LightBlue)
+rslider  bounds( 55, 25, 55, 55), text("Env."), channel("FEnvAmt"), range(0, 10.00, 1.16), trackerColour("white") colour(LightBlue)
+rslider  bounds(105, 25, 55, 55), text("Att."), channel("FAtt"), range(0, 8.00, 0.1,0.5),  trackerColour("white") colour(LightBlue)
+rslider  bounds(155, 25, 55, 55), text("Dec."), channel("FDec"), range(0, 8.00, 1,0.5),    trackerColour("white") colour(LightBlue)
+rslider  bounds(205, 25, 55, 55), text("Sus."), channel("FSus"), range(0, 1.00, 4, 0.5),   trackerColour("white") colour(LightBlue)
+rslider  bounds(255, 25, 55, 55), text("Rel."), channel("FRel"), range(0.01, 8, 1.3, 0.5), trackerColour("white") colour(LightBlue)
 line     bounds(315, 30,  1, 45)
-rslider  bounds(320, 25, 55, 55), text("Layers"), channel("FiltLayers"), range(1, 10, 8,1,1), trackercolour("white") colour(LightBlue)
+rslider  bounds(320, 25, 55, 55), text("Layers"), channel("FiltLayers"), range(1, 10, 8,1,1), trackerColour("white") colour(LightBlue)
 }
 
 ;AMPLITUDE ENVELOPE
-groupbox bounds(380,85, 215, 85), text("Amplitude Envelope"), plant("AmpEnv"), fontcolour("white"){
-rslider bounds(  5, 25, 55, 55), text("Att."), channel("AAtt"), range(0, 8.00, 0.13,0.5),  trackercolour("white") colour(LightBlue)
-rslider bounds( 55, 25, 55, 55), text("Dec."), channel("ADec"), range(0, 8.00, 0.01,0.5),  trackercolour("white") colour(LightBlue)
-rslider bounds(105, 25, 55, 55), text("Sus."), channel("ASus"), range(0, 1.00, 1.00, 0.5), trackercolour("white") colour(LightBlue)
-rslider bounds(155, 25, 55, 55), text("Rel."), channel("ARel"), range(0.01, 8, 1.67, 0.5), trackercolour("white") colour(LightBlue)
+groupbox bounds(380,85, 215, 85), text("Amplitude Envelope"), plant("AmpEnv"), fontColour("white"){
+rslider bounds(  5, 25, 55, 55), text("Att."), channel("AAtt"), range(0, 8.00, 0.13,0.5),  trackerColour("white") colour(LightBlue)
+rslider bounds( 55, 25, 55, 55), text("Dec."), channel("ADec"), range(0, 8.00, 0.01,0.5),  trackerColour("white") colour(LightBlue)
+rslider bounds(105, 25, 55, 55), text("Sus."), channel("ASus"), range(0, 1.00, 1.00, 0.5), trackerColour("white") colour(LightBlue)
+rslider bounds(155, 25, 55, 55), text("Rel."), channel("ARel"), range(0.01, 8, 1.67, 0.5), trackerColour("white") colour(LightBlue)
 }
 
 ;FILTER LFO
-groupbox bounds(  0,170,310, 85), text("Filter LFO"), plant("FilterLFO"), fontcolour("white"){
+groupbox bounds(  0,170,310, 85), text("Filter LFO"), plant("FilterLFO"), fontColour("white"){
 label    bounds( 15, 31, 80, 13), text("Shape")
 combobox bounds( 15, 45, 80, 20), channel("FlfoType"), value(2), text("sine", "splines", "S+H", "square")
-rslider  bounds(100, 25, 55, 55), text("Rate"),  channel("FRte"), range(0, 16.00, 4),       trackercolour("white") colour(LightBlue)
-rslider  bounds(150, 25, 55, 55), text("Depth"), channel("FDep"), range(0, 4.00, 0),        trackercolour("white") colour(LightBlue)
-rslider  bounds(200, 25, 55, 55), text("Delay"), channel("FDel"), range(0, 2.00, 0, 0.5),   trackercolour("white") colour(LightBlue)
-rslider  bounds(250, 25, 55, 55), text("Rise"),  channel("FRis"), range(0, 2.00, 0.1, 0.5), trackercolour("white") colour(LightBlue)
+rslider  bounds(100, 25, 55, 55), text("Rate"),  channel("FRte"), range(0, 16.00, 4),       trackerColour("white") colour(LightBlue)
+rslider  bounds(150, 25, 55, 55), text("Depth"), channel("FDep"), range(0, 4.00, 0),        trackerColour("white") colour(LightBlue)
+rslider  bounds(200, 25, 55, 55), text("Delay"), channel("FDel"), range(0, 2.00, 0, 0.5),   trackerColour("white") colour(LightBlue)
+rslider  bounds(250, 25, 55, 55), text("Rise"),  channel("FRis"), range(0, 2.00, 0.1, 0.5), trackerColour("white") colour(LightBlue)
 }
 
 ;REVERB
-groupbox bounds(310,170,165, 85), text("Reverb"), plant("Reverb"), fontcolour("white"){
-rslider  bounds(  5, 25, 55, 55), fontcolour("white"), text("Send"),   channel("RvbMix"),  range(0, 1.00, 0.5),  trackercolour("white") colour(LightBlue)
-rslider  bounds( 55, 25, 55, 55), fontcolour("white"), text("Size"),   channel("RvbSize"), range(0, 1.00, 0.77), trackercolour("white") colour(LightBlue)
-rslider  bounds(105, 25, 55, 55), fontcolour("white"), text("Cutoff"), channel("RvbCF"),   range(50, 20000, 7000,0.5,1), trackercolour("white") colour(LightBlue)
+groupbox bounds(310,170,165, 85), text("Reverb"), plant("Reverb"), fontColour("white"){
+rslider  bounds(  5, 25, 55, 55), fontColour("white"), text("Send"),   channel("RvbMix"),  range(0, 1.00, 0.5),  trackerColour("white") colour(LightBlue)
+rslider  bounds( 55, 25, 55, 55), fontColour("white"), text("Size"),   channel("RvbSize"), range(0, 1.00, 0.77), trackerColour("white") colour(LightBlue)
+rslider  bounds(105, 25, 55, 55), fontColour("white"), text("Cutoff"), channel("RvbCF"),   range(50, 20000, 7000,0.5,1), trackerColour("white") colour(LightBlue)
 }
 
 ;EXCITER
-groupbox bounds(475,170,120, 85), text("Exciter"), plant("Exciter"), fontcolour("white") , identchannel("ExciterID"){
-rslider  bounds(  5, 25, 55, 55), text("Amount"),    channel("ExciterAmount"),   range(0, 100, 0,1,0.1),  trackercolour("white") colour(LightBlue)
-rslider  bounds( 55, 25, 55, 55), text("Freq."),    channel("ExciterFreq"),   range(1000, 10000, 3000,1,1),  trackercolour("white") colour(LightBlue)
+groupbox bounds(475,170,120, 85), text("Exciter"), plant("Exciter"), fontColour("white") , identChannel("ExciterID"){
+rslider  bounds(  5, 25, 55, 55), text("Amount"),    channel("ExciterAmount"),   range(0, 100, 0,1,0.1),  trackerColour("white") colour(LightBlue)
+rslider  bounds( 55, 25, 55, 55), text("Freq."),    channel("ExciterFreq"),   range(1000, 10000, 3000,1,1),  trackerColour("white") colour(LightBlue)
 }
 
 keyboard bounds(0, 255, 595, 80)

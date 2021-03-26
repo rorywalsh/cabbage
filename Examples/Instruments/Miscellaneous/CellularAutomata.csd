@@ -56,10 +56,10 @@
 ; Each cell is associated with a particular note.
 
 <Cabbage>
-form caption("Cellular Automata [vcella]"), size(830, 360),pluginid("CeAu"), guirefresh(64)
+form caption("Cellular Automata [vcella]"), size(830, 360),pluginId("CeAu"), guiRefresh(64)
 
 ; Triggering
-image      bounds(  5,  5,205, 70), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp"), plant("Trigger") {
+image      bounds(  5,  5,205, 70), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp"), plant("Trigger") {
 label      bounds( 10,  5,100, 13), text("Trigger Change"), align("left")
 button     bounds( 10, 35, 60, 20), text("Manual","Manual"), channel("generate"), latched(0)
 checkbox   bounds( 80, 35, 50, 15), text("Auto"), channel("AutoGenerate"), value(1), colour("DarkSlateBlue")
@@ -67,7 +67,7 @@ nslider  bounds(135, 25, 60, 30), text("Rate"), channel("rate"), range(0,8,0.2,1
 }
 
 ; Sonification
-image      bounds(215,  5,610, 70), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp"), plant("Sonification") {
+image      bounds(215,  5,610, 70), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp"), plant("Sonification") {
 label      bounds( 10,  5,100, 13), text("Sonification"), align("left")
 checkbox   bounds( 10, 35, 60, 15), text("On/Off"), channel("sonify"), value(1), colour("DarkSlateBlue")
 nslider  bounds( 80, 25, 70, 30), text("Note Centre"), channel("NoteCentre"), range(0,127,100,1,1)
@@ -75,33 +75,33 @@ nslider  bounds(155, 25, 70, 30), text("Note Range"), channel("NoteRange"), rang
 nslider  bounds(235, 25, 70, 30), text("Duration"), channel("NoteDur"), range(0.01,0.5,0.1,0.5,0.01)
 nslider  bounds(310, 25, 70, 30), text("Amplitude"), channel("NoteAmp"), range(0,1,0.3,0.5,0.01)
 combobox   bounds(390, 35, 60, 20), text("Free","Sync."), channel("sync"), value(2)
-nslider  bounds(455, 25, 70, 30), text("Rate"), channel("NRate"), range(1,72,8,1,1), identchannel("NRateID")
-nslider  bounds(530, 25, 70, 30), text("Repeats"), channel("SyncRepeats"), range(1,16,4,1,1), identchannel("SyncRepeatsID")
+nslider  bounds(455, 25, 70, 30), text("Rate"), channel("NRate"), range(1,72,8,1,1), identChannel("NRateID")
+nslider  bounds(530, 25, 70, 30), text("Repeats"), channel("SyncRepeats"), range(1,16,4,1,1), identChannel("SyncRepeatsID")
 }
 
 ; Rule
-image     bounds(  5, 80,820, 70), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp"), plant("RuleTable") {
+image     bounds(  5, 80,820, 70), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp"), plant("RuleTable") {
 label     bounds( 10,  5,100, 13), text("Rule"), align("left")
 nslider bounds( 10, 20, 55, 30), text("Length"), channel("RuleLen"), range(1,27,8,1,1)
 nslider bounds( 75, 20, 55, 30), text("Radius"), channel("radius"), range(1,2,2,1,1)
-image     bounds(135, 20,200, 50), colour(30,30,30), outlinecolour("white"), outlinethickness(1), shape("sharp"), identchannel("RuleRange")
-gentable  bounds(135, 30,675, 25),  tablenumber(3), tablecolour("GoldenRod"), amprange(0,1,3,1), zoom(-1), active(1)
+image     bounds(135, 20,200, 50), colour(30,30,30), outlineColour("white"), outlineThickness(1), shape("sharp"), identChannel("RuleRange")
+gentable  bounds(135, 30,675, 25),  tableNumber(3), tableColour("GoldenRod"), ampRange(0,1,3,1), zoom(-1), active(1)
 }
 
 ; Initial State
-image    bounds(  5,155,820, 85), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp"), plant("InitTable") {
+image    bounds(  5,155,820, 85), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp"), plant("InitTable") {
 label    bounds( 10,  5,100, 13), text("Initial States"), align("left")
-image    bounds( 10, 26,800, 32), colour(60,60,60), outlinecolour("white"), outlinethickness(1), shape("sharp"), identchannel("InputRange")
-gentable bounds( 10, 35,800, 15), tablenumber(1), tablecolour("FireBrick"), amprange(0,1,1,1), zoom(-1), active(1)
+image    bounds( 10, 26,800, 32), colour(60,60,60), outlineColour("white"), outlineThickness(1), shape("sharp"), identChannel("InputRange")
+gentable bounds( 10, 35,800, 15), tableNumber(1), tableColour("FireBrick"), ampRange(0,1,1,1), zoom(-1), active(1)
 button   bounds( 10, 60,140, 20), text("Resend Initial State","Resend Initial State"), channel("reinit")
 }
 
-image     bounds(  5,245,820, 95), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp"), plant("OutTable") {
+image     bounds(  5,245,820, 95), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp"), plant("OutTable") {
 label     bounds( 10,  5,100, 13), text("Output States"), align("left")
-image     bounds( 10, 26,800, 32), colour(60,60,60), outlinecolour("white"), outlinethickness(2), shape("sharp"), identchannel("OutputRange")
-gentable  bounds( 10, 35,800, 15),  tablenumber(2), tablecolour("green"), amprange(0,1,2,1), zoom(-1), identchannel("OutTable")
+image     bounds( 10, 26,800, 32), colour(60,60,60), outlineColour("white"), outlineThickness(2), shape("sharp"), identChannel("OutputRange")
+gentable  bounds( 10, 35,800, 15),  tableNumber(2), tableColour("green"), ampRange(0,1,2,1), zoom(-1), identChannel("OutTable")
 nslider bounds( 10, 60, 60, 30), text("Elements"), channel("elements"), range(1,64,32,1,1)
-nslider bounds( 80, 60, 60, 30), text("Iterations"), channel("iter"), range(0,100000,0,1,1), active(0), textcolour(255,255,255), fontcolour(255,255,255)
+nslider bounds( 80, 60, 60, 30), text("Iterations"), channel("iter"), range(0,100000,0,1,1), active(0), textColour(255,255,255), fontColour(255,255,255)
 }
 
 label bounds(5,345,110,11), text("Iain McCurdy |2015|")
@@ -180,7 +180,7 @@ instr	1
  if ktrig==1 then					; if a trigger has been generated...
   kiter		+=	1				; ...increment iterations counter
   chnset	kiter,"iter"				; send new value to counter
-  chnset	"tablenumber(2)","OutTable"		; update table display of cell output states
+  chnset	"tableNumber(2)","OutTable"		; update table display of cell output states
  endif
  
  ; SONIFICATION

@@ -13,10 +13,10 @@
 ; The two rows of 10 sliders vary the strengths of 10 partials for two additive tones.
 
 <Cabbage>
-form caption("Image Sliders"), scrollbars(0), size(610, 540), pluginid("ExSl"),colour(0,0,0), guirefresh(64)
-image bounds(0,0,0,0), widgetarray("slider",20), shape("rounded")
-label      bounds(170,255,250, 20), text("Click and drag anywhere..."), fontcolour("white"), visible(1), identchannel("instruction")
-label bounds(5,528,110, 11), text("Iain McCurdy |2013|"), fontcolour(75,75,75), align("left")
+form caption("Image Sliders"), scrollBars(0), size(610, 540), pluginId("ExSl"),colour(0,0,0), guiRefresh(64)
+image bounds(0,0,0,0), widgetArray("slider",20), shape("rounded")
+label      bounds(170,255,250, 20), text("Click and drag anywhere..."), fontColour("white"), visible(1), identChannel("instruction")
+label bounds(5,528,110, 11), text("Iain McCurdy |2013|"), fontColour(75,75,75), align("left")
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -155,7 +155,7 @@ instr	99 ; melt instruction after the first click
  iTime	=	5
  kalpha	expsegr	255,iTime,1
  ky	linsegr	255,iTime,355
- Sfade	sprintfk	"fontcolour(255,255,255,%d), bounds(170,%d,250, 20)",kalpha,ky
+ Sfade	sprintfk	"fontColour(255,255,255,%d), bounds(170,%d,250, 20)",kalpha,ky
  chnset	Sfade,"instruction"
  if kOffInstruction==1 then
   event	"i",100,iTime,0

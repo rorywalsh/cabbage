@@ -1,6 +1,6 @@
 <Cabbage>
-form caption("Combobox Sample Player") size(400, 100), colour(58, 110, 182), pluginid("CBSP")
-combobox bounds(6, 8, 80, 20) channel("combo1") channeltype("string") populate("*.wav", "/home/rory/Downloads/AKWF_bw_perfectwaves/")
+form caption("Combobox Sample Player") size(400, 100), colour(58, 110, 182), pluginId("CBSP")
+combobox bounds(6, 8, 80, 20) channel("combo1") channelType("string") populate("*.wav", "/home/rory/Downloads/AKWF_bw_perfectwaves/")
 button bounds(90, 8, 80, 40) channel("button1") text("Play", "Stop") 
 </Cabbage>
 <CsoundSynthesizer>

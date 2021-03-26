@@ -28,27 +28,27 @@
 
 
 <Cabbage>
-form size(1000,550), guirefresh(32), text("Lorenz Synth"), colour(220,220,220), pluginid("LorS")
+form size(1000,550), guiRefresh(32), text("Lorenz Synth"), colour(220,220,220), pluginId("LorS")
 
-image bounds(0,0,-30,-30), shape("ellipse"), identchannel("IndicatorBallRed"), colour("red"), visible(0), alpha(0.85)
-image bounds(0,0,-30,-30), shape("ellipse"), identchannel("IndicatorBallGreen"), colour("green"), visible(0), alpha(0.85)
-image bounds(0,0,-30,-30), shape("ellipse"), identchannel("IndicatorBallBlue"), colour("blue"), visible(0), alpha(0.85)
+image bounds(0,0,-30,-30), shape("ellipse"), identChannel("IndicatorBallRed"), colour("red"), visible(0), alpha(0.85)
+image bounds(0,0,-30,-30), shape("ellipse"), identChannel("IndicatorBallGreen"), colour("green"), visible(0), alpha(0.85)
+image bounds(0,0,-30,-30), shape("ellipse"), identChannel("IndicatorBallBlue"), colour("blue"), visible(0), alpha(0.85)
 
 checkbox  bounds(28,  5,15,15), channel("RedBall"), colour("red"), shape("ellipse"), value(1)
 checkbox  bounds(28, 25,15,15), channel("GreenBall"), colour("green"), shape("ellipse")
 checkbox  bounds(28, 45,15,15), channel("BlueBall"), colour("blue"), shape("ellipse")
 
-nslider bounds(5, 65,60,30), text("Sigma"),     channel("sv"), range(0.001,1000,2,1,0.001),           colour(220,220,220), textcolour("black"), fontcolour("black")
-nslider bounds(5,100,60,30), text("Rayleigh"),  channel("rv"), range(0.001,1000,40,1,0.001),           colour(220,220,220), textcolour("black"), fontcolour("black")
-nslider bounds(5,135,60,30), text("Len:Wid"),   channel("bv"), range(0.001,0.999,0.663,1,0.001),     colour(220,220,220), textcolour("black"), fontcolour("black")
-nslider bounds(5,170,60,30), text("Step Size"), channel("h"),  range(0.000001,0.001,0.00002,1,0.000001), colour(220,220,220), textcolour("black"), fontcolour("black")
-nslider bounds(5,205,60,30), text("X Scale"), channel("x_scal"),  range(0.001,10,0.03,1,0.001),           colour(220,220,220), textcolour("black"), fontcolour("black")
-nslider bounds(5,240,60,30), text("Y Scale"), channel("y_scal"),  range(0.001,10,0.03,1,0.001),           colour(220,220,220), textcolour("black"), fontcolour("black")
-nslider bounds(5,275,60,30), text("Z Scale"), channel("z_scal"),  range(0.001,10,0.01,1,0.001),           colour(220,220,220), textcolour("black"), fontcolour("black")
-nslider bounds(5,310,60,30), text("Skip Step"), channel("skip"),  range(0,10000,0,1,1),      colour(220,220,220), textcolour("black"), fontcolour("black")
-button    bounds(5,350,60,18), text("Restart","Restart"), channel("restart"),                          colour:0(220,220,220), colour:1(220,220,220), fontcolour:0("black"), fontcolour:1("black"), latched(0)
+nslider bounds(5, 65,60,30), text("Sigma"),     channel("sv"), range(0.001,1000,2,1,0.001),           colour(220,220,220), textColour("black"), fontColour("black")
+nslider bounds(5,100,60,30), text("Rayleigh"),  channel("rv"), range(0.001,1000,40,1,0.001),           colour(220,220,220), textColour("black"), fontColour("black")
+nslider bounds(5,135,60,30), text("Len:Wid"),   channel("bv"), range(0.001,0.999,0.663,1,0.001),     colour(220,220,220), textColour("black"), fontColour("black")
+nslider bounds(5,170,60,30), text("Step Size"), channel("h"),  range(0.000001,0.001,0.00002,1,0.000001), colour(220,220,220), textColour("black"), fontColour("black")
+nslider bounds(5,205,60,30), text("X Scale"), channel("x_scal"),  range(0.001,10,0.03,1,0.001),           colour(220,220,220), textColour("black"), fontColour("black")
+nslider bounds(5,240,60,30), text("Y Scale"), channel("y_scal"),  range(0.001,10,0.03,1,0.001),           colour(220,220,220), textColour("black"), fontColour("black")
+nslider bounds(5,275,60,30), text("Z Scale"), channel("z_scal"),  range(0.001,10,0.01,1,0.001),           colour(220,220,220), textColour("black"), fontColour("black")
+nslider bounds(5,310,60,30), text("Skip Step"), channel("skip"),  range(0,10000,0,1,1),      colour(220,220,220), textColour("black"), fontColour("black")
+button    bounds(5,350,60,18), text("Restart","Restart"), channel("restart"),                          colour:0(220,220,220), colour:1(220,220,220), fontColour:0("black"), fontColour:1("black"), latched(0)
 
-label bounds(0,530,100,10), text("Iain McCurdy |2015|"), fontcolour(50,50,50)
+label bounds(0,530,100,10), text("Iain McCurdy |2015|"), fontColour(50,50,50)
 </Cabbage>
 
 <CsoundSynthesizer>

@@ -44,56 +44,56 @@
 ; 'Discord'	-	an integration constant used in the setup of the model. Audibly varies dischord. This control changes at i-rate therefore changing it during a note will cause discontinuities.
 
 <Cabbage>
-form caption("Honk") size(700, 440), pluginid("Honk"), colour("LightGrey") style("legacy")
+form caption("Honk") size(700, 440), pluginId("Honk"), colour("LightGrey") style("legacy")
 
 
 ; amplitude
-image   bounds(  0,  0,440, 90), colour(50,50,100), outlinecolour("LightGrey"), outlinethickness(1), shape("sharp"), plant("amplitude"){
-label   bounds(  5,  5,380, 12), text("Input"), fontcolour(white)
-rslider bounds( 10, 20, 60, 60), text("Amplitude"),                                  channel("amp"),     range(0,      1.00, 0.85),           TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
-rslider bounds( 70, 20, 60, 60), text("Velocity"),                                   channel("vel"),     range(0,      1.00, 0.66),           TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
-rslider bounds(130, 20, 60, 60), text("Env."),                                       channel("AEnv"),    range(0,      1.00, 0),              TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
-rslider bounds(190, 20, 60, 60), text("Att.Tim."),                                   channel("AAttTim"), range(0,      2.00, 0.1, 0.5),       TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
-rslider bounds(250, 20, 60, 60), text("Dec.Tim."),                                   channel("ADecTim"), range(0.001,  5.00, 0.1, 0.5),       TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
-rslider bounds(310, 20, 60, 60), text("Sus.Lev."),                                   channel("ASusLev"), range(0,      1.00, 1),              TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
-rslider bounds(370, 20, 60, 60), text("Rel.Tim."),                                   channel("ARelTim"), range(0,      2.00, 0.1,0.5,0.001),  TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
+image   bounds(  0,  0,440, 90), colour(50,50,100), outlineColour("LightGrey"), outlineThickness(1), shape("sharp"), plant("amplitude"){
+label   bounds(  5,  5,380, 12), text("Input"), fontColour(white)
+rslider bounds( 10, 20, 60, 60), text("Amplitude"),                                  channel("amp"),     range(0,      1.00, 0.85),           TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
+rslider bounds( 70, 20, 60, 60), text("Velocity"),                                   channel("vel"),     range(0,      1.00, 0.66),           TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
+rslider bounds(130, 20, 60, 60), text("Env."),                                       channel("AEnv"),    range(0,      1.00, 0),              TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
+rslider bounds(190, 20, 60, 60), text("Att.Tim."),                                   channel("AAttTim"), range(0,      2.00, 0.1, 0.5),       TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
+rslider bounds(250, 20, 60, 60), text("Dec.Tim."),                                   channel("ADecTim"), range(0.001,  5.00, 0.1, 0.5),       TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
+rslider bounds(310, 20, 60, 60), text("Sus.Lev."),                                   channel("ASusLev"), range(0,      1.00, 1),              TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
+rslider bounds(370, 20, 60, 60), text("Rel.Tim."),                                   channel("ARelTim"), range(0,      2.00, 0.1,0.5,0.001),  TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
 }
 
 ; output
-image   bounds(440,  0,260, 90), colour(50,50,100), outlinecolour("LightGrey"), outlinethickness(1), shape("sharp"), plant("output"){
-label   bounds(  5,  5,250, 12), text("Output"), fontcolour(white)
-rslider bounds( 10, 20, 60, 60), text("Width"),                                      channel("width"),   range(0,      1.00, 0.3), TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
-rslider bounds( 70, 20, 60, 60), text("Rvb.Send"),                                   channel("RvbSend"), range(0,      1.00, 0.2), TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
-rslider bounds(130, 20, 60, 60), text("Rvb.Size"),                                   channel("RvbSize"), range(0.5,    0.99, 0.6), TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
-rslider bounds(190, 20, 60, 60), text("Level"),                                      channel("OutGain"), range(0,     10.00, 0.5,0.5), TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
+image   bounds(440,  0,260, 90), colour(50,50,100), outlineColour("LightGrey"), outlineThickness(1), shape("sharp"), plant("output"){
+label   bounds(  5,  5,250, 12), text("Output"), fontColour(white)
+rslider bounds( 10, 20, 60, 60), text("Width"),                                      channel("width"),   range(0,      1.00, 0.3), TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
+rslider bounds( 70, 20, 60, 60), text("Rvb.Send"),                                   channel("RvbSend"), range(0,      1.00, 0.2), TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
+rslider bounds(130, 20, 60, 60), text("Rvb.Size"),                                   channel("RvbSize"), range(0.5,    0.99, 0.6), TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
+rslider bounds(190, 20, 60, 60), text("Level"),                                      channel("OutGain"), range(0,     10.00, 0.5,0.5), TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
 }
 
 ; bow position
-image   bounds(  0, 90,700, 90), colour(50,50,100), outlinecolour("LightGrey"), outlinethickness(1), shape("sharp"), plant("bowposition"){
-label   bounds(  5,  5,690, 12), text("Bowing Position"), fontcolour(white)
-hslider bounds( 10, 30,565, 30), text("Manual"),                                     channel("pos"),      range(0,      1.00, 0.7), TrackerColour("Silver"), textcolour("white"), colour("white")
+image   bounds(  0, 90,700, 90), colour(50,50,100), outlineColour("LightGrey"), outlineThickness(1), shape("sharp"), plant("bowposition"){
+label   bounds(  5,  5,690, 12), text("Bowing Position"), fontColour(white)
+hslider bounds( 10, 30,565, 30), text("Manual"),                                     channel("pos"),      range(0,      1.00, 0.7), TrackerColour("Silver"), textColour("white"), colour("white")
 line    bounds(580,  8,100, 2), colour("grey")
-label   bounds(595,  5, 72, 10), text("MODULATION"), colour(50,50,100), fontcolour("white")
-rslider bounds(570, 20, 60, 60), text("Depth"),                                      channel("PosModDep"),range(0,     0.50, 0.25), TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
-rslider bounds(630, 20, 60, 60), text("Rate"),                                       channel("PosModRte"),range(0.01, 50.00, 3,0.5,0.01),    TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
+label   bounds(595,  5, 72, 10), text("MODULATION"), colour(50,50,100), fontColour("white")
+rslider bounds(570, 20, 60, 60), text("Depth"),                                      channel("PosModDep"),range(0,     0.50, 0.25), TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
+rslider bounds(630, 20, 60, 60), text("Rate"),                                       channel("PosModRte"),range(0.01, 50.00, 3,0.5,0.01),    TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
 }
 
 ; bow pressure
-image   bounds(  0,180,700, 90), colour(50,50,100), outlinecolour("LightGrey"), outlinethickness(1), shape("sharp"), plant("bowpressure"){
-label   bounds(  5,  5,690, 12), text("Bowing Pressure"), fontcolour(white)
-hslider bounds( 10, 30,505, 30), text("Manual"),                                     channel("bowpres"),   range(0,     1, 0.45), TrackerColour("Silver"), textcolour("white"), colour("white")
-rslider bounds(510, 20, 60, 60), text("Velocity"),                                   channel("BowPresVel"),range(0,     1.00, 0), TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
+image   bounds(  0,180,700, 90), colour(50,50,100), outlineColour("LightGrey"), outlineThickness(1), shape("sharp"), plant("bowpressure"){
+label   bounds(  5,  5,690, 12), text("Bowing Pressure"), fontColour(white)
+hslider bounds( 10, 30,505, 30), text("Manual"),                                     channel("bowpres"),   range(0,     1, 0.45), TrackerColour("Silver"), textColour("white"), colour("white")
+rslider bounds(510, 20, 60, 60), text("Velocity"),                                   channel("BowPresVel"),range(0,     1.00, 0), TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
 line    bounds(580,  8,100, 2), colour("grey")
-label   bounds(595,  5, 72, 10), text("MODULATION"), colour(50,50,100), fontcolour("white")
-rslider bounds(570, 20, 60, 60), text("Depth"),                                      channel("BowPresDep"),range(0,     0.50, 0.25), TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
-rslider bounds(630, 20, 60, 60), text("Rate"),                                       channel("BowPresRte"),range(0.01, 50.00, 3.5,0.5,0.01),  TrackerColour("Silver"), textcolour("white"), colour("white"), outlinecolour(100,100,100)
+label   bounds(595,  5, 72, 10), text("MODULATION"), colour(50,50,100), fontColour("white")
+rslider bounds(570, 20, 60, 60), text("Depth"),                                      channel("BowPresDep"),range(0,     0.50, 0.25), TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
+rslider bounds(630, 20, 60, 60), text("Rate"),                                       channel("BowPresRte"),range(0.01, 50.00, 3.5,0.5,0.01),  TrackerColour("Silver"), textColour("white"), colour("white"), outlineColour(100,100,100)
 }
 
 ; system
-image   bounds(  0,270,700, 90), colour(50,50,100), outlinecolour("LightGrey"), outlinethickness(1), shape("sharp"), plant("system"){
-label   bounds(  5,  5,690, 12), text("System"), fontcolour(white)
-hslider bounds( 10, 20,685, 30), text("F.back"),                                   channel("gain"),    range(0,      1.00, 0.95), TrackerColour("Silver"), textcolour("white"), colour("white")
-hslider bounds( 10, 50,685, 30), text("Discord"),                                    channel("const"),   range(0,   1.50, 0.97), TrackerColour("Silver"), textcolour("white"), colour("white")
+image   bounds(  0,270,700, 90), colour(50,50,100), outlineColour("LightGrey"), outlineThickness(1), shape("sharp"), plant("system"){
+label   bounds(  5,  5,690, 12), text("System"), fontColour(white)
+hslider bounds( 10, 20,685, 30), text("F.back"),                                   channel("gain"),    range(0,      1.00, 0.95), TrackerColour("Silver"), textColour("white"), colour("white")
+hslider bounds( 10, 50,685, 30), text("Discord"),                                    channel("const"),   range(0,   1.50, 0.97), TrackerColour("Silver"), textColour("white"), colour("white")
 }
 
 keyboard pos( 0, 360), size(700, 80)

@@ -39,33 +39,33 @@
 
 
 <Cabbage>
-form caption("Inharmonic Synth"), size(445, 285), pluginid("InSy") style("legacy")
-image pos(0, 0),                  size(445, 285), colour("black"), shape("rounded"), outlinecolour("brown"), line(4)
+form caption("Inharmonic Synth"), size(445, 285), pluginId("InSy") style("legacy")
+image pos(0, 0),                  size(445, 285), colour("black"), shape("rounded"), outlineColour("brown"), line(4)
 
 groupbox bounds(275,10,160, 90), text("Instrument"), plant("instrument"){
 combobox channel("Instr"), bounds( 10, 40,140, 25), value(5), text("Bass Guitar", "Dahina", "Banyan", "Xylophone", "Tibetan Bowl 180mm", "Spinel Sphere", "Pot Lid", "Red Cedar Wood Plate", "Tubular Bell", "Redwood Wood Plate", "Douglas Fir Wood Plate", "Uniform Wooden Bar", "Uniform Aluminium Bar", "Vibraphone 1", "Vibraphone 2", "Chladni Plate", "Tibetan Bowl 152mm", "Tibetan Bowl 140mm", "Wine Glass", "Small Handbell", "Albert Clock Bell", "Wood Block","Anvil")
 }
 
 groupbox bounds(10, 10,260, 90), text("Amplitude Envelope"), plant("ampenv"){
-rslider bounds(  0, 25, 60, 60), text("Att."),  channel("AAtt"), colour("red"), trackercolour("red"), range(0.0001,1.00,0.0001,0.25,0.0001)
-rslider bounds( 50, 25, 60, 60), text("Dec."),  channel("ADec"), colour("red"), trackercolour("red"), range(0.001,30.00,7,0.5)
-rslider bounds(100, 25, 60, 60), text("Sus."),   channel("ASus"), colour("red"), trackercolour("red"), range(0, 1.00, 0)
-rslider bounds(150, 25, 60, 60), text("Rel."),   channel("ARel"), colour("red"), trackercolour("red"), range(0.01, 30.00, 7,0.5)
-rslider bounds(200, 25, 60, 60), text("Level"), channel("Lev"),  colour("maroon"), trackercolour("maroon"), range(0, 5.00, 0.1,0.5)
+rslider bounds(  0, 25, 60, 60), text("Att."),  channel("AAtt"), colour("red"), trackerColour("red"), range(0.0001,1.00,0.0001,0.25,0.0001)
+rslider bounds( 50, 25, 60, 60), text("Dec."),  channel("ADec"), colour("red"), trackerColour("red"), range(0.001,30.00,7,0.5)
+rslider bounds(100, 25, 60, 60), text("Sus."),   channel("ASus"), colour("red"), trackerColour("red"), range(0, 1.00, 0)
+rslider bounds(150, 25, 60, 60), text("Rel."),   channel("ARel"), colour("red"), trackerColour("red"), range(0.01, 30.00, 7,0.5)
+rslider bounds(200, 25, 60, 60), text("Level"), channel("Lev"),  colour("maroon"), trackerColour("maroon"), range(0, 5.00, 0.1,0.5)
 }
 
 groupbox bounds(10,105,260, 90), text("Filter Envelope"), plant("filterenv"){
-rslider bounds(  0, 25, 60, 60), text("Amount"),  colour("cornflowerblue"), trackercolour("cornflowerblue"), channel("FAmt"), range(0, 10.0, 8)
-rslider bounds( 50, 25, 60, 60), text("Dec."),   colour("cornflowerblue"), trackercolour("cornflowerblue"), channel("FDec"), range(0.001,30.00,7,0.5)
-rslider bounds(100, 25, 60, 60), text("Sus."),   colour("cornflowerblue"), trackercolour("cornflowerblue"), channel("FSus"), range(0,1.00,0)
-rslider bounds(150, 25, 60, 60), text("Rel."),   colour("cornflowerblue"), trackercolour("cornflowerblue"), channel("FRel"), range(0.1,30.00,7,0.5)
-rslider bounds(200, 25, 60, 60), text("Offset"),  colour("cornflowerblue"), trackercolour("cornflowerblue"), channel("F_OS"), range(-4,10.0, 0)
+rslider bounds(  0, 25, 60, 60), text("Amount"),  colour("cornflowerblue"), trackerColour("cornflowerblue"), channel("FAmt"), range(0, 10.0, 8)
+rslider bounds( 50, 25, 60, 60), text("Dec."),   colour("cornflowerblue"), trackerColour("cornflowerblue"), channel("FDec"), range(0.001,30.00,7,0.5)
+rslider bounds(100, 25, 60, 60), text("Sus."),   colour("cornflowerblue"), trackerColour("cornflowerblue"), channel("FSus"), range(0,1.00,0)
+rslider bounds(150, 25, 60, 60), text("Rel."),   colour("cornflowerblue"), trackerColour("cornflowerblue"), channel("FRel"), range(0.1,30.00,7,0.5)
+rslider bounds(200, 25, 60, 60), text("Offset"),  colour("cornflowerblue"), trackerColour("cornflowerblue"), channel("F_OS"), range(-4,10.0, 0)
 }
 
 groupbox bounds(275,105, 160, 90), text("Chorus"), plant("cho"){
-rslider  bounds(  0, 25,60,60), text("Mix"),   channel("ChoMix"), trackercolour("white"), range(0, 1.00, 0.5)
-rslider  bounds( 50, 25,60,60), text("Depth"), channel("ChoDep"), trackercolour("white"), range(0, 0.1, 0.01,0.5, 0.001)
-rslider  bounds(100, 25,60,60), text("Rate"),  channel("ChoRte"), trackercolour("white"), range(0, 20.00, 0.96, 0.5)
+rslider  bounds(  0, 25,60,60), text("Mix"),   channel("ChoMix"), trackerColour("white"), range(0, 1.00, 0.5)
+rslider  bounds( 50, 25,60,60), text("Depth"), channel("ChoDep"), trackerColour("white"), range(0, 0.1, 0.01,0.5, 0.001)
+rslider  bounds(100, 25,60,60), text("Rate"),  channel("ChoRte"), trackerColour("white"), range(0, 20.00, 0.96, 0.5)
 }
 
 keyboard pos(10, 200), size(425, 80)

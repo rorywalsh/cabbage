@@ -1,12 +1,12 @@
 <Cabbage>
-form caption("ADSR Enveloper") size(400, 280), colour(40, 40, 40), pluginid("DyEn")
+form caption("ADSR Enveloper") size(400, 280), colour(40, 40, 40), pluginId("DyEn")
 keyboard bounds(8, 170, 381, 95)
 
-gentable bounds(5, 10, 380, 140), tablenumber(1), amprange(0, 1, 1, 0.0100), active(1), tablecolour:0(0, 200, 0, 100), identchannel("genTable1")
-label bounds(50, 10, 15, 15), text("A"), colour(255, 255, 255, 255), identchannel("attIdent")
-label bounds(100, 140, 15, 15), text("D"), colour(255, 255, 255, 255), identchannel("decIdent")
-label bounds(180, 72, 15, 15), text("S"), colour(255, 255, 255, 255), identchannel("susIdent")
-label bounds(280, 140, 15, 15), text("R"), colour(255, 255, 255, 255), identchannel("relIdent")
+gentable bounds(5, 10, 380, 140), tableNumber(1), ampRange(0, 1, 1, 0.0100), active(1), tableColour:0(0, 200, 0, 100), identChannel("genTable1")
+label bounds(50, 10, 15, 15), text("A"), colour(255, 255, 255, 255), identChannel("attIdent")
+label bounds(100, 140, 15, 15), text("D"), colour(255, 255, 255, 255), identChannel("decIdent")
+label bounds(180, 72, 15, 15), text("S"), colour(255, 255, 255, 255), identChannel("susIdent")
+label bounds(280, 140, 15, 15), text("R"), colour(255, 255, 255, 255), identChannel("relIdent")
 
 </Cabbage>
 <CsoundSynthesizer>
@@ -116,7 +116,7 @@ instr UpdateTable
     iSus = p6
     iRel = p7
     gi1 ftgen 1, 0, 4096, 7, 0, iAtt, 1, iDec, iSus, iRel-iDec-iAtt, p6, 4096-iRel, 0
-    chnset "tablenumber(1)", "genTable1"
+    chnset "tableNumber(1)", "genTable1"
 endin
 
 

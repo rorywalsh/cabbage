@@ -2,13 +2,13 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("pdclip") size(380, 90), pluginid("pdcl") style("legacy")
-label        bounds(  5,-12,380,100), colour(20,100,100, 0), fontcolour(70,150,150,200), text("pdclip"), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
-image        bounds(  0,  0,380, 90), colour(10,100,200,200), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
-rslider      bounds( 10, 11, 70, 70), text("Input Gain"),  channel("InGain"),  range(0, 5.00, 1,0.375),     textcolour("white"), colour(5, 30,80), trackercolour(255,255,25), outlinecolour(30,30,50)
-rslider      bounds( 75, 11, 70, 70), text("Width"),  channel("width"),  range(0, 1.00, 0),     textcolour("white"), colour(5, 30,80), trackercolour(255,255,25), outlinecolour(30,30,50)
-rslider      bounds(140, 11, 70, 70), text("Centre"), channel("center"), range(-1.00, 1.00, 0), textcolour("white"), colour(5, 30,80), trackercolour(255,255,25), outlinecolour(30,30,50)
-rslider      bounds(300, 11, 70, 70), text("Level"),  channel("level"),  range(0, 1.00, 0.7),   textcolour("white"), colour(5, 30,80), trackercolour(255,255,25), outlinecolour(30,30,50)
+form caption("pdclip") size(380, 90), pluginId("pdcl") style("legacy")
+label        bounds(  5,-12,380,100), colour(20,100,100, 0), fontColour(70,150,150,200), text("pdclip"), shape("rounded"), outlineColour("white"), outlineThickness(4) 
+image        bounds(  0,  0,380, 90), colour(10,100,200,200), shape("rounded"), outlineColour("white"), outlineThickness(4) 
+rslider      bounds( 10, 11, 70, 70), text("Input Gain"),  channel("InGain"),  range(0, 5.00, 1,0.375),     textColour("white"), colour(5, 30,80), trackerColour(255,255,25), outlineColour(30,30,50)
+rslider      bounds( 75, 11, 70, 70), text("Width"),  channel("width"),  range(0, 1.00, 0),     textColour("white"), colour(5, 30,80), trackerColour(255,255,25), outlineColour(30,30,50)
+rslider      bounds(140, 11, 70, 70), text("Centre"), channel("center"), range(-1.00, 1.00, 0), textColour("white"), colour(5, 30,80), trackerColour(255,255,25), outlineColour(30,30,50)
+rslider      bounds(300, 11, 70, 70), text("Level"),  channel("level"),  range(0, 1.00, 0.7),   textColour("white"), colour(5, 30,80), trackerColour(255,255,25), outlineColour(30,30,50)
 combobox     bounds(215, 20, 80, 20), channel("bipolar"), value(2), text("Unipolar", "Bipolar")
 checkbox     bounds(215, 48,130, 12), channel("TestTone"), FontColour("white"),  value(0), text("Sine Tone"), colour(yellow)
 }

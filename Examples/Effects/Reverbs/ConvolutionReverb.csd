@@ -18,23 +18,23 @@
 ; 'Delay OS' fine tunes the delay applied to the dry signal. Normally this should be zero but adjust it to modify how the dry signal lines up with the convoluted signal.
 
 <Cabbage>
-form caption("Convolution Reverb") size(505,230), pluginid("Conv") style("legacy")
-image bounds(0, 0, 505,230), colour(135, 30, 30,220), shape("rounded"), outlinecolour(255,255,150), outlinethickness(4) 
-label   bounds( 29,  10, 55, 12),       text("direction:"), fontcolour(250,250,250)
-button  bounds( 10,  22, 90, 20),       text("forward","backward"),                            channel("FwdBwd"), value(0), fontcolour(250,250,250)
-label   bounds( 33,  43, 45, 12),       text("resize:"), fontcolour(250,250,250)
-button  bounds( 10,  55, 90, 20),       text("normal","compressed"),                           channel("resize"), value(0), fontcolour(250,250,250)
-rslider bounds(105, 11, 70, 70),        text("Size Ratio"),     colour(115, 10, 10), trackercolour(255,255,150), outlinecolour( 75, 35,  0), textcolour(250,250,250),  channel("CompRat"),     range(0, 1.00, 1)
-rslider bounds(170, 11, 70, 70),        text("Curve"),          colour(115, 10, 10), trackercolour(255,255,150), outlinecolour( 75, 35,  0), textcolour(250,250,250),  channel("Curve"),       range(-8.00, 8.00, 0)
-rslider bounds(235, 11, 70, 70),        text("In Skip"),        colour(115, 10, 10), trackercolour(255,255,150), outlinecolour( 75, 35,  0), textcolour(250,250,250),  channel("skipsamples"), range(0, 1.00, 0)
-rslider bounds(300, 11, 70, 70),        text("Del.OS."),        colour(115, 10, 10), trackercolour(255,255,150), outlinecolour( 75, 35,  0), textcolour(250,250,250),  channel("DelayOS"),     range(-1.00, 1.00, 0)
-rslider bounds(365, 11, 70, 70),        text("Mix"),            colour(115, 10, 10), trackercolour(255,255,150), outlinecolour( 75, 35,  0), textcolour(250,250,250),  channel("mix"),         range(0, 1.00, 0.25)
-rslider bounds(430, 11, 70, 70),        text("Level"),          colour(115, 10, 10), trackercolour(255,255,150), outlinecolour( 75, 35,  0), textcolour(250,250,250),  channel("level"),       range(0, 1.00, 0.4)
+form caption("Convolution Reverb") size(505,230), pluginId("Conv") style("legacy")
+image bounds(0, 0, 505,230), colour(135, 30, 30,220), shape("rounded"), outlineColour(255,255,150), outlineThickness(4) 
+label   bounds( 29,  10, 55, 12),       text("direction:"), fontColour(250,250,250)
+button  bounds( 10,  22, 90, 20),       text("forward","backward"),                            channel("FwdBwd"), value(0), fontColour(250,250,250)
+label   bounds( 33,  43, 45, 12),       text("resize:"), fontColour(250,250,250)
+button  bounds( 10,  55, 90, 20),       text("normal","compressed"),                           channel("resize"), value(0), fontColour(250,250,250)
+rslider bounds(105, 11, 70, 70),        text("Size Ratio"),     colour(115, 10, 10), trackerColour(255,255,150), outlineColour( 75, 35,  0), textColour(250,250,250),  channel("CompRat"),     range(0, 1.00, 1)
+rslider bounds(170, 11, 70, 70),        text("Curve"),          colour(115, 10, 10), trackerColour(255,255,150), outlineColour( 75, 35,  0), textColour(250,250,250),  channel("Curve"),       range(-8.00, 8.00, 0)
+rslider bounds(235, 11, 70, 70),        text("In Skip"),        colour(115, 10, 10), trackerColour(255,255,150), outlineColour( 75, 35,  0), textColour(250,250,250),  channel("skipsamples"), range(0, 1.00, 0)
+rslider bounds(300, 11, 70, 70),        text("Del.OS."),        colour(115, 10, 10), trackerColour(255,255,150), outlineColour( 75, 35,  0), textColour(250,250,250),  channel("DelayOS"),     range(-1.00, 1.00, 0)
+rslider bounds(365, 11, 70, 70),        text("Mix"),            colour(115, 10, 10), trackerColour(255,255,150), outlineColour( 75, 35,  0), textColour(250,250,250),  channel("mix"),         range(0, 1.00, 0.25)
+rslider bounds(430, 11, 70, 70),        text("Level"),          colour(115, 10, 10), trackerColour(255,255,150), outlineColour( 75, 35,  0), textColour(250,250,250),  channel("level"),       range(0, 1.00, 0.4)
 
-filebutton bounds( 10, 90, 90, 25), text("Open File","Open File"), fontcolour("white") channel("filename"), shape("ellipse")
-soundfiler bounds(110, 90,380,125), channel("beg","len"), identchannel("ImpulseFile"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255)
-label      bounds(114, 92,300, 16), text(""), align(left), colour(0,0,0,0), fontcolour(255,255,255,150), identchannel("stringbox")
-label      bounds(114, 92,350, 16), text("First open a short stereo impulse sound file..."), align(left), fontcolour(255,255,255,150), visible(1), identchannel("InstructionID")
+filebutton bounds( 10, 90, 90, 25), text("Open File","Open File"), fontColour("white") channel("filename"), shape("ellipse")
+soundfiler bounds(110, 90,380,125), channel("beg","len"), identChannel("ImpulseFile"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255)
+label      bounds(114, 92,300, 16), text(""), align(left), colour(0,0,0,0), fontColour(255,255,255,150), identChannel("stringbox")
+label      bounds(114, 92,350, 16), text("First open a short stereo impulse sound file..."), align(left), fontColour(255,255,255,150), visible(1), identChannel("InstructionID")
 }
 </Cabbage>
 

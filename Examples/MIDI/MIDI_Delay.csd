@@ -8,7 +8,7 @@
 ; Arpeggio	-	note number increase (additive) of each subsequent delay iteration.
 
 <Cabbage>
-form caption("MIDI Delay"), size(300,100), pluginid("MiDl") style("legacy")
+form caption("MIDI Delay"), size(300,100), pluginId("MiDl") style("legacy")
 rslider bounds(0,5,60,60), channel("DelTim"), range(0.01,2,0.2,0.5,0.01), text("Time")
 rslider bounds(60,5,60,60), channel("warp"), range(0.5,2,1,0.5,0.01), text("Warp")
 rslider bounds(120,5,60,60), channel("rpts"), range(1,50,7,1,1), text("Repeats")

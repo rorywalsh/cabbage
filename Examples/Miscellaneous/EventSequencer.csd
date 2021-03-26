@@ -1,6 +1,6 @@
 <Cabbage>
-form caption("Event Sequencer") size(600, 400), pluginid("EvSq")
-eventsequencer bounds(10, 10, 500, 320), channels("step"), active(0) identchannel("trackerIdent"), orientation("horizontal"), colprefix(0:1:2:3, "i\"Sine\" 0 1 "), showstepnumbers(4), matrixsize(16, 4) textcolour(200, 200, 200), highlightcolour(30, 30, 30) outlinecolour(80,80,80), bpm(180), fontcolour("white") backgroundcolour(20, 20, 20)
+form caption("Event Sequencer") size(600, 400), pluginId("EvSq")
+eventsequencer bounds(10, 10, 500, 320), channels("step"), active(0) identChannel("trackerIdent"), orientation("horizontal"), colPrefix(0:1:2:3, "i\"Sine\" 0 1 "), showStepNumbers(4), matrixSize(16, 4) textColour(200, 200, 200), highlightColour(30, 30, 30) outlineColour(80,80,80), bpm(180), fontColour("white") backgroundColour(20, 20, 20)
 rslider bounds(514, 10, 70, 70) channel("bpm") range(10, 400, 180, 1, 0.001) text("BPM") 
 button bounds(514, 82, 70, 27) channel("startPlayback") text("Start", "Stop")  
 button bounds(514, 132, 70, 27) channel("shuffle") text("Shuffle")  
@@ -68,9 +68,9 @@ instr FillCells
             iNoteIndex random 0, lenarray(iNotes)
             if random:i(0, 100)>70 then
                 SScoreEvent sprintf "1 %d", iNotes[int(iNoteIndex)]
-                SMessage sprintf "celldata(%d, %d, %s) ", iColCnt, iRowCnt, SScoreEvent 
+                SMessage sprintf "cellData(%d, %d, %s) ", iColCnt, iRowCnt, SScoreEvent 
             else
-                SMessage sprintf "celldata(%d, %d, \"\") ", iColCnt, iRowCnt
+                SMessage sprintf "cellData(%d, %d, \"\") ", iColCnt, iRowCnt
             endif
             SCellData strcat SCellData, SMessage
         iColCnt+=1

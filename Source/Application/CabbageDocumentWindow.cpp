@@ -323,8 +323,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::saveDocumentAs);
     menu.addCommandItem (&commandManager, CommandIDs::saveAll);
     menu.addSeparator();
-   // menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
-   // menu.addCommandItem (&commandManager, CommandIDs::saveDocumentToRPi);
+    menu.addCommandItem (&commandManager, CommandIDs::convertToCamelCase);
     menu.addSeparator();
     
     if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
@@ -560,6 +559,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::copy,
         CommandIDs::cut,
         CommandIDs::clearConsole,
+        CommandIDs::convertToCamelCase,
         CommandIDs::toggleComments,
         CommandIDs::zoomIn,
         CommandIDs::addCabbageSection,
@@ -643,6 +643,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::saveDocument:
             result.setInfo ("Save file", "Save a document", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
+            break;
+            
+        case CommandIDs::convertToCamelCase:
+            result.setInfo ("Covert Identifiers to camelCase", "Covert Identifiers to camelCase", CommandCategories::general, 0);
             break;
             
         case CommandIDs::importTheme:
@@ -1026,6 +1030,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             
         case CommandIDs::saveDocumentAs:
             getContentComponent()->saveDocument (true);
+            return true;
+            
+        case CommandIDs::convertToCamelCase:
+            getContentComponent()->covertToCamelCase();
             return true;
             
         case CommandIDs::saveGraph:

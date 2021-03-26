@@ -1,9 +1,9 @@
 <Cabbage>
 form caption("HRange Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 hrange bounds(120, 34, 160, 40), channel("hrangeL", "hrangeR"), colour(123, 34, 143), range(100, 1000, 200:300, 1, .01)
-hrange bounds(110, 140, 162, 32), channel("range1", "range2"), identchannel("widgetIdent"), channel colour(123, 34, 143), corners(40), range(0, 1, .24:.75, 1 0.001)
+hrange bounds(110, 140, 162, 32), channel("range1", "range2"), identChannel("widgetIdent"), channel colour(123, 34, 143), corners(40), range(0, 1, .24:.75, 1 0.001)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -34,15 +34,15 @@ endin
 
 instr ChangeAttributes
     SIdentifier init ""
-	SIdent sprintf "outlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "outlineColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "text(\"TextOff %f\", \"TextOn %f\") ", rnd(100), rnd(100)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "textcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "textColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "trackerthickness(%f) ", rnd(10)
+	SIdent sprintf "trackerThickness(%f) ", rnd(10)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "trackercolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "trackerColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "alpha(%f) ", 50 + rnd(50)/50
 	SIdentifier strcat SIdentifier, SIdent
@@ -54,7 +54,7 @@ instr ChangeAttributes
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "colour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "fontcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "fontColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "visible(%d) ", (rnd(100) > 80 ? 0 : 1)
 	SIdentifier strcat SIdentifier, SIdent

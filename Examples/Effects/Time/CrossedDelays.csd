@@ -39,39 +39,39 @@
 ; Level			-	output level (dry and wet signals)
 
 <Cabbage>
-form caption("Crossed Delays") size(815, 130), pluginid("CrDl") style("legacy")
+form caption("Crossed Delays") size(815, 130), pluginId("CrDl") style("legacy")
 
 
-image   bounds(  5,  5,370,120), outlinethickness(1), outlinecolour("white"), colour("black"), plant("Delays_Plant")
+image   bounds(  5,  5,370,120), outlineThickness(1), outlineColour("white"), colour("black"), plant("Delays_Plant")
 {
 label    bounds(  0,  4,370, 12), text("D E L A Y S")
 label    bounds(  5, 20, 80, 12), text("Clock Source")
 combobox bounds(  5, 35, 80, 20), channel("ClockSource"), text("Cabbage","Host")
-rslider  bounds( 75, 20, 90, 90), text("Tempo"), channel("Tempo"), valuetextbox(1), textbox(1), range(20,500,60,1,0.1)
-rslider  bounds(140, 20, 90, 90), text("Mix"), channel("Mix"), valuetextbox(1), textbox(1), range(0,1,0.5,1,0.01)
-rslider  bounds(205, 20, 90, 90), text("Feedback"), channel("Feedback"), valuetextbox(1), textbox(1), range(0,3,0.5,1,0.01)
+rslider  bounds( 75, 20, 90, 90), text("Tempo"), channel("Tempo"), valueTextBox(1), textBox(1), range(20,500,60,1,0.1)
+rslider  bounds(140, 20, 90, 90), text("Mix"), channel("Mix"), valueTextBox(1), textBox(1), range(0,1,0.5,1,0.01)
+rslider  bounds(205, 20, 90, 90), text("Feedback"), channel("Feedback"), valueTextBox(1), textBox(1), range(0,3,0.5,1,0.01)
 label    bounds(285, 20, 70, 13), text("Subdiv.1")
 combobox bounds(285, 33, 70, 20), channel("Div1"), text("1/1","1/2","1/3","1/4","1/6","1/8","1/12","1/16","1/24","1/32","1/48","1/64","1/96","1/128"), value(4)
 label    bounds(285, 60, 70, 13), text("Subdiv.2")
 combobox bounds(285, 73, 70, 20), channel("Div2"), text("1/1","1/2","1/3","1/4","1/6","1/8","1/12","1/16","1/24","1/32","1/48","1/64","1/96","1/128"), value(3)
 }
 
-image   bounds(380,  5,225,120), outlinethickness(1), outlinecolour("white"), colour("black"), plant("RM_Plant")
+image   bounds(380,  5,225,120), outlineThickness(1), outlineColour("white"), colour("black"), plant("RM_Plant")
 {
 label    bounds(  0,  4,225, 12), text("M O D U L A T I O N")
 label    bounds(  5, 55, 80, 12), text("Type")
 combobox bounds(  5, 70, 80, 20), channel("ModType"), text("Ring Mod.","Freq.Shift"), value(2)
 checkbox bounds(  5, 30,120, 12), text("On/Off"), channel("ModOnOff"), value(1)
-rslider  bounds( 75, 20, 90, 90), text("Freq.1"), channel("Freq1"), valuetextbox(1), textbox(1), range(-6000,6000,200,1,1)
-rslider  bounds(140, 20, 90, 90), text("Freq.2"), channel("Freq2"), valuetextbox(1), textbox(1), range(-6000,6000,333,1,1)
+rslider  bounds( 75, 20, 90, 90), text("Freq.1"), channel("Freq1"), valueTextBox(1), textBox(1), range(-6000,6000,200,1,1)
+rslider  bounds(140, 20, 90, 90), text("Freq.2"), channel("Freq2"), valueTextBox(1), textBox(1), range(-6000,6000,333,1,1)
 }
 
-image   bounds(610,  5,200,120), outlinethickness(1), outlinecolour("white"), colour("black"), plant("Output_Plant")
+image   bounds(610,  5,200,120), outlineThickness(1), outlineColour("white"), colour("black"), plant("Output_Plant")
 {
 label    bounds(  0,  4,200, 12), text("O U T P U T")
-rslider  bounds(-10, 20, 90, 90), text("Pan 1"), channel("Pan1"), valuetextbox(1), textbox(1), range(0,1,0)
-rslider  bounds( 55, 20, 90, 90), text("Pan 2"), channel("Pan2"), valuetextbox(1), textbox(1), range(0,1,1)
-rslider  bounds(120, 20, 90, 90), text("Level"), channel("Level"), valuetextbox(1), textbox(1), range(0,1,1)
+rslider  bounds(-10, 20, 90, 90), text("Pan 1"), channel("Pan1"), valueTextBox(1), textBox(1), range(0,1,0)
+rslider  bounds( 55, 20, 90, 90), text("Pan 2"), channel("Pan2"), valueTextBox(1), textBox(1), range(0,1,1)
+rslider  bounds(120, 20, 90, 90), text("Level"), channel("Level"), valueTextBox(1), textBox(1), range(0,1,1)
 }
 
 </Cabbage>

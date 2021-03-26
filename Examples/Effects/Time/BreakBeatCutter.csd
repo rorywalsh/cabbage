@@ -60,17 +60,17 @@
 ; ========================================================================================================================
 
 <Cabbage>
-form          size(440,470), caption("Break Beat Cutter"), pluginid("bbct") style("legacy")
+form          size(440,470), caption("Break Beat Cutter"), pluginId("bbct") style("legacy")
 
 
 groupbox bounds( 0,  0,440,170), text("CUTTER"), plant("cutter"),colour(20,20,20), FontColour(silver){
-rslider bounds( 10, 25, 70, 70), colour("Tan"), trackercolour("Tan"), fontcolour("silver"), text("Sub-div."),       channel("subdiv"),  range(1,  512,  8, 1, 1)
-rslider bounds( 80, 25, 70, 70), colour("Tan"), trackercolour("Tan"), fontcolour("silver"), text("Bar Length"),     channel("barlen"),  range(1,   16,  2, 1, 1)
-rslider bounds(150, 25, 70, 70), colour("Tan"), trackercolour("Tan"), fontcolour("silver"), text("Phrase"),         channel("phrase"),  range(1, 512, 8, 1, 1)
-rslider bounds(220, 25, 70, 70), colour("Tan"), trackercolour("Tan"), fontcolour("silver"), text("Repeats"),        channel("repeats"), range(1, 32, 2, 1, 1)
-rslider bounds(290, 25, 70, 70), colour("Tan"), trackercolour("Tan"), fontcolour("silver"), text("Stut. Speed"),  channel("stutspd"), range(1, 32, 4, 1, 1)
-rslider bounds(360, 25, 70, 70), colour("Tan"), trackercolour("Tan"), fontcolour("silver"), text("Stut. Chance"), channel("stutchnc"), range(0, 1.00, 0.5)
-hslider bounds(  5, 95,425, 40), colour("Tan"), trackercolour("Tan"), fontcolour("silver"), textBox(1)    channel("BPM"), range(10,  500, 110,1,1)
+rslider bounds( 10, 25, 70, 70), colour("Tan"), trackerColour("Tan"), fontColour("silver"), text("Sub-div."),       channel("subdiv"),  range(1,  512,  8, 1, 1)
+rslider bounds( 80, 25, 70, 70), colour("Tan"), trackerColour("Tan"), fontColour("silver"), text("Bar Length"),     channel("barlen"),  range(1,   16,  2, 1, 1)
+rslider bounds(150, 25, 70, 70), colour("Tan"), trackerColour("Tan"), fontColour("silver"), text("Phrase"),         channel("phrase"),  range(1, 512, 8, 1, 1)
+rslider bounds(220, 25, 70, 70), colour("Tan"), trackerColour("Tan"), fontColour("silver"), text("Repeats"),        channel("repeats"), range(1, 32, 2, 1, 1)
+rslider bounds(290, 25, 70, 70), colour("Tan"), trackerColour("Tan"), fontColour("silver"), text("Stut. Speed"),  channel("stutspd"), range(1, 32, 4, 1, 1)
+rslider bounds(360, 25, 70, 70), colour("Tan"), trackerColour("Tan"), fontColour("silver"), text("Stut. Chance"), channel("stutchnc"), range(0, 1.00, 0.5)
+hslider bounds(  5, 95,425, 40), colour("Tan"), trackerColour("Tan"), fontColour("silver"), textBox(1)    channel("BPM"), range(10,  500, 110,1,1)
 label   bounds(198,127, 25, 11), text("BPM"), FontColour("silver")
 label  bounds( 10,142, 80,12), text("Clock Source:")
 button bounds( 90,140, 60,18), text("Internal","External"), channel("ClockSource"), value(0)
@@ -80,40 +80,40 @@ label   bounds(338,158, 100, 10), text("Iain McCurdy [2013]"), FontColour("grey"
 
 
 groupbox bounds( 0,170,440,100), text("FILTER"), plant("filter"), FontColour(silver),colour(20,20,20){
-rslider bounds( 10, 25, 70, 70), colour(200,100,50,255), trackercolour(200,100,50,255), fontcolour("silver"), text("Mix"),    channel("FltMix"), range(0, 1.00, 0.6)
-rslider bounds( 80, 25, 70, 70), colour(200,100,50,255), trackercolour(200,100,50,255), fontcolour("silver"), text("Division"),    channel("fltdiv"), range(1, 16, 1,1,1)
-rslider bounds(150, 25, 70, 70), colour(200,100,50,255), trackercolour(200,100,50,255), fontcolour("silver"), text("Bandwidth"),    channel("bw"), range(0.1, 10, 1, 0.5, 0.001)
-hslider bounds(220, 25,140, 35), colour(200,100,50,255), trackercolour(200,100,50,255), fontcolour("silver"),    channel("cfmin"), range(50, 10000, 50  ,0.5,0.1)
-hslider bounds(220, 50,140, 35), colour(200,100,50,255), trackercolour(200,100,50,255), fontcolour("silver"),    channel("cfmax"), range(50, 10000, 10000,0.5,0.1)
+rslider bounds( 10, 25, 70, 70), colour(200,100,50,255), trackerColour(200,100,50,255), fontColour("silver"), text("Mix"),    channel("FltMix"), range(0, 1.00, 0.6)
+rslider bounds( 80, 25, 70, 70), colour(200,100,50,255), trackerColour(200,100,50,255), fontColour("silver"), text("Division"),    channel("fltdiv"), range(1, 16, 1,1,1)
+rslider bounds(150, 25, 70, 70), colour(200,100,50,255), trackerColour(200,100,50,255), fontColour("silver"), text("Bandwidth"),    channel("bw"), range(0.1, 10, 1, 0.5, 0.001)
+hslider bounds(220, 25,140, 35), colour(200,100,50,255), trackerColour(200,100,50,255), fontColour("silver"),    channel("cfmin"), range(50, 10000, 50  ,0.5,0.1)
+hslider bounds(220, 50,140, 35), colour(200,100,50,255), trackerColour(200,100,50,255), fontColour("silver"),    channel("cfmax"), range(50, 10000, 10000,0.5,0.1)
 label   bounds(254, 77, 80, 12), text("Cutoff Freq."), FontColour("white")
-rslider bounds(360, 25, 70, 70), colour(200,100,50,255), trackercolour(200,100,50,255), fontcolour("silver"), text("Int./S&H"),    channel("i_h"), range(0, 1, 0)
+rslider bounds(360, 25, 70, 70), colour(200,100,50,255), trackerColour(200,100,50,255), fontColour("silver"), text("Int./S&H"),    channel("i_h"), range(0, 1, 0)
 }
 
 groupbox bounds( 0,270,220,100), text("WAVE GUIDE"), plant("waveguide"), FontColour(silver),colour(20,20,20){
-rslider bounds( 10, 25, 70, 70), colour(150,150,50,255), trackercolour(150,150,50,255), fontcolour("silver"), text("Chance"),    channel("WguideChnc"), range(0, 1.00, 0.2)
-hslider bounds( 80, 25,140, 35), colour(150,150,50,255), trackercolour(150,150,50,255), fontcolour("silver"),    channel("wguidemin"), range(22, 100, 50,1,1)
-hslider bounds( 80, 50,140, 35), colour(150,150,50,255), trackercolour(150,150,50,255), fontcolour("silver"),    channel("wguidemax"), range(22, 100, 70,1,1)
+rslider bounds( 10, 25, 70, 70), colour(150,150,50,255), trackerColour(150,150,50,255), fontColour("silver"), text("Chance"),    channel("WguideChnc"), range(0, 1.00, 0.2)
+hslider bounds( 80, 25,140, 35), colour(150,150,50,255), trackerColour(150,150,50,255), fontColour("silver"),    channel("wguidemin"), range(22, 100, 50,1,1)
+hslider bounds( 80, 50,140, 35), colour(150,150,50,255), trackerColour(150,150,50,255), fontColour("silver"),    channel("wguidemax"), range(22, 100, 70,1,1)
 label   bounds(108, 77, 85, 12), text("Pitch Range"), FontColour("white")
 }
 
 groupbox bounds(220,270,220,100), text("SQUARE MOD."), plant("sqmod"), FontColour(silver),colour(20,20,20){
-rslider bounds( 10, 25, 70, 70), colour(200,150,200,255), trackercolour(200,150,200,255), fontcolour("silver"), text("Chance"),    channel("SqModChnc"), range(0, 1.00, 0.2)
-hslider bounds( 80, 25,140, 35), colour(200,150,200,255), trackercolour(200,150,200,255), fontcolour("silver"),    channel("sqmodmin"), range(1, 14.0,  6)
-hslider bounds( 80, 50,140, 35), colour(200,150,200,255), trackercolour(200,150,200,255), fontcolour("silver"),    channel("sqmodmax"), range(1, 14.0, 12)
+rslider bounds( 10, 25, 70, 70), colour(200,150,200,255), trackerColour(200,150,200,255), fontColour("silver"), text("Chance"),    channel("SqModChnc"), range(0, 1.00, 0.2)
+hslider bounds( 80, 25,140, 35), colour(200,150,200,255), trackerColour(200,150,200,255), fontColour("silver"),    channel("sqmodmin"), range(1, 14.0,  6)
+hslider bounds( 80, 50,140, 35), colour(200,150,200,255), trackerColour(200,150,200,255), fontColour("silver"),    channel("sqmodmax"), range(1, 14.0, 12)
 label   bounds(108, 77, 85, 12), text("Freq.Range"), FontColour("white")
 }
 
 groupbox bounds(0,370,220,100), text("FREQUENCY SHIFT"), plant("fshift"), FontColour(silver),colour(20,20,20){
-rslider bounds( 10, 25, 70, 70), colour(250,110,250,255), trackercolour(250,110,250,255), fontcolour("silver"), text("Chance"),    channel("FshiftChnc"), range(0, 1.00, 0.2)
-hslider bounds( 80, 25,140, 35), colour(250,110,250,255), trackercolour(250,110,250,255), fontcolour("silver"),    channel("fshiftmin"), range(-4000, 4000,-1000)
-hslider bounds( 80, 50,140, 35), colour(250,110,250,255), trackercolour(250,110,250,255), fontcolour("silver"),    channel("fshiftmax"), range(-4000, 4000, 1000)
+rslider bounds( 10, 25, 70, 70), colour(250,110,250,255), trackerColour(250,110,250,255), fontColour("silver"), text("Chance"),    channel("FshiftChnc"), range(0, 1.00, 0.2)
+hslider bounds( 80, 25,140, 35), colour(250,110,250,255), trackerColour(250,110,250,255), fontColour("silver"),    channel("fshiftmin"), range(-4000, 4000,-1000)
+hslider bounds( 80, 50,140, 35), colour(250,110,250,255), trackerColour(250,110,250,255), fontColour("silver"),    channel("fshiftmax"), range(-4000, 4000, 1000)
 label   bounds(108, 77, 85, 12), text("Freq.Range"), FontColour("white")
 }
 
 groupbox bounds(220,370,220,100), text("OUTPUT"), plant("output"), FontColour(silver),colour(20,20,20){
-rslider bounds( 10, 25, 70, 70), colour("Tan"), trackercolour("Tan"), fontcolour("silver"), text("Layers"),       channel("layers"), range(1, 20, 1,1,1)
-rslider bounds( 80, 25, 70, 70), colour("Tan"), trackercolour("Tan"), fontcolour("silver"), text("Dry/Wet"),      channel("DryWet"), range(0, 1.00, 0.6)
-rslider bounds(150, 25, 70, 70), colour("Tan"), trackercolour("Tan"), fontcolour("silver"), text("Level"),        channel("gain"),   range(0, 1.00, 0.75)
+rslider bounds( 10, 25, 70, 70), colour("Tan"), trackerColour("Tan"), fontColour("silver"), text("Layers"),       channel("layers"), range(1, 20, 1,1,1)
+rslider bounds( 80, 25, 70, 70), colour("Tan"), trackerColour("Tan"), fontColour("silver"), text("Dry/Wet"),      channel("DryWet"), range(0, 1.00, 0.6)
+rslider bounds(150, 25, 70, 70), colour("Tan"), trackerColour("Tan"), fontColour("silver"), text("Level"),        channel("gain"),   range(0, 1.00, 0.75)
 }
 </Cabbage>
 

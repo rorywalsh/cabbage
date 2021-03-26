@@ -10,21 +10,21 @@
 ; Some of these functions might be useful for control mapping or waveshaping.
 
 <Cabbage>
-form size(500,570), text("Calculated F-Table"), guirefresh(32), colour(80,80,80), pluginid("CaFT")
-gentable bounds(  0,  0,500,500), tablenumber(1), tablecolour("Orange"), identchannel("table"), amprange(-1,1,-1), zoom(-1), fill(0)
+form size(500,570), text("Calculated F-Table"), guiRefresh(32), colour(80,80,80), pluginId("CaFT")
+gentable bounds(  0,  0,500,500), tableNumber(1), tableColour("Orange"), identChannel("table"), ampRange(-1,1,-1), zoom(-1), fill(0)
 image    bounds(  0,250,500,  1), shape("sharp"), colour("white")
-image    bounds(500,  0,  1,300), shape("sharp"), colour("white"), identchannel("y_axis")
+image    bounds(500,  0,  1,300), shape("sharp"), colour("white"), identChannel("y_axis")
 combobox bounds(  5,505,120, 20), channel("formula"), text("y = x","y = -x","y = x / a","y = x * a","y = x ^ a","y = - [x ^ a]","y = x ^ [1/a]","y = - x ^ [1/a] + 1","y = sin[x * pi]","y = cos[x * pi]","y = tan[x * pi]","y = log[x]","y = log2[x]","y = log10[x]","y = sinh[x * a]","y = cosh[x * a]","y = tanh[x * pi * a]","y = sininv[x]","y = cosinv[x]","y = taninv[x * a]","y = a ^ x","y = [a ^ x] - 1","y = [a ^ -x] - 1")
 
-image  bounds( 5,525, 66, 40) plant("a") identchannel("aID") colour(0,0,0,0)
+image  bounds( 5,525, 66, 40) plant("a") identChannel("aID") colour(0,0,0,0)
 {
-nslider bounds( 0,  0, 40, 30), text("a ="), channel("a"), range(1,100,2,1,1) textcolour("white")
+nslider bounds( 0,  0, 40, 30), text("a ="), channel("a"), range(1,100,2,1,1) textColour("white")
 button    bounds(41,  8, 20, 14), text("^","^") channel("aIncr") latched(0)
 button    bounds(41,  8, 20, 14), text("^","^") channel("aDecr") latched(0), rotate(3.147,10,15)
 }
 
-label    bounds(130,513,100, 14), text("normalised"), visible(0), identchannel("normalised")
-label    bounds(220,513,100, 14), text("x = 0 to 10"), visible(0), identchannel("x = 0 to 10")
+label    bounds(130,513,100, 14), text("normalised"), visible(0), identChannel("normalised")
+label    bounds(220,513,100, 14), text("x = 0 to 10"), visible(0), identChannel("x = 0 to 10")
 nslider bounds(340,505,60,30), text("x value"), channel("xval"), range(-10, 10,0,1,0.00001)
 nslider bounds(405,505,60,30), text("y value"), channel("yval"), range(-100,100,0,1,0.00001)
 </Cabbage>
@@ -469,7 +469,7 @@ instr 1
  endif
 
 
-  chnset	"tablenumber(1)","table"		; update table
+  chnset	"tableNumber(1)","table"		; update table
 
  ; read y values and print to nslider
  kMOUSE_X	chnget	"MOUSE_X"	; read mouse x position. range: 0 - panel_width(in pixels)

@@ -1,7 +1,7 @@
 <Cabbage>
 form caption("Signaldisplay Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-signaldisplay bounds(8, 30, 380, 170), colour("lime"), backgroundcolour("black"), displaytype("waveform"), signalvariable("aSig")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+signaldisplay bounds(8, 30, 380, 170), colour("lime"), backgroundColour("black"), displayType("waveform"), signalVariable("aSig")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

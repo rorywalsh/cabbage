@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Presets") size(370, 280), colour(58, 110, 182), pluginid("MPre")
+form caption("Presets") size(370, 280), colour(58, 110, 182), pluginId("MPre")
 rslider bounds(12, 8, 85, 79), channel("att"), range(0, 1, 0.01), text("Att.")
 rslider bounds(98, 8, 85, 79), channel("dec"), range(0, 1, 0.4), text("Dec.")
 rslider bounds(184, 8, 85, 79), channel("sus"), range(0, 1, 0.7), text("Sus.")

@@ -51,71 +51,71 @@
 ; Level			-	output gain control
 
 <Cabbage>
-form caption("Spiccato"), size(990,285), colour(255,230,220), pluginid("Spic") style("legacy")
+form caption("Spiccato"), size(990,285), colour(255,230,220), pluginId("Spic") style("legacy")
 
-image    bounds(  5,  5,360, 95), colour(0,0,0,0), outlinethickness(1), outlinecolour("black"), plant("PresEnv") {
-label    bounds(  0,  5,360, 10), text("B   O   W      P   R   E   S   S   U   R   E"), fontcolour("black")
-rslider  bounds(  5, 20, 70, 70), channel("PAtt"),   range(0.001,3,0.1,0.5),   textcolour("black"), fontcolour("black"), text("Attack"),   colour("black")
-rslider  bounds( 75, 20, 70, 70), channel("PAttLev"),range(-90, -0.4,-0.4,2), textcolour("black"), fontcolour("black"), text("Att.Lev."), colour("black")
-rslider  bounds(145, 20, 70, 70), channel("PDec"),   range(0.001, 3,0.1,0.5),   textcolour("black"), fontcolour("black"), text("Decay"),    colour("black")
-rslider  bounds(215, 20, 70, 70), channel("PSus"),   range(-90, -0.4,-90,2),  textcolour("black"), fontcolour("black"), text("Sustain"),  colour("black")
-rslider  bounds(285, 20, 70, 70), channel("PRel"),   range(0.001, 3,0.1,0.5),   textcolour("black"), fontcolour("black"), text("Release"),  colour("black")
+image    bounds(  5,  5,360, 95), colour(0,0,0,0), outlineThickness(1), outlineColour("black"), plant("PresEnv") {
+label    bounds(  0,  5,360, 10), text("B   O   W      P   R   E   S   S   U   R   E"), fontColour("black")
+rslider  bounds(  5, 20, 70, 70), channel("PAtt"),   range(0.001,3,0.1,0.5),   textColour("black"), fontColour("black"), text("Attack"),   colour("black")
+rslider  bounds( 75, 20, 70, 70), channel("PAttLev"),range(-90, -0.4,-0.4,2), textColour("black"), fontColour("black"), text("Att.Lev."), colour("black")
+rslider  bounds(145, 20, 70, 70), channel("PDec"),   range(0.001, 3,0.1,0.5),   textColour("black"), fontColour("black"), text("Decay"),    colour("black")
+rslider  bounds(215, 20, 70, 70), channel("PSus"),   range(-90, -0.4,-90,2),  textColour("black"), fontColour("black"), text("Sustain"),  colour("black")
+rslider  bounds(285, 20, 70, 70), channel("PRel"),   range(0.001, 3,0.1,0.5),   textColour("black"), fontColour("black"), text("Release"),  colour("black")
 }
 
-image    bounds(370,  5,295, 95), colour(0,0,0,0), outlinethickness(1), outlinecolour("black"), plant("BowPos") {
-label    bounds(  0,  5,295, 10), text("B   O   W      P   O   S   I   T   I   O   N"), fontcolour("black")
-rslider  bounds(  5, 20, 70, 70), channel("BowPos"), range(0.01,0.5,0.127236,1,0.000001), textcolour("black"), fontcolour("black"), text("Bow Pos."), colour("black")
-rslider  bounds( 75, 20, 70, 70), channel("PosIRnd"), range(0,0.2,0.05,0.5,0.001), textcolour("black"), fontcolour("black"), text("Rand.Offset"), colour("black")
-rslider  bounds(145, 20, 70, 70), channel("PosA"), range(0,1,0.05,0.5,0.001), textcolour("black"), fontcolour("black"), text("Mod.Amp."), colour("black")
-rslider  bounds(215, 20, 70, 70), channel("PosF"), range(0.1,50,0.5,0.5,0.01), textcolour("black"), fontcolour("black"), text("Mod.Freq."), colour("black")
+image    bounds(370,  5,295, 95), colour(0,0,0,0), outlineThickness(1), outlineColour("black"), plant("BowPos") {
+label    bounds(  0,  5,295, 10), text("B   O   W      P   O   S   I   T   I   O   N"), fontColour("black")
+rslider  bounds(  5, 20, 70, 70), channel("BowPos"), range(0.01,0.5,0.127236,1,0.000001), textColour("black"), fontColour("black"), text("Bow Pos."), colour("black")
+rslider  bounds( 75, 20, 70, 70), channel("PosIRnd"), range(0,0.2,0.05,0.5,0.001), textColour("black"), fontColour("black"), text("Rand.Offset"), colour("black")
+rslider  bounds(145, 20, 70, 70), channel("PosA"), range(0,1,0.05,0.5,0.001), textColour("black"), fontColour("black"), text("Mod.Amp."), colour("black")
+rslider  bounds(215, 20, 70, 70), channel("PosF"), range(0.1,50,0.5,0.5,0.01), textColour("black"), fontColour("black"), text("Mod.Freq."), colour("black")
 }
 
-image    bounds(670,  5,150, 95), colour(0,0,0,0), outlinethickness(1), outlinecolour("black"), plant("Keyboard") {
-label    bounds(  0,  5,150, 10), text("K   E   Y   B   O   A   R   D"), fontcolour("black")
-rslider  bounds(  5, 20, 70, 70), channel("KybdScale"), range(0,  1,1,1,0.001), textcolour("black"), fontcolour("black"), text("Scale"), colour("black")
-rslider  bounds( 75, 20, 70, 70), channel("KybdShift"), range(0,127,0,1,1),     textcolour("black"), fontcolour("black"), text("Shift"), colour("black")
-}
-
-
-image    bounds(  5,105,290, 95), colour(0,0,0,0), outlinethickness(1), outlinecolour("black"), plant("Vibrato") {
-label    bounds(  0,  5,290, 10), text("V   I   B   R   A   T   O"), fontcolour("black")
-rslider  bounds(  5, 20, 70, 70), channel("vibamp"), range(0,0.3,0.006,0.5), textcolour("black"), fontcolour("black"), text("Depth"), colour("black")
-rslider  bounds( 75, 20, 70, 70), channel("vibf"),   range(0, 30, 3.5,0.5), textcolour("black"), fontcolour("black"), text("Rate"),  colour("black")
-rslider  bounds(145, 20, 70, 70), channel("VibRise"), range(0, 7,  2,0.5),   textcolour("black"), fontcolour("black"), text("Rise"), colour("black")
-rslider  bounds(215, 20, 70, 70), channel("Dereg"), range(0, 5,  1,0.5),  textcolour("black"), fontcolour("black"), text("Dereg."), colour("black")
-}
-
-image    bounds(825,  5,160, 95), colour(0,0,0,0), outlinethickness(1), outlinecolour("black"), plant("MonoPoly") {
-label    bounds(  0,  5,160, 10), text("P   O   L   Y   P   H   O   N   Y"), fontcolour("black")
-checkbox bounds( 10, 25, 70, 12), text("Legato"), channel("legato"), fontcolour("black")
-combobox bounds( 10, 65, 80, 18), text("Fixed Rate","Fixed Time"), channel("LegMode"), fontcolour("white"), value(1), identchannel("LegModeID"), visible(0)
-rslider  bounds( 85, 20, 70, 70), channel("LegTime"), range(0.001,2,0.2,0.5), textcolour("black"), text("Time"), colour("black"), identchannel("LegTimeID"), visible(0)
+image    bounds(670,  5,150, 95), colour(0,0,0,0), outlineThickness(1), outlineColour("black"), plant("Keyboard") {
+label    bounds(  0,  5,150, 10), text("K   E   Y   B   O   A   R   D"), fontColour("black")
+rslider  bounds(  5, 20, 70, 70), channel("KybdScale"), range(0,  1,1,1,0.001), textColour("black"), fontColour("black"), text("Scale"), colour("black")
+rslider  bounds( 75, 20, 70, 70), channel("KybdShift"), range(0,127,0,1,1),     textColour("black"), fontColour("black"), text("Shift"), colour("black")
 }
 
 
-image    bounds(525,105,150, 95), colour(0,0,0,0), outlinethickness(1), outlinecolour("black"), plant("Reverb") {
-label    bounds(  0,  5,150, 10), text("R   E   V   E   R   B"), fontcolour("black")
-rslider  bounds(  5, 20, 70, 70), channel("RvbDryWet"), range(0,1,0.4), textcolour("black"), fontcolour("black"), text("Dry/Wet"), colour("black")
-rslider  bounds( 75, 20, 70, 70), channel("RvbSize"), range(0,0.99,0.7,2), textcolour("black"), fontcolour("black"), text("Size"), colour("black")
+image    bounds(  5,105,290, 95), colour(0,0,0,0), outlineThickness(1), outlineColour("black"), plant("Vibrato") {
+label    bounds(  0,  5,290, 10), text("V   I   B   R   A   T   O"), fontColour("black")
+rslider  bounds(  5, 20, 70, 70), channel("vibamp"), range(0,0.3,0.006,0.5), textColour("black"), fontColour("black"), text("Depth"), colour("black")
+rslider  bounds( 75, 20, 70, 70), channel("vibf"),   range(0, 30, 3.5,0.5), textColour("black"), fontColour("black"), text("Rate"),  colour("black")
+rslider  bounds(145, 20, 70, 70), channel("VibRise"), range(0, 7,  2,0.5),   textColour("black"), fontColour("black"), text("Rise"), colour("black")
+rslider  bounds(215, 20, 70, 70), channel("Dereg"), range(0, 5,  1,0.5),  textColour("black"), fontColour("black"), text("Dereg."), colour("black")
+}
+
+image    bounds(825,  5,160, 95), colour(0,0,0,0), outlineThickness(1), outlineColour("black"), plant("MonoPoly") {
+label    bounds(  0,  5,160, 10), text("P   O   L   Y   P   H   O   N   Y"), fontColour("black")
+checkbox bounds( 10, 25, 70, 12), text("Legato"), channel("legato"), fontColour("black")
+combobox bounds( 10, 65, 80, 18), text("Fixed Rate","Fixed Time"), channel("LegMode"), fontColour("white"), value(1), identChannel("LegModeID"), visible(0)
+rslider  bounds( 85, 20, 70, 70), channel("LegTime"), range(0.001,2,0.2,0.5), textColour("black"), text("Time"), colour("black"), identChannel("LegTimeID"), visible(0)
 }
 
 
-image    bounds(680,105,150, 95), colour(0,0,0,0), outlinethickness(1), outlinecolour("black"), plant("Output") {
-label    bounds(  0,  5,150, 10), text("O   U   T   P   U   T"), fontcolour("black")
-rslider  bounds(  5, 20, 70, 70), channel("PanWidth"), range(0,1,0.2,0.5), textcolour("black"), fontcolour("black"), text("Pan Spread"), colour("black")
-rslider  bounds( 75, 20, 70, 70), channel("level"), range(0,3,1,0.5), textcolour("black"), fontcolour("black"), text("Level"), colour("black")
+image    bounds(525,105,150, 95), colour(0,0,0,0), outlineThickness(1), outlineColour("black"), plant("Reverb") {
+label    bounds(  0,  5,150, 10), text("R   E   V   E   R   B"), fontColour("black")
+rslider  bounds(  5, 20, 70, 70), channel("RvbDryWet"), range(0,1,0.4), textColour("black"), fontColour("black"), text("Dry/Wet"), colour("black")
+rslider  bounds( 75, 20, 70, 70), channel("RvbSize"), range(0,0.99,0.7,2), textColour("black"), fontColour("black"), text("Size"), colour("black")
 }
 
-image    bounds(835,105,150, 95), colour(0,0,0,0), outlinethickness(1), outlinecolour("black"), plant("Presets") {
-label    bounds(  0,  5,150, 10), text("P   R   E   S   E   T   S"), fontcolour("black")
-combobox bounds( 50, 40, 40, 15), channel("preset"), text("1","2","3","4","5","6","7","8","9","10"),  textcolour("white"), fontcolour("white"), colour("black")
+
+image    bounds(680,105,150, 95), colour(0,0,0,0), outlineThickness(1), outlineColour("black"), plant("Output") {
+label    bounds(  0,  5,150, 10), text("O   U   T   P   U   T"), fontColour("black")
+rslider  bounds(  5, 20, 70, 70), channel("PanWidth"), range(0,1,0.2,0.5), textColour("black"), fontColour("black"), text("Pan Spread"), colour("black")
+rslider  bounds( 75, 20, 70, 70), channel("level"), range(0,3,1,0.5), textColour("black"), fontColour("black"), text("Level"), colour("black")
 }
 
-image    bounds(300,105,220, 95), colour(0,0,0,0), outlinethickness(1), outlinecolour("black"), plant("Layers") {
-label    bounds(  0,  5,220, 10), text("L   A   Y   E   R   S"), fontcolour("black")
-rslider  bounds(  5, 20, 70, 70), channel("Layers"), range(1,10,1,1,1), textcolour("black"), fontcolour("black"), text("Layers"), colour("black")
-rslider  bounds( 75, 20, 70, 70), channel("IntSemis"), range(-24,24,2,1,1),  textcolour("black"), fontcolour("black"), text("Semitones"), colour("black")
-rslider  bounds(145, 20, 70, 70), channel("Detune"), range(0,100,0,1,1), textcolour("black"), fontcolour("black"), text("Detune"), colour("black")
+image    bounds(835,105,150, 95), colour(0,0,0,0), outlineThickness(1), outlineColour("black"), plant("Presets") {
+label    bounds(  0,  5,150, 10), text("P   R   E   S   E   T   S"), fontColour("black")
+combobox bounds( 50, 40, 40, 15), channel("preset"), text("1","2","3","4","5","6","7","8","9","10"),  textColour("white"), fontColour("white"), colour("black")
+}
+
+image    bounds(300,105,220, 95), colour(0,0,0,0), outlineThickness(1), outlineColour("black"), plant("Layers") {
+label    bounds(  0,  5,220, 10), text("L   A   Y   E   R   S"), fontColour("black")
+rslider  bounds(  5, 20, 70, 70), channel("Layers"), range(1,10,1,1,1), textColour("black"), fontColour("black"), text("Layers"), colour("black")
+rslider  bounds( 75, 20, 70, 70), channel("IntSemis"), range(-24,24,2,1,1),  textColour("black"), fontColour("black"), text("Semitones"), colour("black")
+rslider  bounds(145, 20, 70, 70), channel("Detune"), range(0,100,0,1,1), textColour("black"), fontColour("black"), text("Detune"), colour("black")
 }
 
 keyboard  bounds( 0,205,985,80)

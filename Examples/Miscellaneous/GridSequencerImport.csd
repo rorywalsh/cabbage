@@ -1,6 +1,6 @@
 <Cabbage>
-form caption("Grid Sequencer") size(544, 480), colour(120, 120, 120),pluginid("GdSI"), guirefresh(128), import("gridSequencer.plant")
-gridSequencer bounds(7, 7, 535, 337), channel("grid"), namespace("rw")
+form caption("Grid Sequencer") size(544, 480), colour(120, 120, 120),pluginId("GdSI"), guiRefresh(128), import("gridSequencer.plant")
+gridSequencer bounds(7, 7, 535, 337), channel("grid"), nameSpace("rw")
 button bounds(10, 430, 148, 40) channel("random") value(1) text("Randomise", "Randomise") 
 button bounds(10, 390, 148, 40) channel("clear") value(1) text("Clear", "Clear") 
 button bounds(10, 350, 148, 40) channel("play") value(1) text("Play", "Stop") 

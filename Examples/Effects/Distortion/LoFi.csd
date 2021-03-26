@@ -2,14 +2,14 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form size(230, 120), caption("Lo Fi"), pluginid("lofi"), scrollbars(0) style("legacy")
+form size(230, 120), caption("Lo Fi"), pluginId("lofi"), scrollBars(0) style("legacy")
 image pos(0, 0), size(230, 120), colour(0,0,0), shape("sharp")
 image   bounds( 30, 94, 30, 15), shape("rounded"), colour("black")
 image   bounds( 85, 70, 60, 15), shape("rounded"), colour("black")
 image   bounds(165, 94, 40, 15), shape("rounded"), colour("black")
-rslider bounds(  5, 31, 80, 80), text("Bits"),     channel("bits"),  range(1, 16, 16),        textcolour("White"),    colour("orange"), trackercolour("brown"), outlinecolour("grey")
-rslider bounds( 75,  7, 80, 80), text("Foldover"), channel("fold"),  range(1, 1024, 0, 0.25), textcolour("White"),    colour("orange"), trackercolour("brown"), outlinecolour("grey")
-rslider bounds(145, 31, 80, 80), text("Level"),    channel("level"), range(0, 1.00, 1),       textcolour("White"),    colour("orange"), trackercolour("brown"), outlinecolour("grey")
+rslider bounds(  5, 31, 80, 80), text("Bits"),     channel("bits"),  range(1, 16, 16),        textColour("White"),    colour("orange"), trackerColour("brown"), outlineColour("grey")
+rslider bounds( 75,  7, 80, 80), text("Foldover"), channel("fold"),  range(1, 1024, 0, 0.25), textColour("White"),    colour("orange"), trackerColour("brown"), outlineColour("grey")
+rslider bounds(145, 31, 80, 80), text("Level"),    channel("level"), range(0, 1.00, 1),       textColour("White"),    colour("orange"), trackerColour("brown"), outlineColour("grey")
 }
 </Cabbage>
 <CsoundSynthesizer>

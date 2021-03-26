@@ -106,6 +106,7 @@ public:
 	void showGraph();
 	void showPluginListEditor();
 	void saveGraph(bool saveAs);
+    void covertToCamelCase();
 	void openGraph(File fileToOpen = File());
 	File getCurrentCsdFile();
 	void setCurrentCsdFile(File file);

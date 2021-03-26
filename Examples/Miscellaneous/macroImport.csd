@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("RadioThings") size(440, 180), colour(58, 110, 210), import("../colourMacro.inc"), pluginid("MacI")
+form caption("RadioThings") size(440, 180), colour(58, 110, 210), import("../colourMacro.inc"), pluginId("MacI")
 groupbox bounds(18, 12, 258, 110), $colourMacro
 </Cabbage>
 <CsoundSynthesizer>

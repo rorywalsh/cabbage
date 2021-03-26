@@ -1,11 +1,11 @@
 <Cabbage>
 form caption("Image Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-label bounds(6, 26, 380, 18) text("Image: click to send info to Csound") fontcolour(118, 118, 118, 255)
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+label bounds(6, 26, 380, 18) text("Image: click to send info to Csound") fontColour(118, 118, 118, 255)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 
 image bounds(128, 46, 122, 57), channel("image1"), colour(123, 34, 143), corners(40)
-image bounds(110, 140, 165, 62) identchannel("widgetIdent")
+image bounds(110, 140, 165, 62) identChannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -37,9 +37,9 @@ instr ChangeAttributes
     SIdentifier init ""
 	SIdent sprintf "corners(%d) ", rnd(100)/80
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "outlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "outlineColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "outlinethickness(%f) ", rnd(100)/50
+	SIdent sprintf "outlineThickness(%f) ", rnd(100)/50
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "alpha(%f) ", 50 + rnd(50)/50
 	SIdentifier strcat SIdentifier, SIdent

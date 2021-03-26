@@ -1,9 +1,9 @@
 <Cabbage>
 form caption("Slider Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-hslider bounds(8, 38, 369, 50), channel("gain"), text("Gain") range(0, 1, 0, 1, 0.001) fontcolour(91, 46, 46, 255) textcolour(29, 29, 29, 255)
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+hslider bounds(8, 38, 369, 50), channel("gain"), text("Gain") range(0, 1, 0, 1, 0.001) fontColour(91, 46, 46, 255) textColour(29, 29, 29, 255)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-rslider bounds(70, 140, 41, 119) channel("rsliderChannel"), identchannel("widgetIdent"), range(0, 1, 0, 1, 0.001) 
+rslider bounds(70, 140, 41, 119) channel("rsliderChannel"), identChannel("widgetIdent"), range(0, 1, 0, 1, 0.001) 
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -33,33 +33,33 @@ endin
 
 instr ChangeAttributes
     SIdentifier init ""
-	SIdent sprintf "markercolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "markerColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "markerthickness(%f) ", rnd(100)/50
+	SIdent sprintf "markerThickness(%f) ", rnd(100)/50
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "markerthickness(%f) ", rnd(100)/50
+	SIdent sprintf "markerThickness(%f) ", rnd(100)/50
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "markerthickness(%f) ", rnd(100)/50
+	SIdent sprintf "markerThickness(%f) ", rnd(100)/50
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "outlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "outlineColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "popuptext(\"Popup Text %d\") ", rnd(1000)
+	SIdent sprintf "popupText(\"Popup Text %d\") ", rnd(1000)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "textcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "textColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "text(\"TextOff %f\") ", rnd(100)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "trackerthickness(%f) ", rnd(10)
+	SIdent sprintf "trackerThickness(%f) ", rnd(10)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "trackerinsideradius(%f) ", rnd(10)/10
+	SIdent sprintf "trackerInsideRadius(%f) ", rnd(10)/10
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "trackeroutsideradius(%f) ", rnd(10)/10
+	SIdent sprintf "trackerOutsideRadius(%f) ", rnd(10)/10
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "textboxoutlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "textBoxOutlineColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "textboxcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "textBoxColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "trackercolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "trackerColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "alpha(%f) ", 50 + rnd(50)/50
 	SIdentifier strcat SIdentifier, SIdent
@@ -69,7 +69,7 @@ instr ChangeAttributes
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "colour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "fontcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "fontColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "visible(%d) ", (rnd(100) > 80 ? 0 : 1)
 	SIdentifier strcat SIdentifier, SIdent

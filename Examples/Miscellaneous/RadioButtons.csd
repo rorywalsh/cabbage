@@ -1,17 +1,17 @@
 <Cabbage>
-form caption("Radio Buttons") size(300, 200), pluginid("RdBt"), guirefresh(10)
+form caption("Radio Buttons") size(300, 200), pluginId("RdBt"), guiRefresh(10)
 
-button bounds(8, 122, 60, 25), channel("but10"), radiogroup(101), colour:1("blue"), value(1), text("Zero", "One")
-button bounds(82, 122, 60, 25), channel("but11"), radiogroup(101), colour:1("blue"), text("Zero", "One")
-button bounds(154, 122, 60, 25), channel("but12"), radiogroup(101), colour:1("blue"), text("Zero", "One")
-checkbox bounds(8, 12, 102, 25), text("Check1"), channel("but1"), radiogroup(100), colour:1("red"), colour:0("blue"), value(1)
-checkbox bounds(8, 38, 102, 25), text("Check2"), channel("but2"), radiogroup(100), colour:1("red"), colour:0("blue")
-checkbox bounds(8, 64, 102, 25), text("Check3"), channel("but3"), radiogroup(100), colour:1("red"), colour:0("blue")
-checkbox bounds(8, 90, 102, 25), text("Check4"), channel("but4"), radiogroup(100), colour:1("red"), colour:0("blue")
-checkbox bounds(110, 12, 102, 25), text("Check5"), channel("but5"), radiogroup(100), colour:1("red"), colour:0("blue")
-checkbox bounds(110, 38, 102, 25), text("Check6"), channel("but6"), radiogroup(100), colour:1("red"), colour:0("blue")
-checkbox bounds(110, 64, 102, 25), text("Check7"), channel("but7"), radiogroup(100), colour:1("red"), colour:0("blue")
-checkbox bounds(110, 90, 102, 25), text("Check8"), channel("but8"), radiogroup(100), colour:1("red"), colour:0("blue")
+button bounds(8, 122, 60, 25), channel("but10"), radioGroup(101), colour:1("blue"), value(1), text("Zero", "One")
+button bounds(82, 122, 60, 25), channel("but11"), radioGroup(101), colour:1("blue"), text("Zero", "One")
+button bounds(154, 122, 60, 25), channel("but12"), radioGroup(101), colour:1("blue"), text("Zero", "One")
+checkbox bounds(8, 12, 102, 25), text("Check1"), channel("but1"), radioGroup(100), colour:1("red"), colour:0("blue"), value(1)
+checkbox bounds(8, 38, 102, 25), text("Check2"), channel("but2"), radioGroup(100), colour:1("red"), colour:0("blue")
+checkbox bounds(8, 64, 102, 25), text("Check3"), channel("but3"), radioGroup(100), colour:1("red"), colour:0("blue")
+checkbox bounds(8, 90, 102, 25), text("Check4"), channel("but4"), radioGroup(100), colour:1("red"), colour:0("blue")
+checkbox bounds(110, 12, 102, 25), text("Check5"), channel("but5"), radioGroup(100), colour:1("red"), colour:0("blue")
+checkbox bounds(110, 38, 102, 25), text("Check6"), channel("but6"), radioGroup(100), colour:1("red"), colour:0("blue")
+checkbox bounds(110, 64, 102, 25), text("Check7"), channel("but7"), radioGroup(100), colour:1("red"), colour:0("blue")
+checkbox bounds(110, 90, 102, 25), text("Check8"), channel("but8"), radioGroup(100), colour:1("red"), colour:0("blue")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

@@ -1,6 +1,6 @@
 <Cabbage>
-form caption("Csound output") size(480,400), pluginid("InBt"), guirefresh(10)
-infobutton bounds(10, 10, 100, 50), file("example1.html"), text("Help"), colour("red"), fontcolour("blue")
+form caption("Csound output") size(480,400), pluginId("InBt"), guiRefresh(10)
+infobutton bounds(10, 10, 100, 50), file("example1.html"), text("Help"), colour("red"), fontColour("blue")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

@@ -12,27 +12,27 @@
 ; The offset value is subtracted so that the envelope can experience values of zero. 
 
 <Cabbage>
-form caption("GEN05"), size(245, 390), pluginid("gn05"), colour(13, 50, 67,50) style("legacy")
+form caption("GEN05"), size(245, 390), pluginId("gn05"), colour(13, 50, 67,50) style("legacy")
 
 label    bounds( 10,  8, 95, 15), text("Edit Method:")
 combobox bounds(105,  5, 80, 20), text("sliders","drawing"), value(1), channel("mode")
 
-gentable bounds( 10, 30, 225, 120), tablenumber(1), tablecolour("silver"), identchannel("table"), amprange(0,1.1,1), zoom(-1), active(1)
+gentable bounds( 10, 30, 225, 120), tableNumber(1), tableColour("silver"), identChannel("table"), ampRange(0,1.1,1), zoom(-1), active(1)
 
-rslider bounds( 10,150, 50, 70), channel("val1"), text("Value.1"), textBox(1), range(0, 1, 0), colour(100,130,130,250), trackercolour("silver")
-rslider bounds( 70,150, 50, 70), channel("val2"), text("Value.2"), textBox(1), range(0, 1, 1), colour(100,130,130,250), trackercolour("silver")
-rslider bounds(130,150, 50, 70), channel("val3"), text("Value.3"), textBox(1), range(0, 1, 0), colour(100,130,130,250), trackercolour("silver")
+rslider bounds( 10,150, 50, 70), channel("val1"), text("Value.1"), textBox(1), range(0, 1, 0), colour(100,130,130,250), trackerColour("silver")
+rslider bounds( 70,150, 50, 70), channel("val2"), text("Value.2"), textBox(1), range(0, 1, 1), colour(100,130,130,250), trackerColour("silver")
+rslider bounds(130,150, 50, 70), channel("val3"), text("Value.3"), textBox(1), range(0, 1, 0), colour(100,130,130,250), trackerColour("silver")
 
-rslider bounds(190,150, 50, 70), channel("offset"), text("Offset"), textBox(1), range(0.0001, 0.1, 0.001), colour(200,130,130, 50), trackercolour("silver")
+rslider bounds(190,150, 50, 70), channel("offset"), text("Offset"), textBox(1), range(0.0001, 0.1, 0.001), colour(200,130,130, 50), trackerColour("silver")
 
-rslider bounds( 40,225, 50, 70), channel("dur1"), text("Dur.1"), textBox(1), range(0, 4096, 0, 1, 1), colour(130,100,130,250), trackercolour("silver")
-rslider bounds(100,225, 50, 70), channel("dur2"), text("Dur.2"), textBox(1), range(0, 4096, 4096, 1, 1), colour(130,100,130,250), trackercolour("silver")
+rslider bounds( 40,225, 50, 70), channel("dur1"), text("Dur.1"), textBox(1), range(0, 4096, 0, 1, 1), colour(130,100,130,250), trackerColour("silver")
+rslider bounds(100,225, 50, 70), channel("dur2"), text("Dur.2"), textBox(1), range(0, 4096, 4096, 1, 1), colour(130,100,130,250), trackerColour("silver")
               
 line     bounds( 10,300,225,  2), colour("Grey")
 checkbox bounds( 15,310,80, 17), channel("TestGen"), text("Test"),  value(1), colour("yellow"), shape("square")
-rslider  bounds( 60,310, 70, 70), channel("speed"), text("Speed"), textBox(1), range(0.25, 8.00, 1,0.5,0.001),   colour(250,230,250,250), trackercolour("silver")
-rslider  bounds(120,310, 70, 70), channel("freq"),  text("Freq."), textBox(1), range(50, 5000, 500,0.5,0.1),     colour(250,230,250,250), trackercolour("silver")
-rslider  bounds(180,310, 70, 70), channel("lev"),   text("Level"), textBox(1), range(0, 1.00, 0.5),              colour(250,230,250,250), trackercolour("silver")
+rslider  bounds( 60,310, 70, 70), channel("speed"), text("Speed"), textBox(1), range(0.25, 8.00, 1,0.5,0.001),   colour(250,230,250,250), trackerColour("silver")
+rslider  bounds(120,310, 70, 70), channel("freq"),  text("Freq."), textBox(1), range(50, 5000, 500,0.5,0.1),     colour(250,230,250,250), trackerColour("silver")
+rslider  bounds(180,310, 70, 70), channel("lev"),   text("Level"), textBox(1), range(0, 1.00, 0.5),              colour(250,230,250,250), trackerColour("silver")
 
 </Cabbage>
                     
@@ -81,7 +81,7 @@ instr	1
 		   irem		=	4096 - (i(gkdur1) + i(gkdur2))		; remainder duration of table
 		  endif
 		gi1	ftgen	1, 0,   4096, -5, i(gkval1)+i(gkoffset), idur1, i(gkval2)+i(gkoffset), idur2, i(gkval3)+i(gkoffset), irem, i(gkoffset)
-		chnset	"tablenumber(1)", "table"	; update table display	
+		chnset	"tableNumber(1)", "table"	; update table display	
 		rireturn
 	endif
 

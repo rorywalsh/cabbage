@@ -4,11 +4,11 @@
 ; It will be noticed that rspline can output values beyond the maximum allowed amplitude limits (-1 and 1)
 
 <Cabbage>
-form caption("Random Number Generators"), size(920, 280), pluginid("RaFu"), guirefresh(32) style("legacy")
+form caption("Random Number Generators"), size(920, 280), pluginId("RaFu"), guiRefresh(32) style("legacy")
 
 image     bounds(  5,  0,910,200), colour(0,0,0,0), plant("Table") {
-gentable  bounds(  0,  0,910,150), identchannel("table1"), tablenumber(1), tablecolour:1(100,0,0), alpha(1), amprange(-1,1,1), zoom(-1), tablebackgroundcolour(50,50,50), tablegridcolour(100,100,100)
-image     bounds(  0,  0,  1,150), identchannel("wiper")
+gentable  bounds(  0,  0,910,150), identChannel("table1"), tableNumber(1), tableColour:1(100,0,0), alpha(1), ampRange(-1,1,1), zoom(-1), tableBackgroundColour(50,50,50), tableGridColour(100,100,100)
+image     bounds(  0,  0,  1,150), identChannel("wiper")
 nslider bounds(  0,155,90,30), text("Rate of Updates"), channel("ROU"), range(1,256,64,1,1)
 nslider bounds( 95,155,90,30), text("Maximum so far"), channel("Max"), range(-10,10,0,1,0.001)
 nslider bounds(190,155,90,30), text("Minimum so far"), channel("Min"), range(-10,10,0,1,0.001)
@@ -17,7 +17,7 @@ button    bounds(285,170,60,17), text("RESET","RESET"), channel("Reset"), latche
 checkbox  bounds(355,170,60,15), text("Sound"), channel("SoundOnOff"), colour("yellow")
 rslider   bounds(415,165,25,25), channel("SoundAmp"), range(0,1,0.3,0.5,0.001)
 
-image     bounds(450,154,130,39), colour(0,0,0,0), outlinethickness(1), outlinecolour(200,200,200), shape("sharp")
+image     bounds(450,154,130,39), colour(0,0,0,0), outlineThickness(1), outlineColour(200,200,200), shape("sharp")
 label     bounds(455,158,80,12), text("FILTER")
 combobox  bounds(455,170,80,20), text("none","port","lineto"), channel("Filter")
 label     bounds(545,156,25,11), text("Time"), align("centre")
@@ -28,33 +28,33 @@ rslider   bounds(545,165,25,25), channel("Time"), range(0,1,0.1,0.5,0.001)
 label     bounds( 10,208,80,12), text("OPCODE")
 combobox  bounds( 10,220,80,20), text("randomi","randomh","rspline","jspline","jitter","jitter2","vibr","vibrato","gaussi"), channel("Type")
 
-image     bounds( 95,210,300, 60), colour(0,0,0,0), plant("randomi"), identchannel("randomiPlant") {
+image     bounds( 95,210,300, 60), colour(0,0,0,0), plant("randomi"), identChannel("randomiPlant") {
 nslider bounds(  0,  0,90,30), text("Amp.1"),         channel("randomiAmp1"),    range(-1,1,-1,1,0.001)
 nslider bounds( 90,  0,90,30), text("Amp.2"),         channel("randomiAmp2"),    range(-1,1,1,1,0.001)
 nslider bounds(180,  0,90,30), text("Freq"),          channel("randomiFreq"),    range(0.001,16,1,1,0.001)
 }
-image     bounds( 95,210,600, 60), colour(0,0,0,0), plant("randomh"), identchannel("randomhPlant") {
+image     bounds( 95,210,600, 60), colour(0,0,0,0), plant("randomh"), identChannel("randomhPlant") {
 nslider bounds(  0,  0,90,30), text("Amp.1"),         channel("randomhAmp1"),    range(-1,1,-1,1,0.001)
 nslider bounds( 90,  0,90,30), text("Amp.2"),         channel("randomhAmp2"),    range(-1,1,1,1,0.001)
 nslider bounds(180,  0,90,30), text("Freq"),          channel("randomhFreq"),    range(0.001,16,1,1,0.001)
 }
-image     bounds( 95,210,600, 60), colour(0,0,0,0), plant("rspline"), identchannel("rsplinePlant") {
+image     bounds( 95,210,600, 60), colour(0,0,0,0), plant("rspline"), identChannel("rsplinePlant") {
 nslider bounds(  0,  0,90,30), text("Amp.1"),           channel("rsplineAmp1"),     range(-1,1,-1,1,0.001)
 nslider bounds( 90,  0,90,30), text("Amp.2"),           channel("rsplineAmp2"),     range(-1,1,1,1,0.001)
 nslider bounds(180,  0,90,30), text("Freq.1"),          channel("rsplineFreq1"),    range(0.001,16,1,1,0.001)
 nslider bounds(270,  0,90,30), text("Freq.2"),          channel("rsplineFreq2"),    range(0.001,16,1,1,0.001)
 }
-image     bounds( 95,210,600, 60), colour(0,0,0,0), plant("jspline"), identchannel("jsplinePlant") {
+image     bounds( 95,210,600, 60), colour(0,0,0,0), plant("jspline"), identChannel("jsplinePlant") {
 nslider bounds(  0,  0,90,30), text("Amp"),             channel("jsplineAmp"),     range(-1,1,1,1,0.001)
 nslider bounds( 90,  0,90,30), text("Freq.1"),          channel("jsplineFreq1"),    range(0.001,16,1,1,0.001)
 nslider bounds(180,  0,90,30), text("Freq.2"),          channel("jsplineFreq2"),    range(0.001,16,1,1,0.001)
 }
-image     bounds( 95,210,600, 60), colour(0,0,0,0), plant("jitter"), identchannel("jitterPlant") {
+image     bounds( 95,210,600, 60), colour(0,0,0,0), plant("jitter"), identChannel("jitterPlant") {
 nslider bounds(  0,  0,90,30), text("Amp"),             channel("jitterAmp"),      range(-1,1,1,1,0.001)
 nslider bounds( 90,  0,90,30), text("Freq.1"),          channel("jitterFreq1"),    range(0.001,16,1,1,0.001)
 nslider bounds(180,  0,90,30), text("Freq.2"),          channel("jitterFreq2"),    range(0.001,16,1,1,0.001)
 }
-image     bounds( 95,210,700, 60), colour(0,0,0,0), plant("jitter2"), identchannel("jitter2Plant") {
+image     bounds( 95,210,700, 60), colour(0,0,0,0), plant("jitter2"), identChannel("jitter2Plant") {
 nslider bounds(  0,  0,90,30), text("Total Amp."),      channel("jitter2TotAmp"),  range(-1,1,1,1,0.001)
 nslider bounds( 90,  0,90,30), text("Amp.1"),           channel("jitter2Amp1"),    range(-1,1,1,1,0.001)
 nslider bounds(180,  0,90,30), text("Freq.1"),          channel("jitter2Freq1"),   range(0.001,16,1,1,0.001)
@@ -63,12 +63,12 @@ nslider bounds(360,  0,90,30), text("Freq.2"),          channel("jitter2Freq2"),
 nslider bounds(450,  0,90,30), text("Amp.3"),           channel("jitter2Amp3"),    range(-1,1,1,1,0.001)
 nslider bounds(540,  0,90,30), text("Freq.3"),          channel("jitter2Freq3"),   range(0.001,16,1,1,0.001)
 }
-image     bounds( 95,210,700, 60), colour(0,0,0,0), plant("vibr"), identchannel("vibrPlant") {
+image     bounds( 95,210,700, 60), colour(0,0,0,0), plant("vibr"), identChannel("vibrPlant") {
 nslider bounds(  0,  0,90,30), text("Av.Amp"),        channel("vibrAvAmp"),        range(-1,1,.3,1,0.001)
 nslider bounds( 90,  0,90,30), text("Av.Freq"),       channel("vibrAvFreq"),       range(0.1,16,1,1,0.001)
 combobox  bounds(180, 14,70,17), text("sine","triangle","square","exp","gauss.1","gauss.2","Bi-gauss"), channel("WaveShape")
 }
-image     bounds( 95,210,800, 60), colour(0,0,0,0), plant("vibrato"), identchannel("vibratoPlant") {
+image     bounds( 95,210,800, 60), colour(0,0,0,0), plant("vibrato"), identChannel("vibratoPlant") {
 nslider bounds(  0,  0,90,30), text("Av.Amp"),        channel("vibratoAvAmp"),          range(-1,1,.3,1,0.001)
 nslider bounds( 90,  0,90,30), text("Av.Freq"),       channel("vibratoAvFreq"),         range(0.1,16,1,1,0.001)
 nslider bounds(180,  0,90,30), text("Rand.Dev.Amp."), channel("vibratoRandAmountAmp"),  range(0,1,1,1,0.001)
@@ -79,7 +79,7 @@ nslider bounds(540,  0,90,30), text("Frq.Min.Rate"),  channel("vibratoCpsMinRate
 nslider bounds(630,  0,90,30), text("Frq.Max.Rate"),  channel("vibratoCpsMaxRate"),     range(0.001,16,1,1,0.001)
 combobox  bounds(720, 14,70,17), text("sine","triangle","square","exp","gauss.1","gauss.2","Bi-gauss"), channel("WaveShape")
 }
-image     bounds( 95,210,800, 60), colour(0,0,0,0), plant("gaussi"), identchannel("gaussiPlant") {
+image     bounds( 95,210,800, 60), colour(0,0,0,0), plant("gaussi"), identChannel("gaussiPlant") {
 nslider bounds(  0,  0,90,30), text("Amp."),        	channel("gaussiRange"),          range(0,1,.3,1,0.001)
 nslider bounds( 90,  0,90,30), text("Range"),       	channel("gaussiAmp"),         range(0,1,1,1,0.001)
 nslider bounds(180,  0,90,30), text("Freq."), 		channel("gaussiCps"),  range(0,100,5,1,0.001)
@@ -245,7 +245,7 @@ instr	1
  if metro(kROU)==1 then							; limit updates (both to the table and to the GUI) using a metronome
   	tablew	kRnd,kNdx,giFunc					; write random value to table
   kNdx	wrap	kNdx+1,0,iLen						; increment index and wrap ot zero if it exceeds table length
-  chnset	"tablenumber(1)","table1"				; update GUI gentable
+  chnset	"tableNumber(1)","table1"				; update GUI gentable
   Smsg	sprintfk	"pos(%d,5)", ((kNdx/iLen) * giTableWidth)	; construct string message to update position of wiper
   	chnset		Smsg,"wiper"					; send message to 'wiper' widget
  endif

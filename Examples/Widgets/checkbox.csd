@@ -1,9 +1,9 @@
 <Cabbage>
 form caption("Checkbox Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 checkbox bounds(116, 38, 150, 50), channel("checkbutton1"), text("Enable Tone", "Disable Tone"),
-checkbox bounds(110, 140, 165, 62) identchannel("widgetIdent")
+checkbox bounds(110, 140, 165, 62) identChannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -45,7 +45,7 @@ instr ChangeAttributes
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "colour:1(%d, 0, 255) ", rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "fontcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "fontColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "text(\"TextOff %f\", \"TextOn %f\") ", rnd(100), rnd(100)
 	SIdentifier strcat SIdentifier, SIdent

@@ -1,6 +1,6 @@
 <Cabbage>
 form size(400, 300), caption("Keyboard"), pluginID("plu1")
-keyboard bounds(10, 10, 385, 160), identchannel("widgetIdent")
+keyboard bounds(10, 10, 385, 160), identChannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -31,21 +31,21 @@ instr ChangeAttributes
     SIdentifier init ""
 	SIdent sprintf "keyseperatorcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "mouseoverkeycolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "mouseOverKeyColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "keypressbaseoctave(%d) ", rnd(10)
+	SIdent sprintf "keypressBaseOctave(%d) ", rnd(10)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "whitenotecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "whiteNoteColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "blacknotecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "blackNoteColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "arrowbackgroundcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "arrowBackgroundColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "keydowncolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "keydownColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "arrowcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "arrowColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "keywidth(%d) ", 20+rnd(20)
+	SIdent sprintf "keyWidth(%d) ", 20+rnd(20)
 	SIdentifier strcat SIdentifier, SIdent
     ;send identifier string to Cabbage
     chnset SIdentifier, "widgetIdent"           

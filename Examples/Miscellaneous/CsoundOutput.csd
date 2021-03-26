@@ -1,6 +1,6 @@
 <Cabbage>
-form caption("Csound output") size(480,400), pluginid("CSOp"), guirefresh(10)
-csoundoutput bounds(8, 4, 467, 353), colour("black"), fontcolour("lime")
+form caption("Csound output") size(480,400), pluginId("CSOp"), guiRefresh(10)
+csoundoutput bounds(8, 4, 467, 353), colour("black"), fontColour("lime")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

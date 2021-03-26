@@ -22,22 +22,22 @@
 ; Level		-	global control of the level of all signal that may be present at the output.
 
 <Cabbage>
-form caption("pvsCross") size(370, 90), pluginid("crss") style("legacy")
-image            bounds(0, 0, 370, 90), colour("Cream"), outlinecolour("silver"), outlinethickness(5)
+form caption("pvsCross") size(370, 90), pluginId("crss") style("legacy")
+image            bounds(0, 0, 370, 90), colour("Cream"), outlineColour("silver"), outlineThickness(5)
 
 ; filter switches
-checkbox bounds( 10, 20, 94, 15), text("Swap Inputs"), channel("swap"), fontcolour(138, 54, 15), colour("lime")
+checkbox bounds( 10, 20, 94, 15), text("Swap Inputs"), channel("swap"), fontColour(138, 54, 15), colour("lime")
 
-label    bounds(15, 41, 60,13), text("FFT Size"), fontcolour(138, 54, 15)
+label    bounds(15, 41, 60,13), text("FFT Size"), fontColour(138, 54, 15)
 combobox bounds(15, 55, 60,20), text("64","128","256","512","1024","2048","2048","4096","8192","16384"), channel("att_table"), value(5)
 
 line     bounds(115, 10,165, 3), colour("Grey")
 
-label   bounds(160,  5, 75, 12), text("M  I  X  E  R"), fontcolour(78, 24,  7), colour("Cream")
-rslider bounds(100,18, 75, 65), text("Source"),     channel("src_lev"),   range(0, 1.00, 0),   textcolour(138, 54, 15), colour("chocolate"), trackercolour(138, 54, 15)
-rslider bounds(160,18, 75, 65), text("Dest."),      channel("dst_lev"),   range(0, 1.00, 0),   textcolour(138, 54, 15), colour("chocolate"), trackercolour(138, 54, 15)
-rslider bounds(220,18, 75, 65), text("Cross"),      channel("cross_lev"), range(0, 1.00, 1),   textcolour(138, 54, 15), colour("chocolate"), trackercolour(138, 54, 15)
-rslider bounds(285, 8, 75, 75), text("Level"),      channel("lev"),       range(0, 1.00, 0.5), textcolour(138, 54, 15), colour("chocolate"), trackercolour(138, 54, 15)
+label   bounds(160,  5, 75, 12), text("M  I  X  E  R"), fontColour(78, 24,  7), colour("Cream")
+rslider bounds(100,18, 75, 65), text("Source"),     channel("src_lev"),   range(0, 1.00, 0),   textColour(138, 54, 15), colour("chocolate"), trackerColour(138, 54, 15)
+rslider bounds(160,18, 75, 65), text("Dest."),      channel("dst_lev"),   range(0, 1.00, 0),   textColour(138, 54, 15), colour("chocolate"), trackerColour(138, 54, 15)
+rslider bounds(220,18, 75, 65), text("Cross"),      channel("cross_lev"), range(0, 1.00, 1),   textColour(138, 54, 15), colour("chocolate"), trackerColour(138, 54, 15)
+rslider bounds(285, 8, 75, 75), text("Level"),      channel("lev"),       range(0, 1.00, 0.5), textColour(138, 54, 15), colour("chocolate"), trackerColour(138, 54, 15)
 </Cabbage>
 <CsoundSynthesizer>
 

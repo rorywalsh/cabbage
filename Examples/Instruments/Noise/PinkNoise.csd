@@ -2,12 +2,12 @@
 ; Written by Iain McCurdy, 2012
 
 <Cabbage>
-form caption("Pink Noise"), size(230, 80), pluginid("pnse") style("legacy")
-image bounds(  0,  0,230, 80), colour("pink"), shape("rounded"), outlinecolour("red"), outlinethickness(4) 
-checkbox bounds( 20, 10, 80, 15), text("On/Off"), channel("onoff"), value(0), fontcolour("black"), colour("yellow")
+form caption("Pink Noise"), size(230, 80), pluginId("pnse") style("legacy")
+image bounds(  0,  0,230, 80), colour("pink"), shape("rounded"), outlineColour("red"), outlineThickness(4) 
+checkbox bounds( 20, 10, 80, 15), text("On/Off"), channel("onoff"), value(0), fontColour("black"), colour("yellow")
 combobox bounds( 20, 40, 70, 20), channel("method"), value(1), text("Gardner", "Kellet", "Kellet 2")
-rslider  bounds(100, 10, 60, 60), text("Amplitude"), channel("amp"),      range(0, 1, 0.5, 0.5, 0.001), textcolour("black"), trackercolour(255,100,100), colour(255,100,100)
-rslider  bounds(160, 10, 60, 60), text("N.Bands"),   channel("numbands"), range(4, 32, 20, 1, 1),       textcolour("black"), trackercolour(255,100,100), colour(255,100,100)
+rslider  bounds(100, 10, 60, 60), text("Amplitude"), channel("amp"),      range(0, 1, 0.5, 0.5, 0.001), textColour("black"), trackerColour(255,100,100), colour(255,100,100)
+rslider  bounds(160, 10, 60, 60), text("N.Bands"),   channel("numbands"), range(4, 32, 20, 1, 1),       textColour("black"), trackerColour(255,100,100), colour(255,100,100)
 </Cabbage>
 
 <CsoundSynthesizer>

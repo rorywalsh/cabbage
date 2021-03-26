@@ -22,9 +22,9 @@
 ; Gain		-	A make-up gain control. Use this to compensate for loss of power caused by certain ocmpressor settings.
 
 <Cabbage>
-#define SLIDER_APPEARANCE trackercolour("DarkSlateGrey"), textcolour("black") 
-form caption("Compressor") size(440,130), pluginid("Comp") style("legacy")
-image            bounds(  0,  0,440,130), outlinethickness(6), outlinecolour("white"), colour("grey")
+#define SLIDER_APPEARANCE trackerColour("DarkSlateGrey"), textColour("black") 
+form caption("Compressor") size(440,130), pluginId("Comp") style("legacy")
+image            bounds(  0,  0,440,130), outlineThickness(6), outlineColour("white"), colour("grey")
 rslider bounds( 10, 10, 70, 70), channel("thresh"), text("Threshold"), range(0,120,0), $SLIDER_APPEARANCE
 rslider bounds( 80, 10, 70, 70), channel("att"), text("Attack"),  range(0,1,0.01,0.5), $SLIDER_APPEARANCE
 rslider bounds(150, 10, 70, 70), channel("rel"), text("Release"), range(0,1,0.05,0.5), $SLIDER_APPEARANCE
@@ -32,7 +32,7 @@ rslider bounds(220, 10, 70, 70), channel("ratio"), text("Ratio"), range(1,300,10
 rslider bounds(290, 10, 70, 70), channel("look"), text("Lookahead"), range(0,1,0.01,0.5), $SLIDER_APPEARANCE
 rslider bounds(360, 10, 70, 70), channel("gain"), text("Gain"), range(-36,36,0), $SLIDER_APPEARANCE
 hrange   bounds( 10, 80,420, 30), channel("LowKnee","HighKnee"), range(0, 120, 48:60), $SLIDER_APPEARANCE
-label    bounds( 10,108,420, 13), text("Soft Knee"), fontcolour("black")
+label    bounds( 10,108,420, 13), text("Soft Knee"), fontColour("black")
 </Cabbage>
 
 <CsoundSynthesizer>

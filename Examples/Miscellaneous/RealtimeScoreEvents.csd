@@ -4,14 +4,14 @@
 ; Written by Iain McCurdy, 2015. Borrowing from Rory Walsh's 'TextEditor.csd' example.
 
 <Cabbage>
-form caption("Realtime Score Events") size(800, 365), pluginid("RTSc"), guirefresh(16)
+form caption("Realtime Score Events") size(800, 365), pluginId("RTSc"), guiRefresh(16)
 
-label bounds(5, 5, 390, 15), text("Enter a score event for instrument 2 or 3..."), align("left"),  fontcolour("white")
-texteditor bounds(5, 25, 390, 20), channel("ScoreEvent"), text(""), color(20, 20, 20), fontcolour(0, 0, 0, 255), 
+label bounds(5, 5, 390, 15), text("Enter a score event for instrument 2 or 3..."), align("left"),  fontColour("white")
+texteditor bounds(5, 25, 390, 20), channel("ScoreEvent"), text(""), color(20, 20, 20), fontColour(0, 0, 0, 255), 
 button     bounds(5,50,80,20), text("Send Again","Send Again"), channel("SendAgain"), value(0)
 csoundoutput bounds(5, 75, 390, 285)
 
-textbox bounds(405, 5,390,350), file("RealtimeScoreEvents.txt"), colour("white"), fontcolour("black")
+textBox bounds(405, 5,390,350), file("RealtimeScoreEvents.txt"), colour("white"), fontColour("black")
 </Cabbage>
 
 <CsoundSynthesizer>

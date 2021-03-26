@@ -26,24 +26,24 @@
 ; Amplitude	-	amount of amplitude modulation
 
 <Cabbage>
-form caption("Leslie Speaker") size(260,120), pluginid("Lsli") style("legacy")
+form caption("Leslie Speaker") size(260,120), pluginId("Lsli") style("legacy")
 
-image     bounds(  0,  0,260,120), outlinethickness(4), outlinecolour("white"), file("DarkWood.jpg");, colour(75,50,50)
-image     bounds(  0,  0,260,120), outlinethickness(4), outlinecolour("silver"), colour(0,0,0,0)
-button    bounds( 40, 85, 60, 25), fontcolour:0(80,55,55), fontcolour:1(255,245,245), colour:0(75,50,50), colour:1(250,170,170), text("Slow","Slow"), channel("Slow"), latched(1), radiogroup(1), value(1)
-button    bounds(100, 85, 60, 25), fontcolour:0(80,55,55), fontcolour:1(255,245,245), colour:0(75,50,50), colour:1(250,170,170), text("Stop","Stop"), channel("Stop"), latched(1), radiogroup(1)
-button    bounds(160, 85, 60, 25), fontcolour:0(80,55,55), fontcolour:1(255,245,245), colour:0(75,50,50), colour:1(250,170,170), text("Fast","Fast"), channel("Fast"), latched(1), radiogroup(1)
+image     bounds(  0,  0,260,120), outlineThickness(4), outlineColour("white"), file("DarkWood.jpg");, colour(75,50,50)
+image     bounds(  0,  0,260,120), outlineThickness(4), outlineColour("silver"), colour(0,0,0,0)
+button    bounds( 40, 85, 60, 25), fontColour:0(80,55,55), fontColour:1(255,245,245), colour:0(75,50,50), colour:1(250,170,170), text("Slow","Slow"), channel("Slow"), latched(1), radioGroup(1), value(1)
+button    bounds(100, 85, 60, 25), fontColour:0(80,55,55), fontColour:1(255,245,245), colour:0(75,50,50), colour:1(250,170,170), text("Stop","Stop"), channel("Stop"), latched(1), radioGroup(1)
+button    bounds(160, 85, 60, 25), fontColour:0(80,55,55), fontColour:1(255,245,245), colour:0(75,50,50), colour:1(250,170,170), text("Fast","Fast"), channel("Fast"), latched(1), radioGroup(1)
 
-image     bounds( 132,  7,16,16), identchannel("TweeterID"), shape("ellipse"), colour(170,150,150)
-image     bounds( 110, 30,40,40), identchannel("WooferID"),  shape("ellipse"), colour(170,150,150)
+image     bounds( 132,  7,16,16), identChannel("TweeterID"), shape("ellipse"), colour(170,150,150)
+image     bounds( 110, 30,40,40), identChannel("WooferID"),  shape("ellipse"), colour(170,150,150)
 
-button bounds(200,10,50, 18), colour:0(80,55,55), colour:1(80,55,55), channel("setup_Button"), text("SETUP"), fontcolour:0(200,200,200), fontcolour:1(200,200,200)
-groupbox bounds(360,28,340,190), plant("Setup"), outlinethickness(0), popup(1), identchannel("setupPlant")
+button bounds(200,10,50, 18), colour:0(80,55,55), colour:1(80,55,55), channel("setup_Button"), text("SETUP"), fontColour:0(200,200,200), fontColour:1(200,200,200)
+groupbox bounds(360,28,340,190), plant("Setup"), outlineThickness(0), popup(1), identChannel("setupPlant")
 {
-image     bounds(0,0,340,190), outlinethickness(4), outlinecolour("silver"), colour(75,50,50), file("DarkWood.jpg")
+image     bounds(0,0,340,190), outlineThickness(4), outlineColour("silver"), colour(75,50,50), file("DarkWood.jpg")
 
-image     bounds(0,0,170,190), outlinethickness(4), outlinecolour("silver"), colour(0,0,0,0)
-label     bounds(0,4,170, 14), text("Woofer"), fontcolour(200,200,200)
+image     bounds(0,0,170,190), outlineThickness(4), outlineColour("silver"), colour(0,0,0,0)
+label     bounds(0,4,170, 14), text("Woofer"), fontColour(200,200,200)
 nslider bounds(10, 20,70,40), channel("CF_Low"), text("Cutoff"),     range(20,8000,800,1,1)
 nslider bounds(90, 20,70,40), channel("LF_Damp"), text("Damping"),   range(0.01,8,1.5,1,0.01)
 nslider bounds(10, 60,70,40), channel("LF_Slow"), text("RPM Slow"),  range(5,1000, 40,1,1)
@@ -52,8 +52,8 @@ nslider bounds(10,100,70,40), channel("LF_Dop"), text("Doppler"),    range(0,2,0
 nslider bounds(90,100,70,40), channel("LF_Pan"), text("Panning"),    range(0,1,0.2,1,0.01)
 nslider bounds(10,140,70,40), channel("LF_Amp"), text("Amplitude"),  range(0,1,0.3,1,0.01)
 
-image     bounds(170,0,170,190), outlinethickness(4), outlinecolour("silver"), colour(0,0,0,0)
-label     bounds(170,4,170, 14), text("Tweeter"), fontcolour(200,200,200)
+image     bounds(170,0,170,190), outlineThickness(4), outlineColour("silver"), colour(0,0,0,0)
+label     bounds(170,4,170, 14), text("Tweeter"), fontColour(200,200,200)
 nslider bounds(180, 20,70,40), channel("CF_High"), text("Cutoff"),    range(20,8000,800,1,1)
 nslider bounds(260, 20,70,40), channel("HF_Damp"), text("Damping"),   range(0.01,8,0.5,1,0.01)
 nslider bounds(180, 60,70,40), channel("HF_Slow"), text("RPM Slow"),  range(5,1000, 48,1,1)

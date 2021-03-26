@@ -1,10 +1,10 @@
 <Cabbage>
 form caption("Combobox Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 combobox bounds(36, 38, 150, 50), channel("combobox1"), items("100Hz", "200Hz", "300Hz")
 combobox bounds(200, 38, 150, 50), channel("combobox2"), populate("*.*", ".")
-combobox bounds(110, 140, 165, 62) identchannel("widgetIdent")
+combobox bounds(110, 140, 165, 62) identChannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -53,7 +53,7 @@ instr ChangeAttributes
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "colour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "fontcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "fontColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "value(%f) ", rnd(1)
 	SIdentifier strcat SIdentifier, SIdent

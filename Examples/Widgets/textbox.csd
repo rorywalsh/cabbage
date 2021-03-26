@@ -1,7 +1,7 @@
 <Cabbage>
 form caption("Textbox Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-textbox bounds(10, 30, 380, 267) identchannel("widgetIdent"), file("Textbox.csd")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+textBox bounds(10, 30, 380, 267) identChannel("widgetIdent"), file("Textbox.csd")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

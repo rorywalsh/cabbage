@@ -2,8 +2,8 @@
 ; Written by Iain McCurdy, 2017.
 
 <Cabbage>
-form caption("Tuner"), size(295,100), pluginid("Tunr")
-image            bounds(0,0,295,100), colour(50,50,80), outlinethickness(4), outlinecolour("silver")
+form caption("Tuner"), size(295,100), pluginId("Tunr")
+image            bounds(0,0,295,100), colour(50,50,80), outlineThickness(4), outlineColour("silver")
 image bounds(10,10,290,85), colour(0,0,0,0), plant("Indicators") {
 checkbox bounds(  0, 16,  9,  9), colour(255,  5,  5), channel("Err-50"), shape("ellipse"), value(0), active(0)
 checkbox bounds( 14, 14, 13, 13), colour(255, 55, 55), channel("Err-40"), shape("ellipse"), value(0), active(0)
@@ -16,10 +16,10 @@ checkbox bounds(197,  9, 22, 22), colour(255,155,155), channel("Err20"),  shape(
 checkbox bounds(224, 12, 17, 17), colour(205,105,105), channel("Err30"),  shape("ellipse"), value(0), active(0)
 checkbox bounds(246, 14, 13, 13), colour(255, 55, 55), channel("Err40"),  shape("ellipse"), value(0), active(0)
 checkbox bounds(264, 16,  9,  9), colour(255,  5,  5), channel("Err50"),  shape("ellipse"), value(0), active(0)
-image    bounds( 91, 48,120, 34), colour(0,0,0), outlinethickness(2), outlinecolour("silver")
-label    bounds(107, 50, 60, 30), text("---"), identchannel("NoteNameID"), fontcolour("white")
-label    bounds(157, 58, 60, 20), text("---"), identchannel("ErrorID"), fontcolour("yellow")
-checkbox bounds( 15, 58, 60, 14), text("mute"), colour( 55,255, 55), channel("mute"), value(1), fontcolour("white")
+image    bounds( 91, 48,120, 34), colour(0,0,0), outlineThickness(2), outlineColour("silver")
+label    bounds(107, 50, 60, 30), text("---"), identChannel("NoteNameID"), fontColour("white")
+label    bounds(157, 58, 60, 20), text("---"), identChannel("ErrorID"), fontColour("yellow")
+checkbox bounds( 15, 58, 60, 14), text("mute"), colour( 55,255, 55), channel("mute"), value(1), fontColour("white")
 }
 </Cabbage>
 

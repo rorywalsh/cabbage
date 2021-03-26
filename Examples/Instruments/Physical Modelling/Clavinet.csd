@@ -52,103 +52,103 @@ Filters
  The four filters are in a parallel arrangement as opposed to being in series.
 
 <Cabbage>
-form caption("Clavinet"), size(550, 170), pluginid("clav"), colour(228,156,28), guirefresh(64) style("legacy")
+form caption("Clavinet"), size(550, 170), pluginId("clav"), colour(228,156,28), guiRefresh(64) style("legacy")
 
-#define RSliderStyle textcolour(black), outlinecolour(50,50,50)
+#define RSliderStyle textColour(black), outlineColour(50,50,50)
 
 image bounds(0,0,550,170), colour(228,156,28), shape("sharp")
 
 ; filter switches
-checkbox bounds( 10,  5, 70, 15), text("Brilliant") channel("brilliant"), fontcolour(50,50,50), colour("lime")
-checkbox bounds( 10, 25, 70, 15), text("Treble") channel("treble"), fontcolour(50,50,50), colour("lime"), value(1)
-checkbox bounds( 10, 45, 70, 15), text("Medium") channel("medium"), fontcolour(50,50,50), colour("lime")
-checkbox bounds( 10, 65, 70, 15), text("Soft") channel("soft"), fontcolour(50,50,50), colour("lime")
+checkbox bounds( 10,  5, 70, 15), text("Brilliant") channel("brilliant"), fontColour(50,50,50), colour("lime")
+checkbox bounds( 10, 25, 70, 15), text("Treble") channel("treble"), fontColour(50,50,50), colour("lime"), value(1)
+checkbox bounds( 10, 45, 70, 15), text("Medium") channel("medium"), fontColour(50,50,50), colour("lime")
+checkbox bounds( 10, 65, 70, 15), text("Soft") channel("soft"), fontColour(50,50,50), colour("lime")
 
 ; pickup configuration switches
-checkbox bounds( 80,  5, 70, 15), text("C/D") channel("C_D"), fontcolour(50,50,50), colour("lime"), value(1)
-checkbox bounds( 80, 25, 70, 15), text("A/B") channel("A_B"), fontcolour(50,50,50), colour("lime"), value(1)
+checkbox bounds( 80,  5, 70, 15), text("C/D") channel("C_D"), fontColour(50,50,50), colour("lime"), value(1)
+checkbox bounds( 80, 25, 70, 15), text("A/B") channel("A_B"), fontColour(50,50,50), colour("lime"), value(1)
 
 ; controls pertaining to the setup of the instrument (pickup positions, pluck position, damping etc.) accessed in a pop-up panel
 button   bounds(140,  5, 100, 30), channel("setup_Button"), text("Setup")
-groupbox bounds(140, 25, 232, 305),  colour(228,156,28), plant("Setup"), outlinethickness(0), popup(1), identchannel("setupPlant")
+groupbox bounds(140, 25, 232, 305),  colour(228,156,28), plant("Setup"), outlineThickness(0), popup(1), identChannel("setupPlant")
 {
 image   bounds(  0,  0,172, 305),  colour(228,156,28)
-rslider bounds(  5,  8, 55, 55), text("Pick A"), colour(195,126,  0), channel("pickA"),   range(0, 1.00, 0.25, 1, 0.001), textcolour(black),  $RSliderStyle
-rslider bounds( 55,  8, 55, 55), text("Pick B"), colour(195,126,  0), channel("pickB"),   range(0, 1.00, 0.07, 1, 0.001), textcolour(black),  $RSliderStyle
-rslider bounds(  5, 68, 55, 55), text("Mod A"),  colour(225,156, 28), channel("ModA"),   range(0,0.50, 0.03, 0.5, 0.001), textcolour(black), $RSliderStyle
-rslider bounds( 55, 68, 55, 55), text("Mod B"),  colour(225,156, 28), channel("ModB"),   range(0,0.50, 0.03, 0.5, 0.001), textcolour(black), $RSliderStyle
-rslider bounds(  5,128, 55, 55), text("Rate A"), colour(255,186, 58), channel("RateA"),   range(0,14.00, 0.2, 0.5, 0.001), textcolour(black), $RSliderStyle
-rslider bounds( 55,128, 55, 55), text("Rate B"), colour(255,186, 58), channel("RateB"),   range(0,14.00, 0.15, 0.5, 0.001), textcolour(black), $RSliderStyle
-rslider bounds(  5,188, 55, 55), text("Env.A"),  colour(255,216, 88), channel("EnvA"),   range(-1, 1.00, 0), textcolour(black), $RSliderStyle
+rslider bounds(  5,  8, 55, 55), text("Pick A"), colour(195,126,  0), channel("pickA"),   range(0, 1.00, 0.25, 1, 0.001), textColour(black),  $RSliderStyle
+rslider bounds( 55,  8, 55, 55), text("Pick B"), colour(195,126,  0), channel("pickB"),   range(0, 1.00, 0.07, 1, 0.001), textColour(black),  $RSliderStyle
+rslider bounds(  5, 68, 55, 55), text("Mod A"),  colour(225,156, 28), channel("ModA"),   range(0,0.50, 0.03, 0.5, 0.001), textColour(black), $RSliderStyle
+rslider bounds( 55, 68, 55, 55), text("Mod B"),  colour(225,156, 28), channel("ModB"),   range(0,0.50, 0.03, 0.5, 0.001), textColour(black), $RSliderStyle
+rslider bounds(  5,128, 55, 55), text("Rate A"), colour(255,186, 58), channel("RateA"),   range(0,14.00, 0.2, 0.5, 0.001), textColour(black), $RSliderStyle
+rslider bounds( 55,128, 55, 55), text("Rate B"), colour(255,186, 58), channel("RateB"),   range(0,14.00, 0.15, 0.5, 0.001), textColour(black), $RSliderStyle
+rslider bounds(  5,188, 55, 55), text("Env.A"),  colour(255,216, 88), channel("EnvA"),   range(-1, 1.00, 0), textColour(black), $RSliderStyle
 
-rslider bounds( 55,188, 55, 55), text("Env.B"),  colour(255,216, 88), channel("EnvB"),   range(-1, 1.00, 0), textcolour(black), $RSliderStyle
-rslider bounds(  5,248, 55, 55), text("Time A"), colour(255,246,118), channel("TimeA"),   range(0, 1.00, 0.05, 0.5, 0.001), textcolour(black), $RSliderStyle
-rslider bounds( 55,248, 55, 55), text("Time B"), colour(255,246,118), channel("TimeB"),   range(0, 1.00, 0.05, 0.5, 0.001), textcolour(black), $RSliderStyle
+rslider bounds( 55,188, 55, 55), text("Env.B"),  colour(255,216, 88), channel("EnvB"),   range(-1, 1.00, 0), textColour(black), $RSliderStyle
+rslider bounds(  5,248, 55, 55), text("Time A"), colour(255,246,118), channel("TimeA"),   range(0, 1.00, 0.05, 0.5, 0.001), textColour(black), $RSliderStyle
+rslider bounds( 55,248, 55, 55), text("Time B"), colour(255,246,118), channel("TimeB"),   range(0, 1.00, 0.05, 0.5, 0.001), textColour(black), $RSliderStyle
 line bounds(110, 25,  1, 260), colour( 50, 50, 50)
-rslider bounds(112,  8, 55, 55), text("Pluck"),  colour(195,126,  0), channel("plk"),     range(0, 1.00, 0.005, 0.5, 0.0001), textcolour(black), $RSliderStyle
-rslider bounds(112, 68, 55, 55), text("Damp"),   colour(225,156, 28), channel("SusDamp"), range(-1.00, 1.00, 0), textcolour(black), $RSliderStyle
-rslider bounds(112,128, 55, 55), text("HPF"),    colour(255,186, 58), channel("HPF"),     range(0,16.0, 0), textcolour(black), $RSliderStyle
-rslider bounds(112,188, 55, 55), text("LPF"),    colour(255,216, 88), channel("LPF"),     range(1.0,72, 72, 0.375, 0.0001), textcolour(black), $RSliderStyle
+rslider bounds(112,  8, 55, 55), text("Pluck"),  colour(195,126,  0), channel("plk"),     range(0, 1.00, 0.005, 0.5, 0.0001), textColour(black), $RSliderStyle
+rslider bounds(112, 68, 55, 55), text("Damp"),   colour(225,156, 28), channel("SusDamp"), range(-1.00, 1.00, 0), textColour(black), $RSliderStyle
+rslider bounds(112,128, 55, 55), text("HPF"),    colour(255,186, 58), channel("HPF"),     range(0,16.0, 0), textColour(black), $RSliderStyle
+rslider bounds(112,188, 55, 55), text("LPF"),    colour(255,216, 88), channel("LPF"),     range(1.0,72, 72, 0.375, 0.0001), textColour(black), $RSliderStyle
 line bounds(170, 25,  1, 260), colour( 50, 50, 50)
-rslider bounds(172,  8, 55, 55), text("Inharm."),colour(255,216, 88), channel("inharm"),  range(-0.99,0.99, 0), textcolour(black), $RSliderStyle
-rslider bounds(172, 68, 55, 55), text("Mix"), colour(255,216, 88), channel("FSMix"),  range(0, 1, 1), textcolour(black), $RSliderStyle
-rslider bounds(172,128, 55, 55), text("Decay"), colour(255,216, 88), channel("FSEnvTime"),  range(0, 1, 0), textcolour(black), $RSliderStyle
-rslider bounds(172,188, 55, 55), text("Feedback"), colour(255,216, 88), channel("FS_FB_Amt"),  range(0, 0.6, 0), textcolour(black), $RSliderStyle
-button  bounds(174,248, 51, 20), text("Key Follow","Key Follow"), fontcolour:0(100,100,100), fontcolour:1(255,255,170), value(0), latched(1), channel("FSKeyFollow") 
+rslider bounds(172,  8, 55, 55), text("Inharm."),colour(255,216, 88), channel("inharm"),  range(-0.99,0.99, 0), textColour(black), $RSliderStyle
+rslider bounds(172, 68, 55, 55), text("Mix"), colour(255,216, 88), channel("FSMix"),  range(0, 1, 1), textColour(black), $RSliderStyle
+rslider bounds(172,128, 55, 55), text("Decay"), colour(255,216, 88), channel("FSEnvTime"),  range(0, 1, 0), textColour(black), $RSliderStyle
+rslider bounds(172,188, 55, 55), text("Feedback"), colour(255,216, 88), channel("FS_FB_Amt"),  range(0, 0.6, 0), textColour(black), $RSliderStyle
+button  bounds(174,248, 51, 20), text("Key Follow","Key Follow"), fontColour:0(100,100,100), fontColour:1(255,255,170), value(0), latched(1), channel("FSKeyFollow") 
 }
 
 ; controls pertaining to the release stage of a note accessed in a pop-up panel
 button bounds(250,   5, 100, 30), channel("release_Button"), text("Release")
-groupbox bounds(250, 25, 265, 65),  colour(228,156,28), plant("Release"), outlinethickness(0), popup(1), identchannel("releasePlant")
+groupbox bounds(250, 25, 265, 65),  colour(228,156,28), plant("Release"), outlineThickness(0), popup(1), identChannel("releasePlant")
 {
 image   bounds(  0,  0,265, 65),  colour(228,156,28)
-rslider bounds(  5,  8, 55, 55), text("Ampl."),  colour(255,186,58), channel("RelAmpl"),  range(0, 20.00, 2), textcolour(black), $RSliderStyle
-rslider bounds( 55,  8, 55, 55), text("Tone"),   colour(255,186,58), channel("RelTone"),  range(100, 8000, 1000), textcolour(black), $RSliderStyle  
-rslider bounds(105,  8, 55, 55), text("D.Time"), colour(255,186,58), channel("RelDTime"), range(0.001, 1, 0.01, 0.5, 0.001), textcolour(black), $RSliderStyle
-rslider bounds(155,  8, 55, 55), text("Damp"),   colour(255,186,58), channel("RelDamp"),  range(0.10, 0.99, 0.95), textcolour(black), $RSliderStyle
-rslider bounds(205,  8, 55, 55), text("A.Time"), colour(255,186,58), channel("RelATime"), range(0.01,20, 0.05, 0.5, 0.01), textcolour(black), $RSliderStyle
+rslider bounds(  5,  8, 55, 55), text("Ampl."),  colour(255,186,58), channel("RelAmpl"),  range(0, 20.00, 2), textColour(black), $RSliderStyle
+rslider bounds( 55,  8, 55, 55), text("Tone"),   colour(255,186,58), channel("RelTone"),  range(100, 8000, 1000), textColour(black), $RSliderStyle  
+rslider bounds(105,  8, 55, 55), text("D.Time"), colour(255,186,58), channel("RelDTime"), range(0.001, 1, 0.01, 0.5, 0.001), textColour(black), $RSliderStyle
+rslider bounds(155,  8, 55, 55), text("Damp"),   colour(255,186,58), channel("RelDamp"),  range(0.10, 0.99, 0.95), textColour(black), $RSliderStyle
+rslider bounds(205,  8, 55, 55), text("A.Time"), colour(255,186,58), channel("RelATime"), range(0.01,20, 0.05, 0.5, 0.01), textColour(black), $RSliderStyle
 }
 
 ; controls pertaining to the setup of the instrument's bandpass filters accessed in a pop-up panel
 button bounds(360,  5, 100, 30), channel("filters_Button"), text("Filters")
-groupbox bounds(360, 25, 230, 195),  colour(228,156,28), plant("Filters"), outlinethickness(0), popup(1), identchannel("filtersPlant")
+groupbox bounds(360, 25, 230, 195),  colour(228,156,28), plant("Filters"), outlineThickness(0), popup(1), identChannel("filtersPlant")
 {
 image    bounds(  0,  0,230,195),  colour(228,156,28)
-label    bounds( 10,  5, 45, 12), text("Brilliant"), colour(228,156,28), fontcolour(50,50,50)
-label    bounds( 64,  5, 45, 12), text("Treble"),    colour(228,156,28), fontcolour(50,50,50)
-label    bounds(121,  5, 45, 12), text("Medium"),    colour(228,156,28), fontcolour(50,50,50)
-label    bounds(174,  5, 45, 12), text("Soft"),      colour(228,156,28), fontcolour(50,50,50)
+label    bounds( 10,  5, 45, 12), text("Brilliant"), colour(228,156,28), fontColour(50,50,50)
+label    bounds( 64,  5, 45, 12), text("Treble"),    colour(228,156,28), fontColour(50,50,50)
+label    bounds(121,  5, 45, 12), text("Medium"),    colour(228,156,28), fontColour(50,50,50)
+label    bounds(174,  5, 45, 12), text("Soft"),      colour(228,156,28), fontColour(50,50,50)
 checkbox bounds( 26, 18, 10, 10), channel("brilliant"), colour("lime"), value(0), shape("ellipse"), active(0)
 checkbox bounds( 81, 18, 10, 10), channel("treble"),    colour("lime"), value(0), shape("ellipse"), active(0)
 checkbox bounds(136, 18, 10, 10), channel("medium"),    colour("lime"), value(0), shape("ellipse"), active(0)
 checkbox bounds(191, 18, 10, 10), channel("soft"),      colour("lime"), value(0), shape("ellipse"), active(0)
-rslider  bounds(  5, 30, 55, 55), channel("fco1"),  text("fco.1"),  colour(235,166,38),  range(50,5000,2500,0.5), textcolour(black), $RSliderStyle
-rslider  bounds( 60, 30, 55, 55), channel("fco2"),  text("fco.2"),  colour(235,166,38),  range(50,5000,1000,0.5), textcolour(black), $RSliderStyle
-rslider  bounds(115, 30, 55, 55), channel("fco3"),  text("fco.3"),  colour(235,166,38),  range(50,5000, 500,0.5), textcolour(black), $RSliderStyle
-rslider  bounds(170, 30, 55, 55), channel("fco4"),  text("fco.4"),  colour(235,166,38),  range(50,5000, 200,0.5), textcolour(black), $RSliderStyle
-rslider  bounds(  5, 85, 55, 55), channel("gain1"), text("Gain 1"), colour(255,216,88),  range(0.50,30,  3,0.5), textcolour(black), $RSliderStyle
-rslider  bounds( 60, 85, 55, 55), channel("gain2"), text("Gain 2"), colour(255,216,88),  range(0.50,30,2.3,0.5), textcolour(black), $RSliderStyle
-rslider  bounds(115, 85, 55, 55), channel("gain3"), text("Gain 3"), colour(255,216,88),  range(0.50,30,1.3,0.5), textcolour(black), $RSliderStyle
-rslider bounds(170, 85, 55, 55), channel("gain4"),  text("Gain 4"), colour(255,216,88),  range(0.50,30,1.4,0.5), textcolour(black), $RSliderStyle
-rslider bounds(  5,140, 55, 55), channel("Q1"),     text("Q 1"),    colour(255,255,138), range(0.50,30,1.25,0.5), textcolour(black), $RSliderStyle
-rslider bounds( 60,140, 55, 55), channel("Q2"),     text("Q 2"),    colour(255,255,138), range(0.50,30,1   ,0.5), textcolour(black), $RSliderStyle
-rslider bounds(115,140, 55, 55), channel("Q3"),     text("Q 3"),    colour(255,255,138), range(0.50,30,1   ,0.5), textcolour(black), $RSliderStyle
-rslider bounds(170,140, 55, 55), channel("Q4"),     text("Q 4"),    colour(255,255,138), range(0.50,30,2   ,0.5), textcolour(black), $RSliderStyle
+rslider  bounds(  5, 30, 55, 55), channel("fco1"),  text("fco.1"),  colour(235,166,38),  range(50,5000,2500,0.5), textColour(black), $RSliderStyle
+rslider  bounds( 60, 30, 55, 55), channel("fco2"),  text("fco.2"),  colour(235,166,38),  range(50,5000,1000,0.5), textColour(black), $RSliderStyle
+rslider  bounds(115, 30, 55, 55), channel("fco3"),  text("fco.3"),  colour(235,166,38),  range(50,5000, 500,0.5), textColour(black), $RSliderStyle
+rslider  bounds(170, 30, 55, 55), channel("fco4"),  text("fco.4"),  colour(235,166,38),  range(50,5000, 200,0.5), textColour(black), $RSliderStyle
+rslider  bounds(  5, 85, 55, 55), channel("gain1"), text("Gain 1"), colour(255,216,88),  range(0.50,30,  3,0.5), textColour(black), $RSliderStyle
+rslider  bounds( 60, 85, 55, 55), channel("gain2"), text("Gain 2"), colour(255,216,88),  range(0.50,30,2.3,0.5), textColour(black), $RSliderStyle
+rslider  bounds(115, 85, 55, 55), channel("gain3"), text("Gain 3"), colour(255,216,88),  range(0.50,30,1.3,0.5), textColour(black), $RSliderStyle
+rslider bounds(170, 85, 55, 55), channel("gain4"),  text("Gain 4"), colour(255,216,88),  range(0.50,30,1.4,0.5), textColour(black), $RSliderStyle
+rslider bounds(  5,140, 55, 55), channel("Q1"),     text("Q 1"),    colour(255,255,138), range(0.50,30,1.25,0.5), textColour(black), $RSliderStyle
+rslider bounds( 60,140, 55, 55), channel("Q2"),     text("Q 2"),    colour(255,255,138), range(0.50,30,1   ,0.5), textColour(black), $RSliderStyle
+rslider bounds(115,140, 55, 55), channel("Q3"),     text("Q 3"),    colour(255,255,138), range(0.50,30,1   ,0.5), textColour(black), $RSliderStyle
+rslider bounds(170,140, 55, 55), channel("Q4"),     text("Q 4"),    colour(255,255,138), range(0.50,30,2   ,0.5), textColour(black), $RSliderStyle
 line bounds( 59, 25,  1, 150), colour(50,50,50)
 line bounds(114, 25,  1, 150), colour(50,50,50)
 line bounds(169, 25,  1, 150), colour(50,50,50)
 }
 
-rslider  bounds(470,  5, 65, 65), text("Level"), colour(255,186,58), channel("level"), range(0, 8.00, 0.5, 0.5), textcolour(black), $RSliderStyle
+rslider  bounds(470,  5, 65, 65), text("Level"), colour(255,186,58), channel("level"), range(0, 8.00, 0.5, 0.5), textColour(black), $RSliderStyle
 
 ; presets
-image      bounds(250, 45,100, 37), colour(228,156, 28), outlinecolour( 50, 50, 50), outlinethickness(1), shape("sharp"),plant("presets"){
-label      bounds( 10,  2, 80, 11), text("PRESETS"), fontcolour( 50, 50, 50)
+image      bounds(250, 45,100, 37), colour(228,156, 28), outlineColour( 50, 50, 50), outlineThickness(1), shape("sharp"),plant("presets"){
+label      bounds( 10,  2, 80, 11), text("PRESETS"), fontColour( 50, 50, 50)
 combobox   bounds( 10, 15, 80, 18), channel("preset"), value(1), text("Clavinet 1", "Clavinet 2", "Clavinet 3", "Clavinet 4", "Clavinet 5", "Clavinet 6", "Clavinet 7", "Clavinet 8", "Clavinet 9", "Clavinet 10")
 }
 
 keyboard bounds(  5, 85,540, 80)
-label bounds(440, 73,  110, 11), text("Iain McCurdy |2013|"), fontcolour(50,50,50)
+label bounds(440, 73,  110, 11), text("Iain McCurdy |2013|"), fontColour(50,50,50)
 
 </Cabbage>
 

@@ -34,39 +34,39 @@
 ; Level		-	output level
 
 <Cabbage>
-form caption("Gate Reverb"), size(850, 85), pluginid("GtRv"), colour(13, 50, 67,50) style("legacy")
+form caption("Gate Reverb"), size(850, 85), pluginId("GtRv"), colour(13, 50, 67,50) style("legacy")
 image              bounds(  0,  0,850, 85), colour(DarkSlateGrey),  shape("sharp")
 
-#define RSliderStyle # colour(150,205,150), textcolour(200,250,200), outlinecolour(140,140,140), trackercolour(yellow), fontcolour(250,250,150)#
+#define RSliderStyle # colour(150,205,150), textColour(200,250,200), outlineColour(140,140,140), trackerColour(yellow), fontColour(250,250,150)#
 
-image   bounds(  0,  0,135, 85), colour(0,0,0,0), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("delays"){
-rslider bounds(  0,  5, 75, 75), channel("TotDel"), text("Duration"), range(0.01,4,0.4,0.5,0.01), valuetextbox(1), textbox(1), $RSliderStyle
-rslider bounds( 60,  5, 75, 75), channel("TotNum"), text("N.Taps"),   range(1,300,100,1,1), valuetextbox(1), textbox(1), $RSliderStyle
+image   bounds(  0,  0,135, 85), colour(0,0,0,0), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("delays"){
+rslider bounds(  0,  5, 75, 75), channel("TotDel"), text("Duration"), range(0.01,4,0.4,0.5,0.01), valueTextBox(1), textBox(1), $RSliderStyle
+rslider bounds( 60,  5, 75, 75), channel("TotNum"), text("N.Taps"),   range(1,300,100,1,1), valueTextBox(1), textBox(1), $RSliderStyle
 }
 
-image   bounds(133,  0,194, 85), colour(0,0,0,0), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("scatter"){
-rslider bounds(  0,  5, 75, 75), channel("ScatAmp"),text("Scat.Amp."), range(0,1,0.5),  valuetextbox(1), textbox(1), $RSliderStyle
-rslider bounds( 60,  5, 75, 75), channel("Shape"),text("Shape"), range(-20,20,0,1,0.1), valuetextbox(1), textbox(1), $RSliderStyle
-rslider bounds(120,  5, 75, 75), channel("ScatTim"),text("Scat.Tim."), range(0,1,0.5),  valuetextbox(1), textbox(1), $RSliderStyle
+image   bounds(133,  0,194, 85), colour(0,0,0,0), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("scatter"){
+rslider bounds(  0,  5, 75, 75), channel("ScatAmp"),text("Scat.Amp."), range(0,1,0.5),  valueTextBox(1), textBox(1), $RSliderStyle
+rslider bounds( 60,  5, 75, 75), channel("Shape"),text("Shape"), range(-20,20,0,1,0.1), valueTextBox(1), textBox(1), $RSliderStyle
+rslider bounds(120,  5, 75, 75), channel("ScatTim"),text("Scat.Tim."), range(0,1,0.5),  valueTextBox(1), textBox(1), $RSliderStyle
 }
 
-image    bounds(325,  0,112, 85), colour(0,0,0,0), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("InputOutputMode"){
-label    bounds(  8,  8, 95, 12), text("Input/Output"), fontcolour(200,250,200)
-combobox bounds(  8, 21, 95, 20), channel("InOutMode"), text("Mono","Stereo Match","Stereo Diff."), value(3), fontcolour(250,250,150)
-checkbox bounds(  8, 50, 95, 12), channel("DelayDry"), text("Delay Dry"), value(0), fontcolour(250,250,150), colour("yellow")
+image    bounds(325,  0,112, 85), colour(0,0,0,0), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("InputOutputMode"){
+label    bounds(  8,  8, 95, 12), text("Input/Output"), fontColour(200,250,200)
+combobox bounds(  8, 21, 95, 20), channel("InOutMode"), text("Mono","Stereo Match","Stereo Diff."), value(3), fontColour(250,250,150)
+checkbox bounds(  8, 50, 95, 12), channel("DelayDry"), text("Delay Dry"), value(0), fontColour(250,250,150), colour("yellow")
 }
 
-image    bounds(435,  0,282, 85), colour(0,0,0,0), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("Filter"){
-label    bounds(  8,  8, 85, 12), text("Filter"), fontcolour(200,250,200)
-combobox bounds(  8, 21, 85, 20), channel("FiltSelect"), text("Bypass","Lowpass","Bandpass"), value(1), fontcolour(250,250,150)
-rslider bounds( 90,  5, 75, 75), channel("FiltMin"),    text("Min."),      range(4,13.5,4,1,0.1),    valuetextbox(1), textbox(1), $RSliderStyle
-rslider bounds(150,  5, 75, 75), channel("FiltMax"),    text("Max."),      range(4,13.5,13.5,1,0.1), valuetextbox(1), textbox(1), $RSliderStyle
-rslider bounds(210,  5, 75, 75), channel("Q"),          text("Q."),        range(0,1,0.1),           valuetextbox(1), textbox(1), $RSliderStyle
+image    bounds(435,  0,282, 85), colour(0,0,0,0), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("Filter"){
+label    bounds(  8,  8, 85, 12), text("Filter"), fontColour(200,250,200)
+combobox bounds(  8, 21, 85, 20), channel("FiltSelect"), text("Bypass","Lowpass","Bandpass"), value(1), fontColour(250,250,150)
+rslider bounds( 90,  5, 75, 75), channel("FiltMin"),    text("Min."),      range(4,13.5,4,1,0.1),    valueTextBox(1), textBox(1), $RSliderStyle
+rslider bounds(150,  5, 75, 75), channel("FiltMax"),    text("Max."),      range(4,13.5,13.5,1,0.1), valueTextBox(1), textBox(1), $RSliderStyle
+rslider bounds(210,  5, 75, 75), channel("Q"),          text("Q."),        range(0,1,0.1),           valueTextBox(1), textBox(1), $RSliderStyle
 }
 
-image   bounds(715,  0,135, 85), colour(0,0,0,0), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("mixer"){
-rslider bounds(  0,  5, 75, 75), channel("Mix"),    text("Mix"),      range(0,1.00,0.5), valuetextbox(1), textbox(1), $RSliderStyle
-rslider bounds( 60,  5, 75, 75), channel("Level"),  text("Level"),    range(0,1,0.7),    valuetextbox(1), textbox(1), $RSliderStyle
+image   bounds(715,  0,135, 85), colour(0,0,0,0), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("mixer"){
+rslider bounds(  0,  5, 75, 75), channel("Mix"),    text("Mix"),      range(0,1.00,0.5), valueTextBox(1), textBox(1), $RSliderStyle
+rslider bounds( 60,  5, 75, 75), channel("Level"),  text("Level"),    range(0,1,0.7),    valueTextBox(1), textBox(1), $RSliderStyle
 }
 
 </Cabbage>

@@ -1,6 +1,6 @@
 <Cabbage>
 form size(400, 500), caption("Infobutton Example"), pluginID("plu1"), colour(39, 40, 34)
-button bounds(20, 16, 100, 30), channel("button"),  text("Push me"), fontcolour("white")
+button bounds(20, 16, 100, 30), channel("button"),  text("Push me"), fontColour("white")
 infobutton bounds(120, 16, 100, 30), channel("button"),  file("button.csd"), text("Info")
 filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), text("Browse")
 </Cabbage>
@@ -42,9 +42,9 @@ instr ChangeAttributes
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "colour:1(%d, 0, 255) ", rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "fontcolour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "fontColour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "fontcolour:1(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "fontColour:1(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent   
 	SIdent sprintf "text(\"TextOff %f\", \"TextOn %f\") ", rnd(100), rnd(100)
 	SIdentifier strcat SIdentifier, SIdent

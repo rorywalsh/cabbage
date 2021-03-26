@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Untitled") size(400, 300), colour(58, 110, 182), pluginid("def1")
+form caption("Untitled") size(400, 300), colour(58, 110, 182), pluginId("def1")
 graphics bounds(10, 10, 380, 280)
 </Cabbage>
 <CsoundSynthesizer>

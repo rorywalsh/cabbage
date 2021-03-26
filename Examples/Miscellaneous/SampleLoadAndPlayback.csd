@@ -1,20 +1,20 @@
 <Cabbage>
-form caption("Sample load and playback") size(635,430), pluginid("SLaP"), colour("whitesmoke")
-soundfiler bounds(10, 10, 150, 80) identchannel("soundfiler1") tablenumber(-1) 
-soundfiler bounds(165, 10, 150, 80) identchannel("soundfiler2") tablenumber(-1) 
-soundfiler bounds(320, 10, 150, 80) identchannel("soundfiler3") tablenumber(-1) 
-soundfiler bounds(475, 10, 150, 80) identchannel("soundfiler4") tablenumber(-1) 
-soundfiler bounds(10, 95, 150, 80) identchannel("soundfiler5") tablenumber(-1) 
-soundfiler bounds(165, 95, 150, 80) identchannel("soundfiler6") tablenumber(-1) 
-soundfiler bounds(320, 95, 150, 80) identchannel("soundfiler7") tablenumber(-1) 
-soundfiler bounds(475, 95, 150, 80) identchannel("soundfiler8") tablenumber(-1) 
-soundfiler bounds(10, 180, 150, 80) identchannel("soundfiler9") tablenumber(-1) 
-soundfiler bounds(165, 180, 150, 80) identchannel("soundfiler10") tablenumber(-1) 
-soundfiler bounds(320, 180, 150, 80) identchannel("soundfiler11") tablenumber(-1) 
-soundfiler bounds(475, 180, 150, 80) identchannel("soundfiler12") tablenumber(-1) 
+form caption("Sample load and playback") size(635,430), pluginId("SLaP"), colour("whitesmoke")
+soundfiler bounds(10, 10, 150, 80) identChannel("soundfiler1") tableNumber(-1) 
+soundfiler bounds(165, 10, 150, 80) identChannel("soundfiler2") tableNumber(-1) 
+soundfiler bounds(320, 10, 150, 80) identChannel("soundfiler3") tableNumber(-1) 
+soundfiler bounds(475, 10, 150, 80) identChannel("soundfiler4") tableNumber(-1) 
+soundfiler bounds(10, 95, 150, 80) identChannel("soundfiler5") tableNumber(-1) 
+soundfiler bounds(165, 95, 150, 80) identChannel("soundfiler6") tableNumber(-1) 
+soundfiler bounds(320, 95, 150, 80) identChannel("soundfiler7") tableNumber(-1) 
+soundfiler bounds(475, 95, 150, 80) identChannel("soundfiler8") tableNumber(-1) 
+soundfiler bounds(10, 180, 150, 80) identChannel("soundfiler9") tableNumber(-1) 
+soundfiler bounds(165, 180, 150, 80) identChannel("soundfiler10") tableNumber(-1) 
+soundfiler bounds(320, 180, 150, 80) identChannel("soundfiler11") tableNumber(-1) 
+soundfiler bounds(475, 180, 150, 80) identChannel("soundfiler12") tableNumber(-1) 
 keyboard bounds(10, 266, 615, 86) mouseoeverkeycolour(255, 255, 0, 128) 
 filebutton bounds(10, 356, 148, 40) channel("sampleFolderButton"), mode("directory") text("Open sample folder", "Open sample folder") 
-label bounds(162, 356, 237, 16) text("Samples are triggered from C4") fontcolour:0(91, 91, 91, 255) 
+label bounds(162, 356, 237, 16) text("Samples are triggered from C4") fontColour:0(91, 91, 91, 255) 
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -84,7 +84,7 @@ instr 2
 
     if(metro(64)==1) then
         kScrubber	downsamp	aPhasor
-        Smessage sprintfk "scrubberposition(%d)", kScrubber*iNumSamples
+        Smessage sprintfk "scrubberPosition(%d)", kScrubber*iNumSamples
         SChannel sprintfk "soundfiler%d", p4-72+1 
         chnset Smessage, SChannel
     endif

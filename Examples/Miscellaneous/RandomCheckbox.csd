@@ -1,6 +1,6 @@
 <Cabbage>
-form size(600, 200), caption("Rnadom Checkbox"), pluginid("RnCB")
-checkbox bounds(0, 0, 50, 50), identchannel("checkboxIdent")
+form size(600, 200), caption("Rnadom Checkbox"), pluginId("RnCB")
+checkbox bounds(0, 0, 50, 50), identChannel("checkboxIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

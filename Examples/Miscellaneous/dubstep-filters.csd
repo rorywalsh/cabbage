@@ -102,7 +102,7 @@ elseif kType == $LOWRES then
 elseif kType == $REZZY then
    aout     rezzy ain, kcfq, kres
 elseif kType == $SVFILTER then
-  aout, ahigh, aband  svfilter ain, kcfq, (499 / 10) * kres + 1 ; rescales to make it musical
+  aout, ahigh, aband  svfilter ain, kcfq, (499 / 10) * kres + 1 ; reScales to make it musical
 elseif kType == $VLOWRES then
     aout    vlowres ain, kcfq, kres, 2, 0
 elseif kType == $STATEVAR then

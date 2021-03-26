@@ -1,8 +1,8 @@
 <Cabbage>
-form size(430, 140), caption("MidiInput"), colour(20, 20, 20), pluginid("mdgt")
+form size(430, 140), caption("MidiInput"), colour(20, 20, 20), pluginId("mdgt")
 
-image bounds(340, 10, 12, 12), corners(2), identchannel("midiIdent"), colour(20, 20, 20)
-label bounds(344, 8, 80, 15), text("Midi Input"), fontstyle("plain")
+image bounds(340, 10, 12, 12), corners(2), identChannel("midiIdent"), colour(20, 20, 20)
+label bounds(344, 8, 80, 15), text("Midi Input"), fontStyle("plain")
 keyboard bounds(16, 32, 400, 60)
 </Cabbage>
 

@@ -1,12 +1,12 @@
 <Cabbage>
 form caption("Meter example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-vmeter bounds(116, 32, 35, 80) channel("vMeter1") value(0) overlaycolour(70, 53, 53, 255) metercolour:0(0, 255, 0, 255) metercolour:1(0, 103, 171, 255) metercolour:2(23, 0, 123, 255) outlinethickness(2) 
-vmeter bounds(156, 32, 35, 80) channel("vMeter2") value(0) overlaycolour(70, 53, 53, 255) metercolour:0(0, 255, 0, 255) metercolour:1(0, 103, 171, 255) metercolour:2(23, 0, 123, 255) outlinethickness(2) 
-vmeter bounds(196, 32, 35, 80) channel("vMeter3") value(0) overlaycolour(70, 53, 53, 255) metercolour:0(0, 255, 0, 255) metercolour:1(0, 103, 171, 255) metercolour:2(23, 0, 123, 255) outlinethickness(2) 
-vmeter bounds(236, 32, 35, 80) channel("vMeter4") value(0) overlaycolour(70, 53, 53, 255) metercolour:0(0, 255, 0, 255) metercolour:1(0, 103, 171, 255) metercolour:2(23, 0, 123, 255) outlinethickness(2)
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+vmeter bounds(116, 32, 35, 80) channel("vMeter1") value(0) overlayColour(70, 53, 53, 255) meterColour:0(0, 255, 0, 255) meterColour:1(0, 103, 171, 255) meterColour:2(23, 0, 123, 255) outlineThickness(2) 
+vmeter bounds(156, 32, 35, 80) channel("vMeter2") value(0) overlayColour(70, 53, 53, 255) meterColour:0(0, 255, 0, 255) meterColour:1(0, 103, 171, 255) meterColour:2(23, 0, 123, 255) outlineThickness(2) 
+vmeter bounds(196, 32, 35, 80) channel("vMeter3") value(0) overlayColour(70, 53, 53, 255) meterColour:0(0, 255, 0, 255) meterColour:1(0, 103, 171, 255) meterColour:2(23, 0, 123, 255) outlineThickness(2) 
+vmeter bounds(236, 32, 35, 80) channel("vMeter4") value(0) overlayColour(70, 53, 53, 255) meterColour:0(0, 255, 0, 255) meterColour:1(0, 103, 171, 255) meterColour:2(23, 0, 123, 255) outlineThickness(2)
 groupbox bounds(8, 118, 380, 177), text("Randomly Updated Identifiers")
-vmeter bounds(142, 140, 46, 145), channel("meterTest") identchannel("widgetIdent")
+vmeter bounds(142, 140, 46, 145), channel("meterTest") identChannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -43,13 +43,13 @@ instr ChangeAttributes
     SIdentifier init ""
 	SIdent sprintf "corners(%d) ", rnd(100)/80
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "outlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "outlineColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "outlinethickness(%f) ", rnd(100)/50
+	SIdent sprintf "outlineThickness(%f) ", rnd(100)/50
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "overlaycolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "overlayColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "metercolour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "meterColour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "alpha(%f) ", 50 + rnd(50)/50
 	SIdentifier strcat SIdentifier, SIdent

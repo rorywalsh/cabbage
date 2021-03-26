@@ -60,52 +60,52 @@
 ; Level		-	output level
 
 <Cabbage>
-#define	SLIDER_STYLE trackercolour(150,150,255)
+#define	SLIDER_STYLE trackerColour(150,150,255)
 #define	CHECKBOX_STYLE colour(255,255,100)
 
-form caption("CZ Synthesiser") size(1075,365), pluginid("RMSy") style("legacy")
+form caption("CZ Synthesiser") size(1075,365), pluginId("RMSy") style("legacy")
 
 ; PHASE DISTORTION
-image      bounds(  5,  5,500,130), colour(0,0,0,0), plant("ShapeAmount"), outlinecolour("white"), outlinethickness(1), shape("sharp") {
-label      bounds(  5,  2,500, 12), text(". PHASE DISTORTION ."), fontcolour(255,255,100)
-rslider    bounds(  0, 40, 80, 80), valuetextbox(1), textbox(1), text("Distort"), channel("ShapeAmount"),  range(-1,  1, 0), $SLIDER_STYLE
-checkbox   bounds( 80, 25, 80, 10), text("Retrig."), channel("SARetrig"), value(1), identchannel("SARetrigID"), visible(0), $CHECKBOX_STYLE
-rslider    bounds( 60, 40, 80, 80), valuetextbox(1), textbox(1), text("Env."), channel("SAEnv"),  range(0,  1, 1), $SLIDER_STYLE
-rslider    bounds(120, 40, 80, 80), valuetextbox(1), textbox(1), text("Att."), channel("SAAtt"),  range(0, 16, 0,0.5), $SLIDER_STYLE
-rslider    bounds(180, 40, 80, 80), valuetextbox(1), textbox(1), text("Dec."), channel("SADec"),  range(0, 16, 2,0.5), $SLIDER_STYLE
-rslider    bounds(240, 40, 80, 80), valuetextbox(1), textbox(1), text("Vel."), channel("SAVel"),  range(0,  1, 1), $SLIDER_STYLE
+image      bounds(  5,  5,500,130), colour(0,0,0,0), plant("ShapeAmount"), outlineColour("white"), outlineThickness(1), shape("sharp") {
+label      bounds(  5,  2,500, 12), text(". PHASE DISTORTION ."), fontColour(255,255,100)
+rslider    bounds(  0, 40, 80, 80), valueTextBox(1), textBox(1), text("Distort"), channel("ShapeAmount"),  range(-1,  1, 0), $SLIDER_STYLE
+checkbox   bounds( 80, 25, 80, 10), text("Retrig."), channel("SARetrig"), value(1), identChannel("SARetrigID"), visible(0), $CHECKBOX_STYLE
+rslider    bounds( 60, 40, 80, 80), valueTextBox(1), textBox(1), text("Env."), channel("SAEnv"),  range(0,  1, 1), $SLIDER_STYLE
+rslider    bounds(120, 40, 80, 80), valueTextBox(1), textBox(1), text("Att."), channel("SAAtt"),  range(0, 16, 0,0.5), $SLIDER_STYLE
+rslider    bounds(180, 40, 80, 80), valueTextBox(1), textBox(1), text("Dec."), channel("SADec"),  range(0, 16, 2,0.5), $SLIDER_STYLE
+rslider    bounds(240, 40, 80, 80), valueTextBox(1), textBox(1), text("Vel."), channel("SAVel"),  range(0,  1, 1), $SLIDER_STYLE
 combobox   bounds(325, 20, 85, 20), channel("SALFOShape"), value(2), text("Tri.","Random")
-rslider    bounds(300, 40, 80, 80), valuetextbox(1), textbox(1), text("LFO"),  channel("SALFO"),  range(0,  1, 0.09), $SLIDER_STYLE
-rslider    bounds(360, 40, 80, 80), valuetextbox(1), textbox(1), text("Rate"), channel("SARate"), range(0, 14, 1), $SLIDER_STYLE
-rslider    bounds(420, 40, 80, 80), valuetextbox(1), textbox(1), text("Kybd.Scal."), channel("KybdScal"), range(0, 1, 0), $SLIDER_STYLE
+rslider    bounds(300, 40, 80, 80), valueTextBox(1), textBox(1), text("LFO"),  channel("SALFO"),  range(0,  1, 0.09), $SLIDER_STYLE
+rslider    bounds(360, 40, 80, 80), valueTextBox(1), textBox(1), text("Rate"), channel("SARate"), range(0, 14, 1), $SLIDER_STYLE
+rslider    bounds(420, 40, 80, 80), valueTextBox(1), textBox(1), text("Kybd.Scal."), channel("KybdScal"), range(0, 1, 0), $SLIDER_STYLE
 }
 
 ; FILTER
-image      bounds(510,  5,560,130), plant("Filter"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp") {
-label      bounds(  5,  2,550, 12), text(". FILTER ."), fontcolour(255,255,100)
+image      bounds(510,  5,560,130), plant("Filter"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp") {
+label      bounds(  5,  2,550, 12), text(". FILTER ."), fontColour(255,255,100)
 checkbox   bounds( 15, 25,100, 10), text("On/Off"), channel("FilterOnOff"), $CHECKBOX_STYLE
-rslider    bounds(  0, 40, 80, 80), valuetextbox(1), textbox(1), text("Cutoff"), channel("Cutoff"),  range(1,100,10,1,0.1), identchannel("ID1"), visible(0), $SLIDER_STYLE
-rslider    bounds( 60, 40, 80, 80), valuetextbox(1), textbox(1), text("Poles"), channel("Poles"),  range(2,  50, 8,1,2), identchannel("ID2"), visible(0), $SLIDER_STYLE
-rslider    bounds(120, 40, 80, 80), valuetextbox(1), textbox(1), text("Ripple"), channel("Ripple"),  range(0.1, 50, 20, 0.5, 0.01), identchannel("ID3"), visible(0), $SLIDER_STYLE
-checkbox   bounds(180, 25, 80, 10), text("Retrig."), textbox(1), channel("FRetrig"), value(1), identchannel("FRetrigID"), visible(0), visible(0), $CHECKBOX_STYLE
-rslider    bounds(180, 40, 80, 80), valuetextbox(1), textbox(1), text("Env."), channel("FEnv"),  range(0, 50, 20,1,0.01), identchannel("ID4"), visible(0), $SLIDER_STYLE
-rslider    bounds(240, 40, 80, 80), valuetextbox(1), textbox(1), text("Att."), channel("FAtt"),  range(0, 16, 0.1,0.5), identchannel("ID5"), visible(0), $SLIDER_STYLE
-rslider    bounds(300, 40, 80, 80), valuetextbox(1), textbox(1), text("Dec."), channel("FDec"),  range(0, 16, 1,0.5), identchannel("ID6"), visible(0), $SLIDER_STYLE
-rslider    bounds(360, 40, 80, 80), valuetextbox(1), textbox(1), text("Vel."), channel("FVel"),  range(0,  1, 1), identchannel("ID7"), visible(0), $SLIDER_STYLE
-combobox   bounds(445, 20, 85, 20), channel("FLFOShape"), value(1), text("Tri.","Random"), identchannel("ID10"), visible(0)
-rslider    bounds(420, 40, 80, 80), valuetextbox(1), textbox(1), text("LFO"),  channel("FLFO"),  range(0, 50, 0), identchannel("ID8"), visible(0), $SLIDER_STYLE
-rslider    bounds(480, 40, 80, 80), valuetextbox(1), textbox(1), text("Rate"), channel("FRate"), range(0, 14, 1), identchannel("ID9"), visible(0), $SLIDER_STYLE
+rslider    bounds(  0, 40, 80, 80), valueTextBox(1), textBox(1), text("Cutoff"), channel("Cutoff"),  range(1,100,10,1,0.1), identChannel("ID1"), visible(0), $SLIDER_STYLE
+rslider    bounds( 60, 40, 80, 80), valueTextBox(1), textBox(1), text("Poles"), channel("Poles"),  range(2,  50, 8,1,2), identChannel("ID2"), visible(0), $SLIDER_STYLE
+rslider    bounds(120, 40, 80, 80), valueTextBox(1), textBox(1), text("Ripple"), channel("Ripple"),  range(0.1, 50, 20, 0.5, 0.01), identChannel("ID3"), visible(0), $SLIDER_STYLE
+checkbox   bounds(180, 25, 80, 10), text("Retrig."), textBox(1), channel("FRetrig"), value(1), identChannel("FRetrigID"), visible(0), visible(0), $CHECKBOX_STYLE
+rslider    bounds(180, 40, 80, 80), valueTextBox(1), textBox(1), text("Env."), channel("FEnv"),  range(0, 50, 20,1,0.01), identChannel("ID4"), visible(0), $SLIDER_STYLE
+rslider    bounds(240, 40, 80, 80), valueTextBox(1), textBox(1), text("Att."), channel("FAtt"),  range(0, 16, 0.1,0.5), identChannel("ID5"), visible(0), $SLIDER_STYLE
+rslider    bounds(300, 40, 80, 80), valueTextBox(1), textBox(1), text("Dec."), channel("FDec"),  range(0, 16, 1,0.5), identChannel("ID6"), visible(0), $SLIDER_STYLE
+rslider    bounds(360, 40, 80, 80), valueTextBox(1), textBox(1), text("Vel."), channel("FVel"),  range(0,  1, 1), identChannel("ID7"), visible(0), $SLIDER_STYLE
+combobox   bounds(445, 20, 85, 20), channel("FLFOShape"), value(1), text("Tri.","Random"), identChannel("ID10"), visible(0)
+rslider    bounds(420, 40, 80, 80), valueTextBox(1), textBox(1), text("LFO"),  channel("FLFO"),  range(0, 50, 0), identChannel("ID8"), visible(0), $SLIDER_STYLE
+rslider    bounds(480, 40, 80, 80), valueTextBox(1), textBox(1), text("Rate"), channel("FRate"), range(0, 14, 1), identChannel("ID9"), visible(0), $SLIDER_STYLE
 }
 
 ; WAVEFORM
-image      bounds(  5,140,320,130), plant("Waveform"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp") {
-label      bounds(  5,  2,320, 12), text(". WAVEFORM ."), fontcolour(255,255,100)
+image      bounds(  5,140,320,130), plant("Waveform"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp") {
+label      bounds(  5,  2,320, 12), text(". WAVEFORM ."), fontColour(255,255,100)
 combobox   bounds(  5, 20, 85, 20), channel("WaveformMode"), value(1), text("Additive","Buzz","Noise")
 label      bounds(145, 23, 85, 13), text("Octave Shift:")
 combobox   bounds(230, 20, 85, 20), channel("OctShift"), value(1), text("0","-1","-2","-3","-4","-5","-6")
 }
 
-image      bounds(  5,190,320,130), plant("WaveformAdd"), colour(0,0,0,0), shape("sharp"), identchannel("WaveformAddID") {
+image      bounds(  5,190,320,130), plant("WaveformAdd"), colour(0,0,0,0), shape("sharp"), identChannel("WaveformAddID") {
 image      bounds(  8,  3,304, 19), colour("silver") shape("sharp")
 checkbox   bounds( 10,  5, 15, 15), channel("F0") ,  colour("lime"), value(1)  ;, shape("ellipse")
 checkbox   bounds( 25,  5, 15, 15), channel("F1") ,  colour("lime")            ;, shape("ellipse")
@@ -150,41 +150,41 @@ label      bounds(280, 24, 15, 9), text("19")
 label      bounds(295, 24, 15, 9), text("20")
 }
 
-image      bounds(  5,190,320,130), plant("WaveformBuzz"), colour(0,0,0,0), shape("sharp"), identchannel("WaveformBuzzID"), visible(0) {
+image      bounds(  5,190,320,130), plant("WaveformBuzz"), colour(0,0,0,0), shape("sharp"), identChannel("WaveformBuzzID"), visible(0) {
 rslider    bounds( 25,  0, 70, 70), text("Harms."), channel("Harms"),  range(1,  80, 5,1,1), $SLIDER_STYLE
 rslider    bounds( 95,  0, 70, 70), text("Lowest"), channel("Lowest"),  range(1,  80, 7,1,1), $SLIDER_STYLE
 rslider    bounds(165,  0, 70, 70), text("Power"), channel("Power"),  range(0,  2, 0.9), $SLIDER_STYLE
 }
 
-image      bounds(  5,190,320,130), plant("WaveformNoise"), colour(0,0,0,0), shape("sharp"), identchannel("WaveformNoiseID"), visible(0) {
+image      bounds(  5,190,320,130), plant("WaveformNoise"), colour(0,0,0,0), shape("sharp"), identChannel("WaveformNoiseID"), visible(0) {
 rslider    bounds( 95,  0, 70, 70), text("Size"), channel("NoiseSize"),  range(2, 12, 7,1,1), $SLIDER_STYLE
 }
 
 ; OSCILLATOR 2
-image      bounds(330,140,140,130), plant("Oscillator2"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp") {
-label      bounds(  5,  2,130, 12), text(". OSCILLATOR 2 ."), fontcolour(255,255,100)
+image      bounds(330,140,140,130), plant("Oscillator2"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp") {
+label      bounds(  5,  2,130, 12), text(". OSCILLATOR 2 ."), fontColour(255,255,100)
 checkbox   bounds( 15, 25,100, 10), text("On/Off"), channel("Osc2OnOff"), value(0), $CHECKBOX_STYLE
-rslider    bounds(  0, 40, 80, 80), valuetextbox(1), textbox(1), text("Semitone"), channel("Semitones"),  range(-24, 24, -12,1,1), $SLIDER_STYLE
-rslider    bounds( 60, 40, 80, 80), valuetextbox(1), textbox(1), text("Cents"), channel("Cents"),  range(-100, 100, 0,1,1), $SLIDER_STYLE
+rslider    bounds(  0, 40, 80, 80), valueTextBox(1), textBox(1), text("Semitone"), channel("Semitones"),  range(-24, 24, -12,1,1), $SLIDER_STYLE
+rslider    bounds( 60, 40, 80, 80), valueTextBox(1), textBox(1), text("Cents"), channel("Cents"),  range(-100, 100, 0,1,1), $SLIDER_STYLE
 }
 
 ; POLYPHONY
-image      bounds(475,140,150,130), plant("Polyphony"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp") {
-label      bounds(  5,  2,140, 12), text(". POLYPHONY ."), fontcolour(255,255,100)
+image      bounds(475,140,150,130), plant("Polyphony"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp") {
+label      bounds(  5,  2,140, 12), text(". POLYPHONY ."), fontColour(255,255,100)
 button     bounds( 15, 40, 50, 20), text("Mono","Poly"), channel("MonoPoly"), value(1)
-rslider    bounds( 60, 40, 80, 80), valuetextbox(1), textbox(1), text("Port.Time"), channel("PortTime"),  range(0, 1, 0.05), identchannel("PortTimeID"), visible(0), $SLIDER_STYLE
+rslider    bounds( 60, 40, 80, 80), valueTextBox(1), textBox(1), text("Port.Time"), channel("PortTime"),  range(0, 1, 0.05), identChannel("PortTimeID"), visible(0), $SLIDER_STYLE
 }
 
 ; AMPLITUDE
-image      bounds(630,140,440,130), plant("Amplitude"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp") {
-label      bounds(  5,  2,430, 12), text(". AMPLITUDE ."), fontcolour(255,255,100)
-rslider    bounds(  0, 40, 80, 80), valuetextbox(1), textbox(1), text("Att."), channel("AAtt"),  range(0,  5, 0.05), $SLIDER_STYLE
-rslider    bounds( 60, 40, 80, 80), valuetextbox(1), textbox(1), text("Dec."), channel("ADec"),  range(0,  5, 0.5), $SLIDER_STYLE
-rslider    bounds(120, 40, 80, 80), valuetextbox(1), textbox(1), text("Sus."), channel("ASus"),  range(0,  1, 1), $SLIDER_STYLE
-rslider    bounds(180, 40, 80, 80), valuetextbox(1), textbox(1), text("Rel."), channel("ARel"),  range(0,  5, 0.2), $SLIDER_STYLE
-rslider    bounds(240, 40, 80, 80), valuetextbox(1), textbox(1), text("Vel."), channel("AVel"),  range(0,  1, 1), $SLIDER_STYLE
-rslider    bounds(300, 40, 80, 80), valuetextbox(1), textbox(1), text("Clip"), channel("Clip"),  range(0.1,  10, 1,0.5), $SLIDER_STYLE
-rslider    bounds(360, 40, 80, 80), valuetextbox(1), textbox(1), text("Level"), channel("Level"),  range(0,  1, 0.15), $SLIDER_STYLE
+image      bounds(630,140,440,130), plant("Amplitude"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp") {
+label      bounds(  5,  2,430, 12), text(". AMPLITUDE ."), fontColour(255,255,100)
+rslider    bounds(  0, 40, 80, 80), valueTextBox(1), textBox(1), text("Att."), channel("AAtt"),  range(0,  5, 0.05), $SLIDER_STYLE
+rslider    bounds( 60, 40, 80, 80), valueTextBox(1), textBox(1), text("Dec."), channel("ADec"),  range(0,  5, 0.5), $SLIDER_STYLE
+rslider    bounds(120, 40, 80, 80), valueTextBox(1), textBox(1), text("Sus."), channel("ASus"),  range(0,  1, 1), $SLIDER_STYLE
+rslider    bounds(180, 40, 80, 80), valueTextBox(1), textBox(1), text("Rel."), channel("ARel"),  range(0,  5, 0.2), $SLIDER_STYLE
+rslider    bounds(240, 40, 80, 80), valueTextBox(1), textBox(1), text("Vel."), channel("AVel"),  range(0,  1, 1), $SLIDER_STYLE
+rslider    bounds(300, 40, 80, 80), valueTextBox(1), textBox(1), text("Clip"), channel("Clip"),  range(0.1,  10, 1,0.5), $SLIDER_STYLE
+rslider    bounds(360, 40, 80, 80), valueTextBox(1), textBox(1), text("Level"), channel("Level"),  range(0,  1, 0.15), $SLIDER_STYLE
 }
 
 keyboard   bounds(  5,275,1065, 85)

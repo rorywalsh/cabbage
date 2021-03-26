@@ -20,27 +20,27 @@
 ; I have been unable to find a clear technical specification of how this was implemented but have nonetheless made my 'best guess'.
 
 <Cabbage>
-form caption("...") size(159, 180), pluginid("basl"), scrollbars(0) style("legacy")
+form caption("...") size(159, 180), pluginId("basl"), scrollBars(0) style("legacy")
 
-label   bounds(  5,  3, 18, 22), text("R"), fontcolour(red)
-label   bounds( 20,  5, 18, 22), text("H"), fontcolour(yellow)
-label   bounds( 35,  2, 18, 22), text("Y"), fontcolour(orchid)
-label   bounds( 50,  4, 18, 22), text("T"), fontcolour(LightGreen)
-label   bounds( 65,  2, 18, 22), text("H"), fontcolour(OrangeRed)
-label   bounds( 82,  6, 18, 22), text("M"), fontcolour(orange)
-label   bounds( 97,  1, 18, 22), text("I"), fontcolour(SkyBlue)
-label   bounds(110,  4, 18, 22), text("C"), fontcolour(Tomato)
-label   bounds(125,  1, 18, 22), text("O"), fontcolour(LightGreen)
-label   bounds(140,  3, 18, 22), text("N"), fontcolour(violet)
+label   bounds(  5,  3, 18, 22), text("R"), fontColour(red)
+label   bounds( 20,  5, 18, 22), text("H"), fontColour(yellow)
+label   bounds( 35,  2, 18, 22), text("Y"), fontColour(orchid)
+label   bounds( 50,  4, 18, 22), text("T"), fontColour(LightGreen)
+label   bounds( 65,  2, 18, 22), text("H"), fontColour(OrangeRed)
+label   bounds( 82,  6, 18, 22), text("M"), fontColour(orange)
+label   bounds( 97,  1, 18, 22), text("I"), fontColour(SkyBlue)
+label   bounds(110,  4, 18, 22), text("C"), fontColour(Tomato)
+label   bounds(125,  1, 18, 22), text("O"), fontColour(LightGreen)
+label   bounds(140,  3, 18, 22), text("N"), fontColour(violet)
 
 label   bounds( 81, 24,  78, 8), text("Iain McCurdy [2013]"), FontColour("white")
 
-rslider bounds(  3, 45, 55, 55), channel("base"), textBox(1), range(0, 127,36, 1,1),fontcolour("white"),textcolour("white"),colour(orange), trackercolour(orange)
-label   bounds( 19, 34, 30, 10), text("BASE"), fontcolour(white)
-rslider bounds( 52, 45, 55, 55), channel("rate"), textBox(1), range(0.1, 5.00, 0.5, 0.5, 0.01),fontcolour("white"),textcolour("white"),colour(orange), trackercolour(orange)
-label   bounds( 68, 34, 30, 10), text("RATE"), fontcolour(white)
-rslider bounds(102, 45, 55, 54), channel("level"), textBox(1), range(0, 1.00, 0.5, 0.5, 0.01),fontcolour("white"),textcolour("white"),colour(orange), trackercolour(orange)
-label   bounds(115, 34, 30, 10), text("LEVEL"), fontcolour(white)
+rslider bounds(  3, 45, 55, 55), channel("base"), textBox(1), range(0, 127,36, 1,1),fontColour("white"),textColour("white"),colour(orange), trackerColour(orange)
+label   bounds( 19, 34, 30, 10), text("BASE"), fontColour(white)
+rslider bounds( 52, 45, 55, 55), channel("rate"), textBox(1), range(0.1, 5.00, 0.5, 0.5, 0.01),fontColour("white"),textColour("white"),colour(orange), trackerColour(orange)
+label   bounds( 68, 34, 30, 10), text("RATE"), fontColour(white)
+rslider bounds(102, 45, 55, 54), channel("level"), textBox(1), range(0, 1.00, 0.5, 0.5, 0.01),fontColour("white"),textColour("white"),colour(orange), trackerColour(orange)
+label   bounds(115, 34, 30, 10), text("LEVEL"), fontColour(white)
 
 
 checkbox bounds(  0, 101,  9, 10), channel("k1")  value(0) shape(square) colour(yellow)

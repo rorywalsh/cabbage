@@ -51,8 +51,8 @@ namespace CommandIDs
         startAudioGraph         = 0x200076,
         exportAsVSTSynth        = 0x200077,
         exportAsVSTEffect       = 0x200074,
-        exportAsVST3Synth        = 0x2000771,
-        exportAsVST3Effect       = 0x2000742,
+        exportAsVST3Synth       = 0x2000771,
+        exportAsVST3Effect      = 0x2000742,
         exportAsAUSynth         = 0x200177,
         exportAsAUEffect        = 0x200174,
         exportAsFMODFxPlugin = 0x200075,
@@ -106,6 +106,7 @@ namespace CommandIDs
         showPluginListEditor    = 0x612005,
         autoReloadFromDisk    = 0x612006,
         addCabbageSection    = 0x612007,
+        convertToCamelCase    = 0x612008,
 
         lastCommandIDEntry
     };
@@ -290,6 +291,188 @@ public:
     {
         add ("scrubberposition_sample");
         add ("scrubberposition_table");
+        add ("tableBackgroundColour");
+        add ("arrowBackgroundColour");
+        add ("amprange_tablenumber");
+        add ("textBoxOutlineColour");
+        add ("trackerOutsideRadius");
+        add ("trackerInsideRadius");
+        add ("surrogatelinenumber");
+        add ("mouseOverKeyColour");
+        add ("keypressBaseOctave");
+        add ("keySeparatorColour");
+        add ("amprange_quantise");
+        add ("currentNoteColour");
+        add ("backgroundColour");
+        add ("trackerThickness");
+        add ("activeCellColour");
+        add ("outlineThickness");
+        add ("scrubberPosition");
+        add ("titleBarGradient");
+        add ("mouseInteraction");
+        add ("whiteNoteColour");
+        add ("blackNoteColour");
+        add ("highlightColour");
+        add ("tableGridColour");
+        add ("trackerBgColour");
+        add ("backgroundColor");
+        add ("showStepNumbers");
+        add ("markerThickness");
+        add ("titleBarColour");
+        add ("tableGridColor");
+        add ("signalVariable");
+        add ("overlayColour");
+        add ("keydownColour");
+        add ("lineThickness");
+        add ("outlineColour");
+        add ("numberOfSteps");
+        add ("textBoxColour");
+        add ("trackerColour");
+        add ("trackerRadius");
+        add ("showsSrubber");
+        add ("markerColour");
+        add ("valueTextBox");
+        add ("fontColour:1");
+        add ("amprange_min");
+        add ("amprange_max");
+        add ("trackerColor");
+        add ("refreshFiles");
+        add ("tableNumbers");
+        add ("identChannel");
+        add ("fontColour:0");
+        add ("macroStrings");
+        add ("tableColour:");
+        add ("meterColour:");
+        add ("popupPostfix");
+        add ("manufacturer");
+        add ("valuePostfix");
+        add ("markerStart");
+		add ("keyReleased");
+        add ("orientation");
+        add ("tableColour");
+        add ("meterColour");
+        add ("widgetArray");
+        add ("arrowColour");
+        add ("channelType");
+        add ("sampleRange");
+        add ("fontColor:0");
+        add ("tableNumber");
+        add ("displayType");
+        add ("fontColor:1");
+        add ("baseChannel");
+        add ("popupPrefix");
+        add ("automatable");
+        add ("valuePrefix");
+        add ("automation");
+        add ("autoUpdate");
+        add ("matrixSize");
+        add ("fontColour");
+        add ("textColour");
+        add ("updateRate");
+        add ("gapMarkers");
+        add ("guiRefresh");
+        add ("tableColor");
+        add ("radioGroup");
+        add ("macroNames");
+        add ("ballColour");
+		add ("keyPressed");
+        add ("scrollBars");
+        add ("cellHeight");
+        add ("opcodeDir");
+        add ("markerEnd");
+        add ("menuColor");
+        add ("cellWidth");
+        add ("popupText");
+        add ("textColor");
+        add ("fontStyle");
+        add ("fontColor");
+        add ("filmStrip");
+        add ("arraySize");
+        add ("increment");
+        add ("nameSpace");
+        add ("rowPrefix");
+        add ("colPrefix");
+		add ("sideChain");
+        add ("populate");		
+        add ("keyWidth");
+        add ("pluginId");
+		add ("fontSize");
+        add ("cvOutput");
+        add ("imgDebug");
+        add ("position");
+        add ("colour:0");
+        add ("colour:1");
+        add ("typeface");
+        add ("channels");
+        add ("velocity");
+        add ("ampRange");
+        add ("cellData");
+        add ("isparent");
+        add ("latency");
+        add ("cvInput");
+        add ("color:0");
+        add ("color:1");
+        add ("caption");
+        add ("textBox");
+        add ("corners");
+        add ("color:1");
+        add ("middleC");
+        add ("channel");
+        add ("imgpath");
+        add ("address");
+        add ("imgFile");
+        add ("visible");
+        add ("latched");
+        add ("reScale");
+        add ("toFront");
+        add ("guiMode");
+        add ("bundle");
+        add ("import");
+        add ("bounds");
+        add ("colour");
+        add ("rangeY");
+        add ("rangeX");
+        add ("rotate");
+        add ("active");
+        add ("shape");
+        add ("screw");
+        add ("scale");
+        add ("popup");
+        add ("alpha");
+        add ("items");
+        add ("light");
+        add ("color");
+        add ("value");
+        add ("range");
+        add ("plant");
+		add ("style");
+        add ("align");
+        add ("file");
+        add ("wrap");
+        add ("text");
+        add ("crop");
+        add ("name");
+        add ("zoom");
+        add ("size");
+        add ("show");
+        add ("kind");
+        add ("fill");
+        add ("mode");
+        add ("min");
+        add ("max");
+        add ("pos");
+        add ("bpm");
+    }
+};
+
+// this array holds all identifier strings
+class CabbageIdentifierStringsNonCamelCase : public StringArray
+{
+public:
+    CabbageIdentifierStringsNonCamelCase()  // longest strings appear first otherwise identifiers will be missed in parsing
+    {
+        add ("scrubberposition_sample");
+        add ("scrubberposition_table");
         add ("tablebackgroundcolour");
         add ("arrowbackgroundcolour");
         add ("amprange_tablenumber");
@@ -346,13 +529,12 @@ public:
         add ("manufacturer");
         add ("valuepostfix");
         add ("markerstart");
-		add ("keyreleased");
+        add ("keyreleased");
         add ("orientation");
         add ("tablecolour");
         add ("metercolour");
         add ("widgetarray");
         add ("arrowcolour");
-        add ("widgetarray");
         add ("channeltype");
         add ("samplerange");
         add ("fontcolor:0");
@@ -375,7 +557,7 @@ public:
         add ("radiogroup");
         add ("macronames");
         add ("ballcolour");
-		add ("keypressed");
+        add ("keypressed");
         add ("scrollbars");
         add ("cellheight");
         add ("opcodedir");
@@ -392,11 +574,11 @@ public:
         add ("namespace");
         add ("rowprefix");
         add ("colprefix");
-		add ("sidechain");
-        add ("populate");		
+        add ("sidechain");
+        add ("populate");
         add ("keywidth");
         add ("pluginid");
-		add ("fontsize");
+        add ("fontsize");
         add ("cvoutput");
         add ("imgdebug");
         add ("position");
@@ -445,7 +627,7 @@ public:
         add ("value");
         add ("range");
         add ("plant");
-		add ("style");
+        add ("style");
         add ("align");
         add ("file");
         add ("wrap");
@@ -464,7 +646,6 @@ public:
         add ("bpm");
     }
 };
-
 namespace CabbageWidgetTypes
 {
     //list of static consts for types of widgets
@@ -517,7 +698,262 @@ namespace CabbageWidgetTypes
 	static const String vslider3 = "vslider3";
 	static const String xypad = "xypad";
 };
+
 namespace CabbageIdentifierIds
+{
+    // list of static consts for each identifiers
+    static const Identifier active = "active";
+    static const Identifier activecellcolour = "activeCellColour";
+    static const Identifier align = "align";
+    static const Identifier autoupdate = "autoUpdate";
+    static const Identifier allowboundsupdate = "allowBoundsUpdate";
+    static const Identifier alpha = "alpha";
+    static const Identifier amprange = "ampRange";
+    static const Identifier amprange_max = "amprange_max";
+    static const Identifier amprange_min = "amprange_min";
+    static const Identifier amprange_quantise = "amprange_quantise";
+    static const Identifier amprange_tablenumber = "amprange_tablenumber";
+    static const Identifier arraysize = "arraySize";
+    static const Identifier arrowbackgroundcolour = "arrowBackgroundColour";
+    static const Identifier arrowcolour = "arrowColour";
+    static const Identifier automation = "automation";
+    static const Identifier automatable = "automatable";
+    static const Identifier author = "author";
+    static const Identifier backgroundcolour = "backgroundColour";
+    static const Identifier ballcolour = "ballColour";
+    static const Identifier basechannel = "baseChannel";
+    static const Identifier basetype = "baseType";
+    static const Identifier blacknotecolour = "blackNoteColour";
+    static const Identifier keydowncolour = "keydownColour";
+    static const Identifier bold = "bold";
+    static const Identifier bounds = "bounds";
+    static const Identifier bpm = "bpm";
+    static const Identifier bundle = "bundle";
+    static const Identifier caption = "caption";
+    static const Identifier celldata = "celldata";
+    static const Identifier channel = "channel";
+    static const Identifier channeltype = "channelType";
+    static const Identifier child = "child";
+    static const Identifier colour = "colour";
+    static const Identifier colouroff = "colour:0";
+    static const Identifier colouron = "colour:1";
+    static const Identifier colprefix = "colPrefix";
+    static const Identifier comborange = "comborange";
+    static const Identifier comboindex = "comboindex";
+    static const Identifier corners = "corners";
+    static const Identifier crop = "crop";
+    static const Identifier cropheight = "cropHeight";
+    static const Identifier cropwidth = "cropWidth";
+    static const Identifier cropx = "cropX";
+    static const Identifier cropy = "cropY";
+    static const Identifier currenttext = "currentText";
+    static const Identifier currentWidgetChannel = "CURRENT_WIDGET";
+    static const Identifier currentPresetName = "currentpresetname";
+    static const Identifier decimalplaces = "decimalplaces";
+    static const Identifier displaytype = "displayType";
+    static const Identifier drawmode = "drawMode";
+    static const Identifier endpoint = "endPoint";
+    static const Identifier endpos = "endPos";
+    static const Identifier gapmarkers = "gapMarkers";
+    static const Identifier macronames = "macronames";
+    static const Identifier manufacturer = "manufacturer";
+    static const Identifier ffttablenumber = "ffttablenumber";
+    static const Identifier file = "file";
+    static const Identifier filetype = "fileType";
+    static const Identifier fill = "fill";
+    static const Identifier filmStripRemoveFrom1 = "filmStripRemoveFrom1";
+    static const Identifier filmStripRemoveFrom2 = "filmStripRemoveFrom2";
+    static const Identifier filmstripimage = "filmStripImage";
+    static const Identifier filmstripframes = "filmStripFrames";
+    static const Identifier fillcolour = "fillColour";
+    static const Identifier fontcolour = "fontColour";
+    static const Identifier fontstyle = "fontStyle";
+    static const Identifier fontsize = "fontSize";
+    static const Identifier gradient = "gradient";
+    static const Identifier guirefresh = "guiRefresh";
+    static const Identifier guimode = "guiMode";
+    static const Identifier polling = "polling";
+    static const Identifier queue = "queue";
+    static const Identifier height = "height";
+    static const Identifier highlightcolour = "highlightColour";
+    static const Identifier identchannel = "identChannel";
+    static const Identifier identchannelarray = "identchannelarray";
+    static const Identifier identchannelmessage = "identchannelmessage";
+    static const Identifier imgbuttonoff = "imgbuttonoff";
+    static const Identifier imgbuttonon = "imgbuttonon";
+    static const Identifier imgbuttonover = "imgbuttonover";
+    static const Identifier imgdebug = "imgdebug";
+    static const Identifier imgfile = "imgFile";
+    static const Identifier imggroupbox = "imggroupbox";
+    static const Identifier imgpath = "imgpath";
+    static const Identifier imgslider = "imgslider";
+    static const Identifier imgsliderbg = "imgsliderbg";
+    static const Identifier import = "import";
+    static const Identifier importfiles = "importfiles";
+    static const Identifier increment = "increment";
+    static const Identifier isparent = "isparent";
+    static const Identifier items = "items";
+    static const Identifier keypressbaseoctave = "keyPressBaseOctave";
+    static const Identifier keyseparatorcolour = "keySeparatorColour";
+    static const Identifier keywidth = "keyWidth";
+    static const Identifier kind = "kind";
+    static const Identifier latched = "latched";
+    static const Identifier left = "left";
+    static const Identifier linenumber = "lineNumber";
+    static const Identifier latency = "latency";
+    static const Identifier linethickness = "lineThickness";
+    static const Identifier logger = "logger";
+    static const Identifier macrostrings = "macrostrings";
+    static const Identifier markercolour = "markerColour";
+    static const Identifier markerend = "markerEnd";
+    static const Identifier markerstart = "markerStart";
+    static const Identifier markerthickness = "markerThickness";
+    static const Identifier matrixcols = "matrixCols";
+    static const Identifier matrixrows = "matrixRows";
+    static const Identifier max = "max";
+    static const Identifier maxenabled = "maxenabled";
+    static const Identifier maxvalue = "maxValue";
+    static const Identifier maxx = "maxX";
+    static const Identifier maxy = "maxY";
+    static const Identifier menucolour = "menuColour";
+    static const Identifier metercolour = "meterColour";
+    static const Identifier middlec = "middleC";
+    static const Identifier midichan = "midichan";
+    static const Identifier midictrl = "midictrl";
+    static const Identifier min = "min";
+    static const Identifier minenabled = "minenabled";
+    static const Identifier minvalue = "minValue";
+    static const Identifier minx = "minxX";
+    static const Identifier miny = "minY";
+    static const Identifier mode = "mode";
+    static const Identifier mouseinteraction = "mouseInteraction";
+    static const Identifier mouseoverkeycolour = "mouseOverKeyColour";
+    static const Identifier name = "name";
+    static const Identifier keypressed = "keyPressed";
+    static const Identifier keyreleased = "keyReleased";
+    static const Identifier oncolour = "onColour";
+    static const Identifier onfontcolour = "onFontColour";
+    static const Identifier opcodedir = "opcodeDir";
+    static const Identifier orientation = "orientation";
+    static const Identifier outlinecolour = "outlineColour";
+    static const Identifier outlinethickness = "outlineThickness";
+    static const Identifier overlaycolour = "overlayColour";
+    static const Identifier parentcomponent = "parentcomponent";
+    static const Identifier parentdir = "parentDir";
+    static const Identifier pivotx = "pivotX";
+    static const Identifier pivoty = "pivotY";
+    static const Identifier plant = "plant";
+    static const Identifier pluginid = "pluginId";
+    static const Identifier populate = "populate";
+    static const Identifier popup = "popup";
+    static const Identifier pos = "pos";
+    static const Identifier position = "position";
+    static const Identifier popuppostfix = "popupPostfix";
+    static const Identifier popupprefix = "popupPrefix";
+    static const Identifier popuptext = "popupText";
+    static const Identifier radiogroup = "radioGroup";
+    static const Identifier range = "range";
+    static const Identifier rangex = "rangeX";
+    static const Identifier rangey = "rangeY";
+    static const Identifier readonly = "readOnly";
+    static const Identifier refreshfiles = "refreshFiles";
+    static const Identifier scale = "scale";
+    static const Identifier resize = "resize";
+    static const Identifier resizemode = "resizeMode";
+    static const Identifier rotate = "rotate";
+    static const Identifier rowprefix = "rowPrefix";
+    static const Identifier samplerange = "sampleRange";
+    static const Identifier scalex = "scaleX";
+    static const Identifier scaley = "scaleY";
+    static const Identifier scrollbars = "scrollBars";
+    static const Identifier scrubberposition = "scrubberPosition";
+    static const Identifier showscrubber = "showScrubber";
+    static const Identifier scrubberposition_sample = "scrubberposition_sample";
+    static const Identifier scrubberposition_table = "scrubberposition_table";
+    static const Identifier shape = "shape";
+    static const Identifier show = "show";
+    static const Identifier sidechain = "sideChain";
+    static const Identifier signalvariable = "signalVariable";
+    static const Identifier size = "size";
+    static const Identifier sliderrange = "sliderRange";
+    static const Identifier sliderskew = "sliderSkew";
+    static const Identifier socketaddress = "socketAddress";
+    static const Identifier socketport = "socketPort";
+    static const Identifier stack = "stack";
+    static const Identifier startpoint = "startPoint";
+    static const Identifier startpos = "startPos";
+    static const Identifier style = "style";
+    static const Identifier surrogatelinenumber = "surrogatelinenumber";
+    static const Identifier tabbed = "tabbed";
+    static const Identifier tablebackgroundcolour = "tableBackgroundColour";
+    static const Identifier tablecolour = "tableColour";
+    static const Identifier tableconfig = "tableConfig";
+    static const Identifier tablegridcolour = "tableGridColour";
+    static const Identifier tablenumber = "tableNumber";
+    static const Identifier tabpage = "tabpage";
+    static const Identifier tabs = "tabs";
+    static const Identifier text = "text";
+    static const Identifier textboxcolour = "textBoxColour";
+    static const Identifier textboxoutlinecolour = "textBoxOutlineColour";
+    static const Identifier textcolour = "textColour";
+    static const Identifier titlebarcolour = "titleBarColour";
+    static const Identifier titlebargradient = "titleBarGradient";
+    static const Identifier tofront = "toFront";
+    static const Identifier top = "top";
+    static const Identifier trackercolour = "trackerColour";
+    static const Identifier trackerbgcolour = "trackerBgColour";
+    static const Identifier trackerthickness = "trackerThickness";
+    static const Identifier trackeroutsideradius = "trackerOutsideRadius";
+    static const Identifier trackerinsideradius = "trackerInsideRadius";
+    static const Identifier type = "type";
+    static const Identifier typeface = "typeface";
+    static const Identifier update = "update";
+    static const Identifier value = "value";
+    static const Identifier valuetextbox = "valueTextBox";
+    static const Identifier valuex = "valueX";
+    static const Identifier valuey = "valueY";
+    static const Identifier valueprefix = "valuePrefix";
+    static const Identifier valuepostfix = "valuePostfix";
+    static const Identifier velocity = "velocity";
+    static const Identifier visible = "visible";
+    static const Identifier visiblelength = "visibleLength";
+    static const Identifier whitenotecolour = "whiteNoteColour";
+    static const Identifier widgetarray = "widgetArray";
+    static const Identifier width = "width";
+    static const Identifier workingdir = "workingDir";
+    static const Identifier wrap = "wrap";
+    static const Identifier xchannel = "xChannel";
+    static const Identifier xyautoindex = "xyautoindex";
+    static const Identifier xychannel = "xyChannel";
+    static const Identifier ychannel = "yChannel";
+    static const Identifier zoom = "zoom";
+    static const String cellheight = "cellHeight";
+    static const String cellwidth = "cellWidth";
+    static const String csdfile = "csdfile";
+    static const String hostbpm = "HOST_BPM";
+    static const String hostppqpos = "HOST_PPQ_POS";
+    static const String lastFileDropped = "LAST_FILE_DROPPED";
+    static const String lastTextDropped = "LAST_TEXT_DROPPED";
+    static const String index = "index";
+    static const String isplaying = "IS_PLAYING";
+    static const String isrecording = "IS_RECORDING";
+    static const String mousedownleft = "MOUSE_DOWN_LEFT";
+    static const String mousedownlmiddle = "MOUSE_DOWN_MIDDLE";
+    static const String mousedownright = "MOUSE_DOWN_RIGHT";
+    static const String mousex = "MOUSE_X";
+    static const String mousey = "MOUSE_Y";
+    static const String nsp = "namespace";
+    static const String numberofsteps = "numberOfSteps";
+    static const String showstepnumbers = "showStepNumbers";
+    static const String stringchannel = "string";
+    static const String timeinsamples = "TIME_IN_SAMPLES";
+    static const String timeinseconds = "TIME_IN_SECONDS";
+    static const String timeSigDenom = "TIME_SIG_DENOM";
+    static const String timeSigNum = "TIME_SIG_NUM";
+    static const String updaterate = "updaterate";
+    
+};
+namespace CabbageIdentifierIds2
 {
     // list of static consts for each identifiers
 	static const Identifier active = "active";
@@ -944,11 +1380,11 @@ static const char* const CsoundKeywords[] =
     "sumarray", "syncloop", "syncphasor", "system", "tablefilter", "tablefilteri", "tableshuffle", "tabmorph", "tabmorpha", "tabmorphak", "tabmorphi", "tabplay", "slicearray", "tabsum", "tab2pvs", "temposcal", "trandom", "transegb",
     "transegr", "trcross", "trfilter", "trhighest", "trlowest", "trmix", "trscale", "trshift", "trsplit", "urandom", "vadd_i", "vaddv_i", "vaget", "vaset", "vbap", "vbapmove", "vbapg", "vbapgmove", "vdivv_i",
     "vexp_i", "vexpv_i", "vmult_i", "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "writescratch", "encoder", "fftdisplay", "keyboard", "label",
-    "listbox", "hrange", "vrange", "active", "align", "alpha", "amprange", "bounds", "caption", "channel", "channelarray", "channeltype", "child", "colour", "colour:0", "colour:1", "corners", "displaytype", "file",
-    "fontcolour", "fontstyle", "fontstyle", "guirefresh", "highlightcolour", "identchannel", "items", "latched", "line", "middlec", "max", "min", "mode", "outlinecolour", "outlinethickness", "plant", "pluginid", "populate",
-    "popup", "popuptext", "popuppostfix", "popupprefix", "range", "rangex", "rangey", "rotate", "samplerange", "scrubberpos", "scrubberposition", "shape", "show", "size", "sliderincr", "svgfile", "svgpath", "tablebackgroundcolour", "tablecolour",
-    "tablegridcolour", "tablenumber", "text", "textcolour", "textbox", "trackercolour", "trackerthickness", "trackerouterradius", "trackerinnerradius", "typeface", "widgetarray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
-    "od", "gentable", "texteditor", "textbox", "sprintfk", "strcpyk", "sprintf", "strcmpk", "strcmp", "a", "abetarand", "abexprnd", "infobutton", "groupbox", "do", "popupmenu", "filebutton", "until",
+    "listbox", "hrange", "vrange", "active", "align", "alpha", "ampRange", "bounds", "caption", "channel", "channelarray", "channelType", "child", "colour", "colour:0", "colour:1", "corners", "displayType", "file",
+    "fontColour", "fontStyle", "fontStyle", "guiRefresh", "highlightColour", "identChannel", "items", "latched", "line", "middleC", "max", "min", "mode", "outlineColour", "outlineThickness", "plant", "pluginId", "populate",
+    "popup", "popupText", "popupPostfix", "popupPrefix", "range", "rangeX", "rangeY", "rotate", "sampleRange", "scrubberpos", "scrubberPosition", "shape", "show", "size", "sliderincr", "svgfile", "svgpath", "tableBackgroundColour", "tableColour",
+    "tableGridColour", "tableNumber", "text", "textColour", "textBox", "trackerColour", "trackerThickness", "trackerOuterRadius", "trackerInnerRadius", "typeface", "widgetArray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
+    "od", "gentable", "texteditor", "textBox", "sprintfk", "strcpyk", "sprintf", "strcmpk", "strcmp", "a", "abetarand", "abexprnd", "infobutton", "groupbox", "do", "popupmenu", "filebutton", "until",
     "enduntil", "soundfiler", "combobox", "vslider", "vslider2", "vslider3", "hslider2", "define", "hslider3", "hslider", "rslider", "groupbox", "combobox", "xypad", "image", "plant", "csoundoutput", "button", "optionbutton", "form", "checkbox",
     "tab", "abs", "acauchy", "active", "adsr", "adsyn", "adsynt", "adsynt2", "aexprand", "aftouch", "agauss", "agogobel", "alinrand", "alpass", "ampdb", "ampdbfs", "ampmidi", "apcauchy", "apoisson", "apow", "areson",
     "aresonk", "atone", "atonek", "atonex", "atrirand", "aunirand", "aweibull", "babo", "balance", "bamboo", "bbcutm", "bbcuts", "betarand", "bexprnd", "bformenc", "bformdec", "biquad", "biquada", "birnd",
@@ -959,7 +1395,7 @@ static const char* const CsoundKeywords[] =
     "delayk", "delayr", "delayw", "deltap", "deltap3", "deltapi", "deltapn", "deltapx", "deltapxw", "denorm", "diff", "diskin", "diskin2", "dispfft", "display", "distort1", "divz", "downsamp", "dripwater",
     "dssiactivate", "dssiaudio", "dssictls", "dssiinit", "dssilist", "dumpk", "dumpk2", "dumpk3", "dumpk4", "duserrnd", "else", "elseif", "endif", "endin", "endop", "envlpx", "envlpxr", "event", "event_i",
     "exitnow", "exp", "expon", "exprand", "expseg", "expsega", "expsegr", "filelen", "filenchnls", "filepeak", "filesr", "filter2", "fin", "fini", "fink", "fiopen", "flanger", "flashtxt", "FLbox", "FLbutBank",
-    "FLbutton", "FLcolor", "FLcolor2", "FLcount", "FLgetsnap", "FLgroup", "FLgroupEnd", "FLgroupEnd", "FLhide", "FLjoy", "fontsize", "FLkeyb", "FLknob", "FLlabel", "FLloadsnap", "flooper", "floor", "FLpack", "FLpackEnd",
+    "FLbutton", "FLcolor", "FLcolor2", "FLcount", "FLgetsnap", "FLgroup", "FLgroupEnd", "FLgroupEnd", "FLhide", "FLjoy", "fontSize", "FLkeyb", "FLknob", "FLlabel", "FLloadsnap", "flooper", "floor", "FLpack", "FLpackEnd",
     "FLpackEnd", "FLpanel", "FLpanelEnd", "FLpanel_end", "FLprintk", "FLprintk2", "FLroller", "FLrun", "FLsavesnap", "FLscroll", "FLscrollEnd", "FLscroll_end", "FLsetAlign", "FLsetBox", "FLsetColor",
     "FLsetColor2", "FLsetFont", "FLsetPosition", "FLsetSize", "FLsetsnap", "FLsetText", "FLsetTextColor", "FLsetTextSize", "FLsetTextType", "FLsetVal_i", "FLsetVal", "FLshow", "FLslidBnk", "FLslider",
     "FLtabs", "FLtabsEnd", "FLtabs_end", "FLtext", "FLupdate", "fluidAllOut", "fluidCCi", "fluidCCk", "fluidControl", "fluidEngine", "fluidLoad", "fluidNote", "fluidOut", "fluidProgramSelect", "FLvalue",
@@ -971,10 +1407,10 @@ static const char* const CsoundKeywords[] =
     "islider8", "itablecopy", "itablegpw", "itablemix", "itablew", "itrirand", "iunirand", "iweibull", "jitter", "jitter2", "jspline", "k", "kbetarand", "kbexprnd", "kcauchy", "kdump", "kdump2", "kdump3",
     "kdump4", "kexprand", "kfilter2", "kgauss", "kgoto", "klinrand", "kon", "koutat", "koutc", "koutc14", "koutpat", "koutpb", "koutpc", "kpcauchy", "kpoisson", "kpow", "kr", "kread", "kread2", "kread3",
     "kread4", "ksmps", "ktableseg", "ktrirand", "kunirand", "kweibull", "lfo", "limit", "line", "linen", "linenr", "lineto", "linrand", "linseg", "linsegr", "locsend", "locsig", "log", "log10", "logbtwo",
-    "loop", "loopseg", "loopsegp", "lorenz", "lorisread", "lorismorph", "lorisplay", "loscil", "liveconv", "loscil3", "lowpass2", "lowres", "linethickness", "lowresx", "lpf18", "lpfreson", "lphasor", "lpinterp", "lposcil", "lposcil3",
+    "loop", "loopseg", "loopsegp", "lorenz", "lorisread", "lorismorph", "lorisplay", "loscil", "liveconv", "loscil3", "lowpass2", "lowres", "lineThickness", "lowresx", "lpf18", "lpfreson", "lphasor", "lpinterp", "lposcil", "lposcil3",
     "lpread", "lpreson", "lpshold", "lpsholdp", "lpslot", "mac", "maca", "madsr", "mandel", "mandol", "marimba", "massign", "maxalloc", "max_k", "mclock", "mdelay", "metro", "midic14", "midic21", "midic7",
     "midichannelaftertouch", "midichn", "midicontrolchange", "midictrl", "mididefault", "midiin", "midinoteoff", "midinoteoncps", "midinoteonkey", "midinoteonoct", "midinoteonpch", "midion", "midion2",
-    "midiout", "midipitchbend", "midipolyaftertouch", "midiprogramchange", "miditempo", "mirror", "MixerSetLevel", "MixerGetLevel", "MixerSend", "MixerReceive", "MixerClear", "moog", "moogladder", "mouseinteraction"
+    "midiout", "midipitchbend", "midipolyaftertouch", "midiprogramchange", "miditempo", "mirror", "MixerSetLevel", "MixerGetLevel", "MixerSend", "MixerReceive", "MixerClear", "moog", "moogladder", "mouseInteraction"
     "moogvcf", "moscil", "mpulse", "mrtmsg", "multitap", "mute", "mxadsr", "nchnls", "nestedap", "nlfilt", "noise", "noteoff", "noteon", "noteondur", "noteondur2", "notnum", "nreverb", "nrpn", "nsamp",
     "nstrnum", "ntrpol", "octave", "octcps", "octmidi", "octmidib octmidib", "octpch", "opcode", "OSCsend", "OSCinit", "OSClisten", "oscbnk", "oscil", "oscil1", "oscil1i", "oscil3", "oscili", "oscilikt",
     "osciliktp", "oscilikts", "osciln", "oscils", "oscilx", "out", "out32", "outc", "outch", "outh", "outiat", "outic", "outic14", "outipat", "outipb", "outipc", "outk", "outkat", "outkc", "outkc14",
@@ -999,7 +1435,7 @@ static const char* const CsoundKeywords[] =
     "vstaudio", "vstaudiog", "vstbankload", "vstedit", "vstinit", "vstinfo", "vstmidiout", "vstnote", "vstparamset", "vstparamget", "vstprogset", "vsubv", "vtablei", "vtablek", "vtablea", "vtablewi",
     "vtablewk", "vtablewa", "vtabi", "vtabk", "vtaba", "vtabwi", "vtabwk", "vtabwa", "vwrap", "waveset", "weibull", "wgbow", "wgbowedbar", "wgbrass", "wgclar", "wgflute", "wgpluck", "wgpluck2", "wguide1",
     "wguide2", "wrap", "wterrain", "xadsr", "xin", "xout", "xscanmap", "xscansmap", "xscans", "xscanu", "xtratim", "xyin", "zacl", "zakinit", "zamod", "zar", "zarg", "zaw", "zawm", "zfilter2", "zir", "ziw",
-    "ziwm", "zkcl", "zkmod", "zkr", "zkw", "zkwm ", "signaldisplay", "signalvariable", "updaterate", "menucolour", "ATSadd", "ATSaddnz", "ATSbufread", "ATScross", "ATSinfo", "ATSinterpread",
+    "ziwm", "zkcl", "zkmod", "zkr", "zkw", "zkwm ", "signaldisplay", "signalVariable", "updateRate", "menucolour", "ATSadd", "ATSaddnz", "ATSbufread", "ATScross", "ATSinfo", "ATSinterpread",
     "ATSpartialtap", "ATSread", "ATSreadnz", "ATSsinnoi", "FLcloseButton", "FLexecButton", "FLgroup_end", "FLhvsBox", "FLhvsBoxSetValue", "FLkeyIn", "FLmouse", "FLpack_end", "FLsetSnapGroup",
     "FLsetVali", "FLslidBnk2", "FLslidBnk2Set", "FLslidBnk2Setk", "FLslidBnkGetHandle", "FLslidBnkSet", "FLslidBnkSetk", "FLvkeybd", "FLvslidBnk", "FLvslidBnk2", "FLxyin", "MixerSetLevel_i",
     "S", "a", "alwayson", "ampmidid", "barmodel", "bformdec1", "bformenc1", "binit", "buchla", "c2r", "cauchyi", "cell", "centroid", "ceps", "cepsinv", "changed2", "chebyshevpoly", "chn_S", "chn_a",
@@ -1029,8 +1465,8 @@ static const char* const CsoundKeywords[] =
     "strindex", "strindexk", "strlen", "strlenk", "strlower", "strlowerk", "strrindex", "strrindexk", "strsub", "strsubk", "strupper", "strupperk", "stsend", "sumarray", "syncloop", "syncphasor", "system", "system_i",
     "tab2pvs", "tab_i", "tabifd", "table3kt", "tablefilter", "tablefilteri", "tableshuffle", "tableshufflei", "tabmorph", "tabmorpha", "tabmorphak", "tabmorphi", "tabplay", "tabsum", "tabw", "tabw_i", "tb0", "tb0_init",
     "tb1", "tb10", "tb11", "tb12", "tb13", "tb14", "tb15", "tb1_init", "tb2", "tb2_init", "tb3", "tb4", "tb5", "tb6", "tb7", "tb8", "tb9", "temposcal", "trandom", "transegb", "transegr", "trcross", "trfilter", "trhighest",
-    "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "valuepostfix", "valueprefix", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i",
-    "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", "then", "while", "od", "do", "endwhile", "trigexpseg", "triglinseg", "setStateValue", "writeStateValue", "writeStateData", "readStateData", "channelStateRecall", "channelStateSave", "cabbageSetValue", "cabbageGetValue", "cabbageGet", "cabbageSet", "cabbageGetCurrentWidget", "guimode", "cabbageCreate", "showscrubber", "titlebarcolour",
+    "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "valuePostfix", "valuePrefix", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i",
+    "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", "then", "while", "od", "do", "endwhile", "trigexpseg", "triglinseg", "setStateValue", "writeStateValue", "writeStateData", "readStateData", "channelStateRecall", "channelStateSave", "cabbageSetValue", "cabbageGetValue", "cabbageGet", "cabbageSet", "cabbageGetCurrentWidget", "guiMode", "cabbageCreate", "showsSrubber", "titleBarColour",
     0
 };
 #endif  // CABBAGECOMMANDIDS_H_INCLUDED

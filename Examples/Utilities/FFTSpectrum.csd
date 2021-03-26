@@ -14,32 +14,32 @@
 ; 'Smooth' applies smoothing to changes of amplitude which can be helpful in stabilising flickering spectrum representations.
 
 <Cabbage>
-form caption("FFT Spectrum"), size(610,640), colour( 50, 50, 50), pluginid("spec"), guirefresh(16) style("legacy")
-gentable outlinethickness(1), bounds( 0,  0, 610,300), tablenumber(1), tablebackgroundcolour("white"), tablegridcolour("WhiteSmoke"), tablecolour(0,0,200,200), identchannel("ampFFT"), amprange(0,1,-1), outlinethickness(0), samplerange(0, 512) 
+form caption("FFT Spectrum"), size(610,640), colour( 50, 50, 50), pluginId("spec"), guiRefresh(16) style("legacy")
+gentable outlineThickness(1), bounds( 0,  0, 610,300), tableNumber(1), tableBackgroundColour("white"), tableGridColour("WhiteSmoke"), tableColour(0,0,200,200), identChannel("ampFFT"), ampRange(0,1,-1), outlineThickness(0), sampleRange(0, 512) 
 
 image bounds(0,305,600,165), plant("source"), colour(0,0,0,0)
 {
-checkbox bounds(  5,  0,100,15), channel("Live"), text("Live"), radiogroup(3), value(1)
-checkbox bounds(  5, 20,100,15), channel("White"), text("White Noise"), radiogroup(3)
-checkbox bounds(  5, 40,100,15), channel("Pink"), text("Pink Noise"), radiogroup(3)
-checkbox bounds(  5, 60,100,15), channel("Sawtooth"), text("Sawtooth"), radiogroup(3)
-checkbox bounds(  5, 80,100,15), channel("Square"), text("Square"), radiogroup(3)
-checkbox bounds(  5,100,100,15), channel("Pulse"), text("Pulse"), radiogroup(3)
-checkbox bounds(  5,120,100,15), channel("Triangle"), text("Triangle"), radiogroup(3)
-checkbox bounds(  5,140,100,15), channel("Buzz"), text("GBuzz"), radiogroup(3)
+checkbox bounds(  5,  0,100,15), channel("Live"), text("Live"), radioGroup(3), value(1)
+checkbox bounds(  5, 20,100,15), channel("White"), text("White Noise"), radioGroup(3)
+checkbox bounds(  5, 40,100,15), channel("Pink"), text("Pink Noise"), radioGroup(3)
+checkbox bounds(  5, 60,100,15), channel("Sawtooth"), text("Sawtooth"), radioGroup(3)
+checkbox bounds(  5, 80,100,15), channel("Square"), text("Square"), radioGroup(3)
+checkbox bounds(  5,100,100,15), channel("Pulse"), text("Pulse"), radioGroup(3)
+checkbox bounds(  5,120,100,15), channel("Triangle"), text("Triangle"), radioGroup(3)
+checkbox bounds(  5,140,100,15), channel("Buzz"), text("GBuzz"), radioGroup(3)
 
-rslider bounds(105, 50,90, 90), channel("OscillatorFreq"), text("Osc. Freq."), textbox(1), valuetextbox(1), range(1,11025,300,0.5,1), visible(0), identchannel("OscFreqID")
-rslider bounds(195, 50,90, 90), channel("PW"), text("Pulse Width"), textbox(1), valuetextbox(1), range(0.005,0.995,0.005,1,0.001), visible(0), identchannel("PWID")
-rslider bounds(195, 50,90, 90), channel("NH"), text("Num. Harms."), textbox(1), valuetextbox(1), range(1,160,40,1,1), visible(0), identchannel("Buzz1ID")
-rslider bounds(285, 50,90, 90), channel("LH"), text("Lowest Harm."), textbox(1), valuetextbox(1), range(1,20,1,1,1), visible(0), identchannel("Buzz2ID")
-rslider bounds(375, 50,90, 90), channel("Mul"), text("Power Mult."), textbox(1), valuetextbox(1), range(0,2,1,1,0.001), visible(0), identchannel("Buzz3ID")
-rslider bounds(465, 50,90, 90), channel("AudioGain"), text("Audio Gain"), textbox(1), valuetextbox(1), range(0,5.00,0.1,0.5)
+rslider bounds(105, 50,90, 90), channel("OscillatorFreq"), text("Osc. Freq."), textBox(1), valueTextBox(1), range(1,11025,300,0.5,1), visible(0), identChannel("OscFreqID")
+rslider bounds(195, 50,90, 90), channel("PW"), text("Pulse Width"), textBox(1), valueTextBox(1), range(0.005,0.995,0.005,1,0.001), visible(0), identChannel("PWID")
+rslider bounds(195, 50,90, 90), channel("NH"), text("Num. Harms."), textBox(1), valueTextBox(1), range(1,160,40,1,1), visible(0), identChannel("Buzz1ID")
+rslider bounds(285, 50,90, 90), channel("LH"), text("Lowest Harm."), textBox(1), valueTextBox(1), range(1,20,1,1,1), visible(0), identChannel("Buzz2ID")
+rslider bounds(375, 50,90, 90), channel("Mul"), text("Power Mult."), textBox(1), valueTextBox(1), range(0,2,1,1,0.001), visible(0), identChannel("Buzz3ID")
+rslider bounds(465, 50,90, 90), channel("AudioGain"), text("Audio Gain"), textBox(1), valueTextBox(1), range(0,5.00,0.1,0.5)
 }
 
 image    bounds(100,300,445, 60), plant("display"), colour(0,0,0,0)
 {
-hslider  bounds(  0,  0,350, 30), channel("gain"), text("Y Zoom"), textbox(1), valuetextbox(1), range(0,99.00,6,0.5,0.01)
-hslider  bounds(  0, 30,350, 30), channel("smooth"), text("Smooth"), textbox(1), valuetextbox(1), range(0,5,0.5)
+hslider  bounds(  0,  0,350, 30), channel("gain"), text("Y Zoom"), textBox(1), valueTextBox(1), range(0,99.00,6,0.5,0.01)
+hslider  bounds(  0, 30,350, 30), channel("smooth"), text("Smooth"), textBox(1), valueTextBox(1), range(0,5,0.5)
 label    bounds(365, 10, 80, 14), text("FFT Size")  
 combobox bounds(365, 25, 80, 20), channel("FFTSize"), text("512","1024","2048","4096","8192"), value(2)
 }
@@ -48,32 +48,32 @@ image    bounds(  5,470,600,185), plant("filter"), colour(0,0,0,0)
 {
 line     bounds(5,  0,600,1), colour("silver")
 
-checkbox bounds(  0, 10,100,15), channel("Bypass"), text("Bypass"), radiogroup(1), value(1)
-checkbox bounds(  0, 30,100,15), channel("LPF"), text("Lowpass"), radiogroup(1)
-checkbox bounds(  0, 50,100,15), channel("HPF"), text("Highpass"), radiogroup(1)
-checkbox bounds(  0, 70,100,15), channel("BPF"), text("Bandpass"), radiogroup(1)
-checkbox bounds(  0, 90,100,15), channel("BRF"), text("Bandreject"), radiogroup(1)
-checkbox bounds(  0,110,100,15), channel("LPFRes"), text("Lowpass Res."), radiogroup(1)
-checkbox bounds(  0,130,100,15), channel("Phaser"), text("Phaser"), radiogroup(1)
-checkbox bounds(  0,150,100,15), channel("Comb"), text("Comb"), radiogroup(1)
-checkbox bounds(  0,170,100,15), channel("Resony"), text("Resony"), radiogroup(1)
+checkbox bounds(  0, 10,100,15), channel("Bypass"), text("Bypass"), radioGroup(1), value(1)
+checkbox bounds(  0, 30,100,15), channel("LPF"), text("Lowpass"), radioGroup(1)
+checkbox bounds(  0, 50,100,15), channel("HPF"), text("Highpass"), radioGroup(1)
+checkbox bounds(  0, 70,100,15), channel("BPF"), text("Bandpass"), radioGroup(1)
+checkbox bounds(  0, 90,100,15), channel("BRF"), text("Bandreject"), radioGroup(1)
+checkbox bounds(  0,110,100,15), channel("LPFRes"), text("Lowpass Res."), radioGroup(1)
+checkbox bounds(  0,130,100,15), channel("Phaser"), text("Phaser"), radioGroup(1)
+checkbox bounds(  0,150,100,15), channel("Comb"), text("Comb"), radioGroup(1)
+checkbox bounds(  0,170,100,15), channel("Resony"), text("Resony"), radioGroup(1)
 
-rslider  bounds(100, 65, 90, 90), channel("cf"), text("Freq."), textbox(1), valuetextbox(1), range(1,20000,1000,0.5,1), identchannel("CFID"), visible(0)
-rslider  bounds(180, 65, 90, 90), channel("res"), text("Res./F.back"), textbox(1), valuetextbox(1), range(-0.99,0.99,0.5,1,0.01), identchannel("ResID"), visible(0)
-rslider  bounds(260, 65, 90, 90), channel("ord"), text("Ordinates"), textbox(1), valuetextbox(1), range(1,80,8,1,1), identchannel("Phs1ID"), visible(0)
-rslider  bounds(340, 65, 90, 90), channel("Q"), text("Q"), textbox(1), valuetextbox(1), range(0.1,10,1), identchannel("Phs2ID"), visible(0)
-rslider  bounds(420, 65, 90, 90), channel("sep"), text("Separation"), textbox(1), valuetextbox(1), range(-3,3,1), identchannel("Phs3ID"), visible(0)
+rslider  bounds(100, 65, 90, 90), channel("cf"), text("Freq."), textBox(1), valueTextBox(1), range(1,20000,1000,0.5,1), identChannel("CFID"), visible(0)
+rslider  bounds(180, 65, 90, 90), channel("res"), text("Res./F.back"), textBox(1), valueTextBox(1), range(-0.99,0.99,0.5,1,0.01), identChannel("ResID"), visible(0)
+rslider  bounds(260, 65, 90, 90), channel("ord"), text("Ordinates"), textBox(1), valueTextBox(1), range(1,80,8,1,1), identChannel("Phs1ID"), visible(0)
+rslider  bounds(340, 65, 90, 90), channel("Q"), text("Q"), textBox(1), valueTextBox(1), range(0.1,10,1), identChannel("Phs2ID"), visible(0)
+rslider  bounds(420, 65, 90, 90), channel("sep"), text("Separation"), textBox(1), valueTextBox(1), range(-3,3,1), identChannel("Phs3ID"), visible(0)
 
-checkbox bounds(510,120,100,15), channel("Mode1"), text("Mode 1"), radiogroup(2), value(1), identchannel("Phs4ID"), visible(0)
-checkbox bounds(510,140,100,15), channel("Mode2"), text("Mode 2"), radiogroup(2), identchannel("Phs5ID"), visible(0)
+checkbox bounds(510,120,100,15), channel("Mode1"), text("Mode 1"), radioGroup(2), value(1), identChannel("Phs4ID"), visible(0)
+checkbox bounds(510,140,100,15), channel("Mode2"), text("Mode 2"), radioGroup(2), identChannel("Phs5ID"), visible(0)
 
-rslider  bounds(260, 65, 90, 90), channel("ResonySep"), text("Sep."), textbox(1), valuetextbox(1), range(0.1,12,5), identchannel("Resony1ID"), visible(0)
-rslider  bounds(340, 65, 90, 90), channel("ResonyNum"), text("Num."), textbox(1), valuetextbox(1), range(1,40,8,1,1), identchannel("Resony2ID"), visible(0)
-label    bounds(425, 65,90,11), text("Separation Mode"), identchannel("Resony3ID"), visible(0)
-combobox bounds(425, 80,90,20), channel("ResonyMode"), text("Octaves","Harmonics"), value(1), identchannel("Resony4ID"), visible(0)
+rslider  bounds(260, 65, 90, 90), channel("ResonySep"), text("Sep."), textBox(1), valueTextBox(1), range(0.1,12,5), identChannel("Resony1ID"), visible(0)
+rslider  bounds(340, 65, 90, 90), channel("ResonyNum"), text("Num."), textBox(1), valueTextBox(1), range(1,40,8,1,1), identChannel("Resony2ID"), visible(0)
+label    bounds(425, 65,90,11), text("Separation Mode"), identChannel("Resony3ID"), visible(0)
+combobox bounds(425, 80,90,20), channel("ResonyMode"), text("Octaves","Harmonics"), value(1), identChannel("Resony4ID"), visible(0)
 }
 
-label bounds(506,319,60,13), text(""), align("left"), identchannel("MOUSEFreqID"), visible(1), fontcolour("black"), colour(255,255,255,200)
+label bounds(506,319,60,13), text(""), align("left"), identChannel("MOUSEFreqID"), visible(1), fontColour("black"), colour(255,255,255,200)
 </Cabbage>                                                   
 
 <CsoundSynthesizer>                                                                                                 
@@ -255,7 +255,7 @@ instr	1
   kflag	pvsftw fSig2, iampFFT
  endif
  if kflag==1 then
- 	 chnset	"tablenumber(1)", "ampFFT"
+ 	 chnset	"tableNumber(1)", "ampFFT"
  endif
   
  aAudioGain	interp	kAudioGain

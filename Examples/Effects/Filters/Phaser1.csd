@@ -2,16 +2,16 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("phaser1") size(400, 90), pluginid("phs1") style("legacy")
-image        pos(0, 0), size(400, 90), colour(80,20,20), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
-label     bounds( 10, 15, 55, 12), text("INPUT"), fontcolour("white")
-checkbox  bounds( 10, 30, 55, 12), text("Live"),  fontcolour("white"), channel("input"),  value(1), radiogroup(1)
-checkbox  bounds( 10, 45, 55, 12), text("Noise"), fontcolour("white"), channel("input2"), value(0), radiogroup(1)
-rslider  bounds( 60, 11, 70, 70),  text("Frequency"), channel("freq"),     range(20.0, 5000, 160, 0.25), colour(160,40,40), textcolour("white"), trackercolour(white)
-rslider  bounds(125, 11, 70, 70),  text("Feedback"),  channel("feedback"), range(-0.99, 0.99, 0.9),      colour(160,40,40), textcolour("white"), trackercolour(white)
-rslider  bounds(190, 11, 70, 70), text("N.Ords."),   channel("ord"),      range(1, 256, 32, 0.5,1),     colour(160,40,40), textcolour("white"), trackercolour(white)
-rslider  bounds(255, 11, 70, 70), text("Mix"),       channel("mix"),      range(0, 1.00, 1),            colour(160,40,40), textcolour("white"), trackercolour(white)
-rslider  bounds(320, 11, 70, 70), text("Level"),     channel("level"),    range(0, 1.00, 0.7),          colour(160,40,40), textcolour("white"), trackercolour(white)
+form caption("phaser1") size(400, 90), pluginId("phs1") style("legacy")
+image        pos(0, 0), size(400, 90), colour(80,20,20), shape("rounded"), outlineColour("white"), outlineThickness(4) 
+label     bounds( 10, 15, 55, 12), text("INPUT"), fontColour("white")
+checkbox  bounds( 10, 30, 55, 12), text("Live"),  fontColour("white"), channel("input"),  value(1), radioGroup(1)
+checkbox  bounds( 10, 45, 55, 12), text("Noise"), fontColour("white"), channel("input2"), value(0), radioGroup(1)
+rslider  bounds( 60, 11, 70, 70),  text("Frequency"), channel("freq"),     range(20.0, 5000, 160, 0.25), colour(160,40,40), textColour("white"), trackerColour(white)
+rslider  bounds(125, 11, 70, 70),  text("Feedback"),  channel("feedback"), range(-0.99, 0.99, 0.9),      colour(160,40,40), textColour("white"), trackerColour(white)
+rslider  bounds(190, 11, 70, 70), text("N.Ords."),   channel("ord"),      range(1, 256, 32, 0.5,1),     colour(160,40,40), textColour("white"), trackerColour(white)
+rslider  bounds(255, 11, 70, 70), text("Mix"),       channel("mix"),      range(0, 1.00, 1),            colour(160,40,40), textColour("white"), trackerColour(white)
+rslider  bounds(320, 11, 70, 70), text("Level"),     channel("level"),    range(0, 1.00, 0.7),          colour(160,40,40), textColour("white"), trackerColour(white)
 }
 </Cabbage>
 

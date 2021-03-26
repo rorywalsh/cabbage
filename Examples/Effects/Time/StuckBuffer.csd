@@ -20,11 +20,11 @@
 ; Width		-	width of random panning of stuck buffers
 
 <Cabbage>
-#define RSliderStyle # colour(150,150,150), trackercolour(white), outlinecolour(85,85,85)#
+#define RSliderStyle # colour(150,150,150), trackerColour(white), outlineColour(85,85,85)#
 
-form caption("Stuck Buffer") size(600,110), colour(50,50,50), pluginid("StBu") style("legacy")
+form caption("Stuck Buffer") size(600,110), colour(50,50,50), pluginId("StBu") style("legacy")
 
-image pos(0, 0), size(600, 110), colour(50,50,50), shape("sharp"), outlinecolour("grey"), outlinethickness(1)
+image pos(0, 0), size(600, 110), colour(50,50,50), shape("sharp"), outlineColour("grey"), outlineThickness(1)
 
 line     bounds( 10, 10,160, 2), colour("grey")
 label    bounds( 50,  5, 80, 12), text("PROBABILITY"), colour(50,50,50)
@@ -33,7 +33,7 @@ checkbox bounds( 10, 85,100, 12), text("HOLD"), colour("lime"), channel("hold"),
 rslider  bounds( 60, 20, 60, 60), text("Freq.Min."), channel("FreqMin"), range(0.1,100.00, 2, 0.5), $RSliderStyle
 rslider  bounds(120, 20, 60, 60), text("Freq.Max."), channel("FreqMax"), range(0.1,100.00, 8, 0.5), $RSliderStyle
 
-button   bounds( 95, 84, 50, 16), text("STUCK","STUCK"), active(0), channel("STUCK"), fontcolour:0(40,40,40), fontcolour:1(255,200,200), colour:1(255,80,80)
+button   bounds( 95, 84, 50, 16), text("STUCK","STUCK"), active(0), channel("STUCK"), fontColour:0(40,40,40), fontColour:1(255,200,200), colour:1(255,80,80)
 
 line     bounds(190, 10,100,  2), colour("grey")
 label    bounds(203	,  5, 75, 12), text("BUFFER SIZE"), colour(50,50,50)
@@ -138,7 +138,7 @@ instr	1
  endif 
  
  aphsr	phasor	kPhsFrq			; create a moving phasor
- aphsr	=	aphsr * ksize		; rescale scope of phasor according to buffer size
+ aphsr	=	aphsr * ksize		; reScale scope of phasor according to buffer size
  
  if kTestVal>=kthresh then		; normal
   	tablew	aInL,aphsr,gibufferL	; write to buffer

@@ -5,18 +5,18 @@
 ; link	-	links 'Amp.Smooth' and 'Frq.Smooth'
 
 <Cabbage>
-form caption("pvSmooth") size(505, 90), pluginid("smoo"), scrollbars(0) style("legacy")
-image bounds(0, 0, 505, 90), colour("Cream"), outlinecolour("silver"), outlinethickness(5)
-label pos(-52, -30), size(615, 150), fontcolour(210,105, 30, 80), text("smooth"), shape("rounded"), outlinecolour("white"), outlinethickness(4)
-rslider bounds( 10, 8, 75, 75), text("Amp.Smooth"), channel("acf"),       range(0, 1.00, 0,16, 0.0001), textcolour(138, 54, 15), colour("chocolate"), trackercolour(138, 54, 15)
-checkbox bounds( 70, 8, 70,10), channel("link"), text("Link"), fontcolour(138, 54, 15)
-rslider bounds( 90, 8, 75, 75), text("Frq.Smooth"), channel("fcf"),       range(0, 1.00, 0,16, 0.0001), textcolour(138, 54, 15), colour("chocolate"), trackercolour(138, 54, 15)
-rslider bounds(170, 8, 75, 75), text("Feedback"),   channel("FB"),        range(0, 0.999, 0, 1,0.001),    textcolour(138, 54, 15), colour("chocolate"), trackercolour(138, 54, 15)
-label    bounds(250,20, 70,13), text("FFT Size"), fontcolour(138, 54, 15)
-combobox bounds(250,35, 70,20), text("64","128","256","512","1024","2048","2048_2","4096","8192","16384"), channel("att_table"), value(5), fontcolour(255,255,200)
-checkbox bounds(250,60, 90,10), channel("delay"), text("Delay Comp."), fontcolour(138, 54, 15)
-rslider bounds(330, 8, 75, 75), text("Mix"),        channel("mix"),       range(0, 1.00, 1),              textcolour(138, 54, 15), colour("chocolate"), trackercolour(138, 54, 15)
-rslider bounds(410, 8, 75, 75), text("Level"),      channel("lev"),       range(0, 1.00, 0.5),            textcolour(138, 54, 15), colour("chocolate"), trackercolour(138, 54, 15)
+form caption("pvSmooth") size(505, 90), pluginId("smoo"), scrollBars(0) style("legacy")
+image bounds(0, 0, 505, 90), colour("Cream"), outlineColour("silver"), outlineThickness(5)
+label pos(-52, -30), size(615, 150), fontColour(210,105, 30, 80), text("smooth"), shape("rounded"), outlineColour("white"), outlineThickness(4)
+rslider bounds( 10, 8, 75, 75), text("Amp.Smooth"), channel("acf"),       range(0, 1.00, 0,16, 0.0001), textColour(138, 54, 15), colour("chocolate"), trackerColour(138, 54, 15)
+checkbox bounds( 70, 8, 70,10), channel("link"), text("Link"), fontColour(138, 54, 15)
+rslider bounds( 90, 8, 75, 75), text("Frq.Smooth"), channel("fcf"),       range(0, 1.00, 0,16, 0.0001), textColour(138, 54, 15), colour("chocolate"), trackerColour(138, 54, 15)
+rslider bounds(170, 8, 75, 75), text("Feedback"),   channel("FB"),        range(0, 0.999, 0, 1,0.001),    textColour(138, 54, 15), colour("chocolate"), trackerColour(138, 54, 15)
+label    bounds(250,20, 70,13), text("FFT Size"), fontColour(138, 54, 15)
+combobox bounds(250,35, 70,20), text("64","128","256","512","1024","2048","2048_2","4096","8192","16384"), channel("att_table"), value(5), fontColour(255,255,200)
+checkbox bounds(250,60, 90,10), channel("delay"), text("Delay Comp."), fontColour(138, 54, 15)
+rslider bounds(330, 8, 75, 75), text("Mix"),        channel("mix"),       range(0, 1.00, 1),              textColour(138, 54, 15), colour("chocolate"), trackerColour(138, 54, 15)
+rslider bounds(410, 8, 75, 75), text("Level"),      channel("lev"),       range(0, 1.00, 0.5),            textColour(138, 54, 15), colour("chocolate"), trackerColour(138, 54, 15)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

@@ -78,6 +78,10 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **MOUSE_DOWN_RIGHT** Returns the current state of the right mouse button; 1 if pressed, and 0 if not. 
 
+**SCREEN_WIDTH** Returns the width of the plugin editor window
+
+**SCREEN_HEIGHT** Returns the height of the plugin editor window
+
 **LAST_FILE_DROPPED** This will hold the name of the last file dragged and released on the plugin window. 
 
 **LAST_TEXT_DROPPED** This will hold the string of the last piece of text that was dragged and released on the plugin window. 

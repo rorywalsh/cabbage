@@ -10,12 +10,12 @@
 ; The offset value is subtracted so that the envelope can experience values of zero. 
 
 <Cabbage>
-form caption("GEN07"), size(250,400), pluginid("gn07"), colour(13, 50, 67,50) style("legacy")
+form caption("GEN07"), size(250,400), pluginId("gn07"), colour(13, 50, 67,50) style("legacy")
 
 label    bounds( 10,  8, 95, 15), text("Edit Method:")
 combobox bounds(105,  5, 80, 20), text("sliders","drawing"), value(1), channel("mode")
 
-gentable bounds( 15, 30, 225, 120), tablenumbers(1), tablecolour("blue"), tablebackgroundcolour("white"), tablegridcolour(230,230,230), identchannel("table"), amprange(0,1,1), zoom(-1), active(1)
+gentable bounds( 15, 30, 225, 120), tableNumbers(1), tableColour("blue"), tableBackgroundColour("white"), tableGridColour(230,230,230), identChannel("table"), ampRange(0,1,1), zoom(-1), active(1)
 label    bounds(  0, 26,15,9), text("1")
 label    bounds(  0, 38,15,9), text("0.9")
 label    bounds(  0, 50,15,9), text("0.8")
@@ -38,18 +38,18 @@ label    bounds(189,151,15,9), text("0.8")
 label    bounds(212,151,15,9), text("0.9")
 label    bounds(232,151,15,9), text("1")
 
-rslider  bounds( 40,160, 50, 70), channel("val1"), text("Value.1"), textBox(1), range(0, 1, 0), colour(100,130,130,250), trackercolour("silver")
-rslider  bounds(100,160, 50, 70), channel("val2"), text("Value.2"), textBox(1), range(0, 1, 1), colour(100,130,130,250), trackercolour("silver")
-rslider  bounds(160,160, 50, 70), channel("val3"), text("Value.3"), textBox(1), range(0, 1, 0), colour(100,130,130,250), trackercolour("silver")
+rslider  bounds( 40,160, 50, 70), channel("val1"), text("Value.1"), textBox(1), range(0, 1, 0), colour(100,130,130,250), trackerColour("silver")
+rslider  bounds(100,160, 50, 70), channel("val2"), text("Value.2"), textBox(1), range(0, 1, 1), colour(100,130,130,250), trackerColour("silver")
+rslider  bounds(160,160, 50, 70), channel("val3"), text("Value.3"), textBox(1), range(0, 1, 0), colour(100,130,130,250), trackerColour("silver")
 
-rslider  bounds( 70,235, 50, 70), channel("dur1"), text("Dur.1"), textBox(1), range(0, 1, 0.2, 1, 0.001), colour(130,100,130,250), trackercolour("silver")
-rslider  bounds(130,235, 50, 70), channel("dur2"), text("Dur.2"), textBox(1), range(0, 1, 0.8, 1, 0.001), colour(130,100,130,250), trackercolour("silver")
+rslider  bounds( 70,235, 50, 70), channel("dur1"), text("Dur.1"), textBox(1), range(0, 1, 0.2, 1, 0.001), colour(130,100,130,250), trackerColour("silver")
+rslider  bounds(130,235, 50, 70), channel("dur2"), text("Dur.2"), textBox(1), range(0, 1, 0.8, 1, 0.001), colour(130,100,130,250), trackerColour("silver")
 
 line     bounds( 10,310,225,  2), colour("Grey")
 checkbox bounds( 15,320,80, 17), channel("TestGen"), text("Test"),  value(1), colour("yellow"), shape("square")
-rslider  bounds( 60,320, 70, 70), channel("speed"), text("Speed"), textBox(1), range(0.25, 8.00, 1,0.5,0.001),   colour(250,230,250,250), trackercolour("silver")
-rslider  bounds(120,320, 70, 70), channel("freq"),  text("Freq."), textBox(1), range(50, 5000, 500,0.5,0.1),     colour(250,230,250,250), trackercolour("silver")
-rslider  bounds(180,320, 70, 70), channel("lev"),   text("Level"), textBox(1), range(0, 1.00, 0.5),              colour(250,230,250,250), trackercolour("silver")
+rslider  bounds( 60,320, 70, 70), channel("speed"), text("Speed"), textBox(1), range(0.25, 8.00, 1,0.5,0.001),   colour(250,230,250,250), trackerColour("silver")
+rslider  bounds(120,320, 70, 70), channel("freq"),  text("Freq."), textBox(1), range(50, 5000, 500,0.5,0.1),     colour(250,230,250,250), trackerColour("silver")
+rslider  bounds(180,320, 70, 70), channel("lev"),   text("Level"), textBox(1), range(0, 1.00, 0.5),              colour(250,230,250,250), trackerColour("silver")
 
 </Cabbage>
                     
@@ -100,7 +100,7 @@ instr	1
 		   irem		=	giTabLen - (i(gkdur1) + i(gkdur2))		; remainder duration of table
 		  endif
 		gi1	ftgen	1, 0,   giTabLen, -7, i(gkval1), idur1, i(gkval2), idur2, i(gkval3), irem, 0
-		chnset	"tablenumber(1)", "table"	; update table display	
+		chnset	"tableNumber(1)", "table"	; update table display	
 		rireturn
 	endif
 

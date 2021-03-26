@@ -2,24 +2,24 @@
 ; Written by Iain McCurdy, 2014, updated 2016
 
 <Cabbage>
-form caption("Buffer Freeze"), size(610, 250), pluginid("BfFr"), colour(50,50,75) style("legacy")
-gentable      bounds(  5,  5,600,120), tablenumber(1), tablecolour("LightBlue"), amprange(-1,1,1), identchannel(table), zoom(-1)
+form caption("Buffer Freeze"), size(610, 250), pluginId("BfFr"), colour(50,50,75) style("legacy")
+gentable      bounds(  5,  5,600,120), tableNumber(1), tableColour("LightBlue"), ampRange(-1,1,1), identChannel(table), zoom(-1)
 
-hslider    bounds(  0,120, 610, 25), channel("ptr"),    range(0, 1.00, 1), trackercolour("LightBlue")
-label      bounds(205,143,200,  12), text("Pointer"), fontcolour("white")
+hslider    bounds(  0,120, 610, 25), channel("ptr"),    range(0, 1.00, 1), trackerColour("LightBlue")
+label      bounds(205,143,200,  12), text("Pointer"), fontColour("white")
 
-checkbox bounds( 15,180, 80, 30), channel("freeze"), text("Freeze"), fontcolour("white"), colour("LightBlue")
+checkbox bounds( 15,180, 80, 30), channel("freeze"), text("Freeze"), fontColour("white"), colour("LightBlue")
 
-rslider    bounds(100,170, 70, 70), channel("InGain"), text("Input Gain"), textcolour("white"), range(0, 8.00, 1,0.5), trackercolour("LightBlue")
-rslider    bounds(170,170, 70, 70), channel("DryGain"), text("Dry Gain"), textcolour("white"), range(0, 8.00, 1,0.5), trackercolour("LightBlue")
-rslider    bounds(240,170, 70, 70), channel("FreezeGain"), text("Freeze Gain"), textcolour("white"), range(0, 8.00, 1), trackercolour("LightBlue")
+rslider    bounds(100,170, 70, 70), channel("InGain"), text("Input Gain"), textColour("white"), range(0, 8.00, 1,0.5), trackerColour("LightBlue")
+rslider    bounds(170,170, 70, 70), channel("DryGain"), text("Dry Gain"), textColour("white"), range(0, 8.00, 1,0.5), trackerColour("LightBlue")
+rslider    bounds(240,170, 70, 70), channel("FreezeGain"), text("Freeze Gain"), textColour("white"), range(0, 8.00, 1), trackerColour("LightBlue")
 
-label      bounds(325,175, 60,13), text("FFT Size"), fontcolour("white")
-combobox   bounds(325,190, 60,20), text("128","256","512","1024","2048","4096","8192"), channel("FFTSize"), value(4), fontcolour(255,255,255)
+label      bounds(325,175, 60,13), text("FFT Size"), fontColour("white")
+combobox   bounds(325,190, 60,20), text("128","256","512","1024","2048","4096","8192"), channel("FFTSize"), value(4), fontColour(255,255,255)
 
-rslider    bounds(395,170, 70, 70), channel("PtrRand"), text("Ptr.Rand."), textcolour("white"), range(0, 1.00, 0), trackercolour("LightBlue")
-rslider    bounds(465,170, 70, 70), channel("Transpose"), text("Transpose"), textcolour("white"), range(-24, 24.00, 0), trackercolour("LightBlue")
-rslider    bounds(535,170, 70, 70), channel("TransRand"), text("Trans.Rand."), textcolour("white"), range(0, 24.00, 0), trackercolour("LightBlue")
+rslider    bounds(395,170, 70, 70), channel("PtrRand"), text("Ptr.Rand."), textColour("white"), range(0, 1.00, 0), trackerColour("LightBlue")
+rslider    bounds(465,170, 70, 70), channel("Transpose"), text("Transpose"), textColour("white"), range(-24, 24.00, 0), trackerColour("LightBlue")
+rslider    bounds(535,170, 70, 70), channel("TransRand"), text("Trans.Rand."), textColour("white"), range(0, 24.00, 0), trackerColour("LightBlue")
 
 </Cabbage>
                     
@@ -68,7 +68,7 @@ instr	1
 	 	tablew	kval,kcount,giDispBuffer
 	 loop_lt	kcount,1,ftlen(giDispBuffer),loop	
 
-       	 chnset	"tablenumber(1)", "table"					; update table display	
+       	 chnset	"tableNumber(1)", "table"					; update table display	
 
 	endif
 	 		outs	aL*kDryGain,aR*kDryGain

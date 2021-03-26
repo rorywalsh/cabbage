@@ -1,7 +1,7 @@
 <Cabbage>
-form caption("Alpha") size(385, 220), pluginid("AlpF")
-rslider bounds(14, 10, 160, 160), channel("hslider1"), colour("yellow") identchannel("hslider_ident1")
-rslider bounds(200, 10, 160, 160), channel("hslider2"), colour("yellow") identchannel("hslider_ident2")
+form caption("Alpha") size(385, 220), pluginId("AlpF")
+rslider bounds(14, 10, 160, 160), channel("hslider1"), colour("yellow") identChannel("hslider_ident1")
+rslider bounds(200, 10, 160, 160), channel("hslider2"), colour("yellow") identChannel("hslider_ident2")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

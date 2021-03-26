@@ -37,10 +37,10 @@
 
 			 
 <Cabbage>
-form caption("GEN19"), size(560, 490), pluginid("gn19"), guirefresh(32), colour(0,0,0) style("legacy")
+form caption("GEN19"), size(560, 490), pluginId("gn19"), guiRefresh(32), colour(0,0,0) style("legacy")
 
-gentable bounds(  0,  5, 560, 120), tablenumber(1), tablecolour("silver"), identchannel("table"), outlinethickness(2), amprange(-1,1,1), zoom(-1), tablegridcolour(0,0,0,0), tablebackgroundcolour(0,0,0), fill(0)
-image   bounds(-50,-50, 10, 10), colour(250,150, 55), identchannel("ball"), shape("ellipse")
+gentable bounds(  0,  5, 560, 120), tableNumber(1), tableColour("silver"), identChannel("table"), outlineThickness(2), ampRange(-1,1,1), zoom(-1), tableGridColour(0,0,0,0), tableBackgroundColour(0,0,0), fill(0)
+image   bounds(-50,-50, 10, 10), colour(250,150, 55), identChannel("ball"), shape("ellipse")
 
 rslider  bounds(  5,140, 60, 60), channel("AmpRte"), text("Str.Rate"),   range(0.1, 5, 0.2,0.5,0.001)
 rslider  bounds( 65,140, 60, 60), channel("PhsRte"), text("Phase Rate"), range(0.1, 5, 0.2,0.5,0.001)
@@ -53,56 +53,56 @@ rslider  bounds(435,140, 60, 60), channel("Density"),  text("Density"),    range
 rslider  bounds(495,140, 60, 60), channel("Level"),  text("Level"),    range(0,2,1,0.5,0.001)
 line     bounds( 20,210,520,  3), colour("Grey")
 
-button   bounds( 10,225, 50, 20), channel("On1"), text("Active"), value(1), fontcolour:0(50,50,50), fontcolour:1(255,255,0)
+button   bounds( 10,225, 50, 20), channel("On1"), text("Active"), value(1), fontColour:0(50,50,50), fontColour:1(255,255,0)
 combobox bounds( 10,250, 50, 20), channel("PN1"), text(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), value(1)
 label    bounds( 15,270, 40, 12), text("P.N.")
 rslider  bounds(  5,290, 60, 60), channel("Amp1"), text("Str."),   range(0, 1, 0.5,1,0.001)
 rslider  bounds(  5,355, 60, 60), channel("Phs1"), text("Phs."),   range(0,360,180,1,0.001)
 rslider  bounds(  5,420, 60, 60),  channel("DC1"),  text("DC."),   range(0, 1, 0.5,1,0.001)
 
-button   bounds( 80,225, 50, 20), channel("On2"), text("Active"), value(1), fontcolour:0(50,50,30), fontcolour:1(255,255,0)
+button   bounds( 80,225, 50, 20), channel("On2"), text("Active"), value(1), fontColour:0(50,50,30), fontColour:1(255,255,0)
 combobox bounds( 80,250, 50, 20), channel("PN2"), text(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), value(2)
 label    bounds( 85,270, 40, 12), text("P.N.")
 rslider  bounds( 75,290, 60, 60), channel("Amp2"), text("Str."),   range(0, 1, 0.5,1,0.001)
 rslider  bounds( 75,355, 60, 60), channel("Phs2"), text("Phs."),   range(0,360,180,1,0.001)
 rslider  bounds( 75,420, 60, 60),  channel("DC2"),  text("DC."),   range(0, 1, 0.5,1,0.001)
 
-button   bounds(150,225, 50, 20), channel("On3"), text("Active"), value(1), fontcolour:0(50,50,30), fontcolour:1(255,255,0)
+button   bounds(150,225, 50, 20), channel("On3"), text("Active"), value(1), fontColour:0(50,50,30), fontColour:1(255,255,0)
 combobox bounds(150,250, 50, 20), channel("PN3"), text(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), value(3)
 label    bounds(155,270, 40, 12), text("P.N.")
 rslider  bounds(145,290, 60, 60), channel("Amp3"), text("Str."),   range(0, 1, 0.5,1,0.001)
 rslider  bounds(145,355, 60, 60), channel("Phs3"), text("Phs."),   range(0,360,180,1,0.001)
 rslider  bounds(145,420, 60, 60),  channel("DC3"),  text("DC."),   range(0, 1, 0.5,1,0.001)
 
-button   bounds(220,225, 50, 20), channel("On4"), text("Active"), value(1), fontcolour:0(50,50,30), fontcolour:1(255,255,0)
+button   bounds(220,225, 50, 20), channel("On4"), text("Active"), value(1), fontColour:0(50,50,30), fontColour:1(255,255,0)
 combobox bounds(220,250, 50, 20), channel("PN4"), text(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), value(4)
 label    bounds(225,270, 40, 12), text("P.N.")
 rslider  bounds(215,290, 60, 60), channel("Amp4"), text("Str."),   range(0, 1, 0.5,1,0.001)
 rslider  bounds(215,355, 60, 60), channel("Phs4"), text("Phs."),   range(0,360,180,1,0.001)
 rslider  bounds(215,420, 60, 60),  channel("DC4"),  text("DC."),   range(0, 1, 0.5,1,0.001)
 
-button   bounds(290,225, 50, 20), channel("On5"), text("Active"), value(0), fontcolour:0(50,50,30), fontcolour:1(255,255,0)
+button   bounds(290,225, 50, 20), channel("On5"), text("Active"), value(0), fontColour:0(50,50,30), fontColour:1(255,255,0)
 combobox bounds(290,250, 50, 20), channel("PN5"), text(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), value(5)
 label    bounds(295,270, 40, 12), text("P.N.")
 rslider  bounds(285,290, 60, 60), channel("Amp5"), text("Str."),   range(0, 1, 0.5,1,0.001)
 rslider  bounds(285,355, 60, 60), channel("Phs5"), text("Phs."),   range(0,360,180,1,0.001)
 rslider  bounds(285,420, 60, 60),  channel("DC5"),  text("DC."),   range(0, 1, 0.5,1,0.001)
 
-button   bounds(360,225, 50, 20), channel("On6"), text("Active"), value(0), fontcolour:0(50,50,30), fontcolour:1(255,255,0)
+button   bounds(360,225, 50, 20), channel("On6"), text("Active"), value(0), fontColour:0(50,50,30), fontColour:1(255,255,0)
 combobox bounds(360,250, 50, 20), channel("PN6"), text(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), value(6)
 label    bounds(365,270, 40, 12), text("P.N.")
 rslider  bounds(355,290, 60, 60), channel("Amp6"), text("Str."),   range(0, 1, 0.5,1,0.001)
 rslider  bounds(355,355, 60, 60), channel("Phs6"), text("Phs."),   range(0,360,180,1,0.001)
 rslider  bounds(355,420, 60, 60),  channel("DC6"),  text("DC."),   range(0, 1, 0.5,1,0.001)
 
-button   bounds(430,225, 50, 20), channel("On7"), text("Active"), value(0), fontcolour:0(50,50,30), fontcolour:1(255,255,0)
+button   bounds(430,225, 50, 20), channel("On7"), text("Active"), value(0), fontColour:0(50,50,30), fontColour:1(255,255,0)
 combobox bounds(430,250, 50, 20), channel("PN7"), text(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), value(7)
 label    bounds(435,270, 40, 12), text("P.N.")
 rslider  bounds(425,290, 60, 60), channel("Amp7"), text("Str."),   range(0, 1, 0.5,1,0.001)
 rslider  bounds(425,355, 60, 60), channel("Phs7"), text("Phs."),   range(0,360,180,1,0.001)
 rslider  bounds(425,420, 60, 60),  channel("DC7"),  text("DC."),   range(0, 1, 0.5,1,0.001)
 
-button   bounds(500,225, 50, 20), channel("On8"), text("Active"), value(0), fontcolour:0(50,50,30), fontcolour:1(255,255,0)
+button   bounds(500,225, 50, 20), channel("On8"), text("Active"), value(0), fontColour:0(50,50,30), fontColour:1(255,255,0)
 combobox bounds(500,250, 50, 20), channel("PN8"), text(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16), value(8)
 label    bounds(505,270, 40, 12), text("P.N.")
 rslider  bounds(495,290, 60, 60), channel("Amp8"), text("Str."),   range(0, 1, 0.5,1,0.001)
@@ -185,7 +185,7 @@ instr	1
 	  					i(kPN8),i(kamp8)*i(kOn8),i(kphs8),i(kDC8)*i(kOn8)
 	rireturn				; out of reinit
 	if kmetro==1 then			; if trigger was '1' (i.e. and table was updated...
-	 chnset	"tablenumber(1)", "table"	; update the table 'view'
+	 chnset	"tableNumber(1)", "table"	; update the table 'view'
 	 kndx	=	ftlen(gifun)*kphasor	; convert phasor (0 to 1) to raw index (0 to 512(table size))
 	 kval	table	kphasor,gifun,1		; read value from table (used to calculate ball graphical height
 	 k1	table	kndx-1,gifun		; read the value before the widget location

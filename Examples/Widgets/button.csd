@@ -1,9 +1,9 @@
 <Cabbage>
 form caption("Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 button bounds(116, 38, 150, 50), channel("button1"), text("Enable Tone", "Disable Tone"),
-button bounds(110, 140, 165, 62) identchannel("widgetIdent")
+button bounds(110, 140, 165, 62) identChannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -47,15 +47,15 @@ instr ChangeAttributes
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "colour:1(%d, 0, 255) ", rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "fontcolour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "fontColour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "fontcolour:1(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "fontColour:1(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent   
-	SIdent sprintf "outlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "outlineColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "outlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "outlineColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "outlinethickness(%f) ", rnd(100)/50
+	SIdent sprintf "outlineThickness(%f) ", rnd(100)/50
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "text(\"TextOff %f\", \"TextOn %f\") ", rnd(100), rnd(100)
 	SIdentifier strcat SIdentifier, SIdent

@@ -1,10 +1,10 @@
 <Cabbage>
-form caption("Soundfiler") size(430, 240), colour(58, 110, 182), pluginid("Sflr")
+form caption("Soundfiler") size(430, 240), colour(58, 110, 182), pluginId("Sflr")
  
 combobox bounds(324, 188, 100, 25), channel("presetsCombo"), populate("*.snaps")
 filebutton bounds(262, 188, 60, 25) value(0) text("Save", "Save") mode("snapshot") 
 
-soundfiler bounds(6, 4, 417, 178) identchannel("soundfiler1") tablebackgroundcolour(255, 0, 0), tablenumber(-1)
+soundfiler bounds(6, 4, 417, 178) identChannel("soundfiler1") tableBackgroundColour(255, 0, 0), tableNumber(-1)
 filebutton bounds(8, 188, 81, 27) channel("filebutton1") value(0) text("Open file", "Open file")
 button bounds(90, 188, 81, 27) channel("playbutton1") text("Play file", "Stop file") 
 </Cabbage>

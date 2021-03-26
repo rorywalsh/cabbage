@@ -2,22 +2,22 @@
 ; Written by Iain McCurdy, 2015
 	
 <Cabbage>
-form caption("Distance Emulator") size(700,300), colour(200,210,180), pluginid("DsEm") style("legacy")
-hslider   bounds(  5,  5,240, 30), channel("Amp1"), text("Amp.1"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 1, 0.5, 0.001)
-hslider   bounds(255,  5,240, 30), channel("Amp2"), text("Amp.2"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 0.25, 0.5, 0.001)
-hslider   bounds(  5, 55,240, 30), channel("Rvb1"), text("Rvb.1"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 0, 0.5, 0.001)
-hslider   bounds(255, 55,240, 30), channel("Rvb2"), text("Rvb.2"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 1, 0.5, 0.001)
-nslider bounds(505, 55, 70, 30), channel("RvbSize"), text("Size"),  colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0,0.999, 0.8,0.5,0.001)
-nslider bounds(585, 55, 70, 30), channel("RvbLPF"), text("RvbLPF"), colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(20,20000,5000,0.5)
-hslider   bounds(  5,105,240, 30), channel("LPF1"), text("LPF.1"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 0)
-hslider   bounds(255,105,240, 30), channel("LPF2"), text("LPF.2"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 1)
-nslider bounds(505,105, 70, 30), channel("LPF_CF"), text("Cutoff"), colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(20,20000,5000,0.5)
-hslider   bounds(  5,155,240, 30), channel("HPF1"), text("HPF.1"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 0)
-hslider   bounds(255,155,240, 30), channel("HPF2"), text("HPF.2"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 1)
-nslider bounds(505,155, 70, 30), channel("HPF_CF"), text("Cutoff"), colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(20,20000,150,0.5)
-hslider   bounds(  5,205,240, 30), channel("Wid1"), text("Width"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 1)
-hslider   bounds(255,205,240, 30), channel("Wid2"), text("Width"),    colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 1)
-hslider   bounds(  5,255,690, 30), channel("Mor"), text("Morph"),     colour(100,140,150), trackercolour(200,240,250), textcolour("DarkSlateGrey"), range(0, 1, 0)
+form caption("Distance Emulator") size(700,300), colour(200,210,180), pluginId("DsEm") style("legacy")
+hslider   bounds(  5,  5,240, 30), channel("Amp1"), text("Amp.1"),    colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(0, 1, 1, 0.5, 0.001)
+hslider   bounds(255,  5,240, 30), channel("Amp2"), text("Amp.2"),    colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(0, 1, 0.25, 0.5, 0.001)
+hslider   bounds(  5, 55,240, 30), channel("Rvb1"), text("Rvb.1"),    colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(0, 1, 0, 0.5, 0.001)
+hslider   bounds(255, 55,240, 30), channel("Rvb2"), text("Rvb.2"),    colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(0, 1, 1, 0.5, 0.001)
+nslider bounds(505, 55, 70, 30), channel("RvbSize"), text("Size"),  colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(0,0.999, 0.8,0.5,0.001)
+nslider bounds(585, 55, 70, 30), channel("RvbLPF"), text("RvbLPF"), colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(20,20000,5000,0.5)
+hslider   bounds(  5,105,240, 30), channel("LPF1"), text("LPF.1"),    colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(0, 1, 0)
+hslider   bounds(255,105,240, 30), channel("LPF2"), text("LPF.2"),    colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(0, 1, 1)
+nslider bounds(505,105, 70, 30), channel("LPF_CF"), text("Cutoff"), colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(20,20000,5000,0.5)
+hslider   bounds(  5,155,240, 30), channel("HPF1"), text("HPF.1"),    colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(0, 1, 0)
+hslider   bounds(255,155,240, 30), channel("HPF2"), text("HPF.2"),    colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(0, 1, 1)
+nslider bounds(505,155, 70, 30), channel("HPF_CF"), text("Cutoff"), colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(20,20000,150,0.5)
+hslider   bounds(  5,205,240, 30), channel("Wid1"), text("Width"),    colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(0, 1, 1)
+hslider   bounds(255,205,240, 30), channel("Wid2"), text("Width"),    colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(0, 1, 1)
+hslider   bounds(  5,255,690, 30), channel("Mor"), text("Morph"),     colour(100,140,150), trackerColour(200,240,250), textColour("DarkSlateGrey"), range(0, 1, 0)
 
 </Cabbage>
 

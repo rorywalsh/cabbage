@@ -10,11 +10,11 @@
 
 
 <Cabbage>
-form caption("File Recorder") size(230, 45), colour(0,0,0) pluginid("FRec") style("legacy")
-image               bounds(  0,  0,230, 45), colour(100,100,100), outlinecolour("White"), line(3)
-checkbox bounds( 10, 10, 75, 25), channel("record"), text("Record"), colour("red"), fontcolour("white")
+form caption("File Recorder") size(230, 45), colour(0,0,0) pluginId("FRec") style("legacy")
+image               bounds(  0,  0,230, 45), colour(100,100,100), outlineColour("White"), line(3)
+checkbox bounds( 10, 10, 75, 25), channel("record"), text("Record"), colour("red"), fontColour("white")
 button   bounds( 90, 10, 65, 25), colour("red"), text("New File","New File"), channel("reset"), latched(0)
-checkbox bounds(165, 10, 75, 25), channel("play"), text("Play"), colour("green"), fontcolour("white")
+checkbox bounds(165, 10, 75, 25), channel("play"), text("Play"), colour("green"), fontColour("white")
 </Cabbage>
 
 <CsoundSynthesizer>

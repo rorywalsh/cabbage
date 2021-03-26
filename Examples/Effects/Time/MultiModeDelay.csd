@@ -2,15 +2,15 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Multi-mode Delay") size(435, 90), pluginid("MMDl") style("legacy")
-image                    bounds(0, 0,435, 90), colour("Maroon"), shape("rounded"), outlinecolour("white"), outlinethickness(4)
-label    bounds( 10, 22, 80, 12), text("Type"), fontcolour("white")
+form caption("Multi-mode Delay") size(435, 90), pluginId("MMDl") style("legacy")
+image                    bounds(0, 0,435, 90), colour("Maroon"), shape("rounded"), outlineColour("white"), outlineThickness(4)
+label    bounds( 10, 22, 80, 12), text("Type"), fontColour("white")
 combobox bounds( 10, 35, 80, 20),  text("Ping Pong","Stereo"), channel("type"), value(1)
-rslider  bounds( 95, 11, 70, 70),  text("Time"),     channel("time"),     range(0.001, 10, 0.4, 0.5), colour( 85,  0,  0) trackercolour("silver"), textcolour("silver")
-rslider  bounds(160, 11, 70, 70),  text("Cutoff"),   channel("cutoff"),   range(20,20000,20000,0.5),  colour( 85,  0,  0) trackercolour("silver"), textcolour("silver")
-rslider  bounds(225, 11, 70, 70), text("Feedback"), channel("feedback"), range(0, 1.00, 0.5),        colour( 85,  0,  0) trackercolour("silver"), textcolour("silver")
-rslider  bounds(290, 11, 70, 70), text("Mix"),      channel("mix"),      range(0, 1.00, 0.5),        colour( 85,  0,  0) trackercolour("silver"), textcolour("silver")
-rslider  bounds(355, 11, 70, 70), text("Level"),    channel("level"),    range(0, 1.00, 0.7),        colour( 85,  0,  0) trackercolour("silver"), textcolour("silver")
+rslider  bounds( 95, 11, 70, 70),  text("Time"),     channel("time"),     range(0.001, 10, 0.4, 0.5), colour( 85,  0,  0) trackerColour("silver"), textColour("silver")
+rslider  bounds(160, 11, 70, 70),  text("Cutoff"),   channel("cutoff"),   range(20,20000,20000,0.5),  colour( 85,  0,  0) trackerColour("silver"), textColour("silver")
+rslider  bounds(225, 11, 70, 70), text("Feedback"), channel("feedback"), range(0, 1.00, 0.5),        colour( 85,  0,  0) trackerColour("silver"), textColour("silver")
+rslider  bounds(290, 11, 70, 70), text("Mix"),      channel("mix"),      range(0, 1.00, 0.5),        colour( 85,  0,  0) trackerColour("silver"), textColour("silver")
+rslider  bounds(355, 11, 70, 70), text("Level"),    channel("level"),    range(0, 1.00, 0.7),        colour( 85,  0,  0) trackerColour("silver"), textColour("silver")
 
 </Cabbage>
 

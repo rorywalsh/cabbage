@@ -15,33 +15,33 @@
 ; 'Width' allows the user to vary the delay from a simple monophonic delay to a ping-pong style delay
 
 <Cabbage>
-form caption("Trigger Delay") size(540,240), pluginid("TrDl") style("legacy")
-image                  bounds(0, 0,540,240), colour(150,150,205), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
+form caption("Trigger Delay") size(540,240), pluginId("TrDl") style("legacy")
+image                  bounds(0, 0,540,240), colour(150,150,205), shape("rounded"), outlineColour("white"), outlineThickness(4) 
 
-rslider  bounds(  5, 11, 70, 70),  text("Threshold"), textcolour("black"),  channel("threshold"), range(0, 1.00, 0.1, 0.5),      colour( 40, 40, 95),trackercolour("white")
+rslider  bounds(  5, 11, 70, 70),  text("Threshold"), textColour("black"),  channel("threshold"), range(0, 1.00, 0.1, 0.5),      colour( 40, 40, 95),trackerColour("white")
                      
 line     bounds( 83, 10, 95, 3), colour("Grey")
-label    bounds(100,  6, 60, 10), text("DELAY TIME"), fontcolour("black"), colour(150,150,205)
+label    bounds(100,  6, 60, 10), text("DELAY TIME"), fontColour("black"), colour(150,150,205)
 
-rslider bounds( 72, 18, 63, 63),  text("Min."),	    textcolour("black"),  channel("dly1"), 	range(0.0001, 2, 0.001,0.5), colour( 40, 40, 95),trackercolour("white")
-rslider bounds(130, 18, 63, 63), text("Max."), 	    textcolour("black"),  channel("dly2"), 	range(0.0001, 2, 0.1, 0.5),  colour( 40, 40, 95),trackercolour("white")
+rslider bounds( 72, 18, 63, 63),  text("Min."),	    textColour("black"),  channel("dly1"), 	range(0.0001, 2, 0.001,0.5), colour( 40, 40, 95),trackerColour("white")
+rslider bounds(130, 18, 63, 63), text("Max."), 	    textColour("black"),  channel("dly2"), 	range(0.0001, 2, 0.1, 0.5),  colour( 40, 40, 95),trackerColour("white")
 
 line     bounds(202, 10,  95,  3), colour("Grey")
-label    bounds(222,  6,  55, 10), text("FEEDBACK"), fontcolour("black"), colour(150,150,205)
+label    bounds(222,  6,  55, 10), text("FEEDBACK"), fontColour("black"), colour(150,150,205)
 
-rslider bounds(190, 18, 63, 63), text("Min."),      textcolour("black"),  channel("fback1"), 	range(0, 1.200, 0.5),        colour( 40, 40, 95),trackercolour("white")
-rslider bounds(248, 18, 63, 63), text("Max."),      textcolour("black"),  channel("fback2"), 	range(0, 1.200, 0.9),        colour( 40, 40, 95),trackercolour("white")
+rslider bounds(190, 18, 63, 63), text("Min."),      textColour("black"),  channel("fback1"), 	range(0, 1.200, 0.5),        colour( 40, 40, 95),trackerColour("white")
+rslider bounds(248, 18, 63, 63), text("Max."),      textColour("black"),  channel("fback2"), 	range(0, 1.200, 0.9),        colour( 40, 40, 95),trackerColour("white")
 
-rslider bounds(  5, 81, 70, 70), text("Portamento"), textcolour("black"),  channel("porttime"), 	range(0,  5.00, 0,0.5),         colour( 40, 40, 95),trackercolour("white")
-rslider bounds( 65, 81, 70, 70), text("Cutoff"),     textcolour("black"),  channel("cf"), 	range(50,10000, 5000,0.5), colour( 40, 40, 95),trackercolour("white")
-rslider bounds(125, 81, 70, 70), text("Bandwidth"),  textcolour("black"),  channel("bw"), 	range(600,22050, 4000,0.5), colour( 40, 40, 95),trackercolour("white")
+rslider bounds(  5, 81, 70, 70), text("Portamento"), textColour("black"),  channel("porttime"), 	range(0,  5.00, 0,0.5),         colour( 40, 40, 95),trackerColour("white")
+rslider bounds( 65, 81, 70, 70), text("Cutoff"),     textColour("black"),  channel("cf"), 	range(50,10000, 5000,0.5), colour( 40, 40, 95),trackerColour("white")
+rslider bounds(125, 81, 70, 70), text("Bandwidth"),  textColour("black"),  channel("bw"), 	range(600,22050, 4000,0.5), colour( 40, 40, 95),trackerColour("white")
 
-rslider bounds(  5,151, 70, 70), text("Width"),	    textcolour("black"),  channel("width"), 	range(0,  1.00, 1),         colour( 40, 40, 95),trackercolour("white")
-rslider bounds( 65,151, 70, 70), text("Mix"), 	    textcolour("black"),  channel("mix"), 	range(0, 1.00, 0.5),        colour( 40, 40, 95),trackercolour("white")
-rslider bounds(125,151, 70, 70), text("Level"),	    textcolour("black"),  channel("level"), 	range(0, 1.00, 1),          colour( 40, 40, 95),trackercolour("white")
+rslider bounds(  5,151, 70, 70), text("Width"),	    textColour("black"),  channel("width"), 	range(0,  1.00, 1),         colour( 40, 40, 95),trackerColour("white")
+rslider bounds( 65,151, 70, 70), text("Mix"), 	    textColour("black"),  channel("mix"), 	range(0, 1.00, 0.5),        colour( 40, 40, 95),trackerColour("white")
+rslider bounds(125,151, 70, 70), text("Level"),	    textColour("black"),  channel("level"), 	range(0, 1.00, 1),          colour( 40, 40, 95),trackerColour("white")
 
 
-xypad bounds(315, 5, 210, 230), channel("cf", "bw"), rangex(50, 10000, 5000), rangey(600, 22050, 4000), text("CF/BW")
+xypad bounds(315, 5, 210, 230), channel("cf", "bw"), rangeX(50, 10000, 5000), rangeY(600, 22050, 4000), text("CF/BW")
 }                 
 </Cabbage>
 

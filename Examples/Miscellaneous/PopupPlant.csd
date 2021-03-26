@@ -1,6 +1,6 @@
 <Cabbage>
-form caption("Popup Plants") size(285, 100), pluginid("PupP"), guirefresh(10)
-groupbox bounds(10, 76, 220, 130), text("Popup Plant"), plant("pop1"), popup(1), colour(20, 20, 20), identchannel("pops") {
+form caption("Popup Plants") size(285, 100), pluginId("PupP"), guiRefresh(10)
+groupbox bounds(10, 76, 220, 130), text("Popup Plant"), plant("pop1"), popup(1), colour(20, 20, 20), identChannel("pops") {
 rslider bounds(6, 24, 50, 50), channel("rslider1"), range(0, 100, 10)
 rslider bounds(58, 24, 50, 50), channel("rslider2"), range(0, 100, 20)
 rslider bounds(110, 24, 50, 50), channel("rslider3"), range(0, 100, 30)

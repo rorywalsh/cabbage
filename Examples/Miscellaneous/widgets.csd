@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Widgets") size(590, 560), pluginid("def1") colour(79, 79, 79)
+form caption("Widgets") size(590, 560), pluginId("def1") colour(79, 79, 79)
 keyboard bounds(4, 450, 286, 95)
 
 
@@ -42,7 +42,7 @@ encoder bounds(10, 44, 60, 60) max(0) min(0), text("Encoder")
 
 
 
-xypad bounds(298, 238, 284, 307) rangex(0, 1, 0) rangey(0, 1, 0), fontcolour("green")
+xypad bounds(298, 238, 284, 307) rangeX(0, 1, 0) rangeY(0, 1, 0), fontColour("green")
 
 groupbox bounds(4, 238, 288, 78), text("Buttons"){
 button bounds(16, 23, 84, 26) range(1) colour:1(60, 58, 58, 255) increment(0.001) colour:0(79, 79, 79, 255)

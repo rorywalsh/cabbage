@@ -29,29 +29,29 @@
 ; Level		-	output level
 
 <Cabbage>
-form caption("Ring Modulator") size(755,170), pluginid("rmod") style("legacy")
-image               pos(0, 0), size(755, 90), colour("black"), shape("rounded"), outlinecolour("lime"), outlinethickness(5) 
-label    bounds( 10, 20, 65, 13), text("Input"), textcolour(white)
-combobox bounds( 10, 34, 65, 18), text("Knob","Keybd."), channel("input"), textcolour(white)
-rslider bounds( 75, 12, 70, 70), text("Freq."),    channel("freq"),  range(0, 15000, 800, 0.25),   colour("yellow"),    trackercolour(white), textcolour(white)
-rslider bounds(145, 12, 70, 70), text("Harms"),    channel("harms"), range(1, 40, 1,1,1),          colour("yellow"),    trackercolour(white), textcolour(white)
-rslider bounds(215, 12, 70, 70), text("Offset"),   channel("offset"),range(0, 20, 0,1,1),          colour("yellow"),    trackercolour(white), textcolour(white)
+form caption("Ring Modulator") size(755,170), pluginId("rmod") style("legacy")
+image               pos(0, 0), size(755, 90), colour("black"), shape("rounded"), outlineColour("lime"), outlineThickness(5) 
+label    bounds( 10, 20, 65, 13), text("Input"), textColour(white)
+combobox bounds( 10, 34, 65, 18), text("Knob","Keybd."), channel("input"), textColour(white)
+rslider bounds( 75, 12, 70, 70), text("Freq."),    channel("freq"),  range(0, 15000, 800, 0.25),   colour("yellow"),    trackerColour(white), textColour(white)
+rslider bounds(145, 12, 70, 70), text("Harms"),    channel("harms"), range(1, 40, 1,1,1),          colour("yellow"),    trackerColour(white), textColour(white)
+rslider bounds(215, 12, 70, 70), text("Offset"),   channel("offset"),range(0, 20, 0,1,1),          colour("yellow"),    trackerColour(white), textColour(white)
 
 line    bounds(290,  2, 3, 86), colour("lime")
-rslider bounds(300, 12, 70, 70), text("Env."),     channel("env"),   range(0, 1.00, 0.5, 0.5,0.001), colour("orange"),    trackercolour(white), textcolour(white)
-rslider bounds(370,  6, 40, 40), text("Att."),     channel("att"),   range(0.001, 2, 0.01, 0.5),   colour("orange"),    trackercolour(white), textcolour(white)
-rslider bounds(370, 46, 40, 40), text("Dec."),     channel("dec"),   range(0.001, 2, 0.1,  0.5),   colour("orange"),    trackercolour(white), textcolour(white)
+rslider bounds(300, 12, 70, 70), text("Env."),     channel("env"),   range(0, 1.00, 0.5, 0.5,0.001), colour("orange"),    trackerColour(white), textColour(white)
+rslider bounds(370,  6, 40, 40), text("Att."),     channel("att"),   range(0.001, 2, 0.01, 0.5),   colour("orange"),    trackerColour(white), textColour(white)
+rslider bounds(370, 46, 40, 40), text("Dec."),     channel("dec"),   range(0.001, 2, 0.1,  0.5),   colour("orange"),    trackerColour(white), textColour(white)
 line    bounds(415,  2, 3, 86), colour("lime")
 
-rslider bounds(425, 12, 70, 70), text("Thresh"),   channel("thresh"),   range(0, 1.00, 0, 0.5,0), colour("orange"),    trackercolour(white), textcolour(white)
-rslider bounds(490,  6, 40, 40), text("Min."),     channel("min"),   range(0, 13, 5),   colour("orange"),    trackercolour(white), textcolour(white)
-rslider bounds(490, 46, 40, 40), text("Max."),     channel("max"),   range(0, 13, 8),   colour("orange"),    trackercolour(white), textcolour(white)
+rslider bounds(425, 12, 70, 70), text("Thresh"),   channel("thresh"),   range(0, 1.00, 0, 0.5,0), colour("orange"),    trackerColour(white), textColour(white)
+rslider bounds(490,  6, 40, 40), text("Min."),     channel("min"),   range(0, 13, 5),   colour("orange"),    trackerColour(white), textColour(white)
+rslider bounds(490, 46, 40, 40), text("Max."),     channel("max"),   range(0, 13, 8),   colour("orange"),    trackerColour(white), textColour(white)
 line    bounds(535,  2, 3, 86), colour("lime")
 
 
-rslider bounds(540, 12, 70, 70), text("Width"),    channel("width"), range(0, 1.0, 0.3,1,0.001),   colour("chocolate"), trackercolour(white), textcolour(white)
-rslider bounds(610, 12, 70, 70), text("Mix"),      channel("mix"),   range(0, 1.00, 1),            colour("chocolate"), trackercolour(white), textcolour(white)
-rslider bounds(680, 12, 70, 70), text("Level"),    channel("level"), range(0, 1.00, 1),            colour("chocolate"), trackercolour(white), textcolour(white)
+rslider bounds(540, 12, 70, 70), text("Width"),    channel("width"), range(0, 1.0, 0.3,1,0.001),   colour("chocolate"), trackerColour(white), textColour(white)
+rslider bounds(610, 12, 70, 70), text("Mix"),      channel("mix"),   range(0, 1.00, 1),            colour("chocolate"), trackerColour(white), textColour(white)
+rslider bounds(680, 12, 70, 70), text("Level"),    channel("level"), range(0, 1.00, 1),            colour("chocolate"), trackerColour(white), textColour(white)
 
 keyboard bounds(0,92,755,78)
 </Cabbage>

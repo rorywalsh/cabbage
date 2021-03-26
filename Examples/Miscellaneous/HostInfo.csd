@@ -1,12 +1,12 @@
 <Cabbage>
-form size(440, 320), caption("Host Info"), pluginid("HtIn"), guirefresh(10), colour("white")
-label bounds(5, 10, 430, 30), colour(100, 0, 0), text("BPM:"), align("left"), identchannel("BPMLabel")
-label bounds(5, 48, 430, 30), colour(90, 0, 0), text("Playing:"), align("left"), identchannel("IsPlayingLabel")
-label bounds(5, 86, 430, 30), colour(80, 0, 0), text("Recording:"), align("left"), identchannel("IsRecordingLabel")
-label bounds(5, 124, 430, 30), colour(70, 0, 0), text("Time in Seconds:"), align("left"), identchannel("TimeInSecondsLabel")
-label bounds(5, 164, 430, 30), colour(60, 0, 0), text("Time in Samples:"), align("left"), identchannel("TimeInSamplesLabel")
-label bounds(5, 202, 430, 30), colour(50, 0, 0), text("Time Signature:"), align("left"), identchannel("TimeSignatureLabel")
-label bounds(5, 240, 430, 30), colour(40, 0, 0),, text("Pulses per quater note:"), align("left"), identchannel("PPQNLabel")
+form size(440, 320), caption("Host Info"), pluginId("HtIn"), guiRefresh(10), colour("white")
+label bounds(5, 10, 430, 30), colour(100, 0, 0), text("BPM:"), align("left"), identChannel("BPMLabel")
+label bounds(5, 48, 430, 30), colour(90, 0, 0), text("Playing:"), align("left"), identChannel("IsPlayingLabel")
+label bounds(5, 86, 430, 30), colour(80, 0, 0), text("Recording:"), align("left"), identChannel("IsRecordingLabel")
+label bounds(5, 124, 430, 30), colour(70, 0, 0), text("Time in Seconds:"), align("left"), identChannel("TimeInSecondsLabel")
+label bounds(5, 164, 430, 30), colour(60, 0, 0), text("Time in Samples:"), align("left"), identChannel("TimeInSamplesLabel")
+label bounds(5, 202, 430, 30), colour(50, 0, 0), text("Time Signature:"), align("left"), identChannel("TimeSignatureLabel")
+label bounds(5, 240, 430, 30), colour(40, 0, 0),, text("Pulses per quater note:"), align("left"), identChannel("PPQNLabel")
 
 </Cabbage>
 <CsoundSynthesizer>

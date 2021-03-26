@@ -1,9 +1,9 @@
 <Cabbage>
 form caption("Encoder Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-encoder bounds(8, 38, 369, 50), channel("gain"), text("Gain") min(0), max(1), increment(.01) fontcolour(91, 46, 46, 255) textcolour(29, 29, 29, 255)
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+encoder bounds(8, 38, 369, 50), channel("gain"), text("Gain") min(0), max(1), increment(.01) fontColour(91, 46, 46, 255) textColour(29, 29, 29, 255)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-encoder bounds(70, 140, 41, 119) identchannel("widgetIdent"),  
+encoder bounds(70, 140, 41, 119) identChannel("widgetIdent"),  
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -33,11 +33,11 @@ endin
 
 instr ChangeAttributes
     SIdentifier init ""
-	SIdent sprintf "outlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "outlineColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "trackercolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "trackerColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "textcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "textColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "text(\"TextOff %f\") ", rnd(100)
 	SIdentifier strcat SIdentifier, SIdent
@@ -51,7 +51,7 @@ instr ChangeAttributes
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "colour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "fontcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "fontColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "value(%f) ", rnd(1)
 	SIdentifier strcat SIdentifier, SIdent

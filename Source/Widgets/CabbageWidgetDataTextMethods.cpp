@@ -37,108 +37,108 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("corners"):
         case HashStringToInt ("fill"):
         case HashStringToInt ("increment"):
-        case HashStringToInt ("linethickness"):
+        case HashStringToInt ("lineThickness"):
         case HashStringToInt ("max"):
         case HashStringToInt ("min"):
-        case HashStringToInt ("outlinethickness"):
-        case HashStringToInt ("trackerthickness"):
-        case HashStringToInt ("trackeroutsideradius"):
-        case HashStringToInt ("trackerinsideradius"):
-        case HashStringToInt ("samplerange"):
-        case HashStringToInt ("scrubberposition"):
+        case HashStringToInt ("outlineThickness"):
+        case HashStringToInt ("trackerThickness"):
+        case HashStringToInt ("trackerOutsideRadius"):
+        case HashStringToInt ("trackerInsideRadius"):
+        case HashStringToInt ("sampleRange"):
+        case HashStringToInt ("scrubberPosition"):
         case HashStringToInt ("surrogatelinenumber"):
         case HashStringToInt ("value"):
-        case HashStringToInt ("valuetextbox"):
+        case HashStringToInt ("valueTextBox"):
         case HashStringToInt ("velocity"):
         case HashStringToInt ("visible"):
         case HashStringToInt ("zoom"):
         case HashStringToInt ("range"):
         case HashStringToInt ("latched"):
-        case HashStringToInt ("fontsize"):
-        case HashStringToInt ("mouseinteraction"):
+        case HashStringToInt ("fontSize"):
+        case HashStringToInt ("mouseInteraction"):
         case HashStringToInt ("automatable"):
             return getNumericalValueTextAsCabbageCode (widgetData, identifier, "").trim();
             
         case HashStringToInt ("align"):
-        case HashStringToInt ("channeltype"):
+        case HashStringToInt ("channelType"):
         case HashStringToInt ("file"):
         case HashStringToInt ("mode"):
 		case HashStringToInt ("style"):
         case HashStringToInt ("plant"):
-        case HashStringToInt ("popuppostfix"):
-        case HashStringToInt ("popupprefix"):
-        case HashStringToInt ("popuptext"):
+        case HashStringToInt ("popupPostfix"):
+        case HashStringToInt ("popupPrefix"):
+        case HashStringToInt ("popupText"):
         case HashStringToInt ("shape"):
-        case HashStringToInt ("radiogroup"):
+        case HashStringToInt ("radioGroup"):
             return getSimpleTextAsCabbageCode(widgetData, identifier, "");
             
             
         case HashStringToInt ("channel"):
-        case HashStringToInt ("identchannel"):
+        case HashStringToInt ("identChannel"):
         case HashStringToInt ("populate"):
-        case HashStringToInt ("tablenumber"):
+        case HashStringToInt ("tableNumber"):
         case HashStringToInt ("text"):
-        case HashStringToInt ("valueprefix"):
-        case HashStringToInt ("valuepostfix"):
+        case HashStringToInt ("valuePrefix"):
+        case HashStringToInt ("valuePostfix"):
             return getMultiItemTextAsCabbageCode(widgetData, identifier, "");
 
         case HashStringToInt ("bounds"):
             return getBoundsTextAsCabbageCode (getBounds (widgetData));
 
-        case HashStringToInt("filmstrip"):
+        case HashStringToInt("filmStrip"):
             return getFilmStripTextAsCabbageCode(widgetData, "");
 
         case HashStringToInt ("type"):
             return getStringProp (widgetData, CabbageIdentifierIds::type);
             
 
-        case HashStringToInt ("amprange"):
+        case HashStringToInt ("ampRange"):
             return getMultiItemNumbersAsCabbageCode (widgetData, identifier, "");
             
-        case HashStringToInt ("activecellcolour"):
-        case HashStringToInt ("arrowbackgroundcolour"):
-        case HashStringToInt ("arrowcolour"):
-        case HashStringToInt ("backgroundcolour"):
-        case HashStringToInt ("ballcolour"):
-        case HashStringToInt ("blacknotecolour"):
-        case HashStringToInt ("fillcolour"):
-        case HashStringToInt ("highlightcolour"):
-        case HashStringToInt ("keyseparatorcolour"):
-        case HashStringToInt ("keydowncolour"):
-        case HashStringToInt ("menucolour"):
-        case HashStringToInt ("mouseoeverkeycolour"):
-        case HashStringToInt ("outlinecolour"):
-        case HashStringToInt ("overlaycolour"):
-        case HashStringToInt ("tablebackgroundcolour"):
-        case HashStringToInt ("tablegridcolour"):
-        case HashStringToInt ("textboxcolour"):
-        case HashStringToInt ("textboxoutlinecolour"):
-        case HashStringToInt ("textcolour"):
-        case HashStringToInt ("titlebarcolour"):
-        case HashStringToInt ("trackercolour"):
-        case HashStringToInt ("markercolour"):
-        case HashStringToInt ("whitenotecolour"):
+        case HashStringToInt ("activeCellColour"):
+        case HashStringToInt ("arrowBackGroundcolour"):
+        case HashStringToInt ("arrowColour"):
+        case HashStringToInt ("backGroundColour"):
+        case HashStringToInt ("ballColour"):
+        case HashStringToInt ("blackNoteColour"):
+        case HashStringToInt ("fillColour"):
+        case HashStringToInt ("highlightColour"):
+        case HashStringToInt ("keySeparatorColour"):
+        case HashStringToInt ("keyDownColour"):
+        case HashStringToInt ("menuColour"):
+        case HashStringToInt ("mouseOverKeyColour"):
+        case HashStringToInt ("outlineColour"):
+        case HashStringToInt ("overlayColour"):
+        case HashStringToInt ("tableBackGroundcolour"):
+        case HashStringToInt ("tableGridColour"):
+        case HashStringToInt ("textboxColour"):
+        case HashStringToInt ("textboxOutlineColour"):
+        case HashStringToInt ("textColour"):
+        case HashStringToInt ("titleBarColour"):
+        case HashStringToInt ("trackerColour"):
+        case HashStringToInt ("markerColour"):
+        case HashStringToInt ("whiteNoteColour"):
         case HashStringToInt ("colour"):
-        case HashStringToInt ("fontcolour"):
+        case HashStringToInt ("fontColour"):
         case HashStringToInt ("colour:0"):
         case HashStringToInt ("colour:1"):
-        case HashStringToInt ("fontcolour:0"):
-        case HashStringToInt ("fontcolour:1"):
-        case HashStringToInt ("tablecolour"):
-        case HashStringToInt ("tablecolours"):
-        case HashStringToInt ("tablecolour:"):
-        case HashStringToInt ("metercolour"):
-        case HashStringToInt ("metercolour:"):
+        case HashStringToInt ("fontColour:0"):
+        case HashStringToInt ("fontColour:1"):
+        case HashStringToInt ("tableColour"):
+        case HashStringToInt ("tableColours"):
+        case HashStringToInt ("tableColour:"):
+        case HashStringToInt ("meterColour"):
+        case HashStringToInt ("meterColour:"):
             return getColoursTextAsCabbageCode (widgetData, identifier, "");
             
         case HashStringToInt ("channelarray"):
-        case HashStringToInt ("widgetarray"):
+        case HashStringToInt ("widgetArray"):
             return getWidgetArrayAsCabbageCode (widgetData, "");
             
         case HashStringToInt ("rotate"):
             return getRotateTextAsCabbageCode (widgetData, "");
             
-        case HashStringToInt ("imgfile"):
+        case HashStringToInt ("imgFile"):
             return getImagesTextAsCabbageCode (widgetData, "");
             
         default:

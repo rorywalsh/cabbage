@@ -1,7 +1,7 @@
 <Cabbage>
-form caption("Live SVGs") size(330, 180), colour("black"), pluginid("LSVG"), svgpath(".")
+form caption("Live SVGs") size(330, 180), colour("black"), pluginId("LSVG"), svgpath(".")
 
-rslider bounds(12, 14, 130, 122), channel("rslider"), range(0, 1, 0), identchannel("svgIdent")
+rslider bounds(12, 14, 130, 122), channel("rslider"), range(0, 1, 0), identChannel("svgIdent")
 </Cabbage>  
 <CsoundSynthesizer>
 <CsOptions>

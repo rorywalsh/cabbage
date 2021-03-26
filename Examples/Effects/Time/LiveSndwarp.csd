@@ -47,58 +47,58 @@
 ; the buffered audio. The feedback loop will also be deactivated when 'freeze' is active.
 
 <Cabbage>
-form caption("Live Sndwarp") size(530, 495), pluginid("lwrp") style("legacy")
+form caption("Live Sndwarp") size(530, 495), pluginId("lwrp") style("legacy")
 
-groupbox bounds(  0,  0, 300,100), text("Master"), colour(30, 30, 40), fontcolour(255,125,125), plant("Master")
+groupbox bounds(  0,  0, 300,100), text("Master"), colour(30, 30, 40), fontColour(255,125,125), plant("Master")
 {
-checkbox bounds( 10, 28, 110, 20), colour("yellow"), channel("OnOff"),  value(1), text("On/Off [MIDI]"), trackercolour("red")
+checkbox bounds( 10, 28, 110, 20), colour("yellow"), channel("OnOff"),  value(1), text("On/Off [MIDI]"), trackerColour("red")
 label    bounds( 22, 53,  80, 13), text("In/Out Mode")
 combobox bounds( 10, 69, 100, 20), channel("monostereo"), value(2), text("mono","stereo out","stereo in/out")
-rslider  bounds(115, 30,  60, 60), text("In Gain"),  channel("InGain"), range(0, 2.00, 1, 0.5), colour( 67, 99, 99), trackercolour(207,239,239)
-rslider  bounds(175, 30,  60, 60), text("Out Gain"), channel("amp"),    range(0, 2.00, 1, 0.5), colour( 67, 99, 99), trackercolour(207,239,239)
-rslider  bounds(235, 30,  60, 60), text("Mix"),      channel("mix"),    range(0, 1.00, 1),      colour( 67, 99, 99), trackercolour(207,239,239)
+rslider  bounds(115, 30,  60, 60), text("In Gain"),  channel("InGain"), range(0, 2.00, 1, 0.5), colour( 67, 99, 99), trackerColour(207,239,239)
+rslider  bounds(175, 30,  60, 60), text("Out Gain"), channel("amp"),    range(0, 2.00, 1, 0.5), colour( 67, 99, 99), trackerColour(207,239,239)
+rslider  bounds(235, 30,  60, 60), text("Mix"),      channel("mix"),    range(0, 1.00, 1),      colour( 67, 99, 99), trackerColour(207,239,239)
 }
 
-groupbox bounds(300,  0, 230,100), text("Feedback - CAUTION!"), colour(25, 25, 35), fontcolour(250,120,120), plant("Feedback")
+groupbox bounds(300,  0, 230,100), text("Feedback - CAUTION!"), colour(25, 25, 35), fontColour(250,120,120), plant("Feedback")
 {
-rslider  bounds(  5, 30,  60, 60), text("Amount"), channel("feedback"), range(0, 1.00, 0), colour( 67, 99, 99), trackercolour(207,239,239)
-checkbox bounds( 65, 35,  70, 20), colour("yellow"), channel("clip"),  value(1), text("Clip"), trackercolour("red")
-checkbox bounds( 65, 65,  70, 20), colour("yellow"), channel("LPF_On"),  value(0), text("LPF"), trackercolour("red")
-rslider  bounds(110, 30,  60, 60), text("Clip Lev."), channel("ClipLev"), range(0.01, 1, 0.5, 0.5), colour( 67, 99, 99), trackercolour(207,239,239)
-rslider  bounds(165, 30,  60, 60), text("LPF"), channel("Cutoff"), range(20, 20000,  4000, 0.5), colour( 67, 99, 99), trackercolour(207,239,239)
+rslider  bounds(  5, 30,  60, 60), text("Amount"), channel("feedback"), range(0, 1.00, 0), colour( 67, 99, 99), trackerColour(207,239,239)
+checkbox bounds( 65, 35,  70, 20), colour("yellow"), channel("clip"),  value(1), text("Clip"), trackerColour("red")
+checkbox bounds( 65, 65,  70, 20), colour("yellow"), channel("LPF_On"),  value(0), text("LPF"), trackerColour("red")
+rslider  bounds(110, 30,  60, 60), text("Clip Lev."), channel("ClipLev"), range(0.01, 1, 0.5, 0.5), colour( 67, 99, 99), trackerColour(207,239,239)
+rslider  bounds(165, 30,  60, 60), text("LPF"), channel("Cutoff"), range(20, 20000,  4000, 0.5), colour( 67, 99, 99), trackerColour(207,239,239)
 }
 
-groupbox bounds(  0,100, 530,100), text("Grains"), colour(35, 35, 45), fontcolour(255,130,130), plant("Grains")
+groupbox bounds(  0,100, 530,100), text("Grains"), colour(35, 35, 45), fontColour(255,130,130), plant("Grains")
 {
-rslider  bounds(  5, 30,  60, 60), text("Size"), channel("wsize"), range(1, 88200, 7000, 0.25, 1), colour( 67, 99, 99), trackercolour(207,239,239)
-rslider  bounds( 65, 30,  60, 60), text("Size Rnd."), channel("rnd"), range(0, 30000, 1000, 0.375, 1), colour( 67, 99, 99), trackercolour(207,239,239)
-rslider  bounds(125, 30,  60, 60), text("Pitch"), channel("pch"), range(0.01, 8, 1, 0.5), colour( 67, 99, 99), trackercolour(207,239,239)
-rslider  bounds(185, 30,  60, 60), text("Semis"), channel("semis"), range(-48, 48, 0,1,1), colour( 67, 99, 99), trackercolour(207,239,239)
-rslider  bounds(245, 30,  60, 60), text("Density"), channel("olaps"), range(1, 100, 10, 1, 1), colour( 67, 99, 99), trackercolour(207,239,239)
+rslider  bounds(  5, 30,  60, 60), text("Size"), channel("wsize"), range(1, 88200, 7000, 0.25, 1), colour( 67, 99, 99), trackerColour(207,239,239)
+rslider  bounds( 65, 30,  60, 60), text("Size Rnd."), channel("rnd"), range(0, 30000, 1000, 0.375, 1), colour( 67, 99, 99), trackerColour(207,239,239)
+rslider  bounds(125, 30,  60, 60), text("Pitch"), channel("pch"), range(0.01, 8, 1, 0.5), colour( 67, 99, 99), trackerColour(207,239,239)
+rslider  bounds(185, 30,  60, 60), text("Semis"), channel("semis"), range(-48, 48, 0,1,1), colour( 67, 99, 99), trackerColour(207,239,239)
+rslider  bounds(245, 30,  60, 60), text("Density"), channel("olaps"), range(1, 100, 10, 1, 1), colour( 67, 99, 99), trackerColour(207,239,239)
 label    bounds(305, 25, 100, 13), text("Grain Envelope")
 combobox bounds(305, 41, 100, 20), channel("wfn"), value(1), text("Half Sine","Perc. 1","Perc. 2","Gate","Rev. Perc. 1 ","Rev. Perc. 2")
 checkbox bounds(315, 70, 100, 20), colour("yellow"), channel("balance"),  value(0), text("Balance")
-rslider  bounds(405, 30,  60, 60), text("Delay"), channel("dly"), range(0, 5, 0.01, 0.5), colour( 67, 99, 99), trackercolour(207,239,239)
-rslider  bounds(465, 30,  60, 60), text("Distr."), channel("beta"), range(1, 16.0, 1, 0.5), colour( 67, 99, 99), trackercolour(207,239,239)
+rslider  bounds(405, 30,  60, 60), text("Delay"), channel("dly"), range(0, 5, 0.01, 0.5), colour( 67, 99, 99), trackerColour(207,239,239)
+rslider  bounds(465, 30,  60, 60), text("Distr."), channel("beta"), range(1, 16.0, 1, 0.5), colour( 67, 99, 99), trackerColour(207,239,239)
 }
 
-groupbox bounds(  0,200,530,165), text("Freeze"), colour(45, 45, 55), fontcolour(255,100,100), plant("Freeze")
+groupbox bounds(  0,200,530,165), text("Freeze"), colour(45, 45, 55), fontColour(255,100,100), plant("Freeze")
 {
-button   bounds( 10, 25, 80, 20), fontcolour:0(50,50,100), fontcolour:1(205,205,255), colour:0(0,0,10), colour:1(100,100,150), channel("freeze"), text("FREEZE","FREEZE"),  value(0)
-hslider  bounds( 90, 29,430, 10), text("Port.Time"), channel("ManPtrPort"), range(0, 1.00, 0.5), colour( 67, 99, 99), trackercolour(207,239,239)
-gentable bounds( 10, 50,510, 80), tablenumber(1), tablecolour("lime"), amprange(-1,1,1), identchannel(table), zoom(-1), fill(0)
-image    bounds(518, 50,  2, 80), colour(200,200,200,100), identchannel("wiper")
-hslider  bounds(  5,132,522, 11), channel("ManPtr"), range(-1.00, 0, 0, 1, 0.001), colour( 67, 99, 99), trackercolour(207,239,239)
+button   bounds( 10, 25, 80, 20), fontColour:0(50,50,100), fontColour:1(205,205,255), colour:0(0,0,10), colour:1(100,100,150), channel("freeze"), text("FREEZE","FREEZE"),  value(0)
+hslider  bounds( 90, 29,430, 10), text("Port.Time"), channel("ManPtrPort"), range(0, 1.00, 0.5), colour( 67, 99, 99), trackerColour(207,239,239)
+gentable bounds( 10, 50,510, 80), tableNumber(1), tableColour("lime"), ampRange(-1,1,1), identChannel(table), zoom(-1), fill(0)
+image    bounds(518, 50,  2, 80), colour(200,200,200,100), identChannel("wiper")
+hslider  bounds(  5,132,522, 11), channel("ManPtr"), range(-1.00, 0, 0, 1, 0.001), colour( 67, 99, 99), trackerColour(207,239,239)
 label    bounds(220,145,100, 13), text("Manual Pointer")
 }
 
-groupbox bounds(  0,365,530,100), text("MIDI"), colour(30, 30, 40), fontcolour(255,100,100), plant("MIDI")
+groupbox bounds(  0,365,530,100), text("MIDI"), colour(30, 30, 40), fontColour(255,100,100), plant("MIDI")
 {
-rslider  bounds( 10, 35, 60, 60), text("Uni.Note"), channel("UniNote"), range(0, 127, 72,1,1), colour( 67, 99, 99), trackercolour(207,239,239)
+rslider  bounds( 10, 35, 60, 60), text("Uni.Note"), channel("UniNote"), range(0, 127, 72,1,1), colour( 67, 99, 99), trackerColour(207,239,239)
 keyboard bounds( 80,  0,450,100)
 }
-image bounds( 5, 470, 215, 20), colour(75, 85, 90, 100), plant("credit"), outlinethickness(0){
-label bounds( 3,   3, 210, 14), text("Author: Iain McCurdy |2012|"), fontcolour("white")
+image bounds( 5, 470, 215, 20), colour(75, 85, 90, 100), plant("credit"), outlineThickness(0){
+label bounds( 3,   3, 210, 14), text("Author: Iain McCurdy |2012|"), fontColour("white")
 }
 </Cabbage>
 
@@ -205,7 +205,7 @@ instr	1
 		tablew	ain+aFBackSig,gaphsW,gibuffer,1			; write input audio to table
 		tablew	k(ain)*5,1-k(gaphsW),giview,1			; write a value to the view table (k-rate is sufficient). Boost its amplitude before writing.
 	 if metro(32)==1 then								; peg rate of table updates
-       	  chnset	"tablenumber(1)", "table"			; update table display	
+       	  chnset	"tableNumber(1)", "table"			; update table display	
 	 endif
 
 	endif
@@ -213,7 +213,7 @@ instr	1
 	/*if stereo in - stereo out mode*/
 	if gkmonostereo==3 then						; if stereo in/out mode has been chosen...
 	 aR	inch	2						; read right channel audio input
-	 aR	=	aR*gkInGain					; rescale its amplitude with 'Input Gain' slider
+	 aR	=	aR*gkInGain					; reScale its amplitude with 'Input Gain' slider
 	 if gkfreeze==0 then
 		tablew	aR+aFBackSigR,gaphsW,gibufferR,1		; write right channel audio input audio to table
 	 endif

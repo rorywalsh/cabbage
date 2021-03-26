@@ -216,7 +216,6 @@ void CabbagePluginProcessor::setWidthHeight() {
 
 void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 {
-
 	for (auto line : linesFromCsd)
 	{
 		ValueTree temp("temp");

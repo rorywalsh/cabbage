@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form size(650, 265), caption("Guitar Chords"), pluginid("guit"), guirefresh(64) style("legacy")
+form size(650, 265), caption("Guitar Chords"), pluginId("guit"), guiRefresh(64) style("legacy")
 
 label  bounds( 54, -1, 25, 10), text("Mute"), FontColour("white")
 label  bounds( 84, -1, 25, 10), text("Open"), FontColour("white")
@@ -14,23 +14,23 @@ combobox bounds(  3, 70, 50, 15), channel("TuneD"),     value(78), text("G9","F#
 combobox bounds(  3, 90, 50, 15), channel("TuneA"),     value(83), text("G9","F#9","F9","E9","D#9","D9","C#9","C9","B8","A#8","A8","G#8","G8","F#8","F8","E8","D#8","D8","C#8","C8","B7","A#7","A7","G#7","G7","F#7","F7","E7","D#7","D7","C#7","C7","B6","A#6","A6","G#6","G6","F#6","F6","E6","D#6","D6","C#6","C6","B5","A#5","A5","G#5","G5","F#5","F5","E5","D#5","D5","C#5","C5","B4","A#4","A4","G#4","G4","F#4","F4","E4","D#4","D4","C#4","C4","B3","A#3","A3","G#3","G3","F#3","F3","E3","D#3","D3","C#3","C3","B2","A#2","A2","G#2","G2","F#2","F2","E2","D#2","D2","C#2","C2","B1","A#1","A1","G#1","G1","F#1","F1","E1","D#1","D1","C#1","C1","B0","A#0","A0","G#0","G0","F#0","F0","E0","D#0","D0","C#0","C0","B-1","A#-1","A-1","G#-1","G-1","F#-1","F-1","E-1","D#-1","D-1","C#-1","C-1")
 combobox bounds(  3,110, 50, 15), channel("TuneLowE"),  value(88), text("G9","F#9","F9","E9","D#9","D9","C#9","C9","B8","A#8","A8","G#8","G8","F#8","F8","E8","D#8","D8","C#8","C8","B7","A#7","A7","G#7","G7","F#7","F7","E7","D#7","D7","C#7","C7","B6","A#6","A6","G#6","G6","F#6","F6","E6","D#6","D6","C#6","C6","B5","A#5","A5","G#5","G5","F#5","F5","E5","D#5","D5","C#5","C5","B4","A#4","A4","G#4","G4","F#4","F4","E4","D#4","D4","C#4","C4","B3","A#3","A3","G#3","G3","F#3","F3","E3","D#3","D3","C#3","C3","B2","A#2","A2","G#2","G2","F#2","F2","E2","D#2","D2","C#2","C2","B1","A#1","A1","G#1","G1","F#1","F1","E1","D#1","D1","C#1","C1","B0","A#0","A0","G#0","G0","F#0","F0","E0","D#0","D0","C#0","C0","B-1","A#-1","A-1","G#-1","G-1","F#-1","F-1","E-1","D#-1","D-1","C#-1","C-1")
 
-checkbox bounds( 59, 30, 15, 15), channel("B_Mute"),     colour(255, 20, 20), radiogroup(2)
-checkbox bounds( 59, 50, 15, 15), channel("G_Mute"),     colour(255, 20, 20), radiogroup(3)
-checkbox bounds( 59, 70, 15, 15), channel("D_Mute"),     colour(255, 20, 20), radiogroup(4)
-checkbox bounds( 59, 90, 15, 15), channel("A_Mute"),     colour(255, 20, 20), radiogroup(5)
-checkbox bounds( 59,110, 15, 15), channel("LowE_Mute"),  colour(255, 20, 20), radiogroup(6), value(1)
+checkbox bounds( 59, 30, 15, 15), channel("B_Mute"),     colour(255, 20, 20), radioGroup(2)
+checkbox bounds( 59, 50, 15, 15), channel("G_Mute"),     colour(255, 20, 20), radioGroup(3)
+checkbox bounds( 59, 70, 15, 15), channel("D_Mute"),     colour(255, 20, 20), radioGroup(4)
+checkbox bounds( 59, 90, 15, 15), channel("A_Mute"),     colour(255, 20, 20), radioGroup(5)
+checkbox bounds( 59,110, 15, 15), channel("LowE_Mute"),  colour(255, 20, 20), radioGroup(6), value(1)
 
-checkbox bounds( 89, 30, 15, 15), channel("B0"),     colour(  0,255,  0), radiogroup(2)
-checkbox bounds( 89, 50, 15, 15), channel("G0"),     colour(  0,255,  0), radiogroup(3)
-checkbox bounds( 89, 70, 15, 15), channel("D0"),     colour(  0,255,  0), radiogroup(4)
-checkbox bounds( 89, 90, 15, 15), channel("A0"),     colour(  0,255,  0), radiogroup(5), value(1)
-checkbox bounds( 89,110, 15, 15), channel("LowE0"),  colour(  0,255,  0), radiogroup(6)
+checkbox bounds( 89, 30, 15, 15), channel("B0"),     colour(  0,255,  0), radioGroup(2)
+checkbox bounds( 89, 50, 15, 15), channel("G0"),     colour(  0,255,  0), radioGroup(3)
+checkbox bounds( 89, 70, 15, 15), channel("D0"),     colour(  0,255,  0), radioGroup(4)
+checkbox bounds( 89, 90, 15, 15), channel("A0"),     colour(  0,255,  0), radioGroup(5), value(1)
+checkbox bounds( 89,110, 15, 15), channel("LowE0"),  colour(  0,255,  0), radioGroup(6)
 
-checkbox bounds( 59, 10, 15, 15), channel("HighE_Mute"), colour(255, 20, 20), radiogroup(1)
-checkbox bounds( 89, 10, 15, 15), channel("HighE0"), colour(  0,255,  0), radiogroup(1), value(1)
+checkbox bounds( 59, 10, 15, 15), channel("HighE_Mute"), colour(255, 20, 20), radioGroup(1)
+checkbox bounds( 89, 10, 15, 15), channel("HighE0"), colour(  0,255,  0), radioGroup(1), value(1)
 
 ; Neck
-image bounds(110,  0,540,135), shape("sharp"), linethickness(0), colour(white)
+image bounds(110,  0,540,135), shape("sharp"), lineThickness(0), colour(white)
 
 ; dots
 image bounds(232, 60, 15,15), colour(0,0,0), shape("ellipse")	; 3rd fret
@@ -40,89 +40,89 @@ image bounds(490, 60, 15,15), colour(0,0,0), shape("ellipse")	; 9th fret
 image bounds(591, 30, 15,15), colour(0,0,0), shape("ellipse")	; 12th fret
 image bounds(591, 90, 15,15), colour(0,0,0), shape("ellipse")	; 12th fret
 
-checkbox bounds(131, 10, 15, 15), channel("HighE1"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
-checkbox bounds(183, 10, 15, 15), channel("HighE2"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
-checkbox bounds(232, 10, 15, 15), channel("HighE3"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
-checkbox bounds(279, 10, 15, 15), channel("HighE4"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
-checkbox bounds(325, 10, 15, 15), channel("HighE5"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
-checkbox bounds(369, 10, 15, 15), channel("HighE6"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
-checkbox bounds(411, 10, 15, 15), channel("HighE7"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
-checkbox bounds(450, 10, 15, 15), channel("HighE8"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
-checkbox bounds(490, 10, 15, 15), channel("HighE9"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
-checkbox bounds(525, 10, 15, 15), channel("HighE10"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
-checkbox bounds(559, 10, 15, 15), channel("HighE11"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
-checkbox bounds(591, 10, 15, 15), channel("HighE12"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
-checkbox bounds(621, 10, 15, 15), channel("HighE13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(1)
+checkbox bounds(131, 10, 15, 15), channel("HighE1"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
+checkbox bounds(183, 10, 15, 15), channel("HighE2"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
+checkbox bounds(232, 10, 15, 15), channel("HighE3"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
+checkbox bounds(279, 10, 15, 15), channel("HighE4"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
+checkbox bounds(325, 10, 15, 15), channel("HighE5"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
+checkbox bounds(369, 10, 15, 15), channel("HighE6"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
+checkbox bounds(411, 10, 15, 15), channel("HighE7"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
+checkbox bounds(450, 10, 15, 15), channel("HighE8"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
+checkbox bounds(490, 10, 15, 15), channel("HighE9"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
+checkbox bounds(525, 10, 15, 15), channel("HighE10"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
+checkbox bounds(559, 10, 15, 15), channel("HighE11"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
+checkbox bounds(591, 10, 15, 15), channel("HighE12"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
+checkbox bounds(621, 10, 15, 15), channel("HighE13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
 
-checkbox bounds(131, 30, 15, 15), channel("B1") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2)
-checkbox bounds(183, 30, 15, 15), channel("B2") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2), value(1)
-checkbox bounds(232, 30, 15, 15), channel("B3") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2)
-checkbox bounds(279, 30, 15, 15), channel("B4") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2)
-checkbox bounds(325, 30, 15, 15), channel("B5") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2)
-checkbox bounds(369, 30, 15, 15), channel("B6") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2)
-checkbox bounds(411, 30, 15, 15), channel("B7") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2)
-checkbox bounds(450, 30, 15, 15), channel("B8") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2)
-checkbox bounds(490, 30, 15, 15), channel("B9") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2)
-checkbox bounds(525, 30, 15, 15), channel("B10"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2)
-checkbox bounds(559, 30, 15, 15), channel("B11"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2)
-checkbox bounds(591, 30, 15, 15), channel("B12"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2)
-checkbox bounds(621, 30, 15, 15), channel("B13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(2)
+checkbox bounds(131, 30, 15, 15), channel("B1") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2)
+checkbox bounds(183, 30, 15, 15), channel("B2") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2), value(1)
+checkbox bounds(232, 30, 15, 15), channel("B3") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2)
+checkbox bounds(279, 30, 15, 15), channel("B4") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2)
+checkbox bounds(325, 30, 15, 15), channel("B5") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2)
+checkbox bounds(369, 30, 15, 15), channel("B6") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2)
+checkbox bounds(411, 30, 15, 15), channel("B7") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2)
+checkbox bounds(450, 30, 15, 15), channel("B8") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2)
+checkbox bounds(490, 30, 15, 15), channel("B9") , colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2)
+checkbox bounds(525, 30, 15, 15), channel("B10"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2)
+checkbox bounds(559, 30, 15, 15), channel("B11"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2)
+checkbox bounds(591, 30, 15, 15), channel("B12"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2)
+checkbox bounds(621, 30, 15, 15), channel("B13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(2)
 
-checkbox bounds(131, 50, 15, 15), channel("G1"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3)
-checkbox bounds(183, 50, 15, 15), channel("G2"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3), value(1)    
-checkbox bounds(232, 50, 15, 15), channel("G3"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3)    
-checkbox bounds(279, 50, 15, 15), channel("G4"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3)    
-checkbox bounds(325, 50, 15, 15), channel("G5"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3)    
-checkbox bounds(369, 50, 15, 15), channel("G6"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3)
-checkbox bounds(411, 50, 15, 15), channel("G7"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3)
-checkbox bounds(450, 50, 15, 15), channel("G8"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3)
-checkbox bounds(490, 50, 15, 15), channel("G9"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3)
-checkbox bounds(525, 50, 15, 15), channel("G10"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3)
-checkbox bounds(559, 50, 15, 15), channel("G11"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3)
-checkbox bounds(591, 50, 15, 15), channel("G12"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3)
-checkbox bounds(621, 50, 15, 15), channel("G13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(3)
+checkbox bounds(131, 50, 15, 15), channel("G1"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3)
+checkbox bounds(183, 50, 15, 15), channel("G2"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3), value(1)    
+checkbox bounds(232, 50, 15, 15), channel("G3"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3)    
+checkbox bounds(279, 50, 15, 15), channel("G4"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3)    
+checkbox bounds(325, 50, 15, 15), channel("G5"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3)    
+checkbox bounds(369, 50, 15, 15), channel("G6"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3)
+checkbox bounds(411, 50, 15, 15), channel("G7"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3)
+checkbox bounds(450, 50, 15, 15), channel("G8"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3)
+checkbox bounds(490, 50, 15, 15), channel("G9"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3)
+checkbox bounds(525, 50, 15, 15), channel("G10"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3)
+checkbox bounds(559, 50, 15, 15), channel("G11"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3)
+checkbox bounds(591, 50, 15, 15), channel("G12"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3)
+checkbox bounds(621, 50, 15, 15), channel("G13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(3)
 
-checkbox bounds(131, 70, 15, 15), channel("D1"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4)
-checkbox bounds(183, 70, 15, 15), channel("D2"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4), value(1)    
-checkbox bounds(232, 70, 15, 15), channel("D3"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4)    
-checkbox bounds(279, 70, 15, 15), channel("D4"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4)    
-checkbox bounds(325, 70, 15, 15), channel("D5"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4)    
-checkbox bounds(369, 70, 15, 15), channel("D6"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4)
-checkbox bounds(411, 70, 15, 15), channel("D7"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4)
-checkbox bounds(450, 70, 15, 15), channel("D8"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4)
-checkbox bounds(490, 70, 15, 15), channel("D9"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4)
-checkbox bounds(525, 70, 15, 15), channel("D10"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4)
-checkbox bounds(559, 70, 15, 15), channel("D11"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4)
-checkbox bounds(591, 70, 15, 15), channel("D12"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4)
-checkbox bounds(621, 70, 15, 15), channel("D13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(4)
+checkbox bounds(131, 70, 15, 15), channel("D1"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4)
+checkbox bounds(183, 70, 15, 15), channel("D2"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4), value(1)    
+checkbox bounds(232, 70, 15, 15), channel("D3"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4)    
+checkbox bounds(279, 70, 15, 15), channel("D4"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4)    
+checkbox bounds(325, 70, 15, 15), channel("D5"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4)    
+checkbox bounds(369, 70, 15, 15), channel("D6"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4)
+checkbox bounds(411, 70, 15, 15), channel("D7"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4)
+checkbox bounds(450, 70, 15, 15), channel("D8"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4)
+checkbox bounds(490, 70, 15, 15), channel("D9"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4)
+checkbox bounds(525, 70, 15, 15), channel("D10"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4)
+checkbox bounds(559, 70, 15, 15), channel("D11"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4)
+checkbox bounds(591, 70, 15, 15), channel("D12"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4)
+checkbox bounds(621, 70, 15, 15), channel("D13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(4)
 
-checkbox bounds(131, 90, 15, 15), channel("A1"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)
-checkbox bounds(183, 90, 15, 15), channel("A2"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)    
-checkbox bounds(232, 90, 15, 15), channel("A3"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)    
-checkbox bounds(279, 90, 15, 15), channel("A4"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)    
-checkbox bounds(325, 90, 15, 15), channel("A5"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)    
-checkbox bounds(369, 90, 15, 15), channel("A6"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)
-checkbox bounds(411, 90, 15, 15), channel("A7"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)
-checkbox bounds(450, 90, 15, 15), channel("A8"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)
-checkbox bounds(490, 90, 15, 15), channel("A9"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)
-checkbox bounds(525, 90, 15, 15), channel("A10"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)
-checkbox bounds(559, 90, 15, 15), channel("A11"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)
-checkbox bounds(591, 90, 15, 15), channel("A12"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)
-checkbox bounds(621, 90, 15, 15), channel("A13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(5)
+checkbox bounds(131, 90, 15, 15), channel("A1"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)
+checkbox bounds(183, 90, 15, 15), channel("A2"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)    
+checkbox bounds(232, 90, 15, 15), channel("A3"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)    
+checkbox bounds(279, 90, 15, 15), channel("A4"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)    
+checkbox bounds(325, 90, 15, 15), channel("A5"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)    
+checkbox bounds(369, 90, 15, 15), channel("A6"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)
+checkbox bounds(411, 90, 15, 15), channel("A7"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)
+checkbox bounds(450, 90, 15, 15), channel("A8"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)
+checkbox bounds(490, 90, 15, 15), channel("A9"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)
+checkbox bounds(525, 90, 15, 15), channel("A10"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)
+checkbox bounds(559, 90, 15, 15), channel("A11"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)
+checkbox bounds(591, 90, 15, 15), channel("A12"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)
+checkbox bounds(621, 90, 15, 15), channel("A13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(5)
 
-checkbox bounds(131,110, 15, 15), channel("LowE1"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);52
-checkbox bounds(183,110, 15, 15), channel("LowE2"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);49
-checkbox bounds(232,110, 15, 15), channel("LowE3"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);47
-checkbox bounds(279,110, 15, 15), channel("LowE4"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);46
-checkbox bounds(325,110, 15, 15), channel("LowE5"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);44
-checkbox bounds(369,110, 15, 15), channel("LowE6"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);42
-checkbox bounds(411,110, 15, 15), channel("LowE7"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);39
-checkbox bounds(450,110, 15, 15), channel("LowE8"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);40
-checkbox bounds(490,110, 15, 15), channel("LowE9"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);35
-checkbox bounds(525,110, 15, 15), channel("LowE10"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);34
-checkbox bounds(559,110, 15, 15), channel("LowE11"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);32
-checkbox bounds(591,110, 15, 15), channel("LowE12"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);30
-checkbox bounds(621,110, 15, 15), channel("LowE13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radiogroup(6);
+checkbox bounds(131,110, 15, 15), channel("LowE1"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);52
+checkbox bounds(183,110, 15, 15), channel("LowE2"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);49
+checkbox bounds(232,110, 15, 15), channel("LowE3"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);47
+checkbox bounds(279,110, 15, 15), channel("LowE4"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);46
+checkbox bounds(325,110, 15, 15), channel("LowE5"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);44
+checkbox bounds(369,110, 15, 15), channel("LowE6"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);42
+checkbox bounds(411,110, 15, 15), channel("LowE7"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);39
+checkbox bounds(450,110, 15, 15), channel("LowE8"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);40
+checkbox bounds(490,110, 15, 15), channel("LowE9"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);35
+checkbox bounds(525,110, 15, 15), channel("LowE10"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);34
+checkbox bounds(559,110, 15, 15), channel("LowE11"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);32
+checkbox bounds(591,110, 15, 15), channel("LowE12"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);30
+checkbox bounds(621,110, 15, 15), channel("LowE13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);
                                                                
 ; frets
 line bounds(164,  5,  2, 125), colour(50,50,50)	      	;	;

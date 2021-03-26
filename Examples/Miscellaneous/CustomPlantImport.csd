@@ -1,6 +1,6 @@
 <Cabbage>
-form caption("RadioThings") size(440, 180), colour(58, 110, 210), import("plant.plant"), pluginid("CuPI")
-radioValueButtonGroup bounds(18, 18, 258, 110), channel("radioGroup"), namespace("rw")
+form caption("RadioThings") size(440, 180), colour(58, 110, 210), import("plant.plant"), pluginId("CuPI")
+radioValueButtonGroup bounds(18, 18, 258, 110), channel("radioGroup"), nameSpace("rw")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

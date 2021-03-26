@@ -13,16 +13,16 @@
 ; Env.Shape	-	Duration of attack and release of synthesizer notes 
 
 <Cabbage>
-form caption("GEN08"), size(410, 300), pluginid("gn08"), colour(120,70,170,150) style("legacy")
+form caption("GEN08"), size(410, 300), pluginId("gn08"), colour(120,70,170,150) style("legacy")
 
-gentable bounds(  5,  5, 400, 120), identchannel("table1"), tablenumber(1), tablecolour("yellow"), amprange(-1,1,1), outlinethickness(2), tablegridcolour(0,0,0,0), zoom(-1), fill(1)
+gentable bounds(  5,  5, 400, 120), identChannel("table1"), tableNumber(1), tableColour("yellow"), ampRange(-1,1,1), outlineThickness(2), tableGridColour(0,0,0,0), zoom(-1), fill(1)
 
-rslider bounds( 15,130, 80, 80), channel("nodes"), text("Nodes"), textbox(1), valuetextbox(1), range(1, 16, 16,1,1),        colour(160,110,210,200), trackercolour("yellow"), outlinecolour(100,100,100), fontcolour("white"), textcolour("white")
-rslider bounds( 75,130, 80, 80), channel("wrap"), text("Repeat"), textbox(1), valuetextbox(1), range(2, 16,16,1,1),         colour(160,110,210,200), trackercolour("yellow"), outlinecolour(100,100,100), fontcolour("white"), textcolour("white")
-rslider bounds(135,130, 80, 80), channel("speed"), text("Speed"), textbox(1), valuetextbox(1), range(1, 5.00, 1),           colour(160,110,210,200), trackercolour("yellow"), outlinecolour(100,100,100), fontcolour("white"), textcolour("white")
-rslider bounds(195,130, 80, 80), channel("level"), text("Level"), textbox(1), valuetextbox(1), range(0, 1.00,0.1),          colour(160,110,210,200), trackercolour("yellow"), outlinecolour(100,100,100), fontcolour("white"), textcolour("white")
-rslider bounds(255,130, 80, 80), channel("reverb"), text("Reverb"), textbox(1), valuetextbox(1), range(0, 1.00,0.1),        colour(160,110,210,200), trackercolour("yellow"), outlinecolour(100,100,100), fontcolour("white"), textcolour("white")
-rslider bounds(315,130, 80, 80), channel("EnvShape"), text("Env.Shape"), textbox(1), valuetextbox(1), range(0, 2.00,0.5),   colour(160,110,210,200), trackercolour("yellow"), outlinecolour(100,100,100), fontcolour("white"), textcolour("white")
+rslider bounds( 15,130, 80, 80), channel("nodes"), text("Nodes"), textBox(1), valueTextBox(1), range(1, 16, 16,1,1),        colour(160,110,210,200), trackerColour("yellow"), outlineColour(100,100,100), fontColour("white"), textColour("white")
+rslider bounds( 75,130, 80, 80), channel("wrap"), text("Repeat"), textBox(1), valueTextBox(1), range(2, 16,16,1,1),         colour(160,110,210,200), trackerColour("yellow"), outlineColour(100,100,100), fontColour("white"), textColour("white")
+rslider bounds(135,130, 80, 80), channel("speed"), text("Speed"), textBox(1), valueTextBox(1), range(1, 5.00, 1),           colour(160,110,210,200), trackerColour("yellow"), outlineColour(100,100,100), fontColour("white"), textColour("white")
+rslider bounds(195,130, 80, 80), channel("level"), text("Level"), textBox(1), valueTextBox(1), range(0, 1.00,0.1),          colour(160,110,210,200), trackerColour("yellow"), outlineColour(100,100,100), fontColour("white"), textColour("white")
+rslider bounds(255,130, 80, 80), channel("reverb"), text("Reverb"), textBox(1), valueTextBox(1), range(0, 1.00,0.1),        colour(160,110,210,200), trackerColour("yellow"), outlineColour(100,100,100), fontColour("white"), textColour("white")
+rslider bounds(315,130, 80, 80), channel("EnvShape"), text("Env.Shape"), textBox(1), valueTextBox(1), range(0, 2.00,0.5),   colour(160,110,210,200), trackerColour("yellow"), outlineColour(100,100,100), fontColour("white"), textColour("white")
 
 keyboard bounds(  0,220,410, 80)
 </Cabbage>
@@ -185,7 +185,7 @@ $ReadStr(16)
 	rireturn
 
 	if metro(32)==1 then			; peg table display rate. Audio quality is unaffected by this.
-	 chnset	"tablenumber(1)", "table1"	; update table display	
+	 chnset	"tableNumber(1)", "table1"	; update table display	
 	endif
 endin
 

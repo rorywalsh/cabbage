@@ -1,11 +1,11 @@
 <Cabbage>
 form caption("Texteditor Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-label bounds(12, 36, 297, 19), text("Enter some text and hit enter"), align("left") fontcolour(84, 83, 83, 255)
+label bounds(12, 36, 297, 19), text("Enter some text and hit enter"), align("left") fontColour(84, 83, 83, 255)
 texteditor bounds(12, 58, 152, 24), channel("textEditor1"), text("") value(0) file("/Users/walshr/sourcecode/cabbage/Examples/Widgets/Sliders.csd")
-texteditor bounds(146, 140, 68, 127) identchannel("widgetIdent")
-label bounds(192, 60, 192, 21), text(""), identchannel("labelIdent")
+texteditor bounds(146, 140, 68, 127) identChannel("widgetIdent")
+label bounds(192, 60, 192, 21), text(""), identChannel("labelIdent")
 
 </Cabbage>
 <CsoundSynthesizer>
@@ -48,7 +48,7 @@ instr ChangeAttributes
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "colour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "fontcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "fontColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
 	SIdent sprintf "visible(%d) ", (rnd(100) > 80 ? 0 : 1)
 	SIdentifier strcat SIdentifier, SIdent

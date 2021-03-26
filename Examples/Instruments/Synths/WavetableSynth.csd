@@ -21,74 +21,74 @@
 ; Drop		--		Amount of pitch drop upon note conclusion
 
 <Cabbage>
-form caption("Wavetable Synth") size(720, 290), pluginid("wtsy") style("legacy")
-image                pos(0, 0), size(720, 290), colour(150,100,70), shape("sharp"),   outlinecolour("maroon"), outlinethickness(2)
+form caption("Wavetable Synth") size(720, 290), pluginId("wtsy") style("legacy")
+image                pos(0, 0), size(720, 290), colour(150,100,70), shape("sharp"),   outlineColour("maroon"), outlineThickness(2)
 
 ;INSTRUMENT
-image    bounds( 10,  6,140, 88), colour(150,100,70), shape("rounded"), outlinecolour("white"), outlinethickness(1), plant("instrument") {
-label    bounds(  0,  5,140, 15), text("Instrument"),       fontcolour(white)
-combobox bounds( 10, 40,120, 20), fontcolour("white"), channel("Instr"),  value(1), text("Clarinet", "Bass Clarinet", "C.bass Clarinet", "Oboe", "Bassoon", "C.bassoon", "Violin", "Cello", "Piccolo", "Flute", "Alto Flute", "Bass Flute", "Ahh", "Horn P", "Horn F", "B.Trb.Harmon Mute", "B.Trb.Cup Mute", "B.Trb.Open")
+image    bounds( 10,  6,140, 88), colour(150,100,70), shape("rounded"), outlineColour("white"), outlineThickness(1), plant("instrument") {
+label    bounds(  0,  5,140, 15), text("Instrument"),       fontColour(white)
+combobox bounds( 10, 40,120, 20), fontColour("white"), channel("Instr"),  value(1), text("Clarinet", "Bass Clarinet", "C.bass Clarinet", "Oboe", "Bassoon", "C.bassoon", "Violin", "Cello", "Piccolo", "Flute", "Alto Flute", "Bass Flute", "Ahh", "Horn P", "Horn F", "B.Trb.Harmon Mute", "B.Trb.Cup Mute", "B.Trb.Open")
 }
 
 ;MODULATION
-image   bounds(160,  6,290, 88), colour(150,100,70), shape("rounded"), outlinecolour("white"), outlinethickness(1), plant("modulation") {
-label   bounds(  0,  5,290, 15), text("Modulation"), fontcolour(white)
-label   bounds(  8, 74, 28, 12), text("Mod."),       fontcolour(white)
-vslider bounds(  0,  4, 40, 80), channel("moddep"), range(0, 1, 0.4),midCtrl(1, 1), colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds( 30, 26, 60, 60), text("Vib."),  channel("vibdep"),  range(0, 1, 0.15),       colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds( 80, 26, 60, 60), text("Trem."), channel("tremdep"), range(0, 1, 0.4),        colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds(130, 26, 60, 60), text("Tone"),  channel("tonedep"), range(0, 4, 2),          colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds(180, 26, 60, 60), text("Rate"),  channel("ModRte"),  range(0, 16, 4.25, 0.5), colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds(230, 26, 60, 60), text("Delay"), channel("ModDly"),  range(0.01,3,1,0.5,0.01),colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
+image   bounds(160,  6,290, 88), colour(150,100,70), shape("rounded"), outlineColour("white"), outlineThickness(1), plant("modulation") {
+label   bounds(  0,  5,290, 15), text("Modulation"), fontColour(white)
+label   bounds(  8, 74, 28, 12), text("Mod."),       fontColour(white)
+vslider bounds(  0,  4, 40, 80), channel("moddep"), range(0, 1, 0.4),midCtrl(1, 1), colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds( 30, 26, 60, 60), text("Vib."),  channel("vibdep"),  range(0, 1, 0.15),       colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds( 80, 26, 60, 60), text("Trem."), channel("tremdep"), range(0, 1, 0.4),        colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds(130, 26, 60, 60), text("Tone"),  channel("tonedep"), range(0, 4, 2),          colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds(180, 26, 60, 60), text("Rate"),  channel("ModRte"),  range(0, 16, 4.25, 0.5), colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds(230, 26, 60, 60), text("Delay"), channel("ModDly"),  range(0.01,3,1,0.5,0.01),colour( 70, 30,  0), trackerColour("tan"), textColour(white)
 }
 
 ;POLYPHONY
-image   bounds(455,  6,140, 88), colour(150,100,70), shape("rounded"), outlinecolour("white"), outlinethickness(1), plant("polyphony") {	;polyphony
-label   bounds(  0,  5,140, 15), text("Polyphony"),  fontcolour(white)
+image   bounds(455,  6,140, 88), colour(150,100,70), shape("rounded"), outlineColour("white"), outlineThickness(1), plant("polyphony") {	;polyphony
+label   bounds(  0,  5,140, 15), text("Polyphony"),  fontColour(white)
 button  bounds( 10, 34, 70, 25), text("poly","mono"), channel("monopoly"), value(1)
-rslider bounds( 80, 26, 60, 60), text("Leg.Time"),    channel("LegTim"), range(0.001, 2, 0.002, 0.5, 0.001), colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
+rslider bounds( 80, 26, 60, 60), text("Leg.Time"),    channel("LegTim"), range(0.001, 2, 0.002, 0.5, 0.001), colour( 70, 30,  0), trackerColour("tan"), textColour(white)
 }
 
 ;PITCH BEND
-image   bounds(600,  6,110, 88), colour(150,100,70), shape("rounded"), outlinecolour("white"),  outlinethickness(1), plant("pitchbend") {	;pitch bend
-label   bounds( 15,  5, 75, 15), text("Pitch Bend"), fontcolour(white)
-rslider bounds(  0, 26, 60, 60), text("P.Bend"), channel("PBend"),  range(-1,1, 0), colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds( 50, 26, 60, 60), text("Range"), channel("PBendRng"), range(0, 12, 2,1,1), colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
+image   bounds(600,  6,110, 88), colour(150,100,70), shape("rounded"), outlineColour("white"),  outlineThickness(1), plant("pitchbend") {	;pitch bend
+label   bounds( 15,  5, 75, 15), text("Pitch Bend"), fontColour(white)
+rslider bounds(  0, 26, 60, 60), text("P.Bend"), channel("PBend"),  range(-1,1, 0), colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds( 50, 26, 60, 60), text("Range"), channel("PBendRng"), range(0, 12, 2,1,1), colour( 70, 30,  0), trackerColour("tan"), textColour(white)
 }
 
 ;NOISE ATTACK
-image   bounds( 15,103,160, 88), colour(150,100,70), shape("rounded"), outlinecolour("white"), outlinethickness(1), plant("noiseattack") {	;noise attack
-label   bounds( 28,  4, 60, 15), text("Attack"),     fontcolour(white)
-rslider bounds(  0, 24, 60, 60), text("Amp."), channel("NAttAmp"), range(0,  4.00, 0.5),      colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds( 50, 24, 60, 60), text("Time"), channel("NAttTim"), range(0.001,0.5,0.05,0.5,0.001), colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds(100, 24, 60, 60), text("Build"), channel("build"),  range(0.001,0.5,0.001,0.5,0.001), colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
+image   bounds( 15,103,160, 88), colour(150,100,70), shape("rounded"), outlineColour("white"), outlineThickness(1), plant("noiseattack") {	;noise attack
+label   bounds( 28,  4, 60, 15), text("Attack"),     fontColour(white)
+rslider bounds(  0, 24, 60, 60), text("Amp."), channel("NAttAmp"), range(0,  4.00, 0.5),      colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds( 50, 24, 60, 60), text("Time"), channel("NAttTim"), range(0.001,0.5,0.05,0.5,0.001), colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds(100, 24, 60, 60), text("Build"), channel("build"),  range(0.001,0.5,0.001,0.5,0.001), colour( 70, 30,  0), trackerColour("tan"), textColour(white)
 }
 
 ;QUALITY
-image   bounds(180,103,155, 88), colour(150,100,70), shape("rounded"), outlinecolour("white"), outlinethickness(1), plant("quality") {	;quality
-label   bounds( 70, 72, 16, 11), text("EQ"),         fontcolour(white)
-label   bounds( 48,  4, 60, 15), text("Quality"),    fontcolour(white)
-rslider bounds(  0, 24, 60, 60), text("Noise"), channel("NoiseAmp"), range(0,5,0.01,0.5,0.0001),     colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-vslider bounds( 53, 17, 30, 65), text(""),      channel("EQ_Lo"),    range(500,10000,2000,0.5,0.01), colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-vslider bounds( 73, 17, 30, 65), text(""),      channel("EQ_Hi"),    range(20,5000,200,0.5,0.01),    colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds( 95, 24, 60, 60), text("Drop"),  channel("drop"),     range(0,0.5,0.05,0.5,0.0001),   colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
+image   bounds(180,103,155, 88), colour(150,100,70), shape("rounded"), outlineColour("white"), outlineThickness(1), plant("quality") {	;quality
+label   bounds( 70, 72, 16, 11), text("EQ"),         fontColour(white)
+label   bounds( 48,  4, 60, 15), text("Quality"),    fontColour(white)
+rslider bounds(  0, 24, 60, 60), text("Noise"), channel("NoiseAmp"), range(0,5,0.01,0.5,0.0001),     colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+vslider bounds( 53, 17, 30, 65), text(""),      channel("EQ_Lo"),    range(500,10000,2000,0.5,0.01), colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+vslider bounds( 73, 17, 30, 65), text(""),      channel("EQ_Hi"),    range(20,5000,200,0.5,0.01),    colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds( 95, 24, 60, 60), text("Drop"),  channel("drop"),     range(0,0.5,0.05,0.5,0.0001),   colour( 70, 30,  0), trackerColour("tan"), textColour(white)
 }
 
 ;REVERB
-image   bounds(340,103,110, 88), colour(150,100,70), shape("rounded"), outlinecolour("white"),  outlinethickness(1), plant("reverb") {	;reverb
-label   bounds( 24,  4, 60, 15), text("Reverb"),     fontcolour(white)
-rslider bounds(  0, 24, 60, 60), text("Mix"),  channel("RvbMix"),  range(0, 1.00, 1),     colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds( 50, 24, 60, 60), text("Size"), channel("RvbSize"), range(0.3, 1.00, 0.4), colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
+image   bounds(340,103,110, 88), colour(150,100,70), shape("rounded"), outlineColour("white"),  outlineThickness(1), plant("reverb") {	;reverb
+label   bounds( 24,  4, 60, 15), text("Reverb"),     fontColour(white)
+rslider bounds(  0, 24, 60, 60), text("Mix"),  channel("RvbMix"),  range(0, 1.00, 1),     colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds( 50, 24, 60, 60), text("Size"), channel("RvbSize"), range(0.3, 1.00, 0.4), colour( 70, 30,  0), trackerColour("tan"), textColour(white)
 }
 
 ;OUTPUT
-image   bounds(455,103,260, 88), colour(150,100,70), shape("rounded"), outlinecolour("white"),  outlinethickness(1), plant("output") {	;output
-label   bounds( 97,  4, 60, 15), text("Output"),     fontcolour(white)
-rslider bounds(  0, 24, 60, 60), text("Tone"),   channel("bright"),  range(0, 1.00, 1),            colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds( 50, 24, 60, 60), text("Shift"),  channel("shift"),   range(-36, 36.00, 0,1,0.001), colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds(100, 24, 60, 60), text("Jitter"), channel("jitter"),  range(0, 1.00, 0.4),          colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds(150, 24, 60, 60), text("Pan"),    channel("pan"),     range(0, 1.00, 0.5),          colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
-rslider bounds(200, 24, 60, 60), text("Level"),  channel("level"),   range(0, 2.00, 1),            colour( 70, 30,  0), trackercolour("tan"), textcolour(white)
+image   bounds(455,103,260, 88), colour(150,100,70), shape("rounded"), outlineColour("white"),  outlineThickness(1), plant("output") {	;output
+label   bounds( 97,  4, 60, 15), text("Output"),     fontColour(white)
+rslider bounds(  0, 24, 60, 60), text("Tone"),   channel("bright"),  range(0, 1.00, 1),            colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds( 50, 24, 60, 60), text("Shift"),  channel("shift"),   range(-36, 36.00, 0,1,0.001), colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds(100, 24, 60, 60), text("Jitter"), channel("jitter"),  range(0, 1.00, 0.4),          colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds(150, 24, 60, 60), text("Pan"),    channel("pan"),     range(0, 1.00, 0.5),          colour( 70, 30,  0), trackerColour("tan"), textColour(white)
+rslider bounds(200, 24, 60, 60), text("Level"),  channel("level"),   range(0, 2.00, 1),            colour( 70, 30,  0), trackerColour("tan"), textColour(white)
 }
 
 keyboard pos(10, 200), size(700, 80)

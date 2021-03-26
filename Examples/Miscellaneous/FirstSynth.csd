@@ -1,5 +1,5 @@
 <Cabbage>
-form size(380, 160), caption("Simple synth"), pluginid("1Syn")
+form size(380, 160), caption("Simple synth"), pluginId("1Syn")
 keyboard bounds(12, 6, 360, 100)
 </Cabbage>
 <CsoundSynthesizer>

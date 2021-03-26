@@ -25,49 +25,49 @@
 ;	If delay time is zero then the delay is completely bypassed.  
                                                                        
 <Cabbage>                                                                                                                   
-form caption("Gate"), colour( 20, 20, 30), size(430, 305), pluginid("Gate"), scrollbars(0) style("legacy")
+form caption("Gate"), colour( 20, 20, 30), size(430, 305), pluginId("Gate"), scrollBars(0) style("legacy")
 
-image     bounds(  5, 10,420, 40), shape("sharp"), outlinecolour("white"), colour(0,0,0,0), outlinethickness(1), plant("Input") {
-label     bounds( 20, 10,180, 14), fontcolour("white"), text("Processing Configuration:"), colour(0,0,0,0), align("right")
-combobox  bounds(202, 10,180, 16), channel("InputMode"), text("Stereo Mixed","Stereo Separate","Right Channel Side Chain"), value(1), colour( 70, 70, 70), fontcolour("white")
+image     bounds(  5, 10,420, 40), shape("sharp"), outlineColour("white"), colour(0,0,0,0), outlineThickness(1), plant("Input") {
+label     bounds( 20, 10,180, 14), fontColour("white"), text("Processing Configuration:"), colour(0,0,0,0), align("right")
+combobox  bounds(202, 10,180, 16), channel("InputMode"), text("Stereo Mixed","Stereo Separate","Right Channel Side Chain"), value(1), colour( 70, 70, 70), fontColour("white")
 }
 
-image     bounds(  5, 55,207, 90), shape("sharp"), outlinecolour("white"), colour(0,0,0,0), outlinethickness(1), plant("OnThresh") {
-label     bounds(  0,  5,207, 12), fontcolour("white"), text("On Threshold"), colour(0,0,0,0)
-rslider   bounds( 10, 20, 60, 60), range(0,0.1,0.01,0.5,0.0001),  channel("OnThresh"), text("Level"), textcolour("white")
+image     bounds(  5, 55,207, 90), shape("sharp"), outlineColour("white"), colour(0,0,0,0), outlineThickness(1), plant("OnThresh") {
+label     bounds(  0,  5,207, 12), fontColour("white"), text("On Threshold"), colour(0,0,0,0)
+rslider   bounds( 10, 20, 60, 60), range(0,0.1,0.01,0.5,0.0001),  channel("OnThresh"), text("Level"), textColour("white")
 nslider bounds( 65, 35, 45, 15), channel("OnThresh_dB"), range(-90,120,-90,1,0.1)
-label     bounds(110, 37, 20, 12), fontcolour("white"), text("dB"), colour(0,0,0,0)
-rslider   bounds(135, 20, 60, 60), range(0,0.3,0.04,0.5,0.0001),  channel("AttTime"), text("Time"), textcolour("white")
+label     bounds(110, 37, 20, 12), fontColour("white"), text("dB"), colour(0,0,0,0)
+rslider   bounds(135, 20, 60, 60), range(0,0.3,0.04,0.5,0.0001),  channel("AttTime"), text("Time"), textColour("white")
 }
 
-image     bounds(218, 55,207, 90), shape("sharp"), outlinecolour("white"), colour(0,0,0,0), outlinethickness(1), plant("OffThresh") {
-label     bounds(  0,  5,207, 12), fontcolour("white"), text("Off Threshold"), colour(0,0,0,0)
-rslider   bounds( 10, 20, 60, 60), range(0,0.1,0.007,0.5,0.0001),  channel("OffThresh"), text("Level"), textcolour("white")
+image     bounds(218, 55,207, 90), shape("sharp"), outlineColour("white"), colour(0,0,0,0), outlineThickness(1), plant("OffThresh") {
+label     bounds(  0,  5,207, 12), fontColour("white"), text("Off Threshold"), colour(0,0,0,0)
+rslider   bounds( 10, 20, 60, 60), range(0,0.1,0.007,0.5,0.0001),  channel("OffThresh"), text("Level"), textColour("white")
 nslider bounds( 65, 35, 45, 15), channel("OffThresh_dB"), range(-90,120,-90,1,0.1)
-label     bounds(110, 37, 20, 12), fontcolour("white"), text("dB"), colour(0,0,0,0)
-rslider   bounds(135, 20, 60, 60), range(0,0.3,0.03,0.5,0.0001),  channel("RelTime"), text("Time"), textcolour("white")
+label     bounds(110, 37, 20, 12), fontColour("white"), text("dB"), colour(0,0,0,0)
+rslider   bounds(135, 20, 60, 60), range(0,0.3,0.03,0.5,0.0001),  channel("RelTime"), text("Time"), textColour("white")
 }
 
-image    bounds(  5,150,420, 50), shape("sharp"), outlinecolour("white"), colour(0,0,0,0), outlinethickness(1), plant("PreFilter") {
-checkbox bounds( 10, 15, 70, 12), channel("PreFiltOnOff"), text("Pre-Filter"), fontcolour("white")
-;hslider2 bounds( 85,  0,330, 40), channel("HPF","LPF"), min(200), max(12000), range(20,20000, 0, 0.5, 1), identchannel("Filter")
-hrange   bounds(  85,  5,330, 20), channel("HPF","LPF"), range(20, 20000, 200:12000, 0.5, 1), identchannel("Filter")
-label    bounds( 85, 30,330, 12), text("Highpass / Lowpass"), fontcolour("white"), identchannel("FilterL")
+image    bounds(  5,150,420, 50), shape("sharp"), outlineColour("white"), colour(0,0,0,0), outlineThickness(1), plant("PreFilter") {
+checkbox bounds( 10, 15, 70, 12), channel("PreFiltOnOff"), text("Pre-Filter"), fontColour("white")
+;hslider2 bounds( 85,  0,330, 40), channel("HPF","LPF"), min(200), max(12000), range(20,20000, 0, 0.5, 1), identChannel("Filter")
+hrange   bounds(  85,  5,330, 20), channel("HPF","LPF"), range(20, 20000, 200:12000, 0.5, 1), identChannel("Filter")
+label    bounds( 85, 30,330, 12), text("Highpass / Lowpass"), fontColour("white"), identChannel("FilterL")
 }
 
-image    bounds(  5,205,210, 95), shape("sharp"), outlinecolour("white"), colour(0,0,0,0), outlinethickness(1), plant("FilterGate") {
-label    bounds(  5, 22, 80, 12), text("Filter Gate"), fontcolour("white")
+image    bounds(  5,205,210, 95), shape("sharp"), outlineColour("white"), colour(0,0,0,0), outlineThickness(1), plant("FilterGate") {
+label    bounds(  5, 22, 80, 12), text("Filter Gate"), fontColour("white")
 combobox bounds(  5, 35, 80, 20), channel("FilterGate"), text("Bypass","12 dB/Oct","24 dB/Oct"), value(1)
-rslider  bounds( 75,  5, 80, 80), range(2,14,2,0.5,0.01),  channel("FiltGateMin"), text("Min"), textcolour("white"), textbox(1)
-rslider  bounds(135,  5, 80, 80), range(2,14,14,0.5,0.01),  channel("FiltGateMax"), text("Max"), textcolour("white"), textbox(1)
+rslider  bounds( 75,  5, 80, 80), range(2,14,2,0.5,0.01),  channel("FiltGateMin"), text("Min"), textColour("white"), textBox(1)
+rslider  bounds(135,  5, 80, 80), range(2,14,14,0.5,0.01),  channel("FiltGateMax"), text("Max"), textColour("white"), textBox(1)
 }
 
-image    bounds(220,205,205, 95), shape("sharp"), outlinecolour("white"), colour(0,0,0,0), outlinethickness(1), plant("Master") {
+image    bounds(220,205,205, 95), shape("sharp"), outlineColour("white"), colour(0,0,0,0), outlineThickness(1), plant("Master") {
 checkbox bounds( 14, 30, 15, 13), channel("GateIndicOp"), shape("ellipse"), colour( 50,255, 50), active(0)
 checkbox bounds( 14, 50, 15, 13), channel("GateIndicCl"), shape("ellipse"), colour(255, 50, 50), value(1), active(0)
-rslider  bounds( 20,  5, 80, 80), range(0,90,90,0.5,0.1),  channel("Atten"), text("Atten."), textcolour("white"), textbox(1)
-rslider  bounds( 75,  5, 80, 80), range(0,0.1,0,0.8,0.001),  channel("DelTim"), text("Delay"), textcolour("white"), textbox(1)
-rslider  bounds(130,  5, 80, 80), range(0,2,1,0.5,0.01),  channel("Gain"), text("Gain"), textcolour("white"), textbox(1)
+rslider  bounds( 20,  5, 80, 80), range(0,90,90,0.5,0.1),  channel("Atten"), text("Atten."), textColour("white"), textBox(1)
+rslider  bounds( 75,  5, 80, 80), range(0,0.1,0,0.8,0.001),  channel("DelTim"), text("Delay"), textColour("white"), textBox(1)
+rslider  bounds(130,  5, 80, 80), range(0,2,1,0.5,0.01),  channel("Gain"), text("Gain"), textColour("white"), textBox(1)
 }
 
 </Cabbage>

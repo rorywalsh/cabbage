@@ -1,6 +1,6 @@
 <Cabbage>
 form size(400, 500), caption("Soundfiler"), size(400, 300), colour(220, 220, 220), pluginID("def1")
-soundfiler bounds(10,10, 380, 200), identchannel("soundfilerIdent")
+soundfiler bounds(10,10, 380, 200), identChannel("soundfilerIdent")
 filebutton bounds(10, 215, 100, 30), channel("openFile"), text("Browse")
 </Cabbage>
 <CsoundSynthesizer>

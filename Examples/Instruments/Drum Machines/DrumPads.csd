@@ -1,14 +1,14 @@
 
 <Cabbage>
-form caption("Drum Pads") size(850, 430), pluginid("DPds") style("legacy")
-image bounds( 10, 10, 200, 200),     colour(150,150,170), shape("rounded"), outlinecolour("white"), line(0)
-image bounds(220, 10, 200, 200),     colour(150,150,170), shape("rounded"), outlinecolour("white"), line(0)
-image bounds(430, 10, 200, 200),     colour(150,150,170), shape("rounded"), outlinecolour("white"), line(0)
-image bounds(640, 10, 200, 200),     colour(150,150,170), shape("rounded"), outlinecolour("white"), line(0)
-image bounds( 10,220, 200, 200),     colour(150,150,170), shape("rounded"), outlinecolour("white"), line(0)
-image bounds(220,220, 200, 200),     colour(150,150,170), shape("rounded"), outlinecolour("white"), line(0)
-image bounds(430,220, 200, 200),     colour(150,150,170), shape("rounded"), outlinecolour("white"), line(0)
-image bounds(640,220, 200, 200),     colour(150,150,170), shape("rounded"), outlinecolour("white"), line(0)
+form caption("Drum Pads") size(850, 430), pluginId("DPds") style("legacy")
+image bounds( 10, 10, 200, 200),     colour(150,150,170), shape("rounded"), outlineColour("white"), line(0)
+image bounds(220, 10, 200, 200),     colour(150,150,170), shape("rounded"), outlineColour("white"), line(0)
+image bounds(430, 10, 200, 200),     colour(150,150,170), shape("rounded"), outlineColour("white"), line(0)
+image bounds(640, 10, 200, 200),     colour(150,150,170), shape("rounded"), outlineColour("white"), line(0)
+image bounds( 10,220, 200, 200),     colour(150,150,170), shape("rounded"), outlineColour("white"), line(0)
+image bounds(220,220, 200, 200),     colour(150,150,170), shape("rounded"), outlineColour("white"), line(0)
+image bounds(430,220, 200, 200),     colour(150,150,170), shape("rounded"), outlineColour("white"), line(0)
+image bounds(640,220, 200, 200),     colour(150,150,170), shape("rounded"), outlineColour("white"), line(0)
 
 </Cabbage>
 

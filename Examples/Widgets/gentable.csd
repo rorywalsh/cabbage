@@ -1,9 +1,9 @@
 <Cabbage>
 form caption("Gentable Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-gentable bounds(8, 30, 380, 70), tablenumber(1), tablegridcolour(0, 0, 0, 255), fill(0)
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+gentable bounds(8, 30, 380, 70), tableNumber(1), tableGridColour(0, 0, 0, 255), fill(0)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-gentable bounds(70, 140, 141, 119), tablenumber(1) identchannel("widgetIdent"),  
+gentable bounds(70, 140, 141, 119), tableNumber(1) identChannel("widgetIdent"),  
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -38,13 +38,13 @@ instr ChangeAttributes
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "size(%d, %d) ", abs(rnd(200))+40, abs(rnd(100))+50
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "tablecolour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "tableColour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "tablebackgroundcolour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "tableBackgroundColour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "tablegridcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
+	SIdent sprintf "tableGridColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
 	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "outlinethickness(%f) ", rnd(100)/50
+	SIdent sprintf "outlineThickness(%f) ", rnd(100)/50
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "alpha(%f) ", 50 + rnd(50)/50
 	SIdentifier strcat SIdentifier, SIdent

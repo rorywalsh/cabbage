@@ -32,40 +32,40 @@
 ; Level	-	amplitude scaling
 
 <Cabbage>
-form caption("wguide1") size(650,200), pluginid("WGu1"), scrollbars(0) style("legacy")
-image           bounds(0, 0, 650,120), colour(125, 95, 55), shape("sharp"), outlinecolour(225,195,155), outlinethickness(2) 
-label   bounds(505,  4,136, 17), align("centre"), text("W A V E G U I D E"), fontcolour(silver), align("left")
-image   bounds(510,  7,125,  1), colour(200,170,130), shape("sharp"), outlinecolour(silver), outlinethickness(1)
-image   bounds(512, 18,124,  1), colour(200,170,130), shape("sharp"), outlinecolour(silver), outlinethickness(1)
-checkbox bounds( 20,  7,120, 12), text("Keyboard Input"), channel("input"), fontcolour("white"), colour(yellow)
-checkbox bounds( 20, 22,120, 12), text("Low Cut"), channel("LowCut") fontcolour("white") colour(yellow) value(0)
-label    bounds(140,  5, 62, 11), text("Source"), fontcolour("white")
+form caption("wguide1") size(650,200), pluginId("WGu1"), scrollBars(0) style("legacy")
+image           bounds(0, 0, 650,120), colour(125, 95, 55), shape("sharp"), outlineColour(225,195,155), outlineThickness(2) 
+label   bounds(505,  4,136, 17), align("centre"), text("W A V E G U I D E"), fontColour(silver), align("left")
+image   bounds(510,  7,125,  1), colour(200,170,130), shape("sharp"), outlineColour(silver), outlineThickness(1)
+image   bounds(512, 18,124,  1), colour(200,170,130), shape("sharp"), outlineColour(silver), outlineThickness(1)
+checkbox bounds( 20,  7,120, 12), text("Keyboard Input"), channel("input"), fontColour("white"), colour(yellow)
+checkbox bounds( 20, 22,120, 12), text("Low Cut"), channel("LowCut") fontColour("white") colour(yellow) value(0)
+label    bounds(140,  5, 62, 11), text("Source"), fontColour("white")
 combobox bounds(140, 16, 62, 16), channel("source"), value(1), text("Live","Gravel","Dust","Air","Click","Pluck")
-image    bounds( 10, 41,145, 70), colour(0,0,0,0), plant("GUIcontrol"), identchannel("NoKeyboardID"), visible(1) {
-rslider  bounds(  0,  0, 70, 70),  text("Frequency"),  channel("freq"),      trackercolour(225,195,155), range(8.2, 12542, 160, 0.25),  colour( 85, 55,15), textcolour(white), fontcolour("silver")
-rslider  bounds( 65,  0, 70, 70),  text("Note Num."),  channel("notnum"),    trackercolour(225,195,155), range(0, 127, 51, 1,1),        colour( 85, 55,15), textcolour(white), fontcolour("silver")
+image    bounds( 10, 41,145, 70), colour(0,0,0,0), plant("GUIcontrol"), identChannel("NoKeyboardID"), visible(1) {
+rslider  bounds(  0,  0, 70, 70),  text("Frequency"),  channel("freq"),      trackerColour(225,195,155), range(8.2, 12542, 160, 0.25),  colour( 85, 55,15), textColour(white), fontColour("silver")
+rslider  bounds( 65,  0, 70, 70),  text("Note Num."),  channel("notnum"),    trackerColour(225,195,155), range(0, 127, 51, 1,1),        colour( 85, 55,15), textColour(white), fontColour("silver")
 }
-rslider  bounds(140, 41, 70, 70),  text("Width"),      channel("StWidth"),   trackercolour(225,195,155), range(-0.2, 0.2, 0, 1,0.001),        colour( 85, 55,15), textcolour(white), fontcolour("silver")
+rslider  bounds(140, 41, 70, 70),  text("Width"),      channel("StWidth"),   trackerColour(225,195,155), range(-0.2, 0.2, 0, 1,0.001),        colour( 85, 55,15), textColour(white), fontColour("silver")
 
-image    bounds(207,  4, 66,112), colour(125, 95, 55), outlinecolour("silver"), outlinethickness(1), line(1)
-label    bounds(212,  8, 56, 11),  text("Cutoff"), fontcolour("white")
+image    bounds(207,  4, 66,112), colour(125, 95, 55), outlineColour("silver"), outlineThickness(1), line(1)
+label    bounds(212,  8, 56, 11),  text("Cutoff"), fontColour("white")
 combobox bounds(212, 20, 56, 15),  text("Fixed","Ratio"),channel("CutoffMode"), value(1)
-rslider  bounds(205, 41, 70, 70),  text("Hertz"),     channel("cutoff"),     trackercolour(225,195,155), range(20,20000,8000,0.25), visible(1), colour( 85, 55,15), textcolour(white), fontcolour("silver"), identchannel("cutoff_ident")
-rslider  bounds(205, 41, 70, 70),  text("Ratio"),     channel("CutoffRatio"),trackercolour(225,195,155), range(1,40,8),             visible(0), colour( 85, 55,15), textcolour(white), fontcolour("silver"), identchannel("CutoffRatio_ident")
+rslider  bounds(205, 41, 70, 70),  text("Hertz"),     channel("cutoff"),     trackerColour(225,195,155), range(20,20000,8000,0.25), visible(1), colour( 85, 55,15), textColour(white), fontColour("silver"), identChannel("cutoff_ident")
+rslider  bounds(205, 41, 70, 70),  text("Ratio"),     channel("CutoffRatio"),trackerColour(225,195,155), range(1,40,8),             visible(0), colour( 85, 55,15), textColour(white), fontColour("silver"), identChannel("CutoffRatio_ident")
 
-rslider  bounds(270, 41, 70, 70),  text("Feedback"),   channel("feedback"),   trackercolour(225,195,155), range(-0.9999999, 0.9999999, 0.8), colour( 85, 55,15), textcolour(white), fontcolour("silver")
+rslider  bounds(270, 41, 70, 70),  text("Feedback"),   channel("feedback"),   trackerColour(225,195,155), range(-0.9999999, 0.9999999, 0.8), colour( 85, 55,15), textColour(white), fontColour("silver")
 
 line     bounds(345,  5,  2,110)
-checkbox bounds(365,  7,120, 12), text("Bandpass On/Off"), channel("BPFOnOff") fontcolour("white") colour(yellow) value(0)
-checkbox bounds(365, 22,120, 12), text("Balance"),         channel("BalanceOnOff") fontcolour("white") colour(yellow) value(0)
-rslider  bounds(355, 41, 70, 70),  text("Bandwidth"),      channel("Bandwidth"),   trackercolour(225,195,155), range(0.001,100.00,0.2,0.5,0.001),             colour( 85, 55,15), textcolour(white), fontcolour("silver")
-rslider  bounds(420, 41, 70, 70),  text("Harm."),          channel("HarmRatio"),trackercolour(225,195,155), range(1,48,1,1,1),             colour( 85, 55,15), textcolour(white), fontcolour("silver")
+checkbox bounds(365,  7,120, 12), text("Bandpass On/Off"), channel("BPFOnOff") fontColour("white") colour(yellow) value(0)
+checkbox bounds(365, 22,120, 12), text("Balance"),         channel("BalanceOnOff") fontColour("white") colour(yellow) value(0)
+rslider  bounds(355, 41, 70, 70),  text("Bandwidth"),      channel("Bandwidth"),   trackerColour(225,195,155), range(0.001,100.00,0.2,0.5,0.001),             colour( 85, 55,15), textColour(white), fontColour("silver")
+rslider  bounds(420, 41, 70, 70),  text("Harm."),          channel("HarmRatio"),trackerColour(225,195,155), range(1,48,1,1,1),             colour( 85, 55,15), textColour(white), fontColour("silver")
 line     bounds(495,  5,  2,110)
 
-rslider  bounds(505, 41, 70, 70),  text("Mix"),        channel("mix"),       trackercolour(225,195,155), range(0, 1.00, 1),             colour( 85, 55,15), textcolour(white), fontcolour("silver")
-rslider  bounds(570, 41, 70, 70),  text("Level"),      channel("level"),     trackercolour(225,195,155), range(0, 5.00, 0.7,0.5,0.001),           colour( 85, 55,15), textcolour(white), fontcolour("silver")
+rslider  bounds(505, 41, 70, 70),  text("Mix"),        channel("mix"),       trackerColour(225,195,155), range(0, 1.00, 1),             colour( 85, 55,15), textColour(white), fontColour("silver")
+rslider  bounds(570, 41, 70, 70),  text("Level"),      channel("level"),     trackerColour(225,195,155), range(0, 5.00, 0.7,0.5,0.001),           colour( 85, 55,15), textColour(white), fontColour("silver")
 
-keyboard bounds(  0,210, 650, 80), visible(1), identchannel("keyboardID")
+keyboard bounds(  0,210, 650, 80), visible(1), identChannel("keyboardID")
 
 </Cabbage>
 

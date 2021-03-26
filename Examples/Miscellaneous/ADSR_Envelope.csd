@@ -24,18 +24,18 @@
 ; gkSY		-	sustain level. Also the value to which the decay segement leads and ther value from which the release segemnt begins. A value in the range zero to one.
 ; gkRX		-	release duration. A value in the range zero to one.
 ;	These values can be used by one of Csound's 'r' (release sensing) opcodes such as linsegr.
-;	It is expected that the duration values will be rescaled using a duration constant.
+;	It is expected that the duration values will be reScaled using a duration constant.
 
 
 
 
 <Cabbage>
-form caption("ADSR Envelope"), size(300, 330), pluginid("AdEn"), guirefresh(32), colour(0,0,0)
+form caption("ADSR Envelope"), size(300, 330), pluginId("AdEn"), guiRefresh(32), colour(0,0,0)
 
-gentable bounds( 10, 10,280,190), tablenumber(1), tablecolour("silver"), identchannel("table1"), amprange(0,1,1), fill(1), zoom(-1), tablegridcolour(0,0,0,0), tablebackgroundcolour(20,20,20), outlinethickness(2), identchannel("table1")
-image   bounds( -5, -5, 6, 6), colour("black"), identchannel("A"), shape("ellipse"), outlinethickness("1")
-image   bounds( -5, -5, 6, 6), colour("black"), identchannel("D"), shape("ellipse"), outlinethickness("1")
-image   bounds( -5, -5, 6, 6), colour("black"), identchannel("R"), shape("ellipse"), outlinethickness("1")
+gentable bounds( 10, 10,280,190), tableNumber(1), tableColour("silver"), identChannel("table1"), ampRange(0,1,1), fill(1), zoom(-1), tableGridColour(0,0,0,0), tableBackgroundColour(20,20,20), outlineThickness(2), identChannel("table1")
+image   bounds( -5, -5, 6, 6), colour("black"), identChannel("A"), shape("ellipse"), outlineThickness("1")
+image   bounds( -5, -5, 6, 6), colour("black"), identChannel("D"), shape("ellipse"), outlineThickness("1")
+image   bounds( -5, -5, 6, 6), colour("black"), identChannel("R"), shape("ellipse"), outlineThickness("1")
 hslider bounds( 5,205,290,10), channel("dur"), range(0.5,10,4,0.5,0.001)
 label bounds( 10,217,280,12), text("Scale Durations")
 keyboard bounds( 10,240,280,80)
@@ -124,7 +124,7 @@ opcode	CabbageADSR,kkkkk,iiiiiiSSSS
   iRX		limit	round(((i(kRX)+(iNodeSize*0.5)-iTabX)/iTabWidth * iFtLen)),1,iFtLen-1   ; release breakpoint value
   
   gitable1	ftgen	ifn,0,iFtLen,-27,	0,0, iAX,iAY, iDX,iSY, iRX,iSY, iFtLen-1,0	; create the table
-  Smsg		sprintf	"tablenumber(%d)",ifn							; create the 'update table' message
+  Smsg		sprintf	"tableNumber(%d)",ifn							; create the 'update table' message
   	 	chnset	Smsg,STabIdent								; send 'update table' message to gentable
   rireturn
  endif

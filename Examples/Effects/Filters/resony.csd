@@ -22,7 +22,7 @@
 ; into equal intervals according to the number of filters that have been selected. Note that no filter is created at the 
 ; frequency of (base frequency + separation). For example: if separation=1 and num.filters=2, filters will be created at 
 ; the base frequency and a tritone above the base frequency (i.e. an interval of 1/2 and an octave). I suspect this is a 
-; mistake in the opcode implementation so in this example I rescale the separation interval before passing it to the 
+; mistake in the opcode implementation so in this example I reScale the separation interval before passing it to the 
 ; resony opcode so that the interval between the lowest and highest filter in this mode will always be the interval 
 ; defined in the GUI. 
 ; If 'hertz' separation mode is selected behaviour is somewhat curious. I have made some other modifications to the 
@@ -65,20 +65,20 @@
 
 
 <Cabbage>
-form caption("resony") size(750,180), pluginid("rsny"), colour(255,100,0) style("legacy")
-image        bounds(  0,  0,750,180), colour("black"), shape("rounded"), outlinecolour(255,100,0), outlinethickness(2) 
+form caption("resony") size(750,180), pluginId("rsny"), colour(255,100,0) style("legacy")
+image        bounds(  0,  0,750,180), colour("black"), shape("rounded"), outlineColour(255,100,0), outlineThickness(2) 
 label     bounds( 10, 20, 80, 12), text("INPUT:")
 button    bounds( 10, 35, 80, 35), text("Live","Noise"),     channel("input"), value(0)
-rslider   bounds( 90, 10, 70, 70), text("Base Freq"),       fontcolour("white"), channel("bf"),   range(20, 20000, 909, 0.5), colour(255,100,0,255), trackercolour(255,250,100)
+rslider   bounds( 90, 10, 70, 70), text("Base Freq"),       fontColour("white"), channel("bf"),   range(20, 20000, 909, 0.5), colour(255,100,0,255), trackerColour(255,250,100)
 nslider bounds(160, 15, 70, 40), text("Base Freq"),        channel("bf"),   range(20, 20000, 909, 0.5)
-rslider   bounds(230, 10, 70, 70), text("B.width"),         fontcolour("white"), channel("bw"),   range(0.01, 500, 13, 0.375, 0.0001), colour(255,100,0,255), trackercolour(255,250,100)
-rslider   bounds(300, 10, 70, 70), text("Num."),            fontcolour("white"), channel("num"),  range(1, 80, 10, 1,1),      colour(255,100,0,255), trackercolour(255,250,100)
-rslider   bounds(370, 10, 70, 70), text("Sep.oct."),        fontcolour("white"), channel("sep"),  range(-11, 11, 2,1,0.001),          colour(255,100,0,255), trackercolour(255,250,100)
+rslider   bounds(230, 10, 70, 70), text("B.width"),         fontColour("white"), channel("bw"),   range(0.01, 500, 13, 0.375, 0.0001), colour(255,100,0,255), trackerColour(255,250,100)
+rslider   bounds(300, 10, 70, 70), text("Num."),            fontColour("white"), channel("num"),  range(1, 80, 10, 1,1),      colour(255,100,0,255), trackerColour(255,250,100)
+rslider   bounds(370, 10, 70, 70), text("Sep.oct."),        fontColour("white"), channel("sep"),  range(-11, 11, 2,1,0.001),          colour(255,100,0,255), trackerColour(255,250,100)
 nslider bounds(440, 15, 70, 40), text("Sep.oct"),          channel("sep"),  range(-11, 11, 2,1,0.001)
-rslider   bounds(510, 10, 70, 70), text("Sep.semi."),       fontcolour("white"), channel("sep2"), range(-48, 48, 24,1,1),     colour(255,100,0,255), trackercolour(255,250,100)
+rslider   bounds(510, 10, 70, 70), text("Sep.semi."),       fontColour("white"), channel("sep2"), range(-48, 48, 24,1,1),     colour(255,100,0,255), trackerColour(255,250,100)
 nslider bounds(580, 15, 70, 40), text("Sep.semi."),        channel("sep2"),  range(-48, 48, 24,1,0.001)
 
-rslider   bounds(660, 10, 70, 70), text("Level"),           fontcolour("white"), channel("gain"), range(0,2,1,0.25,0.00001),  colour(255,100,0,255), trackercolour(255,250,100)
+rslider   bounds(660, 10, 70, 70), text("Level"),           fontColour("white"), channel("gain"), range(0,2,1,0.25,0.00001),  colour(255,100,0,255), trackerColour(255,250,100)
 
 label     bounds(450,100,130, 13), text("Separation Mode")
 combobox  bounds(450,115,130, 25), channel("sepmode"), value(1), text("octs.total", "hertz", "octs.adjacent")
@@ -86,14 +86,14 @@ label     bounds(600,100,130, 13), text("Scaling Mode")
 combobox  bounds(600,115,130, 25), channel("scl"), value(2), text("none", "peak response", "RMS")
 
 
-image    bounds( 30, 90,180, 80), colour(0,0,0,0), outlinecolour(150,150,150), outlinethickness(1), plant("highpass"), {
+image    bounds( 30, 90,180, 80), colour(0,0,0,0), outlineColour(150,150,150), outlineThickness(1), plant("highpass"), {
 checkbox bounds( 20, 15,100, 20), text("Highpass"), channel("HPF_OnOff")
-rslider  bounds(100,  5, 70, 70), text("Ratio"),           fontcolour("white"), channel("HPF_Ratio"), range(0.1, 16, 0.1, 0.5,0.0001),  colour(255,100,0,255), trackercolour(255,250,100)
+rslider  bounds(100,  5, 70, 70), text("Ratio"),           fontColour("white"), channel("HPF_Ratio"), range(0.1, 16, 0.1, 0.5,0.0001),  colour(255,100,0,255), trackerColour(255,250,100)
 }
 
-image    bounds(240, 90,180, 80), colour(0,0,0,0), outlinecolour(150,150,150), outlinethickness(1), plant("lowpass"), {
+image    bounds(240, 90,180, 80), colour(0,0,0,0), outlineColour(150,150,150), outlineThickness(1), plant("lowpass"), {
 checkbox bounds( 20, 15,100, 20), text("Lowpass"), channel("LPF_OnOff")
-rslider  bounds(100,  5, 70, 70), text("Ratio"),           fontcolour("white"), channel("LPF_Ratio"), range(0.1, 32, 32, 0.25,0.00001),  colour(255,100,0,255), trackercolour(255,250,100)
+rslider  bounds(100,  5, 70, 70), text("Ratio"),           fontColour("white"), channel("LPF_Ratio"), range(0.1, 32, 32, 0.25,0.00001),  colour(255,100,0,255), trackerColour(255,250,100)
 }
 
 </Cabbage>
@@ -119,8 +119,8 @@ opcode	resony2,a,akkikii
 
 	;IF 'Octaves (Total)' MODE SELECTED...
 	if isepmode==0 then
-	 irescale	divz	inum,inum-1,1	;PREVENT ERROR IF NUMBER OF FILTERS = ZERO
-	 ksep	=	ksep * irescale		;RESCALE SEPARATION
+	 ireScale	divz	inum,inum-1,1	;PREVENT ERROR IF NUMBER OF FILTERS = ZERO
+	 ksep	=	ksep * ireScale		;RESCALE SEPARATION
 	  
 	;IF 'Hertz' MODE SELECTED...	
 	elseif isepmode==1 then
@@ -129,8 +129,8 @@ opcode	resony2,a,akkikii
 			 
 	;IF 'Octaves (Adjacent)' MODE SELECTED...
 	elseif isepmode==2 then 
-	 irescale	divz	inum,inum-1,1	;PREVENT ERROR IF NUMBER OF FILTERS = ZERO
-	 ksep = ksep * irescale			;RESCALE SEPARATION
+	 ireScale	divz	inum,inum-1,1	;PREVENT ERROR IF NUMBER OF FILTERS = ZERO
+	 ksep = ksep * ireScale			;RESCALE SEPARATION
 	 ksep = ksep * (inum-1)			;RESCALE SEPARATION INTERVAL ACCORDING TO THE NUMBER OF FILTERS CHOSEN
 	 isepmode	=	0		;ESSENTIALLY WE ARE STILL USING MODE:0, JUST WITH THE ksep RESCALING OF THE PREVIOUS LINE ADDED	 
 

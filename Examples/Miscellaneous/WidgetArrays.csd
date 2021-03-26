@@ -1,6 +1,6 @@
 <Cabbage>
-form size(260, 290), caption(""), pluginid("WdAr")
-checkbox bounds(-100, -100, 25, 25), text("Push"), widgetarray("check", 100), value(0)
+form size(260, 290), caption(""), pluginId("WdAr")
+checkbox bounds(-100, -100, 25, 25), text("Push"), widgetArray("check", 100), value(0)
 button bounds(10, 260, 100, 30), text("Toggle"), channel("toggle")
 hslider bounds(157, 253, 103, 37) range(0, 10, 1, 1, 0.001), channel("tempo")
 </Cabbage>

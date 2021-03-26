@@ -14,25 +14,25 @@
 ; NB. Loop Mode = "Fwd/Bwd" does not seem to crossfade properly when fading from the backwards pass to the forwards pass. Maybe a bug in flooper2?
 
 <Cabbage>
-form size(385,325), text("Live Looper"), guirefresh(32), pluginid("LiLp")
-image    bounds(  5,  5,375,110), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), plant("Crossfade"), shape("sharp") {
+form size(385,325), text("Live Looper"), guiRefresh(32), pluginId("LiLp")
+image    bounds(  5,  5,375,110), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), plant("Crossfade"), shape("sharp") {
 label    bounds(  0,  4,375, 15), text("Crossfade")
 rslider  bounds(  5, 27, 70, 70), range(0.25,2,0.5,0.5), channel("Shape"), text("Shape")
 rslider  bounds( 75, 27, 70, 70), range(0.01, 4,1), channel("CFDuration"), text("Duration")
-gentable bounds(155, 27,200, 75), tablenumbers(1,2), tablecolours("lime"), identchannel("table"), amprange(0,1,-1), zoom(-1), tablegridcolour(0,0,0,0), tablebackgroundcolour(250,250,250), tablecolour("black")
+gentable bounds(155, 27,200, 75), tableNumbers(1,2), tableColours("lime"), identChannel("table"), ampRange(0,1,-1), zoom(-1), tableGridColour(0,0,0,0), tableBackgroundColour(250,250,250), tableColour("black")
 }
 
-image     bounds(  5,120,190,120), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), plant("Loop"), shape("sharp") {
+image     bounds(  5,120,190,120), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), plant("Loop"), shape("sharp") {
 label     bounds(  0,  4,190, 15), text("Loop")
-button    bounds( 15, 25, 60, 25), fontcolour:0(50,50,50), fontcolour:1(205,205,235), colour:0(10,0,0), colour:1(0,0,130), text("Stop","Stop"),     channel("Stop"),   latched(1), radiogroup(1), value(1)
-button    bounds( 15, 55, 60, 25), fontcolour:0(50,50,50), fontcolour:1(255,205,205), colour:0(10,0,0), colour:1(150,0,0), text("Record","Record"), channel("Record"), latched(1), radiogroup(1)
-button    bounds( 15, 85, 60, 25), fontcolour:0(50,50,50), fontcolour:1(205,255,205), colour:0(0,10,0), colour:1(0,150,0), text("Play","Play"),     channel("Play"),   latched(1), radiogroup(1)
+button    bounds( 15, 25, 60, 25), fontColour:0(50,50,50), fontColour:1(205,205,235), colour:0(10,0,0), colour:1(0,0,130), text("Stop","Stop"),     channel("Stop"),   latched(1), radioGroup(1), value(1)
+button    bounds( 15, 55, 60, 25), fontColour:0(50,50,50), fontColour:1(255,205,205), colour:0(10,0,0), colour:1(150,0,0), text("Record","Record"), channel("Record"), latched(1), radioGroup(1)
+button    bounds( 15, 85, 60, 25), fontColour:0(50,50,50), fontColour:1(205,255,205), colour:0(0,10,0), colour:1(0,150,0), text("Play","Play"),     channel("Play"),   latched(1), radioGroup(1)
 nslider bounds( 90, 25, 85, 35), range(0, 100000,0), channel("LoopDuration"), text("Loop Duration")
 label     bounds( 90, 68, 85, 14), text("Loop Mode")
 combobox  bounds( 90, 84, 85, 20), text("Fwd","Bwd","Fwd/Bwd"), channel("LoopMode")
 }
 
-image     bounds(200,120,180,120), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), plant("Mixer"), shape("sharp") {
+image     bounds(200,120,180,120), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), plant("Mixer"), shape("sharp") {
 label     bounds(  0,  4,180, 15), text("Mixer")
 rslider   bounds( 10, 30, 80, 80), range(0, 1,1), channel("DryLevel"), text("Dry Level")
 rslider   bounds( 90, 30, 80, 80), range(0, 1,1), channel("LoopLevel"), text("Loop Level")
@@ -95,7 +95,7 @@ instr 1
  loop_lt,icount,1,iftlen,loop					; 
  rireturn							; RETURN FROM REINITIALISATION PASS
  if ktrig==1 then						; IF CHANGED SHAPE CONTROL TRIGGER HAS BEEN GENERATED...
-  chnset	"tablenumbers(1,2)","table"			; ...UPDATE CABBAGE TABLE DISPLAY
+  chnset	"tableNumbers(1,2)","table"			; ...UPDATE CABBAGE TABLE DISPLAY
  endif								; END OF CONDITIONAL BRANCH
  
  gkStop		chnget	"Stop"			; READ IN TRANSPORT BUTTON WIDGETS

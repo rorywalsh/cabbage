@@ -1,10 +1,10 @@
 <Cabbage>
-form size(520, 450), caption("SignalDisplay"), pluginid("SigD")
-signaldisplay bounds(10, 0, 500, 300), colour("lime") displaytype("waveform"), signalvariable("a1", "a2"), identchannel("displayIdent")
+form size(520, 450), caption("SignalDisplay"), pluginId("SigD")
+signaldisplay bounds(10, 0, 500, 300), colour("lime") displayType("waveform"), signalVariable("a1", "a2"), identChannel("displayIdent")
 combobox bounds(388, 368, 120, 25), align("centre"), channel("displayCombo"), items("Waveform", "Spectroscope", "Spectrogram", "Lissajous")
 keyboard bounds(12, 304, 497, 60)
 combobox bounds(12, 368, 100, 30), align("centre"), channel("waveshape"), items("Sine", "Saw", "Square")
-hslider bounds(152, 368, 200, 30), channel("lfoRateSlider"), visible(0), range(0, .5, 0.2), identchannel("lfoSliderIdent"), text("LFO freq")
+hslider bounds(152, 368, 200, 30), channel("lfoRateSlider"), visible(0), range(0, .5, 0.2), identChannel("lfoSliderIdent"), text("LFO freq")
 </Cabbage>
 <CsoundSynthesizer> 
 <CsOptions>
@@ -45,15 +45,15 @@ kChangeDisplay chnget "displayCombo"
 if changed:k(kChangeDisplay)==1 then
 	if kChangeDisplay==1 then
 		chnset "visible(0)", "lfoSliderIdent"
-		SDisplayIdentString strcpyk "displaytype(\"waveform\")"
+		SDisplayIdentString strcpyk "displayType(\"waveform\")"
 	elseif kChangeDisplay==2 then
 		chnset "visible(0)", "lfoSliderIdent"
-		SDisplayIdentString strcpyk "displaytype(\"spectroscope\")"
+		SDisplayIdentString strcpyk "displayType(\"spectroscope\")"
 	elseif kChangeDisplay==3 then
 		chnset "visible(0)", "lfoSliderIdent"
-		SDisplayIdentString strcpyk "displaytype(\"spectrogram\")"
+		SDisplayIdentString strcpyk "displayType(\"spectrogram\")"
 	elseif kChangeDisplay==4 then
-		SDisplayIdentString strcpyk "displaytype(\"lissajous\")"
+		SDisplayIdentString strcpyk "displayType(\"lissajous\")"
 		chnset "visible(1)", "lfoSliderIdent"
 	endif
 endif

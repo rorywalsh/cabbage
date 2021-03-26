@@ -15,20 +15,20 @@
 ; Tempo		in beats per minute
 
 <Cabbage>
-form caption("GEN02"), size(720, 440), scrollbars(0), colour( 50, 50, 50),pluginid("gn02"), guirefresh(32) style("legacy")
+form caption("GEN02"), size(720, 440), scrollBars(0), colour( 50, 50, 50),pluginId("gn02"), guiRefresh(32) style("legacy")
 
-#define RSliderStyle1 # colour("yellow"), outlinecolour(100,100,100), trackercolour(150,150,150) #
-#define RSliderStyle2 # colour("green"),  outlinecolour(100,100,100), trackercolour(150,150,150) #
-#define RSliderStyle3 # colour("blue"),   outlinecolour(100,100,100), trackercolour(150,150,150) #
+#define RSliderStyle1 # colour("yellow"), outlineColour(100,100,100), trackerColour(150,150,150) #
+#define RSliderStyle2 # colour("green"),  outlineColour(100,100,100), trackerColour(150,150,150) #
+#define RSliderStyle3 # colour("blue"),   outlineColour(100,100,100), trackerColour(150,150,150) #
                                                                                   
-gentable bounds(  5,  5, 400,140), identchannel("table1"),  tablenumber(1), tablecolour("yellow"),amprange(36,108,1,1), zoom(-1), tablegridcolour(0,0,0,0), active(1)
-gentable bounds(  5,150, 400,140), identchannel("table2"),  tablenumber(2), tablecolour("green"), amprange(0,1,2), zoom(-1), tablegridcolour(0,0,0,0), active(1)
-gentable bounds(  5,295, 400,140), identchannel("table3"),  tablenumber(3), tablecolour("blue"),  amprange(1,4,3,1), zoom(-1), tablegridcolour(0,0,0,0), active(1)
-label    bounds(  7,  5, 100, 12), text("NOTES"),      align("left"), fontcolour(255,255,255,100)
-label    bounds(  7,150, 100, 12), text("AMPLITUDES"), align("left"), fontcolour(255,255,255,100)
-label    bounds(  7,295, 100, 12), text("DURATIONS"),  align("left"), fontcolour(255,255,255,100)
+gentable bounds(  5,  5, 400,140), identChannel("table1"),  tableNumber(1), tableColour("yellow"),ampRange(36,108,1,1), zoom(-1), tableGridColour(0,0,0,0), active(1)
+gentable bounds(  5,150, 400,140), identChannel("table2"),  tableNumber(2), tableColour("green"), ampRange(0,1,2), zoom(-1), tableGridColour(0,0,0,0), active(1)
+gentable bounds(  5,295, 400,140), identChannel("table3"),  tableNumber(3), tableColour("blue"),  ampRange(1,4,3,1), zoom(-1), tableGridColour(0,0,0,0), active(1)
+label    bounds(  7,  5, 100, 12), text("NOTES"),      align("left"), fontColour(255,255,255,100)
+label    bounds(  7,150, 100, 12), text("AMPLITUDES"), align("left"), fontColour(255,255,255,100)
+label    bounds(  7,295, 100, 12), text("DURATIONS"),  align("left"), fontColour(255,255,255,100)
 
-image   bounds(  5, 5, 50,430), colour(255,255,255,50), shape("sharp"), identchannel("ScrubberID")
+image   bounds(  5, 5, 50,430), colour(255,255,255,50), shape("sharp"), identChannel("ScrubberID")
 
 image   bounds(410,  5,400,430), colour( 50, 50, 50), plant("controls"), shape("sharp"), {
 rslider bounds(  0,  0, 75, 75), channel("fshift"), text("Harm."),   range(0, 32, 0,1,1),       $RSliderStyle1
@@ -43,12 +43,12 @@ rslider bounds(190, 75, 75, 75), channel("time"),   text("Time"),    range(0, 7,
 rslider  bounds(115,160,75,75), channel("tempo"), text("Tempo"), range(10,500,150, 1, 1), $RSliderStyle3
 rslider  bounds(190,160,75,75), channel("amp"),   text("Level"), range(0, 1.00, 0.5),     $RSliderStyle3
 
-button  bounds( 10,160, 80,20), text("Bwd.","Bwd."),           channel("bwd"),    value(0), fontcolour:0(255,255,255,50), fontcolour:1(105,255,105,250), radiogroup(1)
-button  bounds( 10,180, 80,20), text("Fwd./Bwd.","Fwd./Bwd."), channel("fwdbwd"), value(1), fontcolour:0(255,255,255,50), fontcolour:1(105,255,105,250), radiogroup(1)
-button  bounds( 10,200, 80,20), text("Fwd.","Fwd."),           channel("fwd"),    value(0), fontcolour:0(255,255,255,50), fontcolour:1(105,255,105,250), radiogroup(1)
-button  bounds( 10,220, 80,20), text("Freeze","Freeze"),       channel("freeze"), value(0), fontcolour:0(255,255,255,50), fontcolour:1(155,155,255,250), radiogroup(1)
-button  bounds( 10,240, 80,20), text("Random","Random"),       channel("rnd"),    value(0), fontcolour:0(255,255,255,50), fontcolour:1(125,175,155,250), radiogroup(1)
-button  bounds( 10,260, 80,20), text("Stop","Stop"),           channel("stop"),   value(0), fontcolour:0(255,255,255,50), fontcolour:1(255, 55, 55,250), radiogroup(1)
+button  bounds( 10,160, 80,20), text("Bwd.","Bwd."),           channel("bwd"),    value(0), fontColour:0(255,255,255,50), fontColour:1(105,255,105,250), radioGroup(1)
+button  bounds( 10,180, 80,20), text("Fwd./Bwd.","Fwd./Bwd."), channel("fwdbwd"), value(1), fontColour:0(255,255,255,50), fontColour:1(105,255,105,250), radioGroup(1)
+button  bounds( 10,200, 80,20), text("Fwd.","Fwd."),           channel("fwd"),    value(0), fontColour:0(255,255,255,50), fontColour:1(105,255,105,250), radioGroup(1)
+button  bounds( 10,220, 80,20), text("Freeze","Freeze"),       channel("freeze"), value(0), fontColour:0(255,255,255,50), fontColour:1(155,155,255,250), radioGroup(1)
+button  bounds( 10,240, 80,20), text("Random","Random"),       channel("rnd"),    value(0), fontColour:0(255,255,255,50), fontColour:1(125,175,155,250), radioGroup(1)
+button  bounds( 10,260, 80,20), text("Stop","Stop"),           channel("stop"),   value(0), fontColour:0(255,255,255,50), fontColour:1(255, 55, 55,250), radioGroup(1)
 }
 </Cabbage>                                                   
                     
