@@ -274,12 +274,18 @@ public:
         if (CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != -1 && CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != 0)
             numInChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") - sideChainChannels;
 
-
-        if (sideChainChannels != 0)
-            processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(filename, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels), AudioChannelSet::canonicalChannelSet(sideChainChannels)));
+        if(isCabbageFile == false)
+        {
+                    //GenericCabbagePluginProcessor*
+                processor = std::unique_ptr<GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(filename, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels)));
+        }
         else
-            processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(filename, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels)));
-        
+        {
+            if (sideChainChannels != 0)
+                processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(filename, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels), AudioChannelSet::canonicalChannelSet(sideChainChannels)));
+            else
+                processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(filename, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels)));
+        }
 		AudioProcessor::setTypeOfNextNewPlugin(AudioProcessor::wrapperType_Undefined);
 		jassert(processor != nullptr);
 		//processor->disableNonMainBuses();

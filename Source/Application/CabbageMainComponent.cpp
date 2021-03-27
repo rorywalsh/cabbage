@@ -1984,7 +1984,13 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
             
             
             if(!fileContents.contains("<Cabbage>") || !fileContents.contains("</Cabbage>")){
-                CabbageUtilities::showMessage ("Warning", "Please make sure your Cabbage section is wrapped in <Cabbage> and </Cabbage> tags", lookAndFeel.get());
+                const int dismiss = cabbageSettings->getUserSettings()->getIntValue("DisableCabbageTagsWarning");
+                if(!dismiss)
+                {
+                bool value = CabbageUtilities::showMessageWithHideOption("Warning", "Please make sure your Cabbage section is wrapped in <Cabbage> and </Cabbage> tags", lookAndFeel.get(), dismiss);
+                cabbageSettings->getUserSettings()->setValue("DisableCabbageTagsWarning", value);
+                }
+
             }
             AudioProcessorGraph::NodeID node(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
             

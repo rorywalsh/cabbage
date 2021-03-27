@@ -363,6 +363,9 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         {
             const int latency = CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::latency);
             preferredLatency = latency;
+            //DBG(CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::width)
+            csound->SetChannel("SCREEN_WIDTH", CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::width));
+            csound->SetChannel("SCREEN_HEIGHT", CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::height));
         }
 
         if (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channeltype) == "string")

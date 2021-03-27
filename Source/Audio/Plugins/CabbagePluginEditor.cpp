@@ -89,6 +89,8 @@ void CabbagePluginEditor::refreshValueTreeListeners()
 
 void CabbagePluginEditor::resized()
 {
+    sendChannelDataToCsound("SCREEN_WIDTH", getWidth());
+    sendChannelDataToCsound("SCREEN_HEIGHT", getHeight());
 #ifdef Cabbage_IDE_Build
     layoutEditor.setBounds (getLocalBounds());
     
@@ -218,6 +220,8 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     instrumentBounds.setXY(width, height);
     setSize (width, height);
 
+    
+    
     repaint();
 }
 //======================================================================================================

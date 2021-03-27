@@ -33,7 +33,8 @@ GenericCabbagePluginProcessor::GenericCabbagePluginProcessor (File inputFile, Au
 
 GenericCabbagePluginProcessor::~GenericCabbagePluginProcessor()
 {
-    getCsound()->DeleteChannelList (csoundChanList);
+    if(csoundChanList)
+        getCsound()->DeleteChannelList (csoundChanList);
 }
 
 //==============================================================================
