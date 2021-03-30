@@ -1180,19 +1180,19 @@ void CabbageWidgetData::setColourByNumber (StringArray strTokens, ValueTree widg
             
     }
 
-    else if (identifier == "fontcolour")
+    else if (identifier == "fontColour")
     {
         //setProperty (widgetData, CabbageIdentifierIds::onfontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
         setProperty (widgetData, CabbageIdentifierIds::fontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
 
     }
 
-    else if (identifier == "fontcolour:1")
+    else if (identifier == "fontColour:1")
     {
         setProperty (widgetData, CabbageIdentifierIds::onfontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
     }
 
-    else if (identifier == "fontcolour:0")
+    else if (identifier == "fontColour:0")
     {
         setProperty (widgetData, CabbageIdentifierIds::fontcolour, getColourFromText (strTokens.joinIntoString (",")).toString());
     }
@@ -1373,7 +1373,7 @@ void CabbageWidgetData::setFontStyle (StringArray strTokens, ValueTree widgetDat
 void CabbageWidgetData::setAmpRange (StringArray strTokens, ValueTree widgetData)
 {
     if (strTokens.size() < 3)
-        CabbageUtilities::debug ("Not enough paramters passed to amprange(): usage amprange(min, max, tablenumber, quantise\")\n");
+        CabbageUtilities::debug ("Not enough paramters passed to amprange(): usage ampRange(min, max, tablenumber, quantise\")\n");
 
     var array = getProperty (widgetData, CabbageIdentifierIds::amprange);
 
@@ -1512,7 +1512,7 @@ void CabbageWidgetData::setRange (StringArray strTokens, ValueTree widgetData, S
 
         }
     }
-    else if (identifier == "rangex")
+    else if (identifier == "rangeX")
     {
         if (strTokens.size() < 3)
         {
@@ -1531,7 +1531,7 @@ void CabbageWidgetData::setRange (StringArray strTokens, ValueTree widgetData, S
             setProperty (widgetData, CabbageIdentifierIds::decimalplaces, strTokens[3].trim().getDoubleValue());
         }
     }
-    else if (identifier == "rangey")
+    else if (identifier == "rangeY")
     {
         if (strTokens.size() < 3)
         {

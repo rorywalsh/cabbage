@@ -107,6 +107,7 @@ namespace CommandIDs
         autoReloadFromDisk    = 0x612006,
         addCabbageSection    = 0x612007,
         convertToCamelCase    = 0x612008,
+        restartAudioDevice    = 0x612009,
 
         lastCommandIDEntry
     };

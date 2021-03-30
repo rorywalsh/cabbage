@@ -45,6 +45,10 @@ public:
     CabbageMainComponent* getContentComponent();
     //=======================================================
     StringArray getMenuBarNames() override;
+    void activeWindowStatusChanged() override
+    {
+        DBG("Something changed");
+    }
     void createFileMenu (PopupMenu&);
     void createEditMenu (PopupMenu&);
     void createViewMenu (PopupMenu&);

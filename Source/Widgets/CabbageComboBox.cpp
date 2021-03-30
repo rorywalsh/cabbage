@@ -237,9 +237,9 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         }
     }
     //if dealing with preset files...
-    else if ( CabbageWidgetData::getStringProp (wData, "filetype") == "*.snaps"
-             || CabbageWidgetData::getStringProp (wData, "filetype") == ".snaps"
-             || CabbageWidgetData::getStringProp (wData, "filetype") == "snaps") //load items from directory
+    else if ( CabbageWidgetData::getStringProp (wData, "fileType") == "*.snaps"
+             || CabbageWidgetData::getStringProp (wData, "fileType") == ".snaps"
+             || CabbageWidgetData::getStringProp (wData, "fileType") == "snaps") //load items from directory
     {
         const File fileName = File (getCsdFile()).withFileExtension (".snaps");
         clear (dontSendNotification);

@@ -325,7 +325,9 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::convertToCamelCase);
     menu.addSeparator();
-    
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::restartAudioDevice);
+    menu.addSeparator();
     if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
     {
         PopupMenu subMenu1, subMenu2, subMenu3;
@@ -560,6 +562,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::cut,
         CommandIDs::clearConsole,
         CommandIDs::convertToCamelCase,
+        CommandIDs::restartAudioDevice,
         CommandIDs::toggleComments,
         CommandIDs::zoomIn,
         CommandIDs::addCabbageSection,
@@ -647,6 +650,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             
         case CommandIDs::convertToCamelCase:
             result.setInfo ("Covert Identifiers to camelCase", "Covert Identifiers to camelCase", CommandCategories::general, 0);
+            break;
+
+        case CommandIDs::restartAudioDevice:
+            result.setInfo ("Restart Audio Device", "Restarts audio device", CommandCategories::general, 0);
+            result.defaultKeypresses.add (KeyPress ('d', ModifierKeys::commandModifier, 0));
             break;
             
         case CommandIDs::importTheme:
@@ -951,7 +959,6 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             
         case CommandIDs::runDiagnostics:
             result.setInfo (String ("Run diagnostics"), String ("Run diagnostics"), CommandCategories::edit, 0);
-            result.addDefaultKeypress ('d', ModifierKeys::commandModifier);
             break;
             
             // help command
@@ -1034,6 +1041,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             
         case CommandIDs::convertToCamelCase:
             getContentComponent()->covertToCamelCase();
+            return true;
+ 
+        case CommandIDs::restartAudioDevice:
+            getContentComponent()->reloadAudioDeviceState();
             return true;
             
         case CommandIDs::saveGraph:
