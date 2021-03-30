@@ -949,12 +949,18 @@ void CsoundPluginProcessor::triggerCsoundEvents()
 
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
-    if(polling == true)
+    if(polling == 1)
     {
         getChannelDataFromCsound();
         sendChannelDataToCsound();
     }
+    else if(polling == 0)
+    {
+        getIdentifierDataFromCsound();
+    }
     else{
+        getChannelDataFromCsound();
+        sendChannelDataToCsound();
         getIdentifierDataFromCsound();
     }
     

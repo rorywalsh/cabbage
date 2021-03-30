@@ -311,8 +311,13 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 			const String caption = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::caption);
 			setPluginName(caption.length() > 0 ? caption : "Untitled");
             
-            if(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::guimode) != CabbageIdentifierIds::polling.toString())
-                pollingChannels(false);
+            const String polling = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::guimode);
+            if(polling == "polling")
+                pollingChannels(1);
+            else if(polling == "queue")
+                pollingChannels(0);
+            else
+                pollingChannels(2);
             
 			if (CabbageWidgetData::getNumProp(newWidget, CabbageIdentifierIds::logger) == 1)
 				createFileLogger(this->csdFile);

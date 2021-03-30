@@ -269,18 +269,18 @@ public:
         internalStateData = stateData;
     }
 
-    bool pollingChannels(bool shouldPoll)
+    void pollingChannels(int shouldPoll)
     {
-        return polling = shouldPoll;
+        polling = shouldPoll;
     }
     
-    bool pollingChannels()
+    int pollingChannels()
     {
         return polling;
     }
 private:
     //==============================================================================
-    bool polling = true;
+    int polling = 1;
     MidiBuffer midiOutputBuffer;
     int guiCycles = 0;
     int guiRefreshRate = 128;
