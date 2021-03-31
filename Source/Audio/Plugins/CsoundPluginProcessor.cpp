@@ -464,8 +464,8 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
             else
             {
                 const float value = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::value);
-                csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
-                                    value);
+                const String channel = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel);
+                csound->SetChannel (channel.getCharPointer(), value);
             }
 
         }

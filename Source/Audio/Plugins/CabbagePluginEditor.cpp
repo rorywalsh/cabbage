@@ -655,25 +655,30 @@ void CabbagePluginEditor::resizePlugin (int sizeIndex)
 void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 {
     const String mode = CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::mode);
-   
+    const String channel = CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::channel);
     if (CabbagePluginParameter* param = getParameterForComponent (combo->getName()))
     {
-        param->beginChangeGesture();
+        
 
         if(mode == "resize")
         {
-            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
-            resizePlugin(combo->getSelectedItemIndex());            
+            if(combo->getSelectedItemIndex() != -1)
+            {
+                param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
+                resizePlugin(combo->getSelectedItemIndex());
+            }
         }
         else
         {
+            param->beginChangeGesture();
             //preset combos work with 0 index, Cabbage string combos start at 1..
             if (CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::filetype).contains ("snaps"))
                 param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()));
             else
                 param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
+            param->endChangeGesture();
         }
-        param->endChangeGesture();
+        
     }
 }
 //======================================================================================================

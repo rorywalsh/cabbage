@@ -324,11 +324,17 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 
 			setGUIRefreshRate(CabbageWidgetData::getNumProp(newWidget, CabbageIdentifierIds::guirefresh));
 		}
-
+        
 		const String precedingCharacters = currentLineOfCabbageCode.substring(0, currentLineOfCabbageCode.indexOf(
 			typeOfWidget));
 		CabbageWidgetData::setStringProp(newWidget, "precedingCharacters", precedingCharacters);
 
+        const String mode = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::mode);
+        if(mode == "resize" && typeOfWidget == CabbageWidgetTypes::combobox)
+        {
+            CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, "PluginResizerCombBox");
+        }
+        
 		const String widgetName = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name);
         
 		if (widgetName.isNotEmpty())
@@ -1143,6 +1149,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
 			const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
 			const String channelName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
+            
 
 			if (type == CabbageWidgetTypes::texteditor)
 			{

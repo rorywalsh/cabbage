@@ -158,7 +158,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         }
         
         const int currentSize = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
-        setSelectedItemIndex(currentSize, sendNotification);
+        setSelectedItemIndex(currentSize, dontSendNotification);
         owner->resizePlugin(currentSize-1);
         return;
     }
