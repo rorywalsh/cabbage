@@ -390,6 +390,51 @@ int SetCabbageIdentifier::setAttribute()
     return OK;
 }
 
+int SetCabbageIdentifierITime::setAttribute()
+{
+    CabbageWidgetIdentifiers::IdentifierData data;
+    String name(outargs.str_data(0).data);
+    String identifier(outargs.str_data(1).data);
+    data.identifier = identifier.isEmpty() ? "empty" : identifier;
+    data.name = name;
+    
+    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* varData;
+    
+    if (vt != nullptr)
+    {
+        varData = *vt;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
+        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+        *vt = new CabbageWidgetIdentifiers();
+        varData = *vt;
+        csound->message("Creating new internal state object...\n");
+    }
+    
+  
+    if(identifier.isEmpty())
+    {
+        data.isSingleIdent = false;
+        data.args = String(outargs.str_data(2).data);
+        DBG(String(outargs.str_data(2).data));
+    }
+    else
+    {
+        for ( int i = 2 ; i < in_count(); i++)
+        {
+            if(outargs.str_data(i).data)
+                data.args.append(String(outargs.str_data(i).data));
+            else
+                data.args.append(outargs[i]);
+        }
+    }
+    varData->data.add(data);
+
+    return OK;
+}
 //====================================================================================================
 int GetCabbageReservedChannelStringWithTrigger::getAttribute()
 {

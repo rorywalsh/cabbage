@@ -54,6 +54,12 @@ struct SetCabbageIdentifier : csnd::Plugin<64, 0>
     int setAttribute();
 };
 
+struct SetCabbageIdentifierITime : csnd::Plugin<64, 0>
+{
+    CabbageWidgetIdentifiers** vt = nullptr;
+    int init(){ setAttribute(); return OK;};
+    int setAttribute();
+};
 //================================================================
 struct GetCabbageValue : csnd::Plugin<1, 1>
 {
