@@ -115,6 +115,14 @@ void CabbageTextEditor::valueTreePropertyChanged (ValueTree& valueTree, const Id
     lookAndFeelChanged();
     repaint();
     handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
-    textEditor.setText (getCurrentText(valueTree), dontSendNotification);
+    
+    const String filename = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
+    const File textFile(File::getCurrentWorkingDirectory().getChildFile(filename).getFullPathName());
+    
+    if (textFile.existsAsFile())
+        textEditor.setText(textFile.loadFileAsString(), false);
+    else
+        textEditor.setText (getCurrentText(valueTree), dontSendNotification);
+
     sendTextToCsound();
 }
