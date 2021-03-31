@@ -1671,6 +1671,7 @@ Rectangle<int> CabbageWidgetData::getBounds (ValueTree widgetData)
 
 Colour CabbageWidgetData::getColourFromText (String text)
 {
+    DBG(text);
     StringArray strTokens;
     strTokens.addTokens (text, ",", "");
     Colour colour;

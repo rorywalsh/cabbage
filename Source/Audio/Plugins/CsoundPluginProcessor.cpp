@@ -188,7 +188,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "i", "SS[]", csnd::thread::i);
     csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "setStateValue.s", "k", "SS[]", csnd::thread::ik);
 
-    csnd::plugin<SetCabbageIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSN", csnd::thread::ik);
+    csnd::plugin<SetCabbageIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSM", csnd::thread::k);
+    csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSW", csnd::thread::ik);
     csnd::plugin<SetCabbageIdentifierITime>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "SSN", csnd::thread::i);
     csnd::plugin<SetCabbageValueIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSetValue", "", "SkP", csnd::thread::ik);
     

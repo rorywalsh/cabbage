@@ -1231,7 +1231,18 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
             {
                 if(identData->data[i].isSingleIdent)
                 {
-                    cabbageWidgets.getChildWithName(name).setProperty(identifier,identData->data[i].args, nullptr);
+                    if(identifier.toString().contains("colour"))
+                    {
+                        String colourTokens;
+                        for(int x = 0 ; x < identData->data[i].args.size() ; x++){
+                            colourTokens += String(int(identData->data[i].args[x])) + ",";
+                        }
+                        cabbageWidgets.getChildWithName(name).setProperty(identifier, CabbageWidgetData::getColourFromText(colourTokens.dropLastCharacters(1)).toString(), nullptr);
+                    }
+                    else
+                    {
+                        cabbageWidgets.getChildWithName(name).setProperty(identifier,identData->data[i].args, nullptr);
+                    }
                     if(identifier == CabbageIdentifierIds::value && chnsetGestureMode == 1)
                     {
                         var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);

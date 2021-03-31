@@ -46,6 +46,14 @@ struct SetCabbageValueIdentifier : csnd::Plugin<3, 0>
     int setAttribute();
 };
 
+struct SetCabbageIdentifierSArgs : csnd::Plugin<64, 0>
+{
+    CabbageWidgetIdentifiers** vt = nullptr;
+    int init(){ setAttribute(); return OK;};
+    int kperf(){ setAttribute(); return OK;};
+    int setAttribute();
+};
+
 struct SetCabbageIdentifier : csnd::Plugin<64, 0>
 {
     CabbageWidgetIdentifiers** vt = nullptr;
