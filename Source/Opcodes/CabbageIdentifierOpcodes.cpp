@@ -348,7 +348,7 @@ int SetCabbageIdentifier::setAttribute()
     int trigger = outargs[0];
     String name(outargs.str_data(1).data);
     String identifier(outargs.str_data(2).data);
-    data.identifier = identifier.isEmpty() ? "empty" : identifier;
+    data.identifier = identifier;
     data.name = name;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
@@ -369,10 +369,10 @@ int SetCabbageIdentifier::setAttribute()
     
     if(trigger == 1)
     {
-        if(identifier.isEmpty())
+        if(in_count() == 3)
         {
             data.isSingleIdent = false;
-            data.args = String(outargs.str_data(3).data);
+            data.args = String(outargs.str_data(2).data);
             //DBG(String(outargs.str_data(3).data));
         }
         else
@@ -394,7 +394,7 @@ int SetCabbageIdentifierSArgs::setAttribute()
     int trigger = outargs[0];
     String name(outargs.str_data(1).data);
     String identifier(outargs.str_data(2).data);
-    data.identifier = identifier.isEmpty() ? "empty" : identifier;
+    data.identifier = identifier;
     data.name = name;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
@@ -439,7 +439,7 @@ int SetCabbageIdentifierITime::setAttribute()
     CabbageWidgetIdentifiers::IdentifierData data;
     String name(outargs.str_data(0).data);
     String identifier(outargs.str_data(1).data);
-    data.identifier = identifier.isEmpty() ? "empty" : identifier;
+    data.identifier = identifier;
     data.name = name;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
@@ -459,25 +459,64 @@ int SetCabbageIdentifierITime::setAttribute()
     }
     
   
-    if(identifier.isEmpty())
+    if(in_count() == 2)
     {
         data.isSingleIdent = false;
-        data.args = String(outargs.str_data(2).data);
-        DBG(String(outargs.str_data(2).data));
+        data.args = String(outargs.str_data(1).data);
+        DBG(String(outargs.str_data(1).data));
     }
     else
     {
         for ( int i = 2 ; i < in_count(); i++)
         {
-//            if(String(outargs.str_data(i).data).isNotEmpty()){
-//                data.args.append(String(outargs.str_data(i).data));
-//            }
-//            else
-                data.args.append(double(outargs[i]));
+            data.args.append(double(outargs[i]));
         }
     }
     varData->data.add(data);
 
+    return OK;
+}
+
+int SetCabbageIdentifierITimeSArgs::setAttribute()
+{
+    CabbageWidgetIdentifiers::IdentifierData data;
+    String name(outargs.str_data(0).data);
+    String identifier(outargs.str_data(1).data);
+    data.identifier = identifier;
+    data.name = name;
+    
+    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* varData;
+    
+    if (vt != nullptr)
+    {
+        varData = *vt;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
+        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+        *vt = new CabbageWidgetIdentifiers();
+        varData = *vt;
+        csound->message("Creating new internal state object...\n");
+    }
+    
+    
+    if(in_count() == 2)
+    {
+        data.isSingleIdent = false;
+        data.args = String(outargs.str_data(1).data);
+        DBG(String(outargs.str_data(1).data));
+    }
+    else
+    {
+        for ( int i = 2 ; i < in_count(); i++)
+        {
+            data.args.append(String(outargs.str_data(i).data));
+        }
+    }
+    varData->data.add(data);
+    
     return OK;
 }
 //====================================================================================================
