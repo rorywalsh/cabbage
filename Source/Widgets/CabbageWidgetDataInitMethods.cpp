@@ -656,6 +656,7 @@ void CabbageWidgetData::setTextEditorProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::height, 30);
     setProperty (widgetData, CabbageIdentifierIds::channel, "texteditor");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::caretcolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colours::transparentBlack.toString());
     setProperty (widgetData, CabbageIdentifierIds::name, "texteditor");
@@ -664,6 +665,9 @@ void CabbageWidgetData::setTextEditorProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty (widgetData, CabbageIdentifierIds::readonly, 0);
+    setProperty (widgetData, CabbageIdentifierIds::doubleclicktogglesedit, 0);
+    
 }
 
 void CabbageWidgetData::setSoundfilerProperties (ValueTree widgetData, int ID)

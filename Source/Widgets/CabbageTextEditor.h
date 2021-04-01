@@ -32,6 +32,8 @@ public:
     class CustomTextEditor : public TextEditor //custom text editor with right-click popup menu
     {
     public:
+        bool toggleEditOnDoubleClick = false;
+        
         explicit CustomTextEditor (CabbageTextEditor* _owner): TextEditor (""), owner (_owner) {}
         ~CustomTextEditor() {}
 
@@ -45,6 +47,16 @@ public:
             menuToAddTo.addItem (5, "Send text");
         }
 
+        void mouseDoubleClick(const MouseEvent &e) override
+        {
+            if(toggleEditOnDoubleClick){
+                if(isReadOnly())
+                    setReadOnly(false);
+                else
+                    setReadOnly(true);
+            }
+        }
+        
         void performPopupMenuAction (int menuItemID) override
         {
             if (menuItemID == 1)
@@ -61,6 +73,7 @@ public:
 
     private:
         CabbageTextEditor* owner;
+
     };
 
 

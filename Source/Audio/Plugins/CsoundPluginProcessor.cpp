@@ -859,16 +859,25 @@ void CsoundPluginProcessor::releaseResources()
 bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
 
-#if JucePlugin_IsMidiEffectz
+#if JucePlugin_IsMidiEffect
         ignoreUnused (layouts);
         return true;
 #else
+    
+
     
     const AudioChannelSet& mainInput  = layouts.getMainInputChannelSet();
     const AudioChannelSet& mainOutput = layouts.getMainOutputChannelSet();
     
     CabbageUtilities::debug("MainOutputSize:", mainOutput.size());
     CabbageUtilities::debug("MainInputSize:", mainInput.size());
+    
+#if  JucePlugin_IsSynth
+    if(PluginHostType().isCubase()){
+        if (mainInput.size() == 0 && mainOutput.size() == numCsoundOutputChannels)
+            return true;
+    }
+#endif
     
     if(AudioProcessor::wrapperType == wrapperType_AudioUnit)
     {

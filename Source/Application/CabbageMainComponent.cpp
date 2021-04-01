@@ -1980,7 +1980,21 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
                 CabbageUtilities::showMessage ("Warning", infoText, lookAndFeel.get());
             }
             
+            StringArray fileContentStrArray, problemChannels;
+            fileContentStrArray.addLines(fileContents);
+            for ( auto string : fileContentStrArray){
+                const String widgetTreeIdentifier = "tempWidget";
+                ValueTree tempWidget(widgetTreeIdentifier);
+                CabbageWidgetData::setWidgetState(tempWidget, string.trimCharactersAtStart(" \t"), -9);
+                if(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel).contains(" "))
+                    problemChannels.add(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel));
+            }
             
+            if(problemChannels.size() > 0){
+                const String infoText = "White spaces are not supported in channel names. The following channels need to be changed:\n"+problemChannels.joinIntoString("\n");
+                CabbageUtilities::showMessage ("Warning", infoText, lookAndFeel.get());
+            }
+
             
             
             if(!fileContents.contains("<Cabbage>") || !fileContents.contains("</Cabbage>")){

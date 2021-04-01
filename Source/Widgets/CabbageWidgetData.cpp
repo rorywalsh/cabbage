@@ -404,6 +404,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("automatable"):
             case HashStringToInt ("alpha"):
             case HashStringToInt ("corners"):
+            case HashStringToInt ("doubleClickTogglesEdit"):
             case HashStringToInt ("ffttableNumber"):
             case HashStringToInt ("fill"):
             case HashStringToInt ("guiRefresh"):
@@ -571,6 +572,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("arrowBackgroundColour"):
             case HashStringToInt ("arrowColour"):
             case HashStringToInt ("ballColour"):
+            case HashStringToInt ("caretColour"):
             case HashStringToInt ("fillColour"):
             case HashStringToInt ("tableGridColour"):
             case HashStringToInt ("trackerColour"):

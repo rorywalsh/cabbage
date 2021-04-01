@@ -291,6 +291,7 @@ public:
     CabbageIdentifierStrings()  // longest strings appear first otherwise identifiers will be missed in parsing
     {
         add ("scrubberposition_sample");
+        add ("doubleClickTogglesEdit");
         add ("scrubberposition_table");
         add ("tableBackgroundColour");
         add ("arrowBackgroundColour");
@@ -364,6 +365,7 @@ public:
         add ("popupPrefix");
         add ("automatable");
         add ("valuePrefix");
+        add ("caretColour");
         add ("automation");
         add ("autoUpdate");
         add ("matrixSize");
@@ -731,6 +733,7 @@ namespace CabbageIdentifierIds
     static const Identifier bpm = "bpm";
     static const Identifier bundle = "bundle";
     static const Identifier caption = "caption";
+    static const Identifier caretcolour = "caretColour";
     static const Identifier celldata = "celldata";
     static const Identifier channel = "channel";
     static const Identifier channeltype = "channelType";
@@ -752,6 +755,7 @@ namespace CabbageIdentifierIds
     static const Identifier currentPresetName = "currentpresetname";
     static const Identifier decimalplaces = "decimalplaces";
     static const Identifier displaytype = "displayType";
+    static const Identifier doubleclicktogglesedit = "doubleClickTogglesEdit";
     static const Identifier drawmode = "drawMode";
     static const Identifier endpoint = "endPoint";
     static const Identifier endpos = "endPos";
@@ -1467,7 +1471,7 @@ static const char* const CsoundKeywords[] =
     "tab2pvs", "tab_i", "tabifd", "table3kt", "tablefilter", "tablefilteri", "tableshuffle", "tableshufflei", "tabmorph", "tabmorpha", "tabmorphak", "tabmorphi", "tabplay", "tabsum", "tabw", "tabw_i", "tb0", "tb0_init",
     "tb1", "tb10", "tb11", "tb12", "tb13", "tb14", "tb15", "tb1_init", "tb2", "tb2_init", "tb3", "tb4", "tb5", "tb6", "tb7", "tb8", "tb9", "temposcal", "trandom", "transegb", "transegr", "trcross", "trfilter", "trhighest",
     "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "valuePostfix", "valuePrefix", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i",
-    "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", "then", "while", "od", "do", "endwhile", "trigexpseg", "triglinseg", "setStateValue", "writeStateValue", "writeStateData", "readStateData", "channelStateRecall", "channelStateSave", "cabbageSetValue", "cabbageGetValue", "cabbageGet", "cabbageSet", "cabbageGetCurrentWidget", "guiMode", "cabbageCreate", "showsSrubber", "titleBarColour", "FLslidBnkGetHandle", "K35_hpf", "K35_lpf", "OSCbundle", "OSCcount", "OSCinitM", "OSCraw", "OSCsend_lo", "S", "a", "allpole", "ampmidicurve", "apoleparams", "arduinoRead", "arduinoStart", "arduinoStop", "balance2", "beadsynt", "beosc", "bob", "bpf", "bpfcos", "cbrt", "chngeta", "chngeti", "chngetk", "chngetks", "chngets", "chnseta", "chnseti", "chnsetk", "chnsetks", "chnsets", "cmp", "cntCreate", "cntCycles", "cntRead", "cntReset", "cntState", "count", "count_i", "dct", "dctinv", "deinterleave", "diode_ladder", "dot", "faustdsp", "faustplay", "fmanal", "fmax", "fmin", "fmod", "ftaudio", "ftexists", "ftom", "ftprint", "ftset", "ftslice", "ftslicei", "getftargs", "getrowlin", "gtf", "hilbert2", "hypot", "i", "interleave", "k", "lag", "lagud", "lastcycle", "limit1", "lincos", "linlin", "loscil3phs", "loscilphs", "lpcanal", "lpcfilter", "lufs", "metro2", "mfb", "midiarp", "midichannelaftertouch", "midicontrolchange", "midiout_i", "midipolyaftertouch", "midiprogramchange", "moogvcf", "mtof", "mton", "nstrstr", "ntof", "ntom", "nxtpow2", "p", "pchtom", "pows", "printarray", "println", "printsk", "pvsbandwidth", "pvscfs", "pvslpc", "pvstrace", "randc", "reshapearray", "resonbnk", "rndseed", "sc_lag", "sc_lagud", "sc_phasor", "sc_trig", "schedulek", "select", "slicearray_i", "sorta", "sortd", "squinewave", "sterrain", "string2array", "strstrip", "tab2array", "tabrowlin", "trighold", "trigphasor", "trim", "trim_i", "tvconv", "vps", "websocket", "xyscale", "zdf_1pole", "zdf_1pole_mode", "zdf_2pole", "zdf_2pole_mode", "zdf_ladder",
+    "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", "then", "while", "od", "do", "endwhile", "trigexpseg", "triglinseg", "setStateValue", "writeStateValue", "writeStateData", "readStateData", "channelStateRecall", "channelStateSave", "cabbageSetValue", "cabbageGetValue", "cabbageGet", "cabbageSet", "cabbageGetCurrentWidget", "guiMode", "cabbageCreate", "showsSrubber", "titleBarColour", "FLslidBnkGetHandle", "K35_hpf", "K35_lpf", "OSCbundle", "OSCcount", "OSCinitM", "OSCraw", "OSCsend_lo", "S", "a", "allpole", "ampmidicurve", "apoleparams", "arduinoRead", "arduinoStart", "arduinoStop", "balance2", "beadsynt", "beosc", "bob", "bpf", "bpfcos", "cbrt", "chngeta", "chngeti", "chngetk", "chngetks", "chngets", "chnseta", "chnseti", "chnsetk", "chnsetks", "chnsets", "cmp", "cntCreate", "cntCycles", "cntRead", "cntReset", "cntState", "count", "count_i", "dct", "dctinv", "deinterleave", "diode_ladder", "dot", "faustdsp", "faustplay", "fmanal", "fmax", "fmin", "fmod", "ftaudio", "ftexists", "ftom", "ftprint", "ftset", "ftslice", "ftslicei", "getftargs", "getrowlin", "gtf", "hilbert2", "hypot", "i", "interleave", "k", "lag", "lagud", "lastcycle", "limit1", "lincos", "linlin", "loscil3phs", "loscilphs", "lpcanal", "lpcfilter", "lufs", "metro2", "mfb", "midiarp", "midichannelaftertouch", "midicontrolchange", "midiout_i", "midipolyaftertouch", "midiprogramchange", "moogvcf", "mtof", "mton", "nstrstr", "ntof", "ntom", "nxtpow2", "p", "pchtom", "pows", "printarray", "println", "printsk", "pvsbandwidth", "pvscfs", "pvslpc", "pvstrace", "randc", "reshapearray", "resonbnk", "rndseed", "sc_lag", "sc_lagud", "sc_phasor", "sc_trig", "schedulek", "select", "slicearray_i", "sorta", "sortd", "squinewave", "sterrain", "string2array", "strstrip", "tab2array", "tabrowlin", "trighold", "trigphasor", "trim", "trim_i", "tvconv", "vps", "websocket", "xyscale", "zdf_1pole", "zdf_1pole_mode", "zdf_2pole", "zdf_2pole_mode", "zdf_ladder", "readOnly", "doubleClickTogglesEdit", "caretColour",
     0
 };
 #endif  // CABBAGECOMMANDIDS_H_INCLUDED
