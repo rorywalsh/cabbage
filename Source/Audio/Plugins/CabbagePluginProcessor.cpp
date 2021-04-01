@@ -1387,23 +1387,8 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 			if (identifierText.isNotEmpty() && identifierText != identChannelMessage)
             {
                 CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChild(i), " " + identifierText);
-                
-                if(CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
-                {
-                    double scale = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::scale);
-                    
-                    CabbagePluginEditor* editor = static_cast<CabbagePluginEditor*> (this->getActiveEditor());
-#ifdef Cabbage_IDE_Build
-                    double pluginWidth = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::width);
-                    double pluginHeight = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::height);
-                    editor->setSize(pluginWidth*scale, pluginHeight*scale);
-#endif
-                    editor->setScaleFactor(scale);
-                    editor->resized();
-                }
-				
 
-				if (identifierText.contains("tablenumber")) //update even if table number has not changed
+				if (identifierText.contains("tableNumber")) //update even if table number has not changed
 					CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, 1);
 				else if (identifierText == CabbageIdentifierIds::tofront.toString() + "()") {
 					CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::tofront,

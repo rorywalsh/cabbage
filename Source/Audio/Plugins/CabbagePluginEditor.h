@@ -148,7 +148,10 @@ public:
     CabbagePluginProcessor& getProcessor();
     void enableXYAutomator (String name, bool enable, Line<float> dragLine = Line<float> (0, 0, 1, 1));
 
-
+    int getPluginEditorScale()
+    {
+        return cabbageProcessor.currentPluginScale;
+    }
    /* void filesDropped(const StringArray &files, int x, int y) override;
     bool isInterestedInFileDrag(const StringArray &files) override;*/
     //=============================================================================

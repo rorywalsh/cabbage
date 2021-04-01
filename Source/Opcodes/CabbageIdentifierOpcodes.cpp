@@ -367,8 +367,20 @@ int SetCabbageIdentifier::setAttribute()
         csound->message("Creating new internal state object...\n");
     }
     
+
+    
     if(trigger == 1)
     {
+        //hack to trigger table update even if table number hasn't changed
+        if(identifier == "tableNumber")
+        {
+            CabbageWidgetIdentifiers::IdentifierData updateData1;
+            updateData1.identifier = CabbageIdentifierIds::update;
+            updateData1.name = name;
+            updateData1.args = 1;
+            varData->data.add(updateData1);
+        }
+        
         if(in_count() == 3)
         {
             data.isSingleIdent = false;
@@ -384,6 +396,16 @@ int SetCabbageIdentifier::setAttribute()
             }
         }
         varData->data.add(data);
+        
+        //hack to trigger table update even if table number hasn't changed
+        if(identifier == "tableNumber")
+        {
+            CabbageWidgetIdentifiers::IdentifierData updateData0;
+            updateData0.identifier = CabbageIdentifierIds::update;
+            updateData0.name = name;
+            updateData0.args = 0;
+            varData->data.add(updateData0);
+        }
     }
     return OK;
 }

@@ -10,6 +10,12 @@ texteditor WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/wrap.md !} 
 
+{! ./markdown/Widgets/Properties/readonly.md !} 
+
+{! ./markdown/Widgets/Properties/doubleclicktogglesedit.md !} 
+
+{! ./markdown/Widgets/Properties/caretcolour.md !} 
+
 ### Common Identifiers
 
 {! ./markdown/Widgets/Properties/active.md !} 

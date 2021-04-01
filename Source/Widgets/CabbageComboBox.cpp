@@ -55,6 +55,8 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
 
     addItemsToCombobox (widgetData);
 
+    if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::mode) == "resize")
+        return;
         
     if (CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::channeltype) == "string" &&
 		!CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::filetype).contains("snaps"))
@@ -151,15 +153,21 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     
     if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::mode) == "resize")
     {
+        clear();
         StringArray sizeItems = {"50%", "75%", "100%", "125%", "150%", "175%", "200%"};
         for (int i = 0; i < sizeItems.size(); ++i)
         {
             addItem (sizeItems[i], i + 1);
         }
+
+        int currentSize = -1;
+        if(owner->getPluginEditorScale() == -1)
+            currentSize = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
+        else
+            currentSize = owner->getPluginEditorScale();
         
-        const int currentSize = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
-        setSelectedItemIndex(currentSize, dontSendNotification);
-        owner->resizePlugin(currentSize-1);
+        setSelectedId(currentSize, sendNotification);
+        //owner->resizePlugin(currentSize);
         return;
     }
     

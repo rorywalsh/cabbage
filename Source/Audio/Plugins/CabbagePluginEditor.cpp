@@ -64,6 +64,9 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     if(cabbageProcessor.getCsound())
         cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 1.0);
 
+    DBG(cabbageProcessor.currentPluginScale);
+    if(cabbageProcessor.currentPluginScale != -1)
+        resizePlugin(cabbageProcessor.currentPluginScale);
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -73,6 +76,9 @@ CabbagePluginEditor::~CabbagePluginEditor()
     radioGroups.clear();
     radioComponents.clear();
     setLookAndFeel (nullptr);
+    
+
+    
     if(cabbageProcessor.getCsound())
     	cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 0.0);
 }
@@ -644,11 +650,13 @@ CabbagePluginParameter* CabbagePluginEditor::getParameterForComponent (const Str
 //======================================================================================================
 void CabbagePluginEditor::resizePlugin (int sizeIndex)
 {
+    
     float sizes[] = {.5, .75, 1, 1.25, 1.50, 1.75, 2};
-    double scale =  sizes[sizeIndex];
+    cabbageProcessor.currentPluginScale =  sizeIndex;
     //param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
     
-    setScaleFactor(scale);
+    
+    setScaleFactor(sizes[cabbageProcessor.currentPluginScale-1]);
     resized();
 }
 //======================================================================================================
@@ -658,14 +666,12 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
     const String channel = CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::channel);
     if (CabbagePluginParameter* param = getParameterForComponent (combo->getName()))
     {
-        
-
         if(mode == "resize")
         {
             if(combo->getSelectedItemIndex() != -1)
             {
-                param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
-                resizePlugin(combo->getSelectedItemIndex());
+                //param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
+                resizePlugin(combo->getSelectedId());
             }
         }
         else

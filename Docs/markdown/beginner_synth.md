@@ -281,7 +281,7 @@ kAmp chnget "amp"
 
 kEnv madsr iAtt, iDec, iSus, iRel 
 aOut vco2 iAmp, iFreq
-kLFO lfo 1, kLFOFreq
+kLFO lfo 1, kLFOFreq, 5
 aLP moogladder aOut, kLFO*kCutOff, kRes
 outs kAmp*(aLP*kEnv), kAmp*(aLP*kEnv)
 endin
