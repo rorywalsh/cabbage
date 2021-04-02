@@ -475,6 +475,7 @@ public:
     CabbageIdentifierStringsNonCamelCase()  // longest strings appear first otherwise identifiers will be missed in parsing
     {
         add ("scrubberposition_sample");
+        add ("doubleclicktogglesedit");
         add ("scrubberposition_table");
         add ("tablebackgroundcolour");
         add ("arrowbackgroundcolour");
@@ -548,6 +549,7 @@ public:
         add ("popupprefix");
         add ("automatable");
         add ("valueprefix");
+        add ("caretcolour");
         add ("automation");
         add ("autoupdate");
         add ("matrixsize");

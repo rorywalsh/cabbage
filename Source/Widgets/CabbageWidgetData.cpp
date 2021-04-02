@@ -1013,7 +1013,7 @@ void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widge
     var array;
     array.append (strTokens[0].trim());
 
-    if (identifier != "widgetArray")
+    if (identifier != CabbageIdentifierIds::widgetarray.toString())
     {
         for (int i = 1; i < strTokens.size(); i++)
         {
