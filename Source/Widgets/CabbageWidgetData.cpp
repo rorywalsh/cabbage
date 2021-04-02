@@ -358,7 +358,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 setChannelArrays (strTokens, widgetData, identifier);
                 break;
                 
-            case HashStringToInt ("channelarray"):
+            case HashStringToInt ("channelArray"):
             case HashStringToInt ("widgetArray"):
                 setChannelArrays (strTokens, widgetData, identifier);
                 break;
@@ -1013,7 +1013,7 @@ void CabbageWidgetData::setChannelArrays (StringArray strTokens, ValueTree widge
     var array;
     array.append (strTokens[0].trim());
 
-    if (identifier != "widgetarray")
+    if (identifier != "widgetArray")
     {
         for (int i = 1; i < strTokens.size(); i++)
         {

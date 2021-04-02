@@ -782,10 +782,10 @@ namespace CabbageIdentifierIds
     static const Identifier height = "height";
     static const Identifier highlightcolour = "highlightColour";
     static const Identifier identchannel = "identChannel";
-    static const Identifier identchannelarray = "identchannelarray";
-    static const Identifier identchannelmessage = "identchannelmessage";
-    static const Identifier imgbuttonoff = "imgbuttonoff";
-    static const Identifier imgbuttonon = "imgbuttonon";
+    static const Identifier identchannelarray = "identChannelArray";
+    static const Identifier identchannelmessage = "identChannelMessage";
+    static const Identifier imgbuttonoff = "imgButtonOff";
+    static const Identifier imgbuttonon = "imgButtonOn";
     static const Identifier imgbuttonover = "imgbuttonover";
     static const Identifier imgdebug = "imgdebug";
     static const Identifier imgfile = "imgFile";
@@ -1385,7 +1385,7 @@ static const char* const CsoundKeywords[] =
     "sumarray", "syncloop", "syncphasor", "system", "tablefilter", "tablefilteri", "tableshuffle", "tabmorph", "tabmorpha", "tabmorphak", "tabmorphi", "tabplay", "slicearray", "tabsum", "tab2pvs", "temposcal", "trandom", "transegb",
     "transegr", "trcross", "trfilter", "trhighest", "trlowest", "trmix", "trscale", "trshift", "trsplit", "urandom", "vadd_i", "vaddv_i", "vaget", "vaset", "vbap", "vbapmove", "vbapg", "vbapgmove", "vdivv_i",
     "vexp_i", "vexpv_i", "vmult_i", "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "writescratch", "encoder", "fftdisplay", "keyboard", "label",
-    "listbox", "hrange", "vrange", "active", "align", "alpha", "ampRange", "bounds", "caption", "channel", "channelarray", "channelType", "child", "colour", "colour:0", "colour:1", "corners", "displayType", "file",
+    "listbox", "hrange", "vrange", "active", "align", "alpha", "ampRange", "bounds", "caption", "channel", "channelArray", "channelType", "child", "colour", "colour:0", "colour:1", "corners", "displayType", "file",
     "fontColour", "fontStyle", "fontStyle", "guiRefresh", "highlightColour", "identChannel", "items", "latched", "line", "middleC", "max", "min", "mode", "outlineColour", "outlineThickness", "plant", "pluginId", "populate",
     "popup", "popupText", "popupPostfix", "popupPrefix", "range", "rangeX", "rangeY", "rotate", "sampleRange", "scrubberpos", "scrubberPosition", "shape", "show", "size", "sliderincr", "svgfile", "svgpath", "tableBackgroundColour", "tableColour",
     "tableGridColour", "tableNumber", "text", "textColour", "textBox", "trackerColour", "trackerThickness", "trackerOuterRadius", "trackerInnerRadius", "typeface", "widgetArray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
