@@ -670,7 +670,8 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
         {
             if(combo->getSelectedItemIndex() != -1)
             {
-                //param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
+//                param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
+                CabbageWidgetData::setNumProp(getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::value, combo->getSelectedItemIndex()+1);
                 resizePlugin(combo->getSelectedId());
             }
         }

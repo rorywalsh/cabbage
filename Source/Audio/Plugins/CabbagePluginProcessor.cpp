@@ -1038,7 +1038,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 		const String channelName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 			CabbageIdentifierIds::channel);
 		//const String widgetName = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
-
+       
 		const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
 		const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
         
@@ -1150,6 +1150,8 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
 			const String channelName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
             
+            if(channelName == "PluginResizerCombBox")
+                currentPluginScale = e->getAttributeValue(i).getIntValue();
 
 			if (type == CabbageWidgetTypes::texteditor)
 			{

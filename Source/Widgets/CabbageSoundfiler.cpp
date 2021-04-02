@@ -122,6 +122,9 @@ int CabbageSoundfiler::getLoopLength()
 
 void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
+    DBG(getChannel());
+    DBG(CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::identchannel));
+    
     if (file != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file))
     {
         file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
@@ -149,6 +152,8 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
     soundfiler.setScrubberPos (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition));
     soundfiler.setWaveformColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
     soundfiler.setBackgroundColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour));
-    soundfiler.repaint();
     handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    soundfiler.repaint();
+    repaint();
+
 }

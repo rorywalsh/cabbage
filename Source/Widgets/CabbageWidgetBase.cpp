@@ -67,7 +67,7 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
         {
             if(prop == CabbageIdentifierIds::bounds){
                 var bounds = CabbageWidgetData::getProperty(data, CabbageIdentifierIds::bounds);
-                const int size = bounds.size();
+
                 child->setBounds (bounds[0], bounds[1], bounds[2], bounds[3]);
             }
             else if(prop == CabbageIdentifierIds::pos || prop == CabbageIdentifierIds::position)
