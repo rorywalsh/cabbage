@@ -59,8 +59,6 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
     addAndMakeVisible (&textLabel);
     textLabel.setVisible (false);
 
-    if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::popuptext) == "0")
-        shouldDisplayPopup = false;
 
     setLookAndFeelColours (widgetData);
     createPopupBubble();
@@ -80,6 +78,12 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
     postfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::valuepostfix);
     popupPrefix  = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popupprefix);
     popupPostfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuppostfix);
+    
+    const String popup = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext);
+    if (popup == "0" || (popup == "" && popupPrefix == "" && popupPostfix == ""))
+        shouldDisplayPopup = false;
+    else
+        shouldDisplayPopup = true;
     
     resized();
 }
@@ -113,6 +117,9 @@ void CabbageRangeSlider::setCurrentValues (float newMin, float newMax)
 void CabbageRangeSlider::createPopupBubble()
 {
     //create popup display for showing value of sliders.
+    if(!shouldDisplayPopup)
+        return;
+    
     popupBubble.setColour (BubbleComponent::backgroundColourId, Colours::white);
     popupBubble.setBounds (0, 0, 50, 20);
     owner->addChildComponent (popupBubble);
@@ -122,6 +129,9 @@ void CabbageRangeSlider::createPopupBubble()
 
 void CabbageRangeSlider::showPopup (int displayTime)
 {
+    if(!shouldDisplayPopup)
+        return;
+    
     String popupText;
 
     if (getTooltipText().isNotEmpty())
