@@ -582,8 +582,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("titleBarColour"):
             case HashStringToInt ("outlineColour"):
             case HashStringToInt ("textColour"):
-            case HashStringToInt ("textboxColour"):
-            case HashStringToInt ("textboxOutlineColour"):
+            case HashStringToInt ("textBoxColour"):
+            case HashStringToInt ("textBoxOutlineColour"):
             case HashStringToInt ("markerColour"):
                 setProperty (widgetData, identifier, getColourFromText (strTokens.joinIntoString (",")).toString());
                 break;
