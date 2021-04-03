@@ -76,21 +76,21 @@ const Drawable* CabbageFoldersLookAndFeel::getDefaultFolderImage()
 //Cabbage IDE look and feel class
 CabbageLookAndFeel2::CabbageLookAndFeel2()
 {
-    setDefaultFont(File());
+    //setDefaultFont(File("/Users/walshr/Documents/Csoundfiles/RobotoCondensed-Italic.ttf"));
 }
 
 void CabbageLookAndFeel2::setDefaultFont(File fontFile)
 {
-    //    if(fontFile.existsAsFile())
-    //    {
-    //        std::unique_ptr<InputStream> inStream (fontFile.createInputStream());
-    //        MemoryBlock mb;
-    //        inStream->readIntoMemoryBlock(mb);
-    //        Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
-    //        customFont = Font(fontPtr);
-    //    }
-    //    else
-    //        customFont = CabbageUtilities::getComponentFont();
+        if(fontFile.existsAsFile())
+        {
+            std::unique_ptr<InputStream> inStream (fontFile.createInputStream());
+            MemoryBlock mb;
+            inStream->readIntoMemoryBlock(mb);
+            Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
+            LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypeface(fontPtr);
+        }
+        else
+            customFont = CabbageUtilities::getComponentFont();
 }
 
 void CabbageLookAndFeel2::drawDocumentWindowTitleBar(DocumentWindow& window, Graphics& g,
@@ -249,7 +249,7 @@ void CabbageLookAndFeel2::drawPopupMenuItem(Graphics& g, const Rectangle<int>& a
     }
 
 
-    g.setFont(customFont);
+
     g.drawText(CabbageUtilities::cabbageString(text, CabbageUtilities::getComponentFont(), area.getWidth() * 0.8), 20, 0, area.getWidth() * 0.8, area.getHeight(), 1, false);
 
     if (isSeparator == true)
