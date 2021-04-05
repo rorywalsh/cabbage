@@ -492,6 +492,8 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     csound->SetChannel ("IS_EDITOR_OPEN", 0.0);
     csdFilePath.setAsCurrentWorkingDirectory();
 
+    DBG(File::getSpecialLocation (File::userHomeDirectory).getFileIdentifier());
+    csound->SetChannel("HOME_FOLDER_UID", File::getSpecialLocation (File::userHomeDirectory).getFileIdentifier());
 
     time_t seconds_past_epoch = time(0);
     csound->SetChannel("SECONDS_SINCE_EPOCH", (intmax_t)seconds_past_epoch);
