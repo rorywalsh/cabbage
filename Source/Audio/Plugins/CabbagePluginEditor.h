@@ -259,6 +259,7 @@ public:
     
     String changeMessage = "";
     juce::Point<int> customPlantPosition;
+    Font customFont;
 private:
 	  
     //---- main component that holds widgets -----

@@ -55,6 +55,9 @@ CabbageCheckbox::CabbageCheckbox (ValueTree wData, CabbagePluginEditor* _owner)
 
     this->setWantsKeyboardFocus (false);
 
+    lookAndFeel.customFont = owner->customFont;
+    setLookAndFeel(&lookAndFeel);
+    
     setColour (TextButton::ColourIds::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     setColour (TextButton::ColourIds::textColourOnId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::onfontcolour)));
     setColour (TextButton::buttonColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));

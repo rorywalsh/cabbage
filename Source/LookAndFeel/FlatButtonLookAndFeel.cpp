@@ -51,7 +51,9 @@ namespace LookAndFeelHelpers
     }
 }
 
-FlatButtonLookAndFeel::FlatButtonLookAndFeel() {};
+FlatButtonLookAndFeel::FlatButtonLookAndFeel() {
+    //setDefaultFont(File("/Users/walshr/Documents/Csoundfiles/RobotoCondensed-Italic.ttf"));
+};
 FlatButtonLookAndFeel::~FlatButtonLookAndFeel() {};
 
 void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, const Colour &backgroundColour, bool isMouseOverButton, bool isButtonDown)
@@ -514,4 +516,29 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
         PathStrokeType(markerThickness, juce::PathStrokeType::JointStyle::curved, juce::PathStrokeType::EndCapStyle::rounded).createStrokedPath(p, p);
         g.fillPath(p, AffineTransform::rotation(angle).translated(centreX, centreY));
     }
+}
+
+Font FlatButtonLookAndFeel::getTextButtonFont (TextButton&, int buttonHeight)
+{
+    customFont.setHeight(jmin(15.0f, buttonHeight * 0.6f));
+    return customFont;
+}
+
+Font FlatButtonLookAndFeel::getComboBoxFont (ComboBox& box)
+{
+    customFont.setHeight(jmin (15.0f, box.getHeight() * 0.85f));
+    return customFont;
+}
+
+Font FlatButtonLookAndFeel::getLabelFont(Label& label)
+{
+    return customFont;
+    //return CabbageUtilities::getComponentFont();
+}
+
+Font FlatButtonLookAndFeel::getSliderPopupFont (Slider&)
+{
+    customFont.setHeight(15.0f);
+    customFont.setBold(true);
+    return customFont;// (15.0f, Font::bold);
 }

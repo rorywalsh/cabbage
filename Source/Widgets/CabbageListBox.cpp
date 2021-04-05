@@ -30,6 +30,9 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
     //listBox.setBounds(CabbageWidgetData::getBounds(wData).withTop(0).withLeft(0));
     addItemsToListbox(wData);
 
+    lookAndFeel.customFont = owner->customFont;
+    setLookAndFeel(&lookAndFeel);
+    
     if (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channeltype) == "string")
     {
         isStringCombo = true;
@@ -261,6 +264,11 @@ void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
 void CabbageListBox::paintListBoxItem (int rowNumber, Graphics& g,
                                        int width, int height, bool rowIsSelected)
 {
+#ifndef JUCE_MAC
+    font.setFallbackFontName("Verdana");
+#endif
+    g.setFont(owner->customFont);
+    
     if (rowIsSelected)
         g.fillAll (Colour::fromString(highlightColour));
     else

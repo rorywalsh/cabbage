@@ -110,10 +110,11 @@ public:
 
     void setDefaultFont(File fontFile);
     void drawTooltip(Graphics&, const String& text, int width, int height) override;
-//    Font getTextButtonFont (TextButton&, int buttonHeight) override;
-//    Font getComboBoxFont (ComboBox&) override;
+    Font getTextButtonFont (TextButton&, int buttonHeight) override;
+    Font getComboBoxFont (ComboBox&) override;
     Font getLabelFont (Label&) override;
-//    Font getSliderPopupFont (Slider&) override;
+    Font getSliderPopupFont (Slider&) override;
+    Font customFont;
 
 //    Font getAlertWindowTitleFont() override;
 //    Font getAlertWindowMessageFont() override;
@@ -123,7 +124,7 @@ public:
 //    Font getMenuBarFont (MenuBarComponent&, int itemIndex, const String& itemText) override;
 private:
 
-    Font customFont;
+    
 
 };
 

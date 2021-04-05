@@ -324,6 +324,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::saveAll);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::convertToCamelCase);
+    menu.addCommandItem (&commandManager, CommandIDs::convertToLowerCase);
     menu.addSeparator();
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::restartAudioDevice);
@@ -562,6 +563,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::cut,
         CommandIDs::clearConsole,
         CommandIDs::convertToCamelCase,
+        CommandIDs::convertToLowerCase,
         CommandIDs::restartAudioDevice,
         CommandIDs::toggleComments,
         CommandIDs::zoomIn,
@@ -649,9 +651,12 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             break;
             
         case CommandIDs::convertToCamelCase:
-            result.setInfo ("Covert Identifiers to camelCase", "Covert Identifiers to camelCase", CommandCategories::general, 0);
+            result.setInfo ("Convert Identifiers to camelCase", "Covert Identifiers to camelCase", CommandCategories::general, 0);
             break;
-
+        case CommandIDs::convertToLowerCase:
+            result.setInfo ("Convert Identifiers to lower case", "Covert Identifiers to Lower Case", CommandCategories::general, 0);
+            break;
+            
         case CommandIDs::restartAudioDevice:
             result.setInfo ("Restart Audio Device", "Restarts audio device", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('d', ModifierKeys::commandModifier, 0));
@@ -1041,6 +1046,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             
         case CommandIDs::convertToCamelCase:
             getContentComponent()->covertToCamelCase();
+            return true;
+            
+        case CommandIDs::convertToLowerCase:
+            getContentComponent()->covertToLowerCase();
             return true;
  
         case CommandIDs::restartAudioDevice:

@@ -77,6 +77,7 @@ CabbageButton::CabbageButton(ValueTree wData, CabbagePluginEditor* _owner)
 	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat" &&
 		imgOff.isEmpty() && imgOn.isEmpty() && imgOver.isEmpty())
 	{
+        flatLookAndFeel.customFont = owner->customFont;
 		setLookAndFeel(&flatLookAndFeel);
 	}
 

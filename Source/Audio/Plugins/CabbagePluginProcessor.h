@@ -128,6 +128,10 @@ public:
 		return csdArray;
 	}
     
+    Font getCustomFont(){
+        return customFont;
+    }
+    
     // use this instead of AudioProcessor::getParameters
     const OwnedArray<CabbagePluginParameter>& getCabbageParameters() const { return parameters; }
     int currentPluginScale = -1;
@@ -148,6 +152,7 @@ private:
 	bool isUnityPlugin = false;
     int automationMode = 0;
     OwnedArray<CabbagePluginParameter> parameters;
+    Font customFont;
 
 };
 

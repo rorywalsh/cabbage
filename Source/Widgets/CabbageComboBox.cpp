@@ -32,7 +32,8 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     workingDir (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir)),
     rotate (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::rotate)),
     owner (_owner),
-    widgetData (wData)
+    widgetData (wData),
+    lookAndFeel()
 {
     widgetData.addListener (this);
     setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
@@ -49,6 +50,9 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     setWantsKeyboardFocus (false);
     getProperties().set("isPresetCombo", false);
     initialiseCommonAttributes (this, widgetData);
+
+    lookAndFeel.customFont = owner->customFont;
+    setLookAndFeel(&lookAndFeel);
 
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
         CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
@@ -134,7 +138,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
 //---------------------------------------------
 CabbageComboBox::~CabbageComboBox()
 {
-
+    setLookAndFeel(nullptr);
 }
 
 void CabbageComboBox::addItemsToCombobox (ValueTree wData)

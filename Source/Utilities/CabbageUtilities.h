@@ -1238,6 +1238,20 @@ public:
     {
         return convertWhitespaceEscapeChars(str).removeCharacters("\n\r\t");
     }
+    
+    static Typeface::Ptr getFontFromFile(File fontFile)
+    {
+        if(fontFile.existsAsFile())
+        {
+            std::unique_ptr<InputStream> inStream (fontFile.createInputStream());
+            MemoryBlock mb;
+            inStream->readIntoMemoryBlock(mb);
+            Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
+            return fontPtr;
+        }
+        else
+            return nullptr;
+    }
 
 };
 

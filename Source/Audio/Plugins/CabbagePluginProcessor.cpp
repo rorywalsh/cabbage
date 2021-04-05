@@ -225,6 +225,12 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 		{
 			if (line.contains("autoupdate()"))
 				startTimer(1000);
+            const String font = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::typeface);
+            if(font.isNotEmpty()){
+                const String fontPath = File(getCsdFile()).getParentDirectory().getChildFile(font).getFullPathName();
+                customFont = CabbageUtilities::getFontFromFile(File(fontPath));
+            }
+
 		}
 
 	}

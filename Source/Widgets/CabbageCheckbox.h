@@ -33,11 +33,13 @@ class CabbageCheckbox : public ToggleButton, public ValueTree::Listener, public 
     CabbagePluginEditor* owner;
     bool isRect;
     String name, tooltipText, buttonText, colour, fontcolour, oncolour;
-
+    CabbageLookAndFeel2 lookAndFeel;
 public:
 
     CabbageCheckbox (ValueTree widgetData,  CabbagePluginEditor* owner);
-    ~CabbageCheckbox() {};
+    ~CabbageCheckbox() {
+        setLookAndFeel(nullptr);
+    };
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&) override {};
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}

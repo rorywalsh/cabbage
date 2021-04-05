@@ -133,7 +133,7 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
     widgetData.addListener(this);
     addAndMakeVisible(textLabel);
-
+    
     addAndMakeVisible(&slider);
     addAndMakeVisible(thumb);
     slider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
@@ -182,7 +182,9 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat"
         && sliderImg.isEmpty() && sliderImgBg.isEmpty())
     {
+        flatLookAndFeel.customFont = owner->customFont;
         slider.setLookAndFeel(&flatLookAndFeel);
+        textLabel.setLookAndFeel(&flatLookAndFeel);
     }
     slider.setTextValueSuffix(postfix);
 
@@ -210,6 +212,7 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
 CabbageSlider::~CabbageSlider()
 {
     slider.setLookAndFeel(nullptr);
+    textLabel.setLookAndFeel(nullptr);
 }
 
 void CabbageSlider::paint(Graphics& g)

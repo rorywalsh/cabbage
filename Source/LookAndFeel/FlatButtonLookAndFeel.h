@@ -52,4 +52,33 @@ public:
 
     void drawRotarySlider (Graphics& g, int x, int y, int width, int height, float sliderPos, const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider) override;
     // -----------------------
+    
+    Font getTextButtonFont (TextButton&, int buttonHeight) override;
+    Font getComboBoxFont (ComboBox&) override;
+    Font getLabelFont (Label&) override;
+    Font getSliderPopupFont (Slider&) override;
+    
+    //    Font getAlertWindowTitleFont() override;
+    //    Font getAlertWindowMessageFont() override;
+    //    Font getAlertWindowFont() override;
+    //
+    //    Font getPopupMenuFont() override;
+    
+    void setDefaultFont(File fontFile)
+    {
+        if(fontFile.existsAsFile())
+        {
+            std::unique_ptr<InputStream> inStream (fontFile.createInputStream());
+            MemoryBlock mb;
+            inStream->readIntoMemoryBlock(mb);
+            Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
+            customFont = Font(fontPtr);
+        }
+        else
+            customFont = CabbageUtilities::getComponentFont();
+    }
+    
+    Font customFont;
+private:
+
 };

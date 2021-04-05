@@ -87,7 +87,8 @@ void CabbageLookAndFeel2::setDefaultFont(File fontFile)
             MemoryBlock mb;
             inStream->readIntoMemoryBlock(mb);
             Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
-            LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypeface(fontPtr);
+//            LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypeface(fontPtr);
+            customFont = Font(fontPtr);
         }
         else
             customFont = CabbageUtilities::getComponentFont();
@@ -328,7 +329,7 @@ void CabbageLookAndFeel2::drawGroupComponentOutline(Graphics& g, int w, int h, c
 
     //----- Text
     String name = group.getText();
-    Font font = CabbageUtilities::getTitleFont();
+    Font font = customFont;
 #ifndef JUCE_MAC
     font.setFallbackFontName("Verdana");
 #endif
@@ -389,6 +390,12 @@ void CabbageLookAndFeel2::drawToggleButton(Graphics& g, ToggleButton& button, bo
 
     const int textX = (int)tickWidth + 5;
 
+    Font font = customFont;
+#ifndef JUCE_MAC
+    font.setFallbackFontName("Verdana");
+#endif
+    g.setFont(font);
+    
     if (button.getButtonText().isNotEmpty())
     {
         g.drawText(button.getButtonText(),
@@ -1055,7 +1062,7 @@ void CabbageLookAndFeel2::drawButtonBackground(Graphics& g, Button& button, cons
 
 void CabbageLookAndFeel2::drawButtonText(Graphics& g, TextButton& button, bool isMouseOverButton, bool isButtonDown)
 {
-    Font font(getTextButtonFont(button, button.getHeight()));
+    Font font(this->getTextButtonFont(button, button.getHeight()));
     g.setFont(font);
     g.setColour(button.findColour(button.getToggleState() ? TextButton::textColourOnId
         : TextButton::textColourOffId)
@@ -1274,26 +1281,27 @@ void CabbageLookAndFeel2::drawLabel(Graphics& g, Label& label)
 }
 
 //===================================================================================
-//Font CabbageLookAndFeel2::getTextButtonFont (TextButton&, int buttonHeight)
-//{
-//    customFont.setHeight(jmin(15.0f, buttonHeight * 0.6f));
-//    return Font(customFont);
-//}
-//
-//Font CabbageLookAndFeel2::getComboBoxFont (ComboBox& box)
-//{
-//    customFont.setHeight(jmin (15.0f, box.getHeight() * 0.85f));
-//    return Font(customFont);
-//}
-//
+Font CabbageLookAndFeel2::getTextButtonFont (TextButton&, int buttonHeight)
+{
+    customFont.setHeight(jmin(15.0f, buttonHeight * 0.6f));
+    return customFont;
+}
+
+Font CabbageLookAndFeel2::getComboBoxFont (ComboBox& box)
+{
+    customFont.setHeight(jmin (15.0f, box.getHeight() * 0.85f));
+    return customFont;
+}
+
 Font CabbageLookAndFeel2::getLabelFont(Label& label)
 {
-    return CabbageUtilities::getComponentFont();
+    return customFont;
+    //return CabbageUtilities::getComponentFont();
 }
-//
-//Font CabbageLookAndFeel2::getSliderPopupFont (Slider&)
-//{
-//    customFont.setHeight(15.0f);
-//    customFont.setBold(true);
-//    return Font (15.0f, Font::bold);
-//}
+
+Font CabbageLookAndFeel2::getSliderPopupFont (Slider&)
+{
+    customFont.setHeight(15.0f);
+    customFont.setBold(true);
+    return customFont;// (15.0f, Font::bold);
+}

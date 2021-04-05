@@ -108,6 +108,7 @@ namespace CommandIDs
         addCabbageSection    = 0x612007,
         convertToCamelCase    = 0x612008,
         restartAudioDevice    = 0x612009,
+        convertToLowerCase    = 0x6120011,
 
         lastCommandIDEntry
     };

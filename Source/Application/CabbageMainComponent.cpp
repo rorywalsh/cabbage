@@ -1929,6 +1929,25 @@ int CabbageMainComponent::testFileForErrors (String file)
 
 }
 
+void CabbageMainComponent::covertToLowerCase()
+{
+    String currentFileText = getCurrentCsdFile().loadFileAsString();
+    
+    CabbageIdentifierStringsNonCamelCase identifiers;
+    CabbageIdentifierStrings camelCaseIdentifiers;
+    for ( int i = identifiers.size() ; i >=0 ; i--)
+    {
+        if(currentFileText.contains(camelCaseIdentifiers[i]))
+        {
+            DBG("Replacing"+camelCaseIdentifiers[i] + " with " + identifiers[i]);
+            currentFileText = currentFileText.replace(camelCaseIdentifiers[i], identifiers[i]);
+        }
+    }
+    
+    getCurrentCodeEditor()->setAllText(currentFileText);
+    
+}
+
 void CabbageMainComponent::covertToCamelCase()
 {
     String currentFileText = getCurrentCsdFile().loadFileAsString();

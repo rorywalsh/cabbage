@@ -35,7 +35,9 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 #endif
 {
     setName ("PluginEditor");
+
     setLookAndFeel (&lookAndFeel);
+    customFont = cabbageProcessor.getCustomFont();
     viewportContainer.reset (new ViewportContainer());
     addAndMakeVisible(viewportContainer.get());
     viewportContainer->addAndMakeVisible(mainComponent);
@@ -210,7 +212,7 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     const String titlebarColourString = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::titlebarcolour);
     titlebarGradientAmount = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::titlebargradient);
     const String fontColourString = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour);
-    lookAndFeel.setDefaultFont(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::typeface));
+    //lookAndFeel.setDefaultFont(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::typeface));
 
     globalStyle = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::style);
     
