@@ -1249,8 +1249,11 @@ public:
             Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
             return fontPtr;
         }
-        else
-            return nullptr;
+        else{
+            Font fontPtr;
+            return fontPtr.getDefaultTypefaceForFont(Font());
+        }
+        
     }
 
 };
