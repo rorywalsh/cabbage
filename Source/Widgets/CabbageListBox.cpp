@@ -264,9 +264,7 @@ void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
 void CabbageListBox::paintListBoxItem (int rowNumber, Graphics& g,
                                        int width, int height, bool rowIsSelected)
 {
-#ifndef JUCE_MAC
-    font.setFallbackFontName("Verdana");
-#endif
+
     g.setFont(owner->customFont);
     
     if (rowIsSelected)
