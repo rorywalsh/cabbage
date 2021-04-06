@@ -11,8 +11,8 @@
 #include "GenericCabbagePluginProcessor.h"
 #include "GenericCabbageEditor.h"
 
-GenericCabbagePluginProcessor::GenericCabbagePluginProcessor (File inputFile, AudioChannelSet inputs, AudioChannelSet outputs)
-    : CsoundPluginProcessor (inputFile, inputs, outputs)
+GenericCabbagePluginProcessor::GenericCabbagePluginProcessor (File inputFile, const BusesProperties ioBuses)
+    : CsoundPluginProcessor (inputFile, ioBuses)
 {
     setupAndCompileCsound (inputFile, inputFile.getParentDirectory());
     this->setPluginName (inputFile.getFileNameWithoutExtension());

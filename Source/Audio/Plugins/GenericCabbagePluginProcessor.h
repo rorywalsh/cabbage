@@ -19,7 +19,7 @@ class GenericCabbagePluginProcessor  : public CsoundPluginProcessor
 {
     String pluginName;
 public:
-    GenericCabbagePluginProcessor (File inputFile, AudioChannelSet inputs, AudioChannelSet outputs);
+    GenericCabbagePluginProcessor (File inputFile, const BusesProperties ioBuses);
     ~GenericCabbagePluginProcessor();
 
     controlChannelInfo_s* csoundChanList;

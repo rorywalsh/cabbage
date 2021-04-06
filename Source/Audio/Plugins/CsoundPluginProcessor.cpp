@@ -25,45 +25,38 @@
 
 
 //==============================================================================
-CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSet ins, const AudioChannelSet outs)
-    : AudioProcessor (BusesProperties()
-#if ! JucePlugin_IsMidiEffect
-#if ! JucePlugin_IsSynth
-                                         .withInput  ("Input",  ins, true)
-#endif
-                                         .withOutput ("Output", outs, true)
-#endif
-                                        ),
-      csdFile (csdFile)
+CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const BusesProperties ioBuses)
+    : AudioProcessor (ioBuses),
+csdFile (csdFile)
 {
     hostInfo = {};
 	matchingNumberOfIOChannels = getTotalNumInputChannels() == getTotalNumOutputChannels() ? true : false;
-    numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
+
+#if ! JucePlugin_IsSynth
+    numCsoundInputChannels = getTotalNumInputChannels();
+    numCsoundOutputChannels = getTotalNumOutputChannels();
+    CabbageUtilities::debug("Cabbage Csound Constructor - Requested input channels:", numCsoundInputChannels);
+    CabbageUtilities::debug("Cabbage Csound Constructor - Requested output channels:", numCsoundOutputChannels);
+#else
+    numCsoundOutputChannels = getTotalNumOutputChannels();
+    //numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
     CabbageUtilities::debug("Constructor - Requested output channels:", numCsoundOutputChannels);
-#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
-    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
-    CabbageUtilities::debug("Constructor - Requested input channels:", numCsoundInputChannels);
 #endif
+
+    
 }
 
 //==============================================================================
 // side chain constructor
 //==============================================================================
 //==============================================================================
-CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const AudioChannelSet ins, const AudioChannelSet outs, const AudioChannelSet sideChainChannels)
-	: AudioProcessor(BusesProperties()
-#if ! JucePlugin_IsMidiEffect
-#if ! JucePlugin_IsSynth
-		.withInput("Input", ins, true).withInput("Sidechain", sideChainChannels, true)
-#endif
-		.withOutput("Output", outs, true)
-#endif
-	),
+CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const BusesProperties ioBuses, const AudioChannelSet sideChainChannels)
+	: AudioProcessor(ioBuses),
 	csdFile(csdFile)
 {
     hostInfo = {};
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
-#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
+#if ! JucePlugin_IsSynth
 
     numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
 #endif
@@ -134,13 +127,19 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     // the host should respect the default inputs and outs, which are determined by the
     // nhcnls and nchnls_i variables in Csound. But the host is king. If it requested a different
     // config, we must adhere to it.
-    numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
-    CabbageUtilities::debug("SetupAndCompile - Requested output channels:", numCsoundOutputChannels);
+
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
-    const int inputs = getBus(true, 0)->getNumberOfChannels();
+    const int inputs = getTotalNumInputChannels();
     numCsoundInputChannels = inputs + numSideChainChannels;
     CabbageUtilities::debug("SetupAndCompile - Requested input channels:", numCsoundInputChannels);
+#else
+    //numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
+    numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+    //numCsoundOutputChannels = getTotalNumOutputChannels();
 #endif
+
+
+    CabbageUtilities::debug("SetupAndCompile - Requested output channels:", numCsoundOutputChannels);
     //int test = csound->SetGlobalEnv("OPCODE6DIR64", );
     CabbageUtilities::debug("Env var set");
     //csoundSetOpcodedir("/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Opcodes64");
@@ -814,13 +813,17 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 #endif
     
 #if ! JucePlugin_IsSynth
-    const int inputs = getBus(true, 0)->getNumberOfChannels();
+    const int inputs = getTotalNumInputChannels();
+    const int outputs = getTotalNumOutputChannels();
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - inputs:", inputs);
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested input channels:", numCsoundInputChannels);
-#endif
-    const int outputs = getBus(false, 0)->getNumberOfChannels();
+#else
+    //const int outputs = getBus(false, 0)->getNumberOfChannels();
+    const int outputs = getBusCount(false) * 2; //each bus is a stereo pair
+
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - outputs:", outputs);
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested output channels:", numCsoundOutputChannels);
+#endif
 
     int sideChainChannels = 0;
     if (supportsSidechain)
@@ -840,10 +843,10 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
         //allow mono plugins for Logic only..
-        if(hostRequestedMono == true)
-            setupAndCompileCsound(csdFile, csdFilePath, samplingRate, true);
-        else
+        //if(hostRequestedMono == true)
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
+        //else
+        //    setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
 
     if (preferredLatency == -1)
@@ -873,13 +876,6 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     
     CabbageUtilities::debug("MainOutputSize:", mainOutput.size());
     CabbageUtilities::debug("MainInputSize:", mainInput.size());
-    
-#if  JucePlugin_IsSynth
-    if(PluginHostType().isCubase()){
-        if (mainInput.size() == 0 && mainOutput.size() == numCsoundOutputChannels)
-            return true;
-    }
-#endif
     
     if(AudioProcessor::wrapperType == wrapperType_AudioUnit)
     {
@@ -927,6 +923,19 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
         return true;
 #endif
     
+
+#if  JucePlugin_IsSynth
+    if (PluginHostType().isCubase()) {
+        if (mainInput.size() == 0 && mainOutput.size() == numCsoundOutputChannels)
+            return true;
+    }
+    else if (PluginHostType().isLogic())
+        return true;
+
+    if (mainInput.size() == 0 && mainOutput.size() == numCsoundOutputChannels)
+        return true;
+#endif
+
     if ((mainInput.size() == numCsoundInputChannels - numSideChainChannels || mainInput.size() == mainOutput.size()) 
         && mainOutput.size() == numCsoundOutputChannels)
     {
@@ -1101,9 +1110,9 @@ template< typename Type >
 void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuffer& midiMessages)
 {
 	ScopedNoDenormals noDenormals;
-	auto mainOutput = getBusBuffer(buffer, false, 0);
+    auto mainOutput = getBusBuffer(buffer, false, 0);
 #if !JucePlugin_IsSynth
-	auto mainInput = getBusBuffer(buffer, true, 0);
+    auto mainInput = getBusBuffer(buffer, true, 0);
 #endif
     
     const Type** sideChainCubase = nullptr;
@@ -1116,7 +1125,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 		numSideChainChannels = getBusBuffer(buffer, true, 1).getNumChannels();
 	}
 
-    Type** outputBuffer = mainOutput.getArrayOfWritePointers();
+    Type** outputBuffer = buffer.getArrayOfWritePointers();
 #if !JucePlugin_IsSynth
 	Type** inputBuffer = mainInput.getArrayOfWritePointers();
 #endif
@@ -1137,14 +1146,16 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
     int samplePos = 0;
     MidiMessage message;
     MidiBuffer::Iterator iter (midiMessages);
+    const auto busCount = getBusCount(false);
 
 	if (csdCompiledWithoutError())
 	{
-		//mute unused channels
+		////mute unused channels
 		for (int channelsToClear = outputChannelCount; channelsToClear < getTotalNumOutputChannels(); ++channelsToClear)
 		{
 			buffer.clear(channelsToClear, 0, buffer.getNumSamples());
 		}
+
 
 		for (int i = 0; i < numSamples; i++, ++csndIndex)
 		{
@@ -1169,8 +1180,10 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 #if !JucePlugin_IsSynth
             //if using Logic process inputs and outputs separately - otherwise its mono to stereo features break...
 			if (matchingNumberOfIOChannels && !isLogic)
-			{
-				pos = csndIndex * outputChannelCount;
+			{                
+                const int channelNum = buffer.getNumChannels();
+                pos = csndIndex * channelNum;
+				//pos = csndIndex * outputChannelCount;
 				for (int channel = 0; channel < outputChannelCount; channel++)
 				{
 					processCsoundIOBuffers(BufferType::inputOutput, outputBuffer[channel], pos);
@@ -1217,12 +1230,14 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 				}
 			}
 #else
-            pos = csndIndex * outputChannelCount;
+            const int channelNum = buffer.getNumChannels();
+            pos = csndIndex * channelNum;
             for (int channel = 0; channel < outputChannelCount; channel++)
             {
-                processCsoundIOBuffers(BufferType::output, outputBuffer[channel], pos);
+                processCsoundIOBuffers(BufferType::output, buffer.getArrayOfWritePointers()[channel], pos);
                 pos++;
             }
+
 #endif
 		}
     }//if not compiled just mute output

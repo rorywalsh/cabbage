@@ -86,9 +86,9 @@ createPluginFilter() {
 #if !Cabbage_IDE_Build && !Cabbage_Lite
 	PluginHostType pluginHostType;
 	if (sideChainChannels != 0)
-		return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels), AudioChannelSet::canonicalChannelSet(sideChainChannels));
+		return new CabbagePluginProcessor(csdFile, CabbagePluginProcessor::readBusesPropertiesFromXml(csdFile));
 	else
-		return new CabbagePluginProcessor(csdFile, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels));
+		return new CabbagePluginProcessor(csdFile, CabbagePluginProcessor::readBusesPropertiesFromXml(csdFile));
 
 #else
 
@@ -103,22 +103,25 @@ createPluginFilter() {
 
 //==== Sidechain constructor =================================================
 //============================================================================
-CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs, AudioChannelSet sideChainChannels)
-	: CsoundPluginProcessor(inputFile, ins, outs, sideChainChannels),
+CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, BusesProperties ioBuses, AudioChannelSet sideChainChannels)
+	: CsoundPluginProcessor(inputFile, ioBuses, sideChainChannels),
 	cabbageWidgets("CabbageWidgetData"),
 	csdFile(inputFile)
 {
-    
+	CabbageUtilities::debug("Cabbage Processor Constructor - Requested input channels:", getTotalNumInputChannels());
+	CabbageUtilities::debug("Cabbage Processor Constructor - Requested output channels:", getTotalNumOutputChannels());
 	createCsound(inputFile);
 }
 
 
 //============================================================================
-CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, AudioChannelSet ins, AudioChannelSet outs)
-	: CsoundPluginProcessor(inputFile, ins, outs),
+CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, BusesProperties ioBuses)
+	: CsoundPluginProcessor(inputFile, ioBuses),
 	cabbageWidgets("CabbageWidgetData"),
 	csdFile(inputFile)
 {
+	CabbageUtilities::debug("Cabbage Processor Constructor - Requested input channels:", getTotalNumInputChannels());
+	CabbageUtilities::debug("Cabbage Processor Constructor - Requested output channels:", getTotalNumOutputChannels());
 	createCsound(inputFile);
 }
 
@@ -1548,10 +1551,10 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 	bool csoundRecompiled = false;
 	samplesInBlock = samplesPerBlock;
 #if !Cabbage_IDE_Build && !Cabbage_Lite
-	if (this->getBusesLayout().getMainOutputChannelSet() == AudioChannelSet::mono())
-		hostRequestedMono = true;
-	else
-		hostRequestedMono = false;
+	//if (this->getTotalNumOutputChannels() == 1)//mono
+	//	hostRequestedMono = true;
+	//else
+	//	hostRequestedMono = false;
 
 	samplingRate = sampleRate;
 	CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);

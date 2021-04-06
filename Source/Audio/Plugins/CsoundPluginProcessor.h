@@ -41,12 +41,10 @@ class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater
 public:
     //==============================================================================
     CsoundPluginProcessor (File csoundInputFile, 
-		const AudioChannelSet ins, 
-		const AudioChannelSet outs, 
+		const BusesProperties ioBuses, 
 		const AudioChannelSet sideChainChannels);
 	CsoundPluginProcessor(File csoundInputFile, 
-		const AudioChannelSet ins,
-		const AudioChannelSet outs);
+        const BusesProperties ioBuses);
 	~CsoundPluginProcessor();
 
 	bool supportsSidechain = false;

@@ -65,8 +65,8 @@ public:
         StringArray cabbageCode;
     };
 
-	CabbagePluginProcessor (File inputFile, AudioChannelSet ins, AudioChannelSet outs);
-    CabbagePluginProcessor (File inputFile, AudioChannelSet ins, AudioChannelSet outs, AudioChannelSet sidechain);
+	CabbagePluginProcessor (File inputFile, BusesProperties IOBuses);
+    CabbagePluginProcessor (File inputFile, BusesProperties IOBuses, AudioChannelSet sidechain);
 	void createCsound(File inputFile, bool shouldCreateParameters = true);
     ~CabbagePluginProcessor();
 
@@ -121,6 +121,46 @@ public:
 		return csdFile;
 	}
 
+    static BusesProperties readBusesPropertiesFromXml(File csdFile)
+    {
+        BusesProperties buses;
+
+        String csdString = csdFile.loadFileAsString();
+#ifdef CabbagePro
+        csdString = Encrypt::decode(csdFile);
+#endif
+
+        StringArray csdLines;
+        csdLines.addLines(csdString);
+        int sideChainChannels = 0;
+        for (auto line : csdLines)
+        {
+            ValueTree temp("temp");
+            CabbageWidgetData::setWidgetState(temp, line, 0);
+
+            if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+            {
+                sideChainChannels = CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::sidechain);
+                break;
+            }
+        }
+
+        const int numOutChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls");
+        int numInChannels = numOutChannels;
+        if (CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != -1 && CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != 0)
+            numInChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") - sideChainChannels;
+
+        // repeat this for every bus in the xml file
+        for (int i = 0; i < numOutChannels; i++)
+            buses.addBus(false, "Output #" + String(i + 1), AudioChannelSet::mono());
+        for (int i = 0; i < numInChannels; i++)
+            buses.addBus(true, "Input #" + String(i + 1), AudioChannelSet::mono());
+        for (int i = 0; i > sideChainChannels; i++)
+            buses.addBus(true, "Sidechain #" + String(i + 1), AudioChannelSet::mono());
+
+        return buses;
+    }
+
 	StringArray getCurrentCsdFileAsStringArray()
 	{
 		StringArray csdArray;
@@ -153,6 +193,8 @@ private:
     int automationMode = 0;
     OwnedArray<CabbagePluginParameter> parameters;
     Font customFont;
+
+
 
 };
 
