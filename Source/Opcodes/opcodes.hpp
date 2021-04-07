@@ -307,7 +307,7 @@ struct SetStateStringData : csnd::Plugin<1, 2>
             jsonData = "{}";
         }
 
-        std::string newData = "{ \"" + jsonKeyName + "\" : " + value + "}";
+        std::string newData = "{ \"" + jsonKeyName + "\" : \"" + value + "\"}";
 
         if (json::accept(newData) == false)
         {
