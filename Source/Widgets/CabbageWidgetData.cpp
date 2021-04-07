@@ -425,7 +425,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("pivotY"):
             case HashStringToInt ("readOnly"):
             case HashStringToInt ("scrollbars"):
-            case HashStringToInt ("sideChain"):
+            case HashStringToInt ("sidechain"):
             case HashStringToInt ("sliderSkew"):
             case HashStringToInt ("surrogatelinenumber"):
             case HashStringToInt ("textBox"):

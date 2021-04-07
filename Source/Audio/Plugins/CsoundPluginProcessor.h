@@ -55,7 +55,7 @@ public:
 	bool setupAndCompileCsound(File csdFile, File filePath, int sr = 44100, bool isMono = false, bool debugMode = false);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
-    bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
+    //bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
 
 	void performCsoundKsmps();
 	int result = -1;

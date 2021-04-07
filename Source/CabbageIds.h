@@ -396,7 +396,7 @@ public:
         add ("nameSpace");
         add ("rowPrefix");
         add ("colPrefix");
-		add ("sideChain");
+		add ("sidechain");
         add ("populate");		
         add ("keyWidth");
         add ("pluginId");
@@ -880,7 +880,7 @@ namespace CabbageIdentifierIds
     static const Identifier scrubberposition_table = "scrubberposition_table";
     static const Identifier shape = "shape";
     static const Identifier show = "show";
-    static const Identifier sidechain = "sideChain";
+    static const Identifier sidechain = "sidechain";
     static const Identifier signalvariable = "signalVariable";
     static const Identifier size = "size";
     static const Identifier sliderrange = "sliderRange";

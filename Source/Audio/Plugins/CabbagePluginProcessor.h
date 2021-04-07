@@ -153,10 +153,20 @@ public:
         // repeat this for every bus in the xml file
         for (int i = 0; i < numOutChannels; i++)
             buses.addBus(false, "Output #" + String(i + 1), AudioChannelSet::mono());
-        for (int i = 0; i < numInChannels; i++)
-            buses.addBus(true, "Input #" + String(i + 1), AudioChannelSet::mono());
-        for (int i = 0; i > sideChainChannels; i++)
-            buses.addBus(true, "Sidechain #" + String(i + 1), AudioChannelSet::mono());
+
+        if (PluginHostType().isCubase())
+        {
+            for (int i = 0; i < numInChannels; i+=2)
+                buses.addBus(true, "Stereo Input #L" + String(i + 1) + "/R" + String(i + 2), AudioChannelSet::stereo());
+        }
+        else
+        {
+            for (int i = 0; i < numInChannels; i++)
+                buses.addBus(true, "Input #L" + String(i + 1), AudioChannelSet::mono());
+        }
+
+        for (int i = 0; i < sideChainChannels; i += 2)
+            buses.addBus(true, "Sidechain Input #L" + String(i + 1) + "/R" + String(i + 2), AudioChannelSet::stereo());
 
         return buses;
     }
