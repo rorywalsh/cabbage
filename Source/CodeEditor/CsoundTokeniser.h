@@ -174,20 +174,20 @@ private:
     int parseIdentifier (CodeDocument::Iterator& source) noexcept
     {
         int tokenLength = 0;
-        String::CharPointerType::CharType possibleIdentifier [32];
+        String::CharPointerType::CharType possibleIdentifier [64];
         String::CharPointerType possible (possibleIdentifier);
 
         while (isIdentifierBody (source.peekNextChar()))
         {
             const juce_wchar c = source.nextChar();
 
-            if (tokenLength < 32)
+            if (tokenLength < 48)
                 possible.write (c);
 
             ++tokenLength;
         }
 
-        if (tokenLength > 1 && tokenLength <= 32)
+        if (tokenLength > 1 && tokenLength <= 48)
         {
             possible.writeNull();
 

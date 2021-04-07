@@ -277,14 +277,14 @@ public:
         if(isCabbageFile == false)
         {
                     //GenericCabbagePluginProcessor*
-                processor = std::unique_ptr<GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(filename, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels)));
+                processor = std::unique_ptr<GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(filename, CabbagePluginProcessor::readBusesPropertiesFromXml(filename)));
         }
         else
         {
             if (sideChainChannels != 0)
-                processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(filename, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels), AudioChannelSet::canonicalChannelSet(sideChainChannels)));
+                processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(filename, CabbagePluginProcessor::readBusesPropertiesFromXml(filename)));
             else
-                processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(filename, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels)));
+                processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(filename, CabbagePluginProcessor::readBusesPropertiesFromXml(filename)));
         }
 		AudioProcessor::setTypeOfNextNewPlugin(AudioProcessor::wrapperType_Undefined);
 		jassert(processor != nullptr);
