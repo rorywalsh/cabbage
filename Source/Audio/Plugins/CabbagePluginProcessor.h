@@ -153,11 +153,11 @@ public:
         // repeat this for every bus in the xml file
         for (int i = 0; i < numOutChannels; i++)
             buses.addBus(false, "Output #" + String(i + 1), AudioChannelSet::mono());
-#if JucePlugin_IsSynth
+#ifndef Cabbage_IDE_Build
         if (PluginHostType().isCubase())
         {
             for (int i = 0; i < numInChannels; i+=2)
-                buses.addBus(true, "Stereo Input #L" + String(i + 1) + "/R" + String(i + 2), AudioChannelSet::stereo());
+                buses.addBus(true, "Stereo Input #" + String(i + 1) + " L/R", AudioChannelSet::stereo());
         }
         else
 #endif
@@ -167,7 +167,7 @@ public:
         }
 
         for (int i = 0; i < sideChainChannels; i += 2)
-            buses.addBus(true, "Sidechain Input #L" + String(i + 1) + "/R" + String(i + 2), AudioChannelSet::stereo());
+            buses.addBus(true, "Sidechain Input #" + String(i + 1) + " L/R", AudioChannelSet::stereo());
 
         return buses;
     }

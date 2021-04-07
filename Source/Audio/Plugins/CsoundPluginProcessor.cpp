@@ -32,21 +32,23 @@ csdFile (csdFile)
     hostInfo = {};
 	matchingNumberOfIOChannels = getTotalNumInputChannels() == getTotalNumOutputChannels() ? true : false;
 
-#if ! JucePlugin_IsSynth
+#if ! JucePlugin_IsSynth && ! Cabbage_IDE_Build
     numCsoundInputChannels = getTotalNumInputChannels();
     numCsoundOutputChannels = getTotalNumOutputChannels();
     CabbageUtilities::debug("Cabbage Csound Constructor - Requested input channels:", numCsoundInputChannels);
     CabbageUtilities::debug("Cabbage Csound Constructor - Requested output channels:", numCsoundOutputChannels);
 
-    const int numBuses = getBusCount(true);
-    for (int i = 0; i < numBuses; i++) {
-        DBG(getBus(true, i)->getName());
-        if (getBus(true, i)->getName().contains("Sidechain")) {
-            matchingNumberOfIOChannels = false;
-            supportsSidechain = true;
-            numSideChainChannels = getBus(true, i)->getNumberOfChannels();
+    //if (PluginHostType().isCubase()) {
+        const int numBuses = getBusCount(true);
+        for (int i = 0; i < numBuses; i++) {
+            DBG(getBus(true, i)->getName());
+            if (getBus(true, i)->getName().contains("Sidechain")) {
+                matchingNumberOfIOChannels = false;
+                supportsSidechain = true;
+                numSideChainChannels = getBus(true, i)->getNumberOfChannels();
+            }
         }
-    }
+    //}
 
 #else
     numCsoundOutputChannels = getTotalNumOutputChannels();
@@ -65,6 +67,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const BusesProperties
 	: AudioProcessor(ioBuses),
 	csdFile(csdFile)
 {
+    jassertfalse;
     hostInfo = {};
     numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
 #if ! JucePlugin_IsSynth
@@ -139,7 +142,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     // nhcnls and nchnls_i variables in Csound. But the host is king. If it requested a different
     // config, we must adhere to it.
 
-#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
+#if ! JucePlugin_IsSynth
     const int inputs = getTotalNumInputChannels() - numSideChainChannels;
     numCsoundInputChannels = inputs + numSideChainChannels;
     CabbageUtilities::debug("SetupAndCompile - Requested input channels:", numCsoundInputChannels);
@@ -846,7 +849,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     int sideChainChannels = 0;
     if (supportsSidechain)
     {
-        numSideChainChannels = getBus(true, 0)->getNumberOfChannels();
+        numSideChainChannels = getBus(true, numBuses-1)->getNumberOfChannels();
     }
     
     
@@ -993,34 +996,30 @@ void CsoundPluginProcessor::performCsoundKsmps()
 	}
 }
 
+
 template< typename Type >
-void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type*& buffer, int pos)
+void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type* buffer, int samplePos, int csdPos)
 {
 	if (bufferType == BufferType::inputOutput)
 	{
-		Type*& current_sample = buffer;
-		MYFLT sample = *current_sample * cs_scale;
-		CSspin[pos] = sample;
+        MYFLT sample = buffer[samplePos] * cs_scale;
+        CSspin[pos] = sample;
         //if we want 0 latency, we have to fill Csound spin buffer before we call performKsmps()
         if (preferredLatency == -1)
             performCsoundKsmps();
-		*current_sample = (CSspout[pos] / cs_scale);
-		++current_sample;
+        buffer[samplePos] = (CSspout[pos] / cs_scale);
 	}
 	else if (bufferType == BufferType::output)
 	{
-		Type*& current_sample = buffer;
-		*current_sample = (CSspout[pos] / cs_scale);
-		++current_sample;
+        buffer[samplePos] = (CSspout[pos] / cs_scale);
 	}
 	else //input
 	{
         if(buffer != nullptr)
         {
-			Type*& current_sample = buffer;
-            MYFLT newSamp = *current_sample * cs_scale;
+
+            MYFLT newSamp = buffer[samplePos] * cs_scale;
             CSspin[pos] = newSamp;
-            current_sample++;
         }
         else
             CSspin[pos] = 0;
@@ -1089,7 +1088,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
     int samplePos = 0;
     MidiMessage message;
     MidiBuffer::Iterator iter (midiMessages);
-    const auto busCount = getBusCount(false);
+    const auto outputBusCount = getBusCount(false);
 
 	if (csdCompiledWithoutError())
 	{
@@ -1099,10 +1098,20 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 			buffer.clear(channelsToClear, 0, buffer.getNumSamples());
 		}
 
+        //for (auto busNr = 0; busNr < outputBusCount; ++busNr)
+        //{
+        //    auto busBuffer = getBusBuffer(buffer, false, busNr);
+
+        //    for (int channel = 0; channel < busBuffer.getNumChannels(); channel++)
+        //    {
+        //        busBuffer.clear(channel, 0, busBuffer.getNumSamples());
+        //    }
+        //}
+
 
 		for (int i = 0; i < numSamples; i++, ++csndIndex)
 		{
-			if (csndIndex == csdKsmps)
+			if (csndIndex >= csdKsmps)
 			{
                 //don't call performKsmps here if we want 0 latency
                 if(preferredLatency != -1)
@@ -1123,42 +1132,60 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 #if !JucePlugin_IsSynth
             //if using Logic process inputs and outputs separately - otherwise its mono to stereo features break...
 			if (matchingNumberOfIOChannels && !isLogic)
-			{                
+			{    
+                
 				pos = csndIndex * outputChannelCount;
 				for (int channel = 0; channel < outputChannelCount; channel++)
 				{
-					processCsoundIOBuffers(BufferType::inputOutput, ioBuffer[channel], pos);
+                    processCsoundIOBuffers(BufferType::inputOutput, ioBuffer[channel], i, pos);
 					pos++;
 				}
 			}
 			else if (!supportsSidechain)
 			{
-				pos = csndIndex * inputChannelCount;
-				for (int channel = 0; channel < inputChannelCount; channel++)
-				{
-					processCsoundIOBuffers(BufferType::input, ioBuffer[channel], pos);
-					pos++;
-				}
+                //process each bus
+                const int numInputBuses = getBusCount(true);
+                int index = 0;
+                for (int busIndex = 0; busIndex < numInputBuses; busIndex++)
+                {
+                    auto inputBus = getBusBuffer(buffer, true, busIndex);
+                    Type** inputBuffer = inputBus.getArrayOfWritePointers();
+                    pos = csndIndex* numInputBuses + busIndex;
 
-				pos = csndIndex * outputChannelCount;
-				for (int channel = 0; channel < outputChannelCount; channel++)
-				{
-					processCsoundIOBuffers(BufferType::output, ioBuffer[channel], pos);
-					pos++;
-				}
+                    for (int channel = 0; channel < inputBus.getNumChannels(); channel++)
+                    {
+                        processCsoundIOBuffers(BufferType::input, inputBuffer[channel], i, pos);
+                        pos++;
+                    }
+                }
+
+                const int numOutputBuses = getBusCount(false);
+                for (int busIndex = 0; busIndex < numOutputBuses; busIndex++)
+                {
+                    auto outputBus = getBusBuffer(buffer, false, busIndex);
+                    Type** outputBuffer = outputBus.getArrayOfWritePointers();
+                    pos = csndIndex* numOutputBuses + busIndex;
+
+                    for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
+                    {
+                        processCsoundIOBuffers(BufferType::output, outputBuffer[channel], i, pos);
+                        pos++;
+                    }
+                }
+
 			}
 			else {
 				//sidechain processing
-				pos = csndIndex * inputChannelCount;
+				/*pos = csndIndex * inputChannelCount;
 				for (int channel = 0; channel < inputChannelCount; channel++)
 				{
 					if(channel< numSideChainChannels)
-						processCsoundIOBuffers(BufferType::input, ioBuffer[channel], pos);
+						processCsoundIOBuffers(BufferType::input, ioBuffer[channel], i, pos);
                     else{
                         if(hostIsCubase)
                             processCsoundIOSideChainBuffers(BufferType::input, ioBuffer[channel-numSideChainChannels], pos);
                         else
-                            processCsoundIOBuffers(BufferType::input, ioBuffer[channel-numSideChainChannels], pos);
+                            processCsoundIOBuffers(BufferType::input, ioBuffer[channel-numSideChainChannels], i, pos);
                     }
 					pos++;
 				}
@@ -1166,16 +1193,16 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 				pos = csndIndex * outputChannelCount;
 				for (int channel = 0; channel < outputChannelCount; channel++)
 				{
-					processCsoundIOBuffers(BufferType::output, ioBuffer[channel], pos);
+					processCsoundIOBuffers(BufferType::output, ioBuffer[channel], i, pos);
 					pos++;
-				}
+				}*/
 			}
 #else
             const int channelNum = buffer.getNumChannels();
             pos = csndIndex * channelNum;
             for (int channel = 0; channel < outputChannelCount; channel++)
             {
-                processCsoundIOBuffers(BufferType::output, ioBuffer[channel], pos);
+                processCsoundIOBuffers(BufferType::output, ioBuffer[channel], i, pos);
                 pos++;
             }
 
