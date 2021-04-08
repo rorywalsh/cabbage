@@ -57,7 +57,14 @@ public:
 	bool setupAndCompileCsound(File csdFile, File filePath, int sr = 44100, bool debugMode = false);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
-    //bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
+    bool isBusesLayoutSupported (const BusesLayout& layouts) const override
+    {
+#if ! Cabbage_IDE_Build
+        if(PluginHostType().isReaper())//force Reaper to take whatever IOs we give it - it can handle it
+            return false;
+#endif
+        return true;
+    };
 
 	void performCsoundKsmps();
 	int result = -1;
