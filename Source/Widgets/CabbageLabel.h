@@ -40,6 +40,7 @@ public:
 
     CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageLabel() {
+        widgetData.removeListener(this);
         setLookAndFeel(nullptr);
     };
 

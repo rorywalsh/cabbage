@@ -39,6 +39,7 @@ public:
 
     CabbageGroupBox (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageGroupBox() {
+        widgetData.removeListener(this);
         setLookAndFeel(nullptr);
     };
 

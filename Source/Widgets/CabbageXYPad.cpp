@@ -91,6 +91,7 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
 
 CabbageXYPad::~CabbageXYPad()
 {
+    widgetData.removeListener(this);
     CabbageUtilities::debug ("Existing xypad");
 }
 //==================================================================

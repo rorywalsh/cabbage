@@ -176,14 +176,14 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
 	}
 }
 
-CabbagePluginProcessor::~CabbagePluginProcessor() {
+CabbagePluginProcessor::~CabbagePluginProcessor()
+{
 	for (auto xyAuto : xyAutomators)
 		xyAuto->removeAllChangeListeners();
 
 	xyAutomators.clear();
-
-	//    cabbageWidgets.removeAllChildren(nullptr);
-	//    cabbageWidgets.removeAllProperties(nullptr);
+	destroyCsoundGlobalVars();
+	cabbageWidgets.removeAllChildren(nullptr);
 }
 
 void CabbagePluginProcessor::timerCallback()

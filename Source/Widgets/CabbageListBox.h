@@ -25,6 +25,7 @@ public:
 
     CabbageListBox (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageListBox() {
+        widgetData.removeListener(this);
         setLookAndFeel(nullptr);
     };
 

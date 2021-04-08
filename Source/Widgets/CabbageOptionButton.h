@@ -34,7 +34,10 @@ class CabbageOptionButton : public TextButton, public ValueTree::Listener, publi
 public:
     
     CabbageOptionButton(ValueTree wData, CabbagePluginEditor* owner);
-    ~CabbageOptionButton() { setLookAndFeel(nullptr); };
+    ~CabbageOptionButton() { 
+        widgetData.removeListener(this); 
+        setLookAndFeel(nullptr); 
+    };
     
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged(ValueTree& valueTree, const Identifier&) override;

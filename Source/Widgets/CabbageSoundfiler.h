@@ -44,7 +44,9 @@ class CabbageSoundfiler : public Component, public ValueTree::Listener, public C
 public:
 
     CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _owner, int sr);
-    ~CabbageSoundfiler() {};
+    ~CabbageSoundfiler() {
+        widgetData.removeListener(this);
+    };
 
     void resized() override;
 

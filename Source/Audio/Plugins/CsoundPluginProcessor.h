@@ -47,6 +47,8 @@ public:
         const BusesProperties ioBuses);
 	~CsoundPluginProcessor();
 
+    void destroyCsoundGlobalVars();
+    void createCsoundGlobalVars(ValueTree cabbageData);
 	bool supportsSidechain = false;
 	bool matchingNumberOfIOChannels = true;
 	void resetCsound();
@@ -178,7 +180,7 @@ public:
 
     void compileCsdFile (File csoundFile)
     {
-        csCompileResult = csound->Compile (const_cast<char*> (csoundFile.getFullPathName().toUTF8().getAddress()));
+        csCompileResult = csound->Compile (csoundFile.getFullPathName().toUTF8().getAddress());
     }
 
     void compileCsdString (String csdFileText)

@@ -59,7 +59,9 @@ class CabbageEncoder : public Component, public ValueTree::Listener, public Cabb
 public:
 
     CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageEncoder() {};
+    ~CabbageEncoder() {
+        widgetData.removeListener(this);
+    };
 
     CabbagePluginEditor* owner;
 

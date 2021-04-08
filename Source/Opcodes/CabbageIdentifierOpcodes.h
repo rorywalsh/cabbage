@@ -20,6 +20,8 @@ class CabbageWidgetsValueTree
 {
 public:
    CabbageWidgetsValueTree(){}
+   ~CabbageWidgetsValueTree(){}
+
    ValueTree data;
 };
 
@@ -33,7 +35,9 @@ public:
         var args;
     };
     
-    CabbageWidgetIdentifiers(){}
+    CabbageWidgetIdentifiers(){
+        data.clear();
+    }
     Array<IdentifierData, CriticalSection> data;
 };
 

@@ -138,6 +138,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
 //---------------------------------------------
 CabbageComboBox::~CabbageComboBox()
 {
+    widgetData.removeListener(this);
     setLookAndFeel(nullptr);
 }
 

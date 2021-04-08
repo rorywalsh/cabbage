@@ -63,6 +63,7 @@ CabbageEventSequencer::CabbageEventSequencer (ValueTree wData, CabbagePluginEdit
 
 CabbageEventSequencer::~CabbageEventSequencer()
 {
+    widgetData.removeListener(this);
     cells.getUnchecked (0)->clear();
     cells.clear();
 }

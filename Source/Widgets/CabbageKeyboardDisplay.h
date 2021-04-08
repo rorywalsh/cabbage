@@ -339,7 +339,9 @@ class CabbageKeyboardDisplay : public MidiKeyboardDisplay, public ValueTree::Lis
 public:
 
 	explicit CabbageKeyboardDisplay(ValueTree wData);
-	~CabbageKeyboardDisplay() {};
+	~CabbageKeyboardDisplay() {
+		widgetData.removeListener(this);
+	};
 
 	//VlaueTree::Listener virtual methods....
 	void valueTreePropertyChanged(ValueTree& valueTree, const Identifier&) override;

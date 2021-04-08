@@ -36,7 +36,9 @@ class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener
 public:
 
     CabbageKeyboard (ValueTree wData, MidiKeyboardState& state);
-    ~CabbageKeyboard() {};
+    ~CabbageKeyboard() {
+        widgetData.removeListener(this);
+    };
 
     //VlaueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;

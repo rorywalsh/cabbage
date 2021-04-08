@@ -34,7 +34,11 @@ class CabbageFileButton : public TextButton, public ValueTree::Listener, public 
 public:
 
     CabbageFileButton (ValueTree wData, CabbagePluginEditor* owner);
-    ~CabbageFileButton() {  stopTimer();  setLookAndFeel(nullptr); };
+    ~CabbageFileButton() {  
+        stopTimer();  
+        setLookAndFeel(nullptr); 
+        widgetData.removeListener(this);
+    };
 
     //ValueTree::Listener virtual methods....
     void setFile(ValueTree wData);

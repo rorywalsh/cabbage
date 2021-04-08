@@ -78,7 +78,9 @@ public:
 
 
     CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageTextEditor() {};
+    ~CabbageTextEditor() {
+        widgetData.removeListener(this);
+    };
 
     CabbagePluginEditor* owner;
 

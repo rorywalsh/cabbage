@@ -48,7 +48,9 @@ class CabbageGenTable : public Component, public ValueTree::Listener, public Cab
 public:
 
     CabbageGenTable (ValueTree wData, CabbagePluginEditor* owner);
-    ~CabbageGenTable() {};
+    ~CabbageGenTable() {
+        widgetData.removeListener(this);
+    };
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;

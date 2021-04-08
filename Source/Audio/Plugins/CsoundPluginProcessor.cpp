@@ -82,6 +82,7 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const BusesProperties
 
 CsoundPluginProcessor::~CsoundPluginProcessor()
 {
+    csound->Stop();
 	resetCsound();
 }
 
@@ -93,14 +94,8 @@ void CsoundPluginProcessor::resetCsound()
 	Logger::setCurrentLogger(nullptr);
 	if (csound)
 	{
-        CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-        if(pd != nullptr)
-            getCsound()->DestroyGlobalVariable("cabbageData");
         
-        CabbageWidgetIdentifiers** wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
-        if(wi != nullptr)
-            getCsound()->DestroyGlobalVariable("cabbageWidgetData");
-        
+
 #if !defined(Cabbage_Lite)
 		csound = nullptr;
 #endif
@@ -110,6 +105,45 @@ void CsoundPluginProcessor::resetCsound()
 }
 
 //==============================================================================
+void CsoundPluginProcessor::destroyCsoundGlobalVars()
+{
+    CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+    if (pd != nullptr)
+        getCsound()->DestroyGlobalVariable("cabbageData");
+
+    CabbageWidgetIdentifiers** wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
+    if (wi != nullptr)
+        getCsound()->DestroyGlobalVariable("cabbageWidgetData");
+
+
+    CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
+    if (vt != nullptr) {
+        getCsound()->DestroyGlobalVariable("cabbageWidgetsValueTree");
+    }
+}
+
+void CsoundPluginProcessor::createCsoundGlobalVars(ValueTree cabbageData)
+{
+    CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+    if (pd == nullptr) {
+        getCsound()->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
+        pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+        *pd = new CabbagePersistentData();
+        auto pdClass = *pd;
+        pdClass->data = getInternalState().toStdString();
+    }
+
+
+    CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
+    if (vt == nullptr) {
+        getCsound()->CreateGlobalVariable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
+        vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
+        *vt = new CabbageWidgetsValueTree();
+        auto valueTree = *vt;
+        valueTree->data = cabbageData;
+    }
+}
+// 
 //==============================================================================
 bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File filePath, int sr, bool isMono, bool debugMode)
 {
@@ -230,12 +264,10 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<GetCabbageReservedChannelData>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "k", "S", csnd::thread::ik);
 
     csnd::plugin<CreateCabbageWidget>((csnd::Csound*) csound->GetCsound(), "cabbageCreate", "", "S", csnd::thread::i);
-    //csound->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
-    //CabbagePersistentData** pd = (CabbagePersistentData**)csound->QueryGlobalVariable("cabbageData");
-    //*pd = new CabbagePersistentData();
-    //auto pdClass = *pd;
-    //pdClass->data = "{}";
+
     
+
+
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
 	csound->SetExternalMidiReadCallback(ReadMidiData);
@@ -369,12 +401,6 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         return;
     }
     
-    getCsound()->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
-    CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-    *pd = new CabbagePersistentData();
-    auto pdClass = *pd;
-    pdClass->data = getInternalState().toStdString();
-
 
     for (int i = 0; i < cabbageData.getNumChildren(); i++)
     {
@@ -485,11 +511,8 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     }
 
-    getCsound()->CreateGlobalVariable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
-    CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
-    *vt = new CabbageWidgetsValueTree();
-    auto valueTree = *vt;
-    valueTree->data = cabbageData;
+    createCsoundGlobalVars(cabbageData);
+    
     
     if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win32)
     {
@@ -1145,12 +1168,13 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 			{
                 //process each bus
                 const int numInputBuses = getBusCount(true);
-                pos = csndIndex* numInputBuses * 2; //each bus is stereo...
+                int index = 0;
                 for (int busIndex = 0; busIndex < numInputBuses; busIndex++)
                 {
                     auto inputBus = getBusBuffer(buffer, true, busIndex);
                     Type** inputBuffer = inputBus.getArrayOfWritePointers();
-                    
+                    pos = csndIndex* numInputBuses + busIndex;
+
                     for (int channel = 0; channel < inputBus.getNumChannels(); channel++)
                     {
                         processCsoundIOBuffers(BufferType::input, inputBuffer[channel], i, pos);
@@ -1159,11 +1183,11 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
                 }
 
                 const int numOutputBuses = getBusCount(false);
-                pos = csndIndex* numOutputBuses * 2; //each bus is stereo...
                 for (int busIndex = 0; busIndex < numOutputBuses; busIndex++)
                 {
                     auto outputBus = getBusBuffer(buffer, false, busIndex);
                     Type** outputBuffer = outputBus.getArrayOfWritePointers();
+                    pos = csndIndex* numOutputBuses + busIndex;
 
                     for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
                     {

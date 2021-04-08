@@ -55,7 +55,9 @@ class CabbageSignalDisplay : public Component, public ValueTree::Listener, publi
 public:
 
     CabbageSignalDisplay (ValueTree wData, CabbagePluginEditor* owner);
-    ~CabbageSignalDisplay() {};
+    ~CabbageSignalDisplay() {
+        widgetData.removeListener(this);
+    };
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;

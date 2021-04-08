@@ -38,6 +38,7 @@ public:
 
     CabbageCheckbox (ValueTree widgetData,  CabbagePluginEditor* owner);
     ~CabbageCheckbox() {
+        widgetData.removeListener(this);
         setLookAndFeel(nullptr);
     };
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;

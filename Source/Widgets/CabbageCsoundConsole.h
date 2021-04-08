@@ -30,7 +30,9 @@ class CabbageCsoundConsole : public TextEditor, public Timer, public ValueTree::
 public:
 
     CabbageCsoundConsole (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageCsoundConsole() {};
+    ~CabbageCsoundConsole() {
+        widgetData.removeListener(this);
+    };
 
     void setMonospaced(bool value);
     void setMonospaced(const ValueTree &valueTree);

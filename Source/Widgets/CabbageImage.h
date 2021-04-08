@@ -42,7 +42,9 @@ class CabbageImage : public Component, public ValueTree::Listener, public Cabbag
 public:
 
     CabbageImage (ValueTree cAttr, CabbagePluginEditor* _owner, bool isLineWidget = false);
-    ~CabbageImage() {};
+    ~CabbageImage() {
+        widgetData.removeListener(this);
+    };
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
     void paint (Graphics& g) override;

@@ -221,7 +221,7 @@ RangeSlider::RangeSlider (CabbageRangeSlider* _owner)
 
 RangeSlider::~RangeSlider ()
 {
-    
+
 }
 
 void RangeSlider::mouseDown (const MouseEvent& event)

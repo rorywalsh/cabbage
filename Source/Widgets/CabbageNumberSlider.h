@@ -83,6 +83,7 @@ public:
 	SliderLookAndFeel sliderLookAndFeel;
 	explicit CabbageNumberSlider (ValueTree wData);
 	~CabbageNumberSlider() {
+		widgetData.removeListener(this);
 		slider.setLookAndFeel(nullptr);
 
 	};

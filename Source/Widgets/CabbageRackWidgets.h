@@ -69,7 +69,9 @@ class CabbageScrew : public Component, public ValueTree::Listener, public Cabbag
 public:
 
     explicit CabbageScrew (ValueTree cAttr);
-    ~CabbageScrew() {};
+    ~CabbageScrew() {
+        widgetData.removeListener(this);
+    };
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
     void paint (Graphics& g) override;

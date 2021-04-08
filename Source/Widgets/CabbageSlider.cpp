@@ -211,6 +211,7 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
 
 CabbageSlider::~CabbageSlider()
 {
+    widgetData.removeListener(this);
     slider.setLookAndFeel(nullptr);
     textLabel.setLookAndFeel(nullptr);
 }

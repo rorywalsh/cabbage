@@ -205,7 +205,7 @@ private:
     OwnedArray<CabbagePluginParameter> parameters;
     Font customFont;
 
-
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbagePluginProcessor)
 
 };
 
@@ -413,6 +413,8 @@ private:
             return true;
         return false;
     }
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbagePluginParameter)
 };
 
 #endif  // CABBAGEPLUGINPROCESSOR_H_INCLUDED
