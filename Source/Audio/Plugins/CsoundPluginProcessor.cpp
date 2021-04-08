@@ -1145,13 +1145,12 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 			{
                 //process each bus
                 const int numInputBuses = getBusCount(true);
-                int index = 0;
+                pos = csndIndex* numInputBuses * 2; //each bus is stereo...
                 for (int busIndex = 0; busIndex < numInputBuses; busIndex++)
                 {
                     auto inputBus = getBusBuffer(buffer, true, busIndex);
                     Type** inputBuffer = inputBus.getArrayOfWritePointers();
-                    pos = csndIndex* numInputBuses + busIndex;
-
+                    
                     for (int channel = 0; channel < inputBus.getNumChannels(); channel++)
                     {
                         processCsoundIOBuffers(BufferType::input, inputBuffer[channel], i, pos);
@@ -1160,11 +1159,11 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
                 }
 
                 const int numOutputBuses = getBusCount(false);
+                pos = csndIndex* numOutputBuses * 2; //each bus is stereo...
                 for (int busIndex = 0; busIndex < numOutputBuses; busIndex++)
                 {
                     auto outputBus = getBusBuffer(buffer, false, busIndex);
                     Type** outputBuffer = outputBus.getArrayOfWritePointers();
-                    pos = csndIndex* numOutputBuses + busIndex;
 
                     for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
                     {

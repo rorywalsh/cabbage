@@ -73,11 +73,12 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 
 CabbagePluginEditor::~CabbagePluginEditor()
 {
+    setLookAndFeel (nullptr);
     popupPlants.clear();
     components.clear();
     radioGroups.clear();
     radioComponents.clear();
-    setLookAndFeel (nullptr);
+
     
 
     

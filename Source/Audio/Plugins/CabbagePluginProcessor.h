@@ -151,20 +151,20 @@ public:
             numInChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") - sideChainChannels;
 
         // repeat this for every bus in the xml file
-        for (int i = 0; i < numOutChannels; i++)
-            buses.addBus(false, "Output #" + String(i + 1), AudioChannelSet::mono());
-#ifndef Cabbage_IDE_Build
-        if (PluginHostType().isCubase())
-        {
+        for (int i = 0; i < numOutChannels; i+=2)
+            buses.addBus(false, "Stereo Output #" + String(i + 1) + " L/R", AudioChannelSet::stereo());
+//#ifndef Cabbage_IDE_Build
+//        if (PluginHostType().isCubase())
+//        {
             for (int i = 0; i < numInChannels; i+=2)
                 buses.addBus(true, "Stereo Input #" + String(i + 1) + " L/R", AudioChannelSet::stereo());
-        }
-        else
-#endif
-        {
-            for (int i = 0; i < numInChannels; i++)
-                buses.addBus(true, "Input #L" + String(i + 1), AudioChannelSet::mono());
-        }
+//        }
+//        else
+//#endif
+//        {
+//            for (int i = 0; i < numInChannels; i++)
+//                buses.addBus(true, "Input #L" + String(i + 1), AudioChannelSet::mono());
+//        }
 
         for (int i = 0; i < sideChainChannels; i += 2)
             buses.addBus(true, "Sidechain Input #" + String(i + 1) + " L/R", AudioChannelSet::stereo());
