@@ -149,7 +149,6 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 		xyAuto->removeAllChangeListeners();
 
 	xyAutomators.clear();
-	destroyCsoundGlobalVars();
 	cabbageWidgets.removeAllChildren(nullptr);
 }
 

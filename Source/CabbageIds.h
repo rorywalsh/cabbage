@@ -787,8 +787,8 @@ namespace CabbageIdentifierIds
     static const Identifier identchannel = "identChannel";
     static const Identifier identchannelarray = "identChannelArray";
     static const Identifier identchannelmessage = "identChannelMessage";
-    static const Identifier imgbuttonoff = "imgButtonOff";
-    static const Identifier imgbuttonon = "imgButtonOn";
+    static const Identifier imgbuttonoff = "imgbuttonoff";
+    static const Identifier imgbuttonon = "imgbuttonon";
     static const Identifier imgbuttonover = "imgbuttonover";
     static const Identifier imgdebug = "imgdebug";
     static const Identifier imgfile = "imgFile";

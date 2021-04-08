@@ -82,7 +82,6 @@ CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const BusesProperties
 
 CsoundPluginProcessor::~CsoundPluginProcessor()
 {
-    csound->Stop();
 	resetCsound();
 }
 
@@ -95,7 +94,7 @@ void CsoundPluginProcessor::resetCsound()
 	if (csound)
 	{
         
-
+        destroyCsoundGlobalVars();
 #if !defined(Cabbage_Lite)
 		csound = nullptr;
 #endif
@@ -107,18 +106,21 @@ void CsoundPluginProcessor::resetCsound()
 //==============================================================================
 void CsoundPluginProcessor::destroyCsoundGlobalVars()
 {
-    CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-    if (pd != nullptr)
-        getCsound()->DestroyGlobalVariable("cabbageData");
+    if(getCsound())
+    {
+        CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+        if (pd != nullptr)
+            getCsound()->DestroyGlobalVariable("cabbageData");
 
-    CabbageWidgetIdentifiers** wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
-    if (wi != nullptr)
-        getCsound()->DestroyGlobalVariable("cabbageWidgetData");
+        CabbageWidgetIdentifiers** wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
+        if (wi != nullptr)
+            getCsound()->DestroyGlobalVariable("cabbageWidgetData");
 
 
-    CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
-    if (vt != nullptr) {
-        getCsound()->DestroyGlobalVariable("cabbageWidgetsValueTree");
+        CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
+        if (vt != nullptr) {
+            getCsound()->DestroyGlobalVariable("cabbageWidgetsValueTree");
+        }
     }
 }
 

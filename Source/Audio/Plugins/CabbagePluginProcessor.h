@@ -136,11 +136,11 @@ public:
             numInChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") ;
 
         // repeat this for every bus in the xml file
-        for (int i = 0; i < numOutChannels; i+=2)
-            buses.addBus(false, "Stereo Output #" + String(i + 1) + " L/R", AudioChannelSet::stereo());
+        for (int i = 0, cnt = 1; i < numOutChannels; i+=2, cnt++)
+            buses.addBus(false, "Output #" + String(cnt), AudioChannelSet::stereo());
 
-        for (int i = 0; i < numInChannels; i+=2)
-            buses.addBus(true, "Stereo Input #" + String(i + 1) + " L/R", AudioChannelSet::stereo());
+        for (int i = 0, cnt = 1; i < numInChannels; i+=2, cnt++)
+            buses.addBus(true, "n'Input #" + String(cnt), AudioChannelSet::stereo());
 
         return buses;
     }
