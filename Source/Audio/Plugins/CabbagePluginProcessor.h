@@ -130,44 +130,17 @@ public:
         csdString = Encrypt::decode(csdFile);
 #endif
 
-        StringArray csdLines;
-        csdLines.addLines(csdString);
-        int sideChainChannels = 0;
-        for (auto line : csdLines)
-        {
-            ValueTree temp("temp");
-            CabbageWidgetData::setWidgetState(temp, line, 0);
-
-            if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
-            {
-                sideChainChannels = CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::sidechain);
-                break;
-            }
-        }
-
         const int numOutChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls");
         int numInChannels = numOutChannels;
         if (CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != -1 && CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != 0)
-            numInChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") - sideChainChannels;
+            numInChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") ;
 
         // repeat this for every bus in the xml file
         for (int i = 0; i < numOutChannels; i+=2)
             buses.addBus(false, "Stereo Output #" + String(i + 1) + " L/R", AudioChannelSet::stereo());
-//#ifndef Cabbage_IDE_Build
-//        if (PluginHostType().isCubase())
-//        {
-            for (int i = 0; i < numInChannels; i+=2)
-                buses.addBus(true, "Stereo Input #" + String(i + 1) + " L/R", AudioChannelSet::stereo());
-//        }
-//        else
-//#endif
-//        {
-//            for (int i = 0; i < numInChannels; i++)
-//                buses.addBus(true, "Input #L" + String(i + 1), AudioChannelSet::mono());
-//        }
 
-        for (int i = 0; i < sideChainChannels; i += 2)
-            buses.addBus(true, "Sidechain Input #" + String(i + 1) + " L/R", AudioChannelSet::stereo());
+        for (int i = 0; i < numInChannels; i+=2)
+            buses.addBus(true, "Stereo Input #" + String(i + 1) + " L/R", AudioChannelSet::stereo());
 
         return buses;
     }

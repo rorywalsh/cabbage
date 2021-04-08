@@ -62,41 +62,8 @@ createPluginFilter() {
 	csdString = Encrypt::decode(csdFile);
 #endif
 
-	StringArray csdLines;
-	csdLines.addLines(csdString);
-	int sideChainChannels = 0;
-	for (auto line : csdLines)
-	{
-		ValueTree temp("temp");
-		CabbageWidgetData::setWidgetState(temp, line, 0);
+    return new CabbagePluginProcessor(csdFile, CabbagePluginProcessor::readBusesPropertiesFromXml(csdFile));
 
-		if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
-		{
-			sideChainChannels = CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::sidechain);
-			break;
-		}
-
-	}
-
-	const int numOutChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls");
-	int numInChannels = numOutChannels;
-	if (CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != -1 && CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != 0)
-		numInChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") - sideChainChannels;
-
-#if !Cabbage_IDE_Build && !Cabbage_Lite
-	PluginHostType pluginHostType;
-	if (sideChainChannels != 0)
-		return new CabbagePluginProcessor(csdFile, CabbagePluginProcessor::readBusesPropertiesFromXml(csdFile));
-	else
-		return new CabbagePluginProcessor(csdFile, CabbagePluginProcessor::readBusesPropertiesFromXml(csdFile));
-
-#else
-
-	if (sideChainChannels != 0)
-		return new CabbagePluginProcessor(csdFile, CabbagePluginProcessor::readBusesPropertiesFromXml(csdFile));
-	else
-		return new CabbagePluginProcessor(csdFile, CabbagePluginProcessor::readBusesPropertiesFromXml(csdFile));
-#endif
 
 
 };
