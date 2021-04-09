@@ -28,6 +28,7 @@ public:
     CsoundTokeniser() {}
     ~CsoundTokeniser() {}
 
+    StringArray udoKeywords;
     //==============================================================================
     enum TokenType
     {
@@ -147,9 +148,9 @@ private:
     bool isReservedKeyword (String::CharPointerType token, const int tokenLength) noexcept
     {
         //populate char array with Csound keywords
-        //this list of keywords is not completely up to date!
         const char* const* k;
-
+        
+        
         if (tokenLength < 2)
             return false;
 
@@ -166,7 +167,13 @@ private:
 
             ++i;
         }
-
+        
+        for ( auto key : udoKeywords)
+        {
+            if(token == key)
+                return true;
+        }
+        
         return false;
     }
 
@@ -283,6 +290,8 @@ private:
         //jassert (result != tokenType_unknown);
         return result;
     }
+    
+    
 };
 
 #endif

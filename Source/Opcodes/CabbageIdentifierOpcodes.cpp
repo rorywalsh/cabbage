@@ -33,11 +33,25 @@ int CreateCabbageWidget::createWidget()
     }
     
     const String widgetTreeIdentifier = "TempWidget";
-    ValueTree tempWidget(widgetTreeIdentifier);
+    ValueTree tempWidget(widgetTreeIdentifier);	
     String cabbageCode(outargs.str_data(0).data);
+
     CabbageWidgetData::setWidgetState(tempWidget, cabbageCode.trimCharactersAtStart(" \t"),
                                       varData->data.getNumChildren()+1);
 
+    //don't duplicate widgets - based on channels..
+    bool foundDuplicate = false;
+    for ( auto child : varData->data)
+    {
+        String childChannel = CabbageWidgetData::getStringProp(child, CabbageIdentifierIds::channel);
+        String channel = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel);
+        if (childChannel.isNotEmpty() && (childChannel == channel))
+            foundDuplicate = true;
+    }
+    
+    if(foundDuplicate)
+        return OK;
+    
     String widgetNameId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel);
     //if no name is specified use generic name
     if(widgetNameId.isEmpty())
@@ -451,7 +465,6 @@ int SetCabbageIdentifierSArgs::setAttribute()
         {
             data.isSingleIdent = false;
             data.args = String(outargs.str_data(3).data);
-            DBG(String(outargs.str_data(3).data));
         }
         else
         {
@@ -514,7 +527,6 @@ int SetCabbageIdentifierITime::setAttribute()
     {
         data.isSingleIdent = false;
         data.args = String(outargs.str_data(1).data);
-        DBG(String(outargs.str_data(1).data));
     }
     else
     {
@@ -573,9 +585,8 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
     
     if(in_count() == 2)
     {
-        data.isSingleIdent = false;
+        data.isSingleIdent = false; // contains more than one identifier....
         data.args = String(outargs.str_data(1).data);
-        DBG(String(outargs.str_data(1).data));
     }
     else
     {

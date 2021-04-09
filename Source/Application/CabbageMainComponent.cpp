@@ -2007,6 +2007,16 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
                 CabbageWidgetData::setWidgetState(tempWidget, string.trimCharactersAtStart(" \t"), -9);
                 if(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel).contains(" "))
                     problemChannels.add(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel));
+                
+                if(string.trimCharactersAtEnd("\t ").indexOf("opcode") == 0){
+                    StringArray tokens;
+                    tokens.addTokens(string, false);
+                    const String newKeyword = tokens[1].removeCharacters((","));
+                    
+                    getCurrentEditorContainer()->csoundTokeniser.udoKeywords.add(newKeyword);
+                    
+                }
+
             }
             
             if(problemChannels.size() > 0){

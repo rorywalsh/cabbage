@@ -36,6 +36,9 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
     isLineWidget (isLineWidget),
     isParent(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::isparent))
 {
+    
+    DBG(getName());
+    DBG(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::channel));
     prevWidth = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::width);
     prevHeight = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::height);
     widgetData.addListener (this);

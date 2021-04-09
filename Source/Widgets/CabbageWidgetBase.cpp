@@ -60,8 +60,7 @@ void CabbageWidgetBase::initialiseCommonAttributes (Component* child, ValueTree 
 void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, bool calledFromConstructor, const Identifier& prop)
 {
     if (calledFromConstructor == false)
-    {
-        
+    {       
 
         if (getPluginEditor (child) != nullptr && getPluginEditor (child)->isEditModeEnabled() == false)
         {

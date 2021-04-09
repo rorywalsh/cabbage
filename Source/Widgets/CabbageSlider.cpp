@@ -328,17 +328,32 @@ void CabbageSlider::setTextBoxOrientation(String type, int showTextBox)
 
 void CabbageSlider::setTextBoxWidth()
 {
+    int w = jmin(55.f, getWidth() * .65f);
+    int h = 15;
+    
+    var textBoxSize = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::valuetextboxsize);
+    if(textBoxSize.isArray())
+    {
+        DBG(textBoxSize[0].toString());
+        DBG(textBoxSize[1].toString());
+        if(int(textBoxSize[0])!=0)
+            w = int(textBoxSize[0]);
+        if(int(textBoxSize[1])!=0)
+            h = int(textBoxSize[1]);
+    }
+    
     if (!isFilmStripSlider)
     {
         if (sliderType.contains("horizontal"))
-            getSlider().setTextBoxStyle(Slider::TextBoxRight, false, jmin(55.f, getWidth() * .65f), 15);
+            getSlider().setTextBoxStyle(Slider::TextBoxRight, false, w, h);
         else
-            getSlider().setTextBoxStyle(Slider::TextBoxBelow, false, jmin(55.f, getWidth() * .65f), 15);
+            getSlider().setTextBoxStyle(Slider::TextBoxBelow, false, w, h);
     }
     else
     {
         if (sliderType.contains("rotary"))
-            getSlider().setTextBoxStyle(Slider::TextBoxBelow, false, jmin(55.f, getWidth() * .65f), 15);
+            getSlider().setTextBoxStyle(Slider::TextBoxBelow, false, w, h);
+            
     }
 
 }

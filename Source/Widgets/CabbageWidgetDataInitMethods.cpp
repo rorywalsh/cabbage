@@ -87,6 +87,11 @@ void CabbageWidgetData::setHRangeSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
     setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
     setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
+    
+    var valueBoxSizes;
+    valueBoxSizes.append(0);
+    valueBoxSizes.append(0);
+    setProperty (widgetData, CabbageIdentifierIds::valuetextboxsize, valueBoxSizes);
 }
 
 void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
@@ -131,6 +136,11 @@ void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
     setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
     setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
+    
+    var valueBoxSizes;
+    valueBoxSizes.append(0);
+    valueBoxSizes.append(0);
+    setProperty (widgetData, CabbageIdentifierIds::valuetextboxsize, valueBoxSizes);
 }
 
 void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
@@ -153,6 +163,11 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::text, "");
     setProperty (widgetData, CabbageIdentifierIds::valuetextbox, 0.f);
     setProperty (widgetData, CabbageIdentifierIds::textboxcolour, Colour (0.f, 0.f, 0.f, 0.f).toString());
+    
+    var valueBoxSizes;
+    valueBoxSizes.append(0);
+    valueBoxSizes.append(0);
+    setProperty (widgetData, CabbageIdentifierIds::valuetextboxsize, valueBoxSizes);
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::whitesmoke.toString());
     setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (0, 118, 38).toString());

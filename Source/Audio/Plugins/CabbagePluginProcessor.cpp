@@ -1208,7 +1208,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
     {
         const auto identifier = identData->data[i].identifier;
         const auto name = identData->data[i].name;
-        
+
         if(cabbageWidgets.getChildWithName(name).isValid())
         {
             if(!identData->data[i].args.isUndefined())
@@ -1243,7 +1243,6 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                 }
                 else
                 {
-                    DBG(identData->data[i].args.toString());
                     CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), " " + identData->data[i].args.toString());
                 }
             }
