@@ -164,6 +164,20 @@ public:
     //=============================================================================
 	virtual bool keyPressed(const KeyPress& key, Component* originatingComponent) override
 	{
+        StringArray mods;
+        if(key.getModifiers().isAnyModifierKeyDown())
+        {
+            if(key.getModifiers().isCommandDown())
+                mods.add("Command");
+            if(key.getModifiers().isShiftDown())
+                mods.add("Shift");
+            if(key.getModifiers().isCtrlDown())
+                mods.add("Ctrl");
+            if(key.getModifiers().isAltDown())
+                mods.add("Alt");
+        }
+        
+        cabbageProcessor.getCsound()->SetChannel("KEY_MODIFIERS", mods.joinIntoString(" ").toUTF8().getAddress());
         cabbageProcessor.getCsound()->SetChannel("KEY_PRESSED", key.getKeyCode());
 		return false;
 	}
