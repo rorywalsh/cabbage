@@ -322,8 +322,12 @@ int GetCabbageValueWithTrigger::getAttribute()
 
 int SetCabbageValueIdentifier::setAttribute()
 {
-    CabbageWidgetIdentifiers::IdentifierData data;
     int trigger = outargs[2];
+    
+    if(trigger == 0)
+        return OK;
+    
+    CabbageWidgetIdentifiers::IdentifierData data;
     
     String name(outargs.str_data(0).data);
     
@@ -358,8 +362,13 @@ int SetCabbageValueIdentifier::setAttribute()
 //====================================================================================================
 int SetCabbageIdentifier::setAttribute()
 {
-    CabbageWidgetIdentifiers::IdentifierData data;
+   
     int trigger = outargs[0];
+    
+    if(trigger == 0)
+        return OK;
+    
+    CabbageWidgetIdentifiers::IdentifierData data;
     String name(outargs.str_data(1).data);
     String identifier(outargs.str_data(2).data);
     data.identifier = identifier;

@@ -1215,7 +1215,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
             {
                 if(identData->data[i].isSingleIdent)
                 {
-                    if(identifier.toString().contains("colour"))
+                    if(identifier.toString().containsIgnoreCase("colour"))
                     {
                         String colourTokens;
                         for(int x = 0 ; x < identData->data[i].args.size() ; x++){
