@@ -129,8 +129,7 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     popupBubble(250),
     thumb(this)
 {
-    
-    setName(channel);
+
     lookAndFeel.customFont = owner->customFont;
     slider.setLookAndFeel(&lookAndFeel);
     //slider.sendLookAndFeelChange();
