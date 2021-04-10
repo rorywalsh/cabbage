@@ -108,7 +108,7 @@ public:
                                              bool isMouseOver,
                                              bool isMouseDown) override;
 
-    void setDefaultFont(File fontFile);
+//    void setDefaultFont(File fontFile);
     void drawTooltip(Graphics&, const String& text, int width, int height) override;
     Font getTextButtonFont (TextButton&, int buttonHeight) override;
     Font getComboBoxFont (ComboBox&) override;

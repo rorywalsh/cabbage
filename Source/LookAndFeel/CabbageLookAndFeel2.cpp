@@ -78,21 +78,21 @@ CabbageLookAndFeel2::CabbageLookAndFeel2()
 {
     //setDefaultFont(File("/Users/walshr/Documents/Csoundfiles/RobotoCondensed-Italic.ttf"));
 }
-
-void CabbageLookAndFeel2::setDefaultFont(File fontFile)
-{
-        if(fontFile.existsAsFile())
-        {
-            std::unique_ptr<InputStream> inStream (fontFile.createInputStream());
-            MemoryBlock mb;
-            inStream->readIntoMemoryBlock(mb);
-            Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
-//            LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypeface(fontPtr);
-            customFont = Font(fontPtr);
-        }
-        else
-            customFont = CabbageUtilities::getComponentFont();
-}
+//
+//void CabbageLookAndFeel2::setDefaultFont(File fontFile)
+//{
+//        if(fontFile.existsAsFile())
+//        {
+//            std::unique_ptr<InputStream> inStream (fontFile.createInputStream());
+//            MemoryBlock mb;
+//            inStream->readIntoMemoryBlock(mb);
+//            Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
+////            LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypeface(fontPtr);
+//            customFont = Font(fontPtr);
+//        }
+//        else
+//            customFont = CabbageUtilities::getComponentFont();
+//}
 
 void CabbageLookAndFeel2::drawDocumentWindowTitleBar(DocumentWindow& window, Graphics& g,
     int w, int h, int titleSpaceX, int titleSpaceW,
@@ -329,7 +329,11 @@ void CabbageLookAndFeel2::drawGroupComponentOutline(Graphics& g, int w, int h, c
 
     //----- Text
     String name = group.getText();
-    Font font = customFont;
+    Font font;
+    if(customFont.getHeight()>900)
+        font = CabbageUtilities::getTitleFont();
+    else
+        font = customFont;
 #ifndef JUCE_MAC
     font.setFallbackFontName("Verdana");
 #endif
@@ -389,8 +393,10 @@ void CabbageLookAndFeel2::drawToggleButton(Graphics& g, ToggleButton& button, bo
         g.setOpacity(0.5f);
 
     const int textX = (int)tickWidth + 5;
-
-    Font font = customFont;
+    Font font;
+    
+    if(customFont.getHeight()<900)
+       font = customFont;
 #ifndef JUCE_MAC
     font.setFallbackFontName("Verdana");
 #endif
@@ -1071,7 +1077,13 @@ void CabbageLookAndFeel2::drawButtonBackground(Graphics& g, Button& button, cons
 
 void CabbageLookAndFeel2::drawButtonText(Graphics& g, TextButton& button, bool isMouseOverButton, bool isButtonDown)
 {
-    Font font(this->getTextButtonFont(button, button.getHeight()));
+    Font font;
+    
+    if(customFont.getHeight()>900)
+        font = Font(getTextButtonFont(button, button.getHeight()));
+    else
+        font = customFont;
+    
     g.setFont(font);
     g.setColour(button.findColour(button.getToggleState() ? TextButton::textColourOnId
         : TextButton::textColourOffId)
@@ -1292,24 +1304,40 @@ void CabbageLookAndFeel2::drawLabel(Graphics& g, Label& label)
 //===================================================================================
 Font CabbageLookAndFeel2::getTextButtonFont (TextButton&, int buttonHeight)
 {
+    if(customFont.getHeight()>900)
+        return Font(jmin(15.0f, buttonHeight * 0.6f));
+
     customFont.setHeight(jmin(15.0f, buttonHeight * 0.6f));
     return customFont;
+
 }
 
 Font CabbageLookAndFeel2::getComboBoxFont (ComboBox& box)
 {
+    if(customFont.getHeight()>900)
+        return Font(jmin (15.0f, box.getHeight() * 0.85f));
+
     customFont.setHeight(jmin (15.0f, box.getHeight() * 0.85f));
     return customFont;
 }
 
 Font CabbageLookAndFeel2::getLabelFont(Label& label)
 {
+    if(customFont.getHeight()>900)
+        return Font();
+
     return customFont;
     //return CabbageUtilities::getComponentFont();
 }
 
 Font CabbageLookAndFeel2::getSliderPopupFont (Slider&)
 {
+    if(customFont.getHeight()>900)
+    {
+        Font font(15.0f);
+        font.setBold(true);
+        return font;
+    }
     customFont.setHeight(15.0f);
     customFont.setBold(true);
     return customFont;// (15.0f, Font::bold);

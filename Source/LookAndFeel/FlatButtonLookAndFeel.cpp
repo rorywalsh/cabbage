@@ -518,23 +518,48 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     }
 }
 
+//===================================================================================
 Font FlatButtonLookAndFeel::getTextButtonFont (TextButton&, int buttonHeight)
 {
+    if(customFont.getHeight()>900)
+        return Font(jmin(15.0f, buttonHeight * 0.6f));
+    
     customFont.setHeight(jmin(15.0f, buttonHeight * 0.6f));
     return customFont;
+    
 }
 
 Font FlatButtonLookAndFeel::getComboBoxFont (ComboBox& box)
 {
+    if(customFont.getHeight()>900)
+        return Font(jmin (15.0f, box.getHeight() * 0.85f));
+    
     customFont.setHeight(jmin (15.0f, box.getHeight() * 0.85f));
     return customFont;
 }
 
 Font FlatButtonLookAndFeel::getLabelFont(Label& label)
 {
+    if(customFont.getHeight()>900)
+        return Font();
+    
     return customFont;
     //return CabbageUtilities::getComponentFont();
 }
+
+Font FlatButtonLookAndFeel::getSliderPopupFont (Slider&)
+{
+    if(customFont.getHeight()>900)
+    {
+        Font font(15.0f);
+        font.setBold(true);
+        return font;
+    }
+    customFont.setHeight(15.0f);
+    customFont.setBold(true);
+    return customFont;// (15.0f, Font::bold);
+}
+
 
 
 Slider::SliderLayout FlatButtonLookAndFeel::getSliderLayout(Slider& slider)
@@ -610,9 +635,3 @@ Slider::SliderLayout FlatButtonLookAndFeel::getSliderLayout(Slider& slider)
     
 }
 
-Font FlatButtonLookAndFeel::getSliderPopupFont (Slider&)
-{
-    customFont.setHeight(15.0f);
-    customFont.setBold(true);
-    return customFont;// (15.0f, Font::bold);
-}

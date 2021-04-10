@@ -1251,8 +1251,7 @@ public:
         }
         else
         {
-            Font fontPtr;
-            return fontPtr.getDefaultTypefaceForFont(CabbageUtilities::getComponentFont());
+            return nullptr;
         }
         
     }

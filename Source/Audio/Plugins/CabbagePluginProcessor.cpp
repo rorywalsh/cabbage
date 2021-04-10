@@ -200,7 +200,8 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
                 customFont = CabbageUtilities::getFontFromFile(File(fontPath));
             }
             else
-                customFont = CabbageUtilities::getComponentFont();
+                customFont = Font(999);
+
 		}
 
 	}
