@@ -100,6 +100,8 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **KEY_DOWN** Returns 1 a key-down event, and 0 for a key-up event.  
 
+**KEY_MODIFIERS** Returns a string with a list of current modifiers, i.e, Shift Ctrl Alt Command
+
 
 Cabbage also set the host type, which can be retrieved using the following channels. 
 

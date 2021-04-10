@@ -22,6 +22,7 @@ newFileText = ""
 camelCaseIdentifiers = []
 
 camelCaseIdentifiers.append("scrubberposition_sample");
+camelCaseIdentifiers.append("doubleClickTogglesEdit");
 camelCaseIdentifiers.append("scrubberposition_table");
 camelCaseIdentifiers.append("tableBackgroundColour");
 camelCaseIdentifiers.append("arrowBackgroundColour");
@@ -61,7 +62,7 @@ camelCaseIdentifiers.append("numberOfSteps");
 camelCaseIdentifiers.append("textBoxColour");
 camelCaseIdentifiers.append("trackerColour");
 camelCaseIdentifiers.append("trackerRadius");
-camelCaseIdentifiers.append("showsSrubber");
+camelCaseIdentifiers.append("showSrubber");
 camelCaseIdentifiers.append("markerColour");
 camelCaseIdentifiers.append("valueTextBox");
 camelCaseIdentifiers.append("fontColour:1");
@@ -95,6 +96,7 @@ camelCaseIdentifiers.append("baseChannel");
 camelCaseIdentifiers.append("popupPrefix");
 camelCaseIdentifiers.append("automatable");
 camelCaseIdentifiers.append("valuePrefix");
+camelCaseIdentifiers.append("caretColour");
 camelCaseIdentifiers.append("automation");
 camelCaseIdentifiers.append("autoUpdate");
 camelCaseIdentifiers.append("matrixSize");
@@ -197,6 +199,7 @@ camelCaseIdentifiers.append("bpm");
 
 lowerCaseIdentifiers = []
 lowerCaseIdentifiers.append("scrubberposition_sample");
+lowerCaseIdentifiers.append("doubleclicktogglesedit");
 lowerCaseIdentifiers.append("scrubberposition_table");
 lowerCaseIdentifiers.append("tablebackgroundcolour");
 lowerCaseIdentifiers.append("arrowbackgroundcolour");
@@ -270,6 +273,7 @@ lowerCaseIdentifiers.append("basechannel");
 lowerCaseIdentifiers.append("popupprefix");
 lowerCaseIdentifiers.append("automatable");
 lowerCaseIdentifiers.append("valueprefix");
+lowerCaseIdentifiers.append("caretcolour");
 lowerCaseIdentifiers.append("automation");
 lowerCaseIdentifiers.append("autoupdate");
 lowerCaseIdentifiers.append("matrixsize");

@@ -52,6 +52,8 @@ slider WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/valuetextbox.md !} 
 
+{! ./markdown/Widgets/Properties/valuetextboxbounds.md !} 
+
 {! ./markdown/Widgets/Properties/velocity.md !} 
 
 ### Common Identifiers
