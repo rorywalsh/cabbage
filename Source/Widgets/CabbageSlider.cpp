@@ -130,17 +130,13 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     thumb(this)
 {
 
-    lookAndFeel.customFont = owner->customFont;
-    slider.setLookAndFeel(&lookAndFeel);
-    //slider.sendLookAndFeelChange();
-    
     setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
     widgetData.addListener(this);
     addAndMakeVisible(textLabel);
     
     addAndMakeVisible(&slider);
     addAndMakeVisible(thumb);
-    //slider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
+    slider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
     slider.getProperties().set("trackerthickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackerthickness));
     slider.getProperties().set("trackerbgcolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackerbgcolour));
     slider.getProperties().set("markercolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::markercolour));
@@ -150,8 +146,8 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     slider.getProperties().set("gapmarkers", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::gapmarkers));
     setImgProperties(this->slider, wData, "slider");
     setImgProperties(this->slider, wData, "sliderbg");
-
-
+    
+    
     filmStripValueBox.setEditable(true);
     filmStripValueBox.setJustificationType(Justification::centred);
     prefix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::valueprefix);
@@ -160,8 +156,8 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     popupPostfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuppostfix);
     initialiseSlider(wData, slider);
     initFilmStrip(wData);
-
-
+    
+    
     const File sliderImageFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider));
     const File sliderBackgroundFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgsliderbg));
     if (!isFilmStripSlider) {
@@ -174,10 +170,10 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
         {
             sliderBgImage = ImageFileFormat::loadFrom(sliderBackgroundFile);
         }
-
+        
     }
-
-
+    
+    
     setLookAndFeelColours(widgetData);
     setTextBoxOrientation(sliderType, shouldShowTextBox);
     const String sliderImg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider);
@@ -190,27 +186,27 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
         slider.setLookAndFeel(&flatLookAndFeel);
         textLabel.setLookAndFeel(&flatLookAndFeel);
     }
-
     slider.setTextValueSuffix(postfix);
-
-
+    
+    
     slider.onValueChange = [this] {
         if (isFilmStripSlider || sliderThumbImage.isValid())
             repaint();
         thumb.move(slider.getValue(), slider.getRange());
-
+        
         auto newValue = slider.getTextFromValue(slider.getValue());
         filmStripValueBox.setFont(25.f);
         filmStripValueBox.setText(newValue, dontSendNotification);
     };
-
+    
     filmStripValueBox.onTextChange = [this] {
         slider.setValue(float(filmStripValueBox.getTextValue().getValue()));
     };
-
+    
     textLabel.setVisible(false);
     initialiseCommonAttributes(this, wData);
     createPopupBubble();
+    
     
 }
 
