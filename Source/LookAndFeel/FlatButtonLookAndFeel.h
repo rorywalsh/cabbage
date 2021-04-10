@@ -57,6 +57,7 @@ public:
     Font getComboBoxFont (ComboBox&) override;
     Font getLabelFont (Label&) override;
     Font getSliderPopupFont (Slider&) override;
+    Slider::SliderLayout getSliderLayout(Slider& slider) override;
     
     //    Font getAlertWindowTitleFont() override;
     //    Font getAlertWindowMessageFont() override;

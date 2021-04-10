@@ -79,6 +79,7 @@ class SliderThumb : public Component
 public:
     SliderThumb(CabbageSlider* slider) : Component(), owner(slider)
     {
+
     };
 
     void paint(Graphics& g) {
@@ -132,6 +133,7 @@ class CabbageSlider
     bool isFilmStripSlider = false;
 
     FlatButtonLookAndFeel flatLookAndFeel;
+    CabbageLookAndFeel2 lookAndFeel;
     int numFrames = 31;
     bool imageIsNull = true;
     Image filmStrip;

@@ -675,9 +675,18 @@ void CabbageLookAndFeel2::drawLinearSlider(Graphics& g, int x, int y, int width,
 
 Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
 {
-    Slider::SliderLayout layout;
-    layout.sliderBounds = slider.getLocalBounds();
 
+    Slider::SliderLayout layout;
+
+    layout.sliderBounds = slider.getLocalBounds();
+    
+    var bounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::valuetextboxbounds, var());
+    if(bounds.isArray())
+    {
+        layout.textBoxBounds = Rectangle<int>(bounds[0], bounds[1], bounds[2], bounds[3]);
+        return layout;
+    }
+    
     int minXSpace = 0;
     int minYSpace = 0;
 

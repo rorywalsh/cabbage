@@ -129,14 +129,19 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     popupBubble(250),
     thumb(this)
 {
-
+    
+    setName(channel);
+    lookAndFeel.customFont = owner->customFont;
+    slider.setLookAndFeel(&lookAndFeel);
+    //slider.sendLookAndFeelChange();
+    
     setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
     widgetData.addListener(this);
     addAndMakeVisible(textLabel);
     
     addAndMakeVisible(&slider);
     addAndMakeVisible(thumb);
-    slider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
+    //slider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
     slider.getProperties().set("trackerthickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackerthickness));
     slider.getProperties().set("trackerbgcolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackerbgcolour));
     slider.getProperties().set("markercolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::markercolour));
@@ -186,6 +191,7 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
         slider.setLookAndFeel(&flatLookAndFeel);
         textLabel.setLookAndFeel(&flatLookAndFeel);
     }
+
     slider.setTextValueSuffix(postfix);
 
 
@@ -328,20 +334,16 @@ void CabbageSlider::setTextBoxOrientation(String type, int showTextBox)
 
 void CabbageSlider::setTextBoxWidth()
 {
+    //override value text box bounds if needed...
+    var textBoxBounds = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::valuetextboxbounds);
+    if(textBoxBounds.isArray())
+    {
+        slider.getProperties().set("valueTextBoxBounds", textBoxBounds);
+    }
+
     int w = jmin(55.f, getWidth() * .65f);
     int h = 15;
-    
-    var textBoxSize = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::valuetextboxsize);
-    if(textBoxSize.isArray())
-    {
-        DBG(textBoxSize[0].toString());
-        DBG(textBoxSize[1].toString());
-        if(int(textBoxSize[0])!=0)
-            w = int(textBoxSize[0]);
-        if(int(textBoxSize[1])!=0)
-            h = int(textBoxSize[1]);
-    }
-    
+
     if (!isFilmStripSlider)
     {
         if (sliderType.contains("horizontal"))
@@ -353,9 +355,14 @@ void CabbageSlider::setTextBoxWidth()
     {
         if (sliderType.contains("rotary"))
             getSlider().setTextBoxStyle(Slider::TextBoxBelow, false, w, h);
-            
     }
 
+
+    slider.sendLookAndFeelChange();
+    
+    
+    
+    
 }
 
 void CabbageSlider::resized()
