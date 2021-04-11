@@ -497,6 +497,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 break;
                 
             case HashStringToInt ("valueTextBoxBounds"):
+            case HashStringToInt ("sliderBounds"):
                 setProperty (widgetData, identifier, strTokens);
                 break;
             case HashStringToInt ("popup"):

@@ -113,7 +113,7 @@ class CabbageSlider
     int decimalPlaces = 0;
     float remove1 = 0, remove2 = 0;
     String colour, fontColour, textColour, outlineColour, sliderType, trackerColour, channel, popupText;
-    
+    var sliderBounds;
     Slider slider;
     BubbleMessageComponent popupBubble;
     Image sliderThumbImage, sliderBgImage;

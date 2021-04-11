@@ -90,6 +90,7 @@ void CabbageWidgetData::setHRangeSliderProperties (ValueTree widgetData, int ID)
     
     var valueBoxBounds;
     setProperty (widgetData, CabbageIdentifierIds::valuetextboxbounds, valueBoxBounds);
+    setProperty (widgetData, CabbageIdentifierIds::sliderbounds, valueBoxBounds);
 }
 
 void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
@@ -137,6 +138,7 @@ void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
     
     var valueBoxBounds;
     setProperty (widgetData, CabbageIdentifierIds::valuetextboxbounds, valueBoxBounds);
+    setProperty (widgetData, CabbageIdentifierIds::sliderbounds, valueBoxBounds);
     
 }
 
@@ -193,6 +195,7 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
     
     var valueBoxBounds;
     setProperty (widgetData, CabbageIdentifierIds::valuetextboxbounds, valueBoxBounds);
+    setProperty (widgetData, CabbageIdentifierIds::sliderbounds, valueBoxBounds);
 }
 
 void CabbageWidgetData::setLineProperties (ValueTree widgetData, int ID)

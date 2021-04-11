@@ -157,7 +157,9 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     initialiseSlider(wData, slider);
     initFilmStrip(wData);
     
-    
+    sliderBounds = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::sliderbounds);
+
+        
     const File sliderImageFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider));
     const File sliderBackgroundFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgsliderbg));
     if (!isFilmStripSlider) {
@@ -226,8 +228,16 @@ void CabbageSlider::paint(Graphics& g)
 
         int sliderValue = sliderPos * (numFrames - 1);
 
+        if(!sliderBounds.isArray())
+        {
         g.drawImage(filmStrip, filmStripBounds.getX(), filmStripBounds.getY(), filmStripBounds.getWidth(), filmStripBounds.getHeight(),
             0, sliderValue * frameHeight, frameWidth, frameHeight);
+        }
+        else
+        {
+            g.drawImage(filmStrip, (int)sliderBounds[0], (int)sliderBounds[1], (int)sliderBounds[2], (int)sliderBounds[3],
+                        0, sliderValue * frameHeight, frameWidth, frameHeight);
+        }
     }
     else if (sliderBgImage.isValid())
     {

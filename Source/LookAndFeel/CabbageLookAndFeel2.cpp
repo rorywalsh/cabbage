@@ -685,14 +685,7 @@ Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
     Slider::SliderLayout layout;
 
     layout.sliderBounds = slider.getLocalBounds();
-    
-    var bounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::valuetextboxbounds, var());
-    if(bounds.isArray())
-    {
-        layout.textBoxBounds = Rectangle<int>(bounds[0], bounds[1], bounds[2], bounds[3]);
-        return layout;
-    }
-    
+
     int minXSpace = 0;
     int minYSpace = 0;
 
@@ -730,7 +723,7 @@ Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
         }
     }
 
-    layout.sliderBounds = localBounds;
+    layout.sliderBounds = localBounds.reduced(0.5);
 
     if (slider.isBar())
     {
@@ -749,6 +742,17 @@ Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
         else if (slider.isVertical()) layout.sliderBounds.reduce(0, thumbIndent);
     }
 
+    var bounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::valuetextboxbounds, var());
+    if(bounds.isArray())
+    {
+        layout.textBoxBounds = Rectangle<int>(bounds[0], bounds[1], bounds[2], bounds[3]);
+    }
+    var sliderBounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::sliderbounds, var());
+    if(sliderBounds.isArray())
+    {
+        layout.sliderBounds = Rectangle<int>(sliderBounds[0], sliderBounds[1], sliderBounds[2], sliderBounds[3]);
+    }
+    
     return layout;
 }
 
@@ -761,7 +765,7 @@ void CabbageLookAndFeel2::drawLinearSliderBackground(Graphics& g, int x, int y, 
 {
 
     const float sliderRadius = (float)(getSliderThumbRadius(slider) - 2);
-    float xOffset = (sliderRadius / width);
+
     const Colour trackColour(slider.findColour(Slider::trackColourId));
     float zeroPosProportional = 0;
 

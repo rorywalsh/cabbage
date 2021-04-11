@@ -441,10 +441,11 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     }
     else
     {
-        const float radius = jmin(width / 2, height / 2) - 2.0f;
+        const Rectangle<int> bounds = getSliderLayout(slider).sliderBounds;
+        const float radius = jmin(bounds.getWidth() / 2, bounds.getHeight() / 2) - 2.0f;
         const float diameter = radius * 2.f;
-        const float centreX = x + width * 0.5f;
-        const float centreY = y + height * 0.5f;
+        const float centreX = bounds.getX()+ bounds.getWidth() * 0.5f;
+        const float centreY = bounds.getY() + bounds.getHeight() * 0.5f;
         const float rx = centreX - radius;
         const float ry = centreY - radius;
         const float rw = radius * 2.0f;
@@ -470,7 +471,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
         {
             Path filledArc;
             filledArc.addPieSegment(rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
-            filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+            filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, bounds.getWidth() / 2.f, bounds.getHeight() / 2.f));
             g.fillPath(filledArc);
         }
 
@@ -478,7 +479,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
         g.setColour(trackerBgColour);
         Path bgArc;
         bgArc.addPieSegment(rx, ry, rw, rw, angle, rotaryEndAngle, innerRadiusProportion);
-        bgArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+        bgArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, bounds.getWidth() / 2.f, bounds.getHeight() / 2.f));
         g.fillPath(bgArc);
 
         //outlinecolour
@@ -487,7 +488,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
 
         Path outlineArc;
         outlineArc.addPieSegment(rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, innerRadiusProportion);
-        outlineArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+        outlineArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, bounds.getWidth() / 2.f, bounds.getHeight() / 2.f));
         outlineArc.closeSubPath();
 
         g.strokePath(outlineArc, PathStrokeType(slider.isEnabled() ? (isMouseOver ? 2.0f : 1.2f) : 0.3f));
@@ -565,16 +566,9 @@ Font FlatButtonLookAndFeel::getSliderPopupFont (Slider&)
 Slider::SliderLayout FlatButtonLookAndFeel::getSliderLayout(Slider& slider)
 {
     Slider::SliderLayout layout;
-    
+
     layout.sliderBounds = slider.getLocalBounds();
-    
-    var bounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::valuetextboxbounds, var());
-    if(bounds.isArray())
-    {
-        layout.textBoxBounds = Rectangle<int>(bounds[0], bounds[1], bounds[2], bounds[3]);
-        return layout;
-    }
-    
+
     int minXSpace = 0;
     int minYSpace = 0;
     
@@ -629,6 +623,17 @@ Slider::SliderLayout FlatButtonLookAndFeel::getSliderLayout(Slider& slider)
         
         if (slider.isHorizontal())    layout.sliderBounds.reduce(thumbIndent, 0);
         else if (slider.isVertical()) layout.sliderBounds.reduce(0, thumbIndent);
+    }
+    
+    var bounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::valuetextboxbounds, var());
+    if(bounds.isArray())
+    {
+        layout.textBoxBounds = Rectangle<int>(bounds[0], bounds[1], bounds[2], bounds[3]);
+    }
+    var sliderBounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::sliderbounds, var());
+    if(sliderBounds.isArray())
+    {
+        layout.sliderBounds = Rectangle<int>(sliderBounds[0], sliderBounds[1], sliderBounds[2], sliderBounds[3]);
     }
     
     return layout;
