@@ -41,6 +41,7 @@ CabbageLabel::CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner)
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
     textAlign = CabbageUtilities::getJustification (align);
+    
     lookAndFeel.customFont = owner->customFont;
 
 }
@@ -50,9 +51,8 @@ void CabbageLabel::paint (Graphics& g)
     g.setColour (Colour::fromString (colour));
     g.fillRoundedRectangle (getLocalBounds().toFloat(), corners);
     g.setColour (Colour::fromString (fontcolour));
+    owner->customFont.setStyleFlags(fontstyle);
     g.setFont (owner->customFont);
-//    Label tmp;
-//    g.setFont (getLookAndFeel().getLabelFont(tmp).setStyleFlags(fontstyle));
 
 	if (fontsize == 0)
 	{
