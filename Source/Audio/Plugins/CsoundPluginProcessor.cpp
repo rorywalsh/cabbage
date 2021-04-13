@@ -960,33 +960,34 @@ void CsoundPluginProcessor::performCsoundKsmps()
 
 
 template< typename Type >
-void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type* buffer, int samplePos, int csdPos)
+void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type* buffer, int samplePosition, int csndPosition)
 {
     //csdPos should go from 0 to (ksmps * number of channels)...
 	if (bufferType == BufferType::inputOutput)
 	{
-        DBG("Input/Output Buffer Pos: +" + String(csdPos));
-        MYFLT sample = buffer[samplePos] * cs_scale;
-        CSspin[csdPos] = sample;
+       // DBG("Input/Output Buffer Pos: +" + String(csndPosition));
+        MYFLT sample = buffer[samplePosition] * cs_scale;
+        CSspin[csndPosition] = sample;
         
         //if we want 0 latency, we have to fill Csound spin buffer before we call performKsmps()
         if (preferredLatency == -1)
             performCsoundKsmps();
-        buffer[samplePos] = (CSspout[csdPos] / cs_scale);
+        buffer[samplePosition] = (CSspout[csndPosition] / cs_scale);
 	}
 	else if (bufferType == BufferType::output)
 	{
-        buffer[samplePos] = (CSspout[csdPos] / cs_scale);
+        //DBG("Output Buffer Pos: +" + String(csndPosition));
+        buffer[samplePosition] = (CSspout[csndPosition] / cs_scale);
 	}
 	else //input
 	{
         if(buffer != nullptr)
         {
-            //DBG("Input Buffer Pos: +" + String(csdPos));
-            CSspin[csdPos] = buffer[samplePos] * cs_scale;
+            //DBG("Input Buffer Pos: +" + String(csndPosition) + "\n");
+            CSspin[csndPosition] = buffer[samplePosition] * cs_scale;
         }
         else
-            CSspin[csdPos] = 0;
+            CSspin[csndPosition] = 0;
 	}
 }
 
@@ -1094,39 +1095,44 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 	
 #if !JucePlugin_IsSynth
             //if using Logic process inputs and outputs separately - otherwise its mono to stereo features break...
-            if (matchingNumberOfIOChannels)
-            {
-                pos = csndIndex * outputChannelCount;
-                for (int channel = 0; channel < outputChannelCount; channel++)
-                {
-                    processCsoundIOBuffers(BufferType::inputOutput, ioBuffer[channel], i, pos);
-                    pos++;
-                }
-            }
-            else
+            //if (matchingNumberOfIOChannels)
+            //{
+            //    pos = csndIndex * outputChannelCount;
+            //    for (int channel = 0; channel < outputChannelCount; channel++)
+            //    {
+            //        processCsoundIOBuffers(BufferType::inputOutput, ioBuffer[channel], i, pos);
+            //        pos++;
+            //    }
+            //}
+            //else
             {
                 //process each bus
                 const int numInputBuses = getBusCount(true);
               
-                pos = csndIndex * numInputBuses;
+                pos = csndIndex * inputChannelCount;
+
                 for (int busIndex = 0; busIndex < numInputBuses; busIndex++)
                 {
                     auto inputBus = getBusBuffer(buffer, true, busIndex);
                     Type** inputBuffer = inputBus.getArrayOfWritePointers();
-                    pos *= inputBus.getNumChannels();
+                    //pos *= inputBus.getNumChannels();
                     for (int channel = 0; channel < inputBus.getNumChannels(); channel++)
                     {
+                        //DBG("InputBusNumber " + String(busIndex));
+                        //DBG("InputBusChannel " + String(channel));
+                        
                         processCsoundIOBuffers(BufferType::input, inputBuffer[channel], i, pos++);
+
                     }
                 }
 
                 const int numOutputBuses = getBusCount(false);
-                pos = csndIndex* numOutputBuses;
+                pos = csndIndex* outputChannelCount;
                 for (int busIndex = 0; busIndex < numOutputBuses; busIndex++)
                 {
                     auto outputBus = getBusBuffer(buffer, false, busIndex);
                     Type** outputBuffer = outputBus.getArrayOfWritePointers();
-                    pos *= outputBus.getNumChannels();
+                    //pos *= outputBus.getNumChannels();
 
                     for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
                     {
