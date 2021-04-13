@@ -197,7 +197,10 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
             const String font = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::typeface);
             if(font.isNotEmpty()){
                 const String fontPath = File(getCsdFile()).getParentDirectory().getChildFile(font).getFullPathName();
-                customFont = CabbageUtilities::getFontFromFile(File(fontPath));
+                if(File(fontPath).existsAsFile())
+                    customFont = CabbageUtilities::getFontFromFile(File(fontPath));
+                else
+                    customFont = Font(999);
             }
             else
                 customFont = Font(999);

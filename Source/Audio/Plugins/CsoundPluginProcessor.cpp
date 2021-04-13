@@ -38,21 +38,8 @@ csdFile (csdFile)
     CabbageUtilities::debug("Cabbage Csound Constructor - Requested input channels:", numCsoundInputChannels);
     CabbageUtilities::debug("Cabbage Csound Constructor - Requested output channels:", numCsoundOutputChannels);
 
-    //if (PluginHostType().isCubase()) {
-        const int numBuses = getBusCount(true);
-        for (int i = 0; i < numBuses; i++) {
-            DBG(getBus(true, i)->getName());
-            if (getBus(true, i)->getName().contains("Sidechain")) {
-                matchingNumberOfIOChannels = false;
-                supportsSidechain = true;
-                numSideChainChannels = getBus(true, i)->getNumberOfChannels();
-            }
-        }
-    //}
-
 #else
     numCsoundOutputChannels = getTotalNumOutputChannels();
-    //numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
     CabbageUtilities::debug("Constructor - Requested output channels:", numCsoundOutputChannels);
 #endif
 
@@ -193,7 +180,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     //int test = csound->SetGlobalEnv("OPCODE6DIR64", );
     CabbageUtilities::debug("Env var set");
     //csoundSetOpcodedir("/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Opcodes64");
-    //Logger::writeToLog(String::formatted("Resetting csound ...\ncsound = 0x%p", csound.get()));
+    
+    Logger::writeToLog(String::formatted("Resetting csound ...\ncsound = 0x%p", csound.get()));
+
 	csound.reset (new Csound());
     
 	csdFilePath = filePath;
@@ -299,8 +288,21 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 		csoundParams->ksmps_override = 4410;
 	}
 
-	csoundParams->nchnls_override = numCsoundOutputChannels;
-    csoundParams->nchnls_i_override = numCsoundInputChannels;
+    if(hostRequestedMono)
+    {
+        //this mode is for logic and cubase as they both allow weird mono/stereo configs
+        numCsoundOutputChannels = 1;
+        numCsoundInputChannels = 1;
+        csoundParams->nchnls_override = 1;
+        csoundParams->nchnls_i_override = 1;
+    }
+    else
+    {
+        csoundParams->nchnls_override = numCsoundOutputChannels;
+        csoundParams->nchnls_i_override = numCsoundInputChannels;
+    }
+//    csoundParams->nchnls_override = numCsoundOutputChannels;
+//    csoundParams->nchnls_i_override = numCsoundInputChannels;
 
     
     // Update the matchingNumberOfIOChannels flag so the MacOS auval tool doesn't crash when validating
@@ -838,22 +840,15 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 #if ! JucePlugin_IsSynth
     const int inputs = getTotalNumInputChannels();
     const int outputs = getTotalNumOutputChannels();
+    if(getBusesLayout().getMainOutputChannelSet() == AudioChannelSet::mono())
+        hostRequestedMono = true;
+    
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - inputs:", inputs);
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested input channels:", numCsoundInputChannels);
-#else
+#endif
     //const int outputs = getBus(false, 0)->getNumberOfChannels();
-    const int outputs = getBusCount(false) * 2; //each bus is a stereo pair
-
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - outputs:", outputs);
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested output channels:", numCsoundOutputChannels);
-#endif
-
-    const int numBuses = getBusCount(true);
-    for (int i = 0; i < numBuses; i++) {
-        CabbageUtilities::debug(getBus(true, i)->getNumberOfChannels());
-        CabbageUtilities::debug(getBus(true, i)->getName());
-
-    }
 
     if((samplingRate != sampleRate)
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
@@ -1095,75 +1090,46 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 	
 #if !JucePlugin_IsSynth
             //if using Logic process inputs and outputs separately - otherwise its mono to stereo features break...
-            //if (matchingNumberOfIOChannels)
-            //{
-            //    pos = csndIndex * outputChannelCount;
-            //    for (int channel = 0; channel < outputChannelCount; channel++)
-            //    {
-            //        processCsoundIOBuffers(BufferType::inputOutput, ioBuffer[channel], i, pos);
-            //        pos++;
-            //    }
-            //}
-            //else
-            {
+//            if (matchingNumberOfIOChannels)
+//            {
+//
+//                pos = csndIndex * outputChannelCount;
+//                for (int channel = 0; channel < outputChannelCount; channel++)
+//                {
+//                    processCsoundIOBuffers(BufferType::inputOutput, ioBuffer[channel], i, pos);
+//                    pos++;
+//                }
+//            }
+//            else
+//            {
                 //process each bus
                 const int numInputBuses = getBusCount(true);
-              
                 pos = csndIndex * inputChannelCount;
-
+            
                 for (int busIndex = 0; busIndex < numInputBuses; busIndex++)
                 {
                     auto inputBus = getBusBuffer(buffer, true, busIndex);
                     Type** inputBuffer = inputBus.getArrayOfWritePointers();
-                    //pos *= inputBus.getNumChannels();
+
                     for (int channel = 0; channel < inputBus.getNumChannels(); channel++)
                     {
-                        //DBG("InputBusNumber " + String(busIndex));
-                        //DBG("InputBusChannel " + String(channel));
-                        
                         processCsoundIOBuffers(BufferType::input, inputBuffer[channel], i, pos++);
-
                     }
                 }
 
                 const int numOutputBuses = getBusCount(false);
                 pos = csndIndex* outputChannelCount;
+            
                 for (int busIndex = 0; busIndex < numOutputBuses; busIndex++)
                 {
                     auto outputBus = getBusBuffer(buffer, false, busIndex);
                     Type** outputBuffer = outputBus.getArrayOfWritePointers();
-                    //pos *= outputBus.getNumChannels();
 
                     for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
                     {
                         processCsoundIOBuffers(BufferType::output, outputBuffer[channel], i, pos++);
                     }
                 }
-
-			}
-			//else {
-				//sidechain processing
-				/*pos = csndIndex * inputChannelCount;
-				for (int channel = 0; channel < inputChannelCount; channel++)
-				{
-					if(channel< numSideChainChannels)
-						processCsoundIOBuffers(BufferType::input, ioBuffer[channel], i, pos);
-                    else{
-                        if(hostIsCubase)
-                            processCsoundIOSideChainBuffers(BufferType::input, ioBuffer[channel-numSideChainChannels], pos);
-                        else
-                            processCsoundIOBuffers(BufferType::input, ioBuffer[channel-numSideChainChannels], i, pos);
-                    }
-					pos++;
-				}
-
-				pos = csndIndex * outputChannelCount;
-				for (int channel = 0; channel < outputChannelCount; channel++)
-				{
-					processCsoundIOBuffers(BufferType::output, ioBuffer[channel], i, pos);
-					pos++;
-				}*/
-			//}
 #else
             const int channelNum = buffer.getNumChannels();
             pos = csndIndex * channelNum;

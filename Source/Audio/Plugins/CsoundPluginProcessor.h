@@ -60,8 +60,22 @@ public:
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override
     {
 #if ! Cabbage_IDE_Build
-        if(PluginHostType().isReaper())//force Reaper to take whatever IOs we give it - it can handle it
+        if(AudioProcessor::wrapperType != wrapperType_AudioUnit)
+        {
+            if((layouts.getMainInputChannels() > 0 && layouts.getMainInputChannels() < 32 ) &&
+               (layouts.getMainOutputChannels() > 0 && layouts.getMainOutputChannels() < 32))
+                return true;
+        }
+        else if(PluginHostType().isReaper())//force Reaper to take whatever IOs we give it - it can handle it
             return false;
+        
+        
+//        else if (layouts.getMainOutputChannelSet() == AudioChannelSet::stereo())
+//        {
+//            // Disable Mono-to-stereo
+//            if (layouts.getMainInputChannelSet() == AudioChannelSet::mono())
+//                return false;
+//        }
 #endif
         return true;
     };
