@@ -102,6 +102,12 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **KEY_MODIFIERS** Returns a string with a list of current modifiers, i.e, Shift Ctrl Alt Command
 
+**SECONDS_SINCE_EPOCH** Return the number of seconds since the 1st of Jaunary 1970
+
+**CURRENT_DATE_TIME** Returns the current date and time in a string, e.g., "Sun Jan 10 09:36:02 2021"
+
+**CURRENT_WIDGET** Returns the channel string of the widget currently under the mouse - if a channel has been assigned.
+
 
 Cabbage also set the host type, which can be retrieved using the following channels. 
 
