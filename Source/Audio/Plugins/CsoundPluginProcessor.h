@@ -60,7 +60,7 @@ public:
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override
     {
 #if ! Cabbage_IDE_Build
-        if(AudioProcessor::wrapperType != wrapperType_AudioUnit)
+        if(AudioProcessor::wrapperType == wrapperType_AudioUnit)
         {
             if((layouts.getMainInputChannels() > 0 && layouts.getMainInputChannels() < 32 ) &&
                (layouts.getMainOutputChannels() > 0 && layouts.getMainOutputChannels() < 32))
