@@ -24,7 +24,8 @@ using json = nlohmann::json;
 // Set Widget Attribute
 //====================================================================================================
 
-
+#define I_RATE 1
+#define K_RATE 2
 
 class CabbagePersistentData 
 {
@@ -69,16 +70,22 @@ struct WriteStateData : csnd::Plugin<1, 3>
 {
     int init()
     {
-        writeJsonDataToGlobalVar();
+        writeJsonDataToGlobalVar(I_RATE);
         return OK;
     }
 
-    void writeJsonDataToGlobalVar()
+    void writeJsonDataToGlobalVar(int mode)
     {
 
         std::string jsonString(inargs.str_data(1).data);
+        if(jsonString.empty())
+            if(mode == K_RATE)
+                csound->perf_error("JSON string is empty\n", this);
+            else
+                csound->init_error("JSON string is empty:\n");
+        
         std::string jsonData = "";
-        int mode = inargs[0];
+        int writeMode = inargs[0];
         json j;
 
         CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
@@ -95,12 +102,12 @@ struct WriteStateData : csnd::Plugin<1, 3>
 
         if (json::accept(jsonString) == false)
         {
-            csound->message("Invalid JSON data:" + jsonString + "\n");
+            csound->init_error("Invalid JSON data:" + jsonString + "\n");
             outargs[0] = -1;
             return;
         }
 
-        if (mode == 1)
+        if (writeMode == 1)
         {
                 j = json::parse(jsonData);
                 auto j2 = json::parse(jsonString);
@@ -122,7 +129,7 @@ struct SetStateFloatData : csnd::Plugin<1, 2>
 {
     int init()
     {
-        if(writeJsonDataToGlobalVar())
+        if(writeJsonDataToGlobalVar(I_RATE))
             return OK;
         else
             return NOTOK;
@@ -130,21 +137,36 @@ struct SetStateFloatData : csnd::Plugin<1, 2>
 
     int kperf()
     {
-        if(writeJsonDataToGlobalVar())
+        if(writeJsonDataToGlobalVar(K_RATE))
             return OK;
         else
             return NOTOK;
     }
     
-    bool writeJsonDataToGlobalVar()
+    bool writeJsonDataToGlobalVar(int mode)
     {
         
         if (in_count() != 2)
         {
+            if(mode == K_RATE)
+                csound->perf_error("Not enough input arguments:\n", this);
+            else
+                csound->init_error("Not enough input arguments:\n");
+            return NOTOK;
             return false;
         }
         
+        
+        
         std::string jsonKeyName(inargs.str_data(0).data);
+        
+        if(jsonKeyName.empty())
+            if(mode == K_RATE)
+                csound->perf_error("JSON key is empty\n", this);
+            else
+                csound->init_error("JSON key is empty:\n");
+        
+        
         std::string jsonData;
         MYFLT value = inargs[1];
 
@@ -171,7 +193,12 @@ struct SetStateFloatData : csnd::Plugin<1, 2>
 
         if (json::accept(newData) == false)
         {
-            csound->message("Invalid JSON data:" + newData + "\n");
+            if(mode == K_RATE)
+                csound->perf_error("Invalid JSON data:" + newData + "\n", this);
+            else
+                csound->init_error("Invalid JSON data:" + newData + "\n");
+            return false;
+
             outargs[0] = -1;
             return false;
         }
@@ -189,7 +216,7 @@ struct SetStateFloatArrayData : csnd::Plugin<1, 2>
 {
     int init()
     {
-        if(writeJsonDataToGlobalVar())
+        if(writeJsonDataToGlobalVar(I_RATE))
             return OK;
         else
             return NOTOK;
@@ -197,16 +224,20 @@ struct SetStateFloatArrayData : csnd::Plugin<1, 2>
     
     int kperf()
     {
-        if(writeJsonDataToGlobalVar())
+        if(writeJsonDataToGlobalVar(K_RATE))
             return OK;
         else
             return NOTOK;
     }
     
-    bool writeJsonDataToGlobalVar()
+    bool writeJsonDataToGlobalVar(int mode)
     {
         if (in_count() != 2)
         {
+            if(mode == K_RATE)
+                csound->perf_error("Not enough input arguments\n", this);
+            else
+                csound->init_error("Not enough input arguments\n");
             return false;
         }
         
@@ -241,7 +272,11 @@ struct SetStateFloatArrayData : csnd::Plugin<1, 2>
 
         if (json::accept(newData) == false)
         {
-            csound->message("Invalid JSON data:" + newData + "\n");
+            if(mode == K_RATE)
+                csound->perf_error("Invalid JSON data:" + newData + "\n", this);
+            else
+                csound->init_error("Invalid JSON data:" + newData + "\n");
+            return false;
             outargs[0] = -1;
             return false;
         }
@@ -262,7 +297,7 @@ struct SetStateStringData : csnd::Plugin<1, 2>
 {
     int init()
     {
-        if(writeJsonDataToGlobalVar())
+        if(writeJsonDataToGlobalVar(I_RATE))
             return OK;
         else
             return NOTOK;
@@ -270,17 +305,20 @@ struct SetStateStringData : csnd::Plugin<1, 2>
     
     int kperf()
     {
-        if(writeJsonDataToGlobalVar())
+        if(writeJsonDataToGlobalVar(K_RATE))
             return OK;
         else
             return NOTOK;
     }
     
-    bool writeJsonDataToGlobalVar()
+    bool writeJsonDataToGlobalVar(int mode)
     {
-        
         if (in_count() != 2)
         {
+            if(mode == K_RATE)
+                csound->perf_error("Not enough input arguments\n", this);
+            else
+                csound->init_error("Not enough input arguments\n)");
             return false;
         }
         
@@ -311,7 +349,10 @@ struct SetStateStringData : csnd::Plugin<1, 2>
 
         if (json::accept(newData) == false)
         {
-            csound->message("Invalid JSON data:" + newData + "\n");
+            if(mode == K_RATE)
+                csound->perf_error("Invalid JSON data:" + newData + "\n", this);
+            else
+                csound->init_error("Invalid JSON data:" + newData + "\n");
             outargs[0] = -1;
             return false;
         }
@@ -329,7 +370,7 @@ struct SetStateStringArrayData : csnd::Plugin<1, 2>
 {
     int init()
     {
-        if(writeJsonDataToGlobalVar())
+        if(writeJsonDataToGlobalVar(I_RATE))
             return OK;
         else
             return NOTOK;
@@ -337,14 +378,23 @@ struct SetStateStringArrayData : csnd::Plugin<1, 2>
     
     int kperf()
     {
-        if(writeJsonDataToGlobalVar())
+        if(writeJsonDataToGlobalVar(K_RATE))
             return OK;
         else
             return NOTOK;
     }
     
-    bool writeJsonDataToGlobalVar()
+    bool writeJsonDataToGlobalVar(int mode)
     {
+        if (in_count() != 2)
+        {
+            if(mode == K_RATE)
+                csound->perf_error("Not enough input arguments\n", this);
+            else
+                csound->init_error("Not enough input arguments\n");
+            return false;
+        }
+                                   
         std::string jsonKeyName(inargs.str_data(0).data);
         std::string jsonData;
         csnd::Vector<STRINGDAT>& strs = inargs.vector_data<STRINGDAT>(1);
@@ -376,7 +426,11 @@ struct SetStateStringArrayData : csnd::Plugin<1, 2>
 
         if (json::accept(newData) == false)
         {
-            csound->message("Invalid JSON data:" + newData + "\n");
+            if(mode == I_RATE)
+                csound->perf_error("Invalid JSON data:" + newData + "\n", this);
+            else
+                csound->init_error("Invalid JSON data:" + newData + "\n");
+
             outargs[0] = -1;
             return false;
         }
@@ -396,27 +450,17 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
 {
     int init()
     {
-        if (in_count() == 0)
-        {
-            csound->message("Please pass a valid key...\n");
-            return NOTOK;
-        }
-        readData();
+        readData(I_RATE);
         return OK;
     }
 
     int kperf()
     {
-        if (in_count() == 0)
-        {
-            csound->message("Please pass a valid key...\n");
-            return NOTOK;
-        }
-        readData();
+        readData(K_RATE);
         return OK;
     }
 
-    void readData()
+    void readData(int mode)
     {
         std::string chString;
         json j;
@@ -424,6 +468,14 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
         std::string channelKey(inargs.str_data(0).data);
         std::string jsonData;
 
+        if(channelKey.empty()){
+            if(mode == K_RATE)
+                csound->perf_error("JSON key is empty\n", this);
+            else
+                csound->init_error("JSON key is empty:\n");
+        }
+        
+        
         CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
         auto perData = *pd;
         if (perData != nullptr)
@@ -438,7 +490,10 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
 
         if (json::accept(jsonData) == false)
         {
-            csound->message("Invalid JSON data:" + jsonData + "\n");
+            if(mode == I_RATE)
+                csound->perf_error("Invalid JSON data:" + jsonData + "\n", this);
+            else
+                csound->init_error("Invalid JSON data:" + jsonData + "\n");
             outargs.str_data(0).data = "";
             return;
         }
@@ -466,27 +521,17 @@ struct GetStateStringValueArray : csnd::Plugin<1, 1>
 {
     int init()
     {
-        if (in_count() == 0)
-        {
-            csound->message("Please pass a valid key...\n");
-            return NOTOK;
-        }
-        readData();
+        readData(I_RATE);
         return OK;
     }
 
     int kperf()
     {
-        if (in_count() == 0)
-        {
-            csound->message("Please pass a valid key...\n");
-            return NOTOK;
-        }
-        readData();
+        readData(K_RATE);
         return OK;
     }
 
-    void readData()
+    void readData(int mode)
     {
         std::string chString;
         json j;
@@ -495,6 +540,12 @@ struct GetStateStringValueArray : csnd::Plugin<1, 1>
         std::string channelKey(inargs.str_data(0).data);
         std::string jsonData;
 
+        if(channelKey.empty())
+            if(mode == I_RATE)
+                csound->perf_error("Key is empty\n", this);
+            else
+                csound->init_error("Key is empty\n");
+        
         csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
 
 
@@ -513,7 +564,10 @@ struct GetStateStringValueArray : csnd::Plugin<1, 1>
 
         if (json::accept(jsonData) == false)
         {
-            csound->message("Invalid JSON data:" + jsonData + "\n");
+            if(mode == I_RATE)
+                csound->perf_error("Invalid JSON data:" + jsonData + "\n", this);
+            else
+                csound->init_error("Invalid JSON data:" + jsonData + "\n");
             out.init(csound, 1);
             out[0].data = "";
             return;
@@ -551,33 +605,30 @@ struct GetStateFloatValue : csnd::Plugin<1, 1>
 {
     int init()
     {
-        if (in_count() == 0)
-        {
-            csound->message("Please pass a valid key...\n");
-            return NOTOK;
-        }
-        readData();
+        readData(I_RATE);
         return OK;
     }
 
     int kperf()
     {
-        if (in_count() == 0)
-        {
-            csound->message("Please pass a valid key...\n");
-            return NOTOK;
-        }
-        readData();
+        readData(K_RATE);
         return OK;
     }
 
-    void readData()
+    void readData(int mode)
     {
         std::string chString;
         json j;
         MYFLT* value;
         bool firstTimeSuccess = false;
         std::string channelKey(inargs.str_data(0).data);
+        
+        if(channelKey.empty())
+            if(mode == I_RATE)
+                csound->perf_error("Key is empty\n", this);
+            else
+                csound->init_error("Key is empty\n");
+        
         std::string jsonData;
 
         CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
@@ -595,7 +646,10 @@ struct GetStateFloatValue : csnd::Plugin<1, 1>
         
         if (json::accept(jsonData) == false)
         {
-            csound->message("Invalid JSON data:" + jsonData + "\n");
+            if(mode == I_RATE)
+                csound->perf_error("Invalid JSON data:" + jsonData + "\n", this);
+            else
+                csound->init_error("Invalid JSON data:" + jsonData + "\n");
             outargs[0] = -1;
             return;
         }
@@ -623,35 +677,33 @@ struct GetStateFloatValueArray : csnd::Plugin<1, 1>
 {
     int init()
     {
-        if (in_count() == 0)
-        {
-            csound->message("Please pass a valid key...\n");
-            return NOTOK;
-        }
-        readData();
+        readData(I_RATE);
         return OK;
     }
 
     int kperf()
     {
-        if (in_count() == 0)
-        {
-            csound->message("Please pass a valid key...\n");
-            return NOTOK;
-        }
-        readData();
+        readData(K_RATE);
         return OK;
     }
 
-    void readData()
+    void readData(int mode)
     {
         std::string chString;
         json j;
-        MYFLT* value;
-        bool firstTimeSuccess= false;
+        bool firstTimeSuccess = false;
         std::string channelKey(inargs.str_data(0).data);
         std::string jsonData;
 
+        if(channelKey.empty()){
+            if(mode == I_RATE){
+                csound->perf_error("Key is empty\n", this);
+            }
+            else{
+                csound->init_error("Key is empty\n");
+            }
+        }
+        
         csnd::Vector<MYFLT>& out = outargs.myfltvec_data(0);
 
 
@@ -670,7 +722,10 @@ struct GetStateFloatValueArray : csnd::Plugin<1, 1>
 
         if (json::accept(jsonData) == false)
         {
-            csound->message("Invalid JSON data:" + jsonData + "\n");
+            if(mode == I_RATE)
+                csound->perf_error("Invalid JSON data:" + jsonData + "\n", this);
+            else
+                csound->init_error("Invalid JSON data:" + jsonData + "\n");
             out.init(csound, 1);
             out[0] = -1;
             return;
@@ -709,18 +764,27 @@ struct ChannelStateSave : csnd::Plugin<1, 1>
 {
     int init()
     {
-        writeDataToDisk();
-        return OK;
+        return writeDataToDisk(I_RATE);
     }
 
     int kperf()
     {
-        writeDataToDisk();
-        return OK;
+        return writeDataToDisk(K_RATE);
     }
 
-    void writeDataToDisk()
+    int writeDataToDisk(int mode)
     {
+        
+        String filename(inargs.str_data(0).data);
+        
+        if(filename.isEmpty()){
+            //if(mode == I_RATE)
+                csound->message("channelSaveState - Filename is empty\n");
+            //else
+            //    csound->init_error("Filename is empty\n");
+            return NOTOK;
+        }
+        
         json j;
 
         controlChannelInfo_s* csoundChanList;
@@ -751,7 +815,8 @@ struct ChannelStateSave : csnd::Plugin<1, 1>
             }
         }
 
-        String filename(inargs.str_data(0).data);
+
+        
         std::ofstream file;
         file.open(filename.replace("\\\\", "/").toStdString());
         if (file.is_open() == false)
@@ -762,6 +827,8 @@ struct ChannelStateSave : csnd::Plugin<1, 1>
         file << std::setw(4) << j << std::endl;
         file.close();
         csound->message(j.dump());
+        
+        return OK;
     }
 
 };
@@ -771,17 +838,17 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
 {
     int init()
     {
-        readDataFromDisk();
+        readDataFromDisk(I_RATE);
         return OK;
     }
 
     int kperf()
     {
-        readDataFromDisk();
+        readDataFromDisk(K_RATE);
         return OK;
     }
 
-    void readDataFromDisk()
+    void readDataFromDisk(int mode)
     {
         json j;
         std::string filename(inargs.str_data(0).data);
@@ -798,9 +865,13 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
         }
 
         std::ifstream file(filename);
+        
         if (file.fail())
         {
-            csound->message("Unable to open file");
+            if(mode == I_RATE)
+                csound->perf_error("Unable to open file\n", this);
+            else
+                csound->init_error("Unable to open file\n");
             outargs[0] = 0;
             return;
         }
@@ -808,7 +879,10 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
         j << file;
         if (json::accept(j.dump()) == false) 
         {
-            csound->message("Found invalid JSON data in "+filename);
+            if(mode == I_RATE)
+                csound->perf_error("Found invalid JSON data in "+filename+"\n", this);
+            else
+                csound->init_error("Found invalid JSON data in "+filename);
             return;
         }
 

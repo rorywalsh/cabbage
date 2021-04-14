@@ -35,7 +35,10 @@ int CreateCabbageWidget::createWidget()
     const String widgetTreeIdentifier = "TempWidget";
     ValueTree tempWidget(widgetTreeIdentifier);	
     String cabbageCode(outargs.str_data(0).data);
-
+    if(cabbageCode.isEmpty())
+    {
+        return NOTOK;
+    }
     CabbageWidgetData::setWidgetState(tempWidget, cabbageCode.trimCharactersAtStart(" \t"),
                                       varData->data.getNumChildren()+1);
 
@@ -83,6 +86,9 @@ int CreateCabbageWidget::createWidget()
 int GetCabbageStringIdentifierSingle::getAttribute()
 {
     String name(inargs.str_data(0).data);
+    if(name.isEmpty())
+        return OK;
+    
     String identifier(inargs.str_data(1).data);
     
     vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
@@ -102,8 +108,11 @@ int GetCabbageStringIdentifierSingle::getAttribute()
     }
     
     const auto child = varData->data.getChildWithName(name);
-    const String data = child.getProperty(identifier)[0].toString();
-    outargs.str_data(0).data = csound->strdup(data.toUTF8().getAddress());
+    if(child.getProperty(identifier).size()>0)
+    {
+        const String data = child.getProperty(identifier)[0].toString();
+        outargs.str_data(0).data = csound->strdup(data.toUTF8().getAddress());
+    }
     
     
     return OK;
