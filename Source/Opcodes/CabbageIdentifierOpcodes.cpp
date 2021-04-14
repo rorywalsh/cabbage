@@ -85,11 +85,15 @@ int CreateCabbageWidget::createWidget()
 //====================================================================================================
 int GetCabbageStringIdentifierSingle::getAttribute()
 {
-    String name(inargs.str_data(0).data);
-    if(name.isEmpty())
-        return OK;
-    
     String identifier(inargs.str_data(1).data);
+    String name(inargs.str_data(0).data);
+    if(name.isEmpty() || identifier.isEmpty())
+    {
+        return OK;
+    }
+    
+    
+
     
     vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
     CabbageWidgetsValueTree* varData;
@@ -113,6 +117,10 @@ int GetCabbageStringIdentifierSingle::getAttribute()
         const String data = child.getProperty(identifier)[0].toString();
         outargs.str_data(0).data = csound->strdup(data.toUTF8().getAddress());
     }
+    else
+    {
+        outargs.str_data(0).data = csound->strdup(""	);
+    }
     
     
     return OK;
@@ -123,6 +131,9 @@ int GetCabbageIdentifierArray::getAttribute()
     csnd::Vector<MYFLT>& out = outargs.myfltvec_data(0);
     String name(inargs.str_data(0).data);
     String identifier(inargs.str_data(1).data);
+    
+    if(name.isEmpty() || identifier.isEmpty())
+        return OK;
     
     vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
     CabbageWidgetsValueTree* varData;
@@ -169,8 +180,12 @@ int GetCabbageIdentifierArray::getAttribute()
 //=================================================================================================
 int GetCabbageIdentifierSingle::getAttribute()
 {
+
     String name(inargs.str_data(0).data);
     String identifier(inargs.str_data(1).data);
+    
+    if(name.isEmpty() || identifier.isEmpty())
+        return OK;
     
     vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
     CabbageWidgetsValueTree* varData;
@@ -188,8 +203,11 @@ int GetCabbageIdentifierSingle::getAttribute()
         csound->message("Creating new internal state object...\n");
     }
     
-    const auto child = varData->data.getChildWithName(name);    
-    outargs[0] = child.getProperty(identifier);
+    const auto child = varData->data.getChildWithName(name);
+    if(child.getProperty(identifier).size()>0)
+        outargs[0] = (double)child.getProperty(identifier)[0];
+    else
+        outargs[0] = child.getProperty(identifier);
 
     
     return OK;
@@ -680,7 +698,7 @@ int GetCabbageReservedChannelDataWithTrigger::getAttribute()
 //====================================================================================================
 int GetCabbageReservedChannelString::getAttribute()
 {
-    
+    String channel(inargs.str_data(0).data);
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
