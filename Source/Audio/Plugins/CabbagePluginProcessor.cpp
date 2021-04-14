@@ -1226,7 +1226,10 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                         for(int x = 0 ; x < identData->data[i].args.size() ; x++){
                             colourTokens += String(int(identData->data[i].args[x])) + ",";
                         }
-                        cabbageWidgets.getChildWithName(name).setProperty(identifier, CabbageWidgetData::getColourFromText(colourTokens.dropLastCharacters(1)).toString(), nullptr);
+                        if(identifier.toString().contains(":"))
+                            CabbageWidgetData::setColourByNumber(colourTokens.dropLastCharacters(1), cabbageWidgets.getChildWithName(name), identifier.toString());
+                        else
+                            cabbageWidgets.getChildWithName(name).setProperty(identifier, CabbageWidgetData::getColourFromText(colourTokens.dropLastCharacters(1)).toString(), nullptr);
                     }
                     else
                     {

@@ -44,6 +44,7 @@ public:
 //Some of these classes use a reversed input/output system to get around the issue of 0 outputs..
 struct SetCabbageValueIdentifier : csnd::Plugin<3, 0>
 {
+    MYFLT* value;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ setAttribute(); return OK;};
     int kperf(){ setAttribute(); return OK;}

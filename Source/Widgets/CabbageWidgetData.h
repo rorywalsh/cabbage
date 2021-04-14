@@ -109,7 +109,7 @@ public:
     static void setAmpRange (StringArray strTokens, ValueTree widgetData);
 	static void setSideChainChannels(StringArray strTokens, ValueTree widgetData);
     static void setTableNumberArrays (StringArray strTokens, ValueTree widgetData);
-    static void setColourByNumber (StringArray strTokens, ValueTree widgetData, String identifier);
+    static void setColourByNumber (String string, ValueTree widgetData, String identifier);
     static void setPopulateProps ( StringArray strTokens, ValueTree widgetData);
     static void setCellData(StringArray strTokens, String str, ValueTree widgetData);
 	static void setMatrixPrefix(StringArray strTokens, String str, ValueTree widgetData, String identifier);
