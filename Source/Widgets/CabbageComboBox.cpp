@@ -293,7 +293,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         else
             pluginDir = File::getCurrentWorkingDirectory();
 
-        filetype = CabbageWidgetData::getStringProp (wData, "filetype");
+        filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype);
         pluginDir.findChildFiles (dirFiles, 2, false, filetype);
         //addItem ("Select..", 1);
         StringArray tempStrings;

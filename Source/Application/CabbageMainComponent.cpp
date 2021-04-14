@@ -1995,8 +1995,13 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
             
             if(nonCamelCaseIdentifiers.size() > 0)
             {
-                const String infoText = "This instrument seems to ignore camelCase for the following identifiers:" + nonCamelCaseIdentifiers.joinIntoString("\n")+ "\nCabbage now uses camelCase for all identifiers, i.e, trackercolour() is now trackerColour(). Please use \"Convert Identifiers to camelCase\" from the File menu option to update your code. Or manually change the identifer listed";
-                CabbageUtilities::showMessage ("Warning", infoText, lookAndFeel.get());
+                const String infoText = "The following identifiers are not camelCase:\n\n" + nonCamelCaseIdentifiers.joinIntoString("\n")+ "\n\nCabbage uses camelCase for all identifiers, i.e, trackercolour() is now trackerColour(). Please use \"Convert Identifiers to camelCase\" from the File menu option to update your code. Or manually change the identifer listed\n\nWould you like to convert them now?";
+                const int result = CabbageUtilities::showYesNoMessage(infoText, lookAndFeel.get());
+                if(result == 1){
+                    covertToCamelCase();
+                    File(file).replaceWithText(getCurrentCodeEditor()->getDocument().getAllContent());
+                    fileContents = File(file).loadFileAsString();
+                }
             }
             
             StringArray fileContentStrArray, problemChannels;
