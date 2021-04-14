@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.5.33"
+<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.5.34"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
               jucerVersion="5.4.7" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="14" companyCopyright="">
@@ -464,7 +464,7 @@
   </MODULES>
   <JUCEOPTIONS JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0" JUCE_ASIO="1"
                JUCE_PLUGINHOST_VST="1" JUCE_PLUGINHOST_VST3="1" JUCE_WASAPI_EXCLUSIVE="1"
-               JUCE_WASAPI="1" JUCE_USE_OGGVORBIS="1" JUCE_USE_FLAC="1"/>
+               JUCE_WASAPI="1" JUCE_USE_OGGVORBIS="0" JUCE_USE_FLAC="1"/>
   <LIVE_SETTINGS>
     <LINUX/>
     <OSX/>
