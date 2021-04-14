@@ -836,10 +836,11 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     if (pluginType.isCubase())
         hostIsCubase = true;
 #endif
-    
-#if ! JucePlugin_IsSynth
+
     const int inputs = getTotalNumInputChannels();
     const int outputs = getTotalNumOutputChannels();
+
+#if ! JucePlugin_IsSynth
     if(getBusesLayout().getMainOutputChannelSet() == AudioChannelSet::mono())
         hostRequestedMono = true;
     
