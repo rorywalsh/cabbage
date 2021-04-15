@@ -31,6 +31,7 @@ createPluginFilter() {
 #ifdef JUCE_WINDOWS
 	CabbageUtilities::debug(CharPointer_UTF8(JucePlugin_Manufacturer));
 	csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
+
 	if (csdFile.existsAsFile() == false)
 	{
 		String filename = "C:/ProgramData/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();

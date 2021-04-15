@@ -257,7 +257,15 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
              || CabbageWidgetData::getStringProp (wData, "fileType") == ".snaps"
              || CabbageWidgetData::getStringProp (wData, "fileType") == "snaps") //load items from directory
     {
-        const File fileName = File (getCsdFile()).withFileExtension (".snaps");
+        File fileName = File (getCsdFile()).withFileExtension (".snaps");
+
+#ifdef JUCE_WINDOWS
+        if (!fileName.existsAsFile())
+        {
+            String path = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
+            fileName = File(path);
+        }
+#endif
         clear (dontSendNotification);
         stringItems.clear();
         if (fileName.existsAsFile())
@@ -336,10 +344,15 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
         || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype) == ("preset"))
     {
         String presetFilename;
-        if (owner->isAudioUnit())
+        presetFilename = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+
+#ifdef JUCE_WINDOWS
+        presetFilename = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
+        if (!File(presetFilename).existsAsFile())
+        {
             presetFilename = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
-        else
-            presetFilename = owner->createNewGenericNameForPresetFile();
+        }
+#endif 
         
         owner->restorePluginStateFrom (presets[combo->getSelectedItemIndex()], presetFilename);
         owner->sendChannelStringDataToCsound (getChannel(), presets[combo->getSelectedItemIndex()]);

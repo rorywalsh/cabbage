@@ -234,13 +234,18 @@ void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps")
         || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("preset"))
     {
-        String presetFilename;
-        if (owner->isAudioUnit())
-            presetFilename = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
-        else
-            presetFilename = owner->createNewGenericNameForPresetFile();
+        String newFileName;
+        newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+
+#ifdef JUCE_WINDOWS
+        newFileName = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
+        if (!File(newFileName).existsAsFile())
+        {
+            newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+        }
+#endif 
         
-        owner->restorePluginStateFrom (presets[row], presetFilename);
+        owner->restorePluginStateFrom (presets[row], newFileName);
         owner->sendChannelDataToCsound (getChannel(), row);
     }
     else if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))

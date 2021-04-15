@@ -140,10 +140,15 @@ void CabbageFileButton::buttonClicked (Button* button)
     else if (mode == "snapshot")
     {
         String newFileName;
-        if (owner->isAudioUnit())
+        newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+
+#ifdef JUCE_WINDOWS
+        newFileName = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
+        if (!File(newFileName).existsAsFile())
+        {
             newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
-        else
-            newFileName = owner->createNewGenericNameForPresetFile();
+        }
+#endif 
         
         owner->sendChannelStringDataToCsound (getChannel(), newFileName);
         owner->savePluginStateToFile (File (newFileName));
@@ -153,10 +158,15 @@ void CabbageFileButton::buttonClicked (Button* button)
     else if (mode == "remove preset")
     {
         String newFileName;
-        if (owner->isAudioUnit())
+        newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+
+#ifdef JUCE_WINDOWS
+        newFileName = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
+        if (!File(newFileName).existsAsFile())
+        {
             newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
-        else
-            newFileName = owner->createNewGenericNameForPresetFile();
+        }
+#endif 
         
         //owner->sendChannelStringDataToCsound (getChannel(), newFileName);
         AlertWindow w("Preset",
@@ -195,11 +205,15 @@ void CabbageFileButton::buttonClicked (Button* button)
     else if (mode == "named snapshot")
     {
         String newFileName;
-        if (owner->isAudioUnit())
+        newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+
+#ifdef JUCE_WINDOWS
+        newFileName = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
+        if (!File(newFileName).existsAsFile())
+        {
             newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
-        else
-            newFileName = owner->createNewGenericNameForPresetFile();
-        
+        }
+#endif        
         
 #if JUCE_MODAL_LOOPS_PERMITTED
 

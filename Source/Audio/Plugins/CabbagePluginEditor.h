@@ -132,10 +132,7 @@ public:
     void createEventMatrix(int cols, int rows, String channel);
     void setEventMatrixData(int cols, int rows, String channel, String data);
     void setEventMatrixCurrentPosition(int cols, int rows, String channel, int position);
-    bool isAudioUnit()
-    {
-        return processor.wrapperType_AudioUnit;
-    }
+
     bool shouldUpdateSignalDisplay(String variableName);
     String currentPresetName;
     void savePluginStateToFile (File snapshotFile, String presetName="", bool remove = false);
