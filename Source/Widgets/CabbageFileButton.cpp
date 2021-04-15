@@ -188,9 +188,9 @@ void CabbageFileButton::buttonClicked (Button* button)
         if (w.runModalLoop() != 0) // if they picked 'ok'
         {
             presetName = w.getTextEditorContents("text");
-            owner->sendChannelStringDataToCsound(getChannel(), presetName);
-            owner->savePluginStateToFile(File(newFileName), presetName, false);
-            owner->refreshComboListBoxContents(presetName);
+            owner->sendChannelStringDataToCsound(getChannel(), owner->currentPresetName);
+            owner->savePluginStateToFile(File(newFileName), owner->currentPresetName, true);
+            owner->refreshComboListBoxContents();
         }
 
        /* const int result = CabbageUtilities::showYesNoMessage("Are you sure you wish to remove\nthis preset?", tempLAF);
