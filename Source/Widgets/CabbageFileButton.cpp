@@ -159,20 +159,37 @@ void CabbageFileButton::buttonClicked (Button* button)
             newFileName = owner->createNewGenericNameForPresetFile();
         
         //owner->sendChannelStringDataToCsound (getChannel(), newFileName);
-        CabbageLookAndFeel2* tempLAF = static_cast<CabbageLookAndFeel2*>(&owner->getLookAndFeel());
-        
-        tempLAF->setColour (AlertWindow::ColourIds::textColourId, Colour (255, 255, 255));
-        tempLAF->setColour (TextButton::ColourIds::buttonColourId, Colour (50, 50, 50));
-        tempLAF->setColour (TextButton::ColourIds::textColourOffId, Colour (150, 150, 150));
-        tempLAF->setColour (TextButton::ColourIds::buttonOnColourId, Colour (150, 150, 150));
-        tempLAF->setColour (TextButton::ColourIds::textColourOnId, Colour (250, 250, 250));
-        const int result = CabbageUtilities::showYesNoMessage("Are you sure you wish to remove\nthis preset?", tempLAF);
+        AlertWindow w("Preset",
+            "Are you sure you wish to remove\nthis preset ?",
+            AlertWindow::NoIcon);
+        String presetName;
+        LookAndFeel_V4* tempLAF = new LookAndFeel_V4();
+        tempLAF->setColour(AlertWindow::ColourIds::backgroundColourId, Colour(34, 34, 34));
+        tempLAF->setColour(AlertWindow::ColourIds::textColourId, Colour(180, 180, 180));
+        tempLAF->setColour(TextEditor::ColourIds::highlightedTextColourId, Colour(190, 190, 190));
+        tempLAF->setColour(TextButton::ColourIds::buttonColourId, Colour(50, 50, 50));
+        tempLAF->setColour(TextButton::ColourIds::textColourOffId, Colour(150, 150, 150));
+        tempLAF->setColour(TextButton::ColourIds::buttonOnColourId, Colour(150, 150, 150));
+        tempLAF->setColour(TextButton::ColourIds::textColourOnId, Colour(250, 250, 250));
+        w.setLookAndFeel(tempLAF);
+        w.setSize(100, 100);
+        w.addButton("OK", 1, KeyPress(KeyPress::returnKey, 0, 0));
+        w.addButton("Cancel", 0, KeyPress(KeyPress::escapeKey, 0, 0));
+        if (w.runModalLoop() != 0) // if they picked 'ok'
+        {
+            presetName = w.getTextEditorContents("text");
+            owner->sendChannelStringDataToCsound(getChannel(), presetName);
+            owner->savePluginStateToFile(File(newFileName), presetName, false);
+            owner->refreshComboListBoxContents(presetName);
+        }
+
+       /* const int result = CabbageUtilities::showYesNoMessage("Are you sure you wish to remove\nthis preset?", tempLAF);
         if(result == 1)
         {
             owner->sendChannelStringDataToCsound (getChannel(), owner->currentPresetName);
             owner->savePluginStateToFile (File (newFileName), owner->currentPresetName, true);
             owner->refreshComboListBoxContents();
-        }
+        }*/
     }
     
     else if (mode == "named snapshot")
@@ -185,29 +202,50 @@ void CabbageFileButton::buttonClicked (Button* button)
         
         
 #if JUCE_MODAL_LOOPS_PERMITTED
-        String presetname;
 
-        CabbageLookAndFeel2* tempLAF = static_cast<CabbageLookAndFeel2*>(&owner->getLookAndFeel());
-        tempLAF->setColour (AlertWindow::ColourIds::textColourId, Colour (255, 255, 255));
-        tempLAF->setColour (TextEditor::ColourIds::highlightColourId, Colour (185, 185, 185));
-        tempLAF->setColour (TextEditor::ColourIds::highlightedTextColourId, Colour (50, 50, 50));
-        tempLAF->setColour (TextButton::ColourIds::buttonColourId, Colour (50, 50, 50));
-        tempLAF->setColour (TextButton::ColourIds::textColourOffId, Colour (150, 150, 150));
-        tempLAF->setColour (TextButton::ColourIds::buttonOnColourId, Colour (150, 150, 150));
-        tempLAF->setColour (TextButton::ColourIds::textColourOnId, Colour (250, 250, 250));
+
+        //String presetname;
+
+        //CabbageLookAndFeel2* tempLAF = static_cast<CabbageLookAndFeel2*>(&owner->getLookAndFeel());
+        //tempLAF->setColour (AlertWindow::ColourIds::textColourId, Colour (255, 255, 255));
+        //tempLAF->setColour (TextEditor::ColourIds::highlightColourId, Colour (185, 185, 185));
+        //tempLAF->setColour (TextEditor::ColourIds::highlightedTextColourId, Colour (50, 50, 50));
+        //tempLAF->setColour (TextButton::ColourIds::buttonColourId, Colour (50, 50, 50));
+        //tempLAF->setColour (TextButton::ColourIds::textColourOffId, Colour (150, 150, 150));
+        //tempLAF->setColour (TextButton::ColourIds::buttonOnColourId, Colour (150, 150, 150));
+        //tempLAF->setColour (TextButton::ColourIds::textColourOnId, Colour (250, 250, 250));
+        //String presetName;
+        //const int result = CabbageUtilities::showAlertMessageWithTextEditor("Set Preset Name", "Warning: This will overwrite any\npreviously saved presets of the same name.", tempLAF, &presetName);
+        //
+
+
         String presetName;
-        const int result = CabbageUtilities::showAlertMessageWithTextEditor("Set Preset Name", "Warning: This will overwrite any\npreviously saved presets of the same name.", tempLAF, &presetName);
-        
-        
-        if (result == 1)
+        AlertWindow w("Preset",
+            "(will overwrite previous preset of same name)",
+            AlertWindow::NoIcon);
+        LookAndFeel_V4* tempLAF = new LookAndFeel_V4();
+        tempLAF->setColour(AlertWindow::ColourIds::backgroundColourId, Colour(34, 34, 34));
+        tempLAF->setColour(AlertWindow::ColourIds::textColourId, Colour(180, 180, 180));
+        tempLAF->setColour(TextEditor::ColourIds::highlightedTextColourId, Colour(190, 190, 190));
+        tempLAF->setColour(TextButton::ColourIds::buttonColourId, Colour(50, 50, 50));
+        tempLAF->setColour(TextButton::ColourIds::textColourOffId, Colour(150, 150, 150));
+        tempLAF->setColour(TextButton::ColourIds::buttonOnColourId, Colour(150, 150, 150));
+        tempLAF->setColour(TextButton::ColourIds::textColourOnId, Colour(250, 250, 250));
+        w.setLookAndFeel(tempLAF);
+        w.setSize(200, 100);
+        w.addTextEditor("text", "enter preset name", "");
+        w.addButton("OK", 1, KeyPress(KeyPress::returnKey, 0, 0));
+        w.addButton("Cancel", 0, KeyPress(KeyPress::escapeKey, 0, 0));
+
+        if (w.runModalLoop() != 0) // if they picked 'ok'
         {
-            owner->sendChannelStringDataToCsound (getChannel(), presetName);
-            owner->savePluginStateToFile (File (newFileName), presetName, false);
+            presetName = w.getTextEditorContents("text");
+            owner->sendChannelStringDataToCsound(getChannel(), presetName);
+            owner->savePluginStateToFile(File(newFileName), presetName, false);
             owner->refreshComboListBoxContents(presetName);
         }
-        else
-            return;
-#endif
+
+        #endif
         
 
     }
