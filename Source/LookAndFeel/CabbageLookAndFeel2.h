@@ -114,6 +114,7 @@ public:
     Font getComboBoxFont (ComboBox&) override;
     Font getLabelFont (Label&) override;
     Font getSliderPopupFont (Slider&) override;
+    void positionComboBoxText (ComboBox&, Label&) override;
     Font customFont;
 
 //    Font getAlertWindowTitleFont() override;

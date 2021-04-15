@@ -1319,9 +1319,9 @@ Font CabbageLookAndFeel2::getTextButtonFont (TextButton&, int buttonHeight)
 Font CabbageLookAndFeel2::getComboBoxFont (ComboBox& box)
 {
     if(customFont.getHeight()>900)
-        return Font(jmin (15.0f, box.getHeight() * 0.85f));
+        return Font(jmin (10.0f, box.getHeight() * 0.85f));
 
-    customFont.setHeight(jmin (15.0f, box.getHeight() * 0.85f));
+    customFont.setHeight(jmin (10.0f, box.getHeight() * 0.85f));
     return customFont;
 }
 
@@ -1332,6 +1332,15 @@ Font CabbageLookAndFeel2::getLabelFont(Label& label)
 
     return customFont;
     //return CabbageUtilities::getComponentFont();
+}
+
+void CabbageLookAndFeel2::positionComboBoxText (ComboBox& box, Label& label)
+{
+    label.setBounds (1, 4,
+                     box.getWidth() + 3 - box.getHeight(),
+                     box.getHeight() - 8);
+    
+    label.setFont (getComboBoxFont (box));
 }
 
 Font CabbageLookAndFeel2::getSliderPopupFont (Slider&)
