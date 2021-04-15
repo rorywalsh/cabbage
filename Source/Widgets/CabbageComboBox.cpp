@@ -53,8 +53,8 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
 
 
     lookAndFeel.customFont = owner->customFont;
-    int fontstyle = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontstyle);
-    owner->customFont.setStyleFlags(fontstyle);
+    //int fontstyle = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontstyle);
+    //owner->customFont.setStyleFlags(fontstyle);
     setLookAndFeel(&lookAndFeel);
 
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
