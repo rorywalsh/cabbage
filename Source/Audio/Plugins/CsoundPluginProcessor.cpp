@@ -211,6 +211,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<GetStateFloatValue>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "i", "S", csnd::thread::i);
     csnd::plugin<GetStateFloatValue>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "k", "S", csnd::thread::ik);
     csnd::plugin<GetStateFloatValueArray>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "k[]", "S", csnd::thread::ik);
+    csnd::plugin<GetStateFloatValueArray>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "i[]", "S", csnd::thread::i);
     csnd::plugin<GetStateStringValue>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "S", "S", csnd::thread::i);
     csnd::plugin<GetStateStringValueArray>((csnd::Csound*) csound->GetCsound(), "getStateValue.s", "S[]", "S", csnd::thread::ik);
 

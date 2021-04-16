@@ -511,7 +511,8 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
 
         if (firstTimeSuccess == false)
         {
-            csound->message("Could not find value for " + channelKey + "?\nCheck JSON channel data.\n");
+            //csound->message("Could not find value for " + channelKey + "?\nCheck JSON channel data.\n");
+            outargs.str_data(0).data = csound->strdup("");
             firstTimeSuccess = true;
         }
     }
@@ -592,7 +593,7 @@ struct GetStateStringValueArray : csnd::Plugin<1, 1>
 
         if (firstTimeSuccess == false)
         {
-            csound->message("Could not find value for " + channelKey + ". Check JSON channel data.\n");
+            //csound->message("Could not find value for " + channelKey + ". Check JSON channel data.\n");
             firstTimeSuccess = true;
         }
     }
@@ -667,7 +668,7 @@ struct GetStateFloatValue : csnd::Plugin<1, 1>
 
         if (firstTimeSuccess == false)
         {
-            csound->message("Could not find value for "+ channelKey + "?\nCheck JSON channel data.\n");
+            //csound->message("Could not find value for "+ channelKey + "?\nCheck JSON channel data.\n");
             firstTimeSuccess = true;
         }
     }
@@ -749,7 +750,7 @@ struct GetStateFloatValueArray : csnd::Plugin<1, 1>
 
         if (firstTimeSuccess == false)
         {
-            csound->message("Could not find value for " + channelKey + "?\nCheck JSON channel data.\n");
+            //csound->message("Could not find value for " + channelKey + "?\nCheck JSON channel data.\n");
             firstTimeSuccess = true;
         }
     }

@@ -286,10 +286,6 @@ public:
         return internalStateData;
     }
 
-    void setInternalState(String stateData)
-    {
-        internalStateData = stateData;
-    }
 
     void pollingChannels(int shouldPoll)
     {

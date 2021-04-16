@@ -1009,6 +1009,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 		if (pd != nullptr)
 		{
 			auto pdClass = *pd;
+            DBG(pdClass->data);
 			xml->getChildByName(presetName)->setAttribute("cabbageJSONData", pdClass->data);
 		}
 	}
@@ -1114,13 +1115,14 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			//none of these are being updated in their respective valueTreeChanged listeners..
             if(e->getAttributeName(i) == "cabbageJSONData")
             {
-				/*getCsound()->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
-				CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-				*pd = new CabbagePersistentData();
-				auto pdClass = *pd;
-				pdClass->data = e->getStringAttribute("cabbageJSONData").toStdString();*/
-				setInternalState(e->getStringAttribute("cabbageJSONData"));
-				DBG(e->getStringAttribute("cabbageJSONData"));
+                CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+                
+                if (pd != nullptr)
+                {
+                    auto pdClass = *pd;
+                    pdClass->data = e->getStringAttribute("cabbageJSONData").toRawUTF8();
+                }
+
             }
             
             
