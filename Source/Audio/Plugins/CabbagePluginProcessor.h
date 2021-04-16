@@ -66,7 +66,6 @@ public:
     };
 
 	CabbagePluginProcessor (File inputFile, BusesProperties IOBuses);
-    CabbagePluginProcessor (File inputFile, BusesProperties IOBuses, AudioChannelSet sidechain);
 	void createCsound(File inputFile, bool shouldCreateParameters = true);
     ~CabbagePluginProcessor();
 

@@ -69,19 +69,6 @@ createPluginFilter() {
 
 };
 
-//==== Sidechain constructor =================================================
-//============================================================================
-CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, BusesProperties ioBuses, AudioChannelSet sideChainChannels)
-	: CsoundPluginProcessor(inputFile, ioBuses, sideChainChannels),
-	cabbageWidgets("CabbageWidgetData"),
-	csdFile(inputFile)
-{
-	CabbageUtilities::debug("Cabbage Processor Constructor - Requested input channels:", getTotalNumInputChannels());
-	CabbageUtilities::debug("Cabbage Processor Constructor - Requested output channels:", getTotalNumOutputChannels());
-	createCsound(inputFile);
-}
-
-
 //============================================================================
 CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, BusesProperties ioBuses)
 	: CsoundPluginProcessor(inputFile, ioBuses),

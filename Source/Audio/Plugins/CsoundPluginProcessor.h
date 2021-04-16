@@ -40,9 +40,6 @@ class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater
 {
 public:
     //==============================================================================
-    CsoundPluginProcessor (File csoundInputFile, 
-		const BusesProperties ioBuses, 
-		const AudioChannelSet sideChainChannels);
 	CsoundPluginProcessor(File csoundInputFile, 
         const BusesProperties ioBuses);
 	~CsoundPluginProcessor();
@@ -66,16 +63,10 @@ public:
                (layouts.getMainOutputChannels() > 0 && layouts.getMainOutputChannels() < 32))
                 return true;
         }
-        else if(PluginHostType().isReaper())//force Reaper to take whatever IOs we give it - it can handle it
+        //force Reaper and Live to take whatever IOs we give it
+        else if(PluginHostType().isReaper() || PluginHostType().isAbletonLive())
             return false;
-        
-        
-//        else if (layouts.getMainOutputChannelSet() == AudioChannelSet::stereo())
-//        {
-//            // Disable Mono-to-stereo
-//            if (layouts.getMainInputChannelSet() == AudioChannelSet::mono())
-//                return false;
-//        }
+
 #endif
         return true;
     };

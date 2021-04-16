@@ -46,27 +46,6 @@ csdFile (csdFile)
     
 }
 
-//==============================================================================
-// side chain constructor
-//==============================================================================
-//==============================================================================
-CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const BusesProperties ioBuses, const AudioChannelSet sideChainChannels)
-	: AudioProcessor(ioBuses),
-	csdFile(csdFile)
-{
-    jassertfalse;
-    hostInfo = {};
-    numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
-#if ! JucePlugin_IsSynth
-
-    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
-#endif
-    //side chaining is supported, and matchingNumberOfIOChannels must false
-	matchingNumberOfIOChannels = false;
-	supportsSidechain = true;
-    numSideChainChannels = getBus(true, 1)->getNumberOfChannels();
-}
-
 CsoundPluginProcessor::~CsoundPluginProcessor()
 {
 	resetCsound();
@@ -844,11 +823,12 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 #if ! JucePlugin_IsSynth
     if(getBusesLayout().getMainOutputChannelSet() == AudioChannelSet::mono())
         hostRequestedMono = true;
-    
+    CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - inputBuses:", getBusCount(true));
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - inputs:", inputs);
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested input channels:", numCsoundInputChannels);
 #endif
     //const int outputs = getBus(false, 0)->getNumberOfChannels();
+    CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - outputBuses:", getBusCount(false));
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - outputs:", outputs);
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested output channels:", numCsoundOutputChannels);
 
