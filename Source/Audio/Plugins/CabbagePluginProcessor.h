@@ -158,6 +158,8 @@ public:
     // use this instead of AudioProcessor::getParameters
     const OwnedArray<CabbagePluginParameter>& getCabbageParameters() const { return parameters; }
     int currentPluginScale = -1;
+    String currentPresetName = "";
+    
 private:
     controlChannelInfo_s* csoundChanList;
     int numberOfLinesInPlantCode = 0;

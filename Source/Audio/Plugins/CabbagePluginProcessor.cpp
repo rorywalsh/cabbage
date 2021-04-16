@@ -1084,7 +1084,7 @@ void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
            
             if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (this->getActiveEditor()))
             {
-                editor->currentPresetName =  xmlState->getStringAttribute("PresetName");;
+                currentPresetName =  xmlState->getStringAttribute("PresetName");;
             }
 			setParametersFromXml(xmlState);
 		}

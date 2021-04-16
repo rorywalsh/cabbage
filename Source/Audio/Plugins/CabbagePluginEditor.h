@@ -134,7 +134,10 @@ public:
     void setEventMatrixCurrentPosition(int cols, int rows, String channel, int position);
 
     bool shouldUpdateSignalDisplay(String variableName);
-    String currentPresetName;
+    
+    void setCurrentPreset(String preset){     cabbageProcessor.currentPresetName = preset;  }
+    String getCurrentPreset(){     return cabbageProcessor.currentPresetName;  }
+    
     void savePluginStateToFile (File snapshotFile, String presetName="", bool remove = false);
     void restorePluginStateFrom (String childPreset, File xmlFile);
     const Array<float, CriticalSection> getArrayForSignalDisplay (const String signalVariable, const String displayType);

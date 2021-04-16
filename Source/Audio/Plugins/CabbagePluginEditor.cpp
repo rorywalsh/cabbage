@@ -1134,7 +1134,7 @@ void CabbagePluginEditor::restorePluginStateFrom (String childPreset, File xmlFi
     if(File(xmlFile).existsAsFile())
     {
     std::unique_ptr<XmlElement> xmlElement (XmlDocument::parse (xmlFile));
-    currentPresetName = childPreset;
+    setCurrentPreset(childPreset);
     if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
     {
         forEachXmlChildElement (*xmlElement, e)

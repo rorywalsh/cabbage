@@ -111,22 +111,16 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
             isPresetCombo = true;  
             getProperties().set("isPresetCombo", true);
             String presetName = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::value).toString();
-            
+            if(owner->getCurrentPreset().isNotEmpty())
+            {
+                presetName = owner->getCurrentPreset();
+            }
+
             const int index = presets.indexOf(presetName);
 
-            //owner->currentPresetName =
-            //don't send notification here, otherwise the saved session settings will be overwriten by the presets...
-            owner->currentPresetName = getItemText((index-1 >= 0 ? index : 0));
+            owner->setCurrentPreset(getItemText((index-1 >= 0 ? index : 0)));
             setSelectedItemIndex ((index-1 >= 0 ? index : 0), dontSendNotification);
-            //onChange = [this] 
-            //{
-            //    if (getSelectedItemIndex() >= 0)
-            //    {
-            //        setTextWhenNothingSelected(presets[getSelectedItemIndex()]);
-            //        DBG(presets[getSelectedItemIndex()]);
-            //        setSelectedId(0);
-            //    }
-            //};
+
 
         }
         else
