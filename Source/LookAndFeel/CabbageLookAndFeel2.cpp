@@ -1330,6 +1330,7 @@ Font CabbageLookAndFeel2::getLabelFont(Label& label)
     if(customFont.getHeight()>900)
         return Font(jmin(15.0f, label.getHeight() * 0.85f), Font::FontStyleFlags::bold);
 
+    customFont.setHeight(jmin(15.0f, label.getHeight() * 0.85f));
     return customFont;
 }
 
