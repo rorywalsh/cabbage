@@ -298,11 +298,15 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 		CabbageWidgetData::setStringProp(newWidget, "precedingCharacters", precedingCharacters);
 
         const String mode = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::mode);
+        const String filetype = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::filetype);
         if(mode == "resize" && typeOfWidget == CabbageWidgetTypes::combobox)
         {
             CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, "PluginResizerCombBox");
         }
-        
+        if(filetype.contains("snaps") && typeOfWidget == CabbageWidgetTypes::combobox)
+        {
+            CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, "PluginPresetCombBox");
+        }
 		const String widgetName = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name);
         
 		if (widgetName.isNotEmpty())
@@ -1062,6 +1066,12 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 				const String file(tmp_str);
 				xml->getChildByName(presetName)->setAttribute(channelName, file);
 			}
+            else if(channelName == "PluginPresetCombBox")
+            {
+                const String presetValue = value.toString();
+                xml->getChildByName(presetName)->setAttribute("CurrentPresetName", presetValue);
+                xml->getChildByName(presetName)->setAttribute(channelName, presetValue);
+            }
 			else
 			{
 				xml->getChildByName(presetName)->setAttribute(channelName, float(value));
@@ -1084,7 +1094,7 @@ void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
            
             if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (this->getActiveEditor()))
             {
-                currentPresetName =  xmlState->getStringAttribute("PresetName");;
+                currentPresetName =  xmlState->getStringAttribute("PresetName");
             }
 			setParametersFromXml(xmlState);
 		}
@@ -1161,7 +1171,11 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 					e->getAttributeValue(i + 1).getFloatValue());
 				i++;
 			}
-			else
+            else if(channelName == "PluginPresetCombBox")
+            {
+                currentPresetName = e->getStringAttribute("CurrentPresetName");
+            }
+            else
 			{
 				if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
 					&& CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps" &&

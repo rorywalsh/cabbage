@@ -347,10 +347,13 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
             presetFilename = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
         }
 #endif 
-        
-        owner->restorePluginStateFrom (presets[combo->getSelectedItemIndex()], presetFilename);
-        owner->sendChannelStringDataToCsound (getChannel(), presets[combo->getSelectedItemIndex()]);
+        const String channelName = getChannel();
+        owner->setCurrentPreset(presets[combo->getSelectedItemIndex()]);
         CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, presets[combo->getSelectedItemIndex()]);
+        owner->sendChannelStringDataToCsound (getChannel(), presets[combo->getSelectedItemIndex()]);
+        owner->restorePluginStateFrom (presets[combo->getSelectedItemIndex()], presetFilename);
+        
+        
 
         auto menu = getRootMenu();
         auto id = getSelectedId();

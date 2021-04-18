@@ -426,7 +426,7 @@ struct SetStateStringArrayData : csnd::Plugin<1, 2>
 
         if (json::accept(newData) == false)
         {
-            if(mode == I_RATE)
+            if(mode == K_RATE)
                 csound->perf_error("Invalid JSON data:" + newData + "\n", this);
             else
                 csound->init_error("Invalid JSON data:" + newData + "\n");
@@ -469,10 +469,7 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
         std::string jsonData;
 
         if(channelKey.empty()){
-            if(mode == K_RATE)
-                csound->perf_error("JSON key is empty\n", this);
-            else
-                csound->init_error("JSON key is empty:\n");
+            return;
         }
         
         
@@ -490,10 +487,6 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
 
         if (json::accept(jsonData) == false)
         {
-            if(mode == I_RATE)
-                csound->perf_error("Invalid JSON data:" + jsonData + "\n", this);
-            else
-                csound->init_error("Invalid JSON data:" + jsonData + "\n");
             outargs.str_data(0).data = "";
             return;
         }
@@ -542,7 +535,7 @@ struct GetStateStringValueArray : csnd::Plugin<1, 1>
         std::string jsonData;
 
         if(channelKey.empty())
-            if(mode == I_RATE)
+            if(mode == K_RATE)
                 csound->perf_error("Key is empty\n", this);
             else
                 csound->init_error("Key is empty\n");
@@ -565,10 +558,7 @@ struct GetStateStringValueArray : csnd::Plugin<1, 1>
 
         if (json::accept(jsonData) == false)
         {
-            if(mode == I_RATE)
-                csound->perf_error("Invalid JSON data:" + jsonData + "\n", this);
-            else
-                csound->init_error("Invalid JSON data:" + jsonData + "\n");
+            csound->message("Invalid JSON data:" + jsonData + "\n");
             out.init(csound, 1);
             out[0].data = "";
             return;
@@ -626,9 +616,9 @@ struct GetStateFloatValue : csnd::Plugin<1, 1>
         
         if(channelKey.empty())
             if(mode == I_RATE)
-                csound->perf_error("Key is empty\n", this);
-            else
                 csound->init_error("Key is empty\n");
+            else
+                csound->perf_error("Key is empty\n", this);
         
         std::string jsonData;
 
@@ -647,10 +637,7 @@ struct GetStateFloatValue : csnd::Plugin<1, 1>
         
         if (json::accept(jsonData) == false)
         {
-            if(mode == I_RATE)
-                csound->perf_error("Invalid JSON data:" + jsonData + "\n", this);
-            else
-                csound->init_error("Invalid JSON data:" + jsonData + "\n");
+            csound->message("Invalid JSON data:" + jsonData + "\n");
             outargs[0] = -1;
             return;
         }
@@ -697,7 +684,7 @@ struct GetStateFloatValueArray : csnd::Plugin<1, 1>
         std::string jsonData;
 
         if(channelKey.empty()){
-            if(mode == I_RATE){
+            if(mode == K_RATE){
                 csound->perf_error("Key is empty\n", this);
             }
             else{
@@ -723,10 +710,7 @@ struct GetStateFloatValueArray : csnd::Plugin<1, 1>
 
         if (json::accept(jsonData) == false)
         {
-            if(mode == I_RATE)
-                csound->perf_error("Invalid JSON data:" + jsonData + "\n", this);
-            else
-                csound->init_error("Invalid JSON data:" + jsonData + "\n");
+            csound->message("Invalid JSON data:" + jsonData + "\n");
             out.init(csound, 1);
             out[0] = -1;
             return;
@@ -869,7 +853,7 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
         
         if (file.fail())
         {
-            if(mode == I_RATE)
+            if(mode == K_RATE)
                 csound->perf_error("Unable to open file\n", this);
             else
                 csound->init_error("Unable to open file\n");
@@ -880,7 +864,7 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
         j << file;
         if (json::accept(j.dump()) == false) 
         {
-            if(mode == I_RATE)
+            if(mode == K_RATE)
                 csound->perf_error("Found invalid JSON data in "+filename+"\n", this);
             else
                 csound->init_error("Found invalid JSON data in "+filename);
