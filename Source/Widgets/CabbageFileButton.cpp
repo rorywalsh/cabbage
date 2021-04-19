@@ -254,6 +254,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         if (w.runModalLoop() != 0) // if they picked 'ok'
         {
             presetName = w.getTextEditorContents("text");
+            owner->setCurrentPreset(presetName);
             owner->sendChannelStringDataToCsound(getChannel(), presetName);
             owner->savePluginStateToFile(File(newFileName), presetName, false);
             owner->refreshComboListBoxContents(presetName);

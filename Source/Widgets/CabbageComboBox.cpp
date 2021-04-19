@@ -443,6 +443,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 		{
 			currentValueAsText = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::value).toString();
 			const int index = stringItems.indexOf(currentValueAsText);
+            owner->setCurrentPreset(currentValueAsText);
 
 			if (index != -1)
 				setSelectedItemIndex(index, dontSendNotification);

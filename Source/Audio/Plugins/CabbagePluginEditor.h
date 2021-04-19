@@ -135,8 +135,8 @@ public:
 
     bool shouldUpdateSignalDisplay(String variableName);
     
-    void setCurrentPreset(String preset){     cabbageProcessor.currentPresetName = preset;  }
-    String getCurrentPreset(){     return cabbageProcessor.currentPresetName;  }
+    void setCurrentPreset(String preset);
+    String getCurrentPreset();
     
     void savePluginStateToFile (File snapshotFile, String presetName="", bool remove = false);
     void restorePluginStateFrom (String childPreset, File xmlFile);

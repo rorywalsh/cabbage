@@ -96,6 +96,16 @@ void CabbagePluginEditor::refreshValueTreeListeners()
 	}
 }
 
+void CabbagePluginEditor::setCurrentPreset(String preset)
+{
+    cabbageProcessor.currentPresetName = preset;
+}
+
+String CabbagePluginEditor::getCurrentPreset()
+{
+    return cabbageProcessor.currentPresetName;
+}
+
 void CabbagePluginEditor::resized()
 {
     sendChannelDataToCsound("SCREEN_WIDTH", getWidth());

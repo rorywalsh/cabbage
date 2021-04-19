@@ -991,6 +991,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
         DBG("Creating new preset:"+presetName);
         xml->createNewChildElement(presetName);
     }
+    
 	xml->getChildByName(presetName)->setAttribute("PresetName", childName);
 
 	if (getCsound())
@@ -1065,10 +1066,15 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
                     getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
 				const String file(tmp_str);
 				xml->getChildByName(presetName)->setAttribute(channelName, file);
+
 			}
             else if(channelName == "PluginPresetCombBox")
             {
-                const String presetValue = value.toString();
+                const String pName = currentPresetName;
+                String presetValue = value.toString();
+                if(presetValue == "1" && pName.length()>0)
+                    presetValue = pName;
+                    
                 xml->getChildByName(presetName)->setAttribute("CurrentPresetName", presetValue);
                 xml->getChildByName(presetName)->setAttribute(channelName, presetValue);
             }
@@ -1137,8 +1143,10 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			{
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
 			}
-
-            
+            else if(channelName == "PluginPresetCombBox")
+            {
+                currentPresetName = e->getStringAttribute("CurrentPresetName");
+            }
 			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 			{
 				const String stringComboItem = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).existsAsFile() ?
@@ -1146,6 +1154,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
+                
 
 			}
 			else if (type == CabbageWidgetTypes::filebutton)
@@ -1171,10 +1180,6 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 					e->getAttributeValue(i + 1).getFloatValue());
 				i++;
 			}
-            else if(channelName == "PluginPresetCombBox")
-            {
-                currentPresetName = e->getStringAttribute("CurrentPresetName");
-            }
             else
 			{
 				if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
