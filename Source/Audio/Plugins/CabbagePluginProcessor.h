@@ -75,6 +75,11 @@ public:
     void getIdentifierDataFromCsound() override;
     void triggerCsoundEvents() override;
     void setWidthHeight();
+    
+    //save and restore user plugin presets
+    void addPluginPreset(String presetName, bool remove);
+    void restorePluginPreset(String presetName);
+    
     bool addImportFiles (StringArray& lineFromCsd);
     void parseCsdFile (StringArray& linesFromCsd);
     // use this instead of AudioProcessor::addParameter

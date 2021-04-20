@@ -1132,29 +1132,15 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
     return cabbageProcessor;
 }
 
-void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String presetName, bool removePreset)
+void CabbagePluginEditor::savePluginStateToFile (String presetName, bool removePreset)
 {
     //the error happens when we create a new preset not when we modify or delete one...
-    XmlElement xml = cabbageProcessor.savePluginState (instrumentName.replace (" ", "_"), snapshotFile, presetName, removePreset);
-    xml.writeTo (snapshotFile);
+    cabbageProcessor.addPluginPreset (presetName, removePreset);
 }
 
-void CabbagePluginEditor::restorePluginStateFrom (String childPreset, File xmlFile)
+void CabbagePluginEditor::restorePluginStateFrom (String presetName)
 {
-    if(File(xmlFile).existsAsFile())
-    {
-    std::unique_ptr<XmlElement> xmlElement (XmlDocument::parse (xmlFile));
-    setCurrentPreset(childPreset);
-    if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
-    {
-        forEachXmlChildElement (*xmlElement, e)
-        {
-            if (e->getStringAttribute ("PresetName") == childPreset)
-                cabbageProcessor.restorePluginState (e);
-        }
-    }
-    }
-
+    cabbageProcessor.restorePluginPreset (presetName);
 }
 
 void CabbagePluginEditor::refreshComboListBoxContents(String presetName)
@@ -1178,19 +1164,10 @@ void CabbagePluginEditor::refreshComboListBoxContents(String presetName)
                     combo->addItemsToCombobox (cabbageProcessor.cabbageWidgets.getChild (i));
                 }
 
-                if(bool(combo->getProperties().getWithDefault("isPresetCombo", false)) == true && numPresets < combo->getNumItems())
-                    combo->setSelectedItemIndex(combo->getNumItems()-1);
-                else
+                if(bool(combo->getProperties().getWithDefault("isPresetCombo", false)) == true)
                 {
-                    StringArray items;
-                    for( int i = 0 ; i < combo->getNumItems() ; i++){
-                        items.add(combo->getItemText(i));
-                    }
-                    if(items.contains(presetName)){
-                        combo->setSelectedItemIndex(items.indexOf(presetName));
-                    }
-                    else
-                        combo->setSelectedItemIndex(currentIndex);
+                    DBG(getCurrentPreset());
+                    combo->setText(getCurrentPreset());
                 }
             }
 

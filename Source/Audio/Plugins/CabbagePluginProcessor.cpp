@@ -305,7 +305,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
         }
         if(filetype.contains("snaps") && typeOfWidget == CabbageWidgetTypes::combobox)
         {
-            CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, "PluginPresetCombBox");
+            CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channeltype, "string");
         }
 		const String widgetName = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name);
         
@@ -917,96 +917,269 @@ void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInByt
 }
 
 //==============================================================================
+void CabbagePluginProcessor::addPluginPreset(String presetName, bool remove)
+{
+    String newFileName;
+    //check user application data directory for the existance of a relevant snaps files before reading/writing from current directory...
+    newFileName = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
+    
+    if (!File(newFileName).existsAsFile())
+    {
+        newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+    }
+    
+    json j;
+    File presetFile(newFileName);
+    String presetFileContents = presetFile.loadFileAsString();
+    if(presetFileContents.isEmpty())
+    {
+        if(presetName.isEmpty())
+            presetName = "Preset 1";
+    }
+    else
+    {
+        j = json::parse(presetFileContents.toRawUTF8());
+        
+        if(remove == false)
+        {
+            int numberOfPresets = 1;
+            for (json::iterator it = j.begin(); it != j.end(); ++it) {
+                numberOfPresets++;
+            }
+            if(presetName.isEmpty())
+                presetName = "Preset " +String(numberOfPresets);
+        }
+        else
+        {
+            StringArray presets;
+
+            for (json::iterator it = j.begin(); it != j.end(); ++it) {
+                if(String(it.key()) == presetName)
+                {
+                    j.erase(it);
+                    break;
+                }
+            }
+            
+            for (json::iterator it = j.begin(); it != j.end(); ++it) {
+                presets.add (it.key());
+            }
+            
+            currentPresetName = presets[presets.size()-1];
+            
+            presetFile.replaceWithText(String(j.dump(4)));
+            return;
+        }
+    }
+    
+    currentPresetName = presetName;
+    
+    for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
+        const String channelName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                                                                    CabbageIdentifierIds::channel);
+      
+        const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
+        const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+        
+        //only write values for widgets that have channels
+        if (channelName.isNotEmpty()) {
+            if (type == CabbageWidgetTypes::texteditor) {
+                String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                                                                     CabbageIdentifierIds::text);
+                j[presetName.toStdString()][channelName.toStdString()] = text.toRawUTF8();
+            }
+            else if(channelName == "PRESET_COMBOBOX")
+            {
+                //if snaps
+            }
+            else if (type == CabbageWidgetTypes::filebutton &&
+                     !CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                                                       CabbageIdentifierIds::filetype).contains("snaps")) {
+                         const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                                                                              CabbageIdentifierIds::file);
+                         
+                         if (file.length() > 2) {
+                             const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
+                             j[presetName.toStdString()][channelName.toStdString()] = relativePath.replaceCharacters("\\", "/").toStdString();
+                         }
+                     }
+            else if (type.contains("range")) //double channel range widgets
+            {
+                var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+                                                              CabbageIdentifierIds::channel);
+                
+                const float minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                     CabbageIdentifierIds::minvalue);
+                const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                     CabbageIdentifierIds::maxvalue);
+                j[presetName.toStdString()][channels[0].toString().toStdString()] = minValue;
+                j[presetName.toStdString()][channels[1].toString().toStdString()] = maxValue;
+            }
+            else if (type == CabbageWidgetTypes::xypad) //double channel xypad widget
+            {
+                var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+                                                              CabbageIdentifierIds::channel);
+                const float xValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                   CabbageIdentifierIds::valuex);
+                const float yValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                   CabbageIdentifierIds::valuey);
+                j[presetName.toStdString()][channels[0].toString().toStdString()] = xValue;
+                j[presetName.toStdString()][channels[1].toString().toStdString()] = yValue;
+            }
+            else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                                                                                            CabbageIdentifierIds::filetype).contains("snaps"))
+            {
+                    //don't want to grab values for combobox that are used for presets....
+            }
+            else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+                                                                                            CabbageIdentifierIds::channeltype) == "string")
+            {
+                char tmp_str[4096] = { 0 };
+                if(getCsound())
+                    getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
+                const String file(tmp_str);
+                j[presetName.toStdString()][channelName.toStdString()] = file.toStdString();
+                
+            }
+            else
+            {
+                j[presetName.toStdString()][channelName.toStdString()] = float(value);
+            }
+        }
+    }
+    
+    presetFile.replaceWithText(String(j.dump(4)));
+    
+//    // range-based for
+//    for (json::iterator it = j.begin(); it != j.end(); ++it) {
+//        std::cout << it.key();// << " : " << it.value() << "\n";
+//    }
+
+}
+
+void CabbagePluginProcessor::restorePluginPreset(String presetName)
+{
+    String newFileName;
+    //check user application data directory for the existance of a relevant snaps files before reading/writing from current directory...
+    newFileName = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
+    
+    currentPresetName = presetName;
+    
+    if (!File(newFileName).existsAsFile())
+    {
+        newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+    }
+    
+    json j;
+    File presetFile(newFileName);
+    String presetFileContents = presetFile.loadFileAsString();
+    j = json::parse(presetFileContents.toRawUTF8());
+
+    for (json::iterator itA = j.begin(); itA != j.end(); ++itA) {
+        if(String(itA.key()) == presetName)
+        {
+            for (json::iterator presetData = itA->begin(); presetData != itA->end(); ++presetData)
+            {
+                //std::cout << itB.key() << " : " << itB.value() << "\n";
+                ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, presetData.key(), true);
+                const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
+                const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
+                const String channelName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
+                
+                if(presetData.key() == "cabbageJSONData")
+                {
+                    CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+                    if (pd != nullptr)
+                    {
+                        auto pdClass = *pd;
+                        pdClass->data = presetData.value().dump();
+                    }
+                }
+                if(channelName == "PluginResizerCombBox")
+                    currentPluginScale = presetData.value().get<int>();
+                
+                if (type == CabbageWidgetTypes::texteditor)
+                {
+                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, presetData.value().dump());
+                }
+                else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype).contains("snaps"))
+                {
+                    //ignore settings of preset comboboxes...
+                }
+                else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
+                {
+                    const String stringComboItem = csdFile.getParentDirectory().getChildFile(presetData.value().dump()).existsAsFile() ?
+                    csdFile.getParentDirectory().getChildFile(presetData.value().dump()).getFileNameWithoutExtension() : presetData.value().dump();
+                    
+                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
+                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
+                    
+                    
+                }
+                else if (type == CabbageWidgetTypes::filebutton)
+                {
+                    const String absolutePath =
+                    csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();
+                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
+                }
+//                else if (type == CabbageWidgetTypes::hrange ||
+//                         type == CabbageWidgetTypes::vrange) //double channel range widgets
+//                {
+//                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::minvalue,
+//                                                  presetData.value().get<float>(););
+//
+//                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::maxvalue,
+//                                                  e->getAttributeValue(i + 1).getFloatValue());
+//                    i++;
+//                }
+//                else if (type == CabbageWidgetTypes::xypad) //double channel range widgets
+//                {
+//                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuex,
+//                                                  e->getAttributeValue(i).getFloatValue());
+//                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuey,
+//                                                  e->getAttributeValue(i + 1).getFloatValue());
+//                    i++;
+//                }
+                else
+                {
+                    if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
+                        && CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps" &&
+                        CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
+                        CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
+                                                      presetData.value().get<float>());
+                    //now make changes parameter changes so host can see them..
+                    //getParameters().
+                    
+                    for (auto cabbageParam : getCabbageParameters())
+                    {
+                        if (widgetName == cabbageParam->getWidgetName())
+                        {
+                            cabbageParam->beginChangeGesture();
+                            cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(presetData.value().get<float>()));
+                            cabbageParam->endChangeGesture();
+                        }
+                    }
+                }
+            }
+
+        }
+        
+    }
+}
+//===============================================================================================
+
 XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, String newPresetName, bool removePreset)
 {
 	std::unique_ptr<XmlElement> xml;
 
 	if (xmlFile.existsAsFile()) {
 		xml = XmlDocument::parse(xmlFile);
-
 		if (!xml)
 			xml = std::unique_ptr<XmlElement>(new XmlElement("CABBAGE_PRESETS"));
-
 	}
 	else
 		xml = std::unique_ptr<XmlElement>(new XmlElement("CABBAGE_PRESETS"));
-
-
-    if(removePreset == true)
-    {
-        DBG("removing:"+newPresetName);
-        XmlElement* child = xml->getFirstChildElement();
-
-        while (child != nullptr)
-        {
-            if(child->getStringAttribute("PresetName") == newPresetName)
-            {
-                //DBG("found: "+newPresetName+" add removing " + child->getTagName() +" from XML tree");
-                xml->removeChildElement(child, true);
-                break;
-            }
-            child = child->getNextElement();
-        }
-        
-        return *xml;
-    }
     
-	String presetName = "PRESET" + String(xml->getNumChildElements());
-    XmlElement* child = xml->getFirstChildElement();
-    StringArray currentTags;
-    while (child != nullptr)
-    {
-        currentTags.add(child->getTagName());
-        child = child->getNextElement();
-    }
-    
-    int id = 0;
-    while(currentTags.contains("PRESET"+String(id)))
-    {
-        id++;
-    }
-    //generate unique ID for preset tag...
-    presetName = "PRESET"+String(id);
-    
-    
-    
-	const String childName = newPresetName.isNotEmpty() ? newPresetName : xmlTag + " " + String(xml->getNumChildElements());
-	bool presetNameExists = false;
-	for (int i = 0; i < xml->getNumChildElements(); i++)
-	{
-		String preset = "PRESET" + String(i);;
-		if (auto e = xml->getChildByName(preset))
-		{
-			if (e->getStringAttribute("PresetName") == childName)
-			{
-				presetNameExists = true;
-				presetName = preset;
-			}
-		}
-
-	}
-
-    //this is called whenever the session xml is being saved....
-    if (presetNameExists == false && !currentTags.contains(presetName)){
-        DBG("Creating new preset:"+presetName);
-        xml->createNewChildElement(presetName);
-    }
-    
-	xml->getChildByName(presetName)->setAttribute("PresetName", childName);
-
-	if (getCsound())
-	{
-		CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-
-		if (pd != nullptr)
-		{
-			auto pdClass = *pd;
-            DBG(pdClass->data);
-			xml->getChildByName(presetName)->setAttribute("cabbageJSONData", pdClass->data);
-		}
-	}
-
-        
     
 	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
 		const String channelName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
@@ -1021,7 +1194,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 			if (type == CabbageWidgetTypes::texteditor) {
 				const String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 					CabbageIdentifierIds::text);
-				xml->getChildByName(presetName)->setAttribute(channelName, text);
+				xml->setAttribute(channelName, text);
 			}
 			else if (type == CabbageWidgetTypes::filebutton &&
 				!CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
@@ -1031,7 +1204,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 
 				if (file.length() > 2) {
 					const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
-					xml->getChildByName(presetName)->setAttribute(channelName,
+					xml->setAttribute(channelName,
 						relativePath.replaceCharacters("\\", "/"));
 				}
 			}
@@ -1044,8 +1217,8 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 					CabbageIdentifierIds::minvalue);
 				const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 					CabbageIdentifierIds::maxvalue);
-				xml->getChildByName(presetName)->setAttribute(channels[0].toString(), minValue);
-				xml->getChildByName(presetName)->setAttribute(channels[1].toString(), maxValue);
+				xml->setAttribute(channels[0].toString(), minValue);
+				xml->setAttribute(channels[1].toString(), maxValue);
 			}
 			else if (type == CabbageWidgetTypes::xypad) //double channel xypad widget
 			{
@@ -1055,9 +1228,19 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 					CabbageIdentifierIds::valuex);
 				const float yValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 					CabbageIdentifierIds::valuey);
-				xml->getChildByName(presetName)->setAttribute(channels[0].toString(), xValue);
-				xml->getChildByName(presetName)->setAttribute(channels[1].toString(), yValue);
+				xml->setAttribute(channels[0].toString(), xValue);
+				xml->setAttribute(channels[1].toString(), yValue);
 			}
+            else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                                                                                              CabbageIdentifierIds::filetype).contains("snaps"))
+            {
+                if(getCsound())
+                {
+                    memset(&tmp_string[0], 0, sizeof(tmp_string));
+                    getCsound()->GetStringChannel(channelName.toUTF8(), tmp_string);
+                    xml->setAttribute(channelName, String(tmp_string));
+                }
+            }
 			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
 				CabbageIdentifierIds::channeltype) == "string")
 			{
@@ -1065,46 +1248,24 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 				if(getCsound())
                     getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
 				const String file(tmp_str);
-				xml->getChildByName(presetName)->setAttribute(channelName, file);
+				xml->setAttribute(channelName, file);
 
 			}
-            else if(channelName == "PluginPresetCombBox")
-            {
-                const String pName = currentPresetName;
-                String presetValue = value.toString();
-                if(presetValue == "1" && pName.length()>0)
-                    presetValue = pName;
-                    
-                xml->getChildByName(presetName)->setAttribute("CurrentPresetName", presetValue);
-                xml->getChildByName(presetName)->setAttribute(channelName, presetValue);
-            }
 			else
 			{
-				xml->getChildByName(presetName)->setAttribute(channelName, float(value));
+				xml->setAttribute(channelName, float(value));
 			}
 		}
 	}
 
+    xml->writeTo(File("~/Documents/Csoundfiles/text.txt"));
 	return *xml;
 }
 
 void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
 	if (xmlState != nullptr) {
 		//if dealing with session saved by host
-		if (xmlState->getNumChildElements() == 1) {
-			setParametersFromXml(xmlState->getChildByName("PRESET0"));
-		}
-		//else dealing with preset files loaded in editor...
-		else {
-			//            xmlState->writeTo(File("/Users/walshr/Desktop/test.txt"));
-           
-            if(CabbagePluginEditor* editor = dynamic_cast<CabbagePluginEditor*> (this->getActiveEditor()))
-            {
-                currentPresetName =  xmlState->getStringAttribute("PresetName");
-            }
-			setParametersFromXml(xmlState);
-		}
-
+        setParametersFromXml(xmlState);
 		initAllCsoundChannels(cabbageWidgets);
 	}
 }
@@ -1113,7 +1274,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 {
 	if (e)
 	{
-		for (int i = 1; i < e->getNumAttributes(); i++)
+		for (int i = 0; i < e->getNumAttributes(); i++)
 		{
 			//none of these are being updated in their respective valueTreeChanged listeners..
             if(e->getAttributeName(i) == "cabbageJSONData")
@@ -1143,9 +1304,11 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			{
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
 			}
-            else if(channelName == "PluginPresetCombBox")
+            else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype).contains("snaps"))
             {
-                currentPresetName = e->getStringAttribute("CurrentPresetName");
+                currentPresetName = e->getAttributeValue(i);
+                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
+                
             }
 			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 			{

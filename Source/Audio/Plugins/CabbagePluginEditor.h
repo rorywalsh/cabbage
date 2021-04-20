@@ -138,8 +138,8 @@ public:
     void setCurrentPreset(String preset);
     String getCurrentPreset();
     
-    void savePluginStateToFile (File snapshotFile, String presetName="", bool remove = false);
-    void restorePluginStateFrom (String childPreset, File xmlFile);
+    void savePluginStateToFile (String presetName="", bool remove = false);
+    void restorePluginStateFrom (String childPreset);
     const Array<float, CriticalSection> getArrayForSignalDisplay (const String signalVariable, const String displayType);
     const String getCsoundOutputFromProcessor();
     StringArray getTableStatement (int tableNumber);

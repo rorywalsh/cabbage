@@ -423,6 +423,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("outlineThickness"):
             case HashStringToInt ("pivotX"):
             case HashStringToInt ("pivotY"):
+            case HashStringToInt ("protectedItems"):
             case HashStringToInt ("readOnly"):
             case HashStringToInt ("scrollbars"):
             case HashStringToInt ("sidechain"):
@@ -438,6 +439,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("valueTextBox"):
             case HashStringToInt ("valueX"):
             case HashStringToInt ("scale"):
+            case HashStringToInt ("sort"):
             case HashStringToInt ("valueY"):
             case HashStringToInt ("velocitY"):
             case HashStringToInt ("visible"):

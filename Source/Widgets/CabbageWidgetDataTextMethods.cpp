@@ -52,6 +52,8 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("velocity"):
         case HashStringToInt ("visible"):
         case HashStringToInt ("zoom"):
+        case HashStringToInt ("sort"):
+        case HashStringToInt ("protectedItems"):
         case HashStringToInt ("range"):
         case HashStringToInt ("latched"):
         case HashStringToInt ("fontSize"):

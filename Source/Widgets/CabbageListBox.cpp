@@ -245,7 +245,7 @@ void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
         }
 #endif 
         
-        owner->restorePluginStateFrom (presets[row], newFileName);
+        owner->restorePluginStateFrom (presets[row]);
         owner->sendChannelDataToCsound (getChannel(), row);
     }
     else if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))

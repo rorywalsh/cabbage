@@ -49,7 +49,7 @@ public:
     void valueTreeParentChanged (ValueTree&) override {};
     String returnValidPath (File path);
     void setLookAndFeelColours (ValueTree wData);
-
+    bool allowPresetChanges(String presetName);
     void buttonClicked (Button* button)  override;
     ValueTree widgetData;
     
