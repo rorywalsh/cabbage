@@ -392,7 +392,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                 addFiles(strTokens, widgetData, "bundle");
                 break;
                 
-            case HashStringToInt("filmStrip"):
+            case HashStringToInt("filmstrip"):
                 setFilmStrip(strTokens, widgetData);
                 break;
                 
