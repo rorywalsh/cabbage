@@ -57,7 +57,11 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
                 fileExtension = "dll";
         }
         
+#ifdef CabbagePro
+        const String pluginDesc = String(JucePlugin_Manufacturer);
+#else
         const String pluginDesc = String(JucePlugin_Desc);
+#endif
         
         if (type == "VSTi" || type == "AUi" || type == "VST3i")
             pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"Synth." + fileExtension);
@@ -211,7 +215,11 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     
     if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
     {
+#ifdef CabbagePro
+        const String pluginDesc = String(JucePlugin_Manufacturer);
+#else
         const String pluginDesc = String(JucePlugin_Desc);
+#endif
         if(fileExtension.containsIgnoreCase("component"))
             exportedCsdFile = exportedPlugin.getFullPathName() + String ("/Contents/"+pluginDesc+".csd");
         else if(fileExtension.containsIgnoreCase("vst"))
