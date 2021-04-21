@@ -250,7 +250,9 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         var presetNames;
         if (fileName.existsAsFile() && fileName.loadFileAsString().isNotEmpty())
         {
-            
+            if(json::accept(fileName.loadFileAsString().toRawUTF8()) == false)
+               return;
+               
             auto j = json::parse(fileName.loadFileAsString().toRawUTF8());
             for (json::iterator it = j.begin(); it != j.end(); ++it) {
                 presets.add (it.key());
