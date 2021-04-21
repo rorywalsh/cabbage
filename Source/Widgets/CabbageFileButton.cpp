@@ -149,7 +149,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     {
         if(allowPresetChanges(owner->getCurrentPreset()))
         {
-            int result = AlertWindow::showYesNoCancelBox(AlertWindow::AlertIconType::NoIcon, "Preset", "Are you sure you wish to removethis preset?", "Yes", "No", "Cancel");
+            int result = AlertWindow::showYesNoCancelBox(AlertWindow::AlertIconType::NoIcon, "Preset", "Are you sure you wish to remove this preset?", "Yes", "No", "Cancel");
             if(result == 1)
             {
                 owner->savePluginStateToFile(owner->getCurrentPreset(), true);

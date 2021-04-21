@@ -1678,7 +1678,7 @@ CabbagePluginParameter* CabbagePluginProcessor::getParameterForXYPad(String name
 //==============================================================================
 void CabbagePluginProcessor::setCabbageParameter(String channel, float value, ValueTree& wData) {
     
-    if(pollingChannels() == false){
+    if(pollingChannels() == 0){
         MessageManager::callAsync ([this, wData, value](){
             CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, value);
         });

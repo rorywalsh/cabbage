@@ -120,7 +120,7 @@ camelCaseIdentifiers.append("popupText");
 camelCaseIdentifiers.append("textColor");
 camelCaseIdentifiers.append("fontStyle");
 camelCaseIdentifiers.append("fontColor");
-camelCaseIdentifiers.append("filmStrip");
+camelCaseIdentifiers.append("filmstrip");
 camelCaseIdentifiers.append("arraySize");
 camelCaseIdentifiers.append("increment");
 camelCaseIdentifiers.append("nameSpace");

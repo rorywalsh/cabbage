@@ -188,19 +188,43 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
 
         const String currentIdentName = currentIdentifier.substring(0, currentIdentifier.indexOf(
                                                                                                  "(")).trim().removeCharacters(", ");
-        
+            
         //I need to check that the current identifiers are not the same as the existing ones, if so don't replace anything
         if (currentIdentName.isNotEmpty())
         {
             //getCabbageCodeForIdentifier will return multiple imgFile() identifiers, this will create a problem...
-            const String stringToReplace = currentIdentifier.trimCharactersAtStart(", ") + ")";
+            String stringToReplace = currentIdentifier.trimCharactersAtStart(", ") + ")";
             const String newText = getCabbageCodeForIdentifier(widgetData, currentIdentName).trimCharactersAtEnd(", ");
             
-            
-            replacedIdentifiers.add(newText.substring(0, newText.indexOf("(")));
-            const int shouldReplace = returnString.indexOf(newText);
-            if(newText!=stringToReplace && macroStrings.indexOf(newText) == -1 && shouldReplace == -1)
-                returnString = returnString.replace(stringToReplace, newText);
+            if(CabbageUtilities::getNumberOfOccurances(newText, "imgFile")>1)
+            {
+                StringArray newImgFileTokens = CabbageUtilities::getTokens(newText, ')');
+                for(int i = 0 ; i < newImgFileTokens.size() ; i++)
+                {
+                    DBG(newImgFileTokens[i]);
+                    String testToken = newImgFileTokens[i].trimCharactersAtStart(", ") + ")";
+                    replacedIdentifiers.add(testToken.substring(0, testToken.indexOf("(")));
+
+                    if(stringToReplace.isEmpty() && !returnString.contains(testToken))
+                    {
+                        returnString = returnString + " " + testToken;
+                    }
+                    else if(testToken!=stringToReplace && macroStrings.indexOf(testToken) == -1 && !returnString.contains(testToken))
+                        returnString = " " + returnString.replace(stringToReplace, testToken);
+                    else
+                        stringToReplace = "";
+                }
+            }
+            else
+            {
+                replacedIdentifiers.add(newText.substring(0, newText.indexOf("(")));
+                if(newText!=stringToReplace && macroStrings.indexOf(newText) == -1)
+                    returnString = returnString.replace(stringToReplace, newText);
+            }
+
+//            replacedIdentifiers.add(newText.substring(0, newText.indexOf("(")));
+//            if(newText!=stringToReplace && macroStrings.indexOf(newText) == -1)
+//                returnString = returnString.replace(stringToReplace, newText);
         }
         
     }
@@ -406,7 +430,7 @@ String CabbageWidgetData::getSimpleTextAsCabbageCode(ValueTree widgetData, Strin
     return String();
 }
 
-String CabbageWidgetData::getImagesTextAsCabbageCode(ValueTree widgetData, const String macroText, String identifier)
+String CabbageWidgetData::getImagesTextAsCabbageCode(ValueTree widgetData, const String macroText)
 {
     ValueTree tempData("tempTree");
     const String type = getStringProp(widgetData, CabbageIdentifierIds::type);
@@ -424,21 +448,21 @@ String CabbageWidgetData::getImagesTextAsCabbageCode(ValueTree widgetData, const
         != getStringProp(tempData, CabbageIdentifierIds::imgbuttonoff))
     {
         const String text = getStringProp(widgetData, CabbageIdentifierIds::imgbuttonoff);
-        returnText = returnText +"imgFile(\"Off\", \"" + text + "\")";
+        returnText = returnText +"imgFile(\"Off\", \"" + text + "\") ";
     }
 
     if (getStringProp(widgetData, CabbageIdentifierIds::imgslider)
         != getStringProp(tempData, CabbageIdentifierIds::imgslider))
     {
         const String text = getStringProp(widgetData, CabbageIdentifierIds::imgslider);
-        returnText = returnText +"imgFile(\"Slider\", \"" + text + "\")";
+        returnText = returnText +"imgFile(\"Slider\", \"" + text + "\") ";
     }
 
     if (getStringProp(widgetData, CabbageIdentifierIds::imgsliderbg)
         != getStringProp(tempData, CabbageIdentifierIds::imgsliderbg))
     {
         const String text = getStringProp(widgetData, CabbageIdentifierIds::imgsliderbg);
-        returnText = returnText +"imgFile(\"Background\", \"" + text + "\")";
+        returnText = returnText +"imgFile(\"Background\", \"" + text + "\") ";
     }
 
     if (getStringProp(widgetData, CabbageIdentifierIds::imggroupbox)

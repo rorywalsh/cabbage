@@ -1165,7 +1165,24 @@ public:
         return String (static_cast<double> (y) + (1.0 / m) * r);
     }
     //======================================================================================
+    static int getNumberOfOccurances(String text, String word)
+    {
+        int wordCount = 0;
+        
+        if(text.indexOf(word) == -1)
+            return wordCount;
+        
+        int index = text.indexOf(0, word);
 
+        while(index != -1)
+        {
+            wordCount++;
+            index = text.indexOf(index+word.length(), word);
+        }
+        
+        return wordCount;
+
+    }
     //======================================================================================
     static void writeValueTreeToFile (ValueTree valueTree, String filePath)
     {

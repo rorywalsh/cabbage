@@ -393,13 +393,13 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
 
 void CabbagePropertiesPanel::filenameComponentChanged (FilenameComponent* fileComponent)
 {
+    DBG(fileComponent->getName());
     if (File (fileComponent->getCurrentFileText()).existsAsFile())
     {
         const String csdFile = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::csdfile);
         fileComponent->setTooltip (fileComponent->getCurrentFileText());
         const String relativePath = File (fileComponent->getCurrentFileText()).getRelativePathFrom (File (csdFile));
         setPropertyByName (fileComponent->getName(), relativePath);
-
     }
     else
     {
