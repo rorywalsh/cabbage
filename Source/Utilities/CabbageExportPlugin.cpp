@@ -57,7 +57,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
                 fileExtension = "dll";
         }
         
-#ifdef CabbagePro
+#if CabbagePro && JUCE_MAC
         const String pluginDesc = String(JucePlugin_Manufacturer);
 #else
         const String pluginDesc = String(JucePlugin_Desc);

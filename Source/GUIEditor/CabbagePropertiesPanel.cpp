@@ -212,10 +212,15 @@ void CabbagePropertiesPanel::setPropertyByName (String name, var value)
             CabbageWidgetData::setProperty (widgetData, identifier, value);
         }
 
-        if (identifier == CabbageIdentifierIds::filmstrip.toString())
+        else if (identifier == CabbageIdentifierIds::filmstrip.toString())
         {
             CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::filmstripimage,
                 value.toString());
+        }
+        else if (identifier == CabbageIdentifierIds::filmstripframes.toString())
+        {
+            CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::filmstripframes,
+                                           value);
         }
         else if (ampRangeIdentifiers.contains (identifier))
             getAmpRangeForTable (identifier, value);
@@ -334,12 +339,14 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
 	else if (value.refersToSameSourceAs(outerRadius))
 		setPropertyByName("Outer Radius", value.getValue());
 
-
     else if (value.refersToSameSourceAs (zoomValue))
         setPropertyByName ("Zoom", value.getValue());
 
     else if (value.refersToSameSourceAs (sliderNumberBoxValue))
         setPropertyByName ("Value Box", value.getValue());
+
+    else if (value.refersToSameSourceAs (filmstripFrames))
+        setPropertyByName ("Filmstrip Frames", value.getValue());
 
     else if (value.refersToSameSourceAs (fillTableWaveformValue))
         setPropertyByName ("Fill", value.getValue());
@@ -694,9 +701,9 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
         comps.add (new CabbageFilePropertyComponent("Filmstrip Image", false, true, "*", filmStrip));
 
 
-        fsFrames.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::filmstripframes));
-        fsFrames.addListener(this);
-        comps.add (new SliderPropertyComponent(fsFrames, "Filmstrip Frames", 0, 256, 32, 1, 1));
+        filmstripFrames.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::filmstripframes));
+        filmstripFrames.addListener(this);
+        comps.add (new SliderPropertyComponent(filmstripFrames, "Filmstrip Frames", 0, 256, 32, 1, 1));
     }
 
     else if (typeOfWidget == "image")

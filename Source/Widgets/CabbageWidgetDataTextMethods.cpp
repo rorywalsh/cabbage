@@ -88,6 +88,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
             return getBoundsTextAsCabbageCode (getBounds (widgetData));
 
         case HashStringToInt("filmstrip"):
+        case HashStringToInt("filmstripFrames"):
             return getFilmStripTextAsCabbageCode(widgetData, "");
 
         case HashStringToInt ("type"):
