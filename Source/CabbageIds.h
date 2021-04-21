@@ -777,6 +777,7 @@ namespace CabbageIdentifierIds
     static const Identifier file = "file";
     static const Identifier filetype = "fileType";
     static const Identifier fill = "fill";
+    static const Identifier filmstrip = "filmstrip";
     static const Identifier filmStripRemoveFrom1 = "filmStripRemoveFrom1";
     static const Identifier filmStripRemoveFrom2 = "filmStripRemoveFrom2";
     static const Identifier filmstripimage = "filmStripImage";
@@ -1035,6 +1036,7 @@ namespace CabbageIdentifierIds2
 	static const Identifier file = "file";
 	static const Identifier filetype = "filetype";
 	static const Identifier fill = "fill";
+    static const Identifier filmstrip = "filmstrip";
     static const Identifier filmStripRemoveFrom1 = "filmStripRemoveFrom1";
     static const Identifier filmStripRemoveFrom2 = "filmStripRemoveFrom2";
     static const Identifier filmstripimage = "filmstripimage";
@@ -1302,7 +1304,7 @@ public:
         set ("File", CabbageIdentifierIds::file.toString());
         set ("Fill", CabbageIdentifierIds::fill.toString());
         set ("Font", CabbageIdentifierIds::fontcolour.toString());
-        set ("Filmstrip Image", CabbageIdentifierIds::filmstripimage.toString());
+        set ("Filmstrip Image", CabbageIdentifierIds::filmstrip.toString());
         set ("Filmstrip Frames", CabbageIdentifierIds::filmstripframes.toString());
         set ("Font: Off", CabbageIdentifierIds::fontcolour.toString());
         set ("Font: On", CabbageIdentifierIds::onfontcolour.toString());

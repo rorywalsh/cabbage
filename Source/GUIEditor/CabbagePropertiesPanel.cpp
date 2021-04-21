@@ -212,6 +212,11 @@ void CabbagePropertiesPanel::setPropertyByName (String name, var value)
             CabbageWidgetData::setProperty (widgetData, identifier, value);
         }
 
+        if (identifier == CabbageIdentifierIds::filmstrip.toString())
+        {
+            CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::filmstripimage,
+                value.toString());
+        }
         else if (ampRangeIdentifiers.contains (identifier))
             getAmpRangeForTable (identifier, value);
 
@@ -682,8 +687,16 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
     {
         const String sliderFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgfile));
         const String sliderBgFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgsliderbg));
+        const String filmStrip = CabbageUtilities::getFileAndPath(File(csdFile), CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filmstripimage));
+        
         comps.add (new CabbageFilePropertyComponent ("Rotary Image", false, true, "*", sliderFile));
         comps.add (new CabbageFilePropertyComponent ("Background Image", false, true, "*", sliderBgFile));
+        comps.add (new CabbageFilePropertyComponent("Filmstrip Image", false, true, "*", filmStrip));
+
+
+        fsFrames.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::filmstripframes));
+        fsFrames.addListener(this);
+        comps.add (new SliderPropertyComponent(fsFrames, "Filmstrip Frames", 0, 256, 32, 1, 1));
     }
 
     else if (typeOfWidget == "image")
