@@ -166,7 +166,7 @@ void FlatButtonLookAndFeel::drawLinearSlider(Graphics& g, int x, int y, int widt
     float sliderPos, float minSliderPos, float maxSliderPos,
     const Slider::SliderStyle style, Slider& slider)
 {
-    const int filmStrip = slider.getProperties().getWithDefault("filmStrip", 0);
+    const int filmStrip = slider.getProperties().getWithDefault("filmstrip", 0);
     if (filmStrip == 1)
     {
         g.fillAll(Colours::transparentWhite);
@@ -434,7 +434,7 @@ void FlatButtonLookAndFeel::drawTwoValueThumb (Graphics& g, float x, float y, fl
 void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int width, int height, float sliderPos,
     const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider)
 {
-    const int filmStrip = slider.getProperties().getWithDefault("filmStrip", 0);
+    const int filmStrip = slider.getProperties().getWithDefault("filmstrip", 0);
     if (filmStrip == 1)
     {
         g.fillAll(Colours::transparentWhite);

@@ -239,13 +239,12 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     {
         File fileName = File (getCsdFile()).withFileExtension (".snaps");
 
-#ifdef JUCE_WINDOWS
         if (!fileName.existsAsFile())
         {
             String path = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
             fileName = File(path);
         }
-#endif
+
         clear (dontSendNotification);
         stringItems.clear();
         var presetNames;

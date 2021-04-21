@@ -497,7 +497,7 @@ Image CabbageLookAndFeel2::drawToggleImage(float width, float height, bool isTog
 void CabbageLookAndFeel2::drawRotarySlider(Graphics& g, int x, int y, int width, int height, float sliderPos,
     const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider)
 {
-    const int filmStrip = slider.getProperties().getWithDefault("filmStrip", 0);
+    const int filmStrip = slider.getProperties().getWithDefault("filmstrip", 0);
     if (filmStrip == 1)
     {
         g.fillAll(Colours::transparentWhite);

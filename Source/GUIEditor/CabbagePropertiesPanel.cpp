@@ -671,7 +671,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
         const String onFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgbuttonon));
         const String offFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgbuttonoff));
 
-        comps.add (new CabbageFilePropertyComponent ("On Image", false, true, "*", onFile));
+        comps.add (new CabbageFilePropertyComponent("On Image", false, true, "*", onFile));
         comps.add (new CabbageFilePropertyComponent ("Off Image", false, true, "*", offFile));
     }
     else if (typeOfWidget == "combobox")
@@ -680,9 +680,9 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
     }
     else if (typeOfWidget.contains ("slider"))
     {
-        const String sliderFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgslider));
+        const String sliderFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgfile));
         const String sliderBgFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgsliderbg));
-        comps.add (new CabbageFilePropertyComponent ("Image", false, true, "*", sliderFile));
+        comps.add (new CabbageFilePropertyComponent ("Rotary Image", false, true, "*", sliderFile));
         comps.add (new CabbageFilePropertyComponent ("Background Image", false, true, "*", sliderBgFile));
     }
 

@@ -237,13 +237,13 @@ void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
         String newFileName;
         newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
 
-#ifdef JUCE_WINDOWS
+
         newFileName = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
         if (!File(newFileName).existsAsFile())
         {
             newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
         }
-#endif 
+
         
         owner->restorePluginStateFrom (presets[row]);
         owner->sendChannelDataToCsound (getChannel(), row);

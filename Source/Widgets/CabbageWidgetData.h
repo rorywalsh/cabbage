@@ -128,7 +128,7 @@ public:
     static String getNumericalValueTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText);
     static String getRotateTextAsCabbageCode (ValueTree widgetData, const String macroText);
     static String getSimpleTextAsCabbageCode (ValueTree widgetData, String identfier, const String macroText);
-    static String getImagesTextAsCabbageCode (ValueTree widgetData, const String macroText);
+    static String getImagesTextAsCabbageCode (ValueTree widgetData, const String macroText, String identifier = "");
     static String getWidgetArrayAsCabbageCode (ValueTree widgetData, const String macroText);
     static String getMultiItemNumbersAsCabbageCode (ValueTree widgetData, String identifier, const String macroText);
     //============================================================================

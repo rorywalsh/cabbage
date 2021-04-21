@@ -263,7 +263,7 @@ void CabbageSlider::initFilmStrip(ValueTree wData)
         filmStrip = ImageFileFormat::loadFrom(imageFile);
         if (!filmStrip.isNull())
         {
-            slider.getProperties().set("filmStrip", 1);
+            slider.getProperties().set("filmstrip", 1);
             frameHeight = filmStrip.getHeight() / numFrames;
             frameWidth = filmStrip.getWidth();
         }
