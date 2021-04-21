@@ -1258,7 +1258,6 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
 		}
 	}
 
-    xml->writeTo(File("~/Documents/Csoundfiles/text.txt"));
 	return *xml;
 }
 
