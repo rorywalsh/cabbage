@@ -703,7 +703,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
 
         filmstripFrames.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::filmstripframes));
         filmstripFrames.addListener(this);
-        comps.add (new SliderPropertyComponent(filmstripFrames, "Filmstrip Frames", 0, 256, 32, 1, 1));
+        comps.add (new SliderPropertyComponent(filmstripFrames, "Filmstrip Frames", 0, 256, 1));
     }
 
     else if (typeOfWidget == "image")
@@ -718,6 +718,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
         comps.add (new CabbageFilePropertyComponent ("Groupbox Image", false, true, "*", file));
     }
 
+ 
     addListener (comps, this);
     return comps;
 }
