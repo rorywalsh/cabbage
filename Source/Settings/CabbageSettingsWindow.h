@@ -125,6 +125,7 @@ public:
 		void buttonClicked() override
 		{
 			settings.getUserSettings()->setValue("AudioDriversWarning_dismiss", "0");
+            settings.getUserSettings()->setValue("DisablePluginIdWarning", "0");
 		}
 
 	private:

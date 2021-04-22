@@ -1974,131 +1974,149 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
     {
         if (File (file).existsAsFile())
         {
-            auto fileContents = File(file).loadFileAsString();
-            
-            DBG(fileContents);
-            
-            CabbageIdentifierStringsNonCamelCase identifiers;
-            CabbageIdentifierStrings camelCaseIdentifiers;
-            StringArray nonCamelCaseIdentifiers;
-            identifiers.removeEmptyStrings();
-            camelCaseIdentifiers.removeEmptyStrings();
-            for ( int i = identifiers.size() ; i >=0 ; i--)
-            {
-                if(fileContents.contains(identifiers[i]) && camelCaseIdentifiers.contains(identifiers[i]) == false && identifiers[i].isNotEmpty())
-                {
-                    const String test = identifiers[i];
-                    nonCamelCaseIdentifiers.add(identifiers[i]);
-                }
-            }
-            
-            
-            if(nonCamelCaseIdentifiers.size() > 0)
-            {
-                const String infoText = "The following identifiers are not camelCase:\n\n" + nonCamelCaseIdentifiers.joinIntoString("\n")+ "\n\nCabbage uses camelCase for all identifiers, i.e, trackercolour() is now trackerColour(). Please use \"Convert Identifiers to camelCase\" from the File menu option to update your code. Or manually change the identifer listed\n\nWould you like to convert them now?";
-                const int result = CabbageUtilities::showYesNoMessage(infoText, lookAndFeel.get());
-                if(result == 1){
-                    covertToCamelCase();
-                    File(file).replaceWithText(getCurrentCodeEditor()->getDocument().getAllContent());
-                    fileContents = File(file).loadFileAsString();
-                }
-            }
-            
-            StringArray fileContentStrArray, problemChannels;
-            fileContentStrArray.addLines(fileContents);
-            for ( auto string : fileContentStrArray){
-                const String widgetTreeIdentifier = "tempWidget";
-                ValueTree tempWidget(widgetTreeIdentifier);
-                CabbageWidgetData::setWidgetState(tempWidget, string.trimCharactersAtStart(" \t"), -9);
-                if(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel).contains(" "))
-                    problemChannels.add(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel));
-                
-                if(string.trimCharactersAtEnd("\t ").indexOf("opcode") == 0){
-                    StringArray tokens;
-                    tokens.addTokens(string, false);
-                    const String newKeyword = tokens[1].removeCharacters((","));
-                    
-                    getCurrentEditorContainer()->csoundTokeniser.udoKeywords.add(newKeyword);
-                    
-                }
 
-            }
-            
-            if(problemChannels.size() > 0){
-                const String infoText = "White spaces are not supported in channel names. The following channels need to be changed:\n"+problemChannels.joinIntoString("\n");
-                CabbageUtilities::showMessage ("Warning", infoText, lookAndFeel.get());
-            }
-
-            
-            
-            if(!fileContents.contains("<Cabbage>") || !fileContents.contains("</Cabbage>")){
-                const int dismiss = cabbageSettings->getUserSettings()->getIntValue("DisableCabbageTagsWarning");
-                if(!dismiss)
-                {
-                bool value = CabbageUtilities::showMessageWithHideOption("Warning", "Please make sure your Cabbage section is wrapped in <Cabbage> and </Cabbage> tags", lookAndFeel.get(), dismiss);
-                cabbageSettings->getUserSettings()->setValue("DisableCabbageTagsWarning", value);
-                }
-
-            }
-            AudioProcessorGraph::NodeID node(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
-            
-            if (node.uid == -99)
-            {
-                Uuid uniqueID;
-                node.uid = int32 (*uniqueID.getRawData());
-                fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId = node.uid;
-            }
-
-			Random rand;
-			double posOffset = rand.nextDouble() * 0.2;
-			juce::Point<double> pluginNodePos(.5+posOffset, .5+posOffset);
-			juce::Point<int> pluginWindowPos(-1000, -1000);
+preCompileCheckForIssues(File(file));
 
 
-			if (getFilterGraph()->graph.getNodeForId(node))
-			{
-				pluginNodePos = juce::Point<double>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("x", rand.nextDouble()),
-					getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("y", rand.nextDouble()));
+AudioProcessorGraph::NodeID node(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
 
-				pluginWindowPos = juce::Point<int>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowX", rand.nextInt(Range<int>(0, 500))),
-					getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowY", rand.nextInt(Range<int>(0, 500))));
+if (node.uid == -99)
+{
+    Uuid uniqueID;
+    node.uid = int32(*uniqueID.getRawData());
+    fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId = node.uid;
+}
 
-			}
-			
+Random rand;
+double posOffset = rand.nextDouble() * 0.2;
+juce::Point<double> pluginNodePos(.5 + posOffset, .5 + posOffset);
+juce::Point<int> pluginWindowPos(-1000, -1000);
+
+
+if (getFilterGraph()->graph.getNodeForId(node))
+{
+    pluginNodePos = juce::Point<double>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("x", rand.nextDouble()),
+        getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("y", rand.nextDouble()));
+
+    pluginWindowPos = juce::Point<int>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowX", rand.nextInt(Range<int>(0, 500))),
+        getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowY", rand.nextInt(Range<int>(0, 500))));
+
+}
 
 
 
-            getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
-			//this will create or update plugin...
 
-            graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pluginNodePos);
-            
-			
-            createEditorForFilterGraphNode (pluginWindowPos);
+getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
+//this will create or update plugin...
 
-            startTimer (100);
-            if(getFilterGraph()->graph.getNodeForId(node))
-            {
-                fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
-                fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
-            }
-            else
-            {
-                fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
-                fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
-            }
-            
-			factory.togglePlay (true);
-			//hack to allow saving on the fly with JUCE 5.4.7 - needs investigation...
+graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pluginNodePos);
 
-            graphComponent->enableAudioInput();
-            
+
+createEditorForFilterGraphNode(pluginWindowPos);
+
+startTimer(100);
+if (getFilterGraph()->graph.getNodeForId(node))
+{
+    fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
+    fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
+}
+else
+{
+    fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
+    fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
+}
+
+factory.togglePlay(true);
+//hack to allow saving on the fly with JUCE 5.4.7 - needs investigation...
+
+graphComponent->enableAudioInput();
+
         }
         else
-            CabbageUtilities::showMessage ("Warning", "Please open a file first", lookAndFeel.get());
+        CabbageUtilities::showMessage("Warning", "Please open a file first", lookAndFeel.get());
     }
 }
 
+void CabbageMainComponent::preCompileCheckForIssues(File file)
+{
+    CabbageIdentifierStringsNonCamelCase identifiers;
+    CabbageIdentifierStrings camelCaseIdentifiers;
+    StringArray nonCamelCaseIdentifiers;
+    identifiers.removeEmptyStrings();
+    auto fileContents = File(file).loadFileAsString();
+
+    camelCaseIdentifiers.removeEmptyStrings();
+    for (int i = identifiers.size(); i >= 0; i--)
+    {
+        if (fileContents.contains(identifiers[i]) && camelCaseIdentifiers.contains(identifiers[i]) == false && identifiers[i].isNotEmpty())
+        {
+            const String test = identifiers[i];
+            nonCamelCaseIdentifiers.add(identifiers[i]);
+        }
+    }
+
+
+    if (nonCamelCaseIdentifiers.size() > 0)
+    {
+        const String infoText = "The following identifiers are not camelCase:\n\n" + nonCamelCaseIdentifiers.joinIntoString("\n") + "\n\nCabbage uses camelCase for all identifiers, i.e, trackercolour() is now trackerColour(). Please use \"Convert Identifiers to camelCase\" from the File menu option to update your code. Or manually change the identifer listed\n\nWould you like to convert them now?";
+        const int result = CabbageUtilities::showYesNoMessage(infoText, lookAndFeel.get());
+        if (result == 1) {
+            covertToCamelCase();
+            File(file).replaceWithText(getCurrentCodeEditor()->getDocument().getAllContent());
+            fileContents = File(file).loadFileAsString();
+        }
+    }
+
+    StringArray fileContentStrArray, problemChannels;
+    fileContentStrArray.addLines(fileContents);
+    for (auto string : fileContentStrArray) {
+        const String widgetTreeIdentifier = "tempWidget";
+        ValueTree tempWidget(widgetTreeIdentifier);
+        CabbageWidgetData::setWidgetState(tempWidget, string.trimCharactersAtStart(" \t"), -9);
+        if(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::type) == "form")
+        {
+            const String pluginId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::pluginid);
+            if (pluginId.length() != 4)
+            {
+                const int dismiss = cabbageSettings->getUserSettings()->getIntValue("DisablePluginIdWarning");
+                if (!dismiss)
+                {
+                    bool value = CabbageUtilities::showMessageWithHideOption("Warning", "Your form's pluginId() must be an alphanumeric\nstring of 4 characters.", lookAndFeel.get(), dismiss);
+                    cabbageSettings->getUserSettings()->setValue("DisablePluginIdWarning", value);
+                }
+            }
+        }
+        if (CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel).contains(" "))
+            problemChannels.add(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel));
+
+        if (string.trimCharactersAtEnd("\t ").indexOf("opcode") == 0) {
+            StringArray tokens;
+            tokens.addTokens(string, false);
+            const String newKeyword = tokens[1].removeCharacters((","));
+
+            getCurrentEditorContainer()->csoundTokeniser.udoKeywords.add(newKeyword);
+
+        }
+
+    }
+
+    if (problemChannels.size() > 0) {
+        const String infoText = "White spaces are not supported in channel names. The following channels need to be changed:\n" + problemChannels.joinIntoString("\n");
+        CabbageUtilities::showMessage("Warning", infoText, lookAndFeel.get());
+    }
+
+
+
+    if (!fileContents.contains("<Cabbage>") || !fileContents.contains("</Cabbage>")) {
+        const int dismiss = cabbageSettings->getUserSettings()->getIntValue("DisableCabbageTagsWarning");
+        if (!dismiss)
+        {
+            bool value = CabbageUtilities::showMessageWithHideOption("Warning", "Please make sure your Cabbage section is wrapped in <Cabbage> and </Cabbage> tags", lookAndFeel.get(), dismiss);
+            cabbageSettings->getUserSettings()->setValue("DisableCabbageTagsWarning", value);
+        }
+
+    }
+}
 void CabbageMainComponent::stopCsoundForNode (String file, int fileTabIndex)
 {
 
