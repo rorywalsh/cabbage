@@ -35,16 +35,16 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
       debugLabel ("")
 {
     //setMouseClickGrabsKeyboardFocus (true);
-    String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
-    opcodeFile += "/opcodes.txt";
+    //String opcodeFile = File (File::getSpecialLocation (File::currentExecutableFile)).getParentDirectory().getFullPathName();
+    //opcodeFile += "/opcodes.txt";
     this->setLookAndFeel (&lookAndFeel3);
     setScrollbarThickness (20);
 
     addToGUIEditorPopup.reset (new AddCodeToGUIEditorComponent (this, "Add to code repository", Colour (25, 25, 25)));
     addToGUIEditorPopup->setVisible (false);
 
-    if (File (opcodeFile).existsAsFile())
-        setOpcodeStrings (File (opcodeFile).loadFileAsString());
+    //if (File (opcodeFile).existsAsFile())
+    setOpcodeStrings (opcodeHints);
 
     document.addListener (this);
     const Colour lineNumberBackground = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumberBackground, Colour (70, 70, 70));
