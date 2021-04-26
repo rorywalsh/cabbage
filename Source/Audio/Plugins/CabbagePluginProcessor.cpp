@@ -749,6 +749,10 @@ void CabbagePluginProcessor::createCabbageParameters()
 				{
 					const var currentChannel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
 						CabbageIdentifierIds::channel);
+                    
+                    DBG(currentChannel[0].toString());
+                    DBG(currentChannel[1].toString());
+                    
 					const float increment = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 						CabbageIdentifierIds::increment);
 					const float minX = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
@@ -1023,6 +1027,7 @@ void CabbagePluginProcessor::addPluginPreset(String presetName, bool remove)
                                                                    CabbageIdentifierIds::valuex);
                 const float yValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                    CabbageIdentifierIds::valuey);
+
                 j[presetName.toStdString()][channels[0].toString().toStdString()] = xValue;
                 j[presetName.toStdString()][channels[1].toString().toStdString()] = yValue;
             }
@@ -1075,12 +1080,13 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName)
     String presetFileContents = presetFile.loadFileAsString();
     j = json::parse(presetFileContents.toRawUTF8());
 
+    
     for (json::iterator itA = j.begin(); itA != j.end(); ++itA) {
         if(String(itA.key()) == presetName)
         {
             for (json::iterator presetData = itA->begin(); presetData != itA->end(); ++presetData)
             {
-                //std::cout << itB.key() << " : " << itB.value() << "\n";
+                
                 ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, presetData.key(), true);
                 const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
                 const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
@@ -1122,24 +1128,69 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName)
                     csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();
                     CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
                 }
-//                else if (type == CabbageWidgetTypes::hrange ||
-//                         type == CabbageWidgetTypes::vrange) //double channel range widgets
-//                {
-//                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::minvalue,
-//                                                  presetData.value().get<float>(););
-//
-//                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::maxvalue,
-//                                                  e->getAttributeValue(i + 1).getFloatValue());
-//                    i++;
-//                }
-//                else if (type == CabbageWidgetTypes::xypad) //double channel range widgets
-//                {
-//                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuex,
-//                                                  e->getAttributeValue(i).getFloatValue());
-//                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuey,
-//                                                  e->getAttributeValue(i + 1).getFloatValue());
-//                    i++;
-//                }
+                
+                //unique widgets taht take two channels...
+                else if (type == CabbageWidgetTypes::hrange ||
+                         type == CabbageWidgetTypes::vrange) //double channel range widgets
+                {
+                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::minvalue,
+                                                  presetData.value().get<float>());
+
+                    for (auto cabbageParam : getCabbageParameters())
+                    {
+                        if (widgetName+"_min" == cabbageParam->getWidgetName())
+                        {
+                            cabbageParam->beginChangeGesture();
+                            cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(presetData.value().get<float>()));
+                            cabbageParam->endChangeGesture();
+                        }
+                    }
+                    
+                    *presetData++;
+                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::maxvalue,
+                                                  presetData.value().get<float>());
+                    
+                    for (auto cabbageParam : getCabbageParameters())
+                    {
+                        if (widgetName+"_max" == cabbageParam->getWidgetName())
+                        {
+                            cabbageParam->beginChangeGesture();
+                            cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(presetData.value().get<float>()));
+                            cabbageParam->endChangeGesture();
+                        }
+                    }
+                }
+                else if (type == CabbageWidgetTypes::xypad) //double channel range widgets
+                {
+                    
+                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuex, presetData.value().get<float>());
+                    
+                    for (auto cabbageParam : getCabbageParameters())
+                    {
+                        if (widgetName+"_x" == cabbageParam->getWidgetName())
+                        {
+                            cabbageParam->beginChangeGesture();
+                            cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(presetData.value().get<float>()));
+                            cabbageParam->endChangeGesture();
+                        }
+                    }
+                    
+                    *presetData++;
+
+                    
+                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuey, presetData.value().get<float>());
+                    
+                    for (auto cabbageParam : getCabbageParameters())
+                    {
+                        if (widgetName+"_y" == cabbageParam->getWidgetName())
+                        {
+                            cabbageParam->beginChangeGesture();
+                            cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(presetData.value().get<float>()));
+                            cabbageParam->endChangeGesture();
+                        }
+                    }
+                    
+                }
                 else
                 {
                     if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
@@ -1149,7 +1200,7 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName)
                                                       presetData.value().get<float>());
                     //now make changes parameter changes so host can see them..
                     //getParameters().
-                    
+                
                     for (auto cabbageParam : getCabbageParameters())
                     {
                         if (widgetName == cabbageParam->getWidgetName())
@@ -1160,6 +1211,7 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName)
                         }
                     }
                 }
+                
             }
 
         }

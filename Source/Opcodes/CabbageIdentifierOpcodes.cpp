@@ -469,6 +469,12 @@ int SetCabbageIdentifierSArgs::setAttribute()
 {
     CabbageWidgetIdentifiers::IdentifierData data;
     int trigger = outargs[0];
+    int test = in_count();
+    if(out_count()<3){
+        csound->perf_error("Not enough arguments\n", this);
+        return NOTOK;
+    }
+    
     String name(outargs.str_data(1).data);
     String identifier(outargs.str_data(2).data);
     data.identifier = identifier;
