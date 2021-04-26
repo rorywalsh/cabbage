@@ -44,7 +44,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     addToGUIEditorPopup->setVisible (false);
 
     //if (File (opcodeFile).existsAsFile())
-    setOpcodeStrings (opcodeHints);
+    setOpcodeStrings ();
 
     document.addListener (this);
     const Colour lineNumberBackground = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::lineNumberBackground, Colour (70, 70, 70));
