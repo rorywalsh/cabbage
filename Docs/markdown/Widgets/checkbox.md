@@ -37,6 +37,8 @@ checkbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/popup.md !} 
 
+{! ./markdown/Widgets/Properties/presetIgnore.md !} 
+
 {! ./markdown/Widgets/Properties/rotate.md !} 
 
 {! ./markdown/Widgets/Properties/shape.md !} 

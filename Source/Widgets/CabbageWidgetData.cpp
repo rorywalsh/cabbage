@@ -36,6 +36,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     setProperty (widgetData, "scalex", 1);
     setProperty (widgetData, "scaley", 1);
     setProperty (widgetData, "resize", 0);
+    setProperty (widgetData, CabbageIdentifierIds::presetignore, 0);
     setProperty (widgetData, CabbageIdentifierIds::guimode, CabbageIdentifierIds::polling.toString());
     setProperty (widgetData, CabbageIdentifierIds::automation, 0);
     setProperty (widgetData, CabbageIdentifierIds::active, 1);
@@ -423,6 +424,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("outlineThickness"):
             case HashStringToInt ("pivotX"):
             case HashStringToInt ("pivotY"):
+            case HashStringToInt ("presetIgnore"):
             case HashStringToInt ("protectedItems"):
             case HashStringToInt ("readOnly"):
             case HashStringToInt ("scrollbars"):

@@ -39,7 +39,9 @@ listbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/identchannel.md !}  
 
-{! ./markdown/Widgets/Properties/popup.md !}  
+{! ./markdown/Widgets/Properties/popup.md !} 
+
+{! ./markdown/Widgets/Properties/presetIgnore.md !} 
 
 {! ./markdown/Widgets/Properties/rotate.md !}  
 

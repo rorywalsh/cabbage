@@ -981,74 +981,78 @@ void CabbagePluginProcessor::addPluginPreset(String presetName, bool remove)
     for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
         const String channelName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                     CabbageIdentifierIds::channel);
-      
-        const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
-        const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
-        
-        //only write values for widgets that have channels
-        if (channelName.isNotEmpty()) {
-            if (type == CabbageWidgetTypes::texteditor) {
-                String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                                     CabbageIdentifierIds::text);
-                j[presetName.toStdString()][channelName.toStdString()] = text.toRawUTF8();
-            }
-            else if(channelName == "PRESET_COMBOBOX")
-            {
-                //if snaps
-            }
-            else if (type == CabbageWidgetTypes::filebutton &&
-                     !CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                       CabbageIdentifierIds::filetype).contains("snaps")) {
-                         const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                                              CabbageIdentifierIds::file);
-                         
-                         if (file.length() > 2) {
-                             const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
-                             j[presetName.toStdString()][channelName.toStdString()] = relativePath.replaceCharacters("\\", "/").toStdString();
+        const int ignore = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                    CabbageIdentifierIds::presetignore);
+        if(ignore == 0)
+        {
+            const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
+            const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+            
+            //only write values for widgets that have channels
+            if (channelName.isNotEmpty()) {
+                if (type == CabbageWidgetTypes::texteditor) {
+                    String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                                                                         CabbageIdentifierIds::text);
+                    j[presetName.toStdString()][channelName.toStdString()] = text.toRawUTF8();
+                }
+                else if(channelName == "PRESET_COMBOBOX")
+                {
+                    //if snaps
+                }
+                else if (type == CabbageWidgetTypes::filebutton &&
+                         !CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                                                           CabbageIdentifierIds::filetype).contains("snaps")) {
+                             const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                                                                                  CabbageIdentifierIds::file);
+                             
+                             if (file.length() > 2) {
+                                 const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
+                                 j[presetName.toStdString()][channelName.toStdString()] = relativePath.replaceCharacters("\\", "/").toStdString();
+                             }
                          }
-                     }
-            else if (type.contains("range")) //double channel range widgets
-            {
-                var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
-                                                              CabbageIdentifierIds::channel);
-                
-                const float minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                                                                     CabbageIdentifierIds::minvalue);
-                const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                                                                     CabbageIdentifierIds::maxvalue);
-                j[presetName.toStdString()][channels[0].toString().toStdString()] = minValue;
-                j[presetName.toStdString()][channels[1].toString().toStdString()] = maxValue;
-            }
-            else if (type == CabbageWidgetTypes::xypad) //double channel xypad widget
-            {
-                var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
-                                                              CabbageIdentifierIds::channel);
-                const float xValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                                                                   CabbageIdentifierIds::valuex);
-                const float yValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                                                                   CabbageIdentifierIds::valuey);
+                else if (type.contains("range")) //double channel range widgets
+                {
+                    var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+                                                                  CabbageIdentifierIds::channel);
+                    
+                    const float minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                         CabbageIdentifierIds::minvalue);
+                    const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                         CabbageIdentifierIds::maxvalue);
+                    j[presetName.toStdString()][channels[0].toString().toStdString()] = minValue;
+                    j[presetName.toStdString()][channels[1].toString().toStdString()] = maxValue;
+                }
+                else if (type == CabbageWidgetTypes::xypad) //double channel xypad widget
+                {
+                    var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+                                                                  CabbageIdentifierIds::channel);
+                    const float xValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                       CabbageIdentifierIds::valuex);
+                    const float yValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                       CabbageIdentifierIds::valuey);
 
-                j[presetName.toStdString()][channels[0].toString().toStdString()] = xValue;
-                j[presetName.toStdString()][channels[1].toString().toStdString()] = yValue;
-            }
-            else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                                                            CabbageIdentifierIds::filetype).contains("snaps"))
-            {
-                    //don't want to grab values for combobox that are used for presets....
-            }
-            else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
-                                                                                            CabbageIdentifierIds::channeltype) == "string")
-            {
-                char tmp_str[4096] = { 0 };
-                if(getCsound())
-                    getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
-                const String file(tmp_str);
-                j[presetName.toStdString()][channelName.toStdString()] = file.toStdString();
-                
-            }
-            else
-            {
-                j[presetName.toStdString()][channelName.toStdString()] = float(value);
+                    j[presetName.toStdString()][channels[0].toString().toStdString()] = xValue;
+                    j[presetName.toStdString()][channels[1].toString().toStdString()] = yValue;
+                }
+                else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                                                                                                CabbageIdentifierIds::filetype).contains("snaps"))
+                {
+                        //don't want to grab values for combobox that are used for presets....
+                }
+                else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+                                                                                                CabbageIdentifierIds::channeltype) == "string")
+                {
+                    char tmp_str[4096] = { 0 };
+                    if(getCsound())
+                        getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
+                    const String file(tmp_str);
+                    j[presetName.toStdString()][channelName.toStdString()] = file.toStdString();
+                    
+                }
+                else
+                {
+                    j[presetName.toStdString()][channelName.toStdString()] = float(value);
+                }
             }
         }
     }

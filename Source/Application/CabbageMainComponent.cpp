@@ -1933,14 +1933,13 @@ void CabbageMainComponent::covertToLowerCase()
 {
     String currentFileText = getCurrentCsdFile().loadFileAsString();
     
-    CabbageIdentifierStringsNonCamelCase identifiers;
     CabbageIdentifierStrings camelCaseIdentifiers;
-    for ( int i = identifiers.size() ; i >=0 ; i--)
+    for ( int i = camelCaseIdentifiers.size() ; i >=0 ; i--)
     {
         if(currentFileText.contains(camelCaseIdentifiers[i]))
         {
-            DBG("Replacing"+camelCaseIdentifiers[i] + " with " + identifiers[i]);
-            currentFileText = currentFileText.replace(camelCaseIdentifiers[i], identifiers[i]);
+            DBG("Replacing"+camelCaseIdentifiers[i] + " with " + camelCaseIdentifiers[i].toLowerCase());
+            currentFileText = currentFileText.replace(camelCaseIdentifiers[i], camelCaseIdentifiers[i].toLowerCase());
         }
     }
     
@@ -1952,14 +1951,13 @@ void CabbageMainComponent::covertToCamelCase()
 {
     String currentFileText = getCurrentCsdFile().loadFileAsString();
     
-    CabbageIdentifierStringsNonCamelCase identifiers;
     CabbageIdentifierStrings camelCaseIdentifiers;
-    for ( int i = identifiers.size() ; i >=0 ; i--)
+    for ( int i = camelCaseIdentifiers.size() ; i >=0 ; i--)
     {
-        if(currentFileText.contains(identifiers[i]))
+        if(currentFileText.contains(camelCaseIdentifiers[i].toLowerCase()))
         {
-            DBG("Replacing"+identifiers[i] + " with " + camelCaseIdentifiers[i]);
-            currentFileText = currentFileText.replace(identifiers[i], camelCaseIdentifiers[i]);
+            DBG("Replacing"+camelCaseIdentifiers[i].toLowerCase() + " with " + camelCaseIdentifiers[i]);
+            currentFileText = currentFileText.replace(camelCaseIdentifiers[i].toLowerCase(), camelCaseIdentifiers[i]);
         }
     }
     
@@ -2039,19 +2037,16 @@ graphComponent->enableAudioInput();
 
 void CabbageMainComponent::preCompileCheckForIssues(File file)
 {
-    CabbageIdentifierStringsNonCamelCase identifiers;
     CabbageIdentifierStrings camelCaseIdentifiers;
     StringArray nonCamelCaseIdentifiers;
-    identifiers.removeEmptyStrings();
     auto fileContents = File(file).loadFileAsString();
 
     camelCaseIdentifiers.removeEmptyStrings();
-    for (int i = identifiers.size(); i >= 0; i--)
+    for (int i = camelCaseIdentifiers.size(); i >= 0; i--)
     {
-        if (fileContents.contains(identifiers[i]) && camelCaseIdentifiers.contains(identifiers[i]) == false && identifiers[i].isNotEmpty())
+        if (fileContents.contains(camelCaseIdentifiers[i].toLowerCase()) && camelCaseIdentifiers.contains(camelCaseIdentifiers[i].toLowerCase()) == false && camelCaseIdentifiers[i].isNotEmpty())
         {
-            const String test = identifiers[i];
-            nonCamelCaseIdentifiers.add(identifiers[i]);
+            nonCamelCaseIdentifiers.add(camelCaseIdentifiers[i].toLowerCase());
         }
     }
 

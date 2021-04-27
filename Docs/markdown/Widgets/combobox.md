@@ -41,6 +41,8 @@ combobox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/popup.md !}  
 
+{! ./markdown/Widgets/Properties/presetIgnore.md !} 
+
 {! ./markdown/Widgets/Properties/rotate.md !}   
 
 {! ./markdown/Widgets/Properties/value.md !}  Comboboxes indices start at 1, not 0. If you set the initial value to 0 the combobox will not show any items.
