@@ -254,8 +254,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
             if(json::accept(fileName.loadFileAsString().toRawUTF8()) == false)
                return;
                
-            auto j = json::parse(fileName.loadFileAsString().toRawUTF8());
-            for (json::iterator it = j.begin(); it != j.end(); ++it) {
+            auto j = nlohmann::ordered_json::parse(fileName.loadFileAsString().toRawUTF8());
+            for (nlohmann::ordered_json::iterator it = j.begin(); it != j.end(); ++it) {
                 presets.add (it.key());
             }
             

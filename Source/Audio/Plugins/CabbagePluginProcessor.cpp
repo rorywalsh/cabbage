@@ -931,7 +931,7 @@ void CabbagePluginProcessor::addPluginPreset(String presetName, bool remove)
         newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
     }
     
-    json j;
+    nlohmann::ordered_json j;
     File presetFile(newFileName);
     String presetFileContents = presetFile.loadFileAsString();
     if(presetFileContents.isEmpty())
@@ -941,12 +941,12 @@ void CabbagePluginProcessor::addPluginPreset(String presetName, bool remove)
     }
     else
     {
-        j = json::parse(presetFileContents.toRawUTF8());
+        j = nlohmann::ordered_json::parse(presetFileContents.toRawUTF8());
         
         if(remove == false)
         {
             int numberOfPresets = 1;
-            for (json::iterator it = j.begin(); it != j.end(); ++it) {
+            for (nlohmann::ordered_json::iterator it = j.begin(); it != j.end(); ++it) {
                 numberOfPresets++;
             }
             if(presetName.isEmpty())
@@ -956,7 +956,7 @@ void CabbagePluginProcessor::addPluginPreset(String presetName, bool remove)
         {
             StringArray presets;
 
-            for (json::iterator it = j.begin(); it != j.end(); ++it) {
+            for (nlohmann::ordered_json::iterator it = j.begin(); it != j.end(); ++it) {
                 if(String(it.key()) == presetName)
                 {
                     j.erase(it);
@@ -964,7 +964,7 @@ void CabbagePluginProcessor::addPluginPreset(String presetName, bool remove)
                 }
             }
             
-            for (json::iterator it = j.begin(); it != j.end(); ++it) {
+            for (nlohmann::ordered_json::iterator it = j.begin(); it != j.end(); ++it) {
                 presets.add (it.key());
             }
             
@@ -1078,16 +1078,16 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName)
         newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
     }
     
-    json j;
+    nlohmann::ordered_json j;
     File presetFile(newFileName);
     String presetFileContents = presetFile.loadFileAsString();
-    j = json::parse(presetFileContents.toRawUTF8());
+    j = nlohmann::ordered_json::parse(presetFileContents.toRawUTF8());
 
     
-    for (json::iterator itA = j.begin(); itA != j.end(); ++itA) {
+    for (nlohmann::ordered_json::iterator itA = j.begin(); itA != j.end(); ++itA) {
         if(String(itA.key()) == presetName)
         {
-            for (json::iterator presetData = itA->begin(); presetData != itA->end(); ++presetData)
+            for (nlohmann::ordered_json::iterator presetData = itA->begin(); presetData != itA->end(); ++presetData)
             {
                 
                 ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, presetData.key(), true);

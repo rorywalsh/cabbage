@@ -232,7 +232,11 @@ bool CabbageFileButton::allowPresetChanges(String presetName)
             {
                 int protectedItems = CabbageWidgetData::getNumProp (vt.getChild (i), CabbageIdentifierIds::protecteditems);
                 var items = CabbageWidgetData::getProperty (vt.getChild (i), CabbageIdentifierIds::text);
-                for (int i = 0; i < protectedItems ; i++){
+                if(protectedItems > items.size())
+                    return false;
+                
+                for (int i = 0; i < protectedItems ; i++)
+                {
                     if(items[i].toString() == presetName)
                     {
                         return false;

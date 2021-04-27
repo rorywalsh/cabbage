@@ -976,7 +976,7 @@ void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::type, "combobox");
     setProperty (widgetData, CabbageIdentifierIds::comborange, 7);
     setProperty (widgetData, CabbageIdentifierIds::file, "");
-    setProperty (widgetData, CabbageIdentifierIds::sort, 1);
+    setProperty (widgetData, CabbageIdentifierIds::sort, 0);
     setProperty (widgetData, CabbageIdentifierIds::protecteditems, 0);
     var populate;
     //populate.append (String::empty);
