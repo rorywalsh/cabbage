@@ -151,7 +151,6 @@ void CabbageFileButton::buttonClicked (Button* button)
         {
             int result;
             
-#ifdef Cabbage_IDE_Build
             AlertWindow w("Preset",
                           "Are you sure you wish to remove this preset?",
                           AlertWindow::NoIcon);
@@ -162,12 +161,6 @@ void CabbageFileButton::buttonClicked (Button* button)
             w.addButton("No", 0, KeyPress(KeyPress::escapeKey, 0, 0));
             
             if (w.runModalLoop() != 0) // if they picked 'ok'
-                result = 1;
-#else
-             result = AlertWindow::showYesNoCancelBox(AlertWindow::AlertIconType::NoIcon, "Preset", "Are you sure you wish to remove this preset?", "Yes", "No");
-#endif
-            
-            if(result == 1)
             {
                 owner->savePluginStateToFile(owner->getCurrentPreset(), true);
                 owner->refreshComboListBoxContents();
