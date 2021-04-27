@@ -105,6 +105,9 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
             }
             
             const int index = presets.indexOf(presetName);
+            if(index == -1 && presets.size()>0)
+                presetName = presets[0];
+            
             owner->setCurrentPreset(presetName);
             owner->sendChannelStringDataToCsound (getChannel(), presetName);
             setSelectedItemIndex ((index-1 >= 0 ? index : 0), dontSendNotification);

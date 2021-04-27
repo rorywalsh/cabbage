@@ -149,8 +149,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     {
         if(allowPresetChanges(owner->getCurrentPreset()))
         {
-            int result;
-            
+           
             AlertWindow w("Preset",
                           "Are you sure you wish to remove this preset?",
                           AlertWindow::NoIcon);
@@ -168,7 +167,13 @@ void CabbageFileButton::buttonClicked (Button* button)
         }
         else
         {
-            AlertWindow::showMessageBox(AlertWindow::AlertIconType::NoIcon, "Preset", "You can not remove this preset");
+            AlertWindow w("Preset",
+                          "This preset cannot be removed",
+                          AlertWindow::NoIcon);
+            w.setLookAndFeel(tempLAF);
+            w.setSize(200, 100);
+            w.addButton("Ok", 1, KeyPress(KeyPress::returnKey, 0, 0));
+            w.runModalLoop();
         }
     }
     
