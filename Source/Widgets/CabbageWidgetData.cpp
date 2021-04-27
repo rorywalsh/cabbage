@@ -448,7 +448,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("wrap"):
             case HashStringToInt ("zoom"):
             case HashStringToInt ("showScrubber"):
-                if (getStringProp (widgetData, CabbageIdentifierIds::channeltype) == "string")
+                if (getProperty (widgetData, CabbageIdentifierIds::channeltype).toString() == "string")
                     setProperty (widgetData, identifier, strTokens[0].trim());
                 else
                     setProperty (widgetData, identifier, strTokens[0].trim().getFloatValue());

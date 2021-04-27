@@ -92,6 +92,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     }
     else
     {
+        const String cType = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::channeltype);
         if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps"))
         {
             isPresetCombo = true;  

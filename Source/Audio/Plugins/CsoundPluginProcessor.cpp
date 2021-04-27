@@ -123,9 +123,15 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     for (auto line : csdLines)
     {
         ValueTree temp("temp");
+        
+        if(line.contains("populate") && line.contains("snaps") && line.contains("combobox"))
+            line = line.replace("combobox", "combobox channelType(\"string\")");
+        
         CabbageWidgetData::setWidgetState(temp, line, 0);
+        const String filetype = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::filetype);
+        const String typeOfWidget = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type);
 
-        if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+        if (typeOfWidget == CabbageWidgetTypes::form)
         {
             if(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir).isNotEmpty()) {
                 const String opcodeDir = csdFile.getParentDirectory().getChildFile(
@@ -136,6 +142,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
                 preferredLatency = -1;
             }
         }
+
     }
     
     CabbageUtilities::debug(csdFile.getFullPathName());
@@ -384,10 +391,6 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
         if (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channeltype) == "string")
         {
-            if (typeOfWidget == CabbageWidgetTypes::json)
-            {
-                
-            }
             if (typeOfWidget == CabbageWidgetTypes::filebutton)
             {
                 const String mode = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::mode);

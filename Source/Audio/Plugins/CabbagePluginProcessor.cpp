@@ -240,8 +240,10 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 		const String comments = currentLineOfCabbageCode.indexOf(";") == -1 ? "" : currentLineOfCabbageCode.substring(
 			currentLineOfCabbageCode.indexOf(";"));
         
-        
-        
+        //force channel type to string if preset combobox
+        if(currentLineOfCabbageCode.contains("populate") && currentLineOfCabbageCode.contains("snaps") && currentLineOfCabbageCode.contains("combobox"))
+                currentLineOfCabbageCode = currentLineOfCabbageCode.replace("combobox", "combobox channelType(\"string\")");
+           
 		CabbageWidgetData::setWidgetState(tempWidget, currentLineOfCabbageCode.trimCharactersAtStart(" \t") + comments,
 			lineNumber);
         String widgetNameId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel);
@@ -303,10 +305,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
         {
             CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, "PluginResizerCombBox");
         }
-        if(filetype.contains("snaps") && typeOfWidget == CabbageWidgetTypes::combobox)
-        {
-            CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channeltype, "string");
-        }
+
 		const String widgetName = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name);
         
 		if (widgetName.isNotEmpty())
