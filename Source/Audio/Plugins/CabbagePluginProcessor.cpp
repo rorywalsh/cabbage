@@ -1029,7 +1029,7 @@ void CabbagePluginProcessor::addPluginPreset(String presetName, bool remove)
                                                                        CabbageIdentifierIds::valuex);
                     const float yValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                        CabbageIdentifierIds::valuey);
-
+                    
                     j[presetName.toStdString()][channels[0].toString().toStdString()] = xValue;
                     j[presetName.toStdString()][channels[1].toString().toStdString()] = yValue;
                 }
@@ -1732,9 +1732,29 @@ CabbagePluginParameter* CabbagePluginProcessor::getParameterForXYPad(String name
 //==============================================================================
 void CabbagePluginProcessor::setCabbageParameter(String channel, float value, ValueTree& wData) {
     
+    //attention required here. This only works for widgets with a single channel - xypad and range sliders don't fall into this category
     if(pollingChannels() == 0){
-        MessageManager::callAsync ([this, wData, value](){
-            CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, value);
+        MessageManager::callAsync ([this, wData, channel, value](){
+            const String widgetType = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::type);
+            
+            if(widgetType == CabbageWidgetTypes::hrange || widgetType == CabbageWidgetTypes::vrange)
+                jassertfalse;
+            
+            if(widgetType != CabbageWidgetTypes::xypad)
+            {
+                CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, value);
+            }
+            else
+            {
+                var channels = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::channel);
+                if(channel == channels[0].toString())
+                    CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::valuex, value);
+                else
+                    CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::valuey, value);
+                    
+            }
+            
+            
         });
     }
     

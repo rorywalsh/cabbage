@@ -97,6 +97,8 @@ CabbageXYPad::~CabbageXYPad()
 //==================================================================
 void CabbageXYPad::mouseDown (const MouseEvent& e)
 {
+    xAxis.startedDragging();
+    yAxis.startedDragging();
     owner->enableXYAutomator (getName(), false);
     ball.setTopLeftPosition (juce::Point<int> (e.getPosition().getX() - ball.getWidth()*.5f, e.getPosition().getY() - ball.getWidth()*.5f));
     mouseDownXY.setXY (ball.getPosition().getX() + ball.getWidth()*.5f, ball.getPosition().getY() + ball.getHeight()*.5f);
@@ -133,6 +135,9 @@ void CabbageXYPad::mouseUp (const MouseEvent& e)
         owner->enableXYAutomator (getName(), true, dragLine);
         isAutomating = true;
     }
+    
+    xAxis.stoppedDragging();
+    yAxis.stoppedDragging();
 }
 
 void CabbageXYPad::changeListenerCallback (ChangeBroadcaster* source)
