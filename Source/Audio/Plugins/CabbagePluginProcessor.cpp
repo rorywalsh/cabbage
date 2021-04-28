@@ -982,7 +982,7 @@ void CabbagePluginProcessor::addPluginPreset(String presetName, bool remove)
                                                                     CabbageIdentifierIds::channel);
         const int ignore = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                     CabbageIdentifierIds::presetignore);
-        if(ignore == 0)
+        if(ignore == 0 && channelName != "PluginResizerCombBox")
         {
             const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
             const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
