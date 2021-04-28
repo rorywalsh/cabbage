@@ -76,7 +76,7 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
       lookAndFeel(new CabbageIDELookAndFeel()),
       cycleTabsButton ("..."),
       resizerBar(settings->getValueTree(), this),
-      wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.plant;*.xml", "*.*", "")),
+wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.snaps;*.plant;*.xml", "*.*", "")),
       fileTree(FileBrowserComponent::FileChooserFlags::openMode | FileBrowserComponent::FileChooserFlags::canSelectFiles, File::getSpecialLocation (File::currentExecutableFile), wildcardFilter.get(), nullptr),
       owner(owner),
       lookAndFeel4(),
@@ -1671,20 +1671,21 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 			if (getCabbagePluginEditor() != nullptr)
 				getCabbagePluginEditor()->enableEditMode(false);
 
-			FileChooser fc("Select file name and location", getCurrentCsdFile().getParentDirectory(), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
+            FileChooser fc("Select file name and location", getCurrentCsdFile().getParentDirectory(), "*.csd;*.txt;*.js;*.html;*.snaps;*.plant;*.xml", CabbageUtilities::shouldUseNativeBrowser());
 
 			if (fc.browseForFileToSave(false))
 			{
-				if (fc.getResult().withFileExtension("csd").existsAsFile())
+				if (fc.getResult().existsAsFile())
 				{
 					const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", lookAndFeel.get());
 
 					if (result == 1)
 						writeFileToDisk(fc.getResult().withFileExtension(".csd"));
 				}
-				else
-					writeFileToDisk(fc.getResult().withFileExtension(".csd"));
-
+                else
+                {
+					writeFileToDisk(fc.getResult());
+                }
 				getCurrentCodeEditor()->setSavePoint();
 			}
             
@@ -1770,7 +1771,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 //==================================================================================
 void CabbageMainComponent::writeFileToDisk (File file)
 {
-    if (file.hasFileExtension(".csd"))
+    if (file.hasFileExtension("csd;txt;js;html;snaps;plant;xml"))
     {
         file.replaceWithText(getCurrentCodeEditor()->getAllText());
         //setCurrentCsdFile (file);
@@ -1944,6 +1945,46 @@ void CabbageMainComponent::covertToLowerCase()
     }
     
     getCurrentCodeEditor()->setAllText(currentFileText);
+    
+}
+
+void CabbageMainComponent::updatePresetFile()
+{
+    FileChooser fc("Select prest file to convert", getCurrentCsdFile().getParentDirectory(), "*.snaps", CabbageUtilities::shouldUseNativeBrowser());
+    
+    if (fc.browseForFileToSave(false))
+    {
+        if (fc.getResult().existsAsFile())
+        {
+           CabbageUtilities::showMessage("Sorry. You cannot overwrite this file. Please choose a new file name.", lookAndFeel.get());
+           return;
+        }
+        else
+        {
+            std::unique_ptr<XmlElement> myElement;
+            myElement = XmlDocument::parse(getCurrentCsdFile());
+            nlohmann::ordered_json j;
+            
+            if (myElement)
+            {
+                for (int i = 0; i < myElement->getNumChildElements(); i++)
+                {
+                    //none of these are being updated in their respective valueTreeChanged listeners..
+                    auto child = myElement->getChildElement(i);
+                    if(child->getNumAttributes()!=0)
+                    {
+                        const String presetName = child->getAttributeValue(0);
+                        for ( int i = 1 ; i < child->getNumAttributes() ; i++)
+                        {
+                            j[presetName.toStdString()][child->getAttributeName(i).toStdString()] = child->getAttributeValue(i).toStdString();
+                        }
+                    }
+                }
+            }
+            
+            fc.getResult().replaceWithText(j.dump(4));
+        }
+    }
     
 }
 

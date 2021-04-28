@@ -325,6 +325,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::convertToCamelCase);
     menu.addCommandItem (&commandManager, CommandIDs::convertToLowerCase);
+    menu.addCommandItem (&commandManager, CommandIDs::updatePresetFile);
     menu.addSeparator();
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::restartAudioDevice);
@@ -564,6 +565,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::clearConsole,
         CommandIDs::convertToCamelCase,
         CommandIDs::convertToLowerCase,
+        CommandIDs::updatePresetFile,
         CommandIDs::restartAudioDevice,
         CommandIDs::toggleComments,
         CommandIDs::zoomIn,
@@ -655,6 +657,9 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             break;
         case CommandIDs::convertToLowerCase:
             result.setInfo ("Convert Identifiers to lower case", "Covert Identifiers to Lower Case", CommandCategories::general, 0);
+            break;
+        case CommandIDs::updatePresetFile:
+            result.setInfo ("Update XML Preset File to JSON", "Update form older version", CommandCategories::general, 0);
             break;
             
         case CommandIDs::restartAudioDevice:
@@ -1052,6 +1057,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->covertToLowerCase();
             return true;
  
+        case CommandIDs::updatePresetFile:
+            getContentComponent()->updatePresetFile();
+            return true;
+            
         case CommandIDs::restartAudioDevice:
             getContentComponent()->reloadAudioDeviceState();
             return true;

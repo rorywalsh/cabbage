@@ -109,6 +109,7 @@ public:
 	void saveGraph(bool saveAs);
     void covertToCamelCase();
     void covertToLowerCase();
+    void updatePresetFile();
 	void openGraph(File fileToOpen = File());
 	File getCurrentCsdFile();
 	void setCurrentCsdFile(File file);
