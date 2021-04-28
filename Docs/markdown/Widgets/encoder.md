@@ -46,7 +46,7 @@ encoder WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/popup.md !}
 
-{! ./markdown/Widgets/Properties/presetIgnore.md !} 
+{! ./markdown/Widgets/Properties/presetignore.md !} 
 
 {! ./markdown/Widgets/Properties/rotate.md !}  
 
