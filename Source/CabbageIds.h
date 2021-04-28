@@ -328,7 +328,7 @@ public:
         add ("signalVariable");
         add ("protectedItems");
         add ("overlayColour");
-        add ("keydownColour");
+        add ("keyDownColour");
         add ("lineThickness");
         add ("outlineColour");
         add ("numberOfSteps");
