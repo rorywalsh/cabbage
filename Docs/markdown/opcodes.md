@@ -16,7 +16,7 @@ Lines of opcodes can be connected to create a signal graph which describs the fl
 instr 1
 a1 myOpcode1 
 a2 myOpcode2 a1
-a3 myOpcode3 a3
+a3 myOpcode3 a2
 endin
 ```
 
