@@ -9,31 +9,31 @@ gentable WIDGET_SYNTAX
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/amprange.md !} 
+{! ./markdown/Widgets/Properties/ampRange.md !} 
 
 {! ./markdown/Widgets/Properties/bounds.md !} 
 
-{! ./markdown/Widgets/Properties/tablenumber.md !} 
+{! ./markdown/Widgets/Properties/tableNumber.md !} 
 
-{! ./markdown/Widgets/Properties/tablecolour.md !} 
+{! ./markdown/Widgets/Properties/tableColour.md !} 
 
-{! ./markdown/Widgets/Properties/tablebackgroundcolour.md !} 
+{! ./markdown/Widgets/Properties/tableBackgroundColour.md !} 
 
-{! ./markdown/Widgets/Properties/tablegridcolour.md !} 
+{! ./markdown/Widgets/Properties/tableGridColour.md !} 
 
 {! ./markdown/Widgets/Properties/file_gentable.md !} 
 
-{! ./markdown/Widgets/Properties/scrubberposition_gentable.md !} 
+{! ./markdown/Widgets/Properties/scrubberPosition_gentable.md !} 
 
-{! ./markdown/Widgets/Properties/samplerange.md !} 
+{! ./markdown/Widgets/Properties/sampleRange.md !} 
 
-{! ./markdown/Widgets/Properties/samplerange.md !} 
+{! ./markdown/Widgets/Properties/sampleRange.md !} 
 
-{! ./markdown/Widgets/Properties/outlinethickness.md !}  With regards to gentable, this sets the thickness of the waveform's outline. If you are drawing spectrograms setting this to 0 will speed up the process and reduce CPU drain. 
+{! ./markdown/Widgets/Properties/outlineThickness.md !}  With regards to gentable, this sets the thickness of the waveform's outline. If you are drawing spectrograms setting this to 0 will speed up the process and reduce CPU drain. 
 
 ### Common Identifiers
 
-{! ./markdown/Widgets/Properties/identchannel.md !} 
+{! ./markdown/Widgets/Properties/identChannel.md !} 
 
 {! ./markdown/Widgets/Properties/alpha.md !} 
 
@@ -43,7 +43,7 @@ gentable WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/rotate.md !} 
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
 {! ./markdown/Widgets/Properties/active.md !} 
 <!--(End of identifiers)/-->
@@ -57,10 +57,10 @@ gentable WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form caption("Gentable Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-gentable bounds(8, 30, 380, 70), tablenumber(1), tablegridcolour(0, 0, 0, 255), fill(0)
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+gentable bounds(8, 30, 380, 70), tableNumber(1), tableGridColour(0, 0, 0, 255), fill(0)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-gentable bounds(70, 140, 141, 119), tablenumber(1) identchannel("widgetIdent"),  
+gentable bounds(70, 140, 141, 119), tableNumber(1) identChannel("widgetIdent"),  
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

@@ -1,0 +1,2 @@
+<a name="file_combobox"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
+**file("filename")** Using this identifier will cause Cabbage to load lines from the given file into the combo box. If a full file path is not given, file() will search  in the current directory, i.e., the directory that contains the csd file that is open. It is best to keep all files in the same directory as your csd file, but if you wish to keep them in a sperate folder you can pass a full path to the file() identifier. 

@@ -60,7 +60,7 @@ Provided below is the complete source code for a very simple step sequencer. Alt
 ```csharp
 <Cabbage>
 form size(260, 290), caption(""), colour(55, 110, 185) pluginID("plu1")
-checkbox bounds(-100, -100, 25, 25), text(""), widgetarray("step", 100), value(0)
+checkbox bounds(-100, -100, 25, 25), text(""), widgetArray("step", 100), value(0)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

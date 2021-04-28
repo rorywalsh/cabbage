@@ -10,7 +10,7 @@ Although the Cabbage app can load just about any Cabbage instrument, it might be
 
 Cabbage on Android will try to automatically resize an instrument to best fit the phone's screen resolution. It does this by checking the screen's width and height against the plugin's width and height. If the plugin's width is set to 600 pixels, and the screen has a width of 1200 pixels, all widgets will be scaled upwards by a factor of 2. The rescaling is not always perfect, therefore it's always best to develop your instruments using one of the more common aspect ratios such as 4:3, 16:10, 3:2, 5:3, 16:9.
 
-> The fact that Cabbage on Android dynamically rescales instruments may result in some unexpected behavior when it comes to moving widgets around the screen with [Identifier channels](./identchannels.html). For this reason it is always best to use the $SCREEN macros so that you can proportionally reposition widgets based on the handset's screen size.   
+> The fact that Cabbage on Android dynamically reScales instruments may result in some unexpected behavior when it comes to moving widgets around the screen with [Identifier channels](./identChannels.html). For this reason it is always best to use the $SCREEN macros so that you can proportionally reposition widgets based on the handset's screen size.   
 
 It seems that most Android devices take a single input stream rather than a stereo one. This means that many of the examples that ship with Cabbage may suddenly appear as mono instead of stereo. To ensure that instruments run in stereo, simply patch the input stream to both the left and right channel variables. For example:
 

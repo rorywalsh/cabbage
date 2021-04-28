@@ -10,51 +10,51 @@ slider WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/max.md !}  
 
-{! ./markdown/Widgets/Properties/markercolour.md !}  
+{! ./markdown/Widgets/Properties/markerColour.md !}  
 
-{! ./markdown/Widgets/Properties/markerthickness.md !}  
+{! ./markdown/Widgets/Properties/markerThickness.md !}  
 
-{! ./markdown/Widgets/Properties/markerstart.md !} 
+{! ./markdown/Widgets/Properties/markerStart.md !} 
 
-{! ./markdown/Widgets/Properties/markerend.md !}  
+{! ./markdown/Widgets/Properties/markerEnd.md !}  
 
 {! ./markdown/Widgets/Properties/min.md !}  
 
-{! ./markdown/Widgets/Properties/outlinecolour.md !}  
+{! ./markdown/Widgets/Properties/outlineColour.md !}  
 
-{! ./markdown/Widgets/Properties/popuptext.md !} Not available to nslider 
+{! ./markdown/Widgets/Properties/popupText.md !} Not available to nslider 
 
-{! ./markdown/Widgets/Properties/popupprefix.md !} Not available to nslider 
+{! ./markdown/Widgets/Properties/popupPrefix.md !} Not available to nslider 
 
-{! ./markdown/Widgets/Properties/popuppostfix.md !} Although nslider's don't use popup bubbles, this identifier will set a value postfix. 
+{! ./markdown/Widgets/Properties/popupPostfix.md !} Although nslider's don't use popup bubbles, this identifier will set a value postfix. 
 
 {! ./markdown/Widgets/Properties/range.md !}   
 
-{! ./markdown/Widgets/Properties/filmstrip.md !}   
+{! ./markdown/Widgets/Properties/filmStrip.md !}   
 
-{! ./markdown/Widgets/Properties/imgfile_slider.md !} 
+{! ./markdown/Widgets/Properties/imgFile_slider.md !} 
 
-{! ./markdown/Widgets/Properties/sliderbounds.md !}   
+{! ./markdown/Widgets/Properties/sliderBounds.md !}   
 
-{! ./markdown/Widgets/Properties/textcolour.md !}   
+{! ./markdown/Widgets/Properties/textColour.md !}   
 
 {! ./markdown/Widgets/Properties/text_slider.md !} 
 
-{! ./markdown/Widgets/Properties/trackerthickness.md !} Not available for rsliders
+{! ./markdown/Widgets/Properties/trackerThickness.md !} Not available for rsliders
 
-{! ./markdown/Widgets/Properties/trackerinsideradius.md !} Only available to rsliders
+{! ./markdown/Widgets/Properties/trackerInsideRadius.md !} Only available to rsliders
 
-{! ./markdown/Widgets/Properties/trackeroutsideradius.md !} Only available to rsliders
+{! ./markdown/Widgets/Properties/trackerOutsideRadius.md !} Only available to rsliders
 
-{! ./markdown/Widgets/Properties/textboxoutlinecolour.md !}  
+{! ./markdown/Widgets/Properties/textBoxOutlineColour.md !}  
 
-{! ./markdown/Widgets/Properties/textboxcolour.md !}  
+{! ./markdown/Widgets/Properties/textBoxColour.md !}  
 
-{! ./markdown/Widgets/Properties/trackercolour.md !} 
+{! ./markdown/Widgets/Properties/trackerColour.md !} 
 
-{! ./markdown/Widgets/Properties/valuetextbox.md !} 
+{! ./markdown/Widgets/Properties/valueTextBox.md !} 
 
-{! ./markdown/Widgets/Properties/valuetextboxbounds.md !} 
+{! ./markdown/Widgets/Properties/valueTextBoxBounds.md !} 
 
 {! ./markdown/Widgets/Properties/velocity.md !} 
 
@@ -72,25 +72,25 @@ slider WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !} 
 
-{! ./markdown/Widgets/Properties/fontcolour.md !} 
+{! ./markdown/Widgets/Properties/fontColour.md !} 
 
-{! ./markdown/Widgets/Properties/identchannel.md  !}
+{! ./markdown/Widgets/Properties/identChannel.md  !}
 
 {! ./markdown/Widgets/Properties/popup.md !} Not available to nslider
 
-{! ./markdown/Widgets/Properties/presetignore.md !} 
+{! ./markdown/Widgets/Properties/presetIgnore.md !} 
 
-{! ./markdown/Widgets/Properties/valueprefix.md !}
+{! ./markdown/Widgets/Properties/valuePrefix.md !}
 
-{! ./markdown/Widgets/Properties/valuepostfix.md !}
+{! ./markdown/Widgets/Properties/valuePostfix.md !}
 
 {! ./markdown/Widgets/Properties/rotate.md  !}
 
 {! ./markdown/Widgets/Properties/visible.md  !}
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}
+{! ./markdown/Widgets/Properties/widgetArray.md !}
 
 <!--(End of identifiers)/-->
 
@@ -118,10 +118,10 @@ slider WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form caption("Slider Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-hslider bounds(8, 38, 369, 50), channel("gain"), text("Gain") range(0, 1, 0, 1, 0.001) fontcolour(91, 46, 46, 255) textcolour(29, 29, 29, 255)
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+hslider bounds(8, 38, 369, 50), channel("gain"), text("Gain") range(0, 1, 0, 1, 0.001) fontColour(91, 46, 46, 255) textColour(29, 29, 29, 255)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-rslider bounds(70, 140, 41, 119) channel("rsliderChannel"), identchannel("widgetIdent"), range(0, 1, 0, 1, 0.001) 
+rslider bounds(70, 140, 41, 119) channel("rsliderChannel"), identChannel("widgetIdent"), range(0, 1, 0, 1, 0.001) 
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

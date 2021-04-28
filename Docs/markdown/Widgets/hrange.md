@@ -15,19 +15,19 @@ hrange WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/min.md !} 
 
-{! ./markdown/Widgets/Properties/outlinecolour.md !} 
+{! ./markdown/Widgets/Properties/outlineColour.md !} 
 
 {! ./markdown/Widgets/Properties/range.md !} 
 
 {! ./markdown/Widgets/Properties/text.md !} 
 
-{! ./markdown/Widgets/Properties/textbox.md !} 
+{! ./markdown/Widgets/Properties/textBox.md !} 
 
-{! ./markdown/Widgets/Properties/textcolour.md !} 
+{! ./markdown/Widgets/Properties/textColour.md !} 
 
-{! ./markdown/Widgets/Properties/trackerthickness.md !} 
+{! ./markdown/Widgets/Properties/trackerThickness.md !} 
 
-{! ./markdown/Widgets/Properties/trackercolour.md !} 
+{! ./markdown/Widgets/Properties/trackerColour.md !} 
 
 ### Common Identifiers
 
@@ -43,25 +43,25 @@ hrange WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !}  
 
-{! ./markdown/Widgets/Properties/fontcolour.md !}   
+{! ./markdown/Widgets/Properties/fontColour.md !}   
 
-{! ./markdown/Widgets/Properties/identchannel.md !}  
+{! ./markdown/Widgets/Properties/identChannel.md !}  
 
 {! ./markdown/Widgets/Properties/popup.md !}
 
-{! ./markdown/Widgets/Properties/presetignore.md !} 
+{! ./markdown/Widgets/Properties/presetIgnore.md !} 
 
-{! ./markdown/Widgets/Properties/valueprefix.md !}
+{! ./markdown/Widgets/Properties/valuePrefix.md !}
 
-{! ./markdown/Widgets/Properties/valuepostfix.md !}
+{! ./markdown/Widgets/Properties/valuePostfix.md !}
 
 {! ./markdown/Widgets/Properties/rotate.md !}  
 
 {! ./markdown/Widgets/Properties/visible.md !}  
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}
+{! ./markdown/Widgets/Properties/widgetArray.md !}
  
 <!--(End of identifiers)/-->
 
@@ -74,10 +74,10 @@ hrange WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form caption("HRange Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 hrange bounds(120, 34, 160, 40), channel("hrangeL", "hrangeR"), colour(123, 34, 143), range(100, 1000, 200:300, 1, .01)
-hrange bounds(110, 140, 162, 32), channel("range1", "range2"), identchannel("widgetIdent"), channel colour(123, 34, 143), corners(40), range(0, 1, .24:.75, 1 0.001)
+hrange bounds(110, 140, 162, 32), channel("range1", "range2"), identChannel("widgetIdent"), channel colour(123, 34, 143), corners(40), range(0, 1, .24:.75, 1 0.001)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

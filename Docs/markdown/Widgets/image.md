@@ -14,9 +14,9 @@ image WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/file_image.md !}
 
-{! ./markdown/Widgets/Properties/outlinecolour.md !}
+{! ./markdown/Widgets/Properties/outlineColour.md !}
 
-{! ./markdown/Widgets/Properties/outlinethickness.md !}
+{! ./markdown/Widgets/Properties/outlineThickness.md !}
 
 {! ./markdown/Widgets/Properties/popup.md !} 
 
@@ -36,15 +36,15 @@ image WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !}  
 
-{! ./markdown/Widgets/Properties/identchannel.md !}  
+{! ./markdown/Widgets/Properties/identChannel.md !}  
 
 {! ./markdown/Widgets/Properties/rotate.md !}  
 
 {! ./markdown/Widgets/Properties/visible.md !}  
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
 
@@ -55,12 +55,12 @@ image WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form caption("Image Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-label bounds(6, 26, 380, 18) text("Image: click to send info to Csound") fontcolour(118, 118, 118, 255)
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+label bounds(6, 26, 380, 18) text("Image: click to send info to Csound") fontColour(118, 118, 118, 255)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 
 image bounds(128, 46, 122, 57), channel("image1"), colour(123, 34, 143), corners(40)
-image bounds(110, 140, 165, 62) identchannel("widgetIdent")
+image bounds(110, 140, 165, 62) identChannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

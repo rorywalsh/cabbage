@@ -20,7 +20,7 @@
 - title: Advanced Features
   docs:
     - features
-    - identchannels
+    - controlling_widgets
     - soundfiles
     - bundle
     - host_info
@@ -30,6 +30,23 @@
     - managing_large_numbers_of_widgets
     - using_svgs
     - custom_plant_imports
+- title: Cabbage Opcodes
+  docs:
+    - cabbage_opcodes
+    - cabbage_get_value
+    - cabbage_set_value
+    - cabbage_get
+    - cabbage_set
+    - cabbage_write_state_data
+    - cabbage_read_state_data
+    - cabbage_get_state_value
+    - cabbage_set_state_value
+    - cabbage_channel_state_recall
+    - cabbage_channel_state_save
+    
+  # href:
+  #   - /docs/widgets
+
 - title: Cabbage Widgets
   # href:
   #   - /docs/widgets

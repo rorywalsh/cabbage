@@ -13,7 +13,7 @@ class IdentArray : public StringArray
 public:
     IdentArray()
     {
-    	add("numberofsteps")
+    	add("numberOfSteps")
     	add("stepbpm")
 (...)
 ```
@@ -21,9 +21,9 @@ public:
 We then need to add some code to the CabbageGUIType::parse(...) method. You'll see that this method contains a number of conditional statements relating to numeric, or string parameters. In the if-else's for numeric parameters we add the following code:
 
 ```csharp
-else if(identArray[indx].equalsIgnoreCase("numberofsteps"))
+else if(identArray[indx].equalsIgnoreCase("numberOfSteps"))
 {
-    cabbageIdentifiers.set("numberofsteps", strTokens[0].trim().getIntValue());
+    cabbageIdentifiers.set("numberOfSteps", strTokens[0].trim().getIntValue());
 }
 
 else if(identArray[indx].equalsIgnoreCase("stepbpm"))
@@ -31,7 +31,7 @@ else if(identArray[indx].equalsIgnoreCase("stepbpm"))
     cabbageIdentifiers.set("stepbpm", strTokens[0].trim().getIntValue());
 }
 ```
-The CabbageGUIType::parse(...) method is passed a line of Cabbage code, and from that code it sets each of the widget's identifiers. The above code checks if the line contains a *numberofsteps*, or *stepbpm* identifier. If it does, Cabbage will set the value of the identifier with the number passed to it in the user's Cabbage code. 
+The CabbageGUIType::parse(...) method is passed a line of Cabbage code, and from that code it sets each of the widget's identifiers. The above code checks if the line contains a *numberOfSteps*, or *stepbpm* identifier. If it does, Cabbage will set the value of the identifier with the number passed to it in the user's Cabbage code. 
 
 >It's worth checking the list of existing Cabbage identifiers before creating new ones. In many cases, pre-existing identifiers can be used. For example, we don't need to create a special **steppercolour()** identifier for our new widget. We can just use the pre-existing colour() identifier instead. 
 
@@ -51,11 +51,11 @@ Now that we have added two unique stepper identifiers, we might as well go ahead
         cabbageIdentifiers.set(CabbageIDs::type, "stepper");
         cabbageIdentifiers.set(CabbageIDs::name, "stepper");
         cabbageIdentifiers.set(CabbageIDs::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIDs::identchannel, "");
+        cabbageIdentifiers.set(CabbageIDs::identChannel, "");
         cabbageIdentifiers.set(CabbageIDs::visible, 1);
         //new identifiers
         cabbageIdentifiers.set("stepsbpm", 60);
-        cabbageIdentifiers.set("numberofsteps", 12);
+        cabbageIdentifiers.set("numberOfSteps", 12);
     }
     (...)
 ```
@@ -82,7 +82,7 @@ class CabbageStepper	:	public Component
 		name(cAttr.getStringProp(CabbageIDs::name)),
         colour(Colour::fromString(cAttr.getStringProp(CabbageIDs::colour))),
 		stepBPM(cAttr.getNumProp("stepbpm")),
-		numberOfSteps(cAttr.getNumProp("numberofsteps"))
+		numberOfSteps(cAttr.getNumProp("numberOfSteps"))
     {
 		for(int i=0;i<numberOfSteps;i++)
 			stepStates.add(0);
@@ -145,7 +145,7 @@ class CabbageStepper	:	public Component, public Timer
 		name(cAttr.getStringProp(CabbageIDs::name)),
         colour(Colour::fromString(cAttr.getStringProp(CabbageIDs::colour))),
 		stepBPM(cAttr.getNumProp("stepbpm")),
-		numberOfSteps(cAttr.getNumProp("numberofsteps"))
+		numberOfSteps(cAttr.getNumProp("numberOfSteps"))
     {
 		for(int i=0;i<numberOfSteps;i++)
 			stepStates.add(0);
@@ -178,7 +178,7 @@ class CabbageStepper	:	public Component, public Timer
 		name(cAttr.getStringProp(CabbageIDs::name)),
         colour(Colour::fromString(cAttr.getStringProp(CabbageIDs::colour))),
 		stepBPM(cAttr.getNumProp("stepbpm")),
-		numberOfSteps(cAttr.getNumProp("numberofsteps")),
+		numberOfSteps(cAttr.getNumProp("numberOfSteps")),
 		currentStep(0)
     {
 		for(int i=0;i<numberOfSteps;i++)

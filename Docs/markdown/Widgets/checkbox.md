@@ -11,7 +11,7 @@ checkbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/checkbox_corner.md !} 
 
-{! ./markdown/Widgets/Properties/radiogroup.md !} 
+{! ./markdown/Widgets/Properties/radioGroup.md !} 
 
 ### Common Identifiers
 
@@ -31,13 +31,13 @@ checkbox WIDGET_SYNTAX
 
 >You can create an invisible checkbox by setting the colour to something with an alpha value of 0. Images can then be placed under the checkbox to create an image button. See the PVSampler instrument as an example of this. 
 
-{! ./markdown/Widgets/Properties/fontcolour.md !} 
+{! ./markdown/Widgets/Properties/fontColour.md !} 
 
-{! ./markdown/Widgets/Properties/identchannel.md !} 
+{! ./markdown/Widgets/Properties/identChannel.md !} 
 
 {! ./markdown/Widgets/Properties/popup.md !} 
 
-{! ./markdown/Widgets/Properties/presetignore.md !} 
+{! ./markdown/Widgets/Properties/presetIgnore.md !} 
 
 {! ./markdown/Widgets/Properties/rotate.md !} 
 
@@ -49,9 +49,9 @@ checkbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/visible.md !} 
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !} 
+{! ./markdown/Widgets/Properties/widgetArray.md !} 
 
 <!--(End of identifiers)/-->
 
@@ -64,10 +64,10 @@ checkbox WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form caption("Checkbox Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 checkbox bounds(116, 38, 150, 50), channel("checkbutton1"), text("Enable Tone", "Disable Tone"),
-checkbox bounds(110, 140, 165, 62) identchannel("widgetIdent")
+checkbox bounds(110, 140, 165, 62) identChannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

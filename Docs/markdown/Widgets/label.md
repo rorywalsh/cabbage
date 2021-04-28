@@ -13,7 +13,7 @@ label WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/corners.md !} 
 
-**fontstyle("style")** Sets the style of the font. Valid styles are, "plain", "bold"(default), "bold italic", "italic", "underlined", "bold underlined", "italic underlined" and "bold italic underlined". 
+**fontStyle("style")** Sets the style of the font. Valid styles are, "plain", "bold"(default), "bold italic", "italic", "underlined", "bold underlined", "italic underlined" and "bold italic underlined". 
 
 **text("text")** "text" will be the string to appear on the label
 
@@ -29,17 +29,17 @@ label WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !}  
 
-{! ./markdown/Widgets/Properties/fontcolour.md !}  
+{! ./markdown/Widgets/Properties/fontColour.md !}  
 
-{! ./markdown/Widgets/Properties/identchannel.md !}  
+{! ./markdown/Widgets/Properties/identChannel.md !}  
 
 {! ./markdown/Widgets/Properties/rotate.md !}  
 
 {! ./markdown/Widgets/Properties/visible.md !}  
  
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
 ![](../images/label.gif)
@@ -49,10 +49,10 @@ label WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form caption("Label Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 label bounds(50, 38, 300, 18), channel("label1"), colour(20, 20, 20), text("Label. Click to send info to Csound")
-label bounds(110, 140, 165, 62) identchannel("widgetIdent")
+label bounds(110, 140, 165, 62) identChannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

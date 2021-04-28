@@ -14,13 +14,13 @@ encoder WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/min.md !} 
 
-{! ./markdown/Widgets/Properties/outlinecolour.md !} 
+{! ./markdown/Widgets/Properties/outlineColour.md !} 
 
-{! ./markdown/Widgets/Properties/trackercolour.md !} 
+{! ./markdown/Widgets/Properties/trackerColour.md !} 
 
-{! ./markdown/Widgets/Properties/textbox.md !} 
+{! ./markdown/Widgets/Properties/textBox.md !} 
 
-{! ./markdown/Widgets/Properties/textcolour.md !} 
+{! ./markdown/Widgets/Properties/textColour.md !} 
 
 {! ./markdown/Widgets/Properties/text_slider.md !} 
 
@@ -40,29 +40,29 @@ encoder WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !}  
 
-{! ./markdown/Widgets/Properties/fontcolour.md !}   
+{! ./markdown/Widgets/Properties/fontColour.md !}   
 
-{! ./markdown/Widgets/Properties/identchannel.md !}  
+{! ./markdown/Widgets/Properties/identChannel.md !}  
 
 {! ./markdown/Widgets/Properties/popup.md !}
 
-{! ./markdown/Widgets/Properties/presetignore.md !} 
+{! ./markdown/Widgets/Properties/presetIgnore.md !} 
 
 {! ./markdown/Widgets/Properties/rotate.md !}  
 
-{! ./markdown/Widgets/Properties/svgfile.md !} 
+
 
 {! ./markdown/Widgets/Properties/value.md !}
 
-{! ./markdown/Widgets/Properties/valueprefix.md !}
+{! ./markdown/Widgets/Properties/valuePrefix.md !}
 
-{! ./markdown/Widgets/Properties/valuepostfix.md !}
+{! ./markdown/Widgets/Properties/valuePostfix.md !}
 
 {! ./markdown/Widgets/Properties/visible.md !}  
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
 
@@ -73,10 +73,10 @@ encoder WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form caption("Encoder Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-encoder bounds(8, 38, 369, 50), channel("gain"), text("Gain") min(0), max(1), increment(.01) fontcolour(91, 46, 46, 255) textcolour(29, 29, 29, 255)
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+encoder bounds(8, 38, 369, 50), channel("gain"), text("Gain") min(0), max(1), increment(.01) fontColour(91, 46, 46, 255) textColour(29, 29, 29, 255)
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-encoder bounds(70, 140, 41, 119) identchannel("widgetIdent"),  
+encoder bounds(70, 140, 41, 119) identChannel("widgetIdent"),  
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

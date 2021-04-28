@@ -35,15 +35,15 @@ combobox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !}   
 
-{! ./markdown/Widgets/Properties/fontcolour.md !}  
+{! ./markdown/Widgets/Properties/fontColour.md !}  
 
-{! ./markdown/Widgets/Properties/identchannel.md !}  
+{! ./markdown/Widgets/Properties/identChannel.md !}  
 
 {! ./markdown/Widgets/Properties/popup.md !}  
 
-{! ./markdown/Widgets/Properties/presetignore.md !} 
+{! ./markdown/Widgets/Properties/presetIgnore.md !} 
 
-{! ./markdown/Widgets/Properties/protecteditems.md !} 
+{! ./markdown/Widgets/Properties/protectedItems.md !} 
 
 {! ./markdown/Widgets/Properties/rotate.md !}   
 
@@ -51,9 +51,9 @@ combobox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/visible.md !}   
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
 
@@ -64,11 +64,11 @@ combobox WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form caption("Combobox Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 combobox bounds(36, 38, 150, 50), channel("combobox1"), items("100Hz", "200Hz", "300Hz")
 combobox bounds(200, 38, 150, 50), channel("combobox2"), populate("*.*", ".")
-combobox bounds(110, 140, 165, 62) identchannel("widgetIdent")
+combobox bounds(110, 140, 165, 62) identChannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

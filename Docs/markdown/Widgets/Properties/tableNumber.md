@@ -1,0 +1,2 @@
+<a name="tableNumber"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
+**tableNumber(val)** Sets the table/tables to be displayed. If multiple tables are specified the tables will be superimposed on top of each other. If multiple tables are specified with a colon between then the tables will be stacked on top of each other along the Y-axis, e.g., tableNumber(1:2:3:4).  

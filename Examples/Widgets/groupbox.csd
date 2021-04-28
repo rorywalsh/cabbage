@@ -32,7 +32,7 @@ endin
 
 instr ChangeAttributes
     SIdentifier init ""
-	SIdent sprintf "linethickess(%d) ", rnd(100)/80
+	SIdent sprintf "lineThickness(%d) ", rnd(100)/80
 	SIdentifier strcat SIdentifier, SIdent
 	SIdent sprintf "outlineThickness(%f) ", rnd(100)/50
 	SIdentifier strcat SIdentifier, SIdent

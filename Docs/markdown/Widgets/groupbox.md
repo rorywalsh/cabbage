@@ -8,9 +8,9 @@ groupbox WIDGET_SYNTAX
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/linethickness.md !}
+{! ./markdown/Widgets/Properties/lineThickness.md !}
 
-{! ./markdown/Widgets/Properties/outlinethickness.md !}  
+{! ./markdown/Widgets/Properties/outlineThickness.md !}  
 
 {! ./markdown/Widgets/Properties/text_groupbox.md !}
 
@@ -32,19 +32,19 @@ groupbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !}  
 
-{! ./markdown/Widgets/Properties/fontcolour.md !}   
+{! ./markdown/Widgets/Properties/fontColour.md !}   
 
-{! ./markdown/Widgets/Properties/identchannel.md !}  
+{! ./markdown/Widgets/Properties/identChannel.md !}  
+
+{! ./markdown/Widgets/Properties/imgFile.md !} 
 
 {! ./markdown/Widgets/Properties/rotate.md !}  
 
-{! ./markdown/Widgets/Properties/svgfile.md !}  
-
 {! ./markdown/Widgets/Properties/visible.md !}  
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
 ![](../images/groupbox.gif)
@@ -54,10 +54,10 @@ groupbox WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form caption("Groupbox example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
 groupbox bounds(10, 34, 378, 73), text("I'm a groupbox"), colour(80, 80, 80)
 groupbox bounds(8, 118, 380, 177), text("Randomly Updated Identifiers")
-groupbox bounds(142, 140, 146, 145), identchannel("widgetIdent"), text("Groupbox")
+groupbox bounds(142, 140, 146, 145), identChannel("widgetIdent"), text("Groupbox")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

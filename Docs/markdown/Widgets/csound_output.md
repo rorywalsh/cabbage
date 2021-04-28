@@ -15,17 +15,17 @@ csoundoutput WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !} 
 
-{! ./markdown/Widgets/Properties/fontcolour.md !} 
+{! ./markdown/Widgets/Properties/fontColour.md !} 
 
-{! ./markdown/Widgets/Properties/identchannel.md !} 
+{! ./markdown/Widgets/Properties/identChannel.md !} 
 
 {! ./markdown/Widgets/Properties/alpha.md !} 
 
 {! ./markdown/Widgets/Properties/visible.md !} 
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !} 
+{! ./markdown/Widgets/Properties/widgetArray.md !} 
 
 
 <!--(End of identifiers)/-->

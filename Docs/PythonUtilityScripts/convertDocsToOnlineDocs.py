@@ -92,6 +92,9 @@ for dir in directories[0:3]:
 				if "(./form.md)" in line:
 					line = line.replace("(./form.md)", "(../form/index.html)")
 
+				if "(./macros_and_reserved_channels.md)" in line:
+					line = line.replace("(./macros_and_reserved_channels.md)", "(../macros_and_reserved_channels/index.html)")
+
 				if "(./controlling.md)" in line:
 					line = line.replace("(./controlling.md)", "(../controlling/index.html)")
 
@@ -106,6 +109,7 @@ for dir in directories[0:3]:
 
 				if " !}" in line:
 					line = line.replace(" !}", " %}")
+
 
 				outputFile.write(line)
 

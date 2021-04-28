@@ -7,7 +7,7 @@ Reusable and modular plants can be defined in a special plant XML file that shou
 ```
 <Cabbage>
 form caption("RadioThings") size(440, 180), colour(58, 110, 210), import("plant.xml")
-radioValueButtonGroup bounds(18, 18, 258, 110), channel("radioGroup"), namespace("rw")
+radioValueButtonGroup bounds(18, 18, 258, 110), channel("radioGroup"), nameSpace("rw")
 </Cabbage>
 ```
 
@@ -16,8 +16,8 @@ The plant xml file, which can take any file extension, should have the following
 ``` xml
 <?xml version="1.0" encoding="UTF-8"?>
 <plant>
-	<namespace> 
-	</namespace>
+	<nameSpace> 
+	</nameSpace>
 	<name> 
 	</name>
 	<cabbagecode>
@@ -31,11 +31,11 @@ The plant xml file, which can take any file extension, should have the following
 </plant> 
 ```
 
-### namespace
-A unique string should be added to the **namespace** section. This will ensure that plants with the same name, but from different authors can be loaded into a .csd file. Note the namespace name is case sensitive.
+### nameSpace
+A unique string should be added to the **nameSpace** section. This will ensure that plants with the same name, but from different authors can be loaded into a .csd file. Note the nameSpace name is case sensitive.
 
 ### name
-The **name** section should be passed the name of the plant. As with the case of the namespace attribute, this is always case sensitive. 
+The **name** section should be passed the name of the plant. As with the case of the nameSpace attribute, this is always case sensitive. 
 
 ### cabbagecode
 The **cabbagecode** section should provide code for a single plant. It should adhere to the same structure as a standard Cabbage plant, i.e, it should contain opening and closing curly brackets spread over at least 2 lines of code. Each widgets should have a channel attached to it in the usual fashion. When Cabbage imports these widgets into a .csd, it will pre-pend a channel string to the channels defined in your plant. This ensure that each instance of a plant will have unique channel names. you can create an instance of a custom plant in the same way you create any widget in Cabbage. But you must import the plant xml, as described above, before trying to create one. The following code will import a plnt xml, and create an instance of that plant.
@@ -43,7 +43,7 @@ The **cabbagecode** section should provide code for a single plant. It should ad
 ```
 <Cabbage>
 form caption("RadioThings") size(440, 180), colour(58, 110, 210), import("plant.xml")
-radioValueButtonGroup bounds(18, 18, 258, 110), channel("radioGroup"), namespace("rw")
+radioValueButtonGroup bounds(18, 18, 258, 110), channel("radioGroup"), nameSpace("rw")
 </Cabbage>
 ```
 Each widget in the imported plant will have "radioGroup" prepended to its channel name. This is required to ensure that each channel has a unique name, which is required when you instantiate more than one of the same plant. 
@@ -61,7 +61,7 @@ for(var y = 0 ; y < 8 ; y++)
   for (var x = 0 ; x < 16 ; x++)
   {
   if(y==0)
-    Cabbage.print("image bounds("+((x*22))+", 0, 23, 176), colour(100, 100, 100), identchannel(\"scrubberIdent"+(x+1)+"\")");
+    Cabbage.print("image bounds("+((x*22))+", 0, 23, 176), colour(100, 100, 100), identChannel(\"scrubberIdent"+(x+1)+"\")");
 
   Cabbage.print("checkbox bounds("+x*22+","+y*22+", 20, 20), colour(\"red\"), channel(\"gridChannel"+channelNumber+"\")");
   channelNumber++;
@@ -74,7 +74,7 @@ Calls to Cabbage.print() are made first to declare an image widget to be used as
 
 ### csoundcode
 
-The **csoundcode** section is where you declare your custom user defined opcodes. These UDOs can be used to interact with your plant code. It is good practice to use the namespace defined in the **namespace** section as a pre or post-fix to your UDO name. Every UDO you create needs to accept a string parameter that can be used to construct channel names that match those created by Cabbage. See below for a full example of how all this works. 
+The **csoundcode** section is where you declare your custom user defined opcodes. These UDOs can be used to interact with your plant code. It is good practice to use the nameSpace defined in the **nameSpace** section as a pre or post-fix to your UDO name. Every UDO you create needs to accept a string parameter that can be used to construct channel names that match those created by Cabbage. See below for a full example of how all this works. 
 
 ### info
 The **info** section should be filled with information about how to use your custom widget and associated UDOs. 
@@ -118,7 +118,7 @@ Note the use of the `sprintf` opcode. its used to construct unique channel names
 ```
 <Cabbage>
 form caption("Custom ADSR plant") size(320, 300), colour(18, 60, 82), import("adsr.plant"), pluginID("def1")
-adsr bounds(10, 10, 300, 120), channel("adsr"), namespace("cab")
+adsr bounds(10, 10, 300, 120), channel("adsr"), nameSpace("cab")
 keyboard bounds(8, 158, 300, 95)
 </Cabbage>
 <CsoundSynthesizer>

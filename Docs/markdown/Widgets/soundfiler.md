@@ -13,17 +13,17 @@ soundfiler WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/file_soundfiler.md !} 
 
-{! ./markdown/Widgets/Properties/scrubberposition.md !} 
+{! ./markdown/Widgets/Properties/scrubberPosition.md !} 
 
-{! ./markdown/Widgets/Properties/showscrubber.md !} 
+{! ./markdown/Widgets/Properties/showScrubber.md !} 
 
-{! ./markdown/Widgets/Properties/tablenumber.md  !}
+{! ./markdown/Widgets/Properties/tableNumber.md  !}
 
 {! ./markdown/Widgets/Properties/zoom.md !}  
 
-{! ./markdown/Widgets/Properties/samplerange.md !}  
+{! ./markdown/Widgets/Properties/sampleRange.md !}  
 
-{! ./markdown/Widgets/Properties/scrollbars.md !}  
+{! ./markdown/Widgets/Properties/scrollBars.md !}  
 
 ### Common Identifiers
 
@@ -35,15 +35,15 @@ soundfiler WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !} 
 
-{! ./markdown/Widgets/Properties/identchannel.md !}  
+{! ./markdown/Widgets/Properties/identChannel.md !}  
 
 {! ./markdown/Widgets/Properties/rotate.md !} 
 
 {! ./markdown/Widgets/Properties/visible.md  !}
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
 ![](../images/soundfiler.gif)
@@ -53,7 +53,7 @@ soundfiler WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form size(400, 500), caption("Soundfiler"), size(400, 300), colour(220, 220, 220), pluginID("def1")
-soundfiler bounds(10,10, 380, 200), identchannel("soundfilerIdent")
+soundfiler bounds(10,10, 380, 200), identChannel("soundfilerIdent")
 filebutton bounds(10, 215, 100, 30), channel("openFile"), text("Browse")
 </Cabbage>
 <CsoundSynthesizer>

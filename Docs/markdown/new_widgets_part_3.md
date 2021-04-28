@@ -20,7 +20,7 @@ class CabbageStepper	:	public Component, public Timer
 		channel(cAttr.getStringProp(CabbageIDs::channel)),
         colour(Colour::fromString(cAttr.getStringProp(CabbageIDs::colour))),
 		stepBPM(cAttr.getNumProp("stepbpm")),
-		numberOfSteps(cAttr.getNumProp("numberofsteps")),
+		numberOfSteps(cAttr.getNumProp("numberOfSteps")),
 		currentStep(0)
     {
 (...)
@@ -46,7 +46,7 @@ With this final method in place, Cabbage will send messages to Csound on each st
 ```csharp
 <Cabbage>
 form size(500, 100), caption("Stepper"), pluginID("plu1"), colour(57, 110, 185)
-stepper bounds(10, 10, 480, 40), channel("step1"), colour("white"), numberofsteps(12), stepbpm(120)
+stepper bounds(10, 10, 480, 40), channel("step1"), colour("white"), numberOfSteps(12), stepbpm(120)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions> 
@@ -90,7 +90,7 @@ The **CabbagePluginAudioProcessor::updateGUIControls()** method checks for incom
     else if(checkForIdentifierMessage(getFilter()->getGUILayoutCtrls(i), "stepper"))
     {
         ((CabbageStepper*)layoutComps[i])->update(getFilter()->getGUILayoutCtrls(i));
-        getFilter()->getGUILayoutCtrls(i).setStringProp(CabbageIDs::identchannelmessage, "");
+        getFilter()->getGUILayoutCtrls(i).setStringProp(CabbageIDs::identChannelmessage, "");
     }
 ```
 The **checkForIdentifierMessage(...)** method checks for the existence of an identifier string for a particular widget type. If an incoming string identifier is found it calls the widget classes **update(...)** function.
@@ -112,7 +112,7 @@ We can now change the colour of our widget using the following Cabbage/Csound co
 ```csharp
 <Cabbage>
 form size(500, 150), caption("Stepper"), pluginID("plu1"), colour(57, 110, 185)
-stepper bounds(10, 10, 480, 40), channel("step1"), colour("white"), numberofsteps(12), stepbpm(120), identchannel("stepIdent")
+stepper bounds(10, 10, 480, 40), channel("step1"), colour("white"), numberOfSteps(12), stepbpm(120), identChannel("stepIdent")
 button bounds(12, 58, 120, 25), channel("colourButton"), text("Change colour")
 </Cabbage>
 <CsoundSynthesizer>
@@ -149,7 +149,7 @@ CabbageStepper::CabbageStepper (CabbageGUIType &cAttr, CabbagePluginAudioProcess
 		channel(cAttr.getStringProp(CabbageIDs::channel)),
         colour(Colour::fromString(cAttr.getStringProp(CabbageIDs::colour))),
 		stepBPM(cAttr.getNumProp("stepbpm")),
-		numberOfSteps(cAttr.getNumProp("numberofsteps")),
+		numberOfSteps(cAttr.getNumProp("numberOfSteps")),
 		currentStep(0),
 		isRunning(cAttr.getNumProp(CabbageIDs::active)==1 ? true : false)
 {
@@ -192,17 +192,17 @@ Now that we have a way to turn on and off our widget we can create a more musica
 <Cabbage>
 form size(500, 430), caption("Stepper"), pluginID("plu1"), colour(57, 110, 185)
 button bounds(178, 345, 135, 31), channel("startButton"), colour:1("lime"), text("Start", "Stop")
-stepper bounds(10, 10, 480, 40), channel("c4"), colour("white"), numberofsteps(12), stepbpm(120),  active(0), identchannel("stepIdent1") 
-stepper bounds(10, 50, 480, 40), channel("b3"), colour("white"), numberofsteps(12), stepbpm(120),  active(0), identchannel("stepIdent2")
-stepper bounds(10, 90, 480, 40), channel("a3"), colour("white"), numberofsteps(12), stepbpm(120),  active(0), identchannel("stepIdent3")
-stepper bounds(10, 130, 480, 40), channel("g3"), colour("white"), numberofsteps(12), stepbpm(120), active(0), identchannel("stepIdent4")
-stepper bounds(10, 170, 480, 40), channel("f3"), colour("white"), numberofsteps(12), stepbpm(120), active(0), identchannel("stepIdent5")
-stepper bounds(10, 210, 480, 40), channel("e3"), colour("white"), numberofsteps(12), stepbpm(120), active(0), identchannel("stepIdent6")
-stepper bounds(10, 250, 480, 40), channel("d3"), colour("white"), numberofsteps(12), stepbpm(120), active(0), identchannel("stepIdent7")
-stepper bounds(10, 290, 480, 40), channel("c3"), colour("white"), numberofsteps(12), stepbpm(120), active(0), identchannel("stepIdent8")
+stepper bounds(10, 10, 480, 40), channel("c4"), colour("white"), numberOfSteps(12), stepbpm(120),  active(0), identChannel("stepIdent1") 
+stepper bounds(10, 50, 480, 40), channel("b3"), colour("white"), numberOfSteps(12), stepbpm(120),  active(0), identChannel("stepIdent2")
+stepper bounds(10, 90, 480, 40), channel("a3"), colour("white"), numberOfSteps(12), stepbpm(120),  active(0), identChannel("stepIdent3")
+stepper bounds(10, 130, 480, 40), channel("g3"), colour("white"), numberOfSteps(12), stepbpm(120), active(0), identChannel("stepIdent4")
+stepper bounds(10, 170, 480, 40), channel("f3"), colour("white"), numberOfSteps(12), stepbpm(120), active(0), identChannel("stepIdent5")
+stepper bounds(10, 210, 480, 40), channel("e3"), colour("white"), numberOfSteps(12), stepbpm(120), active(0), identChannel("stepIdent6")
+stepper bounds(10, 250, 480, 40), channel("d3"), colour("white"), numberOfSteps(12), stepbpm(120), active(0), identChannel("stepIdent7")
+stepper bounds(10, 290, 480, 40), channel("c3"), colour("white"), numberOfSteps(12), stepbpm(120), active(0), identChannel("stepIdent8")
 
-rslider bounds(12, 340, 80, 80), channel("bpm"), range(40, 180, 60), text("BPM"), trackercolour("lime")
-rslider bounds(92, 340, 80, 80), channel("gain"), range(0, .7, .5), text("Gain"), trackercolour("lime")
+rslider bounds(12, 340, 80, 80), channel("bpm"), range(40, 180, 60), text("BPM"), trackerColour("lime")
+rslider bounds(92, 340, 80, 80), channel("gain"), range(0, .7, .5), text("Gain"), trackerColour("lime")
 
 </Cabbage>
 <CsoundSynthesizer>

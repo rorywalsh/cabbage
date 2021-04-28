@@ -4,12 +4,12 @@ Textbox will display the contents of a text file. This can be useful for placing
 
 
 <big></pre>
-textbox WIDGET_SYNTAX
+textBox WIDGET_SYNTAX
 </pre></big>
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/file_textbox.md !} 
+{! ./markdown/Widgets/Properties/file_textBox.md !} 
 
 {! ./markdown/Widgets/Properties/wrap.md !} 
 
@@ -23,9 +23,9 @@ textbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !}  
 
-{! ./markdown/Widgets/Properties/fontcolour.md !} 
+{! ./markdown/Widgets/Properties/fontColour.md !} 
 
-{! ./markdown/Widgets/Properties/identchannel.md !} 
+{! ./markdown/Widgets/Properties/identChannel.md !} 
 
 {! ./markdown/Widgets/Properties/popup.md !} 
 
@@ -33,20 +33,20 @@ textbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/visible.md !} 
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !} 
+{! ./markdown/Widgets/Properties/widgetArray.md !} 
 
 <!--(End of identifiers)/-->
-![](../images/textbox.gif)
+![](../images/textBox.gif)
 
 ##Example
 <!--(Widget Example)/-->
 ```csharp
 <Cabbage>
 form caption("Textbox Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-textbox bounds(10, 30, 380, 267) identchannel("widgetIdent"), file("Textbox.csd")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+textBox bounds(10, 30, 380, 267) identChannel("widgetIdent"), file("Textbox.csd")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

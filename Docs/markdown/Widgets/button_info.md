@@ -22,23 +22,23 @@ infobutton WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour_1.md !} 
 
-{! ./markdown/Widgets/Properties/fontcolour_0.md !} 
+{! ./markdown/Widgets/Properties/fontColour_0.md !} 
 
-{! ./markdown/Widgets/Properties/fontcolour_1.md !} 
+{! ./markdown/Widgets/Properties/fontColour_1.md !} 
 
-{! ./markdown/Widgets/Properties/identchannel.md !} 
+{! ./markdown/Widgets/Properties/identChannel.md !} 
 
 {! ./markdown/Widgets/Properties/popup.md !} 
 
-{! ./markdown/Widgets/Properties/imgfile.md !} 
+{! ./markdown/Widgets/Properties/imgFile.md !} 
 
 {! ./markdown/Widgets/Properties/text.md !} 
 
 {! ./markdown/Widgets/Properties/visible.md !} 
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !} 
+{! ./markdown/Widgets/Properties/widgetArray.md !} 
 
 <!--(End of identifiers)/-->
 
@@ -50,7 +50,7 @@ infobutton WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form size(400, 500), caption("Infobutton Example"), pluginID("plu1"), colour(39, 40, 34)
-button bounds(20, 16, 100, 30), channel("button"),  text("Push me"), fontcolour("white")
+button bounds(20, 16, 100, 30), channel("button"),  text("Push me"), fontColour("white")
 infobutton bounds(120, 16, 100, 30), channel("button"),  file("button.csd"), text("Info")
 filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), text("Browse")
 </Cabbage>

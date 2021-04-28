@@ -1,5 +1,5 @@
 # Quickly creating multiple widgets
-If you wish to create a large number of widgets you can use the `widgetarray()` identifier, which takes a base channel name, and the number of widgets to be created. Each widget channel will have an underscore and number appended to them, e.g., chan_1, chan_2. Each identifier channel will have an _ident string and number appended to them, e.g., chan_ident1, chan_ident2, etc. The following code will create 100 checkboxes, all sharing the same position.
+If you wish to create a large number of widgets you can use the `widgetArray()` identifier, which takes a base channel name, and the number of widgets to be created. Each widget channel will have an underscore and number appended to them, e.g., chan_1, chan_2. Each identifier channel will have an _ident string and number appended to them, e.g., chan_ident1, chan_ident2, etc. The following code will create 100 checkboxes, all sharing the same position.
 
 ```csharp
 checkbox bounds(10, 10, 50, 50), channelarray("test", 100), value(1)
@@ -10,7 +10,7 @@ The first checkbox widget will have a channel named "test1", and an ident-channe
 ```csharp
 <Cabbage>
 form size(260, 290), caption(""), pluginID("plu1")
-checkbox bounds(-100, -100, 25, 25), text("Push"), widgetarray("test", 100), value(0)
+checkbox bounds(-100, -100, 25, 25), text("Push"), widgetArray("test", 100), value(0)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

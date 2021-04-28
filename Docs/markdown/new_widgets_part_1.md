@@ -140,7 +140,7 @@ There is one final step to be taken before Cabbage will successfully create our 
         cabbageIdentifiers.set(CabbageIDs::type, "stepper");
         cabbageIdentifiers.set(CabbageIDs::name, "stepper");
         cabbageIdentifiers.set(CabbageIDs::name, cabbageIdentifiers.getWithDefault("name", "").toString()+String(ID));
-        cabbageIdentifiers.set(CabbageIDs::identchannel, "");
+        cabbageIdentifiers.set(CabbageIDs::identChannel, "");
         cabbageIdentifiers.set(CabbageIDs::visible, 1);
     }
 ```

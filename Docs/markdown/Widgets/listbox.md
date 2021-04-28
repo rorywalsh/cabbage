@@ -15,7 +15,7 @@ listbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/file_combobox.md !} 
 
-{! ./markdown/Widgets/Properties/highlightcolour.md !} 
+{! ./markdown/Widgets/Properties/highlightColour.md !} 
 
 {! ./markdown/Widgets/Properties/items.md !}  
 
@@ -35,13 +35,13 @@ listbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !}  
 
-{! ./markdown/Widgets/Properties/fontcolour.md !}   
+{! ./markdown/Widgets/Properties/fontColour.md !}   
 
-{! ./markdown/Widgets/Properties/identchannel.md !}  
+{! ./markdown/Widgets/Properties/identChannel.md !}  
 
 {! ./markdown/Widgets/Properties/popup.md !} 
 
-{! ./markdown/Widgets/Properties/presetignore.md !} 
+{! ./markdown/Widgets/Properties/presetIgnore.md !} 
 
 {! ./markdown/Widgets/Properties/rotate.md !}  
 
@@ -49,9 +49,9 @@ listbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/visible.md !}  
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
 
@@ -60,7 +60,7 @@ listbox WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form size(400, 500), caption("Untitled"), pluginID("plu1"), colour(39, 40, 34)
-listbox bounds(10, 16, 300, 200), channel("comps"), file("Compositions.txt"), colour("yellow"), fontcolour("black")
+listbox bounds(10, 16, 300, 200), channel("comps"), file("Compositions.txt"), colour("yellow"), fontColour("black")
 </Cabbage>
 ```
 <!--(End Widget Example)/-->

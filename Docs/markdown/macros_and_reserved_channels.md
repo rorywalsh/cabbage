@@ -4,7 +4,7 @@ Cabbage macros can be used to define a range of different identifiers, and provi
 The following code will create a macro called `SLIDER1` that will define several attributes of a slider widget:
 
 ```csharp
-#define SLIDER1 colour("red"), fontcolour("yellow"), outlinecolour("red"), range(0, 1000, 500)
+#define SLIDER1 colour("red"), fontColour("yellow"), outlineColour("red"), range(0, 1000, 500)
 ```
 The macro can then be used anywhere in your Cabbage code section by placing it on an appropriate line of Cabbage code. For example, the following code uses the above macro with an rslider.
 
@@ -23,7 +23,7 @@ You can use as many macros as you wish in your Cabbage code.
 Macros defined in the Cabbage section of your code can also be accessed in the Csound section using the same syntax. For example, a macro named SLIDER1 is defined in the Cabbage section as:  
 
 ```csharp
-#define SLIDER1 colour("red"), fontcolour("yellow"), outlinecolour("red"), range(0, 1000, 500)
+#define SLIDER1 colour("red"), fontColour("yellow"), outlineColour("red"), range(0, 1000, 500)
 ``` 
 
 It can then accessed in the Csound orchestra like this:
@@ -40,9 +40,9 @@ The following are Csound macros that are set by Cabbage when it first loads. The
 
 **IS_A_PLUGIN** Defined if the instrument is running as a plugin
 
-**SCREEN_WIDTH** Provides the instrument width in pixels as a string value. Use strtod to convert from string to number. On Android devices this will return the actual screen width. This can be useful if you wish to move widgets around in realtime using [Identifier channels](./identchannels.html).  
+**SCREEN_WIDTH** Provides the instrument width in pixels as a string value. Use strtod to convert from string to number. On Android devices this will return the actual screen width. This can be useful if you wish to move widgets around in realtime using [Identifier channels](./identChannels.html).  
 
-**SCREEN_HEIGHT** Provides the instrument height in pixels as a string value. Use strtod to convert from string to number. On Android devices this will return the actual screen height. This can be useful if you wish to move widgets around in realtime using [Identifier channels](./identchannels.html).  
+**SCREEN_HEIGHT** Provides the instrument height in pixels as a string value. Use strtod to convert from string to number. On Android devices this will return the actual screen height. This can be useful if you wish to move widgets around in realtime using [Identifier channels](./identChannels.html).  
 
 ## Reserved Channels
 

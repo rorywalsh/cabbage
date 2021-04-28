@@ -1,19 +1,19 @@
 # Signal Display
 
-Displays a graphical representation of a signal. Must be used with the **display** or **dispfft** opcodes in Csound. You must pass a Csound a-rate variable to the `signalvariable()` identifier, and you must enable `--displays` in the Csound options. Please see the SignalDisplay example csd for more details. 
+Displays a graphical representation of a signal. Must be used with the **display** or **dispfft** opcodes in Csound. You must pass a Csound a-rate variable to the `signalVariable()` identifier, and you must enable `--displays` in the Csound options. Please see the SignalDisplay example csd for more details. 
 
 <big></pre>
 signaldisplay WIDGET_SYNTAX
 </pre></big>
 
 ### Specific Identifiers
-{! ./markdown/Widgets/Properties/backgroundcolour.md !}  
+{! ./markdown/Widgets/Properties/backgroundColour.md !}  
 
-{! ./markdown/Widgets/Properties/displaytype.md !}  
+{! ./markdown/Widgets/Properties/displayType.md !}  
 
-{! ./markdown/Widgets/Properties/signalvariable.md !} 
+{! ./markdown/Widgets/Properties/signalVariable.md !} 
 
-{! ./markdown/Widgets/Properties/updaterate.md !} 
+{! ./markdown/Widgets/Properties/updateRate.md !} 
 
 {! ./markdown/Widgets/Properties/zoom.md !} 
 
@@ -27,9 +27,9 @@ signaldisplay WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !}  
 
-{! ./markdown/Widgets/Properties/identchannel.md !}  
+{! ./markdown/Widgets/Properties/identChannel.md !}  
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
 {! ./markdown/Widgets/Properties/visible.md !}  
 
@@ -44,8 +44,8 @@ signaldisplay WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form caption("Signaldisplay Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-signaldisplay bounds(8, 30, 380, 170), colour("lime"), backgroundcolour("black"), displaytype("waveform"), signalvariable("aSig")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
+signaldisplay bounds(8, 30, 380, 170), colour("lime"), backgroundColour("black"), displayType("waveform"), signalVariable("aSig")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

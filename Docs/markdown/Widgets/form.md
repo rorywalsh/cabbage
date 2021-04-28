@@ -1,6 +1,6 @@
 # Form
 
-Form creates the main application window. pluginid() is the only required identifier. The default values for size are 600x300. 
+Form creates the main application window. pluginId() is the only required identifier. The default values for size are 600x300. 
 
 <big></pre>
 form WIDGET_SYNTAX
@@ -11,33 +11,35 @@ form WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/size.md !} 
 
-{! ./markdown/Widgets/Properties/pluginid.md !} 
+{! ./markdown/Widgets/Properties/pluginId.md !} 
 
-{! ./markdown/Widgets/Properties/guirefresh.md !}     
+{! ./markdown/Widgets/Properties/guiRefresh.md !}     
 
-{! ./markdown/Widgets/Properties/guimode.md !}   
+{! ./markdown/Widgets/Properties/guiMode.md !}   
 
 {! ./markdown/Widgets/Properties/import.md !}  
 
 {! ./markdown/Widgets/Properties/bundle.md !}  
 
-{! ./markdown/Widgets/Properties/titlebarcolour.md !}  
+{! ./markdown/Widgets/Properties/titleBarColour.md !}  
 
 {! ./markdown/Widgets/Properties/style.md !}  
+
+{! ./markdown/Widgets/Properties/sideChain.md !}  
 
 {! ./markdown/Widgets/Properties/typeface.md !}  
 
 {! ./markdown/Widgets/Properties/latency.md !} 
 
-{! ./markdown/Widgets/Properties/autoupdate.md !}  
+{! ./markdown/Widgets/Properties/autoUpdate.md !}  
 
-{! ./markdown/Widgets/Properties/sidechain.md !}  
+{! ./markdown/Widgets/Properties/sideChain.md !}  
 
 ### Common Identifiers
 
 {! ./markdown/Widgets/Properties/colour.md !}   
 
-{! ./markdown/Widgets/Properties/fontcolour.md !}  
+{! ./markdown/Widgets/Properties/fontColour.md !}  
 
 <!--(End of identifiers)/-->
 ![](../images/formExample.png)

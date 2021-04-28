@@ -27,27 +27,27 @@ button WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour_1.md !} 
 
-{! ./markdown/Widgets/Properties/fontcolour_0.md !} 
+{! ./markdown/Widgets/Properties/fontColour_0.md !} 
 
-{! ./markdown/Widgets/Properties/fontcolour_1.md !} 
+{! ./markdown/Widgets/Properties/fontColour_1.md !} 
 
-{! ./markdown/Widgets/Properties/identchannel.md !} 
+{! ./markdown/Widgets/Properties/identChannel.md !} 
 
-{! ./markdown/Widgets/Properties/outlinecolour.md !} 
+{! ./markdown/Widgets/Properties/outlineColour.md !} 
 
-{! ./markdown/Widgets/Properties/outlinecolour.md !} 
+{! ./markdown/Widgets/Properties/outlineColour.md !} 
 
-{! ./markdown/Widgets/Properties/outlinethickness.md !} 
+{! ./markdown/Widgets/Properties/outlineThickness.md !} 
 
 {! ./markdown/Widgets/Properties/popup.md !} 
 
-{! ./markdown/Widgets/Properties/presetignore.md !} 
+{! ./markdown/Widgets/Properties/presetIgnore.md !} 
 
-{! ./markdown/Widgets/Properties/radiogroup.md !} 
+{! ./markdown/Widgets/Properties/radioGroup.md !} 
 
 {! ./markdown/Widgets/Properties/rotate.md !} 
 
-{! ./markdown/Widgets/Properties/imgfile.md !} 
+{! ./markdown/Widgets/Properties/imgFile.md !} 
 
 {! ./markdown/Widgets/Properties/text.md !}
 
@@ -55,13 +55,13 @@ button WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/visible.md !} 
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !} 
+{! ./markdown/Widgets/Properties/widgetArray.md !} 
 
 <!--(End of identifiers)/-->
 
->colour:1() and fontcolour:1() can be set using colour() and fontcolour(). However, it's recommended that you use the numerated colour identifiers in order to make your code as readable a possible. 
+>colour:1() and fontColour:1() can be set using colour() and fontColour(). However, it's recommended that you use the numerated colour identifiers in order to make your code as readable a possible. 
 
 ![Button](../images/button.gif)
 
@@ -70,10 +70,10 @@ button WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form caption("Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
+label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
 groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
 button bounds(116, 38, 150, 50), channel("button1"), text("Enable Tone", "Disable Tone"),
-button bounds(110, 140, 165, 62) identchannel("widgetIdent")
+button bounds(110, 140, 165, 62) identChannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

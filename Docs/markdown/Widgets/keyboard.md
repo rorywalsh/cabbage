@@ -8,27 +8,27 @@ keyboard WIDGET_SYNTAX
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/keyseparatorcolour.md !} 
+{! ./markdown/Widgets/Properties/keySeparatorColour.md !} 
 
-{! ./markdown/Widgets/Properties/mouseoverkeycolour.md !}  
+{! ./markdown/Widgets/Properties/mouseOverKeyColour.md !}  
 
-{! ./markdown/Widgets/Properties/keypressbaseoctave.md !}  
+{! ./markdown/Widgets/Properties/keypressBaseOctave.md !}  
 
-{! ./markdown/Widgets/Properties/whitenotecolour.md !}  
+{! ./markdown/Widgets/Properties/whiteNoteColour.md !}  
 
-{! ./markdown/Widgets/Properties/blacknotecolour.md !} 
+{! ./markdown/Widgets/Properties/blackNoteColour.md !} 
 
-{! ./markdown/Widgets/Properties/arrowbackgroundcolour.md !} 
+{! ./markdown/Widgets/Properties/arrowBackgroundColour.md !} 
 
-{! ./markdown/Widgets/Properties/keydowncolour.md !} 
+{! ./markdown/Widgets/Properties/keyDownColour.md !} 
 
-{! ./markdown/Widgets/Properties/arrowcolour.md !} 
+{! ./markdown/Widgets/Properties/arrowColour.md !} 
 
-{! ./markdown/Widgets/Properties/keywidth.md !} 
+{! ./markdown/Widgets/Properties/keyWidth.md !} 
 
-{! ./markdown/Widgets/Properties/middlec.md !}
+{! ./markdown/Widgets/Properties/middleC.md !}
 
-{! ./markdown/Widgets/Properties/scrollbars.md !}
+{! ./markdown/Widgets/Properties/scrollBars.md !}
 
 {! ./markdown/Widgets/Properties/value_keyboard.md !}
 
@@ -36,9 +36,9 @@ keyboard WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/bounds.md !}  
 
-{! ./markdown/Widgets/Properties/identchannel.md !}  
+{! ./markdown/Widgets/Properties/identChannel.md !}  
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
 {! ./markdown/Widgets/Properties/visible.md !}  
 
@@ -54,7 +54,7 @@ keyboard WIDGET_SYNTAX
 ```csharp
 <Cabbage>
 form size(400, 300), caption("Keyboard"), pluginID("plu1")
-keyboard bounds(10, 10, 385, 160), identchannel("widgetIdent")
+keyboard bounds(10, 10, 385, 160), identChannel("widgetIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
