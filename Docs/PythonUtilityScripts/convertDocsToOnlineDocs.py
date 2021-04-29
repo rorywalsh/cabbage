@@ -83,6 +83,10 @@ for dir in directories[0:3]:
 				if "(./using_cabbage.md)" in line:
 					line = line.replace("(./using_cabbage.md)", "(../using_cabbage/index.html)")
 
+				if "(./cabbage_opcodes.md)" in line:
+					line = line.replace("(./cabbage_opcodes.md)", "(../cabbage_opcodes/index.html)")
+
+
 				if "(./beginners.md)" in line:
 					line = line.replace("(./beginners.md)", "(../beginners/index.html)")
 

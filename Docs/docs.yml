@@ -19,17 +19,17 @@
 - title: Advanced Features
   docs:
     - features
+    - using_imgs
     - controlling_widgets
+    - presets
+    - plants
     - soundfiles
     - bundle
     - host_info
-    - presets
-    - widget_arrays
     - reserved_channels
     - macros
     - managing_large_numbers_of_widgets
-    - using_imgs
-    - plants
+
 - title: Cabbage Opcodes
   docs:
     - cabbage_opcodes
