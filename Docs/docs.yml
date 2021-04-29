@@ -25,9 +25,10 @@
     - host_info
     - presets
     - widget_arrays
-    - macros_and_reserved_channels
+    - reserved_channels
+    - macros
     - managing_large_numbers_of_widgets
-    - using_svgs
+    - using_imgs
     - plants
 - title: Cabbage Opcodes
   docs:

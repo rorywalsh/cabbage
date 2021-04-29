@@ -37,7 +37,12 @@ i1 0 z
 </CsoundSynthesizer>
 ```
 
-The above code will arrange a set of checkboxes in a grid. The channels of each box will be as follows:
+The above code will arrange a set of checkboxes in a grid. 
+
+![](images/alotofwidgets.png)
+
+
+The channels of each box will be as follows:
 
 ["check1  ", "check2  ", "check3  ", "check4  ", "check5  ", "check6  ", "check7  ", "check8  "]
 ["check9  ", "check10 ", "check11 ", "check12 ", "check13 ", "check14 ", "check15 ", "check16 "]
@@ -75,7 +80,11 @@ if metro(2)==1 then
 endif     
 ```
 
-The code above will cause Csound to read through the values of a column. The column number increments twice a second. Finally, we can add a simple synthesiser to the code. This will get triggered whenever a checkbox is on. In this way, one can generate a grid-style step sequencer with very little code. Here is the entire instrument. 
+The code above will cause Csound to read through the values of a column. The column number increments twice a second. Finally, we can add a simple synthesiser to the code. This will get triggered whenever a checkbox is on. In this way, one can generate a grid-style step sequencer with very little code. 
+
+![](images/alotofwidgets2.png)
+
+Here is the entire instrument. 
 
 ```csharp
 <Cabbage>
