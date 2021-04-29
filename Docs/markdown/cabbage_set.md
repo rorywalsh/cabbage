@@ -8,14 +8,42 @@ Sets a widget's attribute identifier. Identifiers can be updated by a single str
 <pre><b>cabbageSet</b> kTrig, SChannel, SIdentifierString</pre>
 <pre><b>cabbageSet</b> SChannel, SIdentifierString</pre>
 
+#### Initialization
+
+* `SChannel` -- widget channel name
+* `SIdentifier` -- a widget identifier you wish to query. This should be passed without any parenthesis.
+* `SIdentifierString` -- the new identifier value you wish to set `SIdentifier` to.
+
+#### Performance
+
+* `kTrig` -- an optional trigger. Updates will only be sent when this is equal to 1
+
+>The versions of <b>cabbageSet</b> that only take two input strings is used to set identifiers at i-rate.
 
 ### Example
 
-<pre><b>cabbageSet</b> metro(1), "image1", "colour", random:k(0, 255), random:k(0, 255), random:k(0, 255)
-<b>cabbageSet</b> metro(1), "image2", "bounds(10, 10, 100, 100)"</pre>
+```csharp
+<Cabbage>
+form caption("Test") size(350, 200), colour(58, 110, 182), guiMode("queue"), pluginId("sfi1")
+rslider bounds(20, 8, 117, 121) range(0, 1, 0, 1, 0.001), channel("gain1"), text("Gain")
+</Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d 
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+ksmps = 32
+nchnls = 2
+0dbfs = 1
 
-In the above code, the widget with channel "image1" will have its colour update every second, and the widget with channel "image2" will have it position set every 1 second. It is also possible to use `sprintfk` with these opcodes. The two lines of code below achieve the same effect. One uses arguments, and the other a `sprintfk`.
+instr 1
+    cabbageSet metro(10), "gain1", "colour", random:k(100, 255), random:k(100, 255), random:k(100, 255)
+endin
 
-<pre><b>cabbageSet</b> metro(1), "image1", "bounds", 10, 10, random:k(0, 255), random:k(0, 255)
-<b>cabbageSet</b> metro(1), "image2", <b>sprintfk<b>("bounds(10, 10, %d, %d)", random:k(0, 255), random:k(0, 255))</pre>
-
+</CsInstruments>
+<CsScore>
+i1 0 z
+</CsScore>
+</CsoundSynthesizer>
+```

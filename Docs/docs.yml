@@ -14,7 +14,6 @@
     - first_effect
     - audio_graph
     - exporting_plugins
-    - exporting_rack_modules
     - cabbage_in_host
     - distributing
 - title: Advanced Features
@@ -29,7 +28,7 @@
     - macros_and_reserved_channels
     - managing_large_numbers_of_widgets
     - using_svgs
-    - custom_plant_imports
+    - plants
 - title: Cabbage Opcodes
   docs:
     - cabbage_opcodes

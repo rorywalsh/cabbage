@@ -4,11 +4,44 @@ Sets the current numeric value of a widget, for example the current value of a `
 
 ### Syntax
 
-<pre><b>cabbageGetValue</b> SChannel, kValue [, kTrig]</pre>
+<pre><b>cabbageSetValue</b> SChannel, kValue [, kTrig]</pre>
+<pre><b>cabbageSetValue</b> SChannel, iValue</pre>
+
+#### Initialization
+
+* `iValue` -- widget value
+* `SChannel` -- widget's channel name
+
+#### Performance
+
+* `kValue` -- widget value
+* `kTrig` -- an optional trigger. Updates will only be sent when this is equal to 1
 
 
 ### Example
 
-<pre><b>cabbageSetValue</b> "freq", random:k(1, 100)</pre>
+```csharp
+<Cabbage>
+form caption("Test") size(350, 200), guiMode("queue"), colour(58, 110, 182), pluginId("sfi1")
+rslider bounds(20, 8, 60, 60) range(0, 1, 0, 1, 0.001), channel("gain"), text("Gain")
+</Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d 
+</CsOptions>
+<CsInstruments>
+; Initialize the global variables. 
+ksmps = 32
+nchnls = 2
+0dbfs = 1
 
-In the above code, the widget with channel "freq" will be updated on each k-cycle with a random value between 0 and 100.  
+instr 1
+    cabbageSetValue "gain", random:k(0, 1)
+endin
+
+</CsInstruments>
+<CsScore>
+i1 0 z
+</CsScore>
+</CsoundSynthesizer>
+```
