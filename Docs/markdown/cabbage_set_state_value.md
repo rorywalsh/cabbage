@@ -64,15 +64,10 @@ instr 2
 endin
 
 instr UpdateData
-    iRes cabbageWriteStateData 1, {{
-        { 
-        "happy": true, 
-        "pi": 1.141, 
-        "test": "hello", 
-        "list":[1, 0, 2, 3, 4, 5, 2, 3, 6], 
-        "stringList":["hi", "who", "goes", "there"]
-        }
-    }}
+    iRes cabbageWriteStateData 1, "{\"happy\": true, \"pi\": 1.141, \"test\": \"hello\", \"list\":[1, 0, 2, 3, 4, 5, 2, 3, 6],\"stringList\":[\"hi\", \"who\", \"goes\", \"there\"]"
+    if iRes == -1 then
+        prints "Couldn't write JSON data"
+    endif
     if iRes == -1 then
         prints "Couldn't write JSON data"
     endif
