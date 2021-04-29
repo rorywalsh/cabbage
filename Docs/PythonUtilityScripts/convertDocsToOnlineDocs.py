@@ -110,6 +110,9 @@ for dir in directories[0:3]:
 				if " !}" in line:
 					line = line.replace(" !}", " %}")
 
+				if "(./cabbage_syntax.md)" in line:
+					line = line.replace("(./cabbage_syntax.md)", "(../cabbage_syntax/index.html)")
+
 
 				outputFile.write(line)
 
