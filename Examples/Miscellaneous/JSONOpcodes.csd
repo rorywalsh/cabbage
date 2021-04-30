@@ -20,72 +20,66 @@ endin
 
 instr 2
 
-kSlider chnget "sliderValue"
+    kSlider chnget "sliderValue"
 
-if changed2(kSlider) == 1 then
-    event "i", "SetFloatValue", 0, 0
-endif
+    if changed2(kSlider) == 1 then
+        event "i", "SetFloatValue", 0, 0
+    endif
 
-if changed:k(chnget:k("showData")) == 1 then
-    event "i", "ShowData", 0, 0
-endif
+    if changed:k(chnget:k("showData")) == 1 then
+        event "i", "ShowData", 0, 0
+    endif
 
 endin
 
-;instr WriteData
-;    iRes writeStateData 0, "{ \"happy\": true, \"pi\": 3.141, \"list\":[1, 0, 2, 3, 4, 5, 2, 3, 6], \"stringList\":[\"Hi\", \"who\", \"goes\", \"there\"]}"
-;    if iRes == -1 then
-;        prints "Couldn't write JSON data"
-;    endif
-;endin
-
 instr UpdateData
-    iRes writeStateData 1, {{
+    cabbageWriteStateData 1, {{
         { 
-        "happy": true, "pi": 1.141, "test": "hello", "list":[1, 0, 2, 3, 4, 5, 2, 3, 6], "stringList":["hi", "who", "goes", "there]
+        "happy": true, 
+        "pi": 1.141, 
+        "test": "hello", 
+        "list":[1, 0, 2, 3, 4, 5, 2, 3, 6], 
+        "stringList":["hi", "who", "goes", "there"]
         }
     }}
-    if iRes == -1 then
-        prints "Couldn't write JSON data"
-    endif
 endin
 
 instr ShowData
-    prints readStateData()
+    prints cabbageReadStateData()
 endin
 
 instr GetFloatValue
-    kVal getStateValue "pi"
+    kVal cabbageGetStateValue "pi"
     printk2 kVal
 endin
 
 instr GetFloatArrayValue
-    kVal[] getStateValue "list"
+    kVal[] cabbageGetStateValue "list"
     printarray kVal, 1, "%d"
 endin
 
 instr GetStringValue
-    SVal getStateValue "test"
+    SVal cabbageGetStateValue "test"
     prints SVal
 endin
 
 instr GetStringArrayValue
-    SVal[] getStateValue "stringList"
+    SVal[] cabbageGetStateValue "stringList"
     printarray SVal, 1, "%s"
 endin
 
 instr SetFloatValue
-    iRes setStateValue "pi", chnget:i("sliderValue")
+    cabbageSetStateValue "pi", chnget:i("sliderValue")
 endin
 
 instr SetFloatArrayValue
     kArr[] fillarray 1, 2, 3, 4
-    kRes setStateValue "list", kArr
+    cabbageSetStateValue "list", kArr
 endin
 
 instr SetStringArrayValue
     SArr[] fillarray "1", "2", "3", "4"
-    kRes setStateValue "stringList", SArr
+    cabbageSetStateValue "stringList", SArr
 endin
 </CsInstruments>
 <CsScore>
@@ -95,7 +89,7 @@ i2 0 z
 ;starts instrument 1 and runs it for a week
 ;i"WriteData" 0 1
 ;i"ShowData" + 1  
-i"UpdateData" 0 1
+;i"UpdateData" 0 1
 ;i"ShowData" 2 1
 ;i"GetFloatValue" 3 1
 ;i"GetFloatArrayValue" 4 1
