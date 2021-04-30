@@ -24,7 +24,7 @@ rslider bounds(20, 8, 60, 60) range(0, 1, 0, 1, 0.001), channel("gain"), text("G
 <CsInstruments>
 ; Initialize the global variables. 
 ksmps = 32
-nchnls = 2
+nchnls = 2  
 0dbfs = 1
 
 instr 1
