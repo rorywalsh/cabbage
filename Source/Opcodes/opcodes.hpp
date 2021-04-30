@@ -64,6 +64,7 @@ struct ReadStateData : csnd::Plugin<1, 0>
                 csound->message("No data, temporary or persistent, has been written to internal state...\n");
             }
             
+            outargs.str_data(0).size = int(strlen(perData->data.c_str()));
             outargs.str_data(0).data = csound->strdup((char*)perData->data.c_str());
             return OK;
         }
@@ -493,6 +494,7 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
 
         if (json::accept(jsonData) == false)
         {
+            outargs.str_data(0).size = 0;
             outargs.str_data(0).data = "";
             return;
         }
@@ -503,6 +505,7 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
         {
             if (it.key() == channelKey && it.value().is_string())
             {
+                outargs.str_data(0).size = strlen((char*)it.value().dump().c_str());
                 outargs.str_data(0).data = csound->strdup((char*)it.value().dump().c_str());
                 firstTimeSuccess = true;
             }
@@ -511,6 +514,7 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
         if (firstTimeSuccess == false)
         {
             //csound->message("Could not find value for " + channelKey + "?\nCheck JSON channel data.\n");
+            outargs.str_data(0).size = 0;
             outargs.str_data(0).data = csound->strdup("");
             firstTimeSuccess = true;
         }
@@ -948,6 +952,7 @@ struct FileToStr : csnd::Plugin<1, 1>
         }
 
         fileStream.close();
+        outargs.str_data(0).size = strlen((char*)lines.c_str());
         outargs.str_data(0).data = csound->strdup((char*)lines.c_str());
         return OK;
     }
@@ -987,6 +992,7 @@ struct StrRemove : csnd::Plugin<1, 3>
                 break;
         }
 
+        opcodeData->outargs.str_data(0).size = strlen((char*)input.c_str());
         opcodeData->outargs.str_data(0).data = csound->strdup((char*)input.c_str());
 
         return OK;

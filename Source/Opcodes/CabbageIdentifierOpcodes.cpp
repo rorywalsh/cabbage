@@ -115,11 +115,13 @@ int GetCabbageStringIdentifierSingle::getAttribute()
     if(child.getProperty(identifier).size()>0)
     {
         const String data = child.getProperty(identifier)[0].toString();
+        outargs.str_data(0).size = strlen(data.toUTF8().getAddress());
         outargs.str_data(0).data = csound->strdup(data.toUTF8().getAddress());
     }
     else
     {
-        outargs.str_data(0).data = csound->strdup(""	);
+        outargs.str_data(0).size = 0;
+        outargs.str_data(0).data = csound->strdup("");
     }
     
     
@@ -266,6 +268,7 @@ int GetCabbageStringValue::getAttribute()
    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.getCharPointer(),
                                                 CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
         {
+            outargs.str_data(0).size = ((STRINGDAT*)value)->size;
             outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
         }
 
@@ -313,6 +316,7 @@ int GetCabbageStringValueWithTrigger::getAttribute()
         else
             outargs[1] = 0;
         
+        outargs.str_data(0).size = strlen(currentString);
         outargs.str_data(0).data = csound->strdup(currentString);
     }
     
@@ -394,15 +398,14 @@ int SetCabbageValueIdentifier::setAttribute()
 //====================================================================================================
 int SetCabbageIdentifier::setAttribute()
 {
-   
-    int trigger = outargs[0];
+    int trigger = args[0];
     
     if(trigger == 0)
         return OK;
     
     CabbageWidgetIdentifiers::IdentifierData data;
-    String name(outargs.str_data(1).data);
-    String identifier(outargs.str_data(2).data);
+    String name(args.str_data(1).data);
+    String identifier(args.str_data(2).data);
     data.identifier = identifier;
     data.name = name;
     
@@ -439,7 +442,7 @@ int SetCabbageIdentifier::setAttribute()
         if(in_count() == 3)
         {
             data.isSingleIdent = false;
-            data.args = String(outargs.str_data(2).data);
+            data.args = String(args.str_data(2).data);
             //DBG(String(outargs.str_data(3).data));
         }
         else
@@ -447,7 +450,7 @@ int SetCabbageIdentifier::setAttribute()
             for ( int i = 3 ; i < in_count(); i++)
             {
                 //DBG(outargs[i]);
-                 data.args.append(outargs[i]);
+                 data.args.append(args[i]);
             }
         }
         varData->data.add(data);
@@ -467,16 +470,20 @@ int SetCabbageIdentifier::setAttribute()
 
 int SetCabbageIdentifierSArgs::setAttribute()
 {
+    //csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSS", csnd::thread::k);
+    
     CabbageWidgetIdentifiers::IdentifierData data;
-    int trigger = outargs[0];
-    int test = in_count();
-    if(out_count()<3){
+    int trigger = args[0];
+    if(trigger == 0)
+        return OK;
+
+    if(in_count()<3){
         csound->perf_error("Not enough arguments\n", this);
         return NOTOK;
     }
     
-    String name(outargs.str_data(1).data);
-    String identifier(outargs.str_data(2).data);
+    String name(args.str_data(1).data);
+    String identifier(args.str_data(2).data);
     data.identifier = identifier;
     data.name = name;
     
@@ -496,42 +503,40 @@ int SetCabbageIdentifierSArgs::setAttribute()
         csound->message("Creating new internal state object...\n");
     }
     
-    if(trigger == 1)
+    //hack to trigger table update even if table number hasn't changed
+    if(identifier == "tableNumber")
     {
-        //hack to trigger table update even if table number hasn't changed
-        if(identifier == "tableNumber")
+        CabbageWidgetIdentifiers::IdentifierData updateData1;
+        updateData1.identifier = CabbageIdentifierIds::update;
+        updateData1.name = name;
+        updateData1.args = 1;
+        varData->data.add(updateData1);
+    }
+    
+    if(identifier.isEmpty())
+    {
+        data.isSingleIdent = false;
+        data.args = String(args.str_data(3).data);
+    }
+    else
+    {
+        for ( int i = 3 ; i < in_count(); i++)
         {
-            CabbageWidgetIdentifiers::IdentifierData updateData1;
-            updateData1.identifier = CabbageIdentifierIds::update;
-            updateData1.name = name;
-            updateData1.args = 1;
-            varData->data.add(updateData1);
-        }
-        
-        if(identifier.isEmpty())
-        {
-            data.isSingleIdent = false;
-            data.args = String(outargs.str_data(3).data);
-        }
-        else
-        {
-            for ( int i = 3 ; i < in_count(); i++)
-            {
-                data.args.append(String(outargs.str_data(i).data));
-            }
-        }
-        varData->data.add(data);
-        
-        //hack to trigger table update even if table number hasn't changed
-        if(identifier == "tableNumber")
-        {
-            CabbageWidgetIdentifiers::IdentifierData updateData0;
-            updateData0.identifier = CabbageIdentifierIds::update;
-            updateData0.name = name;
-            updateData0.args = 0;
-            varData->data.add(updateData0);
+            data.args.append(String(args.str_data(i).data));
         }
     }
+    varData->data.add(data);
+    
+    //hack to trigger table update even if table number hasn't changed
+    if(identifier == "tableNumber")
+    {
+        CabbageWidgetIdentifiers::IdentifierData updateData0;
+        updateData0.identifier = CabbageIdentifierIds::update;
+        updateData0.name = name;
+        updateData0.args = 0;
+        varData->data.add(updateData0);
+    }
+
     return OK;
 }
 
@@ -675,6 +680,7 @@ int GetCabbageReservedChannelStringWithTrigger::getAttribute()
         else
             outargs[1] = 0;
         
+        outargs.str_data(0).size = strlen(channelString);
         outargs.str_data(0).data = csound->strdup(channelString);
     }
     return OK;
