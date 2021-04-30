@@ -177,7 +177,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         }
     }
     
-    else if (mode == "named preset")
+    else if (mode == "named preset" || mode == "named snapshot")
     {
 #if JUCE_MODAL_LOOPS_PERMITTED
         String presetName;
