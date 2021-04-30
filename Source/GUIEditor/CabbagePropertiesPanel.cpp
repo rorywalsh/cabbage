@@ -709,7 +709,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
     else if (typeOfWidget == "image")
     {
         const String file = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file));
-        comps.add (new CabbageFilePropertyComponent ("Image File", false, true, "*", file));
+        comps.add (new CabbageFilePropertyComponent ("File", false, true, "*", file));
     }
 
     else if (typeOfWidget == "groupbox")

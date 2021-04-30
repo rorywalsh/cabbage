@@ -2014,61 +2014,61 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
         if (File (file).existsAsFile())
         {
 
-preCompileCheckForIssues(File(file));
+        preCompileCheckForIssues(File(file));
 
 
-AudioProcessorGraph::NodeID node(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
+        AudioProcessorGraph::NodeID node(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
 
-if (node.uid == -99)
-{
-    Uuid uniqueID;
-    node.uid = int32(*uniqueID.getRawData());
-    fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId = node.uid;
-}
+        if (node.uid == -99)
+        {
+            Uuid uniqueID;
+            node.uid = int32(*uniqueID.getRawData());
+            fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId = node.uid;
+        }
 
-Random rand;
-double posOffset = rand.nextDouble() * 0.2;
-juce::Point<double> pluginNodePos(.5 + posOffset, .5 + posOffset);
-juce::Point<int> pluginWindowPos(-1000, -1000);
-
-
-if (getFilterGraph()->graph.getNodeForId(node))
-{
-    pluginNodePos = juce::Point<double>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("x", rand.nextDouble()),
-        getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("y", rand.nextDouble()));
-
-    pluginWindowPos = juce::Point<int>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowX", rand.nextInt(Range<int>(0, 500))),
-        getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowY", rand.nextInt(Range<int>(0, 500))));
-
-}
+        Random rand;
+        double posOffset = rand.nextDouble() * 0.2;
+        juce::Point<double> pluginNodePos(.5 + posOffset, .5 + posOffset);
+        juce::Point<int> pluginWindowPos(-1000, -1000);
 
 
+        if (getFilterGraph()->graph.getNodeForId(node))
+        {
+            pluginNodePos = juce::Point<double>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("x", rand.nextDouble()),
+                getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("y", rand.nextDouble()));
+
+            pluginWindowPos = juce::Point<int>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowX", rand.nextInt(Range<int>(0, 500))),
+                getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowY", rand.nextInt(Range<int>(0, 500))));
+
+        }
 
 
-getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
-//this will create or update plugin...
-
-graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pluginNodePos);
 
 
-createEditorForFilterGraphNode(pluginWindowPos);
+        getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
+        //this will create or update plugin...
 
-startTimer(100);
-if (getFilterGraph()->graph.getNodeForId(node))
-{
-    fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
-    fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
-}
-else
-{
-    fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
-    fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
-}
+        graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pluginNodePos);
 
-factory.togglePlay(true);
-//hack to allow saving on the fly with JUCE 5.4.7 - needs investigation...
 
-graphComponent->enableAudioInput();
+        createEditorForFilterGraphNode(pluginWindowPos);
+
+        startTimer(100);
+        if (getFilterGraph()->graph.getNodeForId(node))
+        {
+            fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
+            fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
+        }
+        else
+        {
+            fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
+            fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
+        }
+
+        factory.togglePlay(true);
+        //hack to allow saving on the fly with JUCE 5.4.7 - needs investigation...
+
+        graphComponent->enableAudioInput();
 
         }
         else

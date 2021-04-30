@@ -749,9 +749,6 @@ void CabbagePluginProcessor::createCabbageParameters()
 					const var currentChannel = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
 						CabbageIdentifierIds::channel);
                     
-                    DBG(currentChannel[0].toString());
-                    DBG(currentChannel[1].toString());
-                    
 					const float increment = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 						CabbageIdentifierIds::increment);
 					const float minX = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
@@ -1720,7 +1717,6 @@ void CabbagePluginProcessor::enableXYAutomator(String name, bool enable, Line<fl
 CabbagePluginParameter* CabbagePluginProcessor::getParameterForXYPad(String name) {
 	for (auto param : getCabbageParameters()) {
 		if (CabbagePluginParameter * cabbageParam = dynamic_cast<CabbagePluginParameter*> (param)) {
-			DBG(cabbageParam->getWidgetName());
 			if (name == cabbageParam->getWidgetName())
 				return dynamic_cast<CabbagePluginParameter*> (cabbageParam);
 		}
@@ -1738,21 +1734,25 @@ void CabbagePluginProcessor::setCabbageParameter(String channel, float value, Va
             const String widgetType = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::type);
             
             if(widgetType == CabbageWidgetTypes::hrange || widgetType == CabbageWidgetTypes::vrange)
-                jassertfalse;
-            
-            if(widgetType != CabbageWidgetTypes::xypad)
             {
-                CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, value);
+                var channels = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::channel);
+                if(channel == channels[0].toString())
+                    CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::minvalue, value);
+                else
+                    CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::maxvalue, value);
+                
             }
-            else
+            else if(widgetType == CabbageWidgetTypes::xypad)
             {
                 var channels = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::channel);
                 if(channel == channels[0].toString())
                     CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::valuex, value);
                 else
                     CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::valuey, value);
-                    
             }
+            else
+               CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, value);
+
             
             
         });

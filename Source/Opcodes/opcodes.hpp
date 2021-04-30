@@ -40,9 +40,19 @@ public:
 //====================================================================================================
 // ReadStateData
 //====================================================================================================
-struct ReadStateData : csnd::Plugin<1, 1>
+struct ReadStateData : csnd::Plugin<1, 0>
 {
     int init()
+    {
+        return dumpData();
+    }
+    
+    int perf()
+    {
+        return dumpData();
+    }
+    
+    int dumpData()
     {
         CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
         if(pd != nullptr)
@@ -53,7 +63,7 @@ struct ReadStateData : csnd::Plugin<1, 1>
             {
                 csound->message("No data, temporary or persistent, has been written to internal state...\n");
             }
-
+            
             outargs.str_data(0).data = csound->strdup((char*)perData->data.c_str());
             return OK;
         }
@@ -66,7 +76,7 @@ struct ReadStateData : csnd::Plugin<1, 1>
 //====================================================================================================
 // Write State Data
 //====================================================================================================
-struct WriteStateData : csnd::Plugin<1, 3>
+struct WriteStateData : csnd::InPlug<2>
 {
     int init()
     {
@@ -77,7 +87,7 @@ struct WriteStateData : csnd::Plugin<1, 3>
     void writeJsonDataToGlobalVar(int mode)
     {
 
-        std::string jsonString(inargs.str_data(1).data);
+        std::string jsonString(args.str_data(1).data);
         if(jsonString.empty())
             if(mode == K_RATE)
                 csound->perf_error("JSON string is empty\n", this);
@@ -85,7 +95,7 @@ struct WriteStateData : csnd::Plugin<1, 3>
                 csound->init_error("JSON string is empty:\n");
         
         std::string jsonData = "";
-        int writeMode = inargs[0];
+        int writeMode = args[0];
         json j;
 
         CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
@@ -103,13 +113,14 @@ struct WriteStateData : csnd::Plugin<1, 3>
         if (json::accept(jsonString) == false)
         {
             csound->init_error("Invalid JSON data:" + jsonString + "\n");
-            outargs[0] = -1;
             return;
         }
 
         if (writeMode == 1)
         {
-                j = json::parse(jsonData);
+                if(json::accept(jsonData))
+                    j = json::parse(jsonData);
+            
                 auto j2 = json::parse(jsonString);
                 j.update(j2);
         }
@@ -117,7 +128,7 @@ struct WriteStateData : csnd::Plugin<1, 3>
         {
             j = json::parse(jsonString);
         }
-
+        
         perData->data = j.dump();
     }
 };
@@ -125,7 +136,7 @@ struct WriteStateData : csnd::Plugin<1, 3>
 //====================================================================================================
 // Set float values 
 //====================================================================================================
-struct SetStateFloatData : csnd::Plugin<1, 2>
+struct SetStateFloatData : csnd::InPlug<2>
 {
     int init()
     {
@@ -158,7 +169,7 @@ struct SetStateFloatData : csnd::Plugin<1, 2>
         
         
         
-        std::string jsonKeyName(inargs.str_data(0).data);
+        std::string jsonKeyName(args.str_data(0).data);
         
         if(jsonKeyName.empty())
             if(mode == K_RATE)
@@ -168,7 +179,7 @@ struct SetStateFloatData : csnd::Plugin<1, 2>
         
         
         std::string jsonData;
-        MYFLT value = inargs[1];
+        MYFLT value = args[1];
 
         json j;
 
@@ -199,20 +210,18 @@ struct SetStateFloatData : csnd::Plugin<1, 2>
                 csound->init_error("Invalid JSON data:" + newData + "\n");
             return false;
 
-            outargs[0] = -1;
             return false;
         }
 
         j = json::parse(jsonData.empty() ? "{}" : jsonData);
         auto j2 = json::parse(newData);
         j.update(j2);
-
         perData->data = j.dump();
         return true;
     }
 };
 
-struct SetStateFloatArrayData : csnd::Plugin<1, 2>
+struct SetStateFloatArrayData : csnd::InPlug<2>
 {
     int init()
     {
@@ -241,9 +250,9 @@ struct SetStateFloatArrayData : csnd::Plugin<1, 2>
             return false;
         }
         
-        std::string jsonKeyName(inargs.str_data(0).data);
+        std::string jsonKeyName(args.str_data(0).data);
         std::string jsonData;
-        csnd::Vector<MYFLT>& args = inargs.myfltvec_data(1);
+        csnd::Vector<MYFLT>& inputArgs = args.myfltvec_data(1);
 
         json j;
 
@@ -265,8 +274,8 @@ struct SetStateFloatArrayData : csnd::Plugin<1, 2>
         }
 
         std::string newData = "{ \"" + jsonKeyName + "\" : [";
-        for (int i = 0; i < args.len(); i++) {
-            newData += std::to_string(args[i]) + (i < args.len() - 1 ? ", " : "");
+        for (int i = 0; i < inputArgs.len(); i++) {
+            newData += std::to_string(inputArgs[i]) + (i < inputArgs.len() - 1 ? ", " : "");
         }
         newData += "]}";
 
@@ -277,14 +286,11 @@ struct SetStateFloatArrayData : csnd::Plugin<1, 2>
             else
                 csound->init_error("Invalid JSON data:" + newData + "\n");
             return false;
-            outargs[0] = -1;
-            return false;
         }
 
         j = json::parse(jsonData.empty() ? "{}" : jsonData);
         auto j2 = json::parse(newData);
         j.update(j2);
-
         perData->data = j.dump();
         return true;
     }
@@ -293,7 +299,7 @@ struct SetStateFloatArrayData : csnd::Plugin<1, 2>
 //====================================================================================================
 // Set float values 
 //====================================================================================================
-struct SetStateStringData : csnd::Plugin<1, 2>
+struct SetStateStringData : csnd::InPlug<2>
 {
     int init()
     {
@@ -322,9 +328,9 @@ struct SetStateStringData : csnd::Plugin<1, 2>
             return false;
         }
         
-        std::string jsonKeyName(inargs.str_data(0).data);
+        std::string jsonKeyName(args.str_data(0).data);
         std::string jsonData;
-        std::string value(inargs.str_data(1).data);
+        std::string value(args.str_data(1).data);
 
         json j;
 
@@ -353,7 +359,7 @@ struct SetStateStringData : csnd::Plugin<1, 2>
                 csound->perf_error("Invalid JSON data:" + newData + "\n", this);
             else
                 csound->init_error("Invalid JSON data:" + newData + "\n");
-            outargs[0] = -1;
+
             return false;
         }
 
@@ -366,7 +372,7 @@ struct SetStateStringData : csnd::Plugin<1, 2>
     }
 };
 
-struct SetStateStringArrayData : csnd::Plugin<1, 2>
+struct SetStateStringArrayData : csnd::InPlug<2>
 {
     int init()
     {
@@ -395,9 +401,9 @@ struct SetStateStringArrayData : csnd::Plugin<1, 2>
             return false;
         }
                                    
-        std::string jsonKeyName(inargs.str_data(0).data);
+        std::string jsonKeyName(args.str_data(0).data);
         std::string jsonData;
-        csnd::Vector<STRINGDAT>& strs = inargs.vector_data<STRINGDAT>(1);
+        csnd::Vector<STRINGDAT>& strs = args.vector_data<STRINGDAT>(1);
 
         json j;
 
@@ -431,7 +437,7 @@ struct SetStateStringArrayData : csnd::Plugin<1, 2>
             else
                 csound->init_error("Invalid JSON data:" + newData + "\n");
 
-            outargs[0] = -1;
+            
             return false;
         }
 

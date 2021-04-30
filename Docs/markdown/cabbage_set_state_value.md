@@ -6,11 +6,11 @@ Sets a value in the plugin's internal state object. Can set scalars or arrays. E
 
 ### Syntax
 
-<pre>kRes <b>cabbageSetStateValue</b> SKeyName, SData</pre>
-<pre>kRes <b>cabbageSetStateValue</b> SKeyName, kData</pre>
-<pre>iRes <b>cabbageSetStateValue</b> SKeyName, iData</pre>
-<pre>kRes <b>cabbageSetStateValue</b> SKeyName, SData[]</pre>
-<pre>kRes <b>cabbageSetStateValue</b> SKeyName, kData[]</pre>
+<pre><b>cabbageSetStateValue</b> SKeyName, SData</pre>
+<pre><b>cabbageSetStateValue</b> SKeyName, kData</pre>
+<pre><b>cabbageSetStateValue</b> SKeyName, iData</pre>
+<pre><b>cabbageSetStateValue</b> SKeyName, SData[]</pre>
+<pre><b>cabbageSetStateValue</b> SKeyName, kData[]</pre>
 
 #### Initialization
 
