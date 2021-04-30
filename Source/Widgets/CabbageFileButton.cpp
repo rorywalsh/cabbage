@@ -139,7 +139,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         
     }
 
-    else if (mode == "snapshot")
+    else if (mode == "snapshot" || mode == "preset")
     {
         owner->savePluginStateToFile ("");
         owner->refreshComboListBoxContents();
@@ -177,7 +177,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         }
     }
     
-    else if (mode == "named snapshot")
+    else if (mode == "named preset")
     {
 #if JUCE_MODAL_LOOPS_PERMITTED
         String presetName;
