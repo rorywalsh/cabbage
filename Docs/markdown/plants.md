@@ -13,7 +13,9 @@ combobox bounds(20, 100, 155, 30), channel("waveform"), value(2), text("Sine", "
 }
 ``` 
 
-The major advantage in using plants is that you can easily move and resize all widgets in one action. If you wish to dynamically change the position or visibility of a plant at run-time, you must give the image or groupbox a channel. Then you can call `cabbageSet` to update it. IN the code below, a button is used to toggle the visibility of several plants. 
+The major advantage in using plants is that you can easily move and resize all widgets in one action. If you wish to dynamically change the position or visibility of a plant at run-time, you must give the image or groupbox a channel. Then you can call `cabbageSet` to update it. In the code provided below, a button is used to toggle the visibility of several plants. 
+
+![New file](images/toggling_plants.gif)
 
 ```csharp
 <Cabbage>
