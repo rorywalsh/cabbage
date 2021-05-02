@@ -201,8 +201,14 @@ void CabbageXYPad::paint (Graphics& g)
                             5, borderWidth);
 
     //text label
+    Font font;
     g.setColour (textColour);
-    Font font = owner->customFont;
+    if(owner->customFont.getHeight()>900)
+        font = CabbageUtilities::getComponentFont();
+    else
+        font = owner->customFont;
+    
+    
     
     g.setFont (font);
     float strWidth = font.getStringWidthFloat (getText());
