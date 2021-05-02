@@ -513,10 +513,10 @@ int SetCabbageIdentifierSArgs::setAttribute()
         varData->data.add(updateData1);
     }
     
-    if(identifier.isEmpty())
+    if(identifier.isEmpty() || in_count() == 3)
     {
         data.isSingleIdent = false;
-        data.args = String(args.str_data(3).data);
+        data.args = String(args.str_data(2).data);
     }
     else
     {
