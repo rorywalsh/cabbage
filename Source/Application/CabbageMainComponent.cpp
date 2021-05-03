@@ -2105,10 +2105,14 @@ void CabbageMainComponent::preCompileCheckForIssues(File file)
 
     StringArray fileContentStrArray, problemChannels;
     fileContentStrArray.addLines(fileContents);
-    for (auto string : fileContentStrArray) {
+    StringArray channels;
+    
+    for (auto string : fileContentStrArray)
+    {
         const String widgetTreeIdentifier = "tempWidget";
         ValueTree tempWidget(widgetTreeIdentifier);
         CabbageWidgetData::setWidgetState(tempWidget, string.trimCharactersAtStart(" \t"), -9);
+        
         if(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::type) == "form")
         {
             const String pluginId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::pluginid);
@@ -2122,6 +2126,9 @@ void CabbageMainComponent::preCompileCheckForIssues(File file)
                 }
             }
         }
+        
+        channels.add(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel));
+        
         if (CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel).contains(" "))
             problemChannels.add(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel));
 
@@ -2133,17 +2140,35 @@ void CabbageMainComponent::preCompileCheckForIssues(File file)
             getCurrentEditorContainer()->csoundTokeniser.udoKeywords.add(newKeyword);
 
         }
-
     }
 
-    if (problemChannels.size() > 0) {
+    channels.removeEmptyStrings();
+    channels.appendNumbersToDuplicates(false, false, CharPointer_UTF8("|"), CharPointer_UTF8("|"));
+    
+    for( int i = channels.size() ; i >= 0 ; i--){
+        DBG(channels[i]);
+        if(channels[i].indexOf("|") == -1)
+            channels.remove(i);
+        else
+            channels.set(i, channels[i].substring(0, channels[i].indexOf("|")));
+    }
+    
+    if(channels.size()>0)
+    {
+        const String channelError = channels.joinIntoString("\n");
+        const String infoText = "The following channel names are used across multiple widgets:\n" + channelError +"\nThis is not permitted and can lead to unexpected behaviour";
+        CabbageUtilities::showMessage("Warning", infoText, lookAndFeel.get());
+    }
+    
+    
+    if (problemChannels.size() > 0)
+    {
         const String infoText = "White spaces are not supported in channel names. The following channels need to be changed:\n" + problemChannels.joinIntoString("\n");
         CabbageUtilities::showMessage("Warning", infoText, lookAndFeel.get());
     }
 
-
-
-    if (!fileContents.contains("<Cabbage>") || !fileContents.contains("</Cabbage>")) {
+    if (!fileContents.contains("<Cabbage>") || !fileContents.contains("</Cabbage>"))
+    {
         const int dismiss = cabbageSettings->getUserSettings()->getIntValue("DisableCabbageTagsWarning");
         if (!dismiss)
         {
@@ -2153,6 +2178,7 @@ void CabbageMainComponent::preCompileCheckForIssues(File file)
 
     }
 }
+    
 void CabbageMainComponent::stopCsoundForNode (String file, int fileTabIndex)
 {
 

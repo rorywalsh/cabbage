@@ -444,6 +444,7 @@ public:
         add ("rangeX");
         add ("rotate");
         add ("active");
+        add ("parent");
         add ("shape");
         add ("screw");
         add ("scale");
@@ -672,7 +673,7 @@ namespace CabbageIdentifierIds
     static const Identifier outlinecolour = "outlineColour";
     static const Identifier outlinethickness = "outlineThickness";
     static const Identifier overlaycolour = "overlayColour";
-    static const Identifier parentcomponent = "parentcomponent";
+    static const Identifier parentcomponent = "parent";
     static const Identifier parentdir = "parentDir";
     static const Identifier presetignore = "presetIgnore";
     static const Identifier pivotx = "pivotX";

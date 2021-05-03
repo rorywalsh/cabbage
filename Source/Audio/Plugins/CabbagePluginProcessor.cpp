@@ -313,7 +313,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 
         if (isWidgetPlantParent(linesFromCsd, lineNumber) &&
             currentLineOfCabbageCode.removeCharacters(" ").removeCharacters("\t").substring(0, 1) != "{") {
-            //CabbageUtilities::debug (CabbageWidgetData::getProperty (tempWidget, CabbageIdentifierIds::name).toString());
+            CabbageUtilities::debug (CabbageWidgetData::getProperty (newWidget, CabbageIdentifierIds::name).toString());
             parents.add(CabbageWidgetData::getProperty(newWidget, CabbageIdentifierIds::name).toString());
             auto currentChild = cabbageWidgets.getChild(cabbageWidgets.getNumChildren()-1);
             CabbageWidgetData::setNumProp(currentChild, CabbageIdentifierIds::isparent, 1);
@@ -1485,19 +1485,6 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                     CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), " " + identData->data[i].args.toString());
                 }
             }
-        }
-        CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
-        if (vt == nullptr) {
-            getCsound()->CreateGlobalVariable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
-            vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
-            *vt = new CabbageWidgetsValueTree();
-            auto valueTree = *vt;
-            valueTree->data = cabbageWidgets;
-        }
-        else{
-            auto valueTree = *vt;
-            valueTree->data.copyPropertiesFrom(cabbageWidgets, nullptr);
-            DBG(cabbageWidgets.getChildWithName("image1").getProperty(CabbageIdentifierIds::width).toString());;
         }
     }
 
