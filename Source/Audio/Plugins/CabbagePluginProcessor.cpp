@@ -1443,6 +1443,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
             {
                 if(identData->data[i].isSingleIdent)
                 {
+                    //any widgets taht break identifiers into unique entities must be parsed....
                     if(identifier.toString().containsIgnoreCase("colour"))
                     {
                         String colourTokens;
@@ -1453,6 +1454,13 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                             CabbageWidgetData::setColourByNumber(colourTokens.dropLastCharacters(1), cabbageWidgets.getChildWithName(name), identifier.toString());
                         else
                             cabbageWidgets.getChildWithName(name).setProperty(identifier, CabbageWidgetData::getColourFromText(colourTokens.dropLastCharacters(1)).toString(), nullptr);
+                    }
+                    else if(identifier == CabbageIdentifierIds::bounds)
+                    {
+                        CabbageWidgetData::setBounds(cabbageWidgets.getChildWithName(name), Rectangle<int>( identData->data[i].args[0],
+                                                                                                           identData->data[i].args[1],
+                                                                                                           identData->data[i].args[2],
+                                                                                                           identData->data[i].args[3]));
                     }
                     else
                     {
@@ -1478,7 +1486,23 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                 }
             }
         }
+        CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
+        if (vt == nullptr) {
+            getCsound()->CreateGlobalVariable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
+            vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
+            *vt = new CabbageWidgetsValueTree();
+            auto valueTree = *vt;
+            valueTree->data = cabbageWidgets;
+        }
+        else{
+            auto valueTree = *vt;
+            valueTree->data.copyPropertiesFrom(cabbageWidgets, nullptr);
+            DBG(cabbageWidgets.getChildWithName("image1").getProperty(CabbageIdentifierIds::width).toString());;
+        }
     }
+
+
+    
     identData->data.clear();
 
 
