@@ -1,6 +1,6 @@
 # Button (Information button)
 
-Infobuttons can be used to open html files in the system's default web browser. When clicked, the file passed to the file() identifier will be opened. The file can be a local file, or a full URL, `file("http://cabbageaudio.com")`. 
+Infobuttons can be used to open html files in the system's default web browser. When clicked, the file passed to the file() identifier will be opened. The file can be a local file, or a full URL such as `file("http://cabbageaudio.com")`. 
 
 This widget can be useful for providing help files, or any other additional information about your instruments. 
 
