@@ -22,7 +22,7 @@ nslider bounds(105, 70, 90, 35), text("MOUSE MIDDLE"),        fontcolour("white"
 nslider bounds(205, 70, 90, 35), text("MOUSE RIGHT"),         fontcolour("white"), textbox(1),                channel("RIGHT"),       range(0, 1,   0,1,1)
 
 
-textbox bounds(300, 10,475,350), file("MouseSenseInfo.txt")
+texteditor bounds(300, 10,475,350), file("MouseSenseInfo.txt")
 
 </Cabbage>
 

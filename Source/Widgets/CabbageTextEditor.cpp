@@ -45,8 +45,9 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     
     
     addAndMakeVisible (textEditor);
-    textEditor.setMultiLine (isMultiline, false);
-    textEditor.setScrollbarsShown (false);
+    textEditor.setMultiLine (isMultiline);
+    const bool showScrollbars = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrollbars);
+    textEditor.setScrollbarsShown (showScrollbars);
     textEditor.addListener (this);
     textEditor.addKeyListener (this);
     textEditor.setColour (TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));

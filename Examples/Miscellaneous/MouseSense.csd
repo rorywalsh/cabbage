@@ -11,7 +11,7 @@ nslider bounds(105, 70, 90, 35), text("MOUSE MIDDLE"),        fontColour("white"
 nslider bounds(205, 70, 90, 35), text("MOUSE RIGHT"),         fontColour("white"), textBox(1),                channel("RIGHT"),       range(0, 1,   0,1,1)
 
 
-textBox bounds(300, 10,475,350), file("MouseSenseInfo.txt")
+texteditor wrap(1) scrollbars(1) bounds(300, 10,475,350), file("MouseSenseInfo.txt")
 
 </Cabbage>
 

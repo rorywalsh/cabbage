@@ -28,7 +28,7 @@
 
 class CabbageTextBox : public TextEditor, public ValueTree::Listener, public CabbageWidgetBase
 {
-    String filename;
+    String filename;	
 public:
 
     explicit CabbageTextBox (ValueTree wData);

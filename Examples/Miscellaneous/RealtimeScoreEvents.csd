@@ -11,7 +11,7 @@ texteditor bounds(5, 25, 390, 20), channel("ScoreEvent"), text(""), color(20, 20
 button     bounds(5,50,80,20), text("Send Again","Send Again"), channel("SendAgain"), value(0)
 csoundoutput bounds(5, 75, 390, 285)
 
-textBox bounds(405, 5,390,350), file("RealtimeScoreEvents.txt"), colour("white"), fontColour("black")
+texteditor wrap(1), scrollbars(1), bounds(405, 5,390,350), file("RealtimeScoreEvents.txt"), colour("white"), fontColour("black")
 </Cabbage>
 
 <CsoundSynthesizer>

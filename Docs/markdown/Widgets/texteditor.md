@@ -16,6 +16,8 @@ texteditor WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/caretColour.md !} 
 
+{! ./markdown/Widgets/Properties/scrollbars.md !} 
+
 ### Common Identifiers
 
 {! ./markdown/Widgets/Properties/active.md !} 
