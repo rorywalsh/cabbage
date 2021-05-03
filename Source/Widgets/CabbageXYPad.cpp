@@ -177,12 +177,15 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     else
     {
         //need to add a flag to xypad to disable dragging if users want to set values manually
-        const float xPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuex);
-        const float yPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
-        //setValues(xPos, maxY - yPos);
-        juce::Point<float> pos (getValueAsPosition (juce::Point<float> (xPos, maxY - yPos)));
-        //pos.addXY(-ball.getWidth() / 2, -ball.getWidth() / 2);
-        ball.setTopLeftPosition (constrainPosition (pos.getX(), pos.getY()));
+        float xVal = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuex);
+        xVal = (xVal-minX)/(maxX-minX);
+        float yVal = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
+        yVal = (yVal-minY)/(maxY-minY);
+
+        const float xPos = jmap (xVal, 0.f, 1.f, xyPadRect.getX() + ball.getWidth() / 2.f, xyPadRect.getWidth() - ball.getWidth() / 2.f);
+        const float yPos = jmap (yVal, 1.f, 0.f, xyPadRect.getY() + ball.getWidth() / 2.f, xyPadRect.getHeight() - ball.getWidth() / 2.f);
+
+        ball.setTopLeftPosition (constrainPosition (xPos, yPos));
         repaint();
     }
 }
