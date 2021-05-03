@@ -270,7 +270,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             if(fileExtension.containsIgnoreCase("component"))
             {
                 newPList = newPList.replace ("<string>CabbagePlugin</string>", "<string>" + pluginDesc + "</string>");
-                newPLisy = newPList.replace ("CabbageAudio", manu);
+                newPLisy = newPList.replace ("CabbageAudio", manu, true);
             }
             else
                 newPList = newPList.replace ("<string>CabbagePlugin</string>", "<string>" + fc.getFileNameWithoutExtension() + "</string>");
