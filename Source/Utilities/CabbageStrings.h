@@ -52,7 +52,7 @@ public:
     {
         String newCsoundFile =
             "<Cabbage>\n"
-            "form caption(\"Untitled\") size(400, 300), colour(58, 110, 182), pluginid(\"def1\")\n"
+            "form caption(\"Untitled\") size(400, 300), colour(58, 110, 182), pluginId(\"def1\")\n"
             "keyboard bounds(8, 158, 381, 95)\n"
             "</Cabbage>\n"
             "<CsoundSynthesizer>\n"
@@ -94,10 +94,10 @@ public:
         "screw bounds(80, 360, 15, 15)\n"
         "\n"
         "cvinput bounds(34, 60, 30, 30), channel(\"cvInput1\")\n"
-        "label bounds(0, 90, 100, 12), fontcolour(0,0,0) text(\"Input\")\n"
+        "label bounds(0, 90, 100, 12), fontColour(0,0,0) text(\"Input\")\n"
         "cvoutput bounds(34, 300, 30, 30), channel(\"cvOutput1\")\n"
-        "label bounds(0, 330, 100, 12), fontcolour(0,0,0) text(\"Output\")\n"
-        "rslider bounds(0, 150, 100, 100), channel(\"gain\"), text(\"Gain\"), textcolour(0, 0, 0, 255), range(0, 1, 0, 1, 0.01)\n"
+        "label bounds(0, 330, 100, 12), fontColour(0,0,0) text(\"Output\")\n"
+        "rslider bounds(0, 150, 100, 100), channel(\"gain\"), text(\"Gain\"), textColour(0, 0, 0, 255), range(0, 1, 0, 1, 0.01)\n"
         "light bounds(45, 250, 10, 10), channel(\"light1\")\n"
         "</Cabbage>\n"
         "<CsoundSynthesizer>\n"
@@ -140,8 +140,8 @@ public:
     {
         String newCsoundFile =
             "<Cabbage>\n"
-            "form caption(\"Untitled\") size(400, 300), colour(58, 110, 182), pluginid(\"def1\")\n"
-            "rslider bounds(296, 162, 100, 100), channel(\"gain\"), range(0, 1, 0, 1, .01), text(\"Gain\"), trackercolour(\"lime\"), outlinecolour(0, 0, 0, 50), textcolour(\"black\")\n"
+            "form caption(\"Untitled\") size(400, 300), colour(58, 110, 182), pluginId(\"def1\")\n"
+            "rslider bounds(296, 162, 100, 100), channel(\"gain\"), range(0, 1, 0, 1, .01), text(\"Gain\"), trackerColour(\"lime\"), outlineColour(0, 0, 0, 50), textColour(\"black\")\n"
             "\n"
             "</Cabbage>\n"
             "<CsoundSynthesizer>\n"
