@@ -116,7 +116,7 @@ struct GetCabbageStringValueWithTrigger : csnd::Plugin<2, 1>
 };
 
 //================================================================================================================
-struct CreateCabbageWidget : csnd::Plugin<1, 0>
+struct CreateCabbageWidget : csnd::InPlug<2>
 {
     MYFLT* value;
     CabbageWidgetsValueTree** vt = nullptr;

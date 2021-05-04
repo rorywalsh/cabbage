@@ -33,12 +33,21 @@ int CreateCabbageWidget::createWidget()
     }
     
     const String widgetTreeIdentifier = "TempWidget";
-    ValueTree tempWidget(widgetTreeIdentifier);	
-    String cabbageCode(outargs.str_data(0).data);
-    if(cabbageCode.isEmpty())
+    ValueTree tempWidget(widgetTreeIdentifier);
+    if(in_count()!=2)
+    {
+        csound->init_error("Not enough arguments\n");
+    }
+    
+    String cabbageWidget(args.str_data(0).data);
+    String cabbageCode(args.str_data(1).data);
+    if(cabbageCode.isEmpty() || cabbageWidget.isEmpty())
     {
         return NOTOK;
     }
+    
+    cabbageCode = cabbageWidget + " " + cabbageCode;
+    
     CabbageWidgetData::setWidgetState(tempWidget, cabbageCode.trimCharactersAtStart(" \t"),
                                       varData->data.getNumChildren()+1);
 

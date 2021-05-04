@@ -13,6 +13,18 @@ combobox bounds(20, 100, 155, 30), channel("waveform"), value(2), text("Sine", "
 }
 ``` 
 
+You can also group widgets into plants when they are created in the Csound orchestra by specifying who their parents are. In the following code, a rotary slider is added a child of an image. A button is then used to toggle the visibility of the plant.
+
+```csharp
+instr 1
+    cabbageCreate "image bounds(0, 0, 120, 120), channel(\"image1\")"
+    cabbageCreate "rslider bounds(10, 10, 100, 100), channel(\"slider1\"), parent(\"image1\")"
+    kToggle, kTrig cabbageGetValue "toggle"
+    cabbageSet kTrig, "image1", "visible", kToggle
+endin
+```csharp
+
+
 The major advantage in using plants is that you can easily move and resize all widgets in one action. If you wish to dynamically change the position or visibility of a plant at run-time, you must give the image or groupbox a channel. Then you can call `cabbageSet` to update it. In the code provided below, a button is used to toggle the visibility of several plants. 
 
 ![New file](images/toggling_plants.gif)
