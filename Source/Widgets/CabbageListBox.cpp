@@ -108,10 +108,10 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
         }
     }
         //if dealing with preset files...
-    else if (CabbageWidgetData::getStringProp (wData, "filetype") == "preset"
-             || CabbageWidgetData::getStringProp (wData, "filetype") == "*.snaps"
-             || CabbageWidgetData::getStringProp (wData, "filetype") == ".snaps"
-             || CabbageWidgetData::getStringProp (wData, "filetype") == "snaps") //load items from directory
+    else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype) == "preset"
+             || CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype) == "*.snaps"
+             || CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype) == ".snaps"
+             || CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype) == "snaps") //load items from directory
     {
         const File fileName = File (getCsdFile()).withFileExtension (".snaps");
 
@@ -143,7 +143,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
         else
 			listboxDir = File(getCsdFile()).getParentDirectory();
 
-        filetype = CabbageWidgetData::getStringProp (wData, "filetype");
+        filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype);
         listboxDir.findChildFiles (dirFiles, 2, false, filetype);
         stringItems.add ("Select..");
 
@@ -239,6 +239,7 @@ void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
 
 
         newFileName = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
+        
         if (!File(newFileName).existsAsFile())
         {
             newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
@@ -269,8 +270,8 @@ void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
 void CabbageListBox::paintListBoxItem (int rowNumber, Graphics& g,
                                        int width, int height, bool rowIsSelected)
 {
-
-    g.setFont(owner->customFont);
+    if(owner->customFont.getHeight()<900)
+        g.setFont(owner->customFont);
     
     if (rowIsSelected)
         g.fillAll (Colour::fromString(highlightColour));
