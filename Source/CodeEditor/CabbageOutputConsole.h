@@ -49,11 +49,19 @@ public:
     ~CabbageOutputConsole() {};
 
 
-    void setText (String text)
+    void setText (String text, String stringPosition = "")
     {
         const MessageManagerLock lock;
         textEditor->insertTextAtCaret (text);
-        textEditor->setCaretPosition (textEditor->getText().length());
+        if(stringPosition.isEmpty())
+        {
+            textEditor->setCaretPosition (textEditor->getText().length());
+        }
+        else
+        {
+            const int position = textEditor->getText().indexOf(textEditor->getText().fromLastOccurrenceOf(stringPosition, true, false));
+            textEditor->setCaretPosition (position);
+        }
     }
 
     String getText()
