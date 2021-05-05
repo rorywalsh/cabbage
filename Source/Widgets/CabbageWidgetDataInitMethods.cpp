@@ -488,6 +488,7 @@ void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, "populate", populate);
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::filetype, "*");
+    setProperty (widgetData, CabbageIdentifierIds::ignorelastdir, 0);
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
 	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
@@ -625,6 +626,7 @@ void CabbageWidgetData::setListBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::file, "");
     var populate;
     setProperty (widgetData, CabbageIdentifierIds::populate, populate);
+    setProperty (widgetData, CabbageIdentifierIds::ignorelastdir, 0);
     setProperty (widgetData, CabbageIdentifierIds::name, "listbox");
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
@@ -980,8 +982,9 @@ void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::protecteditems, 0);
     var populate;
     //populate.append (String::empty);
-    //populate.append (String::empty);
+    //g.append (String::empty);
     setProperty (widgetData, CabbageIdentifierIds::populate, populate);
+    setProperty (widgetData, CabbageIdentifierIds::ignorelastdir, 0);
     setProperty (widgetData, CabbageIdentifierIds::name, "combobox");
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");

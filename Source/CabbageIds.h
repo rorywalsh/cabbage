@@ -302,6 +302,7 @@ public:
         add ("trackerOutsideRadius");
         add ("trackerInsideRadius");
         add ("surrogatelinenumber");
+        add ("ignoreLastOpenedDir");
         add ("mouseOverKeyColour");
         add ("keypressBaseOctave");
         add ("keySeparatorColour");
@@ -669,6 +670,7 @@ namespace CabbageIdentifierIds
     static const Identifier oncolour = "onColour";
     static const Identifier onfontcolour = "onFontColour";
     static const Identifier opcodedir = "opcodeDir";
+    static const Identifier ignorelastdir = "ignoreLastOpenedDir";
     static const Identifier orientation = "orientation";
     static const Identifier outlinecolour = "outlineColour";
     static const Identifier outlinethickness = "outlineThickness";

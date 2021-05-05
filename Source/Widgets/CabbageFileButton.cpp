@@ -88,10 +88,12 @@ void CabbageFileButton::buttonClicked (Button* button)
     
     if (mode == "file")
     {
-        const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        if(lastKnownDirectory.isNotEmpty())
-            currentDir = File(lastKnownDirectory);
-            
+        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::ignorelastdir))
+        {
+            const String lastKnownDirectory = owner->getLastOpenedDirectory();
+            if(lastKnownDirectory.isNotEmpty())
+                currentDir = File(lastKnownDirectory);
+        }
         FileChooser fc ("Choose File", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToOpen())
@@ -106,9 +108,12 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     else if (mode == "save")
     {
-        const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        if(lastKnownDirectory.isNotEmpty())
-            currentDir = File(lastKnownDirectory);
+        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::ignorelastdir))
+        {
+            const String lastKnownDirectory = owner->getLastOpenedDirectory();
+            if(lastKnownDirectory.isNotEmpty())
+                currentDir = File(lastKnownDirectory);
+        }
         
         FileChooser fc ("Choose File", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser());
 
@@ -126,8 +131,14 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     else if (mode == "directory")
     {
-        const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Open Directory", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getChildFile (getFilename()) : File (lastKnownDirectory), filetype, CabbageUtilities::shouldUseNativeBrowser());
+        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::ignorelastdir))
+        {
+            const String lastKnownDirectory = owner->getLastOpenedDirectory();
+            if(lastKnownDirectory.isNotEmpty())
+                currentDir = File(lastKnownDirectory);
+        }
+        
+        FileChooser fc ("Open Directory", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForDirectory())
         {
