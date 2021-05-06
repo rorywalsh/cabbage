@@ -83,8 +83,7 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.snaps;*.plant;*
       factory (this),
       cabbageSettings (settings)
 {
-
-
+  
     cycleTabsButton.setColour (TextButton::ColourIds::buttonColourId, Colour (100, 100, 100));
     getLookAndFeel().setColour (TooltipWindow::ColourIds::backgroundColourId, Colours::whitesmoke);
     propertyPanel.reset (new CabbagePropertiesPanel (ValueTree("empty")));
@@ -1992,17 +1991,23 @@ void CabbageMainComponent::covertToCamelCase()
 {
     String currentFileText = getCurrentCsdFile().loadFileAsString();
     
+    String cabbageCode = currentFileText.substring(0, currentFileText.indexOf("</Cabbage>")+10);
+    String csoundCode = currentFileText.substring(currentFileText.indexOf("</Cabbage>")+10);
+    DBG(cabbageCode);
+    DBG(csoundCode);
+    
     CabbageIdentifierStrings camelCaseIdentifiers;
     for ( int i = camelCaseIdentifiers.size() ; i >=0 ; i--)
     {
-        if(currentFileText.contains(camelCaseIdentifiers[i].toLowerCase()))
+        if(cabbageCode.contains(camelCaseIdentifiers[i].toLowerCase()))
         {
             DBG("Replacing"+camelCaseIdentifiers[i].toLowerCase() + " with " + camelCaseIdentifiers[i]);
-            currentFileText = currentFileText.replace(camelCaseIdentifiers[i].toLowerCase(), camelCaseIdentifiers[i]);
+            cabbageCode = cabbageCode.replace(camelCaseIdentifiers[i].toLowerCase(), camelCaseIdentifiers[i]);
         }
     }
     
-    getCurrentCodeEditor()->setAllText(currentFileText);
+    
+    getCurrentCodeEditor()->setAllText(cabbageCode+csoundCode);
            
 }
 
