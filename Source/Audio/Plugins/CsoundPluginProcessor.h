@@ -63,9 +63,16 @@ public:
                (layouts.getMainOutputChannels() > 0 && layouts.getMainOutputChannels() < 32))
                 return true;
         }
-        //force Reaper and Live to take whatever IOs we give it
-        else if(PluginHostType().isReaper() || PluginHostType().isAbletonLive())
-            return false;
+        else if(AudioProcessor::wrapperType == wrapperType_VST)
+        {
+            //force Reaper and Live to take whatever IOs we give it
+            if(PluginHostType().isReaper() || PluginHostType().isAbletonLive())
+                return false;
+        }
+        else if(AudioProcessor::wrapperType == wrapperType_VST3)
+        {
+            return true;
+        }
 
 #endif
         return true;

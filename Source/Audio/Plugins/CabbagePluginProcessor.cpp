@@ -1220,17 +1220,10 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName)
 }
 //===============================================================================================
 
-XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, String newPresetName, bool removePreset)
+XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 {
 	std::unique_ptr<XmlElement> xml;
-
-	if (xmlFile.existsAsFile()) {
-		xml = XmlDocument::parse(xmlFile);
-		if (!xml)
-			xml = std::unique_ptr<XmlElement>(new XmlElement("CABBAGE_PRESETS"));
-	}
-	else
-		xml = std::unique_ptr<XmlElement>(new XmlElement("CABBAGE_PRESETS"));
+    xml = std::unique_ptr<XmlElement>(new XmlElement("CABBAGE_PRESETS"));
     
     
 	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
@@ -1286,12 +1279,11 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag, File xmlFile, 
             else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                                               CabbageIdentifierIds::filetype).contains("snaps"))
             {
-                if(getCsound())
-                {
-                    memset(&tmp_string[0], 0, sizeof(tmp_string));
-                    getCsound()->GetStringChannel(channelName.toUTF8(), tmp_string);
-                    xml->setAttribute(channelName, String(tmp_string));
-                }
+                const String presetName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::value);
+                if(currentPresetName.isNotEmpty())
+                    xml->setAttribute(channelName, currentPresetName);
+                else
+                    xml->setAttribute(channelName, presetName);
             }
 			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
 				CabbageIdentifierIds::channeltype) == "string")
