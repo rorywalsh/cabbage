@@ -1301,7 +1301,6 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 			}
 		}
 	}
-
 	return *xml;
 }
 
@@ -1388,8 +1387,8 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			}
             else
 			{
-				if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
-					&& CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps" &&
+				if (CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype) != "preset"
+					&& CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype) != "*.snaps" &&
 					CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
 					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
 						e->getAttributeValue(i).getFloatValue());
