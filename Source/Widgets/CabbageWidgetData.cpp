@@ -184,7 +184,6 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     //===============table==================//
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::table))
     {
-        setProperty (widgetData, "basetype", "layout");
         var tableColours;
         tableColours.append ("white");
         tableColours.append ("cornflowerblue");
@@ -213,7 +212,6 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     //===============stepper example==================//
     else if (strTokens[0].trim() == "stepper")
     {
-        setProperty (widgetData, "basetype", "layout");
         setProperty (widgetData, CabbageIdentifierIds::top, 10);
         setProperty (widgetData, CabbageIdentifierIds::left, 10);
         setProperty (widgetData, CabbageIdentifierIds::width, 160);
@@ -229,35 +227,30 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     //===============non-GUI host widgets==================//
     else if (strTokens[0].trim() == "hostbpm")
     {
-        setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
         setProperty (widgetData, CabbageIdentifierIds::name, "hostbpm");
         setProperty (widgetData, CabbageIdentifierIds::type, "hostbpm");
     }
 
     else if (strTokens[0].trim() == "hostppqpos")
     {
-        setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
         setProperty (widgetData, CabbageIdentifierIds::name, "hostppqpos");
         setProperty (widgetData, CabbageIdentifierIds::type, "hostppqpos");
     }
 
     else if (strTokens[0].trim() == "hostplaying")
     {
-        setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
         setProperty (widgetData, CabbageIdentifierIds::name, "hostplaying");
         setProperty (widgetData, CabbageIdentifierIds::type, "hostplaying");
     }
 
     else if (strTokens[0].trim() == "hostrecording")
     {
-        setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
         setProperty (widgetData, CabbageIdentifierIds::name, "hostrecording");
         setProperty (widgetData, CabbageIdentifierIds::type, "hostrecording");
     }
 
     else if (strTokens[0].trim() == "hosttime")
     {
-        setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
         setProperty (widgetData, CabbageIdentifierIds::name, "hosttime");
         setProperty (widgetData, CabbageIdentifierIds::type, "hosttime");
     }

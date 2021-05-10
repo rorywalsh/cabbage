@@ -555,7 +555,6 @@ namespace CabbageIdentifierIds
     static const Identifier backgroundcolour = "backgroundColour";
     static const Identifier ballcolour = "ballColour";
     static const Identifier basechannel = "baseChannel";
-    static const Identifier basetype = "baseType";
     static const Identifier blacknotecolour = "blackNoteColour";
     static const Identifier keydowncolour = "keydownColour";
     static const Identifier bold = "bold";

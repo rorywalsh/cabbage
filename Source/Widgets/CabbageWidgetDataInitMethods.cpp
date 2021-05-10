@@ -24,7 +24,6 @@
 //===========================================================================================
 void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 600);
@@ -47,7 +46,6 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setHRangeSliderProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "interactive");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 250);
@@ -95,7 +93,6 @@ void CabbageWidgetData::setHRangeSliderProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "interactive");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 50);
@@ -144,7 +141,6 @@ void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "interactive");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 60);
@@ -200,7 +196,6 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setLineProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 160);
@@ -215,7 +210,6 @@ void CabbageWidgetData::setLineProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setScrewProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 30);
@@ -228,7 +222,6 @@ void CabbageWidgetData::setScrewProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setPortProperties (ValueTree widgetData, int ID, const String type)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 30);
@@ -240,7 +233,6 @@ void CabbageWidgetData::setPortProperties (ValueTree widgetData, int ID, const S
 
 void CabbageWidgetData::setLightProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 30);
@@ -253,7 +245,6 @@ void CabbageWidgetData::setLightProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setEventSequencerProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 160);
@@ -281,7 +272,6 @@ void CabbageWidgetData::setEventSequencerProperties (ValueTree widgetData, int I
 
 void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "interactive");
     var channels;
     channels.append ("xChan");
     channels.append ("yChan");
@@ -317,7 +307,6 @@ void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setSignalDisplayProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "layout");
     var signalVariables;
     signalVariables.append ("");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
@@ -367,7 +356,6 @@ void CabbageWidgetData::setLoadButtonProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID, bool displayOnly)
 {
-    setProperty (widgetData, "basetype", "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 400);
@@ -401,7 +389,6 @@ void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID, boo
 
 void CabbageWidgetData::setCsoundOutputProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 400);
@@ -420,7 +407,6 @@ void CabbageWidgetData::setCsoundOutputProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setButtonProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "interactive");
     var array;
     array.append ("Push me");
     array.append ("Push me");
@@ -457,7 +443,6 @@ void CabbageWidgetData::setButtonProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "layout");
     var array;
     array.append ("Open file");
     array.append ("Open file");
@@ -496,7 +481,6 @@ void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 80);
@@ -522,7 +506,6 @@ void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setOptionButtonProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "interactive");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 80);
@@ -554,7 +537,6 @@ void CabbageWidgetData::setOptionButtonProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setTextBoxProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 400);
@@ -574,7 +556,6 @@ void CabbageWidgetData::setTextBoxProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setLabelProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 80);
@@ -599,7 +580,6 @@ void CabbageWidgetData::setLabelProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setListBoxProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "interactive");
     var array;
     array.append ("Item 1");
     array.append ("Item 2");
@@ -638,7 +618,6 @@ void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID, bool i
 {
     var meterColours;
     meterColours.append (Colours::lime.toString());
-    setProperty (widgetData, "basetype", "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 80);
@@ -663,7 +642,6 @@ void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID, bool i
 
 void CabbageWidgetData::setTextEditorProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 100);
@@ -687,7 +665,6 @@ void CabbageWidgetData::setTextEditorProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setSoundfilerProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 300);
@@ -712,7 +689,6 @@ void CabbageWidgetData::setSoundfilerProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setEncoderProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "interactive");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 60);
@@ -750,7 +726,6 @@ void CabbageWidgetData::setEncoderProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setGroupBoxProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 180);
@@ -776,7 +751,6 @@ void CabbageWidgetData::setGroupBoxProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "layout");
     var tableColours;
     tableColours.append (Colours::lime.toString());
 
@@ -810,6 +784,7 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::drawmode, "");
     setProperty (widgetData, CabbageIdentifierIds::file, "");
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
+    setProperty(widgetData, CabbageIdentifierIds::channel, "gentable" + String(ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::active, 0);
@@ -827,7 +802,6 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
 }
 void CabbageWidgetData::setHSliderProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "interactive");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 150);
@@ -874,7 +848,6 @@ void CabbageWidgetData::setHSliderProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setVSliderProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::basetype, "interactive");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 50);
@@ -920,7 +893,6 @@ void CabbageWidgetData::setVSliderProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setImageProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "layout");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 160);
@@ -947,7 +919,6 @@ void CabbageWidgetData::setImageProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "interactive");
     var array;
     array.append ("Item 1");
     array.append ("Item 2");
@@ -996,7 +967,6 @@ void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
 
 void CabbageWidgetData::setNumberSliderProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "interactive");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 100);
@@ -1030,7 +1000,6 @@ void CabbageWidgetData::setNumberSliderProperties (ValueTree widgetData, int ID)
 }
 void CabbageWidgetData::setCheckBoxProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, "basetype", "interactive");
     setProperty (widgetData, CabbageIdentifierIds::top, 10);
     setProperty (widgetData, CabbageIdentifierIds::left, 10);
     setProperty (widgetData, CabbageIdentifierIds::width, 100);
