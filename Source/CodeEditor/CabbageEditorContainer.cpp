@@ -38,7 +38,7 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* cabbageSettings
         addAndMakeVisible (editor.get());
     }
 
-    outputConsole.reset (new CabbageOutputConsole (settings->valueTree));
+    outputConsole.reset (new CabbageOutputConsole (settings->valueTree, consoleDocument));
     addAndMakeVisible (outputConsole.get());
 
     editor->setLineNumbersShown (true);

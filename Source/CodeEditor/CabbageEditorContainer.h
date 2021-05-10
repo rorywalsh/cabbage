@@ -88,6 +88,7 @@ public:
     std::unique_ptr<CabbageOutputConsole> outputConsole;
     StatusBar statusBar;
     CodeDocument csoundDocument;
+	CodeDocument consoleDocument;
     CsoundTokeniser csoundTokeniser;
 	JavascriptTokeniser javaTokeniser;
     CabbageSettings* settings;

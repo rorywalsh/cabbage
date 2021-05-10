@@ -2077,9 +2077,7 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
             if(warnings.size()>0)
             {
                 Timer::callAfterDelay(1000, [warnings, this](){
-                    this->getCurrentOutputConsole()->setText("========================== Cabbage Warnings ============================\n");
-                    this->getCurrentOutputConsole()->setText(warnings.joinIntoString("\n"));
-                    this->getCurrentOutputConsole()->setText("\n======================= End of Cabbage Warnings ========================\n");
+                    this->getCurrentOutputConsole()->setText("/*"+ warnings.joinIntoString("\n") + "\n*/\n");
                 });
             }
         }
@@ -2099,8 +2097,7 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
     
     if (!fileContents.contains("<Cabbage>") || !fileContents.contains("</Cabbage>"))
     {
-        warnings.add("------------------------------------------------------------------------");
-        warnings.add("Warning: Your .csd file does not contain a Cabbage section. Please make sure you have wrapped your Cabbage code in opening and closing <Cabbage> and </Cabbage> tags");
+        warnings.add("\nWarning: Your .csd file does not contain a Cabbage section. Please make sure you have wrapped your Cabbage code in opening and closing <Cabbage> and </Cabbage> tags");
     }
     
     camelCaseIdentifiers.removeEmptyStrings();
@@ -2117,9 +2114,7 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
 
     if (nonCamelCaseIdentifiers.size() > 0)
     {
-        warnings.add("------------------------------------------------------------------------");
-        const String infoText = "Warning: The following identifiers are not camelCase: " + nonCamelCaseIdentifiers.joinIntoString(",") + ". Cabbage uses camelCase for all identifiers, i.e, trackercolour() is now trackerColour(). Please use \"Convert Identifiers to camelCase\" from the File menu option to update your code. Or manually change the identifer listed.";
-        
+        const String infoText = "\nWarning: The following identifiers are not camelCase: " + nonCamelCaseIdentifiers.joinIntoString(",") + ". Cabbage uses camelCase for all identifiers, i.e, trackercolour() is now trackerColour(). Please use \"Convert Identifiers to camelCase\" from the File menu option to update your code. Or manually change the identifer listed.";
         warnings.addLines(infoText);
     }
 
@@ -2140,21 +2135,17 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
             {
                 const CodeDocument::Position startPos (getCurrentCodeEditor()->getDocument(), fileContents.indexOf(pluginId));
                 int lineNum = startPos.getLineNumber() + 1;
-                
-                warnings.add("------------------------------------------------------------------------");
-                warnings.add("Warning: The current pluginId(\""+pluginId+"\") (Line:"+String(lineNum)+") is not valid. A form pluginId() must be an alphanumeric string of 4 characters. ");
+                warnings.add("\nWarning: The current pluginId(\""+pluginId+"\") (Line:"+String(lineNum)+") is not valid. A form pluginId() must be an alphanumeric string of 4 characters. ");
             }
 
             const String guiMode = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::guimode);
             if (guiMode != "queue" && fileContents.contains("cabbageSet"))
             {
-                warnings.add("------------------------------------------------------------------------");
-                warnings.add("It looks like you are trying to use cabbageSet opcode without guiMode(\"queue\") enabled. Please enable guiMode(\"queue\"), otherwise cabbageSet will not work");
+                warnings.add("\nWarning: It looks like you are trying to use cabbageSet opcodes without guiMode(\"queue\") enabled. Please enable guiMode(\"queue\"), otherwise cabbageSet will not work");
             }
             else if (guiMode == "queue" && fileContents.contains("identChannel"))
             {
-                warnings.add("------------------------------------------------------------------------");
-                warnings.add("It looks like you are trying to use identChannels() with guiMode(\"queue\"). These are not compatible.");
+                warnings.add("\nWarning: It looks like you are trying to use identChannels() with guiMode(\"queue\"). These are not compatible.");
             }
         }
         
@@ -2200,17 +2191,15 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
     
     if(channels.size()>0)
     {
-        warnings.add("------------------------------------------------------------------------");
         const String channelError = channels.joinIntoString(",");
-        const String infoText = "Warning: The following channel names are used across multiple widgets: " + channelError +". This is not permitted and can lead to unexpected behaviour";
+        const String infoText = "\nWarning: The following channel names are used across multiple widgets: " + channelError +". This is not permitted and can lead to unexpected behaviour";
         warnings.addLines(infoText);
     }
     
     
     if (problemChannels.size() > 0)
     {
-        warnings.add("------------------------------------------------------------------------");
-        const String infoText = "Warning: White spaces are not supported in channel names. The following channels need to be changed: " + problemChannels.joinIntoString(",");
+        const String infoText = "\nWarning: White spaces are not supported in channel names. The following channels need to be changed: " + problemChannels.joinIntoString(",");
         warnings.addLines(infoText);
     }
     
