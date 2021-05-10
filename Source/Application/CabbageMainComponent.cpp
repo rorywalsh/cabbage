@@ -2078,7 +2078,8 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
             {
                 Timer::callAfterDelay(1000, [warnings, this](){
                     this->getCurrentOutputConsole()->setText("========================== Cabbage Warnings ============================\n");
-                    this->getCurrentOutputConsole()->setText(warnings.joinIntoString("\n"), "========================== Cabbage Warnings ============================\n");
+                    this->getCurrentOutputConsole()->setText(warnings.joinIntoString("\n"));
+                    this->getCurrentOutputConsole()->setText("\n======================= End of Cabbage Warnings ========================\n");
                 });
             }
         }
@@ -2142,6 +2143,18 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
                 
                 warnings.add("------------------------------------------------------------------------");
                 warnings.add("Warning: The current pluginId(\""+pluginId+"\") (Line:"+String(lineNum)+") is not valid. A form pluginId() must be an alphanumeric string of 4 characters. ");
+            }
+
+            const String guiMode = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::guimode);
+            if (guiMode != "queue" && fileContents.contains("cabbageSet"))
+            {
+                warnings.add("------------------------------------------------------------------------");
+                warnings.add("It looks like you are trying to use cabbageSet opcode without guiMode(\"queue\") enabled. Please enable guiMode(\"queue\"), otherwise cabbageSet will not work");
+            }
+            else if (guiMode == "queue" && fileContents.contains("identChannel"))
+            {
+                warnings.add("------------------------------------------------------------------------");
+                warnings.add("It looks like you are trying to use identChannels() with guiMode(\"queue\"). These are not compatible.");
             }
         }
         
