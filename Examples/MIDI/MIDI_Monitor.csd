@@ -9,7 +9,7 @@ form caption("Midi Monitor"), size(610, 425), colour( 50, 50, 50),pluginId("MiMo
 
 ; NOTES AND VELOCITIES
 image     bounds(  0,  0, 610,110), colour(75, 85, 90, 100), line(2), shape(sharp)
-gentable     bounds(  5,  5, 600, 74),  tableNumbers(1), tableColour("yellow"), identChannel("table1"), drawmode(4), ampRange(0,127,1), zoom(-1), tableGridColour(0,0,0,0)
+gentable     bounds(  5,  5, 600, 74),  tableNumbers(1), tableColour("yellow"), identChannel("table1"), ampRange(0,127,1), zoom(-1), tableGridColour(0,0,0,0)
 label     bounds(  5, 83,600, 12), text("Notes and Velocities"), fontColour("white")
 label     bounds(  5, 82, 70, 12), text("Last Note:"), fontColour("white")
 nslider bounds( 75, 80, 35, 16), fontColour("white"), channel("LastNote"), range(0,127,0,1,1)
@@ -18,7 +18,7 @@ nslider bounds(205, 80, 35, 16), fontColour("white"), channel("LastVel"), range(
 
 ; ALL CONTROLLERS ON ONE CHANNEL
 image    bounds(  0,115,610,110), colour(75, 85, 90, 100), line(2), shape(sharp)
-gentable    bounds(  5,120,600, 74), tableNumbers(2), tableColour("lime"), identChannel("table2"), drawmode(4), ampRange(0,127,2), zoom(-1), tableGridColour(0,0,0,0)
+gentable    bounds(  5,120,600, 74), tableNumbers(2), tableColour("lime"), identChannel("table2"), ampRange(0,127,2), zoom(-1), tableGridColour(0,0,0,0)
 label    bounds(  5,198,600, 12), text("Controllers by Channel"), fontColour("white")
 label    bounds(  5,197,130, 12), text("Last Controller Value:"), fontColour("white")
 nslider  bounds(135,195, 35, 16), fontColour("white"), channel("LastCtrl"), range(0,127,0,1,1)
@@ -27,7 +27,7 @@ combobox bounds(500,200, 33, 15), channel("CtrlChannel"), value(1), text("1","2"
 
 ; THE SAME CONTROLLER ON ALL CHANNELS
 image    bounds(  0,230, 610,110), colour(75, 85, 90, 100), line(2), shape(sharp)
-gentable    bounds(  5,235,600, 74), tableNumbers(3), tableColour("LightBlue"), identChannel("table3"), drawmode(4), ampRange(0,127,3), zoom(-1), tableGridColour(0,0,0,0)
+gentable    bounds(  5,235,600, 74), tableNumbers(3), tableColour("LightBlue"), identChannel("table3"), ampRange(0,127,3), zoom(-1), tableGridColour(0,0,0,0)
 label    bounds(  5,313,600, 12), text("Controllers by Number"), fontColour("white")
 hslider  bounds(380,308,220, 23), fontColour("white"), textBox(1), channel("CtrlNumber"), range(0,127,1,1,1)
 label    bounds(380,324,220, 11), text("Controller Number"), fontColour("white")
