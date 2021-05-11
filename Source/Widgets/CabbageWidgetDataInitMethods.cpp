@@ -807,7 +807,7 @@ void CabbageWidgetData::setGenTableProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::startpos, 0);
     setProperty (widgetData, CabbageIdentifierIds::endpos, -1);
     setProperty (widgetData, CabbageIdentifierIds::fill, 1);
-    setProperty (widgetData, CabbageIdentifierIds::drawmode, "");
+    setProperty (widgetData, CabbageIdentifierIds::drawmode, -1);
     setProperty (widgetData, CabbageIdentifierIds::file, "");
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty(widgetData, CabbageIdentifierIds::channel, "gentable" + Uuid().toString());

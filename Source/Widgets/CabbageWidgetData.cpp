@@ -197,7 +197,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
         setProperty (widgetData, CabbageIdentifierIds::width, 400);
         setProperty (widgetData, CabbageIdentifierIds::height, 200);
         setProperty (widgetData, CabbageIdentifierIds::tablenumber, 1);
-        setProperty (widgetData, CabbageIdentifierIds::drawmode, "");
+        setProperty (widgetData, CabbageIdentifierIds::drawmode, -1);
         setProperty (widgetData, CabbageIdentifierIds::resizemode, 0);
         setProperty (widgetData, CabbageIdentifierIds::readonly, 0);
         setProperty (widgetData, CabbageIdentifierIds::tablecolour, tableColours);
@@ -400,6 +400,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("alpha"):
             case HashStringToInt ("corners"):
             case HashStringToInt ("doubleClickTogglesEdit"):
+            case HashStringToInt ("drawMode"):
             case HashStringToInt ("ffttableNumber"):
             case HashStringToInt ("fill"):
             case HashStringToInt ("guiRefresh"):

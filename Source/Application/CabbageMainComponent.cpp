@@ -2121,7 +2121,7 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
     StringArray fileContentStrArray, problemChannels;
     fileContentStrArray.addLines(fileContents);
     StringArray channels;
-    
+    int lineIndex = 0;
     for (auto string : fileContentStrArray)
     {
         const String widgetTreeIdentifier = "tempWidget";
@@ -2148,14 +2148,20 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
                 warnings.add("\nWarning: It looks like you are trying to use identChannels() with guiMode(\"queue\"). These are not compatible.");
             }
         }
+        else if(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::type) == "gentable")
+        {
+            const int drawMode = CabbageWidgetData::getNumProp(tempWidget, CabbageIdentifierIds::drawmode);
+            if(drawMode != -1)
+            {
+            warnings.add("\nWarning: drawMode("+String(drawMode)+") (Line:"+String(lineIndex)+") is deprecated. Please use a meter widget");
+            }
+        }
         
         channels.add(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel));
         
         if (CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel).contains(" "))
         {
-            const CodeDocument::Position startPos (getCurrentCodeEditor()->getDocument(), fileContents.indexOf(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel)));
-            int lineNum = startPos.getLineNumber() + 1;
-            problemChannels.add("\""+CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel)+"\" (Line:"+String(lineNum)+")");
+            problemChannels.add("\""+CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel)+"\" (Line:"+String(lineIndex)+")");
         }
         
         if (string.trimCharactersAtEnd("\t ").indexOf("opcode") == 0) {
@@ -2166,6 +2172,8 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
             getCurrentEditorContainer()->csoundTokeniser.udoKeywords.add(newKeyword);
 
         }
+        
+        lineIndex++;
     }
 
     channels.removeEmptyStrings();
