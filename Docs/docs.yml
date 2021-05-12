@@ -70,7 +70,7 @@
     - label
     - listbox
     - numberbox
-    - meters
+    - meter
     - signaldisplay
     - sliders
     - soundfiler

@@ -1,6 +1,6 @@
 <Cabbage>
-form caption("Tables") size(400, 410), pluginId("STbl")
-gentable bounds(5, 5, 370, 200), tableNumber(1), tableColour("red"), identChannel("table")
+form caption("Tables") size(400, 410), guiMode("queue"), pluginId("STbl")
+gentable bounds(5, 5, 370, 200), tableNumber(1), tableColour("red"), channel("table")
 hslider bounds(6, 210, 368, 30), channel("harm1"), range(0, 1, 1, 1, 0.01), colour(255, 255, 255, 255), trackerColour("red"), text("Harm1")
 hslider bounds(6, 242, 368, 30), channel("harm2"), range(0, 1, 0, 1, 0.01), colour(255, 255, 255, 255), trackerColour("red"), text("Harm2")
 hslider bounds(6, 274, 368, 30), channel("harm3"), range(0, 1, 0, 1, 0.01), colour(255, 255, 255, 255), trackerColour("red"), text("Harm3")
@@ -41,7 +41,7 @@ endin
 instr	2
 iNormal = (chnget:i("normal")==0 ? -1 : 1)
 iTable	ftgen	1, 0,   1024, 10*iNormal, p4, p5, p6, p7, p8
-chnset	"tableNumber(1)", "table"	; update table display
+cabbageSet	"table", "tableNumber", 1	; update table display
 endin
 
 </CsInstruments>
