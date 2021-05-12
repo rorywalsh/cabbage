@@ -635,7 +635,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
     }
     
     //hack to trigger table update even if table number hasn't changed
-    if(identifier == "tableNumber")
+    if(identifier.contains("tableNumber"))
     {
         CabbageWidgetIdentifiers::IdentifierData updateData1;
         updateData1.identifier = CabbageIdentifierIds::update;
@@ -658,7 +658,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
     }
     varData->data.add(data);
     
-    if(identifier == "tableNumber")
+    if(identifier.contains("tableNumber"))
     {
         CabbageWidgetIdentifiers::IdentifierData updateData0;
         updateData0.identifier = CabbageIdentifierIds::update;
