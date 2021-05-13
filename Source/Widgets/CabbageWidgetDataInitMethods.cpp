@@ -44,7 +44,7 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
 	setProperty(widgetData, CabbageIdentifierIds::sidechain, 0);
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, "");
-    setProperty (widgetData, CabbageIdentifierIds::colour, CabbageUtilities::getBackgroundSkin().toString());
+    setProperty (widgetData, CabbageIdentifierIds::colour, Colour(147, 210, 0).toString());
 }
 
 void CabbageWidgetData::setHRangeSliderProperties (ValueTree widgetData, int ID)
@@ -67,7 +67,7 @@ void CabbageWidgetData::setHRangeSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::textboxcolour, Colour (0.f, 0.f, 0.f, 0.f).toString());
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
-    setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (0, 118, 38).toString());
+    setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (147, 210, 0).toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::sliderskew, 1);
@@ -114,7 +114,7 @@ void CabbageWidgetData::setVRangeSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::textboxcolour, Colour (0.f, 0.f, 0.f, 0.f).toString());
-    setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (0, 118, 38).toString());
+    setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (147, 210, 0).toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::sliderskew, 1);
@@ -163,7 +163,7 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::textboxcolour, Colour (0.f, 0.f, 0.f, 0.f).toString());
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::whitesmoke.toString());
-    setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (0, 118, 38).toString());
+    setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (147, 210, 0).toString());
     setProperty (widgetData, CabbageIdentifierIds::trackerbgcolour, Colour (0, 0, 0).toString());
     setProperty (widgetData, CabbageIdentifierIds::markercolour, Colour(80, 80, 80).toString());
     setProperty (widgetData, CabbageIdentifierIds::markerthickness, 1.0f);
@@ -844,7 +844,7 @@ void CabbageWidgetData::setHSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::gapmarkers, 0);
-    setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (0, 118, 38).toString());
+    setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (147, 210, 0).toString());
     setProperty (widgetData, CabbageIdentifierIds::trackerbgcolour, Colour (0, 0, 0).toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());
@@ -890,7 +890,7 @@ void CabbageWidgetData::setVSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::gapmarkers, 0);
-    setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (0, 118, 38).toString());
+    setProperty (widgetData, CabbageIdentifierIds::trackercolour, Colour (147, 210, 0).toString());
     setProperty (widgetData, CabbageIdentifierIds::trackerbgcolour, Colour (0, 0, 0).toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::textcolour, CabbageUtilities::getComponentFontColour().toString());

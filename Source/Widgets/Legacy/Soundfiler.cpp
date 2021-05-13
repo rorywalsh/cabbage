@@ -306,8 +306,9 @@ void Soundfiler::setScrubberPos (double pos)
         if (pos != 0)
         {
             pos = (pos / (thumbnail->getTotalLength() * sampleRate)) * thumbnail->getTotalLength();
-            currentPositionMarker->setRectangle(Rectangle<float>(timeToX(pos) - 0.75f, 10,
-                1.5f, (float)(getHeight() - scrollbar->getHeight() - 10)));
+            
+            currentPositionMarker->setRectangle(Rectangle<float>(timeToX(pos), 10,
+                1.5f, (double)(getHeight() - scrollbar->getHeight() - 10)));
         }
         if (pos < 0.5)
             setRange (visibleRange.movedToStartAt (0));

@@ -122,7 +122,7 @@ public:
     void setColour (Colour col) { tableColour = col; repaint();    }
     void setScrubberPos (double pos);
 
-    float timeToX (const double time) const
+    double timeToX (const double time) const
     {
         return getWidth() * (double) ((time - visibleRange.getStart()) / (visibleRange.getLength()));
     }

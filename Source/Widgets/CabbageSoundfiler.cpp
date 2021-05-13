@@ -122,7 +122,6 @@ int CabbageSoundfiler::getLoopLength()
 
 void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    DBG(getChannel());
     DBG(CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::identchannel));
     
     if (file != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file))
