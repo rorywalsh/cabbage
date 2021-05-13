@@ -48,7 +48,8 @@ createPluginFilter() {
 	csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
 	if (csdFile.existsAsFile() == false)
 	{
-		String filename = "/usr/share/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
+        //In Linux, plugin application directory will reside in ~/Manufacturer/PluginName
+		String filename = "~/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
 
 		csdFile = File(filename);
 	}
