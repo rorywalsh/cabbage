@@ -351,6 +351,8 @@ private:
     OwnedArray<PopupDocumentWindow> popupPlants;
     String lastOpenedDirectory;
     MainComponent mainComponent;
+    float pluginSizes[7] = {.5, .75, 1, 1.25, 1.50, 1.75, 2};
+    
     int keyboardCount = 0;
     //int xyPadIndex = 0;
     int consoleCount = 0;

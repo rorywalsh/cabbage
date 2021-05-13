@@ -178,8 +178,9 @@ void CabbagePluginEditor::handleMouseMovement (const MouseEvent& e)
     int x = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().x;
     int yOffset = (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE ? 27 : 0 );
     int y = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().y - yOffset; //27 is the height of the standalone window frame
-    sendChannelDataToCsound (CabbageIdentifierIds::mousex, x);
-    sendChannelDataToCsound (CabbageIdentifierIds::mousey, y);
+    double scale = pluginSizes[cabbageProcessor.currentPluginScale-1];
+    sendChannelDataToCsound (CabbageIdentifierIds::mousex, x/scale);
+    sendChannelDataToCsound (CabbageIdentifierIds::mousey, y/scale);
 }
 
 void CabbagePluginEditor::handleMouseClicks (const MouseEvent& e, bool isMousePressed)
@@ -664,12 +665,12 @@ CabbagePluginParameter* CabbagePluginEditor::getParameterForComponent (const Str
 void CabbagePluginEditor::resizePlugin (int sizeIndex)
 {
     
-    float sizes[] = {.5, .75, 1, 1.25, 1.50, 1.75, 2};
+    
     cabbageProcessor.currentPluginScale =  sizeIndex;
     //param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
     
     
-    setScaleFactor(sizes[cabbageProcessor.currentPluginScale-1]);
+    setScaleFactor(pluginSizes[cabbageProcessor.currentPluginScale-1]);
     resized();
 }
 //======================================================================================================
