@@ -174,7 +174,7 @@ int GetCabbageIdentifierArray::getAttribute()
         out[2] = child.getProperty(CabbageIdentifierIds::width);
         out[3] = child.getProperty(CabbageIdentifierIds::height);
     }
-    else if(identifier.contains("colour"))
+    else if(identifier.containsIgnoreCase("colour"))
     {
         out.init(csound, 4);
         const Colour colour = Colour::fromString(args.toString());

@@ -44,7 +44,7 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
 	setProperty(widgetData, CabbageIdentifierIds::sidechain, 0);
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, "");
-    setProperty (widgetData, CabbageIdentifierIds::colour, Colour(147, 210, 0).toString());
+    setProperty (widgetData, CabbageIdentifierIds::colour, Colour(2, 149, 207).toString());
 }
 
 void CabbageWidgetData::setHRangeSliderProperties (ValueTree widgetData, int ID)

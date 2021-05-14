@@ -35,7 +35,7 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, MidiKeyboardState& state)
     setKeyPressBaseOctave (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keypressbaseoctave)); // octave num. in [0, 10]
     setKeyWidth (keyWidth);
     setScrollButtonsVisible (scrollbars == 1 ? true : false);
-    
+    setWantsKeyboardFocus (true);
     updateColours(wData);
 
 }

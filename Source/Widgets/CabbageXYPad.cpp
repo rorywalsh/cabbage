@@ -266,8 +266,8 @@ void CabbageXYPad::resized()
     xyPadRect.setHeight (getHeight()*.85);
     xyPadRect.setTop (getHeight()*.02);
     xyPadRect.setLeft (getWidth()*.02);
-    xValueLabel.setBounds (0, xyPadRect.getHeight(), getWidth() / 2, 20);
-    yValueLabel.setBounds (getWidth()*.5, xyPadRect.getHeight(), getWidth() / 2, 20);
+    xValueLabel.setBounds (0, xyPadRect.getHeight()+10, getWidth() / 2, 20);
+    yValueLabel.setBounds (getWidth()*.5, xyPadRect.getHeight()+10, getWidth() / 2, 20);
 }
 
 //==================================================================

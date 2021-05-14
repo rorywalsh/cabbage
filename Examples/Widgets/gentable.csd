@@ -1,66 +1,68 @@
 <Cabbage>
-form caption("Gentable Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
-gentable bounds(8, 30, 380, 70), tableNumber(1), tableGridColour(0, 0, 0, 255), fill(0)
-groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-gentable bounds(70, 140, 141, 119), tableNumber(1) identChannel("widgetIdent"),  
+form caption("Gentable Example") size(400, 650), guiMode("queue"), colour(2, 145, 209), pluginId("def1")
+gentable bounds(13, 7, 370, 200), channel("gentable1"), outlineThickness(3), tableNumber(1.0), tableGridColour(155, 155, 155, 255) tableBackgroundColour(0,0,0,0) tableColour:0(147, 210, 0, 255)
+hslider bounds(14, 212, 368, 40), channel("harm1"), range(0, 1, 1, 1, 0.01), textColour(255, 255, 255, 255), text("Harm1")
+hslider bounds(14, 244, 368, 40), channel("harm2"), range(0, 1, 0, 1, 0.01), textColour(255, 255, 255, 255), text("Harm2")
+hslider bounds(14, 276, 368, 40), channel("harm3"), range(0, 1, 0, 1, 0.01), textColour(255, 255, 255, 255), text("Harm3")
+hslider bounds(14, 308, 368, 40), channel("harm4"), range(0, 1, 0, 1, 0.01), textColour(255, 255, 255, 255), text("Harm4")
+hslider bounds(14, 340, 368, 40), channel("harm5"), range(0, 1, 0, 1, 0.01), textColour(255, 255, 255, 255), text("Harm5")
+checkbox bounds(16, 380, 120, 20), channel("normal"), text("Normalise"), value(1), fontColour:1(255, 255, 255, 255)
+checkbox bounds(140, 380, 120, 20), channel("fill"), text("Fill Table"), value(1), fontColour:1(255, 255, 255, 255)
+texteditor bounds(16, 410, 367, 219) channel("infoText"), wrap(1), text("A 'GEN' table widget will display the contents of a sound function table. In this example, a basic sine wave is stored in function table 1, which is defined in the CsScore section. Whenever a slider is changed, instr 1 will trigger the 'UpdateTable' instrument, which in turns creates a new function shape accordingly. It writes the shape to the same table number as defined when declaring the gentable widget.", "Although a gentable can be passed new function tables at run-time, it might incur a slight performance hit especially if the new function table is a larger. It is a better idea is to just copy the contents of one table to another using the table copy opcodes in Csound.")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
--n -d -+rtmidi=NULL -M0 -m0d 
+-d -n -m0d
 </CsOptions>
 <CsInstruments>
-; Initialize the global variables. 
-sr = 44100
-ksmps = 32
-nchnls = 2
-0dbfs = 1
+;sr is set by the host
+ksmps 		= 	32
+nchnls 		= 	2
+0dbfs		=	1
 
-giWave ftgen 1, 0, 4096, 10, 1, 1, 1, 1 
-seed 0 
-;basic usage
-instr 1
-    aTone oscili chnget:k("gain"), 300
-    outs aTone, aTone    
-endin
 
-;WIDGET_ADVANCED_USAGE
+; Rory Walsh 2021 
+;
+; License: CC0 1.0 Universal
+; You can copy, modify, and distribute this file, 
+; even for commercial purposes, all without asking permission. 
 
-instr 2
-    if metro(1) == 1 then
-        event "i", "ChangeAttributes", 0, 1
+
+instr	1
+
+    SText  = "A 'GEN' table widget will display the contents of a sound function table. In this example, a basic sine wave is stored in function table 1, which is defined in the CsScore section. Whenever a slider is changed, instr 1 will trigger the 'UpdateTable' instrument, which in turns creates a new function shape accordingly. It writes the shape to the same table number as defined when declaring the gentable widget.\n\nAlthough a gentable can be passed new function tables at run-time, it might incur a slight performance hit especially if the new function table is a larger. It is a better idea is to just copy the contents of one table to another using the table copy opcodes in Csound."
+    cabbageSet "infoText", "text", SText
+    
+    ;toggle fill
+    kFill, kTrig cabbageGetValue "fill"
+    cabbageSet kTrig, "gentable1", "fill", kFill 
+
+    k1 chnget "harm1"
+    k2 chnget "harm2"
+    k3 chnget "harm3"
+    k4 chnget "harm4"
+    k5 chnget "harm5"
+
+    a1 oscili .5, 200, 1
+    outs a1, a1
+
+    kChanged changed k1, k2, k3, k4, k5
+    if kChanged==1 then
+        ;if a slider changes trigger instrument 2 to update table
+        event "i", "UpdateTable", 0, .01, k1, k2, k3, k4, k5
     endif
+
 endin
 
-instr ChangeAttributes
-    SIdentifier init ""
-	SIdent sprintf "pos(%d, 140) ", 100 + rnd(100)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "size(%d, %d) ", abs(rnd(200))+40, abs(rnd(100))+50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "tableColour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "tableBackgroundColour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "tableGridColour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "outlineThickness(%f) ", rnd(100)/50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "alpha(%f) ", 50 + rnd(50)/50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "visible(%d) ", (rnd(100) > 80 ? 0 : 1)
-	SIdentifier strcat SIdentifier, SIdent
-    ;send identifier string to Cabbage
-    chnset SIdentifier, "widgetIdent"           
+instr UpdateTable
+    iNormal = (chnget:i("normal")==0 ? -1 : 1)
+    iTable	ftgen	1, 0,   1024, 10*iNormal, p4, p5, p6, p7, p8
+    cabbageSet	"gentable1", "tableNumber", 1	; update table display
 endin
-                
 
 </CsInstruments>
 <CsScore>
-;causes Csound to run for about 7000 years...
-f0 z
-;starts instrument 1 and runs it for a week
-i1 0 z
-i2 0 z
+f1 0 1024 10 1
+i1 0 [3600*24*7]
 </CsScore>
 </CsoundSynthesizer>

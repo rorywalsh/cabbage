@@ -24,7 +24,7 @@ nchnls = 2
 ; Rory Walsh 2021 
 ;
 ; License: CC0 1.0 Universal
-; You can copy, modify, distribute and perform the work, 
+; You can copy, modify, and distribute this file, 
 ; even for commercial purposes, all without asking permission. 
 
 
