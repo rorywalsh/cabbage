@@ -100,6 +100,7 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
     if ( toFront != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::tofront) || calledFromConstructor)
     {
         toFront = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::tofront);
+        CabbageWidgetData::setNumProp (data, CabbageIdentifierIds::tofront, 0);
         child->toFront(true);
     }
 

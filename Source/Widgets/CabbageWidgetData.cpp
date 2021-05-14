@@ -410,6 +410,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("keypressBaseOctave"):
             case HashStringToInt ("keyWidth"):
             case HashStringToInt ("latched"):
+            case HashStringToInt ("toFront"):
             case HashStringToInt ("lineThickness"):
             case HashStringToInt ("latency"):
             case HashStringToInt ("markerEnd"):

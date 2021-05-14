@@ -1000,7 +1000,7 @@ void CabbageWidgetData::setNumberSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::width, 100);
     setProperty (widgetData, CabbageIdentifierIds::height, 22);
     var channels;
-    channels.append ("numberbox" + String(ID));
+    channels.append ("nslider" + String(ID));
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
     setProperty (widgetData, CabbageIdentifierIds::min, 0);
     setProperty (widgetData, CabbageIdentifierIds::max, 100);
@@ -1021,7 +1021,7 @@ void CabbageWidgetData::setNumberSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
-    setProperty (widgetData, CabbageIdentifierIds::velocity, 80);
+    setProperty (widgetData, CabbageIdentifierIds::velocity, 50);
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
     setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
     setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
