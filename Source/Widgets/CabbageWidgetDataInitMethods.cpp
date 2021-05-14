@@ -466,7 +466,7 @@ void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
     var channels;
     channels.append ("filebutton" + String(ID));
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
-    setProperty (widgetData, CabbageIdentifierIds::value, 1);
+    setProperty (widgetData, CabbageIdentifierIds::value, 0);
     setProperty (widgetData, CabbageIdentifierIds::text, array);
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
 	setProperty(widgetData, CabbageIdentifierIds::popuptext, "");

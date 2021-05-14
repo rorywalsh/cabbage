@@ -398,7 +398,14 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
             else if (int (value.getValue()) == 1)
                 setPropertyByName ("Mode", "directory");
             else if (int (value.getValue()) == 2)
-                setPropertyByName ("Mode", "snapshot");
+                setPropertyByName ("Mode", "save");
+            else if (int (value.getValue()) == 3)
+                setPropertyByName ("Mode", "preset");
+            else if (int (value.getValue()) == 4)
+                setPropertyByName ("Mode", "named preset");
+            else if (int (value.getValue()) == 5)
+                setPropertyByName ("Mode", "remove preset");
+
         }
     }
 }
@@ -905,17 +912,32 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors (ValueTree v
 
         choices.add ("File");
         choices.add ("Directory");
-        choices.add ("Snapshot");
+        choices.add ("Save");
+        choices.add ("Preset");
+        choices.add ("Named Preset");
+        choices.add ("Remove Preset");
         choiceVars.add (0);
         choiceVars.add (1);
         choiceVars.add (2);
+        choiceVars.add (3);
+        choiceVars.add (4);
+        choiceVars.add (5);
+
+        
 
         if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mode) == "file")
             fileModeValue.setValue (0);
         else if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mode) == "directory")
             fileModeValue.setValue (1);
-        else
+        else if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mode) == "save")
             fileModeValue.setValue (2);
+        else if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mode) == "preset")
+            fileModeValue.setValue (3);
+        else if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mode) == "named preset")
+            fileModeValue.setValue (4);
+        else if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mode) == "remove preset")
+            fileModeValue.setValue (5);
+
 
         comps.add (new ChoicePropertyComponent (fileModeValue, "Mode", choices, choiceVars));
 
