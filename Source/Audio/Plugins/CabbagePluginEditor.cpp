@@ -66,7 +66,6 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     if(cabbageProcessor.getCsound())
         cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 1.0);
 
-    DBG(cabbageProcessor.currentPluginScale);
     if(cabbageProcessor.currentPluginScale != -1)
         resizePlugin(cabbageProcessor.currentPluginScale);
 }
@@ -1167,7 +1166,6 @@ void CabbagePluginEditor::refreshComboListBoxContents(String presetName)
 
                 if(bool(combo->getProperties().getWithDefault("isPresetCombo", false)) == true)
                 {
-                    DBG(getCurrentPreset());
                     combo->setText(getCurrentPreset());
                 }
             }

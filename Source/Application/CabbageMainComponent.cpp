@@ -1993,8 +1993,6 @@ void CabbageMainComponent::covertToCamelCase()
     
     String cabbageCode = currentFileText.substring(0, currentFileText.indexOf("</Cabbage>")+10);
     String csoundCode = currentFileText.substring(currentFileText.indexOf("</Cabbage>")+10);
-    DBG(cabbageCode);
-    DBG(csoundCode);
     
     CabbageIdentifierStrings camelCaseIdentifiers;
     for ( int i = camelCaseIdentifiers.size() ; i >=0 ; i--)
@@ -2180,20 +2178,16 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
     channels.appendNumbersToDuplicates(false, true, CharPointer_UTF8("|"), CharPointer_UTF8("|"));
     
     for( int i = channels.size() ; i >= 0 ; i--){
-        DBG(channels[i]);
         if(channels[i].indexOf("|") == -1)
             channels.remove(i);
         else
         {
-            DBG(fileContents);
             const String chan = channels[i].substring(0, channels[i].indexOf("|"));
             const CodeDocument::Position startPos (getCurrentCodeEditor()->getDocument(), fileContents.indexOf(chan));
             int lineNum = startPos.getLineNumber() + 1;
             
             channels.set(i, "\""+channels[i].substring(0, channels[i].indexOf("|"))+"\" (Line:"+String(lineNum)+")");
-            fileContents = fileContents.replaceFirstOccurrenceOf(chan, "test");
-            DBG(fileContents);
-            
+            fileContents = fileContents.replaceFirstOccurrenceOf(chan, "test");            
         }
     }
     

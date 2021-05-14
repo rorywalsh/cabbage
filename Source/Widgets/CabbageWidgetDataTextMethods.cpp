@@ -112,7 +112,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("mouseOverKeyColour"):
         case HashStringToInt ("outlineColour"):
         case HashStringToInt ("overlayColour"):
-        case HashStringToInt ("tableBackGroundcolour"):
+        case HashStringToInt ("tableBackgroundColour"):
         case HashStringToInt ("tableGridColour"):
         case HashStringToInt ("textboxColour"):
         case HashStringToInt ("textboxOutlineColour"):
@@ -202,7 +202,6 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
                 StringArray newImgFileTokens = CabbageUtilities::getTokens(newText, ')');
                 for(int i = 0 ; i < newImgFileTokens.size() ; i++)
                 {
-                    DBG(newImgFileTokens[i]);
                     String testToken = newImgFileTokens[i].trimCharactersAtStart(", ") + ")";
                     replacedIdentifiers.add(testToken.substring(0, testToken.indexOf("(")));
 

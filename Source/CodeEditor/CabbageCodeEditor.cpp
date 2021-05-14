@@ -1217,7 +1217,6 @@ void CabbageCodeEditorComponent::updateBoundsText (int lineNumber, String codeTo
         csdLines.insert (lineNumber, codeToInsert);
     else
     {
-        CabbageUtilities::debug(currentLine.replace(currentBounds, newBounds));
         csdLines.set (lineNumber, currentLine.replace(currentBounds, newBounds));
     }
 
