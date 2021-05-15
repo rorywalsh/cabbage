@@ -51,30 +51,33 @@ infobutton WIDGET_SYNTAX
 <!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form size(400, 500), caption("Infobutton Example"), pluginID("plu1"), colour(39, 40, 34)
-button bounds(20, 16, 100, 30), channel("button"),  text("Push me"), fontColour("white")
-infobutton bounds(120, 16, 100, 30), channel("button"),  file("button.csd"), text("Info")
-filebutton bounds(220, 16, 100, 30), channel("button"),  populate("*.wav", ""), text("Browse")
-</Cabbage>
+form caption("Info Button Example") size(380, 300), guiMode("queue"), , colour(2, 145, 209) pluginId("def1")
+
+infobutton bounds(16, 12, 340, 36) file("https://cabbageaudio.com/docs/introduction/") text("Load Cababge Documentation"), corners(5)
+
+texteditor bounds(16, 68, 341, 72) channel("infoText"), readOnly(1), wrap(1), scrollbars(1)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
 -n -d -+rtmidi=NULL -M0 -m0d 
-</CsOptions>
+</CsOptions>e
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1
 
-seed 0 
-;basic usage
-instr 1
+; Rory Walsh 2021 
+;
+; License: CC0 1.0 Universal
+; You can copy, modify, and distribute this file, 
+; even for commercial purposes, all without asking permission. 
 
+instr 1
+    SText  = "An infobutton can be used to load a html file, or a hyperlink. It doesn't receive any information from Csound, but you can still update its appearance and position by sending identifier data to its channel"
+    cabbageSet "infoText", "text", SText
 endin
 
-;WIDGET_ADVANCED_USAGE
 
 </CsInstruments>
 <CsScore>
@@ -82,9 +85,9 @@ endin
 f0 z
 ;starts instrument 1 and runs it for a week
 i1 0 z
-i2 0 z
 </CsScore>
 </CsoundSynthesizer>
+
 ```
 <!--(End Widget Example)/-->
 
