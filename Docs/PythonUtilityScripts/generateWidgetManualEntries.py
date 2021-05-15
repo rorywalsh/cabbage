@@ -57,45 +57,24 @@ for filename in docfiles:
         
             htmlText = htmlText+line;
 
-            if ";WIDGET_ADVANCED_USAGE" in line:
-                newLines = '''
-instr 2
-    if metro(1) == 1 then
-        event "i", "ChangeAttributes", 0, 1
-    endif
-endin
-
-instr ChangeAttributes
-    SIdentifier init ""\n'''
-                newLines = newLines.lstrip(' ')
-                newLines +=''.join(identifierCode).lstrip(' ')      
-
-                lastBit ='''    ;send identifier string to Cabbage
-    chnset SIdentifier, "widgetIdent"           
-endin
-                '''
-                newLines+=lastBit
-
-                line = line.replace(";WIDGET_ADVANCED_USAGE", newLines)
-                htmlText = htmlText+line;
 
         inputFile = open("./ExpandedWidgetEntries/"+filename, "w+")
         inputFile.write(htmlText)
         inputFile.close();
 
         #generate help .csd from expanded widget entry        
-        inputFile = open("./ExpandedWidgetEntries/"+filename)
-        outputFile = open("../../../Examples/Widgets/"+filename.lower().replace('.md', '.csd'), "w+")
-        foundExampleCode = False
-        for line in inputFile:
-            if "<!--(Widget Example)/-->" in line:
-                foundExampleCode = True
-            if "<!--(End Widget Example)/-->" in line:
-                foundExampleCode = False
-            if foundExampleCode is True and "<!--(Widget Example)/-->" not in line and "```" not in line:
-                outputFile.write(line)
+        # inputFile = open("./ExpandedWidgetEntries/"+filename)
+        # outputFile = open("../../../Examples/Widgets/"+filename.lower().replace('.md', '.csd'), "w+")
+        # foundExampleCode = False
+        # for line in inputFile:
+        #     if "<!--(Widget Example)/-->" in line:
+        #         foundExampleCode = True
+        #     if "<!--(End Widget Example)/-->" in line:
+        #         foundExampleCode = False
+        #     if foundExampleCode is True and "<!--(Widget Example)/-->" not in line and "```" not in line:
+        #         outputFile.write(line)
         
-        inputFile.close()
-        outputFile.close()
+        # inputFile.close()
+        # outputFile.close()
 
 

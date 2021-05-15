@@ -94,7 +94,6 @@ instr 1
 endin
               
 
-
 </CsInstruments>
 <CsScore>
 ;causes Csound to run for about 7000 years...
