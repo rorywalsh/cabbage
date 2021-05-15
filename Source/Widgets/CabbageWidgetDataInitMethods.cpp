@@ -491,6 +491,7 @@ void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
 	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
+    setProperty (widgetData, CabbageIdentifierIds::corners, 2.0f);
 }
 
 void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
@@ -518,6 +519,7 @@ void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
 	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
     setProperty(widgetData, CabbageIdentifierIds::channel, getProperty(widgetData, CabbageIdentifierIds::type).toString() + String(ID));
     setProperty(widgetData, CabbageIdentifierIds::automatable, 0.0f);
+    setProperty (widgetData, CabbageIdentifierIds::corners, 2.0f);
 }
 
 void CabbageWidgetData::setOptionButtonProperties (ValueTree widgetData, int ID)
@@ -550,6 +552,7 @@ void CabbageWidgetData::setOptionButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
     setProperty(widgetData, CabbageIdentifierIds::style, "flat");
+    setProperty (widgetData, CabbageIdentifierIds::corners, 2.0f);
 }
 
 void CabbageWidgetData::setTextBoxProperties (ValueTree widgetData, int ID)

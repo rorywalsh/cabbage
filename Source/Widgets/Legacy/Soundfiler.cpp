@@ -61,7 +61,7 @@ Soundfiler::Soundfiler (int sr, Colour col, Colour bgcol):
     currentPositionMarker (new DrawableRectangle()),
     scrubberPosition (0),
     sampleRate (sr),
-    regionWidth (1),
+    regionWidth (0),
     thumbnailCache (5),
     colour (col),
     bgColour (bgcol),

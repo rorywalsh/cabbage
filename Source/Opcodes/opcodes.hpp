@@ -821,7 +821,7 @@ struct ChannelStateSave : csnd::Plugin<1, 1>
 
         file << std::setw(4) << j << std::endl;
         file.close();
-        csound->message(j.dump());
+        //csound->message(j.dump());
         
         return OK;
     }
