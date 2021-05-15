@@ -111,37 +111,78 @@ slider WIDGET_SYNTAX
 
 >Make sure to use two unique channel names when using hslider2 and vslider2, otherwise min and max will be set to the same value. 
 
-![](../images/sliders.gif)
+ <video width="320" height="240" controls>
+  <source src="movie.mp4" type="video/mp4">
+  <source src="movie.ogg" type="video/ogg">
+Your browser does not support the video tag.
+</video> 
 
 ##Example
 <!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form caption("Slider Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontColour("black")
-hslider bounds(8, 38, 369, 50), channel("gain"), text("Gain") range(0, 1, 0, 1, 0.001) fontColour(91, 46, 46, 255) textColour(29, 29, 29, 255)
-groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-rslider bounds(70, 140, 41, 119) channel("rsliderChannel"), identChannel("widgetIdent"), range(0, 1, 0, 1, 0.001) 
+form caption("Slider Example") size(360, 460), guiMode("queue"), colour(2, 145, 209) pluginId("def1")
+
+texteditor bounds(16, 254, 332, 191) channel("infoText"), readOnly(1), wrap(1), scrollbars(1)
+
+vslider bounds(20, 20, 40, 180) channel("harmonic1") range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
+vslider bounds(60, 20, 40, 180) channel("harmonic2") range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
+vslider bounds(100, 20, 40, 180) channel("harmonic3") range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
+vslider bounds(140, 20, 40, 180) channel("harmonic4") range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
+vslider bounds(180, 20, 40, 180) channel("harmonic5") range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
+vslider bounds(220, 20, 40, 180) channel("harmonic6") range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
+vslider bounds(260, 20, 40, 180) channel("harmonic7") range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
+vslider bounds(300, 20, 40, 180) channel("harmonic8") range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
+checkbox bounds(24, 208, 100, 30) channel("randomise"), colour:1(147, 210, 0), text("Randomise"), fontColour:1("white")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
--n -d -+rtmidi=NULL -M0 -m0d 
-</CsOptions>
+-n -d
+</CsOptions>e
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
-ksmps = 32
+ksmps = 16
 nchnls = 2
 0dbfs = 1
 
-seed 0 
-;basic usage
-instr 1
-    aTone oscili chnget:k("gain"), 300
-    outs aTone, aTone    
-endin
+; Rory Walsh 2021 
+;
+; License: CC0 1.0 Universal
+; You can copy, modify, and distribute this file, 
+; even for commercial purposes, all without asking permission. 
 
-;WIDGET_ADVANCED_USAGE
+giWave ftgen 1, 0, 4096, 10, 1, .2, .1, .2, .1
+
+instr 1
+
+    SText  = "Slider widgets in Cabbage come in a variety of styles. Almost all the widget examples use sliders in some way or another. This simple instrument uses vslider widgets. The fader thumb uses an image loaded from disk. When the 'Randomise' button is pushed, each slider has its position updated according to a simple spline curve.\n\nCabbage sliders can load images for their various parts, background, thumb, etc., or they can use film strips / sprite-sheet type PNGs that contain frames of each state."
+    cabbageSet "infoText", "text", SText
+    
+    a1 oscili tonek(cabbageGetValue:k("harmonic1"), 10), 50, giWave
+    a2 oscili tonek(cabbageGetValue:k("harmonic2"), 10), 100, giWave
+    a3 oscili tonek(cabbageGetValue:k("harmonic3"), 10), 150, giWave
+    a4 oscili tonek(cabbageGetValue:k("harmonic4"), 10), 200, giWave
+    a5 oscili tonek(cabbageGetValue:k("harmonic5"), 10), 250, giWave
+    a6 oscili tonek(cabbageGetValue:k("harmonic6"), 10), 300, giWave
+    a7 oscili tonek(cabbageGetValue:k("harmonic7"), 10), 350, giWave
+    a8 oscili tonek(cabbageGetValue:k("harmonic8"), 10), 400, giWave
+    
+    kRandom cabbageGet "randomise"
+    
+    if kRandom == 1 then
+        cabbageSetValue "harmonic1", abs(jspline:k(.9, .1, .3))
+        cabbageSetValue "harmonic2", abs(jspline:k(.9, .1, .3))
+        cabbageSetValue "harmonic3", abs(jspline:k(.9, .1, .3))
+        cabbageSetValue "harmonic4", abs(jspline:k(.9, .1, .3))
+        cabbageSetValue "harmonic5", abs(jspline:k(.9, .1, .3))
+        cabbageSetValue "harmonic6", abs(jspline:k(.9, .1, .3))
+        cabbageSetValue "harmonic7", abs(jspline:k(.9, .1, .3))
+        cabbageSetValue "harmonic8", abs(jspline:k(.9, .1, .3))
+    endif
+    
+    aMix = a1+a2+a3+a4+a5+a6+a7+a8
+    out aMix, aMix
+endin       
 
 </CsInstruments>
 <CsScore>
@@ -149,8 +190,8 @@ endin
 f0 z
 ;starts instrument 1 and runs it for a week
 i1 0 z
-i2 0 z
 </CsScore>
 </CsoundSynthesizer>
+
 ```
 <!--(End Widget Example)/-->
