@@ -42,7 +42,8 @@ public:
     String align, colour, highlightColour, fontColour, channelType;
     Justification justify;
     CabbagePluginEditor* owner;
-    CabbageLookAndFeel2 lookAndFeel;
+    //CabbageLookAndFeel2 lookAndFeel;
+    LookAndFeel_V4 lookAndFeel;
     File listboxDir;
     bool isStringCombo = false;
     bool isPresetCombo = false;

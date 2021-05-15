@@ -13,7 +13,7 @@ The example below show how **imgFile()** identifiers can be used.
 <Cabbage>
 form caption("SVG Example") size(530, 480), colour("black"), pluginID("SMo1")
  groupbox bounds(122, 4, 376, 135), text("")
- groupbox bounds(120, 152, 379, 277), text(""), imgFile("custom_groupbox.svg"), identChannel("groupbox")
+ groupbox bounds(120, 152, 379, 277), text(""), imgFile("custom_groupbox.svg")
 rslider bounds(18, 90, 87, 85) channel("Waveshape1") imgFile("Slider", "rslider.svg") imgFile("background", "rslider_background.svg"), range(0, 5, 0, 1, 1) trackerColour(255, 165, 0, 255) trackerThickness(.5),
  rslider bounds(18, 184, 90, 90), channel("Waveshape2"), imgFile("slider", "rslider.svg"), imgFile("background", "rslider_background.svg"), range(0, 1, 0), trackerColour("orange"), trackerThickness(0.4), textBox(1)
 rslider bounds(18, 280, 90, 90) channel("Waveshape3") imgFile("Slider", "rslider.svg") imgFile("background", "rslider_background.svg"), range(0, 5, 0, 1, 1) trackerColour(255, 165, 0, 255) trackerThickness(.5),
@@ -28,7 +28,7 @@ rslider bounds(18, 280, 90, 90) channel("Waveshape3") imgFile("Slider", "rslider
  vslider bounds(418, 192, 50, 220), channel("vslider6"), imgFile("slider", "vslider.svg"), imgFile("background", "vslider_background.svg"), trackerColour("darkorange"), textBox(1), range(0, 1, .4), text("vP.1"), trackerThickness(.125), gradient(0)
  button bounds(20, 6, 85, 35), channel("but1"), text("Disabled", "Enabled"), fontColour:0("orange")
  button bounds(20, 46, 85, 35), channel("but2"), text("Disabled", "Enabled"), fontColour:0("orange")
-button bounds(20, 379, 85, 50) channel("but3") identChannel("svgIdent") fontColour:0(255, 165, 0, 255) text(""), imgFile("On", "led_on.svg") imgFile("off", "led_off.svg"),
+button bounds(20, 379, 85, 50) channel("but3") fontColour:0(255, 165, 0, 255) text(""), imgFile("On", "led_on.svg") imgFile("off", "led_off.svg"),
 </Cabbage>  
 ```
 

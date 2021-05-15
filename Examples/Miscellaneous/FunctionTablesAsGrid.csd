@@ -1,7 +1,7 @@
 <Cabbage>
-form caption("Grid Sequencer") size(580, 370), colour("black"),pluginId("FTaG")
+form caption("Grid Sequencer") size(580, 370), pluginId("FTaG")
 
-gentable bounds(10, 10, 560, 245), tableNumber(11:12:13:14:15:16:17:18), active(1), tableBackgroundColour("black"), tableColour("lime") zoom(-1), ampRange(0, 1, -1, 1)
+gentable bounds(10, 10, 560, 245), tableNumber(11:12:13:14:15:16:17:18), active(1), tableBackgroundColour(0, 0, 0, 0), tableColour(147, 210, 0) zoom(-1), ampRange(0, 1, -1, 1)
 rslider bounds(14, 264, 60, 60) channel("bpmSlider") range(20, 500, 200, 1, 0.001) text("BPM")
 image bounds(10, 250, 560, 5) corners(3), identChannel("progressBar") 
 </Cabbage>

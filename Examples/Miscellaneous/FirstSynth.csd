@@ -13,7 +13,8 @@ nchnls = 2
 0dbfs=1
 
 instr 1
-a1 oscili p5, p4, 1
+kEnv madsr .1, .2, .6, .1
+a1 oscili kEnv*p5, p4, 1
 outs a1, a1
 endin
 

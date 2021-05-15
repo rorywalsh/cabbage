@@ -1,3 +1,0 @@
-# Cabbage Feature
-
-The following pages outlines some of the more useful features of Cabbage. You'll see how widgets can be controlled in real time using identifier channels. How so-called plants can be used to create GUI abstractions. How multiple widgets can be created in a single line of code using arrays of widgets, and how macros can be used to quickly develop consistent styles for your widgets. The various reserved channels used by Cabbage will also be explored along with the saving and recalling of instrument presets.   

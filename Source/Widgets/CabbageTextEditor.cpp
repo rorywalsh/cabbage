@@ -36,13 +36,11 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     const int readOnly = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::readonly);
     textEditor.setReadOnly(readOnly == 1 ? true : false);
     
+    
+    int fontSize =CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontsize);
+    textEditor.setFont(Font(16));
+                       
     textEditor.toggleEditOnDoubleClick = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::doubleclicktogglesedit);
-    
-    
-    
-    
-    
-    
     
     addAndMakeVisible (textEditor);
     textEditor.setMultiLine (isMultiline);
@@ -56,6 +54,7 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     textEditor.setColour (TextEditor::focusedOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
     textEditor.setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
     textEditor.setColour(CaretComponent::ColourIds::caretColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::caretcolour)));
+
     
     const String filename = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
     const File textFile(File::getCurrentWorkingDirectory().getChildFile(filename).getFullPathName());

@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("That's a lof of checkboxes!") size(820, 420), guiMode("queue") colour(0, 0, 0), pluginId("def1")
+form caption("That's a lof of checkboxes!") size(820, 420), guiMode("queue"), pluginId("def1")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -15,8 +15,8 @@ instr 1
     iWidgetCount init 0
     while iY < 8 do
         while iX < 16 do
-            SWidget sprintf "checkbox bounds(%d, %d, 50, 50), channel(\"check%d\"), colour:1(%d, %d, %d)", 10+iX*50, 10+iY*50, iWidgetCount, rnd(255), rnd(255), rnd(255)
-            cabbageCreate SWidget
+            SWidget sprintf "bounds(%d, %d, 50, 50), channel(\"check%d\"), colour:1(%d, %d, %d)", 10+iX*50, 10+iY*50, iWidgetCount, rnd(255), rnd(255), rnd(255)
+            cabbageCreate "checkbox", SWidget
             iWidgetCount += 1
             iX += 1
         od

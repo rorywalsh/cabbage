@@ -1,7 +1,7 @@
 <Cabbage>
-form caption("Alpha") size(385, 220), pluginId("AlpF")
-rslider bounds(14, 10, 160, 160), channel("hslider1"), colour("yellow") identChannel("hslider_ident1")
-rslider bounds(200, 10, 160, 160), channel("hslider2"), colour("yellow") identChannel("hslider_ident2")
+form caption("Alpha") size(385, 220), guiMode("queue") pluginId("AlpF")
+rslider bounds(14, 10, 160, 160), channel("slider1")
+rslider bounds(200, 10, 160, 160), channel("slider2")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -22,13 +22,11 @@ instr	1
 kTrig metro 10
 kLeft oscili 1, .5, -1, .5
 kRight oscili 1, .5, -1
-if kTrig==1 then
-	Smessage sprintfk "alpha(%f)", (kLeft+1)/2
-	chnset Smessage, "hslider_ident1"
+cabbageSet kTrig, "slider1", "alpha", (kLeft+1)/2
+cabbageSet kTrig, "slider2", "alpha", (kRight+1)/2
 
-	Smessage sprintfk "alpha(%f)", (kRight+1)/2
-	chnset Smessage, "hslider_ident2"
-endif
+cabbageSetValue "slider1", (kLeft+1)/2
+cabbageSetValue "slider2", 1-(kLeft+1)/2
 endin
 
 </CsInstruments>

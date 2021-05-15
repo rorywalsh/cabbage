@@ -452,6 +452,7 @@ void CabbageWidgetData::setButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
 	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
+    setProperty (widgetData, CabbageIdentifierIds::corners, 2.0f);
 }
 
 void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)

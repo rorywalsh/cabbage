@@ -1,6 +1,6 @@
 <Cabbage>
 #define SLIDER_APPEARANCE trackerColour("DarkSlateGrey"), textColour("black") 
-form caption("SidChainCompress") size(440,530), pluginId("FSR3") style("legacy"), sideChain(2)
+form caption("SideChainCompress") size(440,130), pluginId("FSR3") style("legacy")
 image bounds(  0,  0,440,130), outlineThickness(6), outlineColour("white"), colour("grey")
 rslider bounds( 80, 10, 70, 70), channel("att"), text("Attack"),  range(0,1,0.01,0.5), $SLIDER_APPEARANCE
 rslider bounds(150, 10, 70, 70), channel("rel"), text("Release"), range(0,1,0.05,0.5), $SLIDER_APPEARANCE
@@ -9,7 +9,6 @@ rslider bounds(290, 10, 70, 70), channel("look"), text("Lookahead"), range(0,1,0
 rslider bounds(360, 10, 70, 70), channel("gain"), text("Gain"), range(-36,36,0), $SLIDER_APPEARANCE
 hrange   bounds( 10, 80,420, 30), channel("LowKnee","HighKnee"), range(0, 120, 48:60), $SLIDER_APPEARANCE
 label    bounds( 10,108,420, 13), text("Soft Knee"), fontColour("black")
-csoundoutput bounds(10, 130, 390, 300)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

@@ -7,23 +7,23 @@
 <Cabbage>
 form caption("Modifying Widget Appearance") size(800, 500), guiMode("queue"), pluginId("TEx1")
 image bounds( 20,180, 50,11), colour(250,250,  0,255), shape("sharp"), outlineColour("white"), outlineThickness(2), channel("image1"), rotate(0, 0, 0)
-hslider bounds(  0, 210, 450, 30), channel("HorPos"),  range(  0,450, 20,1,1), fontColour(white) colour(SlateGrey)
+hslider bounds(  0, 210, 450, 30), channel("HorPos"),  range(  0,450, 20,1,1), textColour(white) colour(SlateGrey)
 label      bounds(210,233, 35, 11), text("X Pos."), fontColour("white")
-vslider bounds(460,  0, 30, 200),  channel("VertPos"), range(  0,200,20,1,1), fontColour(white) colour(SlateGrey)
+vslider bounds(460,  0, 30, 200),  channel("VertPos"), range(  0,200,20,1,1), textColour(white) colour(SlateGrey)
 label      bounds(484,100, 35, 11), text("Y Pos."), fontColour("white")
-hslider bounds( 10, 240, 390, 30), channel("SizeX"),   range(  1,450, 50,1,1), fontColour(white) colour(SlateGrey), text("Size X")
-hslider bounds( 10, 270, 390, 30), channel("SizeY"),   range(  1,450, 11,1,1), fontColour(white) colour(SlateGrey), text("Size Y")
+hslider bounds( 10, 240, 390, 30), channel("SizeX"),   range(  1,450, 50,1,1), textColour(white) colour(SlateGrey), text("Size X")
+hslider bounds( 10, 270, 390, 30), channel("SizeY"),   range(  1,450, 11,1,1), textColour(white) colour(SlateGrey), text("Size Y")
 combobox bounds(400,240, 100, 25), channel("VisibleInvisible"), value(2), text("Invisible", "Visible")
 
-groupbox   bounds( 10, 310,220,170) text("Main Object"), plant("main") {
+groupbox   bounds( 10, 310,220,170) text("Main Object"), fontColour("white"), plant("main") {
 combobox   bounds( 70,  30, 80, 20), channel("Shape"), text("rounded","sharp","ellipse"), value(1), channelType("string")
-hslider    bounds(  0,  50,220, 30), channel("Red"),     range(  0,255,250,1,1), fontColour(red)   colour(red),   text("Red"),  trackerColour(red)
-hslider    bounds(  0,  80,220, 30), channel("Green"),   range(  0,255,250,1,1), fontColour(green) colour(green), text("Green"),  trackerColour(green)
-hslider    bounds(  0, 110,220, 30), channel("Blue"),    range(  0,255,  0,1,1), fontColour(blue)  colour(blue),  text("Blue"),  trackerColour(blue)
-hslider    bounds(  0, 140,220, 30), channel("Alpha"),   range(  0,255,255,1,1), fontColour(white) colour(SlateGrey), text("Alpha")
+hslider    bounds(  0,  50,220, 30), channel("Red"),     range(  0,255,250,1,1), textColour("red")   colour(red),   text("Red"),  trackerColour(red)
+hslider    bounds(  0,  80,220, 30), channel("Green"),   range(  0,255,250,1,1), textColour("green") colour(green), text("Green"),  trackerColour(green)
+hslider    bounds(  0, 110,220, 30), channel("Blue"),    range(  0,255,  0,1,1), textColour("blue")  colour(blue),  text("Blue"),  trackerColour(blue)
+hslider    bounds(  0, 140,220, 30), channel("Alpha"),   range(  0,255,255,1,1), textColour("white") colour(SlateGrey), text("Alpha")
 }
 
-groupbox bounds(230,310,220,170) text("Line"), plant("line") {
+groupbox bounds(230,310,220,170) text("Line"), fontColour("white") {
 hslider  bounds(  0,  20, 220, 30), channel("Line"), range(0, 100, 0,1,1), fontColour(white) colour(SlateGrey), text("Thick")
 hslider  bounds(  0,  50, 220, 30), channel("LineRed"),     range(  0,255,250,1,1), fontColour(red)   colour(red),   text("Red"),  trackerColour(red)
 hslider  bounds(  0,  80, 220, 30), channel("LineGreen"),   range(  0,255,250,1,1), fontColour(green) colour(green), text("Green"),  trackerColour(green)
@@ -31,7 +31,7 @@ hslider  bounds(  0, 110, 220, 30), channel("LineBlue"),    range(  0,255,  0,1,
 hslider  bounds(  0, 140, 220, 30), channel("LineAlpha"),   range(  0,255,255,1,1), fontColour(white) colour(SlateGrey), text("Alpha")
 }
 
-groupbox bounds(450,370,220,110) text("Rotation"), plant("rotatation") {
+groupbox bounds(450,370,220,110) text("Rotation"), fontColour("white") {
 hslider  bounds(  0,  20, 220, 30), channel("radians"), range(0, 6.283, 0,1,0.001), fontColour(white) colour(SlateGrey), text("Radians")
 hslider  bounds(  0,  50, 220, 30), channel("pivotx"),  range(0, 1, 0,1,0.001),     fontColour(white) colour(SlateGrey), text("Pivot X")
 hslider  bounds(  0,  80, 220, 30), channel("pivoty"),  range(0, 1, 0,1,0.001),     fontColour(white) colour(SlateGrey), text("Pivot Y")
@@ -39,7 +39,7 @@ hslider  bounds(  0,  80, 220, 30), channel("pivoty"),  range(0, 1, 0,1,0.001), 
 
 
 
-texteditor bounds(520, 20, 259, 281), readOnly(1), wrap(1) colour("black"), fontColour("white") channel("textInfo")
+texteditor bounds(520, 20, 259, 326), readOnly(1), wrap(1) colour("white"), fontColour("black") channel("textInfo")
 </Cabbage>
 
 <CsoundSynthesizer>

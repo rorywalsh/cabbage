@@ -1,2 +1,0 @@
-<a name="scrubberposition"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
-**scrubberposition(val)** Sets the scrubber position where val is an integer value in samples, or steps if dealing with a stringsequencer widget. If you wish to update the scrubberposition in real time use an identchannel identifier.

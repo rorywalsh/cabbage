@@ -30,7 +30,8 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
     //listBox.setBounds(CabbageWidgetData::getBounds(wData).withTop(0).withLeft(0));
     addItemsToListbox(wData);
 
-    lookAndFeel.customFont = owner->customFont;
+    
+    //lookAndFeel.customFont = owner->customFont;
     setLookAndFeel(&lookAndFeel);
     
     if (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channeltype) == "string")
@@ -65,9 +66,9 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
 
 	const Colour backgroundColour = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour));
 	
-	listBox.setColour(ScrollBar::backgroundColourId, Colours::red);
+    listBox.getVerticalScrollBar().getLookAndFeel().setColour(ScrollBar::backgroundColourId, Colours::red);
 	listBox.setColour(ListBox::backgroundColourId, backgroundColour);
-	//listBox.lookAndFeelChanged();
+	listBox.lookAndFeelChanged();
 	resized();
 
 }

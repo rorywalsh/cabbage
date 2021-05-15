@@ -1,9 +1,9 @@
 <Cabbage>
-form caption("MIDI CC Out") size(420, 160), colour(58, 110, 182), pluginId("def1")
-rslider bounds(6, 6, 100, 100), channel("ctrl70"), range(0, 127, 0, 1, 1), text("Ctrl70-Chan1"), trackerColour(0, 255, 0, 255), outlineColour(0, 0, 0, 50), textColour(0, 0, 0, 255)
-rslider bounds(106, 6, 100, 100), channel("ctrl71"), range(0, 127, 0, 1, 1), text("Ctrl71-Chan1"), trackerColour(0, 255, 0, 255), outlineColour(0, 0, 0, 50), textColour(0, 0, 0, 255)
-rslider bounds(206, 6, 100, 100), channel("ctrl72"), range(0, 127, 0, 1, 1), text("Ctrl72-Chan1"), trackerColour(0, 255, 0, 255), outlineColour(0, 0, 0, 50), textColour(0, 0, 0, 255)
-rslider bounds(306, 6, 100, 100), channel("ctrl73"), range(0, 127, 0, 1, 1), text("Ctrl73-Chan1"), trackerColour(0, 255, 0, 255), outlineColour(0, 0, 0, 50), textColour(0, 0, 0, 255)
+form caption("MIDI CC Out") size(420, 160), pluginId("def1")
+rslider bounds(6, 6, 100, 100), channel("ctrl70"), range(0, 127, 0, 1, 1), text("Ctrl70-Chan1"), textColour("white")
+rslider bounds(106, 6, 100, 100), channel("ctrl71"), range(0, 127, 0, 1, 1), text("Ctrl71-Chan1"), textColour("white")
+rslider bounds(206, 6, 100, 100), channel("ctrl72"), range(0, 127, 0, 1, 1), text("Ctrl72-Chan1"), textColour("white")
+rslider bounds(306, 6, 100, 100), channel("ctrl73"), range(0, 127, 0, 1, 1), text("Ctrl73-Chan1"), textColour("white")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

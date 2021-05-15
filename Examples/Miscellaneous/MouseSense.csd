@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2014
 
 <Cabbage>
-form caption("Mouse Sense") size(785, 400), pluginId("MsSe"), guiRefresh(16)
+form caption("Mouse Sense") size(785, 400), pluginId("MsSe")
 
 nslider bounds( 55, 25, 90, 35), text("MOUSE X"),             fontColour("white"), textBox(1),                channel("X"),           range(0, 800, 0,1,1)
 nslider bounds(160, 25, 90, 35), text("MOUSE Y"),             fontColour("white"), textBox(1),                channel("Y"),           range(0, 400, 0,1,1)

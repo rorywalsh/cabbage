@@ -115,6 +115,8 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **CURRENT_WIDGET** Returns the channel string of the widget currently under the mouse - if a channel has been assigned.
 
+**HOME_FOLDER_UID** Returns a unique ID for the users home folder.
+
 
 Cabbage also set the host type, which can be retrieved using the following channels. 
 

@@ -1,12 +1,12 @@
 <Cabbage>
-form size(440, 320), caption("Host Info"), pluginId("HtIn"), guiRefresh(10), colour("white")
-label bounds(5, 10, 430, 30), colour(100, 0, 0), text("BPM:"), align("left"), identChannel("BPMLabel")
-label bounds(5, 48, 430, 30), colour(90, 0, 0), text("Playing:"), align("left"), identChannel("IsPlayingLabel")
-label bounds(5, 86, 430, 30), colour(80, 0, 0), text("Recording:"), align("left"), identChannel("IsRecordingLabel")
-label bounds(5, 124, 430, 30), colour(70, 0, 0), text("Time in Seconds:"), align("left"), identChannel("TimeInSecondsLabel")
-label bounds(5, 164, 430, 30), colour(60, 0, 0), text("Time in Samples:"), align("left"), identChannel("TimeInSamplesLabel")
-label bounds(5, 202, 430, 30), colour(50, 0, 0), text("Time Signature:"), align("left"), identChannel("TimeSignatureLabel")
-label bounds(5, 240, 430, 30), colour(40, 0, 0),, text("Pulses per quater note:"), align("left"), identChannel("PPQNLabel")
+form size(440, 320), caption("Host Info"), pluginId("HtIn"), guiRefresh(10)
+label bounds(5, 10, 430, 30), text("BPM:"), align("left"), identChannel("BPMLabel"), fontColour("white"), colour(147, 210, 0) 
+label bounds(5, 48, 430, 30), text("Playing:"), align("left"), identChannel("IsPlayingLabel"), fontColour("white"), colour(147, 210, 0) 
+label bounds(5, 86, 430, 30), text("Recording:"), align("left"), identChannel("IsRecordingLabel"), fontColour("white"), colour(147, 210, 0) 
+label bounds(5, 124, 430, 30), text("Time in Seconds:"), align("left"), identChannel("TimeInSecondsLabel"), fontColour("white"), colour(147, 210, 0) 
+label bounds(5, 164, 430, 30), text("Time in Samples:"), align("left"), identChannel("TimeInSamplesLabel"), fontColour("white"), colour(147, 210, 0) 
+label bounds(5, 202, 430, 30), text("Time Signature:"), align("left"), identChannel("TimeSignatureLabel"), fontColour("white"), colour(147, 210, 0) 
+label bounds(5, 240, 430, 30), text("Pulses per quater note:"), align("left"), identChannel("PPQNLabel"), fontColour("white"), colour(147, 210, 0) 
 
 </Cabbage>
 <CsoundSynthesizer>

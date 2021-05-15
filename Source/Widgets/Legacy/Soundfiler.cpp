@@ -216,7 +216,7 @@ void Soundfiler::paint (Graphics& g)
         thumbArea.setHeight (getHeight() - 14);
         thumbArea.setTop (10.f);
         thumbnail->drawChannels (g, thumbArea.reduced (2),
-                                 visibleRange.getStart(), visibleRange.getEnd(), .8f);
+                                 visibleRange.getStart(), visibleRange.getEnd(), 1.f);
 
         //if(regionWidth>1){
         g.setColour (colour.contrasting (.5f).withAlpha (.7f));

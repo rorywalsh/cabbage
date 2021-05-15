@@ -1,3 +1,3 @@
 <a name="identChannel"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
-**identChannel("channel")**
-Sets the channel which data is sent and retrieved from Csound. When used with a chnset opcode users can override widget attributes. See [Identifier channels](./identChannels.mdl)
+**identChannel("channel")  [!!! DEPRECATED !!!]**
+Although identifier channels still work, they are no longer supported. Please use the new guiMode("queue") system and the cabbageSet opcodes instead. They are far more efficient then identifiers channel. 

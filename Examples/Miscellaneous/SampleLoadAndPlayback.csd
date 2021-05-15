@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Sample load and playback") size(635,430), guiMode("queue"), pluginId("SLaP"), colour("whitesmoke")
+form caption("Sample load and playback") size(635,430), guiMode("queue"), pluginId("SLaP")
 soundfiler bounds(10, 10, 150, 80) channel("soundfiler1") tableNumber(-1) 
 soundfiler bounds(165, 10, 150, 80) channel("soundfiler2") tableNumber(-1) 
 soundfiler bounds(320, 10, 150, 80) channel("soundfiler3") tableNumber(-1) 
@@ -14,7 +14,7 @@ soundfiler bounds(320, 180, 150, 80) channel("soundfiler11") tableNumber(-1)
 soundfiler bounds(475, 180, 150, 80) channel("soundfiler12") tableNumber(-1) 
 keyboard bounds(10, 266, 615, 86) mouseoeverkeycolour(255, 255, 0, 128) 
 filebutton bounds(10, 356, 148, 40) channel("sampleFolderButton"), mode("directory") text("Open sample folder", "Open sample folder") 
-label bounds(162, 356, 237, 16) text("Samples are triggered from C4") fontColour:0(91, 91, 91, 255) 
+label bounds(162, 360, 237, 16) text("Samples are triggered from C4") fontColour(255, 255, 255, 255) channel("label16")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
