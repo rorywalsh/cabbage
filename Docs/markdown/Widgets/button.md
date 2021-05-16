@@ -2,6 +2,10 @@
 
 Button creates a button on screen that can be used for a whole range of different tasks. The "channel" string identifies the channel on which Cabbage will communicate with Csound. "OnCaption" and "OffCaption" determine the strings that will appear on the button as users toggle between two states, i.e., 0 or 1. By default these captions are set to "On" and "Off" but the user can specify any strings they wish. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/button.mp4">
+</video> 
+
 <big></pre>
 button WIDGET_SYNTAX
 </pre></big>
@@ -63,7 +67,6 @@ button WIDGET_SYNTAX
 
 >colour:1() and fontColour:1() can be set using colour() and fontColour(). However, it's recommended that you use the numerated colour identifiers in order to make your code as readable a possible. 
 
-![Button](../images/button.gif)
 
 ##Example
 <!--(Widget Example)/-->

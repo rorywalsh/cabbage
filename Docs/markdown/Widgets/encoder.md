@@ -2,6 +2,10 @@
 
 Encoder creates an endless rotary encoder similar to those found in certain well-known hardware samplers. Unlike regular sliders, *encoder* doesn't typically have a start and stop point. By setting a very small slider increment these widgets can offer a level of fine grain control not possible with regular sliders. Note that these sliders do not use the range() identifier. But you can set min and max values using `min()` and `max()`.
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/encoder.mp4">
+</video> 
+
 <big></pre>
 encoder WIDGET_SYNTAX
 </pre></big>
@@ -65,8 +69,6 @@ encoder WIDGET_SYNTAX
 {! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
-
-![Button](../images/encoder.gif)
 
 ##Example
 <!--(Widget Example)/-->

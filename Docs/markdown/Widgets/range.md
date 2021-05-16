@@ -1,7 +1,10 @@
-# Hrange
+# Range Sliders
 
 Create an on-screen slider with a dragable, and user selectable range. Data can be sent to Csound on the channel specified through the channel string.  
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/range.mp4">
+</video> 
 
 <big></pre>
 hrange WIDGET_SYNTAX
@@ -67,7 +70,6 @@ hrange WIDGET_SYNTAX
 
 >Make sure to use two unique channel names when using hslider2 and vslider2, otherwise min and max will be set to the same value. 
 
-![](../images/hrange.gif)
 
 ##Example
 <!--(Widget Example)/-->

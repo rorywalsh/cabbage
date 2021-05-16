@@ -2,6 +2,12 @@
 
 Image creates a static shape or graphic. It can be used to show pictures or it can be used to draw simple shapes. If you wish to display a picture you must pass the file name to the file() identifier. For convenience, the file passed to file() should be in the same directory as your Cabbage instrument.
 
+
+<video width="800" height="600" controls>
+<source src="../../images/docs/image.mp4">
+</video> 
+
+
 <big></pre>
 image WIDGET_SYNTAX
 </pre></big>
@@ -48,7 +54,6 @@ image WIDGET_SYNTAX
 
 <!--(End of identifiers)/-->
 
-![](../images/image.gif)
 
 ##Example
 <!--(Widget Example)/-->

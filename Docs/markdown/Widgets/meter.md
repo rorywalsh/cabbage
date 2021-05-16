@@ -2,6 +2,9 @@
 
 Meters can be used to create any kind of horizontal or vertical metering bar, such as VU meters. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/meter.mp4">
+</video> 
 
 <big></pre>
 meter WIDGET_SYNTAX
@@ -47,7 +50,7 @@ meter WIDGET_SYNTAX
 * *hslider*, a standard horizontal slider
 
 <!--(End of identifiers)/-->
-![](../images/meter.gif)
+
 
 ##Example
 <!--(Widget Example)/-->

@@ -4,6 +4,9 @@ Combobox creates a drop-down list of items which users can choose from. Once the
 
 A combobox can also be set up a work with strings. In this case Csound will receive the currently selected string instead of the current index. Note that using a combobox in this way renders it useless in terms of host automation. Host automation can only be achieved when a combobox is sending the current index, rather than the current string.  
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/combobox.mp4">
+</video> 
 
 <big></pre>
 combobox WIDGET_SYNTAX
@@ -56,8 +59,6 @@ combobox WIDGET_SYNTAX
 {! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
-
-![Button](../images/combobox.gif)
 
 ##Example
 <!--(Widget Example)/-->

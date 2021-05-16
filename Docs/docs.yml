@@ -59,12 +59,9 @@
     - combobox
     - csound_output
     - encoder
-    - event_sequencer
-    - fftdisplay
     - form
     - gentable
     - groupbox
-    - hrange
     - image
     - keyboard
     - label
@@ -74,7 +71,6 @@
     - signaldisplay
     - sliders
     - soundfiler
-    - textbox
     - texteditor
-    - vrange
+    - range
     - xypad

@@ -44,22 +44,24 @@ The above code will arrange a set of checkboxes in a grid.
 
 The channels of each box will be as follows:
 
-["check1  ", "check2  ", "check3  ", "check4  ", "check5  ", "check6  ", "check7  ", "check8  "]
-["check9  ", "check10 ", "check11 ", "check12 ", "check13 ", "check14 ", "check15 ", "check16 "]
-["check17 ", "check18 ", "check19 ", "check20 ", "check21 ", "check22 ", "check23 ", "check24 "]
-["check25 ", "check26 ", "check27 ", "check28 ", "check29 ", "check30 ", "check31 ", "check32 "]
-["check33 ", "check34 ", "check35 ", "check36 ", "check37 ", "check38 ", "check39 ", "check40 "]
-["check41 ", "check42 ", "check43 ", "check44 ", "check45 ", "check46 ", "check47 ", "check48 "]
-["check49 ", "check50 ", "check51 ", "check52 ", "check53 ", "check54 ", "check55 ", "check56 "]
-["check57 ", "check58 ", "check59 ", "check60 ", "check61 ", "check62 ", "check63 ", "check64 "]
-["check65 ", "check66 ", "check67 ", "check68 ", "check69 ", "check70 ", "check71 ", "check72 "]
-["check73 ", "check74 ", "check75 ", "check76 ", "check77 ", "check78 ", "check79 ", "check80 "]
-["check81 ", "check82 ", "check83 ", "check84 ", "check85 ", "check86 ", "check87 ", "check88 "]
-["check89 ", "check90 ", "check91 ", "check92 ", "check93 ", "check94 ", "check95 ", "check96 "]
+```
+["check1  ", "check2  ", "check3  ", "check4  ", "check5  ", "check6  ", "check7  ", "check8  "]    
+["check9  ", "check10 ", "check11 ", "check12 ", "check13 ", "check14 ", "check15 ", "check16 "]    
+["check17 ", "check18 ", "check19 ", "check20 ", "check21 ", "check22 ", "check23 ", "check24 "]    
+["check25 ", "check26 ", "check27 ", "check28 ", "check29 ", "check30 ", "check31 ", "check32 "]    
+["check33 ", "check34 ", "check35 ", "check36 ", "check37 ", "check38 ", "check39 ", "check40 "]    
+["check41 ", "check42 ", "check43 ", "check44 ", "check45 ", "check46 ", "check47 ", "check48 "]    
+["check49 ", "check50 ", "check51 ", "check52 ", "check53 ", "check54 ", "check55 ", "check56 "]    
+["check57 ", "check58 ", "check59 ", "check60 ", "check61 ", "check62 ", "check63 ", "check64 "]    
+["check65 ", "check66 ", "check67 ", "check68 ", "check69 ", "check70 ", "check71 ", "check72 "]    
+["check73 ", "check74 ", "check75 ", "check76 ", "check77 ", "check78 ", "check79 ", "check80 "]    
+["check81 ", "check82 ", "check83 ", "check84 ", "check85 ", "check86 ", "check87 ", "check88 "]    
+["check89 ", "check90 ", "check91 ", "check92 ", "check93 ", "check94 ", "check95 ", "check96 "]   
 ["check97 ", "check98 ", "check99 ", "check100", "check101", "check102", "check103", "check104"]
 ["check105", "check106", "check107", "check108", "check109", "check110", "check111", "check112"]
 ["check113", "check114", "check115", "check116", "check117", "check118", "check119", "check120"]
 ["check121", "check122", "check123", "check124", "check125", "check126", "check127", "check128"]
+```
 
 If we want to step through each checkbox and query its value, we can do so using a k-rate while loop. 
 

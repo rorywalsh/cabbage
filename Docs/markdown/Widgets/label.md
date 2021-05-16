@@ -2,6 +2,9 @@
 
 Labels can be used for placing text on-screen. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/label.mp4">
+</video> 
 
 <big></pre>
 label WIDGET_SYNTAX
@@ -42,7 +45,7 @@ label WIDGET_SYNTAX
 {! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
-![](../images/label.gif)
+
 
 ##Example
 <!--(Widget Example)/-->

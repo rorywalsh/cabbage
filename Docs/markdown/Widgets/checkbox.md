@@ -2,6 +2,9 @@
 
 Checkbox creates a checkbox which functions like a button, but the associated caption will not change when the user checks it. As with all widgets capable of sending data to Csound, the channel string is the channel on which the widget will communicate with Csound. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/checkbox.mp4">
+</video> 
 
 <big></pre>
 checkbox WIDGET_SYNTAX
@@ -57,7 +60,6 @@ checkbox WIDGET_SYNTAX
 
 >colour:1() can be set using colour(). However, it's recommended that you use the numerated colour identifiers in order to make your code more readable. 
 
-![Button](../images/checkbox.gif)
 
 ## Example
 <!--(Widget Example)/-->

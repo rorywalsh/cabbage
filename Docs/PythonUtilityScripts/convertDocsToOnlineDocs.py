@@ -17,8 +17,8 @@ outputDir = os.path.abspath(sys.argv[1])+"/_docs"
 imagesDir = os.path.abspath(sys.argv[1])+"/images/docs/"
 copy_tree("../images/", imagesDir)
 
-if os.path.isdir("../markdown/Widgets/ExpandedWidgetEntries/gifs/"):
-	copy_tree("../markdown/Widgets/ExpandedWidgetEntries/gifs/", imagesDir)
+if os.path.isdir("../markdown/WidgetVideos/"):
+	copy_tree("../markdown/WidgetVideos/", imagesDir)
 
 directories = ["", "/Widgets/ExpandedWidgetEntries", "/Widgets/Properties"]
 currentDir = os.path.abspath("../markdown")
@@ -56,7 +56,7 @@ for dir in directories[0:3]:
 				if "(images/" in line:
 					line = "![](../../../../images/" +line[line.index("(images/")+8:]
 
-				if "../images/" in line:
+				if "../images/" in line and not ".mp4" in line:
 					line = "![](../../images/docs/" +line[line.index("./images/")+9:]
 
 				if "```html" in line:

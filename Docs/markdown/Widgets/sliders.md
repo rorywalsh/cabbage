@@ -1,10 +1,15 @@
 # Sliders
 
-Slider can be used to create an on-screen slider. Data can be sent to Csound on the channel specified through the channel string. Sliders can be rotary, vertical, horizontal, frange-based, or number boxes, and can react in both a linear and non-linear fashion. 
+Slider can be used to create an on-screen slider. Data can be sent to Csound on the channel specified through the channel string. Sliders can be rotary, vertical, horizontal, range-based, or number boxes, and can react in both a linear and non-linear fashion. 
+
+<video width="800" height="600" controls>
+<source src="../../images/docs/sliders.mp4">
+</video> 
 
 <big></pre>
 slider WIDGET_SYNTAX
 </pre></big>
+
 
 ### Specific Identifiers
 
@@ -111,11 +116,6 @@ slider WIDGET_SYNTAX
 
 >Make sure to use two unique channel names when using hslider2 and vslider2, otherwise min and max will be set to the same value. 
 
- <video width="320" height="240" controls>
-  <source src="movie.mp4" type="video/mp4">
-  <source src="movie.ogg" type="video/ogg">
-Your browser does not support the video tag.
-</video> 
 
 ##Example
 <!--(Widget Example)/-->

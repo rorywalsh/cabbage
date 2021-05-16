@@ -47,7 +47,6 @@ groupbox WIDGET_SYNTAX
 {! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
-![](../images/groupbox.gif)
 
 ##Example
 <!--(Widget Example)/-->

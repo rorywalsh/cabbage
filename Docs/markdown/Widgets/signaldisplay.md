@@ -2,6 +2,10 @@
 
 Displays a graphical representation of a signal. Must be used with the **display** or **dispfft** opcodes in Csound. You must pass a Csound a-rate variable to the `signalVariable()` identifier, and you must enable `--displays` in the Csound options. Please see the SignalDisplay example csd for more details. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/signaldisplay.mp4">
+</video> 
+
 <big></pre>
 signaldisplay WIDGET_SYNTAX
 </pre></big>
@@ -37,7 +41,6 @@ signaldisplay WIDGET_SYNTAX
 
 > To enable the use of the signaldisplay widget you must pass --displays to your CsOptions. See the SignalDisplay example for details. Also note that the Lissajous display is the most CPU expensive display option, followed by waveform. The spectral modes are the least CPU expensive.   
 
-![](../images/signaledisplay.gif)
 
 ##Example
 <!--(Widget Example)/-->

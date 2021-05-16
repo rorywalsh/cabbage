@@ -2,6 +2,10 @@
 
 Optionbutton creates a button on screen that can be used to toggle between a range of items. It functions much like a combobox box, but doesn't have a drop down menu. Clicking on the button will cause it to cycle through each of its text items, sending a numeric value to Csound in the process. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/optionbutton.mp4">
+</video> 
+
 <big></pre>
 button WIDGET_SYNTAX
 </pre></big>

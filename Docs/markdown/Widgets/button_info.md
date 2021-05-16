@@ -4,6 +4,10 @@ Infobuttons can be used to open html files in the system's default web browser. 
 
 This widget can be useful for providing help files, or any other additional information about your instruments. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/filebutton.mp4">
+</video> 
+
 <big></pre>
 infobutton WIDGET_SYNTAX
 </pre></big>
@@ -43,8 +47,6 @@ infobutton WIDGET_SYNTAX
 {! ./markdown/Widgets/Properties/widgetArray.md !} 
 
 <!--(End of identifiers)/-->
-
-![](../images/button_info.gif)
 
 
 ##Example

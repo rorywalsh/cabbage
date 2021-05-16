@@ -2,6 +2,9 @@
 
 Soundfiler will display the contents of a sound file, or a function table containing a sound file (GEN01 tables). This is a fast waveform viewer that allows users to select regions of the waveform. Unlike the table widget, soundfiler can only display one waveform at a time. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/soundfiler.mp4">
+</video> 
 
 <big></pre>
 soundfiler WIDGET_SYNTAX
@@ -46,7 +49,6 @@ soundfiler WIDGET_SYNTAX
 {! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
-![](../images/soundfiler.gif)
 
 ##Example
 <!--(Widget Example)/-->

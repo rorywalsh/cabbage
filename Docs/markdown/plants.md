@@ -22,7 +22,7 @@ instr 1
     kToggle, kTrig cabbageGetValue "toggle"
     cabbageSet kTrig, "image1", "visible", kToggle
 endin
-```csharp
+```
 
 
 The major advantage in using plants is that you can easily move and resize all widgets in one action. If you wish to dynamically change the position or visibility of a plant at run-time, you must give the image or groupbox a channel. Then you can call `cabbageSet` to update it. In the code provided below, a button is used to toggle the visibility of several plants. 
@@ -34,21 +34,21 @@ The major advantage in using plants is that you can easily move and resize all w
 form size(400, 200), caption("Toggling Plants"), guiMode("queue") pluginId("plu1"), guiRefresh(10)
 button bounds(12, 12, 60, 25), channel("but1"), text("Toggle", "Toggle")
 
-groupbox bounds(80, 10, 200, 160), text("White Sliders"), visible(0), channel("sliders1"), plant("GUIabst_1"){
+groupbox bounds(80, 10, 200, 160), text("White Sliders"), visible(0), channel("group1"){
 hslider bounds(0, 30, 200, 30), channel("hslider1"), range(0, 100, 55), colour("white")
 hslider bounds(0, 60, 200, 30), channel("hslider2"), range(0, 100, 23), colour("white")
 hslider bounds(0, 90, 200, 30), channel("hslider3"), range(0, 100, 45), colour("white")
 hslider bounds(0, 120, 200, 30), channel("hslider4"), range(0, 100, 56), colour("white")
 }
 
-groupbox bounds(80, 10, 200, 160), text("Red Sliders"), visible(0), channel("sliders2"), plant("GUIabst_2"){
+groupbox bounds(80, 10, 200, 160), text("Red Sliders"), visible(0), channel("group2"){
 hslider bounds(0, 30, 200, 30), channel("hslider5"), range(0, 100, 25), colour("red")
 hslider bounds(0, 60, 200, 30), channel("hslider6"), range(0, 100, 63), colour("red")
 hslider bounds(0, 90, 200, 30), channel("hslider7"), range(0, 100, 15), colour("red")
 hslider bounds(0, 120, 200, 30), channel("hslider8"), range(0, 100, 16), colour("red")
 }
 
-groupbox bounds(80, 10, 200, 160), text("Yellow Sliders"), visible(1), channel("sliders3"), plant("GUIabst_3"){
+groupbox bounds(80, 10, 200, 160), text("Yellow Sliders"), visible(1), channel("group3"){
 hslider bounds(0, 30, 200, 30), channel("hslider9"), range(0, 100, 5), colour("yellow")
 hslider bounds(0, 60, 200, 30), channel("hslider10"), range(0, 100, 63), colour("yellow")
 hslider bounds(0, 90, 200, 30), channel("hslider11"), range(0, 100, 25), colour("yellow")

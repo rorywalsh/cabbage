@@ -2,6 +2,10 @@
 
 A filebutton can be used to select files from disk. The filename selected, or created will be sent to Csound on the named channel as a string message. Filebuttons can also be used to select snapshot files for Cabbage to save parameter presets. See the populate identifier below. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/filebutton.mp4">
+</video> 
+
 <big></pre>
 filebutton WIDGET_SYNTAX
 </pre></big>
@@ -48,8 +52,6 @@ filebutton WIDGET_SYNTAX
 
 <!--(End of identifiers)/-->
 >colour:1() and fontColour:1() can be set using colour() and fontColour(). However, it's recommended that you use the numerated colour identifiers in order to make your code as readable a possible. 
-
-![](../images/button_file.gif)
 
 ##Example
 

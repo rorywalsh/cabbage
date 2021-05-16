@@ -30,7 +30,6 @@ csoundoutput WIDGET_SYNTAX
 
 <!--(End of identifiers)/-->
 
-![Button](../images/csound_output.gif)
 
 ##Example
 <!--(Widget Example)/-->

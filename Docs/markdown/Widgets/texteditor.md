@@ -2,6 +2,10 @@
 
 Texteditor creates a text editor that can be used to send strings to Csound. Hitting return when in single line mode will send the string to Csound on a named string channel while pressing the up and down buttons when the texteditor is in focus will toggle through the previous strings that have been sent. When in "multiline" mode, press command and return to send the string data to Csound. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/texteditor.mp4">
+</video> 
+
 <big></pre>
 texteditor WIDGET_SYNTAX
 </pre></big>
@@ -45,8 +49,6 @@ texteditor WIDGET_SYNTAX
 {! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
-
-![](../images/texteditor.gif)
 
 ##Example
 <!--(Widget Example)/-->

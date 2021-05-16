@@ -2,6 +2,10 @@
 
 Keyboard will display a keyboard that will send MIDI information to your Csound instrument. This component can be used together with a hardware controller. Pressing keys on the actual MIDI keyboard will cause the on-screen keys to react up. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/keyboard.mp4">
+</video> 
+
 <big></pre>
 keyboard WIDGET_SYNTAX
 </pre></big>
@@ -45,9 +49,8 @@ keyboard WIDGET_SYNTAX
 
 <!--(End of identifiers)/-->
 
->The keyboard can be played at different velocities depending on where you click on the key with your mouse. Clicking at the top of the key will cause a quieter velocity while clicking on the bottom will cause the note to sound with full velocity. If you wish to play the keyboard like a nutjob in standalone mode, make sure to pass '-m0d' to the CsOptions(disable console messages). The keyboard widget is only provided as a quick and easy means of testing plugins in Cabbage. Treating it as anything more than that could result in severe disappointment!  
+>The keyboard can be played at different velocities depending on where you click on the key with your mouse. Clicking at the top of the key will cause a quieter velocity while clicking on the bottom will cause the note to sound with full velocity. If you wish to play the keyboard like a nutjob in standalone mode, make sure to pass '-m0d' to the CsOptions(disable console messages). The keyboard widget is only provided as a quick and easy means of testing plugins in the Cabbage IDE. Treating it as anything more than that could result in severe disappointment!  
 
-![](../images/keyboard.gif)
 
 ##Example
 <!--(Widget Example)/-->

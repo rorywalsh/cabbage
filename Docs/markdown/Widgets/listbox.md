@@ -2,6 +2,9 @@
 
 Listbox creates a list of custom items. Similary to a combobox in functionality, listboxes can be used for much longer lists that users can scroll through. Double-clicking on a listbox item will send a channel message to Csound. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/listbox.mp4">
+</video> 
 
 <big></pre>
 listbox WIDGET_SYNTAX
