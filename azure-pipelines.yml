@@ -12,6 +12,7 @@ jobs:
 
 # Run a build on Windows at the same time
 - job: Windows
+  timeoutInMinutes: 80
   pool:
     vmImage: 'vs2017-win2016'
   # The Windows build involves running a powershell script
@@ -31,6 +32,7 @@ jobs:
       # artifactName: 'Cabbage64Setup.exe'
   
 - job: macOS
+  timeoutInMinutes: 80
   pool:
     vmImage: 'macos-10.14'
     xcodeVersion: '9.4.1'
