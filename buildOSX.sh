@@ -104,8 +104,11 @@ cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/
 cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
 cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
 
-xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj clean
-xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj -configuration Release
+$PROJUCER --resave ../../CabbageCsoundCLI.jucer
+xcodebuild -project CabbageCsoundCLI.xcodeproj clean
+xcodebuild -project CabbageCsoundCLI.xcodeproj -configuration Release
+
+
 
 # cp ../../CsoundTestXcode/Build/Release/CsoundTest ./build/Release/Cabbage.app/Contents/MacOS/CsoundTest 
 cp -rf ./build/Release/CabbageCsoundCLI ./build/Release/Cabbage.app/Contents/MacOS/CabbageCsoundCLI 
