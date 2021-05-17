@@ -115,7 +115,7 @@ cp -rf ./build/Release/CabbageCsoundCLI ./build/Release/Cabbage.app/Contents/Mac
 
 curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
 ls
-unzip -q "CabbageManual.zip"
+unzip -q -o "CabbageManual.zip" 
 ls
 cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/CabbageManual
 cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
