@@ -667,6 +667,7 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
 
     if (prop == CabbageIdentifierIds::value)
     {
+        const MessageManagerLock lock;
         getSlider().setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), dontSendNotification);
         if (sliderThumbImage.isValid())
             thumb.move(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), slider.getRange());

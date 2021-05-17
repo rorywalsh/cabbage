@@ -60,7 +60,7 @@ void CsoundPluginProcessor::resetCsound()
 	if (csound)
 	{
         
-        destroyCsoundGlobalVars();
+        //destroyCsoundGlobalVars();
 #if !defined(Cabbage_Lite)
 		csound = nullptr;
 #endif
@@ -486,7 +486,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     }
 
-    createCsoundGlobalVars(cabbageData);
+   // createCsoundGlobalVars(cabbageData);
     
     
     if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win32)

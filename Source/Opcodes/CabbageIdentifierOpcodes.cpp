@@ -387,7 +387,7 @@ int SetCabbageValueIdentifier::setAttribute()
         vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
         *vt = new CabbageWidgetIdentifiers();
         varData = *vt;
-        csound->message("Creating new internal state object...\n");
+        //csound->message("Creating new internal state object...\n");
     }
     
     if(trigger == 1)
