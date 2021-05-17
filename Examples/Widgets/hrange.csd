@@ -28,7 +28,7 @@ nchnls = 2
 
 instr 99
 
-    SText  = "A form represents an instrument plugin window. All widgets are positioned relative to the top left of the form, i.e., position 0,0.\n\nWhen declaring a form, you can also set some useful attributes of your plugin such as the pluginId and plugin delay compensation (latency)."
+    SText  = "A range slider provides two thumbs so that you can select a min and max range. The range can then be dragged with the mouse. As with all two-channel widgets, only the first channel is needed for 'cabbageSet' to work\n\nIn this example there are 3 sources, some noise, a pulse wave and a blurred audio sample. Each source is fed through a band pass filter. The sliders control the centre frequency and the width of the pass band."
     cabbageSet "infoText", "text", SText
     
 endin
@@ -49,7 +49,8 @@ instr 1
     endif
     
     aBp butterbp aSource, port(kMin+(kMax-kMin/2), .2), kMax-kMin
-    outs aBp, aBp
+    aEnv linseg 0, 2, 1, 1, 1
+    outs aBp*aEnv, aBp*aEnv
 
     if cabbageGetValue:k("agitate") == 1 then
         kFreq = abs(jspline(1000-400, .1, .3))

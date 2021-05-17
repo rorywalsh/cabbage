@@ -21,11 +21,11 @@ instr 1
 a1, a2 init 0
 
 if chnget:k("waveshape") == 1 then
-	a1 oscili 1, p4
+	a1 oscili .5, p4
 elseif chnget:k("waveshape") == 2 then
-	a1 vco2 1, p4
+	a1 vco2 .5, p4
 elseif chnget:k("waveshape") == 3 then
-	a1 vco2 1, p4, 10
+	a1 vco2 .51, p4, 10
 endif
 outs a1, a1
 

@@ -1,7 +1,7 @@
 <Cabbage>
 form size(465, 505), caption("Monobomb"), guiMode("queue"), pluginId("plu1")
 keyboard bounds(6, 148, 445, 92)
-groupbox bounds(6, 6, 223, 134), text("LFO"), colour(0,0,0,0), fontColour("white")
+groupbox bounds(6, 6, 223, 134), text("LFO"), colour(0,0,0,0), channel("grp1") fontColour("white")
 groupbox bounds(232, 6, 223, 134), text("Filter"), colour(0,0,0,0), fontColour("white")
 
 rslider bounds(16, 32, 100, 100), channel("rate"), textColour("white"), range(0, 10, 1, 1, 0.01), text("rate")
@@ -53,10 +53,10 @@ instr 1
 	kLfo lfo kAmp, kFreq, 5
 
 	if kPitch==0 then
-		aSig vco2 p5, p4
+		aSig vco2 p5*.5, p4
 		aMoog moogladder aSig, (kAmp == 0 ? kCutoff : kLfo*kCutoff), kRes
 	else
-		aSig vco2 p5, (kAmp == 0 ? p4 : p4 -(1-kLfo*p4*.5))
+		aSig vco2 p5*5, (kAmp == 0 ? p4 : p4 -(1-kLfo*p4*.5))
 		aMoog moogladder aSig, kCutoff, kRes
 	endif
 

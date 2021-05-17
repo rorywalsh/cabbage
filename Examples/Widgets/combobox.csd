@@ -43,7 +43,7 @@ instr 1
     iSus cabbageGetValue "sus"
     iRel cabbageGetValue "rel"
     kEnv madsr iAtt, iDec, iSus, iRel
-    aVco vco2 kEnv*p5, cpsmidinn(p4), iVcoModes[cabbageGetValue:i("waveform")-1]
+    aVco vco2 kEnv*p5*.5, cpsmidinn(p4), iVcoModes[cabbageGetValue:i("waveform")-1]
     outs aVco, aVco    
 endin
 

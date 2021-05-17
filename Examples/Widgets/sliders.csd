@@ -59,7 +59,7 @@ instr 1
     endif
     
     aMix = a1+a2+a3+a4+a5+a6+a7+a8
-    out aMix, aMix
+    out aMix*.1, aMix*.1
 endin       
 
 </CsInstruments>

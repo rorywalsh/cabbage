@@ -43,7 +43,8 @@ instr	1
     k4 chnget "harm4"
     k5 chnget "harm5"
 
-    a1 oscili .5, 200, 1
+    aEnv linen 1, 1, p3, 1
+    a1 oscili .2, 200, 1
     outs a1, a1
 
     kChanged changed k1, k2, k3, k4, k5

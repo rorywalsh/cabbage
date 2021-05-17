@@ -76,7 +76,7 @@ instr Effects
     endif
 
     if kReverb == 1 then
-        aRevL, aRevR reverbsc aInL, aInR, .99, 15000
+        aRevL, aRevR reverbsc aInL, aInR, .9, 5000
     else
         aRevR = 0
         aRevL = 0
