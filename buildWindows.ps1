@@ -67,7 +67,7 @@ Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 
 
 # Invoke-WebRequest -UseBasicParsing "http://cabbageaudio.com/beta/CabbageManual.zip" -OutFile "D:\a\1\s\CabbageManual.zip" 
-7z.exe x CabbageManual.zip -aoa -o D:\a\1\s\CabbageManual
+7z.exe x CabbageManual.zip -oD:\a\1\s\CabbageManual  -y
 
 cd D:/a/1/s/Builds/VisualStudio2017/x64
 
