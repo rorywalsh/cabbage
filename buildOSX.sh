@@ -113,13 +113,9 @@ xcodebuild -project CabbageCsoundCLI.xcodeproj -configuration Release
 # cp ../../CsoundTestXcode/Build/Release/CsoundTest ./build/Release/Cabbage.app/Contents/MacOS/CsoundTest 
 cp -rf ./build/Release/CabbageCsoundCLI ./build/Release/Cabbage.app/Contents/MacOS/CabbageCsoundCLI 
 curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
-<<<<<<< HEAD
 ls
 unzip -q -o "CabbageManual.zip" 
 ls
-=======
-unzip -q "CabbageManual.zip"
->>>>>>> 1e820444e917c7643cf8771faf4913d7d02865f2
 cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/CabbageManual
 cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
 
