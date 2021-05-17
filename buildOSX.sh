@@ -112,15 +112,10 @@ xcodebuild -project CabbageCsoundCLI.xcodeproj -configuration Release
 
 # cp ../../CsoundTestXcode/Build/Release/CsoundTest ./build/Release/Cabbage.app/Contents/MacOS/CsoundTest 
 cp -rf ./build/Release/CabbageCsoundCLI ./build/Release/Cabbage.app/Contents/MacOS/CabbageCsoundCLI 
-
 curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
-ls
 unzip -q "CabbageManual.zip"
-ls
 cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/CabbageManual
 cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
-
-cp ../opcodes.txt ./build/Release/Cabbage.app/Contents/MacOS/opcodes.txt 
 
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX/build/Release/
 curl -L -o CabbageRack-1.0.0-mac.zip https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-mac.zip
