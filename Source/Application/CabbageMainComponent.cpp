@@ -1975,7 +1975,10 @@ void CabbageMainComponent::updatePresetFile()
                         const String presetName = child->getAttributeValue(0);
                         for ( int i = 1 ; i < child->getNumAttributes() ; i++)
                         {
-                            j[presetName.toStdString()][child->getAttributeName(i).toStdString()] = child->getAttributeValue(i).toStdString();
+                            if (child->getAttributeName(i).isQuotedString())
+                                j[presetName.toStdString()][child->getAttributeName(i).toStdString()] = child->getAttributeValue(i).toStdString();
+                            else
+                                j[presetName.toStdString()][child->getAttributeName(i).toStdString()] = child->getDoubleAttribute(child->getAttributeName(i).toStdString(), 0.f);
                         }
                     }
                 }
