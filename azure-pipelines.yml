@@ -32,7 +32,7 @@ jobs:
       # artifactName: 'Cabbage64Setup.exe'
   
 - job: macOS
-  timeoutInMinutes: 80
+  timeoutInMinutes: 100
   pool:
     vmImage: 'macos-10.14'
     xcodeVersion: '9.4.1'
