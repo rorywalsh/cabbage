@@ -115,6 +115,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
                         CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir)).getFullPathName();
                 csoundSetOpcodedir(opcodeDir.toUTF8().getAddress());
             }
+            if (CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::latency) == -1) {
+                preferredLatency = -1;
+            }
         }
     }
     
@@ -210,6 +213,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 		csoundParams->ksmps_override = 32;
 
 	csoundParams->sample_rate_override = requestedSampleRate>0 ? requestedSampleRate : sr;
+
+    if(preferredLatency == -1)
+        csoundParams->ksmps_override = 1;
 
 	csound->SetParams(csoundParams.get());
     
@@ -385,6 +391,16 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     csound->SetChannel ("IS_EDITOR_OPEN", 0.0);
     csdFilePath.setAsCurrentWorkingDirectory();
+
+
+    time_t seconds_past_epoch = time(0);
+    csound->SetChannel("SECONDS_SINCE_EPOCH", (intmax_t)seconds_past_epoch);
+    // convert now to string form
+    char* dt = ctime(&seconds_past_epoch);
+    std::stringstream strStream;
+    strStream << dt << endl;
+    csound->SetStringChannel("CURRENT_DATE_TIME", String(strStream.str()).toUTF8().getAddress());
+
 
 	if((SystemStats::getOperatingSystemType() & SystemStats::OperatingSystemType::Linux) != 0)
     {
@@ -728,7 +744,10 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
 
-	this->setLatencySamples(preferredLatency == 0 ? csound->GetKsmps() : preferredLatency);
+    if (preferredLatency == -1)
+        this->setLatencySamples(0);
+    else
+	    this->setLatencySamples(preferredLatency == 0 ? csound->GetKsmps() : preferredLatency);
 }
 
 void CsoundPluginProcessor::releaseResources()
@@ -755,11 +774,14 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
     {
 #if  JucePlugin_IsSynth
         //synth can only be mono or stereo...
-        if (mainInput.size() == 0 && mainOutput.size() == 1)
+//        if (mainInput.size() == 0 && mainOutput.size() == 1)
+//            return true;
+//        if (mainInput.size() == 0 && mainOutput.size() == 2)
+//            return true;
+        if (mainInput.size() == 0 && mainOutput.size() == numCsoundOutputChannels)
             return true;
-        if (mainInput.size() == 0 && mainOutput.size() == 2)
-            return true;
-#else        
+
+#else
 #if !defined(Cabbage_IDE_Build) && !defined(Cabbage_Lite)
         if (PluginHostType().isReaper())
         {
@@ -789,9 +811,10 @@ bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) 
         return false;
     }
 
-
-
-    
+#if defined(Cabbage_IDE_Build) && defined(Cabbage_Lite)
+    if(mainInput.size() == numCsoundInputChannels && mainOutput.size() == numCsoundOutputChannels)
+        return true;
+#endif
     
     if ((mainInput.size() == numCsoundInputChannels - numSideChainChannels || mainInput.size() == mainOutput.size()) 
         && mainOutput.size() == numCsoundOutputChannels)
@@ -896,6 +919,9 @@ void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type*& buffer
 		Type*& current_sample = buffer;
 		MYFLT sample = *current_sample * cs_scale;
 		CSspin[pos] = sample;
+        //if we want 0 latency, we have to fill Csound spin buffer before we call performKsmps()
+        if (preferredLatency == -1)
+            performCsoundKsmps();
 		*current_sample = (CSspout[pos] / cs_scale);
 		++current_sample;
 	}
@@ -996,7 +1022,9 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 		{
 			if (csndIndex == csdKsmps)
 			{
-				performCsoundKsmps();
+                //don't call performKsmps here if we want 0 latency
+                if(preferredLatency != -1)
+				    performCsoundKsmps();
 				csndIndex = 0;
 			}
             

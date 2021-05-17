@@ -89,7 +89,7 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
     {
         visible = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::visible);
         child->setVisible ( visible == 1 ? true : false);
-        child->setEnabled ( visible == 1 ? true : false);
+        //child->setEnabled ( visible == 1 ? true : false);
     }
 
     if (text != CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text) || calledFromConstructor)

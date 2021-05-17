@@ -8,7 +8,7 @@ groupbox WIDGET_SYNTAX
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/linethickess.md !}
+{! ./markdown/Widgets/Properties/linethickness.md !}
 
 {! ./markdown/Widgets/Properties/outlinethickness.md !}  
 

@@ -34,6 +34,7 @@ class CabbageLabel : public Component, public ValueTree::Listener, public Cabbag
     int counter;
     String text, colour, fontcolour, align;
     Justification textAlign;
+	int fontsize = 0;
 
 public:
 

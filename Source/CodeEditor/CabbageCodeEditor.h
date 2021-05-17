@@ -48,7 +48,7 @@ class CabbageCodeEditorComponent :
     CabbageEditorContainer* owner;
     int updateGUICounter = 0;
     int currentFontSize = 17;
-    LookAndFeel_V4 lookAndFeel3;
+    LookAndFeel_V3 lookAndFeel3;
     Array<Range<int>> commentedSections;
 
 

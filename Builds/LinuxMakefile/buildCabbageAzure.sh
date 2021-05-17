@@ -79,3 +79,4 @@ g++ ../../Source/testCsoundFile.cpp -o testCsoundFile -I"/usr/local/include/csou
 sed "s@CURRENTDIR@$(pwd)@" Cabbage.desktop > ./install/desktop/cabbage.desktop
 sed "s@CURRENTDIR@$(pwd)@" Cabbage.desktop > ./install/desktop/cabbageLite.desktop
 # sed "s@CURRENTDIR@$(pwd)@" dummy.desktop > CabbageBuild/cabbagelite.desktop
+zip -r CabbageLinux.zip ./install

@@ -323,8 +323,8 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::saveDocumentAs);
     menu.addCommandItem (&commandManager, CommandIDs::saveAll);
     menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
-    menu.addCommandItem (&commandManager, CommandIDs::saveDocumentToRPi);
+   // menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
+   // menu.addCommandItem (&commandManager, CommandIDs::saveDocumentToRPi);
     menu.addSeparator();
     
     if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
@@ -377,7 +377,11 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneApp);
     
     if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
-        menu.addCommandItem (&commandManager, CommandIDs::exportAsFMODSoundPlugin);
+    {
+        menu.addCommandItem(&commandManager, CommandIDs::exportAsFMODSoundPlugin);
+        menu.addCommandItem(&commandManager, CommandIDs::exportAsFMODFxPlugin);
+    }
+
     
     menu.addSeparator();
     
@@ -552,6 +556,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::exportAsVCVRackModule,
         CommandIDs::nextTab,
         CommandIDs::exportAsFMODSoundPlugin,
+        CommandIDs::exportAsFMODFxPlugin,
         CommandIDs::copy,
         CommandIDs::cut,
         CommandIDs::clearConsole,
@@ -756,6 +761,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             
         case CommandIDs::exportAsFMODSoundPlugin:
             result.setInfo ("Export as FMOD Sound Plugin", "Exports as plugin", CommandCategories::general, 0);
+            break;
+
+        case CommandIDs::exportAsFMODFxPlugin:
+            result.setInfo("Export as FMOD Fx Plugin", "Exports as plugin", CommandCategories::general, 0);
             break;
             
         case CommandIDs::batchConvertExamplesAU:
@@ -1119,6 +1128,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             
         case CommandIDs::exportAsFMODSoundPlugin:
             pluginExporter.exportPlugin("FMOD", getContentComponent()->getCurrentCsdFile(), getPluginInfo(currentFile, "id"));
+            return true;
+
+        case CommandIDs::exportAsFMODFxPlugin:
+            pluginExporter.exportPlugin("FMODFx", getContentComponent()->getCurrentCsdFile(), getPluginInfo(currentFile, "id"));
             return true;
             
         case CommandIDs::exportTheme:

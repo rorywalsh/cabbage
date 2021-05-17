@@ -1564,12 +1564,14 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
 void CabbageMainComponent::launchHelpfile (String type)
 {
     String url = "";
-
-    CodeDocument::Position pos1, pos2;
-    pos1 = getCurrentCodeEditor()->getDocument().findWordBreakBefore (getCurrentCodeEditor()->getCaretPos());
-    pos2 = getCurrentCodeEditor()->getDocument().findWordBreakAfter (getCurrentCodeEditor()->getCaretPos());
-    String keyword = getCurrentCodeEditor()->getDocument().getTextBetween (pos1, pos2).trim();
-
+    String keyword = "";
+    if (getCurrentCodeEditor())
+    {
+        CodeDocument::Position pos1, pos2;
+        pos1 = getCurrentCodeEditor()->getDocument().findWordBreakBefore(getCurrentCodeEditor()->getCaretPos());
+        pos2 = getCurrentCodeEditor()->getDocument().findWordBreakAfter(getCurrentCodeEditor()->getCaretPos());
+        keyword = getCurrentCodeEditor()->getDocument().getTextBetween(pos1, pos2).trim();
+    }
     const String csoundHelpDir = cabbageSettings->getUserSettings()->getValue ("CsoundManualDir");
     const String cabbageHelpDir = cabbageSettings->getUserSettings()->getValue ("CabbageManualDir");
 

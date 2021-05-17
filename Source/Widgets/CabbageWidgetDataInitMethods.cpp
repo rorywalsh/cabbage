@@ -542,6 +542,7 @@ void CabbageWidgetData::setLabelProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, CabbageUtilities::getComponentFontColour().toString());
     setProperty (widgetData, CabbageIdentifierIds::align, "centre");
     setProperty (widgetData, CabbageIdentifierIds::fontstyle, 1);
+	setProperty(widgetData, CabbageIdentifierIds::fontsize, 0);
     setProperty (widgetData, CabbageIdentifierIds::channel, "");
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::corners, 3);
@@ -604,7 +605,7 @@ void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID, bool i
     setProperty (widgetData, CabbageIdentifierIds::metercolour, meterColours);
     setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::outlinethickness, 1);
-    setProperty (widgetData, CabbageIdentifierIds::value, 1);
+    setProperty (widgetData, CabbageIdentifierIds::value, 0.0);
     setProperty (widgetData, CabbageIdentifierIds::corners, 3);
     setProperty (widgetData, CabbageIdentifierIds::channel, "");
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");

@@ -682,7 +682,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
     {
         const String sliderFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgslider));
         const String sliderBgFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgsliderbg));
-        comps.add (new CabbageFilePropertyComponent ("Rotary Image", false, true, "*", sliderFile));
+        comps.add (new CabbageFilePropertyComponent ("Image", false, true, "*", sliderFile));
         comps.add (new CabbageFilePropertyComponent ("Background Image", false, true, "*", sliderBgFile));
     }
 

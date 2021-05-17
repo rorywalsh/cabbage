@@ -55,8 +55,8 @@ void ColourPropertyComponent::mouseDown (const MouseEvent& e)
         colourSelector->addChangeListener (this);
         colourSelector->setNameOfParent (name);
         colourSelector->setCurrentColour (colour);
-       // CallOutBox::launchAsynchronously (colourSelector, getScreenBounds(), nullptr);
-       // colour = colourSelector->getCurrentColour();
+        CallOutBox::launchAsynchronously (colourSelector, getScreenBounds(), nullptr);
+        colour = colourSelector->getCurrentColour();
 
     }
 }
@@ -129,7 +129,7 @@ void ColourMultiPropertyComponent::addNewColour (Colour newColour)
 {
     OverlayComponent* comp;
     overlayComponents.add (comp = new OverlayComponent ("overlay" + String (overlayComponents.size() + 1)));
-    comp->addMouseListener (this, false);
+    overlayComponents[overlayComponents.size()-1]->addMouseListener (this, true);
 
     comp->setColour (newColour);
     overlayComponentContainer.addAndMakeVisible (comp);
@@ -195,8 +195,8 @@ void ColourMultiPropertyComponent::mouseDown (const MouseEvent& e)
             colourSelector->addChangeListener (this);
             colourSelector->setNameOfParent (overlayComponentName);
             colourSelector->setCurrentColour (colours[colourIndex]);
-            //CallOutBox::launchAsynchronously (colourSelector, getScreenBounds(), nullptr);
-            //colour = colourSelector->getCurrentColour();
+            CallOutBox::launchAsynchronously (colourSelector, getScreenBounds(), nullptr);
+            colour = colourSelector->getCurrentColour();
         }
     }
 }

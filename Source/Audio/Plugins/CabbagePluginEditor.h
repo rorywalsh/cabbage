@@ -188,7 +188,7 @@ public:
     void sliderDragStarted(Slider* slider) override;
     void sliderDragEnded(Slider* slider) override;
     //=============================================================================
-    CabbageAudioParameter* getParameterForComponent (const String name);
+    CabbagePluginParameter* getParameterForComponent (const String name);
     //=============================================================================
     void setLastOpenedDirectory (const String lastDirectory)
     {

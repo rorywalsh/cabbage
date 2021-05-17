@@ -247,15 +247,40 @@ public:
 		std::unique_ptr < AudioProcessor> processor;
         
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(filename));
-		const int numChannels = CabbageUtilities::getHeaderInfo(File(filename).loadFileAsString(), "nchnls");
+        StringArray csdLines;
+        csdLines.addLines(File(filename).loadFileAsString());
+        int sideChainChannels = 0;
+        for (auto line : csdLines)
+        {
+            ValueTree temp("temp");
+            CabbageWidgetData::setWidgetState(temp, line, 0);
+            
+            if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+            {
+                sideChainChannels = CabbageWidgetData::getProperty(temp, CabbageIdentifierIds::sidechain);
+                break;
+            }
+            
+        }
+        
+        const String csdString = File(filename).loadFileAsString();
+        const int numOutChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls");
+        int numInChannels = numOutChannels;
+        if (CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != -1 && CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != 0)
+            numInChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") - sideChainChannels;
 
 
 
-		if (isCabbageFile)
-			processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(File(filename), AudioChannelSet::discreteChannels(numChannels), AudioChannelSet::discreteChannels(numChannels)));
-		else
-			processor = std::unique_ptr < GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(File(filename), AudioChannelSet::discreteChannels(numChannels), AudioChannelSet::discreteChannels(numChannels)));
+//        if (isCabbageFile)
+//            processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(File(filename), AudioChannelSet::discreteChannels(numInChannels), AudioChannelSet::discreteChannels(numChannels)));
+//        else
+//            processor = std::unique_ptr < GenericCabbagePluginProcessor>(new GenericCabbagePluginProcessor(File(filename), AudioChannelSet::discreteChannels(numInChannels), AudioChannelSet::discreteChannels(numChannels)));
 
+        if (sideChainChannels != 0)
+            processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(filename, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels), AudioChannelSet::canonicalChannelSet(sideChainChannels)));
+        else
+            processor = std::unique_ptr<CabbagePluginProcessor>(new CabbagePluginProcessor(filename, AudioChannelSet::canonicalChannelSet(numInChannels), AudioChannelSet::canonicalChannelSet(numOutChannels)));
+        
 		AudioProcessor::setTypeOfNextNewPlugin(AudioProcessor::wrapperType_Undefined);
 		jassert(processor != nullptr);
 		//processor->disableNonMainBuses();

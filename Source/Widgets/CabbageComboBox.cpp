@@ -107,12 +107,17 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     //load items from text file
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
-        String comboFile = File (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)).loadFileAsString();
+        auto tempFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file));
+        String comboFile = tempFile.loadFileAsString();
         StringArray lines = StringArray::fromLines (comboFile);
 
         for (int i = 0; i < lines.size(); ++i)
         {
-            addItem (lines[i], i + 1);
+            if (lines[i].isNotEmpty()) 
+            {
+                addItem(lines[i], i + 1);
+                stringItems.add(lines[i]);
+            }                
         }
     }
 

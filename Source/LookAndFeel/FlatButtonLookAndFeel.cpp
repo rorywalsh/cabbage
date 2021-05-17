@@ -228,7 +228,7 @@ void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int 
 
         //backgrounds
         g.setColour (trackerBgColour);
-        g.fillRoundedRectangle (sliderRadius, height * 0.425, width * 1.08, height * 0.15, height * 0.05); //main rectangle
+        g.fillRoundedRectangle (sliderRadius, height * 0.425, width + sliderRadius*1.95, height * 0.15, height * 0.05); //main rectangle
         
         const float scale = trackerThickness;
         const float ih = (height * scale);
@@ -306,7 +306,7 @@ void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int 
             }
             else
                 g.fillRoundedRectangle (ix, zeroPosProportional * height + sliderRadius,
-                    iw, sliderPos - sliderRadius - zeroPosProportional * height,
+                    iw, abs(sliderPos - sliderRadius - zeroPosProportional * height),
                     3.0f);
         }
     }
@@ -342,9 +342,9 @@ void FlatButtonLookAndFeel::drawLinearSliderThumb (Graphics& g, int x, int y, in
         }
         else
         {
-            kx = sliderPos;
+            kx = jmap(sliderPos, (float)x, float(x+width), float(x), (x+width)+sliderRadius);
             ky = y + height * 0.5f;
-            sliderWidth = sliderRadius * 1.25f;
+            sliderWidth = sliderRadius *1.25f;
             sliderHeight = sliderRadius * 2.0f;
         }
 

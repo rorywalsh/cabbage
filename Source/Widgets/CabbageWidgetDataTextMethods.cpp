@@ -646,7 +646,6 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
         }
     }
     
-    
     else if (identifier == "fontcolour:1")
     {
         if (getStringProp(widgetData, CabbageIdentifierIds::onfontcolour) !=
@@ -702,7 +701,7 @@ String CabbageWidgetData::getColoursTextAsCabbageCode (ValueTree widgetData, con
             && !type.contains("button")
             && !type.contains("checkbox")
             && !identifier.contains("tablecolour")
-            && !type.contains("meter"))
+            && !identifier.contains("metercolour"))
         {
             const Colour col = Colour::fromString (getStringProp (widgetData, identifier));
             colourString << identifier.trim() << "(" << (float)col.getRed() << ", " << (float)col.getGreen() << ", " << (float)col.getBlue() << ", " << (float)col.getAlpha() << ")";

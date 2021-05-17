@@ -25,7 +25,7 @@
 #include "../../CabbageIds.h"
 #include "../../Widgets/CabbageXYPad.h"
 
-class CabbageAudioParameter;
+class CabbagePluginParameter;
 
 class CabbagePluginProcessor : public CsoundPluginProcessor,
 public Timer
@@ -77,7 +77,7 @@ public:
     bool addImportFiles (StringArray& lineFromCsd);
     void parseCsdFile (StringArray& linesFromCsd);
     // use this instead of AudioProcessor::addParameter
-    void addCabbageParameter(std::unique_ptr<CabbageAudioParameter> parameter);
+    void addCabbageParameter(std::unique_ptr<CabbagePluginParameter> parameter);
     void createCabbageParameters();
     void updateWidgets (String csdText);
     void handleXmlImport (XmlElement* xml, StringArray& linesFromCsd);
@@ -92,7 +92,7 @@ public:
     void expandMacroText (String &line, ValueTree wData);
 	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
 	void setCabbageParameter(String channel, float value);
-    CabbageAudioParameter* getParameterForXYPad (String name);
+    CabbagePluginParameter* getParameterForXYPad (String name);
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
@@ -127,7 +127,7 @@ public:
 	}
     
     // use this instead of AudioProcessor::getParameters
-    const OwnedArray<CabbageAudioParameter>& getCabbageParameters() const { return parameters; }
+    const OwnedArray<CabbagePluginParameter>& getCabbageParameters() const { return parameters; }
     
 private:
     controlChannelInfo_s* csoundChanList;
@@ -145,7 +145,7 @@ private:
 	int screenWidth, screenHeight;
 	bool isUnityPlugin = false;
     int automationMode = 0;
-    OwnedArray<CabbageAudioParameter> parameters;
+    OwnedArray<CabbagePluginParameter> parameters;
 
 };
 
@@ -155,11 +155,11 @@ private:
  while being able to intercept calls to the host for parameters that are non-automatable.
  */
 
-class CabbageAudioParameter
+class CabbagePluginParameter
 {
     
 public:
-    CabbageAudioParameter(CabbagePluginProcessor* owner,
+    CabbagePluginParameter(CabbagePluginProcessor* owner,
                           ValueTree wData,
                           Csound& csound,
                           const String& channelToUse,
@@ -180,7 +180,7 @@ public:
 
     }
     
-    ~CabbageAudioParameter()
+    ~CabbagePluginParameter()
     {
         if (!hostParameterReleased)
         {
@@ -297,7 +297,7 @@ private:
         const String& getChannel() const { return channel; }
         
     private:
-        CabbageHostParameter(CabbageAudioParameter& owner,
+        CabbageHostParameter(CabbagePluginParameter& owner,
                              CabbagePluginProcessor* proc,
                              ValueTree wData,
                              Csound& csound,
@@ -329,12 +329,12 @@ private:
         float currentValue;
         bool isCombo = false;
         
-        CabbageAudioParameter& owner;
+        CabbagePluginParameter& owner;
         CabbagePluginProcessor* processor;
         
         mutable bool showingAffixes = true;
         
-        friend class CabbageAudioParameter;
+        friend class CabbagePluginParameter;
     };
     
     CabbageHostParameter* parameter;

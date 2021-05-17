@@ -55,6 +55,7 @@ namespace CommandIDs
         exportAsVST3Effect       = 0x2000742,
         exportAsAUSynth         = 0x200177,
         exportAsAUEffect        = 0x200174,
+        exportAsFMODFxPlugin = 0x200075,
         exportAsFMODSoundPlugin = 0x200078,
         stopAudioGraph          = 0x200079,
         clearConsole            = 0x20007a,
@@ -795,102 +796,102 @@ class CabbageIdentifierPropertyStringPairs : public StringPairArray
 public:
     CabbageIdentifierPropertyStringPairs()
     {
-        set ("X Position", CabbageIdentifierIds::left.toString());
-        set ("Y Position", CabbageIdentifierIds::top.toString());
-        set ("Width", CabbageIdentifierIds::width.toString());
-        set ("Height", CabbageIdentifierIds::height.toString());
-        set ("Pivot X", CabbageIdentifierIds::pivotx.toString());
-        set ("Pivot Y", CabbageIdentifierIds::pivoty.toString());
-        set ("Rotate", CabbageIdentifierIds::rotate.toString());
-        set ("Channel", CabbageIdentifierIds::channel.toString());
-        set ("Ident Channel", CabbageIdentifierIds::identchannel.toString());
-        set ("Minimum", CabbageIdentifierIds::min.toString());
-        set ("Maximum", CabbageIdentifierIds::max.toString());
-        set ("Skew", CabbageIdentifierIds::sliderskew.toString());
-        set ("Increment", CabbageIdentifierIds::increment.toString());
-        set ("Value", CabbageIdentifierIds::value.toString());
-        set ("Text", CabbageIdentifierIds::text.toString());
-        set ("Popup Text", CabbageIdentifierIds::popuptext.toString());
+        set ("Font Size", CabbageIdentifierIds::fontsize.toString());
         set ("Active", CabbageIdentifierIds::active.toString());
-        set ("Visible", CabbageIdentifierIds::visible.toString());
-        set ("Font: On", CabbageIdentifierIds::onfontcolour.toString());
-        set ("Font: Off", CabbageIdentifierIds::fontcolour.toString());
-        set ("Font", CabbageIdentifierIds::fontcolour.toString());
-        set ("Menu Colour", CabbageIdentifierIds::menucolour.toString());
-        set ("Colour: Off", CabbageIdentifierIds::colour.toString());
-        set ("Colour", CabbageIdentifierIds::colour.toString());
-        set ("Selected Row", CabbageIdentifierIds::highlightcolour.toString());
-        set ("Outline", CabbageIdentifierIds::outlinecolour.toString());
-        set ("Tracker", CabbageIdentifierIds::trackercolour.toString());
-        set ("Marker", CabbageIdentifierIds::markercolour.toString());
-        set ("Tracker Thickness", CabbageIdentifierIds::trackerthickness.toString());
-        set ("Inner Radius", CabbageIdentifierIds::trackerinsideradius.toString());
-        set ("Outer Radius", CabbageIdentifierIds::trackeroutsideradius.toString());
-        set ("Soundfiler Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
-        set ("Text Colour", CabbageIdentifierIds::textcolour.toString());
-        set ("Value Box", CabbageIdentifierIds::valuetextbox.toString());
-        set ("Value Box Colour", CabbageIdentifierIds::textboxcolour.toString());
-        set ("Value Box Outline", CabbageIdentifierIds::textboxoutlinecolour.toString());
-        set ("Outline Thickness", CabbageIdentifierIds::outlinethickness.toString());
-        set ("Line Thickness", CabbageIdentifierIds::linethickness.toString());
-        set ("Colour: On", CabbageIdentifierIds::oncolour.toString());
-        set ("White Notes", CabbageIdentifierIds::whitenotecolour.toString());
-        set ("Black Notes", CabbageIdentifierIds::blacknotecolour.toString());
-        set ("Key Separator", CabbageIdentifierIds::keyseparatorcolour.toString());
+        set ("Align", CabbageIdentifierIds::align.toString());
+        set ("Alpha", CabbageIdentifierIds::alpha.toString());
+        set ("Array Size", CabbageIdentifierIds::arraysize.toString());
         set ("Arrows Background", CabbageIdentifierIds::arrowbackgroundcolour.toString());
         set ("Arrows", CabbageIdentifierIds::arrowcolour.toString());
-        set ("Alpha", CabbageIdentifierIds::alpha.toString());
-        set ("Zoom", CabbageIdentifierIds::zoom.toString());
-        set ("Radio Group", CabbageIdentifierIds::radiogroup.toString());
-        set ("Corners", CabbageIdentifierIds::corners.toString());
-        set ("Shape", CabbageIdentifierIds::shape.toString());
-        set ("File", CabbageIdentifierIds::file.toString());
-        set ("Image File", CabbageIdentifierIds::file.toString());
-        set ("Text Align", CabbageIdentifierIds::align.toString());
-        set ("Align", CabbageIdentifierIds::align.toString());
-        set ("Velocity", CabbageIdentifierIds::velocity.toString());
-        set ("Min: X", CabbageIdentifierIds::minx.toString());
-        set ("Max: X", CabbageIdentifierIds::maxx.toString());
-        set ("Min: Y", CabbageIdentifierIds::miny.toString());
-        set ("Max: Y", CabbageIdentifierIds::maxy.toString());
-        set ("Value X", CabbageIdentifierIds::valuex.toString());
-        set ("Value Y", CabbageIdentifierIds::valuey.toString());
-        set ("Value Min", CabbageIdentifierIds::minvalue.toString());
-        set ("Value Max", CabbageIdentifierIds::maxvalue.toString());
-        set ("Background", CabbageIdentifierIds::backgroundcolour.toString());
-		set("Font Size", CabbageIdentifierIds::fontsize.toString());
-        set ("Ball", CabbageIdentifierIds::ballcolour.toString());
-        set ("Mode", CabbageIdentifierIds::mode.toString());
-        set ("Base Channel", CabbageIdentifierIds::basechannel.toString());
-        set ("Array Size", CabbageIdentifierIds::arraysize.toString());
-        set ("Rotary Image", CabbageIdentifierIds::imgslider.toString());
         set ("Background Image", CabbageIdentifierIds::imgsliderbg.toString());
+        set ("Background", CabbageIdentifierIds::backgroundcolour.toString());
+        set ("Ball", CabbageIdentifierIds::ballcolour.toString());
+        set ("Base Channel", CabbageIdentifierIds::basechannel.toString());
+        set ("Black Notes", CabbageIdentifierIds::blacknotecolour.toString());
+        set ("Cell Height", CabbageIdentifierIds::cellheight);
+        set ("Cell Width", CabbageIdentifierIds::cellwidth);
+        set ("Channel Type", CabbageIdentifierIds::channeltype.toString());
+        set ("Channel", CabbageIdentifierIds::channel.toString());
+        set ("Colour", CabbageIdentifierIds::colour.toString());
+        set ("Colour: Off", CabbageIdentifierIds::colour.toString());
+        set ("Colour: On", CabbageIdentifierIds::oncolour.toString());
+        set ("Corners", CabbageIdentifierIds::corners.toString());
+        set ("End Index", CabbageIdentifierIds::endpos.toString());
+        set ("File", CabbageIdentifierIds::file.toString());
+        set ("Fill", CabbageIdentifierIds::fill.toString());
+        set ("Font", CabbageIdentifierIds::fontcolour.toString());
+        set ("Font: Off", CabbageIdentifierIds::fontcolour.toString());
+        set ("Font: On", CabbageIdentifierIds::onfontcolour.toString());
         set ("Groupbox Image", CabbageIdentifierIds::imggroupbox.toString());
-        set ("On Image", CabbageIdentifierIds::imgbuttonon.toString());
-        set ("Over Image", CabbageIdentifierIds::imgbuttonover.toString());
-        set ("Off Image", CabbageIdentifierIds::imgbuttonoff.toString());
-        set ("Mouse Over", CabbageIdentifierIds::mouseoverkeycolour.toString());
+        set ("Height", CabbageIdentifierIds::height.toString());
+        set ("Ident Channel", CabbageIdentifierIds::identchannel.toString());
+        set ("Image File", CabbageIdentifierIds::file.toString());
+        set ("Increment", CabbageIdentifierIds::increment.toString());
+        set ("Inner Radius", CabbageIdentifierIds::trackerinsideradius.toString());
+        set ("Key Separator", CabbageIdentifierIds::keyseparatorcolour.toString());
+        set ("Line Thickness", CabbageIdentifierIds::linethickness.toString());
+        set ("Marker", CabbageIdentifierIds::markercolour.toString());
         set ("Max Amp", CabbageIdentifierIds::amprange_max.toString());
+        set ("Max: X", CabbageIdentifierIds::maxx.toString());
+        set ("Max: Y", CabbageIdentifierIds::maxy.toString());
+        set ("Maximum", CabbageIdentifierIds::max.toString());
+        set ("Menu Colour", CabbageIdentifierIds::menucolour.toString());
+        set ("Meter", CabbageIdentifierIds::metercolour.toString());
         set ("Min Amp", CabbageIdentifierIds::amprange_min.toString());
-        set ("Table No.", CabbageIdentifierIds::amprange_tablenumber.toString());
+        set ("Min: X", CabbageIdentifierIds::minx.toString());
+        set ("Min: Y", CabbageIdentifierIds::miny.toString());
+        set ("Minimum", CabbageIdentifierIds::min.toString());
+        set ("Mode", CabbageIdentifierIds::mode.toString());
+        set ("Mouse Over", CabbageIdentifierIds::mouseoverkeycolour.toString());
+        set ("Off Image", CabbageIdentifierIds::imgbuttonoff.toString());
+        set ("On Image", CabbageIdentifierIds::imgbuttonon.toString());
+        set ("Orientation", CabbageIdentifierIds::orientation.toString());
+        set ("Outer Radius", CabbageIdentifierIds::trackeroutsideradius.toString());
+        set ("Outline Thickness", CabbageIdentifierIds::outlinethickness.toString());
+        set ("Outline", CabbageIdentifierIds::outlinecolour.toString());
+        set ("Over Image", CabbageIdentifierIds::imgbuttonover.toString());
+        set ("Overlay Colour", CabbageIdentifierIds::overlaycolour.toString());
+        set ("Pivot X", CabbageIdentifierIds::pivotx.toString());
+        set ("Pivot Y", CabbageIdentifierIds::pivoty.toString());
+        set ("Populate", CabbageIdentifierIds::populate.toString());
+        set ("Popup Text", CabbageIdentifierIds::popuptext.toString());
         set ("Quantise", CabbageIdentifierIds::amprange_quantise.toString());
+        set ("Radio Group", CabbageIdentifierIds::radiogroup.toString());
+        set ("Rotary Image", CabbageIdentifierIds::imgslider.toString());
+        set ("Rotate", CabbageIdentifierIds::rotate.toString());
+        set ("Scrubber Pos", CabbageIdentifierIds::scrubberposition_sample.toString());
+        set ("Scrubber Table", CabbageIdentifierIds::scrubberposition_table.toString());
+        set ("Selected Row", CabbageIdentifierIds::highlightcolour.toString());
+        set ("Shape", CabbageIdentifierIds::shape.toString());
+        set ("Skew", CabbageIdentifierIds::sliderskew.toString());
+        set ("Soundfiler Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
+        set ("Start Index", CabbageIdentifierIds::startpos.toString());
+        set ("Table Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
+        set ("Table Grid", CabbageIdentifierIds::tablegridcolour.toString());
+        set ("Table No.", CabbageIdentifierIds::amprange_tablenumber.toString());
         set ("Table Numbers", CabbageIdentifierIds::tablenumber.toString());
         set ("Tables", CabbageIdentifierIds::tablecolour.toString());
-        set ("Meter", CabbageIdentifierIds::metercolour.toString());
-        set ("Table Grid", CabbageIdentifierIds::tablegridcolour.toString());
-        set ("Table Background", CabbageIdentifierIds::tablebackgroundcolour.toString());
-        set ("Overlay Colour", CabbageIdentifierIds::overlaycolour.toString());
-        set ("Fill", CabbageIdentifierIds::fill.toString());
+        set ("Text Align", CabbageIdentifierIds::align.toString());
+        set ("Text Colour", CabbageIdentifierIds::textcolour.toString());
+        set ("Text", CabbageIdentifierIds::text.toString());
+        set ("Tracker Thickness", CabbageIdentifierIds::trackerthickness.toString());
+        set ("Tracker", CabbageIdentifierIds::trackercolour.toString());
+        set ("Value Box Colour", CabbageIdentifierIds::textboxcolour.toString());
+        set ("Value Box Outline", CabbageIdentifierIds::textboxoutlinecolour.toString());
+        set ("Value Box", CabbageIdentifierIds::valuetextbox.toString());
+        set ("Value Max", CabbageIdentifierIds::maxvalue.toString());
+        set ("Value Min", CabbageIdentifierIds::minvalue.toString());
+        set ("Value X", CabbageIdentifierIds::valuex.toString());
+        set ("Value Y", CabbageIdentifierIds::valuey.toString());
+        set ("Value", CabbageIdentifierIds::value.toString());
+        set ("Velocity", CabbageIdentifierIds::velocity.toString());
+        set ("Visible", CabbageIdentifierIds::visible.toString());
+        set ("White Notes", CabbageIdentifierIds::whitenotecolour.toString());
+        set ("Width", CabbageIdentifierIds::width.toString());
+        set ("Y Position", CabbageIdentifierIds::top.toString());
         set ("Zoom", CabbageIdentifierIds::zoom.toString());
-        set ("Start Index", CabbageIdentifierIds::startpos.toString());
-        set ("End Index", CabbageIdentifierIds::endpos.toString());
-        set ("Scrubber Table", CabbageIdentifierIds::scrubberposition_table.toString());
-        set ("Scrubber Pos", CabbageIdentifierIds::scrubberposition_sample.toString());
-        set ("Orientation", CabbageIdentifierIds::orientation.toString());
-        set ("Populate", CabbageIdentifierIds::populate.toString());
-        set ("Channel Type", CabbageIdentifierIds::channeltype.toString());
-        set ("Cell Width", CabbageIdentifierIds::cellwidth);
-        set ("Cell Height", CabbageIdentifierIds::cellheight);
+        set ("Zoom", CabbageIdentifierIds::zoom.toString());
+        set ("X Position", CabbageIdentifierIds::left.toString());
     }
 };
 
@@ -934,7 +935,7 @@ static const char* const CsoundKeywords[] =
     "delayk", "delayr", "delayw", "deltap", "deltap3", "deltapi", "deltapn", "deltapx", "deltapxw", "denorm", "diff", "diskin", "diskin2", "dispfft", "display", "distort1", "divz", "downsamp", "dripwater",
     "dssiactivate", "dssiaudio", "dssictls", "dssiinit", "dssilist", "dumpk", "dumpk2", "dumpk3", "dumpk4", "duserrnd", "else", "elseif", "endif", "endin", "endop", "envlpx", "envlpxr", "event", "event_i",
     "exitnow", "exp", "expon", "exprand", "expseg", "expsega", "expsegr", "filelen", "filenchnls", "filepeak", "filesr", "filter2", "fin", "fini", "fink", "fiopen", "flanger", "flashtxt", "FLbox", "FLbutBank",
-    "FLbutton", "FLcolor", "FLcolor2", "FLcount", "FLgetsnap", "FLgroup", "FLgroupEnd", "FLgroupEnd", "FLhide", "FLjoy", "FLkeyb", "FLknob", "FLlabel", "FLloadsnap", "flooper", "floor", "FLpack", "FLpackEnd",
+    "FLbutton", "FLcolor", "FLcolor2", "FLcount", "FLgetsnap", "FLgroup", "FLgroupEnd", "FLgroupEnd", "FLhide", "FLjoy", "fontsize", "FLkeyb", "FLknob", "FLlabel", "FLloadsnap", "flooper", "floor", "FLpack", "FLpackEnd",
     "FLpackEnd", "FLpanel", "FLpanelEnd", "FLpanel_end", "FLprintk", "FLprintk2", "FLroller", "FLrun", "FLsavesnap", "FLscroll", "FLscrollEnd", "FLscroll_end", "FLsetAlign", "FLsetBox", "FLsetColor",
     "FLsetColor2", "FLsetFont", "FLsetPosition", "FLsetSize", "FLsetsnap", "FLsetText", "FLsetTextColor", "FLsetTextSize", "FLsetTextType", "FLsetVal_i", "FLsetVal", "FLshow", "FLslidBnk", "FLslider",
     "FLtabs", "FLtabsEnd", "FLtabs_end", "FLtext", "FLupdate", "fluidAllOut", "fluidCCi", "fluidCCk", "fluidControl", "fluidEngine", "fluidLoad", "fluidNote", "fluidOut", "fluidProgramSelect", "FLvalue",
@@ -946,7 +947,7 @@ static const char* const CsoundKeywords[] =
     "islider8", "itablecopy", "itablegpw", "itablemix", "itablew", "itrirand", "iunirand", "iweibull", "jitter", "jitter2", "jspline", "k", "kbetarand", "kbexprnd", "kcauchy", "kdump", "kdump2", "kdump3",
     "kdump4", "kexprand", "kfilter2", "kgauss", "kgoto", "klinrand", "kon", "koutat", "koutc", "koutc14", "koutpat", "koutpb", "koutpc", "kpcauchy", "kpoisson", "kpow", "kr", "kread", "kread2", "kread3",
     "kread4", "ksmps", "ktableseg", "ktrirand", "kunirand", "kweibull", "lfo", "limit", "line", "linen", "linenr", "lineto", "linrand", "linseg", "linsegr", "locsend", "locsig", "log", "log10", "logbtwo",
-    "loop", "loopseg", "loopsegp", "lorenz", "lorisread", "lorismorph", "lorisplay", "loscil", "loscil3", "lowpass2", "lowres", "lowresx", "lpf18", "lpfreson", "lphasor", "lpinterp", "lposcil", "lposcil3",
+    "loop", "loopseg", "loopsegp", "lorenz", "lorisread", "lorismorph", "lorisplay", "loscil", "liveconv", "loscil3", "lowpass2", "lowres", "linethickness", "lowresx", "lpf18", "lpfreson", "lphasor", "lpinterp", "lposcil", "lposcil3",
     "lpread", "lpreson", "lpshold", "lpsholdp", "lpslot", "mac", "maca", "madsr", "mandel", "mandol", "marimba", "massign", "maxalloc", "max_k", "mclock", "mdelay", "metro", "midic14", "midic21", "midic7",
     "midichannelaftertouch", "midichn", "midicontrolchange", "midictrl", "mididefault", "midiin", "midinoteoff", "midinoteoncps", "midinoteonkey", "midinoteonoct", "midinoteonpch", "midion", "midion2",
     "midiout", "midipitchbend", "midipolyaftertouch", "midiprogramchange", "miditempo", "mirror", "MixerSetLevel", "MixerGetLevel", "MixerSend", "MixerReceive", "MixerClear", "moog", "moogladder", "mouseinteraction"
