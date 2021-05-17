@@ -2,19 +2,19 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Flanger") size(510,100), pluginid("flan") style("legacy")
-image pos(0, 0), size(510,100), colour("lightgreen"), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
+form caption("Flanger") size(510,100), pluginId("flan") style("legacy")
+image pos(0, 0), size(510,100), colour("lightgreen"), shape("rounded"), outlineColour("white"), outlineThickness(4) 
 line	 bounds( 15, 10,190,  2)
-label    bounds( 75,  7, 70, 10), text("MODULATION"), fontcolour("white"), colour(100,110,130)
-rslider  bounds(  5, 20, 70, 70), text("Rate"),     channel("rate"),  range(0.001, 40, 0.15, 0.5, 0.001),      colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
-rslider  bounds( 75, 20, 70, 70), text("Depth"),    channel("depth"), range(0, 0.01, 0.005,1,0.0001),          colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
-rslider  bounds(145, 20, 70, 70), text("Offset"),    channel("delay"), range(0.00002, 0.1, 0.0001, 0.5, 0.0001), colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
-rslider  bounds(215, 20, 70, 70), text("Feedback"), channel("fback"), range(-1, 1, 0),                         colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
-checkbox bounds(290, 20, 80, 15), colour("yellow"), channel("ThruZero"),  value(1), text("Thru.Zero"), fontcolour(  0, 30,  0)
-label    bounds(295, 47, 65, 12), text("LFO Shape:"), fontcolour(  0, 30,  0)
+label    bounds( 75,  7, 70, 10), text("MODULATION"), fontColour("white"), colour(100,110,130)
+rslider  bounds(  5, 20, 70, 70), text("Rate"),     channel("rate"),  range(0.001, 40, 0.15, 0.5, 0.001),      colour("DarkGreen"), trackerColour( 50,150, 50), textColour(  0, 30,  0)
+rslider  bounds( 75, 20, 70, 70), text("Depth"),    channel("depth"), range(0, 0.01, 0.005,1,0.0001),          colour("DarkGreen"), trackerColour( 50,150, 50), textColour(  0, 30,  0)
+rslider  bounds(145, 20, 70, 70), text("Offset"),    channel("delay"), range(0.00002, 0.1, 0.0001, 0.5, 0.0001), colour("DarkGreen"), trackerColour( 50,150, 50), textColour(  0, 30,  0)
+rslider  bounds(215, 20, 70, 70), text("Feedback"), channel("fback"), range(-1, 1, 0),                         colour("DarkGreen"), trackerColour( 50,150, 50), textColour(  0, 30,  0)
+checkbox bounds(290, 20, 80, 15), colour("yellow"), channel("ThruZero"),  value(1), text("Thru.Zero"), fontColour(  0, 30,  0)
+label    bounds(295, 47, 65, 12), text("LFO Shape:"), fontColour(  0, 30,  0)
 combobox bounds(290, 60, 80, 18), channel("lfoshape"), value(1), text("parabola", "sine", "triangle", "randomi", "randomh")
-rslider  bounds(370, 20, 70, 70), text("Mix"),      channel("mix"),   range(0, 1.00, 0.5),                     colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
-rslider  bounds(435, 20, 70, 70), text("Level"), channel("level"), range(0, 1.00, 1), colour("DarkGreen"), trackercolour( 50,150, 50), textcolour(  0, 30,  0)
+rslider  bounds(370, 20, 70, 70), text("Mix"),      channel("mix"),   range(0, 1.00, 0.5),                     colour("DarkGreen"), trackerColour( 50,150, 50), textColour(  0, 30,  0)
+rslider  bounds(435, 20, 70, 70), text("Level"), channel("level"), range(0, 1.00, 1), colour("DarkGreen"), trackerColour( 50,150, 50), textColour(  0, 30,  0)
 </Cabbage>
 
 <CsoundSynthesizer>

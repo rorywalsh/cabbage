@@ -191,7 +191,6 @@ void ComponentOverlay::mouseUp (const MouseEvent& e)
 
 void ComponentOverlay::mouseDrag (const MouseEvent& e)
 {
-
     if (e.eventComponent != resizer)
     {
         bool multipleSelection = false;

@@ -61,7 +61,7 @@ Soundfiler::Soundfiler (int sr, Colour col, Colour bgcol):
     currentPositionMarker (new DrawableRectangle()),
     scrubberPosition (0),
     sampleRate (sr),
-    regionWidth (1),
+    regionWidth (0),
     thumbnailCache (5),
     colour (col),
     bgColour (bgcol),
@@ -125,6 +125,12 @@ void Soundfiler::scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRan
 {
     if (scrollBarThatHasMoved == scrollbar.get())
         setRange (visibleRange.movedToStartAt (newRangeStart));
+}
+
+void Soundfiler::showScrollbars (bool show)
+{
+    if(scrollbar)
+        scrollbar->setVisible(false);
 }
 
 void Soundfiler::setFile (const File& file)
@@ -210,7 +216,7 @@ void Soundfiler::paint (Graphics& g)
         thumbArea.setHeight (getHeight() - 14);
         thumbArea.setTop (10.f);
         thumbnail->drawChannels (g, thumbArea.reduced (2),
-                                 visibleRange.getStart(), visibleRange.getEnd(), .8f);
+                                 visibleRange.getStart(), visibleRange.getEnd(), 1.f);
 
         //if(regionWidth>1){
         g.setColour (colour.contrasting (.5f).withAlpha (.7f));
@@ -300,8 +306,9 @@ void Soundfiler::setScrubberPos (double pos)
         if (pos != 0)
         {
             pos = (pos / (thumbnail->getTotalLength() * sampleRate)) * thumbnail->getTotalLength();
-            currentPositionMarker->setRectangle(Rectangle<float>(timeToX(pos) - 0.75f, 10,
-                1.5f, (float)(getHeight() - scrollbar->getHeight() - 10)));
+            
+            currentPositionMarker->setRectangle(Rectangle<float>(timeToX(pos), 10,
+                1.5f, (double)(getHeight() - scrollbar->getHeight() - 10)));
         }
         if (pos < 0.5)
             setRange (visibleRange.movedToStartAt (0));

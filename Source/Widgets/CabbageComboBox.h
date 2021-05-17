@@ -23,6 +23,7 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
+
 class CabbagePluginEditor;
 class CabbageComboBox
     : public ComboBox,
@@ -42,7 +43,7 @@ class CabbageComboBox
     Array<File> folderFiles;
     StringArray stringItems;
     StringArray presets;
-
+    CabbageLookAndFeel2 lookAndFeel;
 public:
 
     CabbageComboBox (ValueTree cAttr, CabbagePluginEditor* _owner);

@@ -11,23 +11,23 @@
 ; x position controls panning position for both horizontals and verticals
 
 <Cabbage>
-form caption("Bounce") size(610, 360), pluginid("bnce")
+form caption("Bounce") size(610, 360), pluginId("bnce")
 
 ; box 1 image    bounds(  0,  0,230,250), colour(200,100,100,200), 
-shape("rounded"), ouTlinecolour("white"), outlinethickness(0) 
-xypad    bounds(  0, 0,230,250), colour(200,100,100,200), channel("x1", "y1"), rangex(0, 1.00, 0), rangey(0, 1, 0)
+shape("rounded"), ouTlinecolour("white"), outlineThickness(0) 
+xypad    bounds(  0, 0,230,250), colour(200,100,100,200), channel("x1", "y1"), rangeX(0, 1.00, 0), rangeY(0, 1, 0)
 
 ; box 2
-image    bounds(230,  0,270,250), colour(100,200,200,200),shape("rounded"), outlinecolour("white"), line(0)
-xypad    bounds(230,  0,270,250), colour(100,200,200,200), channel("x2", "y2"), rangex(0, 1.00, 0), rangey(0, 1, 0)
+image    bounds(230,  0,270,250), colour(100,200,200,200),shape("rounded"), outlineColour("white"), line(0)
+xypad    bounds(230,  0,270,250), colour(100,200,200,200), channel("x2", "y2"), rangeX(0, 1.00, 0), rangeY(0, 1, 0)
 
 ; box 3
-image    bounds(  0,250,500,110), colour(100,100,200,200),shape("rounded"), outlinecolour("white"), line(0)
-xypad    bounds(  0,250,500,110), colour(100,100,200,200), channel("x3", "y3"), rangex(0, 1.00, 0), rangey(0, 1, 0)
+image    bounds(  0,250,500,110), colour(100,100,200,200),shape("rounded"), outlineColour("white"), line(0)
+xypad    bounds(  0,250,500,110), colour(100,100,200,200), channel("x3", "y3"), rangeX(0, 1.00, 0), rangeY(0, 1, 0)
 
 ; box 4
-image    bounds(500,  0,110,360), colour(100,200,100,200),shape("rounded"), outlinecolour("white"), line(0)
-xypad    bounds(500,  0,110,360), colour(100,200,100,200), channel("x4", "y4"), rangex(0, 1.00, 0), rangey(0, 1, 0)
+image    bounds(500,  0,110,360), colour(100,200,100,200),shape("rounded"), outlineColour("white"), line(0)
+xypad    bounds(500,  0,110,360), colour(100,200,100,200), channel("x4", "y4"), rangeX(0, 1.00, 0), rangeY(0, 1, 0)
 
 </Cabbage>
 

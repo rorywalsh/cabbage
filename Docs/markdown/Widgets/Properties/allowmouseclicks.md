@@ -1,2 +1,0 @@
-<a name="allowmouseclicks"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
-**allowmouseclicks(val)** This sets whether the image can accept mouse clicks (default), or whether they should be passed to the widget under the image. 

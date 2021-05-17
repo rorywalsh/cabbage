@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.5.13"
+<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.5.44"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
               jucerVersion="5.4.7" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="14" companyCopyright="">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
+      <GROUP id="{79BAF709-725B-0011-2B8F-19764599A5F1}" name="Opcodes">
+        <FILE id="frSdmC" name="CabbageIdentifierOpcodes.cpp" compile="1" resource="0"
+              file="Source/Opcodes/CabbageIdentifierOpcodes.cpp"/>
+        <FILE id="hug30n" name="CabbageIdentifierOpcodes.h" compile="0" resource="0"
+              file="Source/Opcodes/CabbageIdentifierOpcodes.h"/>
+        <FILE id="Edf5fO" name="opcodes.hpp" compile="0" resource="0" file="Source/Opcodes/opcodes.hpp"/>
+      </GROUP>
       <GROUP id="{EFD0F6CA-6C41-91A9-F9C2-8DB9116E5A2D}" name="Application">
         <FILE id="LrRPa8" name="FileTab.h" compile="0" resource="0" file="Source/Application/FileTab.h"/>
         <FILE id="DLROLQ" name="FileTab.cpp" compile="1" resource="0" file="Source/Application/FileTab.cpp"/>
@@ -186,14 +193,6 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{75DB6341-3F9B-0D75-CA59-C9FD48A46CD2}" name="Widgets">
-        <FILE id="ato7Fa" name="CabbageRackWidgets.cpp" compile="1" resource="0"
-              file="Source/Widgets/CabbageRackWidgets.cpp"/>
-        <FILE id="Mx9IuR" name="CabbageRackWidgets.h" compile="0" resource="0"
-              file="Source/Widgets/CabbageRackWidgets.h"/>
-        <FILE id="jaBD7N" name="CabbageKeyboardDisplay.cpp" compile="1" resource="0"
-              file="Source/Widgets/CabbageKeyboardDisplay.cpp"/>
-        <FILE id="dpqsn7" name="CabbageKeyboardDisplay.h" compile="0" resource="0"
-              file="Source/Widgets/CabbageKeyboardDisplay.h"/>
         <GROUP id="{39718DAA-6F71-5044-A75A-E63898BD3051}" name="Legacy">
           <FILE id="xwsGZ8" name="FrequencyRangeDisplayComponent.h" compile="0"
                 resource="0" file="Source/Widgets/Legacy/FrequencyRangeDisplayComponent.h"/>
@@ -259,7 +258,19 @@
               file="Source/Widgets/CabbageKeyboard.h"/>
         <FILE id="LO1QxG" name="CabbageLabel.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageLabel.cpp"/>
+        <FILE id="ato7Fa" name="CabbageRackWidgets.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageRackWidgets.cpp"/>
+        <FILE id="Mx9IuR" name="CabbageRackWidgets.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageRackWidgets.h"/>
+        <FILE id="jaBD7N" name="CabbageKeyboardDisplay.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageKeyboardDisplay.cpp"/>
+        <FILE id="dpqsn7" name="CabbageKeyboardDisplay.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageKeyboardDisplay.h"/>
         <FILE id="QBhCqn" name="CabbageLabel.h" compile="0" resource="0" file="Source/Widgets/CabbageLabel.h"/>
+        <FILE id="wQpBtV" name="CabbageOptionButton.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageOptionButton.cpp"/>
+        <FILE id="Rt2XYC" name="CabbageOptionButton.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageOptionButton.h"/>
         <FILE id="Qn4aP7" name="CabbageRangeSlider.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageRangeSlider.cpp"/>
         <FILE id="RVtSKH" name="CabbageRangeSlider.h" compile="0" resource="0"
@@ -348,7 +359,7 @@
                        libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
                        osxCompatibility="10.8 SDK" osxArchitecture="64BitIntel" enablePluginBinaryCopyStep="1"/>
-        <CONFIGURATION name="Release" isDebug="0" optimisation="3" targetName="Cabbage"
+        <CONFIGURATION name="Release" isDebug="1" optimisation="3" targetName="Cabbage"
                        libraryPath="" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
                        customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
                        osxCompatibility="10.8 SDK" osxArchitecture="64BitIntel" enablePluginBinaryCopyStep="1"/>
@@ -368,7 +379,7 @@
         <MODULEPATH id="juce_audio_basics" path="../JUCE/"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1"
+    <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;"
             externalLibraries="csound64.lib" windowsTargetPlatformVersion="10.0.17763.0"
             smallIcon="vNeY7N" bigIcon="vNeY7N" vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK">
       <CONFIGURATIONS>
@@ -412,7 +423,7 @@
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
       </MODULEPATHS>
     </CLION>
-    <VS2019 targetFolder="Builds/VisualStudio2019" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;CABBAGE=1"
+    <VS2019 targetFolder="Builds/VisualStudio2019" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;"
             vstLegacyFolder="C:\SDKs\VST_SDK\VST3_SDK" smallIcon="vNeY7N"
             bigIcon="vNeY7N" externalLibraries="csound64.lib">
       <CONFIGURATIONS>
@@ -453,7 +464,7 @@
   </MODULES>
   <JUCEOPTIONS JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0" JUCE_ASIO="1"
                JUCE_PLUGINHOST_VST="1" JUCE_PLUGINHOST_VST3="1" JUCE_WASAPI_EXCLUSIVE="1"
-               JUCE_WASAPI="1" JUCE_USE_OGGVORBIS="0" JUCE_USE_FLAC="0"/>
+               JUCE_WASAPI="1" JUCE_USE_OGGVORBIS="0" JUCE_USE_FLAC="1"/>
   <LIVE_SETTINGS>
     <LINUX/>
     <OSX/>

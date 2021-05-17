@@ -16,30 +16,30 @@
 ; will be stretch, compressed and moved appropriately.
 
 <Cabbage>
-form caption("Mouse Chord") size(700, 500), pluginid("MChd"), scrollbars(0), guirefresh(64) style("legacy")
-image bounds(0,0,0,0),     colour(255,100,0),   shape("rounded"), outlinecolour("white"), line(1), identchannel("1") 		; I
-image bounds(0,0,0,0),     colour("Blue"),      shape("rounded"), outlinecolour("white"), line(1), identchannel("2") 		; II
-image bounds(0,0,0,0),     colour("Yellow"),    shape("rounded"), outlinecolour("white"), line(1), identchannel("3") 		; III
-image bounds(0,0,0,0),     colour("Green"),     shape("rounded"), outlinecolour("white"), line(1), identchannel("4") 		; IV
-image bounds(0,0,0,0),     colour(255,0,0),     shape("rounded"), outlinecolour("white"), line(1), identchannel("5") 		; V
-image bounds(0,0,0,0),     colour("Purple"),    shape("rounded"), outlinecolour("white"), line(1), identchannel("6") 		; VI
-image bounds(0,0,0,0),     colour(150, 40, 40), shape("rounded"), outlinecolour("white"), line(1), identchannel("7") 	; VII
-label bounds(132,270, 40, 50), text("I"),   fontcolour("white"), align("centre"), identchannel("11")
-label bounds(380,270, 45, 50), text("II"),  fontcolour("white"), align("centre"), identchannel("22")
-label bounds(615,270, 70, 50), text("III"), fontcolour("white"), align("centre"), identchannel("33")
-label bounds(875,270, 60, 50), text("IV"),  fontcolour("white"), align("centre"), identchannel("44")
-label bounds(220,620, 60, 50), text("V"),   fontcolour("white"), align("centre"), identchannel("55")
-label bounds(470,620, 60, 50), text("VI"),  fontcolour("white"), align("centre"), identchannel("66")
-label bounds(708,620, 80, 50), text("VII"), fontcolour("white"), align("centre"), identchannel("77")
+form caption("Mouse Chord") size(700, 500), pluginId("MChd"), scrollBars(0), guiRefresh(64) style("legacy")
+image bounds(0,0,0,0),     colour(255,100,0),   shape("rounded"), outlineColour("white"), line(1), identChannel("1") 		; I
+image bounds(0,0,0,0),     colour("Blue"),      shape("rounded"), outlineColour("white"), line(1), identChannel("2") 		; II
+image bounds(0,0,0,0),     colour("Yellow"),    shape("rounded"), outlineColour("white"), line(1), identChannel("3") 		; III
+image bounds(0,0,0,0),     colour("Green"),     shape("rounded"), outlineColour("white"), line(1), identChannel("4") 		; IV
+image bounds(0,0,0,0),     colour(255,0,0),     shape("rounded"), outlineColour("white"), line(1), identChannel("5") 		; V
+image bounds(0,0,0,0),     colour("Purple"),    shape("rounded"), outlineColour("white"), line(1), identChannel("6") 		; VI
+image bounds(0,0,0,0),     colour(150, 40, 40), shape("rounded"), outlineColour("white"), line(1), identChannel("7") 	; VII
+label bounds(132,270, 40, 50), text("I"),   fontColour("white"), align("centre"), identChannel("11")
+label bounds(380,270, 45, 50), text("II"),  fontColour("white"), align("centre"), identChannel("22")
+label bounds(615,270, 70, 50), text("III"), fontColour("white"), align("centre"), identChannel("33")
+label bounds(875,270, 60, 50), text("IV"),  fontColour("white"), align("centre"), identChannel("44")
+label bounds(220,620, 60, 50), text("V"),   fontColour("white"), align("centre"), identChannel("55")
+label bounds(470,620, 60, 50), text("VI"),  fontColour("white"), align("centre"), identChannel("66")
+label bounds(708,620, 80, 50), text("VII"), fontColour("white"), align("centre"), identChannel("77")
 
 combobox bounds(  5, 20, 70, 20), channel("key"), value(12), text("B", "A#", "A", "G#", "G", "F#", "F", "E", "D#", "D", "C#", "C")
 combobox bounds( 80, 20, 70, 20), channel("oct"), value(3), text("2", "1", "0", "-1", "-2")
 combobox bounds(155, 20, 70, 20), channel("ton"), value(2), text("minor", "major")
 combobox bounds(230, 20, 70, 20), channel("ins"), value(1), text("strings", "brass")
-label    bounds( 20,  5, 30, 11), text("Key"), fontcolour("white")
-label    bounds( 85,  5, 50, 11), text("Octave"), fontcolour("white")
-label    bounds(158,  5, 55, 11), text("Tonality"), fontcolour("white")
-label    bounds(230,  5, 70, 11), text("Instrument"), fontcolour("white"), align("centre")
+label    bounds( 20,  5, 30, 11), text("Key"), fontColour("white")
+label    bounds( 85,  5, 50, 11), text("Octave"), fontColour("white")
+label    bounds(158,  5, 55, 11), text("Tonality"), fontColour("white")
+label    bounds(230,  5, 70, 11), text("Instrument"), fontColour("white"), align("centre")
 
 </Cabbage>
 

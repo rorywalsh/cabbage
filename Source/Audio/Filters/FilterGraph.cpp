@@ -178,6 +178,7 @@ PluginWindow* FilterGraph::getOrCreateWindowFor (AudioProcessorGraph::Node* node
        #endif
 
 		PluginWindow* w = new PluginWindow(node, type, activePluginWindows);
+        //w->setColour(ResizableWindow::ColourIds::backgroundColourId );
 		//w->setVisible(false);
         return activePluginWindows.add (w);
     }

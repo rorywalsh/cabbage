@@ -19,18 +19,18 @@
 
 
 <Cabbage>
-form caption("Reverse") size(455, 95), pluginid("rvrs") style("legacy")
-image           bounds(0, 0, 455, 95), colour("darkslategrey"), shape("rounded"), outlinecolour("white"), line(4)
-rslider  bounds( 10, 10,  75, 75), text("Time L"),    channel("timeL"),   range(0.010, 4, 1, 0.5,0.001),colour(37,59,59)   textcolour(255,255,200), trackercolour(lightblue)
-rslider  bounds( 80, 10,  75, 75), text("Time R"),    channel("timeR"),   range(0.010, 4, 1, 0.5,0.001),colour(37,59,59)   textcolour(255,255,200), trackercolour(lightblue)
-rslider  bounds(150, 10, 75, 75),  text("Spread"),    channel("spread"),  range(0, 1.00, 1),            colour(37,59,59)   textcolour(255,255,200), trackercolour(lightblue)
-rslider  bounds(220, 10, 75, 75),  text("Mix"),       channel("mix"),     range(0, 1.00, 1),            colour(37,59,59)   textcolour(255,255,200), trackercolour(lightblue)
-rslider  bounds(290, 10, 75, 75),  text("Level"),     channel("level"),   range(0, 1.00, 1, 0.5),       colour(37,59,59)   textcolour(255,255,200), trackercolour(lightblue)
-checkbox bounds(370, 12, 100, 12), text("Reverse"),   channel("reverse"),  value(1),                    colour(255,255, 50)     fontcolour(255,255,200)
-checkbox bounds(370, 27, 100, 12), text("Forward"),   channel("forward"),  value(0),                    colour(255,255, 50)     fontcolour(255,255,200)
-checkbox bounds(370, 42, 100, 12), text("Link L&R"),  channel("link"),     value(0),                    colour(255,255, 50)     fontcolour(255,255,200)
-checkbox bounds(370, 57, 100, 12), text("Time Mod."), channel("TMod"),    value(0),                     colour(255,255, 50)     fontcolour(255,255,200)
-checkbox bounds(370, 72, 100, 12), text("Pan Mod."),  channel("PMod"),    value(0),                     colour(255,255, 50)     fontcolour(255,255,200)
+form caption("Reverse") size(455, 95), pluginId("rvrs") style("legacy")
+image           bounds(0, 0, 455, 95), colour("darkslategrey"), shape("rounded"), outlineColour("white"), line(4)
+rslider  bounds( 10, 10,  75, 75), text("Time L"),    channel("timeL"),   range(0.010, 4, 1, 0.5,0.001),colour(37,59,59)   textColour(255,255,200), trackerColour(lightblue)
+rslider  bounds( 80, 10,  75, 75), text("Time R"),    channel("timeR"),   range(0.010, 4, 1, 0.5,0.001),colour(37,59,59)   textColour(255,255,200), trackerColour(lightblue)
+rslider  bounds(150, 10, 75, 75),  text("Spread"),    channel("spread"),  range(0, 1.00, 1),            colour(37,59,59)   textColour(255,255,200), trackerColour(lightblue)
+rslider  bounds(220, 10, 75, 75),  text("Mix"),       channel("mix"),     range(0, 1.00, 1),            colour(37,59,59)   textColour(255,255,200), trackerColour(lightblue)
+rslider  bounds(290, 10, 75, 75),  text("Level"),     channel("level"),   range(0, 1.00, 1, 0.5),       colour(37,59,59)   textColour(255,255,200), trackerColour(lightblue)
+checkbox bounds(370, 12, 100, 12), text("Reverse"),   channel("reverse"),  value(1),                    colour(255,255, 50)     fontColour(255,255,200)
+checkbox bounds(370, 27, 100, 12), text("Forward"),   channel("forward"),  value(0),                    colour(255,255, 50)     fontColour(255,255,200)
+checkbox bounds(370, 42, 100, 12), text("Link L&R"),  channel("link"),     value(0),                    colour(255,255, 50)     fontColour(255,255,200)
+checkbox bounds(370, 57, 100, 12), text("Time Mod."), channel("TMod"),    value(0),                     colour(255,255, 50)     fontColour(255,255,200)
+checkbox bounds(370, 72, 100, 12), text("Pan Mod."),  channel("PMod"),    value(0),                     colour(255,255, 50)     fontColour(255,255,200)
 }
 </Cabbage>
 <CsoundSynthesizer>
@@ -139,7 +139,7 @@ a1	ntrpol	a1,arev1,kmix			; dry/wet mix
 a2	ntrpol	a2,arev2,kmix
 a1	=	a1 * klevel			; apply level control
 a2	=	a2 * klevel
-kspread	scale	kspread,1,0.5 			; rescale from range 0 - 1 to 0.5 - 1
+kspread	scale	kspread,1,0.5 			; reScale from range 0 - 1 to 0.5 - 1
 aL	sum	a1*kspread,a2*(1-kspread)	; create stereo mix according to Spread control
 aR	sum	a2*kspread,a1*(1-kspread)	; create stereo mix according to Spread control
 	outs	aL,aR

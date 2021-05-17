@@ -8,11 +8,11 @@
 
 
 <Cabbage>
-form caption("GEN16"), size(325, 360), pluginid("gn16"), colour(100,100,110) style("legacy")
+form caption("GEN16"), size(325, 360), pluginId("gn16"), colour(100,100,110) style("legacy")
 
-gentable bounds( 10,  5, 305, 120), tablenumber(1), tablecolour("lime"), identchannel("table"), zoom(-1), amprange(1,0,1)
+gentable bounds( 10,  5, 305, 120), tableNumber(1), tableColour("lime"), identChannel("table"), zoom(-1), ampRange(1,0,1)
 
-#define SLIDER_SETTINGS #textBox(1), fontcolour("white"), textcolour("white"), trackercolour("silver")#
+#define SLIDER_SETTINGS #textBox(1), fontColour("white"), textColour("white"), trackerColour("silver")#
 
 rslider bounds( 10,130, 50, 70), channel("val1"), text("Value.1"), range(0, 1, 0),   colour(80,80,80), $SLIDER_SETTINGS
 rslider bounds( 70,130, 50, 70), channel("val2"), text("Value.2"), range(0, 1, 1),   colour(80,80,80), $SLIDER_SETTINGS
@@ -102,7 +102,7 @@ instr	2
 	   idur3	=	i(gkdur3)
 	  endif
 	gi1	ftgen	1, 0,   4096,-16, i(gkval1), idur1, i(gkshp1), i(gkval2), idur2, i(gkshp2), i(gkval3), idur3, i(gkshp3), i(gkval4)
-	chnset	"tablenumber(1)", "table"	; update table display	
+	chnset	"tableNumber(1)", "table"	; update table display	
 endin
 
 </CsInstruments>

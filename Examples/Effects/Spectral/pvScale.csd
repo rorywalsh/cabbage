@@ -15,30 +15,30 @@
 ; Port.		-	Portamento time applied to changed made to the pitch scaling interval
 
 <Cabbage>
-form caption("pvscale Pitch Shifter") size(690,  90), pluginid("scal") style("legacy")
-image                         bounds(0, 0, 690, 90), colour("SlateGrey"), outlinecolour("silver"), outlinethickness(4)
+form caption("pvscale Pitch Shifter") size(690,  90), pluginId("scal") style("legacy")
+image                         bounds(0, 0, 690, 90), colour("SlateGrey"), outlineColour("silver"), outlineThickness(4)
 
-image bounds(  6, 23,678, 30), colour("silver"), shape("ellipse"), outlinethickness(3)
+image bounds(  6, 23,678, 30), colour("silver"), shape("ellipse"), outlineThickness(3)
 
-label    bounds( 10, 24, 75, 12), text("Interval"), fontcolour("black")
+label    bounds( 10, 24, 75, 12), text("Interval"), fontColour("black")
 combobox bounds( 10, 37, 75, 20), channel("IntervalMode"), text("Semitone","Ratio"), value(1)
 
-image   bounds( 90, 10,290, 80), colour(0,0,0,0), plant("Semitone"), identchannel("semitone_ident") {
-image   bounds(  8,  1, 54, 53), colour(30,30,30), shape("ellipse"), outlinethickness(0)
-rslider bounds(  0,  0, 70, 70),  text("Semitones"), channel("semis"), range(-24, 24, 7, 1, 1),   textcolour("black"),colour("DarkSlateGrey"), trackercolour("LightBlue")
-image   bounds( 78,  1, 54, 53), colour(30,30,30), shape("ellipse"), outlinethickness(0)
-rslider bounds( 70,  0, 70, 70),  text("Cents"),     channel("cents"), range(-100, 100, 0, 1, 1), textcolour("black"),colour("DarkSlateGrey"), trackercolour("LightBlue")
+image   bounds( 90, 10,290, 80), colour(0,0,0,0), plant("Semitone"), identChannel("semitone_ident") {
+image   bounds(  8,  1, 54, 53), colour(30,30,30), shape("ellipse"), outlineThickness(0)
+rslider bounds(  0,  0, 70, 70),  text("Semitones"), channel("semis"), range(-24, 24, 7, 1, 1),   textColour("black"),colour("DarkSlateGrey"), trackerColour("LightBlue")
+image   bounds( 78,  1, 54, 53), colour(30,30,30), shape("ellipse"), outlineThickness(0)
+rslider bounds( 70,  0, 70, 70),  text("Cents"),     channel("cents"), range(-100, 100, 0, 1, 1), textColour("black"),colour("DarkSlateGrey"), trackerColour("LightBlue")
 }
 
-image     bounds(130, 20, 35, 58), plant("Ratio"), colour(0,0,0,0), visible(0), identchannel("ratio_ident") {
+image     bounds(130, 20, 35, 58), plant("Ratio"), colour(0,0,0,0), visible(0), identChannel("ratio_ident") {
 nslider bounds(  5,  5, 25, 18), channel("Numerator"),        range(1,99,3,1,1)
 image     bounds(  0, 26, 35,  1), shape("sharp"), colour("black")
 nslider bounds(  5, 30, 25, 18), channel("Denominator"),      range(1,99,2,1,1)
 }
 
-image   bounds(238, 11, 54, 53), colour(30,30,30), shape("ellipse"), outlinethickness(0)	; circles around rsliders
-rslider bounds(230, 10, 70, 70), text("Feedback"),  channel("FB"), range(0.00, 0.99, 0),         textcolour("black"),colour("DarkSlateGrey"), trackercolour("LightBlue"), identchannel("feedback_ident")
-rslider bounds(230, 10, 70, 70), text("Iter."),     channel("Iter"), range(1, 10, 1,1,1),        textcolour("black"),colour("DarkSlateGrey"), trackercolour("LightBlue"), identchannel("iter_ident"), visible(0)
+image   bounds(238, 11, 54, 53), colour(30,30,30), shape("ellipse"), outlineThickness(0)	; circles around rsliders
+rslider bounds(230, 10, 70, 70), text("Feedback"),  channel("FB"), range(0.00, 0.99, 0),         textColour("black"),colour("DarkSlateGrey"), trackerColour("LightBlue"), identChannel("feedback_ident")
+rslider bounds(230, 10, 70, 70), text("Iter."),     channel("Iter"), range(1, 10, 1,1,1),        textColour("black"),colour("DarkSlateGrey"), trackerColour("LightBlue"), identChannel("iter_ident"), visible(0)
 
 label    bounds(310,  8, 70, 12), text("F.back Mode"), FontColour("black")
 combobox bounds(310, 20,  70,20), channel("FB_mode"), value(1), text("F Sig.", "Audio", "Iter.")
@@ -46,15 +46,15 @@ combobox bounds(310, 20,  70,20), channel("FB_mode"), value(1), text("F Sig.", "
 label    bounds(310, 45,  70, 12), text("Formants"), FontColour("black")
 combobox bounds(310, 57,  70, 20), channel("formants"), value(1), text("Ignore", "Keep 1", "Keep 2")
 
-label    bounds(400, 24, 60, 12), text("FFT Size"), fontcolour("black")
+label    bounds(400, 24, 60, 12), text("FFT Size"), fontColour("black")
 combobox bounds(400, 37, 60, 20), channel("FFTsize"), text("64","128","256","512","1024","2048","4096","8192"), value(6)
 
-image   bounds(478, 11, 54, 53), colour(30,30,30), shape("ellipse"), outlinethickness(0)
-rslider bounds(470, 10, 70, 70), text("Port."),     channel("port"),      range(0,30.00, 0.05,0.5,0.01), textcolour("black"),colour("DarkSlateGrey"), trackercolour("LightBlue")
-image   bounds(548, 11, 54, 53), colour(30,30,30), shape("ellipse"), outlinethickness(0)
-rslider bounds(540, 10, 70, 70), text("Mix"),       channel("mix"),       range(0, 1.00, 0.5),      textcolour("black"),colour("DarkSlateGrey"), trackercolour("LightBlue")
-image   bounds(618, 11, 54, 53), colour(30,30,30), shape("ellipse"), outlinethickness(0)
-rslider bounds(610, 10, 70, 70), text("Level"),     channel("lev"),       range(0, 1.00, 0.5, 0.5), textcolour("black"),colour("DarkSlateGrey"), trackercolour("LightBlue")
+image   bounds(478, 11, 54, 53), colour(30,30,30), shape("ellipse"), outlineThickness(0)
+rslider bounds(470, 10, 70, 70), text("Port."),     channel("port"),      range(0,30.00, 0.05,0.5,0.01), textColour("black"),colour("DarkSlateGrey"), trackerColour("LightBlue")
+image   bounds(548, 11, 54, 53), colour(30,30,30), shape("ellipse"), outlineThickness(0)
+rslider bounds(540, 10, 70, 70), text("Mix"),       channel("mix"),       range(0, 1.00, 0.5),      textColour("black"),colour("DarkSlateGrey"), trackerColour("LightBlue")
+image   bounds(618, 11, 54, 53), colour(30,30,30), shape("ellipse"), outlineThickness(0)
+rslider bounds(610, 10, 70, 70), text("Level"),     channel("lev"),       range(0, 1.00, 0.5, 0.5), textColour("black"),colour("DarkSlateGrey"), trackerColour("LightBlue")
 </Cabbage>
 
 <CsoundSynthesizer>

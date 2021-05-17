@@ -54,5 +54,5 @@ void CabbageTextBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
     setColour (TextEditor::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
     lookAndFeelChanged();
     repaint();
-    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 }

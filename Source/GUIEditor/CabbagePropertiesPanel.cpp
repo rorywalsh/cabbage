@@ -212,6 +212,16 @@ void CabbagePropertiesPanel::setPropertyByName (String name, var value)
             CabbageWidgetData::setProperty (widgetData, identifier, value);
         }
 
+        else if (identifier == CabbageIdentifierIds::filmstrip.toString())
+        {
+            CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::filmstripimage,
+                value.toString());
+        }
+        else if (identifier == CabbageIdentifierIds::filmstripframes.toString())
+        {
+            CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::filmstripframes,
+                                           value);
+        }
         else if (ampRangeIdentifiers.contains (identifier))
             getAmpRangeForTable (identifier, value);
 
@@ -329,12 +339,14 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
 	else if (value.refersToSameSourceAs(outerRadius))
 		setPropertyByName("Outer Radius", value.getValue());
 
-
     else if (value.refersToSameSourceAs (zoomValue))
         setPropertyByName ("Zoom", value.getValue());
 
     else if (value.refersToSameSourceAs (sliderNumberBoxValue))
         setPropertyByName ("Value Box", value.getValue());
+
+    else if (value.refersToSameSourceAs (filmstripFrames))
+        setPropertyByName ("Filmstrip Frames", value.getValue());
 
     else if (value.refersToSameSourceAs (fillTableWaveformValue))
         setPropertyByName ("Fill", value.getValue());
@@ -386,20 +398,27 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
             else if (int (value.getValue()) == 1)
                 setPropertyByName ("Mode", "directory");
             else if (int (value.getValue()) == 2)
-                setPropertyByName ("Mode", "snapshot");
+                setPropertyByName ("Mode", "save");
+            else if (int (value.getValue()) == 3)
+                setPropertyByName ("Mode", "preset");
+            else if (int (value.getValue()) == 4)
+                setPropertyByName ("Mode", "named preset");
+            else if (int (value.getValue()) == 5)
+                setPropertyByName ("Mode", "remove preset");
+
         }
     }
 }
 
 void CabbagePropertiesPanel::filenameComponentChanged (FilenameComponent* fileComponent)
 {
+    DBG(fileComponent->getName());
     if (File (fileComponent->getCurrentFileText()).existsAsFile())
     {
         const String csdFile = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::csdfile);
         fileComponent->setTooltip (fileComponent->getCurrentFileText());
         const String relativePath = File (fileComponent->getCurrentFileText()).getRelativePathFrom (File (csdFile));
         setPropertyByName (fileComponent->getName(), relativePath);
-
     }
     else
     {
@@ -671,7 +690,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
         const String onFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgbuttonon));
         const String offFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgbuttonoff));
 
-        comps.add (new CabbageFilePropertyComponent ("On Image", false, true, "*", onFile));
+        comps.add (new CabbageFilePropertyComponent("On Image", false, true, "*", onFile));
         comps.add (new CabbageFilePropertyComponent ("Off Image", false, true, "*", offFile));
     }
     else if (typeOfWidget == "combobox")
@@ -680,16 +699,24 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
     }
     else if (typeOfWidget.contains ("slider"))
     {
-        const String sliderFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgslider));
+        const String sliderFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgfile));
         const String sliderBgFile = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::imgsliderbg));
-        comps.add (new CabbageFilePropertyComponent ("Image", false, true, "*", sliderFile));
+        const String filmStrip = CabbageUtilities::getFileAndPath(File(csdFile), CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filmstripimage));
+        
+        comps.add (new CabbageFilePropertyComponent ("Rotary Image", false, true, "*", sliderFile));
         comps.add (new CabbageFilePropertyComponent ("Background Image", false, true, "*", sliderBgFile));
+        comps.add (new CabbageFilePropertyComponent("Filmstrip Image", false, true, "*", filmStrip));
+
+
+        filmstripFrames.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::filmstripframes));
+        filmstripFrames.addListener(this);
+        comps.add (new SliderPropertyComponent(filmstripFrames, "Filmstrip Frames", 0, 256, 1));
     }
 
     else if (typeOfWidget == "image")
     {
         const String file = CabbageUtilities::getFileAndPath (File (csdFile), CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file));
-        comps.add (new CabbageFilePropertyComponent ("Image File", false, true, "*", file));
+        comps.add (new CabbageFilePropertyComponent ("File", false, true, "*", file));
     }
 
     else if (typeOfWidget == "groupbox")
@@ -698,6 +725,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createFileEditors (ValueTree v
         comps.add (new CabbageFilePropertyComponent ("Groupbox Image", false, true, "*", file));
     }
 
+ 
     addListener (comps, this);
     return comps;
 }
@@ -884,17 +912,32 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors (ValueTree v
 
         choices.add ("File");
         choices.add ("Directory");
-        choices.add ("Snapshot");
+        choices.add ("Save");
+        choices.add ("Preset");
+        choices.add ("Named Preset");
+        choices.add ("Remove Preset");
         choiceVars.add (0);
         choiceVars.add (1);
         choiceVars.add (2);
+        choiceVars.add (3);
+        choiceVars.add (4);
+        choiceVars.add (5);
+
+        
 
         if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mode) == "file")
             fileModeValue.setValue (0);
         else if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mode) == "directory")
             fileModeValue.setValue (1);
-        else
+        else if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mode) == "save")
             fileModeValue.setValue (2);
+        else if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mode) == "preset")
+            fileModeValue.setValue (3);
+        else if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mode) == "named preset")
+            fileModeValue.setValue (4);
+        else if (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::mode) == "remove preset")
+            fileModeValue.setValue (5);
+
 
         comps.add (new ChoicePropertyComponent (fileModeValue, "Mode", choices, choiceVars));
 

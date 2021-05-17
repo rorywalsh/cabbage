@@ -2,18 +2,18 @@
 ; Iain McCurdy, 2017
 
 <Cabbage>
-form caption("Stormy Weather") size(300, 310), pluginid("StWr")  style("legacy")
-button  bounds( 10,  5,70, 30), text("Wind","Wind"), latched(1), fontcolour:0(100,100,100), channel("Wind"), value(1)
+form caption("Stormy Weather") size(300, 310), pluginId("StWr")  style("legacy")
+button  bounds( 10,  5,70, 30), text("Wind","Wind"), latched(1), fontColour:0(100,100,100), channel("Wind"), value(1)
 
 rslider bounds(  5, 40, 80, 80), channel("WindLev"), text("Level"), range(0, 1, .5, 1, .01)
 rslider bounds(  5,130, 80, 80), channel("WindLayers"), text("Layers"), range(1,10, 2, 1, 1)
 
-button  bounds(110,  5,70, 30), text("Thunder","Thunder"), fontcolour:0(100,100,100), channel("Thunder")
+button  bounds(110,  5,70, 30), text("Thunder","Thunder"), fontColour:0(100,100,100), channel("Thunder")
 rslider bounds(105, 40, 80, 80), channel("ThunderLev"), text("Level"), range(0, 1, .5, 1, .01)
 rslider bounds(105,130, 80, 80), channel("ThunderDur"), text("Duration"), range(4, 25, 11)
 rslider bounds(105,220, 80, 80), channel("ThunderDist"), text("Distance"), range(0, 1, 0.1)
 
-button  bounds(210,  5,70, 30), text("Rain","Rain"), latched(1), fontcolour:0(100,100,100), channel("Rain"), value(1)
+button  bounds(210,  5,70, 30), text("Rain","Rain"), latched(1), fontColour:0(100,100,100), channel("Rain"), value(1)
 rslider bounds(205, 40, 80, 80), channel("RainLev"), text("Level"), range(0, 1, .5, 1, .01)
 rslider bounds(205,130, 80, 80), channel("RainMix"), text("Mix"), range(0, 1, .5)
 rslider bounds(205,220, 80, 80), channel("RainDens"), text("Density"), range(0, 1, .5)

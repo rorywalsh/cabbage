@@ -61,56 +61,56 @@
 ; ratio 2 controls the ratio of the frequency of the ring modulator to the fundemental (frequency of the first oscillator.)
 
 <Cabbage>
-form caption("Ring Modulation Synthesizer") size(875,267), pluginid("RMS1") style("legacy")
+form caption("Ring Modulation Synthesizer") size(875,267), pluginId("RMS1") style("legacy")
 
-image      bounds(  5,  5, 70,160), colour(0,0,0,0), outlinecolour("white"), outlinethickness(4), shape("rounded"), plant("osc1") {
+image      bounds(  5,  5, 70,160), colour(0,0,0,0), outlineColour("white"), outlineThickness(4), shape("rounded"), plant("osc1") {
 label      bounds(  5,  5, 60, 14), text("OSC.1")
 rslider    bounds(  5, 25, 60, 60), text("Decay"),        channel("Dec"),   range(0.01,12, 2,1,0.001)
 rslider    bounds(  5, 95, 60, 60), text("Release"),      channel("Rel"),   range(0.01,12, 0.2,1,0.001)
 }
 
-image      bounds( 80,  5, 70,160), colour(0,0,0,0), outlinecolour("white"), outlinethickness(4), shape("rounded"), plant("osc2") {
+image      bounds( 80,  5, 70,160), colour(0,0,0,0), outlineColour("white"), outlineThickness(4), shape("rounded"), plant("osc2") {
 label      bounds(  5,  5, 60, 14), text("OSC.2")
 rslider    bounds(  5, 25, 60, 60), text("Ratio"),        channel("PRat"),  range(.1,  30, 3.37,0.5,0.001)
 rslider    bounds(  5, 95, 60, 60), text("Decay"),      channel("PDec"),  range(0.001,1, 0.2,1,0.001)
 }
-image      bounds(155,  5, 70,160), colour(0,0,0,0), outlinecolour("white"), outlinethickness(4), shape("rounded"), plant("RM") {
+image      bounds(155,  5, 70,160), colour(0,0,0,0), outlineColour("white"), outlineThickness(4), shape("rounded"), plant("RM") {
 label      bounds(  5,  5, 60, 14), text("MOD.")
 rslider    bounds(  5, 25, 60, 60), text("Ratio"),        channel("MRat"),  range(.1,  30, 2.77,0.5,0.001)
 rslider    bounds(  5, 95, 60, 60), text("Decay"),      channel("MDec"),  range(0.001,1, 0.1,1,0.001)
 }
-image      bounds(230,  5, 70,160), colour(0,0,0,0), outlinecolour("white"), outlinethickness(4), shape("rounded"), plant("Spat") {
+image      bounds(230,  5, 70,160), colour(0,0,0,0), outlineColour("white"), outlineThickness(4), shape("rounded"), plant("Spat") {
 label      bounds(  5,  5, 60, 14), text("SPACE")
 rslider    bounds(  5, 25, 60, 60), text("Mix"),           channel("SpatMix"),   range(0,1,1,1,0.001)
 rslider    bounds(  5, 95, 60, 60), text("Width"),         channel("SpatWidth"), range(0.001,0.05,0.03,1,0.001)
 }
-image      bounds(305,  5, 70,160), colour(0,0,0,0), outlinecolour("white"), outlinethickness(4), shape("rounded"), plant("Velocity") {
+image      bounds(305,  5, 70,160), colour(0,0,0,0), outlineColour("white"), outlineThickness(4), shape("rounded"), plant("Velocity") {
 label      bounds(  5,  5, 60, 14), text("VEL.")
 rslider    bounds(  5, 25, 60, 60), text("Amount"),      channel("VelAmt"),   range(  0,  1,0.4,0.5,0.001)
 rslider    bounds(  5, 95, 60, 60), text("Offset"),      channel("VelOS"),    range(  0,  1,0,0.5,0.001)
 }
-image      bounds(380,  5, 70,160), colour(0,0,0,0), outlinecolour("white"), outlinethickness(4), shape("rounded"), plant("Tuning") {
+image      bounds(380,  5, 70,160), colour(0,0,0,0), outlineColour("white"), outlineThickness(4), shape("rounded"), plant("Tuning") {
 label      bounds(  5,  5, 60, 14), text("RANDOM")
 rslider    bounds(  5, 25, 60, 60), text("Fund."),        channel("RndTune"), range(0,10,0.1,0.5,0.001)
 rslider    bounds(  5, 95, 60, 60), text("Spectrum"),     channel("RndSpec"), range(0,10,0.1,0.5,0.001)
 }
-image      bounds(455,  5, 70,160), colour(0,0,0,0), outlinecolour("white"), outlinethickness(4), shape("rounded"), plant("Scale") {
+image      bounds(455,  5, 70,160), colour(0,0,0,0), outlineColour("white"), outlineThickness(4), shape("rounded"), plant("Scale") {
 label      bounds(  5,  5, 60, 14), text("SCALE")
 rslider    bounds(  5, 25, 60, 60), text("Note"),          channel("KybdNote"), range(  0,127, 64,1,1)
 rslider    bounds(  5, 95, 60, 60), text("Amount"),        channel("KybdScal"), range(  0,  5,3.5,1,0.001)
 }
-image      bounds(530,  5, 70,160), colour(0,0,0,0), outlinecolour("white"), outlinethickness(4), shape("rounded"), plant("Attack") {
+image      bounds(530,  5, 70,160), colour(0,0,0,0), outlineColour("white"), outlineThickness(4), shape("rounded"), plant("Attack") {
 label      bounds(  5,  5, 60, 14), text("ATTACK")
 rslider    bounds(  5, 25, 60, 60), text("Time"),       channel("AttTim"),   range(0,0.5,0,0.5,0.001)
 rslider    bounds(  5, 95, 60, 60), text("Smoothing"),  channel("AttSmooth"),range(  0,   1,  0.5,1,0.001)
 }
-image      bounds(605,  5,130,160), colour(0,0,0,0), outlinecolour("white"), outlinethickness(4), shape("rounded"), plant("Detune") {
+image      bounds(605,  5,130,160), colour(0,0,0,0), outlineColour("white"), outlineThickness(4), shape("rounded"), plant("Detune") {
 label      bounds(  5,  5,120, 14), text("DETUNE")
 rslider    bounds(  5, 25, 60, 60), text("Random"),       channel("DtnRnd"),   range(0,100,0,1,0.001)
 rslider    bounds(  5, 95, 60, 60), text("Manual"),       channel("DtnMan"),   range(-50,50,0,1,0.01)
 rslider    bounds( 65, 25, 60, 60), text("Velocity"),     channel("DtnVel"),   range(0,1,0,1,0.001)
 }
-image      bounds(740,  5,130,160), colour(0,0,0,0), outlinecolour("white"), outlinethickness(4), shape("rounded"), plant("Output") {
+image      bounds(740,  5,130,160), colour(0,0,0,0), outlineColour("white"), outlineThickness(4), shape("rounded"), plant("Output") {
 label      bounds(  5,  5,120, 14), text("GLOBAL")
 rslider    bounds(  5, 25, 60, 60), text("High Cut"),      channel("LPF"),    range(100,12000,12000,0.5,1)
 rslider    bounds(  5, 95, 60, 60), text("Sus.Lev."),      channel("SusLev"), range(  0,    1,  0,1,0.001)

@@ -63,7 +63,7 @@ public:
     Array<PropertyComponent*> createWidgetArrayEditors (CabbagePropertiesPanel* owner, ValueTree valueTree);
     Array<PropertyComponent*> createAmpRangeEditors (ValueTree valueTree);
     Array<PropertyComponent*> createTwoValueEditors (ValueTree valueTree, Identifier identifier);
-    Value isActiveValue, isVisibleValue, alphaValue, shapeValue,
+    Value isActiveValue, isVisibleValue, alphaValue, shapeValue, filmstripFrames,
           sliderNumberBoxValue, alignValue, velocityValue, fileModeValue,
           fillTableWaveformValue, zoomValue, channelTypeValue, innerRadius, outerRadius;
     Colour backgroundColour, borderColour;

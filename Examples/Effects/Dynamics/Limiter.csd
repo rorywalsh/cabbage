@@ -10,14 +10,14 @@
 ; Gain		-	Make up gain. Useful for compensating for gain loss.
    
 <Cabbage>
-#define SLIDER_APPEARANCE textcolour("black"), trackercolour("LightSlateGrey")
-form caption("Limiter") size(435,105), pluginid("lmtr") style("legacy")
-image         bounds(  0,  0,435,105), outlinethickness(6), outlinecolour("white"), colour("silver")
+#define SLIDER_APPEARANCE textColour("black"), trackerColour("LightSlateGrey")
+form caption("Limiter") size(435,105), pluginId("lmtr") style("legacy")
+image         bounds(  0,  0,435,105), outlineThickness(6), outlineColour("white"), colour("silver")
 rslider  bounds( 10,15, 80, 80), channel("thresh"), text("Threshold [dB]"), range(-120,0,-24), $SLIDER_APPEARANCE
 rslider  bounds( 90,15, 80, 80), channel("smooth"), text("Smoothing"), range(0.01,1,0.1,0.5), $SLIDER_APPEARANCE
 rslider  bounds(170,15, 80, 80), channel("delay"), text("Delay [s]"), range(0,0.2,0,0.5), $SLIDER_APPEARANCE
 rslider  bounds(250,15, 80, 80), channel("gain"), text("Gain [dB]"), range(-48,48,0), $SLIDER_APPEARANCE
-checkbox bounds(335,35,100, 20), channel("limiting"), text("Limiting"), shape("ellipse"), colour("red"), fontcolour("black"), active(0)
+checkbox bounds(335,35,100, 20), channel("limiting"), text("Limiting"), shape("ellipse"), colour("red"), fontColour("black"), active(0)
 </Cabbage>
 
 <CsoundSynthesizer>

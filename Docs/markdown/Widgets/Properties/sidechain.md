@@ -1,2 +1,0 @@
-<a name="sidechain"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
-**sidechain(val)** Will enable sidechain support. `val` represents the number of sidechain inputs. Note that some hosts only support mono input. See the CompressSidechain.csd example in the Miscellaneous example for further details. 

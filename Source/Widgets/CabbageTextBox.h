@@ -28,11 +28,13 @@
 
 class CabbageTextBox : public TextEditor, public ValueTree::Listener, public CabbageWidgetBase
 {
-    String filename;
+    String filename;	
 public:
 
     explicit CabbageTextBox (ValueTree wData);
-    ~CabbageTextBox() {};
+    ~CabbageTextBox() {
+        widgetData.removeListener(this);
+    };
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;

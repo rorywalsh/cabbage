@@ -13,20 +13,20 @@
 ; Level		-	output level
 
 <Cabbage>
-form caption("Strum") size(320,400), pluginid("strm"), guirefresh(128) style("legacy")
+form caption("Strum") size(320,400), pluginId("strm"), guiRefresh(128) style("legacy")
 
-image    bounds(  0,  0,320,300), colour(250,230,255),    shape("sharp"), outlinecolour("black"), outlinethickness(1)
-xypad    bounds(  0,  0,320,300), colour(220,200,250), channel("x", "y"), rangex(0, 1.00, 0), rangey(0, 1, 0), colour("DarkSlateGrey"), textcolour("DarkSlateGrey")
+image    bounds(  0,  0,320,300), colour(250,230,255),    shape("sharp"), outlineColour("black"), outlineThickness(1)
+xypad    bounds(  0,  0,320,300), colour(220,200,250), channel("x", "y"), rangeX(0, 1.00, 0), rangeY(0, 1, 0), colour("DarkSlateGrey"), textColour("DarkSlateGrey")
 
-image    bounds(  0,300,320,100), colour(220,200,250),    shape("sharp"), outlinecolour("black"), outlinethickness(1)
-rslider  bounds(  0,305, 70, 70), channel("notes"),     text("Notes"),    valuetextbox(1), textbox(1), range(1, 50, 5,1,1),         colour("SlateGrey"), trackercolour(20,40,70), textcolour(20,40,70), fontcolour("DarkSlateGrey")
-rslider  bounds( 50,305, 70, 70), channel("spacing"),   text("Spacing"),  valuetextbox(1), textbox(1), range(0.25, 6.00, 1,1,0.25), colour("SlateGrey"), trackercolour(20,40,70), textcolour(20,40,70), fontcolour("DarkSlateGrey")
-rslider  bounds(100,305, 70, 70), channel("offset"),    text("Offset"),   valuetextbox(1), textbox(1), range(24, 72, 48,1,1),       colour("SlateGrey"), trackercolour(20,40,70), textcolour(20,40,70), fontcolour("DarkSlateGrey")
-rslider  bounds(150,305, 70, 70), channel("shift"),     text("Shift"),    valuetextbox(1), textbox(1), range(-24, 24, 12,1,0.25),   colour("SlateGrey"), trackercolour(20,40,70), textcolour(20,40,70), fontcolour("DarkSlateGrey")
-rslider  bounds(200,305, 70, 70), channel("PolyLimit"), text("Polyphony"),valuetextbox(1), textbox(1), range(1, 24, 3,1,1),         colour("SlateGrey"), trackercolour(20,40,70), textcolour(20,40,70), fontcolour("DarkSlateGrey")
-rslider  bounds(250,305, 70, 70), channel("lev"),       text("Level"),    valuetextbox(1), textbox(1), range(0, 1.00, 0.3),         colour("SlateGrey"), trackercolour(20,40,70), textcolour(20,40,70), fontcolour("DarkSlateGrey")
+image    bounds(  0,300,320,100), colour(220,200,250),    shape("sharp"), outlineColour("black"), outlineThickness(1)
+rslider  bounds(  0,305, 70, 70), channel("notes"),     text("Notes"),    valueTextBox(1), textBox(1), range(1, 50, 5,1,1),         colour("SlateGrey"), trackerColour(20,40,70), textColour(20,40,70), fontColour("DarkSlateGrey")
+rslider  bounds( 50,305, 70, 70), channel("spacing"),   text("Spacing"),  valueTextBox(1), textBox(1), range(0.25, 6.00, 1,1,0.25), colour("SlateGrey"), trackerColour(20,40,70), textColour(20,40,70), fontColour("DarkSlateGrey")
+rslider  bounds(100,305, 70, 70), channel("offset"),    text("Offset"),   valueTextBox(1), textBox(1), range(24, 72, 48,1,1),       colour("SlateGrey"), trackerColour(20,40,70), textColour(20,40,70), fontColour("DarkSlateGrey")
+rslider  bounds(150,305, 70, 70), channel("shift"),     text("Shift"),    valueTextBox(1), textBox(1), range(-24, 24, 12,1,0.25),   colour("SlateGrey"), trackerColour(20,40,70), textColour(20,40,70), fontColour("DarkSlateGrey")
+rslider  bounds(200,305, 70, 70), channel("PolyLimit"), text("Polyphony"),valueTextBox(1), textBox(1), range(1, 24, 3,1,1),         colour("SlateGrey"), trackerColour(20,40,70), textColour(20,40,70), fontColour("DarkSlateGrey")
+rslider  bounds(250,305, 70, 70), channel("lev"),       text("Level"),    valueTextBox(1), textBox(1), range(0, 1.00, 0.3),         colour("SlateGrey"), trackerColour(20,40,70), textColour(20,40,70), fontColour("DarkSlateGrey")
 
-checkbox bounds( 25,380,110, 16), text("Include Edges"), colour("yellow"), channel("IncludeEdges"),  value(0), fontcolour("DarkSlateGrey")
+checkbox bounds( 25,380,110, 16), text("Include Edges"), colour("yellow"), channel("IncludeEdges"),  value(0), fontColour("DarkSlateGrey")
 
 </Cabbage>
 

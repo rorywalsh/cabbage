@@ -5,16 +5,16 @@
 ; Pitch Mod. is only used by reverbsc.
 
 <Cabbage>
-form caption("Multi Reverb") size(415, 90), pluginid("Rvrb") style("legacy")
-image  bounds(  7, 22, 73, 45), colour( 39, 31, 20), shape("rounded"), outlinecolour(white), outlinethickness(1) 
-image  bounds(  0,  0,415, 90), colour( 39, 31, 20), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
-button bounds( 11, 20, 66, 20), text("screverb","screverb"), channel("scType"),   value(1), fontcolour:0(50,50,50), fontcolour:1("lime"), radiogroup(1)
-button bounds( 11, 40, 66, 20), text("freeverb","freeverb"), channel("freeType"), value(0), fontcolour:0(50,50,50), fontcolour:1("lime"), radiogroup(1)
-rslider bounds( 80, 11, 70, 70), text("Size"), 		textcolour(white), 		channel("fblvl"), 	range(0, 1.00, 0.8), colour( 79, 81, 70), trackercolour(240,210,170)
-rslider bounds(145, 11, 70, 70), text("Damping"), 	textcolour(white), 		channel("fco"), 	range(0, 1.00, 0.6), colour( 79, 81, 70), trackercolour(240,210,170)
-rslider bounds(210, 11, 70, 70), text("Pitch Mod."), 	textcolour(white), 		channel("pitchm"), 	range(0, 20.0, 1),   colour( 79, 81, 70), trackercolour(240,210,170), identchannel("pitchmID")
-rslider bounds(275, 11, 70, 70), text("Mix"), 		textcolour(white), 		channel("mix"), 	range(0, 1.00, 1),   colour( 79, 81, 70), trackercolour(240,210,170)
-rslider bounds(340, 11, 70, 70), text("Level"),	 	textcolour(white), 		channel("amp"), 	range(0, 1.00, 1),   colour( 79, 81, 70), trackercolour(240,210,170)
+form caption("Multi Reverb") size(415, 90), pluginId("Rvrb") style("legacy")
+image  bounds(  7, 22, 73, 45), colour( 39, 31, 20), shape("rounded"), outlineColour(white), outlineThickness(1) 
+image  bounds(  0,  0,415, 90), colour( 39, 31, 20), shape("rounded"), outlineColour("white"), outlineThickness(4) 
+button bounds( 11, 20, 66, 20), text("screverb","screverb"), channel("scType"),   value(1), fontColour:0(50,50,50), fontColour:1("lime"), radioGroup(1)
+button bounds( 11, 40, 66, 20), text("freeverb","freeverb"), channel("freeType"), value(0), fontColour:0(50,50,50), fontColour:1("lime"), radioGroup(1)
+rslider bounds( 80, 11, 70, 70), text("Size"), 		textColour(white), 		channel("fblvl"), 	range(0, 1.00, 0.8), colour( 79, 81, 70), trackerColour(240,210,170)
+rslider bounds(145, 11, 70, 70), text("Damping"), 	textColour(white), 		channel("fco"), 	range(0, 1.00, 0.6), colour( 79, 81, 70), trackerColour(240,210,170)
+rslider bounds(210, 11, 70, 70), text("Pitch Mod."), 	textColour(white), 		channel("pitchm"), 	range(0, 20.0, 1),   colour( 79, 81, 70), trackerColour(240,210,170), identChannel("pitchmID")
+rslider bounds(275, 11, 70, 70), text("Mix"), 		textColour(white), 		channel("mix"), 	range(0, 1.00, 1),   colour( 79, 81, 70), trackerColour(240,210,170)
+rslider bounds(340, 11, 70, 70), text("Level"),	 	textColour(white), 		channel("amp"), 	range(0, 1.00, 1),   colour( 79, 81, 70), trackerColour(240,210,170)
 </Cabbage>
 
 <CsoundSynthesizer>

@@ -4,24 +4,24 @@
 ; Streaming phase vocoding frequency shifter.
 
 <Cabbage>
-form caption("pvshift Frequency Shifter") size(510,  90), pluginid("shft"), scrollbars(0) style("legacy")
+form caption("pvshift Frequency Shifter") size(510,  90), pluginId("shft"), scrollBars(0) style("legacy")
 
-image bounds( 15,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlinethickness(0)
-image bounds( 85,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlinethickness(0)
-image bounds(155,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlinethickness(0)
-image bounds(225,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlinethickness(0)
-image bounds(295,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlinethickness(0)
-image bounds(365,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlinethickness(0)
-image bounds(435,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlinethickness(0)
-image bounds(-60,-5,630,110), colour(100,205,60), outlinecolour("silver"), outlinethickness(6), shape("ellipse")
-rslider bounds( 10, 15, 70, 70), text("Coarse"),     channel("coarse"),    range(-4000, 4000, 0, 1),    colour("orange"), trackercolour("yellow"), textcolour("black")
-rslider bounds( 80, 15, 70, 70), text("Multiplier"), channel("fine"),      range(-1, 1, 1, 1, 0.0001),  colour("orange"), trackercolour("yellow"), textcolour("black")
-rslider bounds(150, 15, 70, 70), text("Lowest"),     channel("lowest"),    range( 20, 20000, 20, 0.5),  colour("orange"), trackercolour("yellow"), textcolour("black")
-rslider bounds(220, 15, 70, 70), text("Feedback"),   channel("FB"),        range(0, 1.00, 0),           colour("orange"), trackercolour("yellow"), textcolour("black")
-label    bounds(295,20, 60,13), text("FFT Size"), fontcolour("black")
-combobox bounds(295,35, 60,20), text("64","128","256","512","1024","2048","4096","8192"), channel("att_table"), value(5), fontcolour(220,220,255)
-rslider bounds(360, 15, 70, 70), text("Mix"),        channel("mix"),       range(0, 1.00, 1),           colour("orange"), trackercolour("yellow"), textcolour("black")
-rslider bounds(430, 15, 70, 70), text("Level"),      channel("lev"),       range(0, 1.00, 0.5, 0.5),    colour("orange"), trackercolour("yellow"), textcolour("black")
+image bounds( 15,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlineThickness(0)
+image bounds( 85,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlineThickness(0)
+image bounds(155,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlineThickness(0)
+image bounds(225,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlineThickness(0)
+image bounds(295,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlineThickness(0)
+image bounds(365,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlineThickness(0)
+image bounds(435,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlineThickness(0)
+image bounds(-60,-5,630,110), colour(100,205,60), outlineColour("silver"), outlineThickness(6), shape("ellipse")
+rslider bounds( 10, 15, 70, 70), text("Coarse"),     channel("coarse"),    range(-4000, 4000, 0, 1),    colour("orange"), trackerColour("yellow"), textColour("black")
+rslider bounds( 80, 15, 70, 70), text("Multiplier"), channel("fine"),      range(-1, 1, 1, 1, 0.0001),  colour("orange"), trackerColour("yellow"), textColour("black")
+rslider bounds(150, 15, 70, 70), text("Lowest"),     channel("lowest"),    range( 20, 20000, 20, 0.5),  colour("orange"), trackerColour("yellow"), textColour("black")
+rslider bounds(220, 15, 70, 70), text("Feedback"),   channel("FB"),        range(0, 1.00, 0),           colour("orange"), trackerColour("yellow"), textColour("black")
+label    bounds(295,20, 60,13), text("FFT Size"), fontColour("black")
+combobox bounds(295,35, 60,20), text("64","128","256","512","1024","2048","4096","8192"), channel("att_table"), value(5), fontColour(220,220,255)
+rslider bounds(360, 15, 70, 70), text("Mix"),        channel("mix"),       range(0, 1.00, 1),           colour("orange"), trackerColour("yellow"), textColour("black")
+rslider bounds(430, 15, 70, 70), text("Level"),      channel("lev"),       range(0, 1.00, 0.5, 0.5),    colour("orange"), trackerColour("yellow"), textColour("black")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

@@ -28,6 +28,7 @@ public:
     CsoundTokeniser() {}
     ~CsoundTokeniser() {}
 
+    StringArray udoKeywords;
     //==============================================================================
     enum TokenType
     {
@@ -147,10 +148,10 @@ private:
     bool isReservedKeyword (String::CharPointerType token, const int tokenLength) noexcept
     {
         //populate char array with Csound keywords
-        //this list of keywords is not completely up to date!
         const char* const* k;
-
-        if (tokenLength < 2 || tokenLength > 16)
+        
+        
+        if (tokenLength < 2)
             return false;
 
         else
@@ -166,7 +167,13 @@ private:
 
             ++i;
         }
-
+        
+        for ( auto key : udoKeywords)
+        {
+            if(token == key)
+                return true;
+        }
+        
         return false;
     }
 
@@ -174,20 +181,20 @@ private:
     int parseIdentifier (CodeDocument::Iterator& source) noexcept
     {
         int tokenLength = 0;
-        String::CharPointerType::CharType possibleIdentifier [20];
+        String::CharPointerType::CharType possibleIdentifier [64];
         String::CharPointerType possible (possibleIdentifier);
 
         while (isIdentifierBody (source.peekNextChar()))
         {
             const juce_wchar c = source.nextChar();
 
-            if (tokenLength < 20)
+            if (tokenLength < 48)
                 possible.write (c);
 
             ++tokenLength;
         }
 
-        if (tokenLength > 1 && tokenLength <= 16)
+        if (tokenLength > 1 && tokenLength <= 48)
         {
             possible.writeNull();
 
@@ -283,6 +290,8 @@ private:
         //jassert (result != tokenType_unknown);
         return result;
     }
+    
+    
 };
 
 #endif

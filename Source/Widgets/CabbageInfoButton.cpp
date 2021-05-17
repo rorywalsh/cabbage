@@ -77,7 +77,7 @@ void CabbageInfoButton::setLookAndFeelColours (ValueTree wData)
 void CabbageInfoButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
     setLookAndFeelColours (valueTree);
-    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 
     setButtonText (getText());
 }

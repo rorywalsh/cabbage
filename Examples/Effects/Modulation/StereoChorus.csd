@@ -7,17 +7,17 @@
 ; Dereg. (deregulate) adds a random modulation to both LFO rate and depth in both LFO modes
 
 <Cabbage>
-form caption("Stereo Chorus") size(595, 100), pluginid("StCh") style("legacy")
-image                 bounds(0, 0, 595, 100), colour("DarkSlateGrey"), shape("rounded"), outlinecolour("white"), outlinethickness(6)
-label    bounds( 15, 22, 75, 12), text("LFO Type:"), fontcolour("white")
-combobox bounds( 15, 35, 75, 20), text("Sine","RSpline"), channel("type"), textcolour("white"), colour( 7,29,29), fontcolour("white")
-rslider  bounds( 90, 13, 75, 75), text("Rate"), channel("rate"), range(0.001, 7, 0.5,0.5),  textcolour("white"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(160, 13, 75, 75), text("Dereg"), channel("dereg"), range(0, 4, 0,0.5,0.01), textcolour("white"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(230, 13, 75, 75), text("Depth"), channel("depth"), range(0, 1.00, 0.2),     textcolour("white"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(300, 13, 75, 75), text("Offset"), channel("offset"), range(0.0001,0.1,0.001,0.5,0.0001),     textcolour("white"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(370, 13, 75, 75), text("Width"), channel("width"), range(0, 1.00, 0.75),    textcolour("white"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(440, 13, 75, 75), text("Mix"), channel("mix"), range(0, 1.00, 0.5),      textcolour("white"), colour(37,59,59), trackercolour("Silver")
-rslider  bounds(510, 13, 75, 75), text("Level"), channel("level"), range(0, 1.00, 1),      textcolour("white"), colour(37,59,59), trackercolour("Silver")
+form caption("Stereo Chorus") size(595, 100), pluginId("StCh") style("legacy")
+image                 bounds(0, 0, 595, 100), colour("DarkSlateGrey"), shape("rounded"), outlineColour("white"), outlineThickness(6)
+label    bounds( 15, 22, 75, 12), text("LFO Type:"), fontColour("white")
+combobox bounds( 15, 35, 75, 20), text("Sine","RSpline"), channel("type"), textColour("white"), colour( 7,29,29), fontColour("white")
+rslider  bounds( 90, 13, 75, 75), text("Rate"), channel("rate"), range(0.001, 7, 0.5,0.5),  textColour("white"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(160, 13, 75, 75), text("Dereg"), channel("dereg"), range(0, 4, 0,0.5,0.01), textColour("white"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(230, 13, 75, 75), text("Depth"), channel("depth"), range(0, 1.00, 0.2),     textColour("white"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(300, 13, 75, 75), text("Offset"), channel("offset"), range(0.0001,0.1,0.001,0.5,0.0001),     textColour("white"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(370, 13, 75, 75), text("Width"), channel("width"), range(0, 1.00, 0.75),    textColour("white"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(440, 13, 75, 75), text("Mix"), channel("mix"), range(0, 1.00, 0.5),      textColour("white"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(510, 13, 75, 75), text("Level"), channel("level"), range(0, 1.00, 1),      textColour("white"), colour(37,59,59), trackerColour("Silver")
 </Cabbage>
 
 <CsoundSynthesizer>

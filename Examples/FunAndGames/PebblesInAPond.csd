@@ -10,9 +10,9 @@
 ; The reason 5 circles created, and triggering cycles through these, is to allow circles to overlap. It is assumed that the user won't trigger more that five at once.
 
 <Cabbage>
-form caption("Pebbles in a Pond"), scrollbars(0), size(900, 520), pluginid("Pond"),colour(0,10,20), guirefresh(64) style("legacy")
-image bounds(0,0,0,0), colour(0,0,0), widgetarray("circle",70), shape("ellipse"), outlinecolour("white"), line(0)
-label    bounds(  0, 0,0, 0), text("Drop a pebble into the pond..."), align(centre), fontcolour(0,0,0,0), identchannel("instructions")
+form caption("Pebbles in a Pond"), scrollBars(0), size(900, 520), pluginId("Pond"),colour(0,10,20), guiRefresh(64) style("legacy")
+image bounds(0,0,0,0), colour(0,0,0), widgetArray("circle",70), shape("ellipse"), outlineColour("white"), line(0)
+label    bounds(  0, 0,0, 0), text("Drop a pebble into the pond..."), align(centre), fontColour(0,0,0,0), identChannel("instructions")
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -173,7 +173,7 @@ instr	1000	; Print initial text instructions, expanding and disappearing.
  if ktrig==1 then				; If a trigger has been generated...
   reinit UPDATE
   UPDATE:
-  Smessage sprintfk "bounds(-200, 245,%d, %d),fontcolour(255,255,255,%d)", giPanelSizeX+400, i(kSize), i(kAlpha)	; Create a string with updated attributes that will be sent to the instructions widget.
+  Smessage sprintfk "bounds(-200, 245,%d, %d),fontColour(255,255,255,%d)", giPanelSizeX+400, i(kSize), i(kAlpha)	; Create a string with updated attributes that will be sent to the instructions widget.
   rireturn
   chnset Smessage, "instructions"														; Send updated attributes to the widget.
  endif

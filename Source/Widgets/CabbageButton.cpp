@@ -77,7 +77,11 @@ CabbageButton::CabbageButton(ValueTree wData, CabbagePluginEditor* _owner)
 	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat" &&
 		imgOff.isEmpty() && imgOn.isEmpty() && imgOver.isEmpty())
 	{
+        int fontstyle = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontstyle);
+        owner->customFont.setStyleFlags(fontstyle);
+        flatLookAndFeel.customFont = owner->customFont;
 		setLookAndFeel(&flatLookAndFeel);
+        lookAndFeelChanged();
 	}
 
 
@@ -97,16 +101,18 @@ void CabbageButton::valueTreePropertyChanged(ValueTree& valueTree, const Identif
 
 	if (prop == CabbageIdentifierIds::value)
 	{
-		CabbageUtilities::debug(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name));
-		CabbageUtilities::debug(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value));
-		setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value));
-		setToggleState(getValue() == 0 ? false : true, dontSendNotification);
+		//CabbageUtilities::debug(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name));
+		//CabbageUtilities::debug(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value));
+        const int newValue = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)  > 0.9 ? 1 : 0;
+        setValue(newValue);
+		//bool shouldEnable = (newValue == 0 ? false : true);
+        setToggleState(newValue == 0 ? false : true, dontSendNotification);
 		setButtonText(getTextArray()[getValue()]);
 	}
 	else
 	{
 		setLookAndFeelColours(valueTree);
-		handleCommonUpdates(this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+		handleCommonUpdates(this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 		populateTextArrays(valueTree);
 		//const String newText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::text);
 		//if(newText != getTextArray()[getValue()])

@@ -4,24 +4,24 @@
 ; Take Care! Feedback values above 1 are intended to be used only when transposition is not unison. 
 
 <Cabbage>
-form caption("pvsBuffer") size(580,135), pluginid("buff") style("legacy")
-image             bounds(0, 0, 580, 135), colour(100, 80, 80,125), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
+form caption("pvsBuffer") size(580,135), pluginId("buff") style("legacy")
+image             bounds(0, 0, 580, 135), colour(100, 80, 80,125), shape("rounded"), outlineColour("white"), outlineThickness(4) 
 
-label             bounds(10, 97, 48,10), text("RECORD"), align(right), fontcolour(white)
-label             bounds(10,112, 48,10), text("PLAY"),   align(right), fontcolour(white)
-image             bounds( 70,101, 490, 3), colour(255, 50, 50), shape("sharp"), identchannel("RecIndic")
-image             bounds( 70,116, 490, 3), colour( 55,250, 50), shape("sharp"), identchannel("PlayIndic")
+label             bounds(10, 97, 48,10), text("RECORD"), align(right), fontColour(white)
+label             bounds(10,112, 48,10), text("PLAY"),   align(right), fontColour(white)
+image             bounds( 70,101, 490, 3), colour(255, 50, 50), shape("sharp"), identChannel("RecIndic")
+image             bounds( 70,116, 490, 3), colour( 55,250, 50), shape("sharp"), identChannel("PlayIndic")
 
-rslider bounds(10, 11, 70, 70),  text("Speed"),     channel("speed"),     range(0, 4, 1, 0.5, 0.0001), textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
-rslider bounds(80, 11, 70, 70),  text("Buf. Size"), channel("buflen"),    range(0.10,20.00, 5, 0.5),   textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
-rslider bounds(150, 11, 70, 70), text("Semitones"), channel("semis"),     range(-24, 24, 0, 1, 1),     textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
-rslider bounds(220, 11, 70, 70), text("Cents"),     channel("cents"),     range(-100, 100, 0, 1, 1),   textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
-rslider bounds(290, 11, 70, 70), text("Feedback"),  channel("FB"),        range(0, 1.50, 0),           textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
-label    bounds(360,20, 60,13), text("FFT Size"), fontcolour("white")
-combobox bounds(360,35, 60,20), text("64","128","256","512","1024","2048","4096","8192"), channel("att_table"), value(5), fontcolour(255,255,190)
+rslider bounds(10, 11, 70, 70),  text("Speed"),     channel("speed"),     range(0, 4, 1, 0.5, 0.0001), textColour("white"),    colour(100, 80, 80,  5) trackerColour(silver)
+rslider bounds(80, 11, 70, 70),  text("Buf. Size"), channel("buflen"),    range(0.10,20.00, 5, 0.5),   textColour("white"),    colour(100, 80, 80,  5) trackerColour(silver)
+rslider bounds(150, 11, 70, 70), text("Semitones"), channel("semis"),     range(-24, 24, 0, 1, 1),     textColour("white"),    colour(100, 80, 80,  5) trackerColour(silver)
+rslider bounds(220, 11, 70, 70), text("Cents"),     channel("cents"),     range(-100, 100, 0, 1, 1),   textColour("white"),    colour(100, 80, 80,  5) trackerColour(silver)
+rslider bounds(290, 11, 70, 70), text("Feedback"),  channel("FB"),        range(0, 1.50, 0),           textColour("white"),    colour(100, 80, 80,  5) trackerColour(silver)
+label    bounds(360,20, 60,13), text("FFT Size"), fontColour("white")
+combobox bounds(360,35, 60,20), text("64","128","256","512","1024","2048","4096","8192"), channel("att_table"), value(5), fontColour(255,255,190)
 
-rslider bounds(430, 11, 70, 70), text("Mix"),       channel("mix"),       range(0, 1.00, 1),           textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
-rslider bounds(500, 11, 70, 70), text("Level"),     channel("lev"),       range(0, 1.00, 0.5),         textcolour("white"),    colour(100, 80, 80,  5) trackercolour(silver)
+rslider bounds(430, 11, 70, 70), text("Mix"),       channel("mix"),       range(0, 1.00, 1),           textColour("white"),    colour(100, 80, 80,  5) trackerColour(silver)
+rslider bounds(500, 11, 70, 70), text("Level"),     channel("lev"),       range(0, 1.00, 0.5),         textColour("white"),    colour(100, 80, 80,  5) trackerColour(silver)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

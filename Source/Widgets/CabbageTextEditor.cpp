@@ -32,9 +32,20 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
+    
+    const int readOnly = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::readonly);
+    textEditor.setReadOnly(readOnly == 1 ? true : false);
+    
+    
+    int fontSize =CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontsize);
+    textEditor.setFont(Font(16));
+                       
+    textEditor.toggleEditOnDoubleClick = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::doubleclicktogglesedit);
+    
     addAndMakeVisible (textEditor);
-    textEditor.setMultiLine (isMultiline, false);
-    textEditor.setScrollbarsShown (false);
+    textEditor.setMultiLine (isMultiline);
+    const bool showScrollbars = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrollbars);
+    textEditor.setScrollbarsShown (showScrollbars);
     textEditor.addListener (this);
     textEditor.addKeyListener (this);
     textEditor.setColour (TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
@@ -42,6 +53,8 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     textEditor.setColour (TextEditor::outlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
     textEditor.setColour (TextEditor::focusedOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
     textEditor.setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
+    textEditor.setColour(CaretComponent::ColourIds::caretColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::caretcolour)));
+
     
     const String filename = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
     const File textFile(File::getCurrentWorkingDirectory().getChildFile(filename).getFullPathName());
@@ -114,7 +127,15 @@ void CabbageTextEditor::valueTreePropertyChanged (ValueTree& valueTree, const Id
     textEditor.setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
     lookAndFeelChanged();
     repaint();
-    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
-    textEditor.setText (getCurrentText(valueTree), dontSendNotification);
+    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    
+    const String filename = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
+    const File textFile(File::getCurrentWorkingDirectory().getChildFile(filename).getFullPathName());
+    
+    if (textFile.existsAsFile())
+        textEditor.setText(textFile.loadFileAsString(), false);
+    else
+        textEditor.setText (getCurrentText(valueTree), dontSendNotification);
+
     sendTextToCsound();
 }

@@ -7,28 +7,28 @@ The sound file can be played back using the Play/Stop button (and the 'Transpose
 Playing back using the MIDI keyboard will implement pitch changes based on key played.
 
 <Cabbage>
-form caption("Temposcal File Player") size(570,340), colour(0,0,0) pluginid("TScl") style("legacy")
-image                       bounds(  0,  0,570,340), colour( 30, 70, 70), outlinecolour("White"), shape("sharp"), line(3)
+form caption("Temposcal File Player") size(570,340), colour(0,0,0) pluginId("TScl") style("legacy")
+image                       bounds(  0,  0,570,340), colour( 30, 70, 70), outlineColour("White"), shape("sharp"), line(3)
 
-soundfiler bounds(  5,  5,560,175), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 
-label bounds(6, 4, 560, 14), text(""), align(left), colour(0,0,0,0), fontcolour(200,200,200), identchannel("stringbox")
+soundfiler bounds(  5,  5,560,175), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
+label bounds(6, 4, 560, 14), text(""), align(left), colour(0,0,0,0), fontColour(200,200,200), identChannel("stringbox")
 
-image    bounds(  0,180,570,160), colour(0,0,0,0), outlinecolour("white"), line(2), shape("sharp"), plant("controls"){
-filebutton bounds(  5, 10, 80, 25), text("Open","Open"), fontcolour("white") channel("filename"), shape("ellipse")
-checkbox   bounds(  5, 40, 95, 25), channel("PlayStop"), text("Play/Stop"), fontcolour("white")
+image    bounds(  0,180,570,160), colour(0,0,0,0), outlineColour("white"), line(2), shape("sharp"), plant("controls"){
+filebutton bounds(  5, 10, 80, 25), text("Open","Open"), fontColour("white") channel("filename"), shape("ellipse")
+checkbox   bounds(  5, 40, 95, 25), channel("PlayStop"), text("Play/Stop"), fontColour("white")
 
-checkbox   bounds( 95, 43,100, 15), channel("lock"), text("Phase Lock"), colour("red"), fontcolour("white")
-checkbox   bounds( 95, 60,100, 15), channel("freeze"), text("Freeze"), colour("LightBlue"), fontcolour("white")
+checkbox   bounds( 95, 43,100, 15), channel("lock"), text("Phase Lock"), colour("red"), fontColour("white")
+checkbox   bounds( 95, 60,100, 15), channel("freeze"), text("Freeze"), colour("LightBlue"), fontColour("white")
 
-label      bounds(105,  8, 48, 12), text("FFT Size"), fontcolour("white")
-combobox   bounds( 95, 20, 70, 20), channel("FFTSize"), items("32768", "16384", "8192", "4096", "2048", "1024", "512", "256", "128", "64", "32", "16", "8", "4"), value(5), fontcolour("white")
+label      bounds(105,  8, 48, 12), text("FFT Size"), fontColour("white")
+combobox   bounds( 95, 20, 70, 20), channel("FFTSize"), items("32768", "16384", "8192", "4096", "2048", "1024", "512", "256", "128", "64", "32", "16", "8", "4"), value(5), fontColour("white")
 
-rslider    bounds(175,  5, 70, 70), channel("transpose"), range(-48, 48, 0,1,1),            colour( 50, 90, 90)), trackercolour("silver"), text("Transpose"), textcolour("white")
-rslider    bounds(240,  5, 70, 70), channel("speed"),     range( -2,  2.00, 1),             colour( 50, 90, 90),  trackercolour("silver"), text("Speed"),     textcolour("white")
-rslider    bounds(305,  5, 70, 70), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       colour( 50, 90, 90),  trackercolour("silver"), text("Att.Tim"),   textcolour("white")
-rslider    bounds(370,  5, 70, 70), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour( 50, 90, 90),  trackercolour("silver"), text("Rel.Tim"),   textcolour("white")
-rslider    bounds(435,  5, 70, 70), channel("MidiRef"),   range(0,127,60, 1, 1),            colour( 50, 90, 90), trackercolour("silver"),  text("MIDI Ref."), textcolour("white")
-rslider    bounds(500,  5, 70, 70), channel("level"),     range(  0,  3.00, 1, 0.5),        colour( 50, 90, 90),  trackercolour("silver"), text("Level"),     textcolour("white")
+rslider    bounds(175,  5, 70, 70), channel("transpose"), range(-48, 48, 0,1,1),            colour( 50, 90, 90)), trackerColour("silver"), text("Transpose"), textColour("white")
+rslider    bounds(240,  5, 70, 70), channel("speed"),     range( -2,  2.00, 1),             colour( 50, 90, 90),  trackerColour("silver"), text("Speed"),     textColour("white")
+rslider    bounds(305,  5, 70, 70), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       colour( 50, 90, 90),  trackerColour("silver"), text("Att.Tim"),   textColour("white")
+rslider    bounds(370,  5, 70, 70), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour( 50, 90, 90),  trackerColour("silver"), text("Rel.Tim"),   textColour("white")
+rslider    bounds(435,  5, 70, 70), channel("MidiRef"),   range(0,127,60, 1, 1),            colour( 50, 90, 90), trackerColour("silver"),  text("MIDI Ref."), textColour("white")
+rslider    bounds(500,  5, 70, 70), channel("level"),     range(  0,  3.00, 1, 0.5),        colour( 50, 90, 90),  trackerColour("silver"), text("Level"),     textColour("white")
 
 keyboard bounds( 5, 80, 560, 75)
 }
@@ -141,7 +141,7 @@ endif
  ; print scrubber
  kscrubber	phasor	(gkspeed*gkfreeze*sr)/ftlen(gitableL)
  if(metro(20)==1) then
-  Smessage sprintfk "scrubberposition(%d)", kscrubber*ftlen(gitableL)
+  Smessage sprintfk "scrubberPosition(%d)", kscrubber*ftlen(gitableL)
   chnset Smessage, "filer1"
  endif
 

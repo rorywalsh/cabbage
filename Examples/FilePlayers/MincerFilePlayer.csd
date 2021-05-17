@@ -20,66 +20,66 @@
 
 
 <Cabbage>
-form caption("Mincer File Player") size(1055,370), colour(  0,  0,  0) pluginid("Minc"), guirefresh(10) style("legacy")
-image                    bounds(  0,  0,1055,370), colour( 50,100,100), outlinecolour("White"), line(3), shape("sharp")
+form caption("Mincer File Player") size(1055,370), colour(  0,  0,  0) pluginId("Minc"), guiRefresh(10) style("legacy")
+image                    bounds(  0,  0,1055,370), colour( 50,100,100), outlineColour("White"), line(3), shape("sharp")
 
-soundfiler bounds(  5,  5,1045,150), channel("beg","len"), channel("pos1","end1"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 
-label bounds(6, 4, 560, 14), text(""), align(left), colour(0,0,0,0), fontcolour(200,200,200), identchannel("stringbox")
+soundfiler bounds(  5,  5,1045,150), channel("beg","len"), channel("pos1","end1"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
+label bounds(6, 4, 560, 14), text(""), align(left), colour(0,0,0,0), fontColour(200,200,200), identChannel("stringbox")
 
-hslider    bounds(  0,150,1055, 30), channel("pointer"), range( 0,  1.00, 0.1), colour( 40, 80, 80),  trackercolour("white"), fontcolour("white")
-label      bounds(  0,172,1055, 12), text("Manual Pointer"), fontcolour("white")
+hslider    bounds(  0,150,1055, 30), channel("pointer"), range( 0,  1.00, 0.1), colour( 40, 80, 80),  trackerColour("white"), fontColour("white")
+label      bounds(  0,172,1055, 12), text("Manual Pointer"), fontColour("white")
 
-filebutton bounds(  5,185, 80, 22), text("Open File","Open File"), fontcolour("white"), channel("filename"), shape("ellipse")
+filebutton bounds(  5,185, 80, 22), text("Open File","Open File"), fontColour("white"), channel("filename"), shape("ellipse")
 
-checkbox bounds(  5,218,120, 12), text("Manual Pointer"), channel("r1"), fontcolour("white"), colour(yellow), radiogroup(1)
-checkbox bounds(  5,232,120, 12), text("Mouse Scrubber"), channel("r2"), fontcolour("white"), colour(yellow), radiogroup(1), value(1) 
-label    bounds( 19,246,100, 10), text("[right click and drag]"), fontcolour("white"), align("left")
-checkbox bounds(  5,256,120, 12), text("Loop Region"),    channel("r3"), fontcolour("white"), colour(yellow), radiogroup(1) 
-label    bounds( 19,270,100, 10), text("[left click and drag]"), fontcolour("white"), align("left")
+checkbox bounds(  5,218,120, 12), text("Manual Pointer"), channel("r1"), fontColour("white"), colour(yellow), radioGroup(1)
+checkbox bounds(  5,232,120, 12), text("Mouse Scrubber"), channel("r2"), fontColour("white"), colour(yellow), radioGroup(1), value(1) 
+label    bounds( 19,246,100, 10), text("[right click and drag]"), fontColour("white"), align("left")
+checkbox bounds(  5,256,120, 12), text("Loop Region"),    channel("r3"), fontColour("white"), colour(yellow), radioGroup(1) 
+label    bounds( 19,270,100, 10), text("[left click and drag]"), fontColour("white"), align("left")
 
-checkbox   bounds(125,223, 60, 12), channel("lock"), text("Lock"), colour("yellow"), fontcolour("white"), value(1)
-checkbox   bounds(125,243, 60, 12), channel("MIDI"), text("MIDI"), colour("yellow"), fontcolour("white")
+checkbox   bounds(125,223, 60, 12), channel("lock"), text("Lock"), colour("yellow"), fontColour("white"), value(1)
+checkbox   bounds(125,243, 60, 12), channel("MIDI"), text("MIDI"), colour("yellow"), fontColour("white")
 
-label      bounds(105,183, 48, 12), text("FFT Size"), fontcolour("white")
-combobox   bounds( 95,195, 70, 20), channel("FFTSize"), text("32768", "16384", "8192", "4096", "2048", "1024", "512", "256", "128", "64", "32", "16", "8", "4"), value(5), fontcolour("white")
+label      bounds(105,183, 48, 12), text("FFT Size"), fontColour("white")
+combobox   bounds( 95,195, 70, 20), channel("FFTSize"), text("32768", "16384", "8192", "4096", "2048", "1024", "512", "256", "128", "64", "32", "16", "8", "4"), value(5), fontColour("white")
 
 combobox   bounds(170,175, 80, 20), text("Semitone","Ratio"), channel("IntervalMode"),       value(1)
 
-image      bounds(175,200, 70, 70), colour(0,0,0,0), plant("Semitones"), identchannel("SemitonesPlant_ident"), visible(1) {
-rslider    bounds(  0,  0, 70, 70), channel("Semitones"), range(-48, 48, 0,1,1), colour( 40, 80, 80), trackercolour("white"), text("Semitones"), textcolour("white")
+image      bounds(175,200, 70, 70), colour(0,0,0,0), plant("Semitones"), identChannel("SemitonesPlant_ident"), visible(1) {
+rslider    bounds(  0,  0, 70, 70), channel("Semitones"), range(-48, 48, 0,1,1), colour( 40, 80, 80), trackerColour("white"), text("Semitones"), textColour("white")
 }
 
-image      bounds(175,200, 70, 70), colour(0,0,0,0), plant("Ratio"), identchannel("RatioPlant_ident"), visible(0) {
+image      bounds(175,200, 70, 70), colour(0,0,0,0), plant("Ratio"), identChannel("RatioPlant_ident"), visible(0) {
 nslider bounds( 20,  0, 25, 18), channel("Numerator"),        range(1,99,3,1,1)
 image     bounds( 15, 26, 35,  1), shape("sharp") 
 nslider bounds( 20, 35, 25, 18), channel("Denominator"),      range(1,99,2,1,1)
 }
 
 
-rslider    bounds(240,200, 70, 70), channel("portamento"),range(0, 20,0.05,0.5,0.01), colour( 40, 80, 80), trackercolour("white"), text("Port.Time"), textcolour("white")
+rslider    bounds(240,200, 70, 70), channel("portamento"),range(0, 20,0.05,0.5,0.01), colour( 40, 80, 80), trackerColour("white"), text("Port.Time"), textColour("white")
 
-image      bounds(320,188, 305,90), colour(0,0,0,0), outlinecolour("silver"), outlinethickness(1), shape("sharp"), plant("LoopRegion") {
-label      bounds(  0,  2, 305,10), text("L   O   O   P       R   E   G   I   O   N"), fontcolour("white")
-label      bounds( 10, 24, 85, 12), text("Shape"), fontcolour("white")
-combobox   bounds( 10, 37, 85, 20), channel("LoopMode"), text("Forward","Backward","Triangle","Sine"), value(1), fontcolour("white")
-rslider    bounds(100, 17, 70, 70), channel("Speed"), range(-2, 2, 1,1,0.001),            colour( 40, 80, 80)), trackercolour("white"), text("Speed"), textcolour("white")
-nslider  bounds(170, 35, 60, 30), channel("ModRange"), range(0,2,0,1,0.001),  colour(  0,  0,  0), text("Mod.Range"), textcolour("white")
-nslider  bounds(235, 20, 60, 30), channel("Rate1"),    range(0,30,1,1,0.001), colour(  0,  0,  0), text("Rate 1"),    textcolour("white")
-nslider  bounds(235, 50, 60, 30), channel("Rate2"),    range(0,30,2,1,0.001), colour(  0,  0,  0), text("Rate 2"),    textcolour("white")
+image      bounds(320,188, 305,90), colour(0,0,0,0), outlineColour("silver"), outlineThickness(1), shape("sharp"), plant("LoopRegion") {
+label      bounds(  0,  2, 305,10), text("L   O   O   P       R   E   G   I   O   N"), fontColour("white")
+label      bounds( 10, 24, 85, 12), text("Shape"), fontColour("white")
+combobox   bounds( 10, 37, 85, 20), channel("LoopMode"), text("Forward","Backward","Triangle","Sine"), value(1), fontColour("white")
+rslider    bounds(100, 17, 70, 70), channel("Speed"), range(-2, 2, 1,1,0.001),            colour( 40, 80, 80)), trackerColour("white"), text("Speed"), textColour("white")
+nslider  bounds(170, 35, 60, 30), channel("ModRange"), range(0,2,0,1,0.001),  colour(  0,  0,  0), text("Mod.Range"), textColour("white")
+nslider  bounds(235, 20, 60, 30), channel("Rate1"),    range(0,30,1,1,0.001), colour(  0,  0,  0), text("Rate 1"),    textColour("white")
+nslider  bounds(235, 50, 60, 30), channel("Rate2"),    range(0,30,2,1,0.001), colour(  0,  0,  0), text("Rate 2"),    textColour("white")
 }
 
-image      bounds(630,188, 145,90), colour(0,0,0,0), outlinecolour("silver"), outlinethickness(1), shape("sharp"), plant("ModPtr") {
-label      bounds(  0,  2, 135,10), text("M  O  D.     P  O  I  N  T  E  R"), fontcolour("white")
-nslider  bounds( 10, 35, 60, 30), channel("PtrModRange"), range(0,1,0,1,0.001),  colour(  0,  0,  0), text("Mod.Range"), textcolour("white")
-nslider  bounds( 75, 20, 60, 30), channel("PtrRate1"),    range(0,500,1,1,0.001), colour(  0,  0,  0), text("Rate 1"),    textcolour("white")
-nslider  bounds( 75, 50, 60, 30), channel("PtrRate2"),    range(0,500,2,1,0.001), colour(  0,  0,  0), text("Rate 2"),    textcolour("white")
+image      bounds(630,188, 145,90), colour(0,0,0,0), outlineColour("silver"), outlineThickness(1), shape("sharp"), plant("ModPtr") {
+label      bounds(  0,  2, 135,10), text("M  O  D.     P  O  I  N  T  E  R"), fontColour("white")
+nslider  bounds( 10, 35, 60, 30), channel("PtrModRange"), range(0,1,0,1,0.001),  colour(  0,  0,  0), text("Mod.Range"), textColour("white")
+nslider  bounds( 75, 20, 60, 30), channel("PtrRate1"),    range(0,500,1,1,0.001), colour(  0,  0,  0), text("Rate 1"),    textColour("white")
+nslider  bounds( 75, 50, 60, 30), channel("PtrRate2"),    range(0,500,2,1,0.001), colour(  0,  0,  0), text("Rate 2"),    textColour("white")
 }
 
 image      bounds(785,200,265, 70), colour(0,0,0,0), plant("output") {
-rslider    bounds(  0,  0, 70, 70), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       colour( 40, 80, 80),  trackercolour("white"), text("Att.Tim"),   textcolour("white")
-rslider    bounds( 65,  0, 70, 70), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour( 40, 80, 80),  trackercolour("white"), text("Rel.Tim"),   textcolour("white")
-rslider    bounds(130,  0, 70, 70), channel("MidiRef"),   range(0,127,60, 1, 1),            colour( 40, 80, 80),  trackercolour("white"), text("MIDI Ref."), textcolour("white")
-rslider    bounds(195,  0, 70, 70), channel("level"),     range(  0,  1.00, 1, 0.5),        colour( 40, 80, 80),  trackercolour("white"), text("Level"),     textcolour("white")
+rslider    bounds(  0,  0, 70, 70), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       colour( 40, 80, 80),  trackerColour("white"), text("Att.Tim"),   textColour("white")
+rslider    bounds( 65,  0, 70, 70), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour( 40, 80, 80),  trackerColour("white"), text("Rel.Tim"),   textColour("white")
+rslider    bounds(130,  0, 70, 70), channel("MidiRef"),   range(0,127,60, 1, 1),            colour( 40, 80, 80),  trackerColour("white"), text("MIDI Ref."), textColour("white")
+rslider    bounds(195,  0, 70, 70), channel("level"),     range(  0,  1.00, 1, 0.5),        colour( 40, 80, 80),  trackerColour("white"), text("Level"),     textColour("white")
 }
 
 keyboard bounds(  5,290,1045, 75)

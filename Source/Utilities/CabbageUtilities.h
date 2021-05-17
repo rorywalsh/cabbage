@@ -420,7 +420,14 @@ public:
 	//==============================================================
 	static int getHeaderInfo(String csdText, String headerString)
 	{
-
+        
+        const int start = csdText.indexOf("/*");
+        const int end = csdText.indexOf("*/");
+        
+        //special case where users has misplaced a closing comment */
+        if(end < start)
+            csdText = csdText.replaceFirstOccurrenceOf("*/", "");
+        
 		while (csdText.indexOf("/*") != -1 && csdText.indexOf("*/") != -1)
 		{
 			const String comments = csdText.substring(csdText.indexOf("/*"), csdText.indexOf("*/") + 2);
@@ -834,6 +841,45 @@ public:
         return result;
 
     }
+    
+    static int showAlertMessageWithTextEditor (String title, String message, LookAndFeel* feel, String* presetName)
+    {
+
+        AlertWindow w (title,
+                       message,
+                       AlertWindow::WarningIcon);
+        w.setLookAndFeel(feel);
+        //w.getLookAndFeel().setColour(AlertWindow::ColourIds::backgroundColourId, Colour(43, 43, 43));
+        //w.setSize(8500, 300);
+        w.addTextEditor ("text", "enter name here", "");
+        w.addButton ("OK",     1, KeyPress (KeyPress::returnKey, 0, 0));
+        w.addButton ("Cancel", 0, KeyPress (KeyPress::escapeKey, 0, 0));
+        
+//        if (w.runModalLoop() != 0) // if they picked 'ok'
+//        {
+//
+//        }
+        
+//        AlertWindow alert ("Cabbage Message", message, AlertWindow::WarningIcon, 0);
+//        alert.setLookAndFeel (feel);
+//        alert.addButton ("Yes", 1);
+//        alert.addButton ("No", 2);
+//        alert.setAlwaysOnTop(true);
+//        if (cancel == 1)
+//            alert.addButton ("Cancel", 0);
+//
+        int result;
+#if !defined(AndroidBuild)
+        result = w.runModalLoop();
+        *presetName = w.getTextEditorContents ("text");
+#else
+        result = w.showYesNoCancelBox (AlertWindow::QuestionIcon, "Warning", message, "Yes", "No", "Cancel", nullptr, nullptr);
+#endif
+        return result;
+        
+    }
+    
+
 
     //==========================================================================================
     static String cabbageString (String input, Font font, float availableWidth)
@@ -1119,14 +1165,31 @@ public:
         return String (static_cast<double> (y) + (1.0 / m) * r);
     }
     //======================================================================================
+    static int getNumberOfOccurances(String text, String word)
+    {
+        int wordCount = 0;
+        
+        if(text.indexOf(word) == -1)
+            return wordCount;
+        
+        int index = text.indexOf(0, word);
 
+        while(index != -1)
+        {
+            wordCount++;
+            index = text.indexOf(index+word.length(), word);
+        }
+        
+        return wordCount;
+
+    }
     //======================================================================================
     static void writeValueTreeToFile (ValueTree valueTree, String filePath)
     {
 		std::unique_ptr<XmlElement> data(valueTree.createXml());
         // only works when there are no objects in the array...
         //write new xml settings files based on data from user settings file, but using ValueTree
-        data->writeTo (File (filePath));
+        //data->writeTo (File (filePath));
     }
 
     //======= method for replacing the contents of an identifier with new values..
@@ -1191,6 +1254,23 @@ public:
     static String removeWhitespaceEscapeChars(const String& str)
     {
         return convertWhitespaceEscapeChars(str).removeCharacters("\n\r\t");
+    }
+    
+    static Typeface::Ptr getFontFromFile(File fontFile)
+    {
+        if(fontFile.existsAsFile())
+        {
+            std::unique_ptr<InputStream> inStream (fontFile.createInputStream());
+            MemoryBlock mb;
+            inStream->readIntoMemoryBlock(mb);
+            Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
+            return fontPtr;
+        }
+        else
+        {
+            return nullptr;
+        }
+        
     }
 
 };

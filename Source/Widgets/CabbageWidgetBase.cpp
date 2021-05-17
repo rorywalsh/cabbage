@@ -54,16 +54,34 @@ void CabbageWidgetBase::initialiseCommonAttributes (Component* child, ValueTree 
     child->getProperties().set (CabbageIdentifierIds::linenumber, lineNumber);
     populateTextArrays (data);
     //now initialise everything that can be updated using ident channels
-    handleCommonUpdates (child, data, true);
+    handleCommonUpdates (child, data, true, Identifier());
 }
 
-void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, bool calledFromConstructor)
+void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, bool calledFromConstructor, const Identifier& prop)
 {
     if (calledFromConstructor == false)
-    {
-        if (getPluginEditor (child) != nullptr && getPluginEditor (child)->isEditModeEnabled() == false)
-            child->setBounds (CabbageWidgetData::getBounds (data));
+    {       
 
+        if (getPluginEditor (child) != nullptr && getPluginEditor (child)->isEditModeEnabled() == false)
+        {
+            if(prop == CabbageIdentifierIds::bounds){
+                var bounds = CabbageWidgetData::getProperty(data, CabbageIdentifierIds::bounds);
+
+                child->setBounds (bounds[0], bounds[1], bounds[2], bounds[3]);
+            }
+            else if(prop == CabbageIdentifierIds::pos || prop == CabbageIdentifierIds::position)
+            {
+                var pos = CabbageWidgetData::getProperty(data, CabbageIdentifierIds::position);
+                child->setTopLeftPosition(pos[0], pos[1]);
+            }
+            else if(prop == CabbageIdentifierIds::size)
+            {
+                var size = CabbageWidgetData::getProperty(data, CabbageIdentifierIds::position);
+                child->setTopLeftPosition(size[0], size[1]);
+            }
+            else
+                child->setBounds (CabbageWidgetData::getBounds (data));
+        }
         else if (CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::allowboundsupdate) == 1)
         {
             child->setBounds (CabbageWidgetData::getBounds (data));
@@ -82,6 +100,7 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
     if ( toFront != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::tofront) || calledFromConstructor)
     {
         toFront = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::tofront);
+        CabbageWidgetData::setNumProp (data, CabbageIdentifierIds::tofront, 0);
         child->toFront(true);
     }
 

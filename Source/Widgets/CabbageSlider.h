@@ -79,6 +79,7 @@ class SliderThumb : public Component
 public:
     SliderThumb(CabbageSlider* slider) : Component(), owner(slider)
     {
+
     };
 
     void paint(Graphics& g) {
@@ -93,6 +94,7 @@ public:
     void mouseDown(const MouseEvent& e) override;
     void mouseMove(const MouseEvent& e) override;
     void mouseEnter(const MouseEvent& e) override;
+    void mouseUp (const MouseEvent& event) override;
     void move(double value, Range<double> range);
     int yOffset = 0, xOffset = 0;
     CabbageSlider* owner;
@@ -111,7 +113,7 @@ class CabbageSlider
     int decimalPlaces = 0;
     float remove1 = 0, remove2 = 0;
     String colour, fontColour, textColour, outlineColour, sliderType, trackerColour, channel, popupText;
-    
+    var sliderBounds;
     Slider slider;
     BubbleMessageComponent popupBubble;
     Image sliderThumbImage, sliderBgImage;
@@ -120,6 +122,7 @@ class CabbageSlider
     void mouseMove (const MouseEvent& event) override;
     void mouseEnter (const MouseEvent& event) override;
     void mouseExit (const MouseEvent& event) override;
+ 
     void createPopupBubble();
    
     void setLookAndFeelColours (ValueTree wData);
@@ -130,6 +133,7 @@ class CabbageSlider
     bool isFilmStripSlider = false;
 
     FlatButtonLookAndFeel flatLookAndFeel;
+    CabbageLookAndFeel2 lookAndFeel;
     int numFrames = 31;
     bool imageIsNull = true;
     Image filmStrip;
@@ -149,6 +153,10 @@ public:
     void setSliderVelocity (ValueTree wData);
     void resized() override;
     void initialiseSlider (ValueTree wData, Slider& currentSlider);
+    
+    CabbagePluginEditor* getEditor(){
+        return owner;
+    }
 
     void setTextBoxOrientation (String type, int textBox);
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop) override;

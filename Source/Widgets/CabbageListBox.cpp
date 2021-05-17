@@ -30,6 +30,10 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
     //listBox.setBounds(CabbageWidgetData::getBounds(wData).withTop(0).withLeft(0));
     addItemsToListbox(wData);
 
+    
+    //lookAndFeel.customFont = owner->customFont;
+    setLookAndFeel(&lookAndFeel);
+    
     if (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channeltype) == "string")
     {
         isStringCombo = true;
@@ -62,9 +66,9 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
 
 	const Colour backgroundColour = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour));
 	
-	listBox.setColour(ScrollBar::backgroundColourId, Colours::red);
+    listBox.getVerticalScrollBar().getLookAndFeel().setColour(ScrollBar::backgroundColourId, Colours::red);
 	listBox.setColour(ListBox::backgroundColourId, backgroundColour);
-	//listBox.lookAndFeelChanged();
+	listBox.lookAndFeelChanged();
 	resized();
 
 }
@@ -105,10 +109,10 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
         }
     }
         //if dealing with preset files...
-    else if (CabbageWidgetData::getStringProp (wData, "filetype") == "preset"
-             || CabbageWidgetData::getStringProp (wData, "filetype") == "*.snaps"
-             || CabbageWidgetData::getStringProp (wData, "filetype") == ".snaps"
-             || CabbageWidgetData::getStringProp (wData, "filetype") == "snaps") //load items from directory
+    else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype) == "preset"
+             || CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype) == "*.snaps"
+             || CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype) == ".snaps"
+             || CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype) == "snaps") //load items from directory
     {
         const File fileName = File (getCsdFile()).withFileExtension (".snaps");
 
@@ -140,7 +144,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
         else
 			listboxDir = File(getCsdFile()).getParentDirectory();
 
-        filetype = CabbageWidgetData::getStringProp (wData, "filetype");
+        filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype);
         listboxDir.findChildFiles (dirFiles, 2, false, filetype);
         stringItems.add ("Select..");
 
@@ -198,7 +202,7 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
 
     else
     {
-        handleCommonUpdates (this, valueTree);
+        handleCommonUpdates (this, valueTree, false, prop);
         highlightColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightcolour);
         colour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour);
         fontColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour);
@@ -231,13 +235,19 @@ void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps")
         || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("preset"))
     {
-        String presetFilename;
-        if (owner->isAudioUnit())
-            presetFilename = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
-        else
-            presetFilename = owner->createNewGenericNameForPresetFile();
+        String newFileName;
+        newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+
+
+        newFileName = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
         
-        owner->restorePluginStateFrom (presets[row], presetFilename);
+        if (!File(newFileName).existsAsFile())
+        {
+            newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+        }
+
+        
+        owner->restorePluginStateFrom (presets[row]);
         owner->sendChannelDataToCsound (getChannel(), row);
     }
     else if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))
@@ -261,6 +271,9 @@ void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
 void CabbageListBox::paintListBoxItem (int rowNumber, Graphics& g,
                                        int width, int height, bool rowIsSelected)
 {
+    if(owner->customFont.getHeight()<900)
+        g.setFont(owner->customFont);
+    
     if (rowIsSelected)
         g.fillAll (Colour::fromString(highlightColour));
     else

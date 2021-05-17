@@ -2,21 +2,21 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("HRTF 3D") size(365, 275), pluginid("HRTF")
-image pos(0, 0), size(365, 236), colour(50, 20,  0), shape("rounded"), outlinecolour("white"), outlinethickness(4)
-xypad bounds(6,  6, 250, 224), channel("Az", "Elev"), text("X=Azimuth : Y=Elev."), rangex(-180,  180,   0), rangey(-40, 90, 0)
+form caption("HRTF 3D") size(365, 275), pluginId("HRTF")
+image pos(0, 0), size(365, 236), colour(50, 20,  0), shape("rounded"), outlineColour("white"), outlineThickness(4)
+xypad bounds(6,  6, 250, 224), channel("Az", "Elev"), text("X=Azimuth : Y=Elev."), rangeX(-180,  180,   0), rangeY(-40, 90, 0)
 
 checkbox bounds(265, 6, 80, 12), channel("TestSound"), FontColour("white"),  value(1), text("Test Sound"), colour(yellow)
 
 combobox bounds(265, 20, 90,25), channel("type"), value(2), text("hrtfmove", "hrtfmove2")
-label    bounds(265,  50, 90, 15), text("L/R In"), fontcolour("white")
+label    bounds(265,  50, 90, 15), text("L/R In"), fontColour("white")
 hslider  bounds(265,  65, 90, 20), channel("L_R_In"), range(0, 1.00, 0)
-label    bounds(265,110, 90, 15), text("Overlap"), fontcolour("white")
+label    bounds(265,110, 90, 15), text("Overlap"), fontColour("white")
 combobox bounds(265,125, 90, 20), channel("overlap"), value(3), text("1", "2", "4", "8", "16", "32", "64")
-label    bounds(265, 175, 90, 15), text("Radius"), fontcolour("white")
+label    bounds(265, 175, 90, 15), text("Radius"), fontColour("white")
 hslider  bounds(265, 190, 90, 20), channel("radius"), range(1, 30, 9)
-image bounds(5,245, 215, 20), colour(100,100,100,80), plant("credit"), outlinethickness(0){
-label bounds(0.03, 0.1, .95, .7), text("Author: Iain McCurdy |2012|"), fontcolour("white")}
+image bounds(5,245, 215, 20), colour(100,100,100,80), plant("credit"), outlineThickness(0){
+label bounds(0.03, 0.1, .95, .7), text("Author: Iain McCurdy |2012|"), fontColour("white")}
 </Cabbage>
 
 <CsoundSynthesizer>

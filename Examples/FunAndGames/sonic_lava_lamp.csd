@@ -2,19 +2,19 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Sonic Lava Lamp") size(510, 450), pluginid("sonl") style("legacy")
+form caption("Sonic Lava Lamp") size(510, 450), pluginId("sonl") style("legacy")
 image bounds(  5,  0,250, 210), colour(255,255, 50,100),shape("rounded"), oulinecolour("white"), line(0)
 image bounds(255,  0,250, 210), colour(  0,  0,255,100),shape("rounded"), oulinecolour("white"), line(0)
 image bounds(  5,210,250, 210), colour(  5,255,  0,100),shape("rounded"), oulinecolour("white"), line(0)
 image bounds(255,210,250, 210), colour(255,  0,200,100),shape("rounded"), oulinecolour("white"), line(0)
 
-xypad bounds(5, 0, 250, 210), channel("LFOspeed", "LFO_OS"), rangex(0, 1.00, 0.01), rangey(5, 11, 8), text("Speed/OS")
-xypad bounds(255, 0, 250, 210), channel("LFOshape", "LFOdepth"), rangex(0, 1, 0.7), rangey(0.1, 4, 2), text("Shape/Depth")
-xypad bounds(5, 210, 250, 210), channel("pan", "amp"), rangex(0, 1, 0.5), rangey(0, 1, 0.8), text("pan/amp")
-xypad bounds(255, 210, 250, 210), channel("DelTim", "DelSnd"), rangex(0, 1.00, 0.5), rangey(0, 1.00, 0.5), text("Delay Time/Send")
+xypad bounds(5, 0, 250, 210), channel("LFOspeed", "LFO_OS"), rangeX(0, 1.00, 0.01), rangeY(5, 11, 8), text("Speed/OS")
+xypad bounds(255, 0, 250, 210), channel("LFOshape", "LFOdepth"), rangeX(0, 1, 0.7), rangeY(0.1, 4, 2), text("Shape/Depth")
+xypad bounds(5, 210, 250, 210), channel("pan", "amp"), rangeX(0, 1, 0.5), rangeY(0, 1, 0.8), text("pan/amp")
+xypad bounds(255, 210, 250, 210), channel("DelTim", "DelSnd"), rangeX(0, 1.00, 0.5), rangeY(0, 1.00, 0.5), text("Delay Time/Send")
 infobutton bounds(5,425, 100, 20), text("Help"), file("SonicLavaLampHelp.html")
 image bounds(105, 425, 300, 20), colour(75, 85, 90, 100), plant("credit"), line(0){
-label bounds(0.03, 0.1, .9, .7), text("Author: Iain McCurdy |2012|"), fontcolour("white")
+label bounds(0.03, 0.1, .9, .7), text("Author: Iain McCurdy |2012|"), fontColour("white")
 }
 </Cabbage>
 <CsoundSynthesizer>

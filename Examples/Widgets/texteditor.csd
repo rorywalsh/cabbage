@@ -1,69 +1,69 @@
 <Cabbage>
-form caption("Texteditor Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-label bounds(12, 36, 297, 19), text("Enter some text and hit enter"), align("left") fontcolour(84, 83, 83, 255)
-texteditor bounds(12, 58, 152, 24), channel("textEditor1"), text("") value(0) file("/Users/walshr/sourcecode/cabbage/Examples/Widgets/Sliders.csd")
-texteditor bounds(146, 140, 68, 127) identchannel("widgetIdent")
-label bounds(192, 60, 192, 21), text(""), identchannel("labelIdent")
+form caption("Texteditor Example") size(380, 300), guiMode("queue"), colour(2, 145, 209) pluginId("def1")
 
+texteditor bounds(18, 20, 341, 204) fontSize(16), channel("orcText"), scrollbars(1), wrap(1),  fontColour(124, 210, 0), colour(0, 0, 0, 100)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
--n -d -+rtmidi=NULL -M0 -m0d 
+-n -d -+rtmidi=NULL -M0 -m0d --midi-key=4 --midi-velocity-amp=5
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
-ksmps = 32
+ksmps = 16
 nchnls = 2
 0dbfs = 1
 
-seed 0 
-;basic usage
+
+; Rory Walsh 2021 
+;
+; License: CC0 1.0 Universal
+; You can copy, modify, and distribute this file, 
+; even for commercial purposes, all without asking permission. 
+
 instr 1
-SFile chnget "textEditor1" 
-    if changed(SFile)== 1 then
-        printf "%s\n", k(1), SFile
-        SMessage sprintfk "text(\"%s\") ", SFile
-        chnset SMessage, "labelIdent"
-    endif
+
+    SText  = {{
+/* A Cabbage texteditor is a simple text editor that can show static text, or provide a way of edit new or existing text. You can also send text back to Csound by hit Ctrl+Enter. When you do so, Csound will pick up the entire editor string.\n\nIn the this example we create a simple live-coding type environment. Each time we modify the Csound code it gets sent to Csound and compiled on the fly.\n\nAll of the Cabbage widget examples use simple texteditor widgets to show basic information, but they can also load entire text files using the 'file()' identifier.  */
+
+;simple instrument
+instr 1
+    kEnv madsr .1, .4, .5, 1
+    a1 oscili kEnv, p4
+    outs a1, a1
 endin
 
-;WIDGET_ADVANCED_USAGE
+;schedule(1, 0, 2, 300)
+    }}
+    
+    cabbageSet "orcText", "text", SText
+    cabbageSet "scoText", "text",  "schedule(1, 0, 2, 300)"
+
+    SText cabbageGetValue "orcText"
+    if changed:k(SText) == 1 then
+        event "i", 2, 0, 1
+    endif
+    
+    SText cabbageGetValue "scoText"
+    if changed:k(SText) == 1 then
+        event "i", 3, 0, 1
+    endif
+endin
 
 instr 2
-    if metro(1) == 1 then
-        event "i", "ChangeAttributes", 0, 1
-    endif
+    SText chnget "orcText"
+    prints SText
+    ires compilestr SText 
+    print ires ; -1 as could not compile
 endin
 
-instr ChangeAttributes
-    SIdentifier init ""
-	SIdent sprintf "alpha(%f) ", 50 + rnd(50)/50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "pos(%d, 140) ", 100 + rnd(100)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "size(%d, %d) ", abs(rnd(200))+40, abs(rnd(100))+50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "colour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "fontcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "visible(%d) ", (rnd(100) > 80 ? 0 : 1)
-	SIdentifier strcat SIdentifier, SIdent
-    ;send identifier string to Cabbage
-    chnset SIdentifier, "widgetIdent"           
+instr 3
+    SText chnget "scoText"
+    prints SText
+    ires compilestr SText 
+    print ires ; -1 as could not compile
 endin
-                
-
 </CsInstruments>
 <CsScore>
-;causes Csound to run for about 7000 years...
-f0 z
-;starts instrument 1 and runs it for a week
 i1 0 z
-i2 0 z
 </CsScore>
 </CsoundSynthesizer>
-<!--End Widget Example)/-->

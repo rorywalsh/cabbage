@@ -157,6 +157,10 @@ public:
 		if (auto * ui = createProcessorEditor(*node->getProcessor(), type))
 			setContentOwned(ui, true);
 
+        if(CabbagePluginEditor* cabbageEditor = dynamic_cast<CabbagePluginEditor*>(createProcessorEditor(*node->getProcessor(), type)))
+        {
+            this->setColour(ResizableWindow::ColourIds::backgroundColourId, cabbageEditor->titlebarColour);
+        }
 #if JUCE_IOS || JUCE_ANDROID
 		auto screenBounds = Desktop::getInstance().getDisplays().getTotalBounds(true).toFloat();
 		auto scaleFactor = jmin((screenBounds.getWidth() - 50) / getWidth(), (screenBounds.getHeight() - 50) / getHeight());

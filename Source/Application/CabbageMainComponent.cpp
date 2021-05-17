@@ -76,15 +76,14 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
       lookAndFeel(new CabbageIDELookAndFeel()),
       cycleTabsButton ("..."),
       resizerBar(settings->getValueTree(), this),
-      wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.plant;*.xml", "*.*", "")),
+wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.snaps;*.plant;*.xml", "*.*", "")),
       fileTree(FileBrowserComponent::FileChooserFlags::openMode | FileBrowserComponent::FileChooserFlags::canSelectFiles, File::getSpecialLocation (File::currentExecutableFile), wildcardFilter.get(), nullptr),
       owner(owner),
       lookAndFeel4(),
       factory (this),
       cabbageSettings (settings)
 {
-
-
+  
     cycleTabsButton.setColour (TextButton::ColourIds::buttonColourId, Colour (100, 100, 100));
     getLookAndFeel().setColour (TooltipWindow::ColourIds::backgroundColourId, Colours::whitesmoke);
     propertyPanel.reset (new CabbagePropertiesPanel (ValueTree("empty")));
@@ -550,9 +549,12 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
 
 void CabbageMainComponent::comboBoxChanged (ComboBox* comboBoxThatHasChanged)
 {
-    int index = comboBoxThatHasChanged->getSelectedId();
-    const int lineToScrollTo = getCurrentCodeEditor()->instrumentsAndRegions.getValueAt (index - 1);
-    getCurrentCodeEditor()->scrollToLine (lineToScrollTo);
+    if(editorAndConsole.size() > 0)
+    {
+        int index = comboBoxThatHasChanged->getSelectedId();
+        const int lineToScrollTo = getCurrentCodeEditor()->instrumentsAndRegions.getValueAt (index - 1);
+        getCurrentCodeEditor()->scrollToLine (lineToScrollTo);
+    }
 }
 
 //==============================================================================
@@ -1208,7 +1210,7 @@ CabbagePluginProcessor* CabbageMainComponent::getCabbagePluginProcessor()
             return processor;
     }
 
-    return nullptr;
+    return nullptr;  
 }
 //==================================================================================
 int CabbageMainComponent::getStatusbarYPos()
@@ -1218,7 +1220,7 @@ int CabbageMainComponent::getStatusbarYPos()
 //=======================================================================================
 void CabbageMainComponent::enableAutoUpdateMode()
 {
-    int shouldUpdate = cabbageSettings->getUserSettings()->getIntValue ("AutoLoadFromDisk");
+//    int shouldUpdate = cabbageSettings->getUserSettings()->getIntValue ("AutoLoadFromDisk");
 }
 
 void CabbageMainComponent::addCabbageSection()
@@ -1430,6 +1432,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
     StringArray pluginFiles;
     Result res = getFilterGraph()->loadDocument (fileToOpen);
     
+    //getFilterGraph()->closeAnyOpenPluginWindows();
     for ( int i = 0 ; i < files.size() ; i++)
     {
 		String fileName = files[i].getFullPathName();
@@ -1444,6 +1447,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
             File file = openFile (files[i].getFullPathName());
             fileTabs[getTabFileIndex(files[i])]->uniqueFileId = uuids[i+uidOffset];
 			fileTabs[getTabFileIndex(files[i])]->getPlayButton().setToggleState(true, dontSendNotification);
+            //runCsoundForNode(files[i].getFullPathName());
        }
     }
 	
@@ -1483,6 +1487,7 @@ void CabbageMainComponent::saveGraph (bool saveAs)
 //==================================================================================
 void CabbageMainComponent::openFolder ()
 {
+    
     FileChooser fc ("Open File", cabbageSettings->getMostRecentFile (0).getParentDirectory(), "*.csd;*", CabbageUtilities::shouldUseNativeBrowser());
     
     if (fc.browseForDirectory())
@@ -1665,20 +1670,21 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 			if (getCabbagePluginEditor() != nullptr)
 				getCabbagePluginEditor()->enableEditMode(false);
 
-			FileChooser fc("Select file name and location", getCurrentCsdFile().getParentDirectory(), "*.csd", CabbageUtilities::shouldUseNativeBrowser());
+            FileChooser fc("Select file name and location", getCurrentCsdFile().getParentDirectory(), "*.csd;*.txt;*.js;*.html;*.snaps;*.plant;*.xml", CabbageUtilities::shouldUseNativeBrowser());
 
 			if (fc.browseForFileToSave(false))
 			{
-				if (fc.getResult().withFileExtension("csd").existsAsFile())
+				if (fc.getResult().existsAsFile())
 				{
 					const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", lookAndFeel.get());
 
 					if (result == 1)
 						writeFileToDisk(fc.getResult().withFileExtension(".csd"));
 				}
-				else
-					writeFileToDisk(fc.getResult().withFileExtension(".csd"));
-
+                else
+                {
+					writeFileToDisk(fc.getResult());
+                }
 				getCurrentCodeEditor()->setSavePoint();
 			}
             
@@ -1700,7 +1706,6 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
 			stopCsoundForNode(getCurrentCsdFile().getFullPathName());;
 			isGUIEnabled = false;
-			int modifiedFileIndex = -1;
 
 			if (getCabbagePluginEditor() != nullptr)
 				getCabbagePluginEditor()->enableEditMode(false);
@@ -1765,7 +1770,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 //==================================================================================
 void CabbageMainComponent::writeFileToDisk (File file)
 {
-    if (file.hasFileExtension(".csd"))
+    if (file.hasFileExtension("csd;txt;js;html;snaps;plant;xml"))
     {
         file.replaceWithText(getCurrentCodeEditor()->getAllText());
         //setCurrentCsdFile (file);
@@ -1799,6 +1804,9 @@ void CabbageMainComponent::closeDocument()
     }
 
     cabbageSettings->setProperty ("NumberOfOpenFiles", int (editorAndConsole.size()));
+    
+    if(editorAndConsole.size()==0)
+        factory.combo->clearItemsFromComboBox();
 
 }
 //==================================================================================
@@ -1920,6 +1928,87 @@ int CabbageMainComponent::testFileForErrors (String file)
     return 0;
 
 }
+
+void CabbageMainComponent::covertToLowerCase()
+{
+    String currentFileText = getCurrentCsdFile().loadFileAsString();
+    
+    CabbageIdentifierStrings camelCaseIdentifiers;
+    for ( int i = camelCaseIdentifiers.size() ; i >=0 ; i--)
+    {
+        if(currentFileText.contains(camelCaseIdentifiers[i]))
+        {
+            DBG("Replacing"+camelCaseIdentifiers[i] + " with " + camelCaseIdentifiers[i].toLowerCase());
+            currentFileText = currentFileText.replace(camelCaseIdentifiers[i], camelCaseIdentifiers[i].toLowerCase());
+        }
+    }
+    
+    getCurrentCodeEditor()->setAllText(currentFileText);
+    
+}
+
+void CabbageMainComponent::updatePresetFile()
+{
+    FileChooser fc("Select prest file to convert", getCurrentCsdFile().getParentDirectory(), "*.snaps", CabbageUtilities::shouldUseNativeBrowser());
+    
+    if (fc.browseForFileToSave(false))
+    {
+        if (fc.getResult().existsAsFile())
+        {
+           CabbageUtilities::showMessage("Sorry. You cannot overwrite this file. Please choose a new file name.", lookAndFeel.get());
+           return;
+        }
+        else
+        {
+            std::unique_ptr<XmlElement> myElement;
+            myElement = XmlDocument::parse(getCurrentCsdFile());
+            nlohmann::ordered_json j;
+            
+            if (myElement)
+            {
+                for (int i = 0; i < myElement->getNumChildElements(); i++)
+                {
+                    //none of these are being updated in their respective valueTreeChanged listeners..
+                    auto child = myElement->getChildElement(i);
+                    if(child->getNumAttributes()!=0)
+                    {
+                        const String presetName = child->getAttributeValue(0);
+                        for ( int i = 1 ; i < child->getNumAttributes() ; i++)
+                        {
+                            j[presetName.toStdString()][child->getAttributeName(i).toStdString()] = child->getAttributeValue(i).toStdString();
+                        }
+                    }
+                }
+            }
+            
+            fc.getResult().replaceWithText(j.dump(4));
+        }
+    }
+    
+}
+
+void CabbageMainComponent::covertToCamelCase()
+{
+    String currentFileText = getCurrentCsdFile().loadFileAsString();
+    
+    String cabbageCode = currentFileText.substring(0, currentFileText.indexOf("</Cabbage>")+10);
+    String csoundCode = currentFileText.substring(currentFileText.indexOf("</Cabbage>")+10);
+    
+    CabbageIdentifierStrings camelCaseIdentifiers;
+    for ( int i = camelCaseIdentifiers.size() ; i >=0 ; i--)
+    {
+        if(cabbageCode.contains(camelCaseIdentifiers[i].toLowerCase()))
+        {
+            DBG("Replacing"+camelCaseIdentifiers[i].toLowerCase() + " with " + camelCaseIdentifiers[i]);
+            cabbageCode = cabbageCode.replace(camelCaseIdentifiers[i].toLowerCase(), camelCaseIdentifiers[i]);
+        }
+    }
+    
+    
+    getCurrentCodeEditor()->setAllText(cabbageCode+csoundCode);
+           
+}
+
 void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
 {
     startFilterGraph();
@@ -1927,48 +2016,47 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
     {
         if (File (file).existsAsFile())
         {
-            auto fileContents = File(file).loadFileAsString();
-            if(!fileContents.contains("<Cabbage>") || !fileContents.contains("</Cabbage>")){
-                CabbageUtilities::showMessage ("Warning", "Please make sure your Cabbage section is wrapped in <Cabbage> and </Cabbage> tags", lookAndFeel.get());
-            }
+
+            StringArray warnings = preCompileCheckForIssues(File(file));
+
             AudioProcessorGraph::NodeID node(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
-            
+
             if (node.uid == -99)
             {
                 Uuid uniqueID;
-                node.uid = int32 (*uniqueID.getRawData());
+                node.uid = int32(*uniqueID.getRawData());
                 fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId = node.uid;
             }
 
-			Random rand;
-			double posOffset = rand.nextDouble() * 0.2;
-			juce::Point<double> pluginNodePos(.5+posOffset, .5+posOffset);
-			juce::Point<int> pluginWindowPos(-1000, -1000);
+            Random rand;
+            double posOffset = rand.nextDouble() * 0.2;
+            juce::Point<double> pluginNodePos(.5 + posOffset, .5 + posOffset);
+            juce::Point<int> pluginWindowPos(-1000, -1000);
 
 
-			if (getFilterGraph()->graph.getNodeForId(node))
-			{
-				pluginNodePos = juce::Point<double>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("x", rand.nextDouble()),
-					getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("y", rand.nextDouble()));
+            if (getFilterGraph()->graph.getNodeForId(node))
+            {
+                pluginNodePos = juce::Point<double>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("x", rand.nextDouble()),
+                    getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("y", rand.nextDouble()));
 
-				pluginWindowPos = juce::Point<int>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowX", rand.nextInt(Range<int>(0, 500))),
-					getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowY", rand.nextInt(Range<int>(0, 500))));
+                pluginWindowPos = juce::Point<int>(getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowX", rand.nextInt(Range<int>(0, 500))),
+                    getFilterGraph()->graph.getNodeForId(node)->properties.getWithDefault("PluginWindowY", rand.nextInt(Range<int>(0, 500))));
 
-			}
-			
+            }
+
 
 
 
             getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
-			//this will create or update plugin...
+            //this will create or update plugin...
 
             graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pluginNodePos);
-            
-			
-            createEditorForFilterGraphNode (pluginWindowPos);
 
-            startTimer (100);
-            if(getFilterGraph()->graph.getNodeForId(node))
+
+            createEditorForFilterGraphNode(pluginWindowPos);
+
+            startTimer(100);
+            if (getFilterGraph()->graph.getNodeForId(node))
             {
                 fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
                 fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
@@ -1978,18 +2066,148 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
                 fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
                 fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
             }
-            
-			factory.togglePlay (true);
-			//hack to allow saving on the fly with JUCE 5.4.7 - needs investigation...
+
+            factory.togglePlay(true);
+            //hack to allow saving on the fly with JUCE 5.4.7 - needs investigation...
 
             graphComponent->enableAudioInput();
             
+            if(warnings.size()>0)
+            {
+                Timer::callAfterDelay(1000, [warnings, this](){
+                    this->getCurrentOutputConsole()->setText("/*"+ warnings.joinIntoString("\n") + "\n*/\n");
+                });
+            }
         }
         else
-            CabbageUtilities::showMessage ("Warning", "Please open a file first", lookAndFeel.get());
+        CabbageUtilities::showMessage("Warning", "Please open a file first", lookAndFeel.get());
     }
 }
 
+StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
+{
+    
+    StringArray warnings;
+    CabbageIdentifierStrings camelCaseIdentifiers;
+    StringArray nonCamelCaseIdentifiers;
+    auto fileContents = File(file).loadFileAsString();
+
+    
+    if (!fileContents.contains("<Cabbage>") || !fileContents.contains("</Cabbage>"))
+    {
+        warnings.add("\nWarning: Your .csd file does not contain a Cabbage section. Please make sure you have wrapped your Cabbage code in opening and closing <Cabbage> and </Cabbage> tags");
+    }
+    
+    camelCaseIdentifiers.removeEmptyStrings();
+    for (int i = camelCaseIdentifiers.size(); i >= 0; i--)
+    {
+        if (fileContents.contains(camelCaseIdentifiers[i].toLowerCase()) && camelCaseIdentifiers.contains(camelCaseIdentifiers[i].toLowerCase()) == false && camelCaseIdentifiers[i].isNotEmpty())
+        {
+            const CodeDocument::Position startPos (getCurrentCodeEditor()->getDocument(), fileContents.indexOf(camelCaseIdentifiers[i].toLowerCase()));
+            int lineNum = startPos.getLineNumber() + 1;
+            nonCamelCaseIdentifiers.add("\""+camelCaseIdentifiers[i].toLowerCase()+"\"(Line:"+String(lineNum)+")");
+        }
+    }
+
+
+    if (nonCamelCaseIdentifiers.size() > 0)
+    {
+        const String infoText = "\nWarning: The following identifiers are not camelCase: " + nonCamelCaseIdentifiers.joinIntoString(",") + ". Cabbage uses camelCase for all identifiers, i.e, trackercolour() is now trackerColour(). Please use \"Convert Identifiers to camelCase\" from the File menu option to update your code. Or manually change the identifer listed.";
+        warnings.addLines(infoText);
+    }
+
+    StringArray fileContentStrArray, problemChannels;
+    fileContentStrArray.addLines(fileContents);
+    StringArray channels;
+    int lineIndex = 0;
+    for (auto string : fileContentStrArray)
+    {
+        const String widgetTreeIdentifier = "tempWidget";
+        ValueTree tempWidget(widgetTreeIdentifier);
+        CabbageWidgetData::setWidgetState(tempWidget, string.trimCharactersAtStart(" \t"), -9);
+        
+        if(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::type) == "form")
+        {
+            const String pluginId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::pluginid);
+            if (pluginId.length() != 4)
+            {
+                const CodeDocument::Position startPos (getCurrentCodeEditor()->getDocument(), fileContents.indexOf(pluginId));
+                int lineNum = startPos.getLineNumber() + 1;
+                warnings.add("\nWarning: The current pluginId(\""+pluginId+"\") (Line:"+String(lineNum)+") is not valid. A form pluginId() must be an alphanumeric string of 4 characters. ");
+            }
+
+            const String guiMode = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::guimode);
+            if (guiMode != "queue" && fileContents.contains("cabbageSet"))
+            {
+                warnings.add("\nWarning: It looks like you are trying to use cabbageSet opcodes without guiMode(\"queue\") enabled. Please enable guiMode(\"queue\"), otherwise cabbageSet will not work");
+            }
+            else if (guiMode == "queue" && fileContents.contains("identChannel"))
+            {
+                warnings.add("\nWarning: It looks like you are trying to use identChannels() with guiMode(\"queue\"). These are not compatible.");
+            }
+        }
+        else if(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::type) == "gentable")
+        {
+            const int drawMode = CabbageWidgetData::getNumProp(tempWidget, CabbageIdentifierIds::drawmode);
+            if(drawMode != -1)
+            {
+            warnings.add("\nWarning: drawMode("+String(drawMode)+") (Line:"+String(lineIndex)+") is deprecated. Please use a meter widget");
+            }
+        }
+        
+        channels.add(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel));
+        
+        if (CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel).contains(" "))
+        {
+            problemChannels.add("\""+CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel)+"\" (Line:"+String(lineIndex)+")");
+        }
+        
+        if (string.trimCharactersAtEnd("\t ").indexOf("opcode") == 0) {
+            StringArray tokens;
+            tokens.addTokens(string, false);
+            const String newKeyword = tokens[1].removeCharacters((","));
+
+            getCurrentEditorContainer()->csoundTokeniser.udoKeywords.add(newKeyword);
+
+        }
+        
+        lineIndex++;
+    }
+
+    channels.removeEmptyStrings();
+    channels.appendNumbersToDuplicates(false, true, CharPointer_UTF8("|"), CharPointer_UTF8("|"));
+    
+    for( int i = channels.size() ; i >= 0 ; i--){
+        if(channels[i].indexOf("|") == -1)
+            channels.remove(i);
+        else
+        {
+            const String chan = channels[i].substring(0, channels[i].indexOf("|"));
+            const CodeDocument::Position startPos (getCurrentCodeEditor()->getDocument(), fileContents.indexOf(chan));
+            int lineNum = startPos.getLineNumber() + 1;
+            
+            channels.set(i, "\""+channels[i].substring(0, channels[i].indexOf("|"))+"\" (Line:"+String(lineNum)+")");
+            fileContents = fileContents.replaceFirstOccurrenceOf(chan, "test");            
+        }
+    }
+    
+    if(channels.size()>0)
+    {
+        const String channelError = channels.joinIntoString(",");
+        const String infoText = "\nWarning: The following channel names are used across multiple widgets: " + channelError +". This is not permitted and can lead to unexpected behaviour";
+        warnings.addLines(infoText);
+    }
+    
+    
+    if (problemChannels.size() > 0)
+    {
+        const String infoText = "\nWarning: White spaces are not supported in channel names. The following channels need to be changed: " + problemChannels.joinIntoString(",");
+        warnings.addLines(infoText);
+    }
+    
+    return warnings;
+}
+    
 void CabbageMainComponent::stopCsoundForNode (String file, int fileTabIndex)
 {
 
@@ -2059,3 +2277,4 @@ void CabbageMainComponent::resized()
 
     arrangeFileTabs();
 }
+

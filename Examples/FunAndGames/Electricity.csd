@@ -10,10 +10,10 @@
 ;   the loop times of which are linked to the mouse x and y positions.
 
 <Cabbage>
-form size(1000,540), text("Electricity"), guirefresh(32), colour(0,0,0), pluginid("Elec")
-image bound(0,0,0,0), shape("sharp"), visible(0), widgetarray("spark",10)	; widget array (10 image widgets with a single line of code)
+form size(1000,540), text("Electricity"), guiRefresh(32), colour(0,0,0), pluginId("Elec")
+image bound(0,0,0,0), shape("sharp"), visible(0), widgetArray("spark",10)	; widget array (10 image widgets with a single line of code)
 label bounds(0,530,100,10), text("Iain McCurdy |2015|")
-label bounds(  0,230,1000,70), text("Click and Drag..."), fontcolour(255,255,255), identchannel("instructions")
+label bounds(  0,230,1000,70), text("Click and Drag..."), fontColour(255,255,255), identChannel("instructions")
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -158,7 +158,7 @@ instr	1000	; flash instructions
  kvis	TriggerToGatek	ktrig, kdur,0.2	; extend the trigger to a pulse of 'kdur' duration (using a UDO - see instr 0 above)
  kcol	randomi	0,255,2,1		; colour opacity changing continuously and randomly
  if changed(kvis)==1 then		; if flash changing from on to off or vice versa
-  Smsg	sprintfk	"visible(%d), fontcolour(255,255,255,%d)",kvis,kcol	; create string
+  Smsg	sprintfk	"visible(%d), fontColour(255,255,255,%d)",kvis,kcol	; create string
   	chnset	Smsg,"instructions"	; send string to widget
  endif
 

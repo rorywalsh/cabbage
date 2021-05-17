@@ -8,35 +8,35 @@
 ; In this example the histogram is used as a probability distribution from which notes are randomly chosen. Values define (midi) note numbers.
 
 <Cabbage>
-form caption("GEN41"), size(420, 395), pluginid("gn41"), colour(120,70,170,150) style("legacy")
+form caption("GEN41"), size(420, 395), pluginId("gn41"), colour(120,70,170,150) style("legacy")
 
-gentable bounds(  5,  5, 410, 115), identchannel("table1"), tablenumber(1), tablecolour("yellow"), outlinethickness(2), amprange(36,84,1), zoom(-1), fill(0)
+gentable bounds(  5,  5, 410, 115), identChannel("table1"), tableNumber(1), tableColour("yellow"), outlineThickness(2), ampRange(36,84,1), zoom(-1), fill(0)
 
-groupbox bounds(0, 125,420,170), text("Histogram"), plant("histogram"), fontcolour("white"){
-rslider bounds(  0, 25, 70, 70), channel("prob1"), text("Prob. 1"), valuetextbox(1), textbox(1), range(0, 100, 70,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds( 50, 25, 70, 70), channel("prob2"), text("Prob. 2"), valuetextbox(1), textbox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(100, 25, 70, 70), channel("prob3"), text("Prob. 3"), valuetextbox(1), textbox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(150, 25, 70, 70), channel("prob4"), text("Prob. 4"), valuetextbox(1), textbox(1), range(0, 100, 15,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(200, 25, 70, 70), channel("prob5"), text("Prob. 5"), valuetextbox(1), textbox(1), range(0, 100, 15,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(250, 25, 70, 70), channel("prob6"), text("Prob. 6"), valuetextbox(1), textbox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(300, 25, 70, 70), channel("prob7"), text("Prob. 7"), valuetextbox(1), textbox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(350, 25, 70, 70), channel("prob8"), text("Prob. 8"), valuetextbox(1), textbox(1), range(0, 100, 70,1,1), colour(160,110,210,200), trackercolour("white")
+groupbox bounds(0, 125,420,170), text("Histogram"), plant("histogram"), fontColour("white"){
+rslider bounds(  0, 25, 70, 70), channel("prob1"), text("Prob. 1"), valueTextBox(1), textBox(1), range(0, 100, 70,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds( 50, 25, 70, 70), channel("prob2"), text("Prob. 2"), valueTextBox(1), textBox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds(100, 25, 70, 70), channel("prob3"), text("Prob. 3"), valueTextBox(1), textBox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds(150, 25, 70, 70), channel("prob4"), text("Prob. 4"), valueTextBox(1), textBox(1), range(0, 100, 15,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds(200, 25, 70, 70), channel("prob5"), text("Prob. 5"), valueTextBox(1), textBox(1), range(0, 100, 15,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds(250, 25, 70, 70), channel("prob6"), text("Prob. 6"), valueTextBox(1), textBox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds(300, 25, 70, 70), channel("prob7"), text("Prob. 7"), valueTextBox(1), textBox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds(350, 25, 70, 70), channel("prob8"), text("Prob. 8"), valueTextBox(1), textBox(1), range(0, 100, 70,1,1), colour(160,110,210,200), trackerColour("white")
 
-rslider bounds(  0, 95, 70, 70), channel("val1"), text("Value 1"), valuetextbox(1), textbox(1), range(36, 84, 60,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds( 50, 95, 70, 70), channel("val2"), text("Value 2"), valuetextbox(1), textbox(1), range(36, 84, 62,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(100, 95, 70, 70), channel("val3"), text("Value 3"), valuetextbox(1), textbox(1), range(36, 84, 64,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(150, 95, 70, 70), channel("val4"), text("Value 4"), valuetextbox(1), textbox(1), range(36, 84, 65,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(200, 95, 70, 70), channel("val5"), text("Value 5"), valuetextbox(1), textbox(1), range(36, 84, 67,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(250, 95, 70, 70), channel("val6"), text("Value 6"), valuetextbox(1), textbox(1), range(36, 84, 69,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(300, 95, 70, 70), channel("val7"), text("Value 7"), valuetextbox(1), textbox(1), range(36, 84, 71,1,1), colour(160,110,210,200), trackercolour("white")
-rslider bounds(350, 95, 70, 70), channel("val8"), text("Value 8"), valuetextbox(1), textbox(1), range(36, 84, 72,1,1), colour(160,110,210,200), trackercolour("white")
+rslider bounds(  0, 95, 70, 70), channel("val1"), text("Value 1"), valueTextBox(1), textBox(1), range(36, 84, 60,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds( 50, 95, 70, 70), channel("val2"), text("Value 2"), valueTextBox(1), textBox(1), range(36, 84, 62,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds(100, 95, 70, 70), channel("val3"), text("Value 3"), valueTextBox(1), textBox(1), range(36, 84, 64,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds(150, 95, 70, 70), channel("val4"), text("Value 4"), valueTextBox(1), textBox(1), range(36, 84, 65,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds(200, 95, 70, 70), channel("val5"), text("Value 5"), valueTextBox(1), textBox(1), range(36, 84, 67,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds(250, 95, 70, 70), channel("val6"), text("Value 6"), valueTextBox(1), textBox(1), range(36, 84, 69,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds(300, 95, 70, 70), channel("val7"), text("Value 7"), valueTextBox(1), textBox(1), range(36, 84, 71,1,1), colour(160,110,210,200), trackerColour("white")
+rslider bounds(350, 95, 70, 70), channel("val8"), text("Value 8"), valueTextBox(1), textBox(1), range(36, 84, 72,1,1), colour(160,110,210,200), trackerColour("white")
 }
 
-groupbox bounds(0, 295,420,100), text("Synthesiser"), plant("synth"), fontcolour("white"){
+groupbox bounds(0, 295,420,100), text("Synthesiser"), plant("synth"), fontColour("white"){
 checkbox bounds( 15, 50,115, 17), channel("SynthOnOff"), text("On/Off"),  value(0), colour("yellow"), shape("square")
-rslider  bounds( 75, 25, 70, 70), channel("lev"),  text("Level"), valuetextbox(1), textbox(1), range(0, 1.00, 0.7), colour(160,110,210,200), trackercolour("white")
-rslider  bounds(125, 25, 70, 70), channel("rate"), text("Rate"), valuetextbox(1),  textbox(1), range(0.2, 5.00, 2), colour(160,110,210,200), trackercolour("white")
-rslider  bounds(175, 25, 70, 70), channel("dur"),  text("Dur."), valuetextbox(1),  textbox(1), range(0.1, 3.00, 2), colour(160,110,210,200), trackercolour("white")
+rslider  bounds( 75, 25, 70, 70), channel("lev"),  text("Level"), valueTextBox(1), textBox(1), range(0, 1.00, 0.7), colour(160,110,210,200), trackerColour("white")
+rslider  bounds(125, 25, 70, 70), channel("rate"), text("Rate"), valueTextBox(1),  textBox(1), range(0.2, 5.00, 2), colour(160,110,210,200), trackerColour("white")
+rslider  bounds(175, 25, 70, 70), channel("dur"),  text("Dur."), valueTextBox(1),  textBox(1), range(0.1, 3.00, 2), colour(160,110,210,200), trackerColour("white")
 }
 
 </Cabbage>
@@ -103,7 +103,7 @@ instr	1
 	rireturn
 
 	if ktrig==1 then			; 
-	 chnset	"tablenumber(1)", "table1"	; update table display	
+	 chnset	"tableNumber(1)", "table1"	; update table display	
 	endif
 
 	; TRIGGER SOME NOTES

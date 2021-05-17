@@ -5,36 +5,36 @@
 ;  so on accaount of this complication a scrubber line in the waveform view is not yet implemented.
 
 <Cabbage>
-form caption("Syncgrain File Player") size(800,340), colour(0,0,0) pluginid("SGFP") style("legacy")
-image                       bounds(  0,  0,800,340), colour( 90, 60, 30), outlinecolour("White"), shape("sharp"), line(3)	; main panel colouration    
-soundfiler                  bounds(  5,  5,790,175), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 
+form caption("Syncgrain File Player") size(800,340), colour(0,0,0) pluginId("SGFP") style("legacy")
+image                       bounds(  0,  0,800,340), colour( 90, 60, 30), outlineColour("White"), shape("sharp"), line(3)	; main panel colouration    
+soundfiler                  bounds(  5,  5,790,175), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
 
-image    bounds(  0,180,800,160), colour(0,0,0,0), outlinecolour("white"), line(0), shape("sharp"), plant("controls"){
-filebutton bounds(  5, 10, 80, 25), text("Open File","Open File"), fontcolour("white") channel("filename"), shape("ellipse")
-checkbox   bounds(  5, 40, 95, 25), channel("PlayStop"), text("Play/Stop"), fontcolour("white")
-label      bounds(225,  4, 65, 8), text("G   R   A   I   N   S"), fontcolour("white")
-rslider    bounds( 90, 15, 60, 60), channel("density"),   range( 0.5,400.00,20, 0.5),          colour( 70, 40, 10), text("Density"),     textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
-rslider    bounds(145, 15, 60, 60), channel("DensOS"),     range( 0, 5.00, 0),                 colour( 70, 40, 10), text("Dens.OS"),     textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
-rslider    bounds(200, 15, 60, 60), channel("grsize"),   range( 0.001,1.00, 0.04, 0.5),        colour( 70, 40, 10), text("Size"),        textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
-rslider    bounds(255, 15, 60, 60), channel("SizeOS"),   range( 0, 5.00, 0, 0.5),              colour( 70, 40, 10), text("Size OS"),     textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
-rslider    bounds(310, 15, 60, 60), channel("transpose"), range(-24, 24, 0,1,1),               colour( 70, 40, 10), text("Transpose"),   textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
-rslider    bounds(365, 15, 60, 60), channel("TransposeOS"), range(0, 12.00, 0),                colour( 70, 40, 10), text("Trans.OS"),    textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
-rslider    bounds(420, 15, 60, 60), channel("speed"),     range( -2.00, 2.00, 1),              colour( 70, 40, 10), text("Speed"),       textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
-label      bounds(495, 12, 40, 10), text("S h a p e"), fontcolour("white")
-combobox   bounds(478, 22, 74, 18), channel("shape"), items("Hanning", "Perc.1", "Perc.2", "Gate", "Rev.Perc.1", "Rev.Perc.2"), value(1),fontcolour("white")
-checkbox   bounds(478, 45,100, 18), channel("freeze"), text("Freeze"), colour("LightBlue"), fontcolour("white")
+image    bounds(  0,180,800,160), colour(0,0,0,0), outlineColour("white"), line(0), shape("sharp"), plant("controls"){
+filebutton bounds(  5, 10, 80, 25), text("Open File","Open File"), fontColour("white") channel("filename"), shape("ellipse")
+checkbox   bounds(  5, 40, 95, 25), channel("PlayStop"), text("Play/Stop"), fontColour("white")
+label      bounds(225,  4, 65, 8), text("G   R   A   I   N   S"), fontColour("white")
+rslider    bounds( 90, 15, 60, 60), channel("density"),   range( 0.5,400.00,20, 0.5),          colour( 70, 40, 10), text("Density"),     textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
+rslider    bounds(145, 15, 60, 60), channel("DensOS"),     range( 0, 5.00, 0),                 colour( 70, 40, 10), text("Dens.OS"),     textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
+rslider    bounds(200, 15, 60, 60), channel("grsize"),   range( 0.001,1.00, 0.04, 0.5),        colour( 70, 40, 10), text("Size"),        textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
+rslider    bounds(255, 15, 60, 60), channel("SizeOS"),   range( 0, 5.00, 0, 0.5),              colour( 70, 40, 10), text("Size OS"),     textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
+rslider    bounds(310, 15, 60, 60), channel("transpose"), range(-24, 24, 0,1,1),               colour( 70, 40, 10), text("Transpose"),   textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
+rslider    bounds(365, 15, 60, 60), channel("TransposeOS"), range(0, 12.00, 0),                colour( 70, 40, 10), text("Trans.OS"),    textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
+rslider    bounds(420, 15, 60, 60), channel("speed"),     range( -2.00, 2.00, 1),              colour( 70, 40, 10), text("Speed"),       textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
+label      bounds(495, 12, 40, 10), text("S h a p e"), fontColour("white")
+combobox   bounds(478, 22, 74, 18), channel("shape"), items("Hanning", "Perc.1", "Perc.2", "Gate", "Rev.Perc.1", "Rev.Perc.2"), value(1),fontColour("white")
+checkbox   bounds(478, 45,100, 18), channel("freeze"), text("Freeze"), colour("LightBlue"), fontColour("white")
 
 line       bounds(559, 10,  2, 65), colour("Grey")
 
-label      bounds(578,  4, 86, 8), text("E   N   V   E   L   O   P   E"), fontcolour("white")
-rslider    bounds(565, 15, 60, 60), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       colour( 70, 40, 10), text("Att.Tim"),   textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
-rslider    bounds(620, 15, 60, 60), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour( 70, 40, 10), text("Rel.Tim"),   textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
+label      bounds(578,  4, 86, 8), text("E   N   V   E   L   O   P   E"), fontColour("white")
+rslider    bounds(565, 15, 60, 60), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       colour( 70, 40, 10), text("Att.Tim"),   textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
+rslider    bounds(620, 15, 60, 60), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour( 70, 40, 10), text("Rel.Tim"),   textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
 
 line       bounds(684, 10,  2, 65), colour("Grey")
 
-label      bounds(702,  4, 76, 8), text("C   O   N   T   R   O   L"), fontcolour("white")
-rslider    bounds(685, 15, 60, 60), channel("MidiRef"),   range(0,127,60, 1, 1),            colour( 70, 40, 10), text("MIDI Ref."), textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
-rslider    bounds(740, 15, 60, 60), channel("level"),     range(  0,  3.00, 1, 0.5),        colour( 70, 40, 10), text("Level"),     textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
+label      bounds(702,  4, 76, 8), text("C   O   N   T   R   O   L"), fontColour("white")
+rslider    bounds(685, 15, 60, 60), channel("MidiRef"),   range(0,127,60, 1, 1),            colour( 70, 40, 10), text("MIDI Ref."), textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
+rslider    bounds(740, 15, 60, 60), channel("level"),     range(  0,  3.00, 1, 0.5),        colour( 70, 40, 10), text("Level"),     textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
 
 keyboard bounds(5, 80,790, 75)
 }

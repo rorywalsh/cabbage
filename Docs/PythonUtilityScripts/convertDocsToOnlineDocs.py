@@ -17,8 +17,8 @@ outputDir = os.path.abspath(sys.argv[1])+"/_docs"
 imagesDir = os.path.abspath(sys.argv[1])+"/images/docs/"
 copy_tree("../images/", imagesDir)
 
-if os.path.isdir("../markdown/Widgets/ExpandedWidgetEntries/gifs/"):
-	copy_tree("../markdown/Widgets/ExpandedWidgetEntries/gifs/", imagesDir)
+if os.path.isdir("../markdown/WidgetVideos/"):
+	copy_tree("../markdown/WidgetVideos/", imagesDir)
 
 directories = ["", "/Widgets/ExpandedWidgetEntries", "/Widgets/Properties"]
 currentDir = os.path.abspath("../markdown")
@@ -56,7 +56,7 @@ for dir in directories[0:3]:
 				if "(images/" in line:
 					line = "![](../../../../images/" +line[line.index("(images/")+8:]
 
-				if "../images/" in line:
+				if "../images/" in line and not ".mp4" in line:
 					line = "![](../../images/docs/" +line[line.index("./images/")+9:]
 
 				if "```html" in line:
@@ -83,6 +83,10 @@ for dir in directories[0:3]:
 				if "(./using_cabbage.md)" in line:
 					line = line.replace("(./using_cabbage.md)", "(../using_cabbage/index.html)")
 
+				if "(./cabbage_opcodes.md)" in line:
+					line = line.replace("(./cabbage_opcodes.md)", "(../cabbage_opcodes/index.html)")
+
+
 				if "(./beginners.md)" in line:
 					line = line.replace("(./beginners.md)", "(../beginners/index.html)")
 
@@ -91,6 +95,9 @@ for dir in directories[0:3]:
 
 				if "(./form.md)" in line:
 					line = line.replace("(./form.md)", "(../form/index.html)")
+
+				if "(./macros_and_reserved_channels.md)" in line:
+					line = line.replace("(./macros_and_reserved_channels.md)", "(../macros_and_reserved_channels/index.html)")
 
 				if "(./controlling.md)" in line:
 					line = line.replace("(./controlling.md)", "(../controlling/index.html)")
@@ -106,6 +113,10 @@ for dir in directories[0:3]:
 
 				if " !}" in line:
 					line = line.replace(" !}", " %}")
+
+				if "(./cabbage_syntax.md)" in line:
+					line = line.replace("(./cabbage_syntax.md)", "(../cabbage_syntax/index.html)")
+
 
 				outputFile.write(line)
 

@@ -6,39 +6,39 @@
 ; The limit double slider is more just for display.
                                                                                    
 <Cabbage>                                                                                                                   
-form caption("Bandfilter II"), colour("LightSlateGrey"), size(510, 655), pluginid("BFII"), scrollbars(0) style("legacy")
+form caption("Bandfilter II"), colour("LightSlateGrey"), size(510, 655), pluginId("BFII"), scrollBars(0) style("legacy")
 
-checkbox bounds(9,3,90,15), channel("TestSound"), text("Test Sound"), value(0), fontcolour("black")
+checkbox bounds(9,3,90,15), channel("TestSound"), text("Test Sound"), value(0), fontColour("black")
 
-xypad bounds(5,20, 500, 500), channel("shift", "width"), rangex(0, 1, 0.5), rangey(0, 1, 0.5), text("x:cutoff y:bandwidth"), colour("LightSlateGrey"), fontcolour("white")
+xypad bounds(5,20, 500, 500), channel("shift", "width"), rangeX(0, 1, 0.5), rangeY(0, 1, 0.5), text("x:cutoff y:bandwidth"), colour("LightSlateGrey"), fontColour("white")
 
 ;hslider2 bounds(  5,513,500, 40), channel("Lim1","Lim2"), min(4), max(14), range(4, 14, 0, 1, 0.001)
 hrange   bounds(  5,513, 500, 40), channel("Lim1","Lim2"), range(4, 14, 4:14, 1, 0.001)
 ;hslider   bounds(  5,513,500,15),   channel("Lim1"), range(4,14,4)
 ;hslider   bounds(  5,528,500,15),   channel("Lim2"), range(4,14,14)
 
-label    bounds(  5,543,500, 13), text("L I M I T S"), fontcolour("black")
+label    bounds(  5,543,500, 13), text("L I M I T S"), fontColour("black")
 
-image    bounds(  5,560,155, 90), shape("sharp"), outlinecolour("black"), colour(0,0,0,0), outlinethickness(1)
-checkbox bounds( 15,570, 80, 11), channel("HPF_active"), text("HPF Active"), fontcolour("black"), value(1)
-label    bounds( 15,595, 80, 13), text("HPF Type"), fontcolour("black")
+image    bounds(  5,560,155, 90), shape("sharp"), outlineColour("black"), colour(0,0,0,0), outlineThickness(1)
+checkbox bounds( 15,570, 80, 11), channel("HPF_active"), text("HPF Active"), fontColour("black"), value(1)
+label    bounds( 15,595, 80, 13), text("HPF Type"), fontColour("black")
 combobox bounds( 15,610, 80, 20), value(2), channel("HPF_type"),   text("6dB/oct","12dB/oct","24dB/oct","36dB/oct","48dB/oct","Resonant"), colour("black")
-rslider  bounds( 95,560, 60, 85), range(0,1,0),  channel("HPF_res"),  identchannel("HPF_resID"),   text("Res"),   textbox(1), colour("black"), fontcolour("black"), textcolour("black"), fontcolour("black")
+rslider  bounds( 95,560, 60, 85), range(0,1,0),  channel("HPF_res"),  identChannel("HPF_resID"),   text("Res"),   textBox(1), colour("black"), fontColour("black"), textColour("black"), fontColour("black")
 
-image    bounds(165,560,155, 90), shape("sharp"), outlinecolour("black"), colour(0,0,0,0), outlinethickness(1)
-checkbox bounds(175,570, 80, 11), channel("LPF_active"), text("LPF Active"), fontcolour("black"), value(1)
-label    bounds(175,595, 80, 13), text("LPF Type"), fontcolour("black")
+image    bounds(165,560,155, 90), shape("sharp"), outlineColour("black"), colour(0,0,0,0), outlineThickness(1)
+checkbox bounds(175,570, 80, 11), channel("LPF_active"), text("LPF Active"), fontColour("black"), value(1)
+label    bounds(175,595, 80, 13), text("LPF Type"), fontColour("black")
 combobox bounds(175,610, 80, 20), value(2), channel("LPF_type"),  text("6dB/oct","12dB/oct","24dB/oct","36dB/oct","48dB/oct","Resonant"), colour("black")
-rslider  bounds(255,560, 60, 85), range(0,1,0),  channel("LPF_res"),  identchannel("LPF_resID"),   text("Res"),   textbox(1), colour("black"), fontcolour("black"), textcolour("black")
+rslider  bounds(255,560, 60, 85), range(0,1,0),  channel("LPF_res"),  identChannel("LPF_resID"),   text("Res"),   textBox(1), colour("black"), fontColour("black"), textColour("black")
 
-label    bounds(370,550, 95, 13), fontcolour("black"), text("Mode")
+label    bounds(370,550, 95, 13), fontColour("black"), text("Mode")
 combobox bounds(370,565, 95, 20), channel("PassRej"), text("Bandpass","Bandreject","Bypass"), value(1)
 
-label   bounds(330,591,170,13), fontcolour("black"), text("Smoothing")
-hslider bounds(330,605,170,15), range(0,0.1,0.03,0.75,0.0001),  channel("Smoothing"), textcolour("black")
+label   bounds(330,591,170,13), fontColour("black"), text("Smoothing")
+hslider bounds(330,605,170,15), range(0,0.1,0.03,0.75,0.0001),  channel("Smoothing"), textColour("black")
 
-label   bounds(330,621,170,13), fontcolour("black"), text("Gain")
-hslider bounds(330,635,170,15), range(0,1,1),  channel("Gain"), textcolour("black")
+label   bounds(330,621,170,13), fontColour("black"), text("Gain")
+hslider bounds(330,635,170,15), range(0,1,1),  channel("Gain"), textColour("black")
 }
 </Cabbage>
 

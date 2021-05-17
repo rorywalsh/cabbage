@@ -2,13 +2,13 @@
 ; Based on work by Eric Grehan, Rory Walsh and Iain McCurdy, 2017
 
 <Cabbage>
-form caption("Log Fire") size(400, 170),  pluginid("Log Fire")   style("legacy")
-image   bounds(  0,  0,400,170) colour(0,0,0,0) identchannel("PanelID")
-button  bounds( 10,  5,380,  40) channel("playButton") text("Start Fire", "Stop Fire") identchannel("ButtonID")
-rslider bounds( 10, 50,100, 100) channel("density"), text("Crackle Density") range(1,80, 16, 1, 0.001), valuetextbox(1), textbox(1)
-rslider bounds(100, 50,100, 100) channel("crackleGain"), text("Crackle Gain"), range(0, 1,0.5, 1, 0.001), valuetextbox(1), textbox(1)
-rslider bounds(190, 50,100, 100) channel("hissNoise"), text("Hiss Noise"), range(0, .22, 0.04, 1, 0.001), valuetextbox(1), textbox(1)
-rslider bounds(280, 50,100, 100) channel("flameGain"), text("Flame Gain") range(0, 1, .2, 1, 0.001), valuetextbox(1), textbox(1)
+form caption("Log Fire") size(400, 170),  pluginId("Log Fire")   style("legacy")
+image   bounds(  0,  0,400,170) colour(0,0,0,0) identChannel("PanelID")
+button  bounds( 10,  5,380,  40) channel("playButton") text("Start Fire", "Stop Fire") identChannel("ButtonID")
+rslider bounds( 10, 50,100, 100) channel("density"), text("Crackle Density") range(1,80, 16, 1, 0.001), valueTextBox(1), textBox(1)
+rslider bounds(100, 50,100, 100) channel("crackleGain"), text("Crackle Gain"), range(0, 1,0.5, 1, 0.001), valueTextBox(1), textBox(1)
+rslider bounds(190, 50,100, 100) channel("hissNoise"), text("Hiss Noise"), range(0, .22, 0.04, 1, 0.001), valueTextBox(1), textBox(1)
+rslider bounds(280, 50,100, 100) channel("flameGain"), text("Flame Gain") range(0, 1, .2, 1, 0.001), valueTextBox(1), textBox(1)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

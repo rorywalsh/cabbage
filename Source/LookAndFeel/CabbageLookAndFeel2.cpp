@@ -76,22 +76,23 @@ const Drawable* CabbageFoldersLookAndFeel::getDefaultFolderImage()
 //Cabbage IDE look and feel class
 CabbageLookAndFeel2::CabbageLookAndFeel2()
 {
-    setDefaultFont(File());
+    //setDefaultFont(File("/Users/walshr/Documents/Csoundfiles/RobotoCondensed-Italic.ttf"));
 }
-
-void CabbageLookAndFeel2::setDefaultFont(File fontFile)
-{
-    //    if(fontFile.existsAsFile())
-    //    {
-    //        std::unique_ptr<InputStream> inStream (fontFile.createInputStream());
-    //        MemoryBlock mb;
-    //        inStream->readIntoMemoryBlock(mb);
-    //        Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
-    //        customFont = Font(fontPtr);
-    //    }
-    //    else
-    //        customFont = CabbageUtilities::getComponentFont();
-}
+//
+//void CabbageLookAndFeel2::setDefaultFont(File fontFile)
+//{
+//        if(fontFile.existsAsFile())
+//        {
+//            std::unique_ptr<InputStream> inStream (fontFile.createInputStream());
+//            MemoryBlock mb;
+//            inStream->readIntoMemoryBlock(mb);
+//            Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (mb.getData(), mb.getSize());
+////            LookAndFeel::getDefaultLookAndFeel().setDefaultSansSerifTypeface(fontPtr);
+//            customFont = Font(fontPtr);
+//        }
+//        else
+//            customFont = CabbageUtilities::getComponentFont();
+//}
 
 void CabbageLookAndFeel2::drawDocumentWindowTitleBar(DocumentWindow& window, Graphics& g,
     int w, int h, int titleSpaceX, int titleSpaceW,
@@ -249,7 +250,7 @@ void CabbageLookAndFeel2::drawPopupMenuItem(Graphics& g, const Rectangle<int>& a
     }
 
 
-    g.setFont(customFont);
+
     g.drawText(CabbageUtilities::cabbageString(text, CabbageUtilities::getComponentFont(), area.getWidth() * 0.8), 20, 0, area.getWidth() * 0.8, area.getHeight(), 1, false);
 
     if (isSeparator == true)
@@ -328,7 +329,11 @@ void CabbageLookAndFeel2::drawGroupComponentOutline(Graphics& g, int w, int h, c
 
     //----- Text
     String name = group.getText();
-    Font font = CabbageUtilities::getTitleFont();
+    Font font;
+    if(customFont.getHeight()>900)
+        font = CabbageUtilities::getTitleFont();
+    else
+        font = customFont;
 #ifndef JUCE_MAC
     font.setFallbackFontName("Verdana");
 #endif
@@ -388,7 +393,15 @@ void CabbageLookAndFeel2::drawToggleButton(Graphics& g, ToggleButton& button, bo
         g.setOpacity(0.5f);
 
     const int textX = (int)tickWidth + 5;
-
+    Font font;
+    
+    if(customFont.getHeight()<900)
+       font = customFont;
+#ifndef JUCE_MAC
+    font.setFallbackFontName("Verdana");
+#endif
+    g.setFont(font);
+    
     if (button.getButtonText().isNotEmpty())
     {
         g.drawText(button.getButtonText(),
@@ -484,7 +497,7 @@ Image CabbageLookAndFeel2::drawToggleImage(float width, float height, bool isTog
 void CabbageLookAndFeel2::drawRotarySlider(Graphics& g, int x, int y, int width, int height, float sliderPos,
     const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider)
 {
-    const int filmStrip = slider.getProperties().getWithDefault("filmStrip", 0);
+    const int filmStrip = slider.getProperties().getWithDefault("filmstrip", 0);
     if (filmStrip == 1)
     {
         g.fillAll(Colours::transparentWhite);
@@ -668,7 +681,9 @@ void CabbageLookAndFeel2::drawLinearSlider(Graphics& g, int x, int y, int width,
 
 Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
 {
+
     Slider::SliderLayout layout;
+
     layout.sliderBounds = slider.getLocalBounds();
 
     int minXSpace = 0;
@@ -708,7 +723,7 @@ Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
         }
     }
 
-    layout.sliderBounds = localBounds;
+    layout.sliderBounds = localBounds.reduced(0.5);
 
     if (slider.isBar())
     {
@@ -727,6 +742,17 @@ Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
         else if (slider.isVertical()) layout.sliderBounds.reduce(0, thumbIndent);
     }
 
+    var bounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::valuetextboxbounds, var());
+    if(bounds.isArray())
+    {
+        layout.textBoxBounds = Rectangle<int>(bounds[0], bounds[1], bounds[2], bounds[3]);
+    }
+    var sliderBounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::sliderbounds, var());
+    if(sliderBounds.isArray())
+    {
+        layout.sliderBounds = Rectangle<int>(sliderBounds[0], sliderBounds[1], sliderBounds[2], sliderBounds[3]);
+    }
+    
     return layout;
 }
 
@@ -739,7 +765,7 @@ void CabbageLookAndFeel2::drawLinearSliderBackground(Graphics& g, int x, int y, 
 {
 
     const float sliderRadius = (float)(getSliderThumbRadius(slider) - 2);
-    float xOffset = (sliderRadius / width);
+
     const Colour trackColour(slider.findColour(Slider::trackColourId));
     float zeroPosProportional = 0;
 
@@ -1055,7 +1081,13 @@ void CabbageLookAndFeel2::drawButtonBackground(Graphics& g, Button& button, cons
 
 void CabbageLookAndFeel2::drawButtonText(Graphics& g, TextButton& button, bool isMouseOverButton, bool isButtonDown)
 {
-    Font font(getTextButtonFont(button, button.getHeight()));
+    Font font;
+    
+    if(customFont.getHeight()>900)
+        font = Font(getTextButtonFont(button, button.getHeight()));
+    else
+        font = customFont;
+    
     g.setFont(font);
     g.setColour(button.findColour(button.getToggleState() ? TextButton::textColourOnId
         : TextButton::textColourOffId)
@@ -1151,58 +1183,60 @@ void CabbageLookAndFeel2::drawFromSVG(Graphics& g, File svgFile, int x, int y, i
     }
 }
 
-void CabbageLookAndFeel2::drawAlertBox(Graphics& g,
-    AlertWindow& alert,
-    const Rectangle<int>& textArea,
-    TextLayout& textLayout)
+void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
+                                          AlertWindow& alert,
+                                          const Rectangle<int>& textArea,
+                                          TextLayout& textLayout)
 {
-    g.fillAll(Colour(250, 250, 250));
-
+    g.fillAll (Colour::fromString("2ff52636a"));
+    
     int iconSpaceUsed = 160;
-
+    
     if (alert.getAlertType() != AlertWindow::NoIcon)
     {
         Path icon;
-
+        
         if (alert.getAlertType() == AlertWindow::WarningIcon)
         {
-            const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
+            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed).toFloat());
+            
+            const Image warningImage = ImageCache::getFromMemory (CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
             //g.drawImage(warningImage, rect.reduced(20));
         }
-
+        
         if (alert.getAlertType() == AlertWindow::QuestionIcon)
         {
-
-            const Image warningImage = ImageCache::getFromMemory(CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
+            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).toFloat());
+            const Image warningImage = ImageCache::getFromMemory (CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
             //g.drawImage(warningImage, rect.reduced(25));
         }
-
-        MemoryInputStream svgStream(CabbageBinaryData::processstop_svg, CabbageBinaryData::processstop_svgSize, false);
-        std::unique_ptr<XmlElement> svg(XmlDocument::parse(svgStream.readString()));
-
+        
+        MemoryInputStream svgStream (CabbageBinaryData::processstop_svg, CabbageBinaryData::processstop_svgSize, false);
+        std::unique_ptr<XmlElement> svg (XmlDocument::parse (svgStream.readString()));
+        
         if (svg == nullptr)
-            jassert(false);
-
+            jassert (false);
+        
         std::unique_ptr<Drawable> drawable;
-
+        
         if (svg != nullptr)
         {
-            drawable = Drawable::createFromSVG(*svg);
-            Rectangle<float> rect(alert.getLocalBounds().removeFromLeft(iconSpaceUsed - 20).toFloat());
-            drawable->setTransformToFit(rect.reduced(30), RectanglePlacement::stretchToFit);
-            drawable->draw(g, 1.f, AffineTransform());
+            drawable = Drawable::createFromSVG (*svg);
+            Rectangle<float> rect (20, 20, 80, 80);//alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).withHeight(130).toFloat());
+            drawable->setTransformToFit (rect, RectanglePlacement::stretchToFit);
+            drawable->draw (g, 1.f, AffineTransform());
         }
     }
-
-    g.setColour(alert.findColour(AlertWindow::textColourId));
-
-    textLayout.draw(g, Rectangle<int>(textArea.getX() + iconSpaceUsed - 50,
-        textArea.getY(),
-        textArea.getWidth() - iconSpaceUsed - 40,
-        textArea.getHeight()).toFloat());
-
-    g.setColour(alert.findColour(AlertWindow::outlineColourId));
-    g.drawRect(0, 0, alert.getWidth(), alert.getHeight());
+    
+    
+    g.setColour (alert.findColour (AlertWindow::textColourId));
+    textLayout.draw (g, Rectangle<int> (textArea.getX() + iconSpaceUsed - 50,
+                                        textArea.getY(),
+                                        textArea.getWidth() - iconSpaceUsed - 40,
+                                        textArea.getHeight()).toFloat());
+    
+    g.setColour (alert.findColour (AlertWindow::outlineColourId));
+    g.drawRect (0, 0, alert.getWidth(), alert.getHeight());
 }
 
 
@@ -1272,26 +1306,52 @@ void CabbageLookAndFeel2::drawLabel(Graphics& g, Label& label)
 }
 
 //===================================================================================
-//Font CabbageLookAndFeel2::getTextButtonFont (TextButton&, int buttonHeight)
-//{
-//    customFont.setHeight(jmin(15.0f, buttonHeight * 0.6f));
-//    return Font(customFont);
-//}
-//
-//Font CabbageLookAndFeel2::getComboBoxFont (ComboBox& box)
-//{
-//    customFont.setHeight(jmin (15.0f, box.getHeight() * 0.85f));
-//    return Font(customFont);
-//}
-//
+Font CabbageLookAndFeel2::getTextButtonFont (TextButton&, int buttonHeight)
+{
+    if(customFont.getHeight()>900)
+        return Font(jmin(15.0f, buttonHeight * 0.6f));
+
+    customFont.setHeight(jmin(15.0f, buttonHeight * 0.6f));
+    return customFont;
+
+}
+
+Font CabbageLookAndFeel2::getComboBoxFont (ComboBox& box)
+{
+    if(customFont.getHeight()>900)
+        return Font(jmin (10.0f, box.getHeight() * 0.85f));
+
+    customFont.setHeight(jmin (10.0f, box.getHeight() * 0.85f));
+    return customFont;
+}
+
 Font CabbageLookAndFeel2::getLabelFont(Label& label)
 {
-    return CabbageUtilities::getComponentFont();
+    if(customFont.getHeight()>900)
+        return Font(jmin(15.0f, label.getHeight() * 0.85f), Font::FontStyleFlags::bold);
+
+    customFont.setHeight(jmin(15.0f, label.getHeight() * 0.85f));
+    return customFont;
 }
-//
-//Font CabbageLookAndFeel2::getSliderPopupFont (Slider&)
-//{
-//    customFont.setHeight(15.0f);
-//    customFont.setBold(true);
-//    return Font (15.0f, Font::bold);
-//}
+
+void CabbageLookAndFeel2::positionComboBoxText (ComboBox& box, Label& label)
+{
+    label.setBounds (1, 2,
+                     box.getWidth() + 3 - box.getHeight(),
+                     box.getHeight() - 4);
+    
+    label.setFont (getComboBoxFont (box));
+}
+
+Font CabbageLookAndFeel2::getSliderPopupFont (Slider&)
+{
+    if(customFont.getHeight()>900)
+    {
+        Font font(15.0f);
+        font.setBold(true);
+        return font;
+    }
+    customFont.setHeight(15.0f);
+    customFont.setBold(true);
+    return customFont;// (15.0f, Font::bold);
+}

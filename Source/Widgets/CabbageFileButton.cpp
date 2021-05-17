@@ -23,7 +23,8 @@
 CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owner)
     : TextButton(),
     owner (owner),
-    widgetData (wData)
+    widgetData (wData),
+lAndF()
 {
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
@@ -35,7 +36,7 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
     
     setButtonText (getText());
 
-    mode = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mode);
+    
     filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).replaceCharacters (" ", ";");
 
     setImgProperties (*this, wData, "buttonon");
@@ -51,6 +52,12 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
     getProperties().set("corners", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
     
     const String globalStyle = owner->globalStyle;
+    
+    mode = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mode);
+    if( mode == "file" || mode == "save" || mode == "directory")
+        setFile(wData);
+    
+    
     if(globalStyle == "legacy")
     {
         return;
@@ -63,17 +70,31 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
         setLookAndFeel(&flatLookAndFeel);
     }
     
-    setFile(wData);
-    
+
 }
 
 //===============================================================================
 void CabbageFileButton::buttonClicked (Button* button)
 {
+   
+    String workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::workingdir);
+    File currentDir;
+    if (workingDir.isNotEmpty())
+        currentDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
+    else
+        currentDir = File::getCurrentWorkingDirectory();
+    
+    LookAndFeel_V4* tempLAF = new LookAndFeel_V4();
+    
     if (mode == "file")
     {
-        const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), filetype, CabbageUtilities::shouldUseNativeBrowser());
+        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::ignorelastdir))
+        {
+            const String lastKnownDirectory = owner->getLastOpenedDirectory();
+            if(lastKnownDirectory.isNotEmpty())
+                currentDir = File(lastKnownDirectory);
+        }
+        FileChooser fc ("Choose File", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToOpen())
         {
@@ -87,8 +108,14 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     else if (mode == "save")
     {
-        const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Choose File", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getParentDirectory() : File (lastKnownDirectory), filetype, CabbageUtilities::shouldUseNativeBrowser());
+        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::ignorelastdir))
+        {
+            const String lastKnownDirectory = owner->getLastOpenedDirectory();
+            if(lastKnownDirectory.isNotEmpty())
+                currentDir = File(lastKnownDirectory);
+        }
+        
+        FileChooser fc ("Choose File", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForFileToSave(true))
         {
@@ -104,8 +131,14 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     else if (mode == "directory")
     {
-        const String lastKnownDirectory = owner->getLastOpenedDirectory();
-        FileChooser fc ("Open Directory", lastKnownDirectory.isEmpty() ? File (getCsdFile()).getChildFile (getFilename()) : File (lastKnownDirectory), filetype, CabbageUtilities::shouldUseNativeBrowser());
+        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::ignorelastdir))
+        {
+            const String lastKnownDirectory = owner->getLastOpenedDirectory();
+            if(lastKnownDirectory.isNotEmpty())
+                currentDir = File(lastKnownDirectory);
+        }
+        
+        FileChooser fc ("Open Directory", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser());
 
         if (fc.browseForDirectory())
         {
@@ -117,53 +150,112 @@ void CabbageFileButton::buttonClicked (Button* button)
         
     }
 
-    else if (mode == "snapshot")
+    else if (mode == "snapshot" || mode == "preset")
     {
-        String newFileName;
-        if (owner->isAudioUnit())
-            newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
-        else
-            newFileName = owner->createNewGenericNameForPresetFile();
-        
-        owner->sendChannelStringDataToCsound (getChannel(), newFileName);
-        owner->savePluginStateToFile (File (newFileName));
+        owner->savePluginStateToFile ("");
         owner->refreshComboListBoxContents();
     }
     
-    else if (mode == "named snapshot")
+    else if (mode == "remove preset")
     {
-        String newFileName;
-        if (owner->isAudioUnit())
-            newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
-        else
-            newFileName = owner->createNewGenericNameForPresetFile();
-        
-        
-#if JUCE_MODAL_LOOPS_PERMITTED
-        String presetname;
-        AlertWindow w ("Preset",
-                       "Set preset name (warning, will overwrite previous preset of same name)",
-                       AlertWindow::NoIcon);
-        w.setLookAndFeel(&getLookAndFeel());
-        w.setSize(100, 100);
-        w.addTextEditor ("text", "enter name here", "");
-        w.addButton ("OK",     1, KeyPress (KeyPress::returnKey, 0, 0));
-        w.addButton ("Cancel", 0, KeyPress (KeyPress::escapeKey, 0, 0));
-        
-        if (w.runModalLoop() != 0) // is they picked 'ok'
+        if(allowPresetChanges(owner->getCurrentPreset()))
         {
-            presetname = w.getTextEditorContents ("text");
+           
+            AlertWindow w("Preset",
+                          "Are you sure you wish to remove this preset?",
+                          AlertWindow::NoIcon);
+            
+            w.setLookAndFeel(tempLAF);
+            w.setSize(200, 100);
+            w.addButton("Yes", 1, KeyPress(KeyPress::returnKey, 0, 0));
+            w.addButton("No", 0, KeyPress(KeyPress::escapeKey, 0, 0));
+            
+            if (w.runModalLoop() != 0) // if they picked 'ok'
+            {
+                owner->savePluginStateToFile(owner->getCurrentPreset(), true);
+                owner->refreshComboListBoxContents();
+            }
+        }
+        else
+        {
+            AlertWindow w("Preset",
+                          "This preset cannot be removed",
+                          AlertWindow::NoIcon);
+            w.setLookAndFeel(tempLAF);
+            w.setSize(200, 100);
+            w.addButton("Ok", 1, KeyPress(KeyPress::returnKey, 0, 0));
+            w.runModalLoop();
+        }
+    }
+    
+    else if (mode == "named preset" || mode == "named snapshot")
+    {
+#if JUCE_MODAL_LOOPS_PERMITTED
+        String presetName;
+        AlertWindow w("Preset",
+            "(will overwrite previous preset of same name)",
+            AlertWindow::NoIcon);
+
+        w.setLookAndFeel(tempLAF);
+        w.setSize(200, 100);
+        w.addTextEditor("text", "enter preset name", "");
+        w.addButton("OK", 1, KeyPress(KeyPress::returnKey, 0, 0));
+        w.addButton("Cancel", 0, KeyPress(KeyPress::escapeKey, 0, 0));
+
+        if (w.runModalLoop() != 0) // if they picked 'ok'
+        {
+            presetName = w.getTextEditorContents("text");
+        }
+        
+        if(presetName.isEmpty())
+            return;
+        
+        if(allowPresetChanges(presetName))
+        {
+            owner->setCurrentPreset(presetName);
+            owner->sendChannelStringDataToCsound(getChannel(), presetName);
+            owner->savePluginStateToFile(presetName, false);
+            owner->refreshComboListBoxContents(presetName);
+        }
+        else
+        {
+            AlertWindow::showMessageBox(AlertWindow::AlertIconType::NoIcon, "Preset", "You can not remove this preset");
         }
 #endif
-        
-        owner->sendChannelStringDataToCsound (getChannel(), newFileName);
-        owner->savePluginStateToFile (File (newFileName), presetname);
-        owner->refreshComboListBoxContents();
     }
 
+    tempLAF = nullptr;
     owner->getProcessor().updateHostDisplay();
 }
 
+bool CabbageFileButton::allowPresetChanges(String presetName)
+{
+    auto vt = owner->getProcessor().cabbageWidgets;
+    for ( int i = 0 ; i < vt.getNumChildren() ; i++)
+    {
+        const String type = CabbageWidgetData::getStringProp (vt.getChild (i), CabbageIdentifierIds::type);
+        
+        if ( type == "combobox" || type == "listbox")
+        {
+            if(CabbageWidgetData::getStringProp (vt.getChild (i), CabbageIdentifierIds::filetype).contains("snaps"))
+            {
+                int protectedItems = CabbageWidgetData::getNumProp (vt.getChild (i), CabbageIdentifierIds::protecteditems);
+                var items = CabbageWidgetData::getProperty (vt.getChild (i), CabbageIdentifierIds::text);
+                if(protectedItems > items.size())
+                    return false;
+                
+                for (int i = 0; i < protectedItems ; i++)
+                {
+                    if(items[i].toString() == presetName)
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    return true;
+}
 //===============================================================================
 void CabbageFileButton::timerCallback()
 {
@@ -198,8 +290,9 @@ void CabbageFileButton::setLookAndFeelColours (ValueTree wData)
 void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
     setLookAndFeelColours (valueTree);
-    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     setButtonText (getText());
-    setFile(valueTree);
+    if( mode == "file" || mode == "save" || mode == "directory")
+        setFile(valueTree);
     setTooltip(getCurrentPopupText(valueTree));
 }

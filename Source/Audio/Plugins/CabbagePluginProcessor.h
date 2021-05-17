@@ -65,15 +65,21 @@ public:
         StringArray cabbageCode;
     };
 
-	CabbagePluginProcessor (File inputFile, AudioChannelSet ins, AudioChannelSet outs);
-    CabbagePluginProcessor (File inputFile, AudioChannelSet ins, AudioChannelSet outs, AudioChannelSet sidechain);
+	CabbagePluginProcessor (File inputFile, BusesProperties IOBuses);
 	void createCsound(File inputFile, bool shouldCreateParameters = true);
     ~CabbagePluginProcessor();
 
     ValueTree cabbageWidgets;
+    CachedValue<var> cachedValue;
     void getChannelDataFromCsound() override;
+    void getIdentifierDataFromCsound() override;
     void triggerCsoundEvents() override;
     void setWidthHeight();
+    
+    //save and restore user plugin presets
+    void addPluginPreset(String presetName, bool remove);
+    void restorePluginPreset(String presetName);
+    
     bool addImportFiles (StringArray& lineFromCsd);
     void parseCsdFile (StringArray& linesFromCsd);
     // use this instead of AudioProcessor::addParameter
@@ -91,7 +97,7 @@ public:
     String getPluginName() { return pluginName;  }
     void expandMacroText (String &line, ValueTree wData);
 	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
-	void setCabbageParameter(String channel, float value);
+	void setCabbageParameter(String channel, float value, ValueTree& wData);
     CabbagePluginParameter* getParameterForXYPad (String name);
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
@@ -103,7 +109,7 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     void setParametersFromXml (XmlElement* e);
-    XmlElement savePluginState (String tag, File xmlFile = File(), String presetName="");
+    XmlElement savePluginState (String tag);
     void restorePluginState (XmlElement* xmlElement);
     //==============================================================================
     StringArray cabbageScriptGeneratedCode;
@@ -119,6 +125,30 @@ public:
 		return csdFile;
 	}
 
+    static BusesProperties readBusesPropertiesFromXml(File csdFile)
+    {
+        BusesProperties buses;
+
+        String csdString = csdFile.loadFileAsString();
+#ifdef CabbagePro
+        csdString = Encrypt::decode(csdFile);
+#endif
+
+        const int numOutChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls");
+        int numInChannels = numOutChannels;
+        if (CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != -1 && CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") != 0)
+            numInChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls_i") ;
+
+        // repeat this for every bus in the xml file
+        for (int i = 0, cnt = 1; i < numOutChannels; i+=2, cnt++)
+            buses.addBus(false, "Output #" + String(cnt), AudioChannelSet::stereo());
+
+        for (int i = 0, cnt = 1; i < numInChannels; i+=2, cnt++)
+            buses.addBus(true, "n'Input #" + String(cnt), AudioChannelSet::stereo());
+
+        return buses;
+    }
+
 	StringArray getCurrentCsdFileAsStringArray()
 	{
 		StringArray csdArray;
@@ -126,8 +156,14 @@ public:
 		return csdArray;
 	}
     
+    Font getCustomFont(){
+        return customFont;
+    }
+    
     // use this instead of AudioProcessor::getParameters
     const OwnedArray<CabbagePluginParameter>& getCabbageParameters() const { return parameters; }
+    int currentPluginScale = -1;
+    String currentPresetName = "";
     
 private:
     controlChannelInfo_s* csoundChanList;
@@ -146,6 +182,9 @@ private:
 	bool isUnityPlugin = false;
     int automationMode = 0;
     OwnedArray<CabbagePluginParameter> parameters;
+    Font customFont;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbagePluginProcessor)
 
 };
 
@@ -248,7 +287,7 @@ private:
         void setValue(float newValue) override
         {
             currentValue = isCombo ? juce::roundToInt(range.convertFrom0to1 (newValue)) : range.convertFrom0to1 (newValue);
-            processor->setCabbageParameter(channel, currentValue);
+            processor->setCabbageParameter(channel, currentValue, valueTree);
         }
         
         String getText(float normalizedValue, int length) const override
@@ -318,7 +357,8 @@ private:
         currentValue(def),
         isCombo(isCombo),
         owner(owner),
-        processor(proc)
+        processor(proc),
+        valueTree(wData)
         {
             
         }
@@ -331,6 +371,7 @@ private:
         
         CabbagePluginParameter& owner;
         CabbagePluginProcessor* processor;
+        ValueTree valueTree;
         
         mutable bool showingAffixes = true;
         
@@ -347,10 +388,12 @@ private:
     
     bool isCombo(const String name)
     {
-        if(name.contains("combobox"))
+        if(name.contains("combobox") || name.contains("optionbutton"))
             return true;
         return false;
     }
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbagePluginParameter)
 };
 
 #endif  // CABBAGEPLUGINPROCESSOR_H_INCLUDED

@@ -91,11 +91,14 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
 
 CabbageXYPad::~CabbageXYPad()
 {
+    widgetData.removeListener(this);
     CabbageUtilities::debug ("Existing xypad");
 }
 //==================================================================
 void CabbageXYPad::mouseDown (const MouseEvent& e)
 {
+    xAxis.startedDragging();
+    yAxis.startedDragging();
     owner->enableXYAutomator (getName(), false);
     ball.setTopLeftPosition (juce::Point<int> (e.getPosition().getX() - ball.getWidth()*.5f, e.getPosition().getY() - ball.getWidth()*.5f));
     mouseDownXY.setXY (ball.getPosition().getX() + ball.getWidth()*.5f, ball.getPosition().getY() + ball.getHeight()*.5f);
@@ -132,6 +135,9 @@ void CabbageXYPad::mouseUp (const MouseEvent& e)
         owner->enableXYAutomator (getName(), true, dragLine);
         isAutomating = true;
     }
+    
+    xAxis.stoppedDragging();
+    yAxis.stoppedDragging();
 }
 
 void CabbageXYPad::changeListenerCallback (ChangeBroadcaster* source)
@@ -156,7 +162,7 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 {
     if (prop != CabbageIdentifierIds::valuex && prop != CabbageIdentifierIds::valuey) //not updating xy values here...
     {
-        handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+        handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
         fontColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour));
         textColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textcolour));
         colour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
@@ -171,12 +177,15 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     else
     {
         //need to add a flag to xypad to disable dragging if users want to set values manually
-        const float xPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuex);
-        const float yPos = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
-        //setValues(xPos, maxY - yPos);
-        juce::Point<float> pos (getValueAsPosition (juce::Point<float> (xPos, maxY - yPos)));
-        //pos.addXY(-ball.getWidth() / 2, -ball.getWidth() / 2);
-        ball.setTopLeftPosition (constrainPosition (pos.getX(), pos.getY()));
+        float xVal = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuex);
+        xVal = (xVal-minX)/(maxX-minX);
+        float yVal = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
+        yVal = (yVal-minY)/(maxY-minY);
+
+        const float xPos = jmap (xVal, 0.f, 1.f, xyPadRect.getX() + ball.getWidth() / 2.f, xyPadRect.getWidth() - ball.getWidth() / 2.f);
+        const float yPos = jmap (yVal, 1.f, 0.f, xyPadRect.getY() + ball.getWidth() / 2.f, xyPadRect.getHeight() - ball.getWidth() / 2.f);
+
+        ball.setTopLeftPosition (constrainPosition (xPos, yPos));
         repaint();
     }
 }
@@ -195,8 +204,15 @@ void CabbageXYPad::paint (Graphics& g)
                             5, borderWidth);
 
     //text label
+    Font font;
     g.setColour (textColour);
-    Font font = CabbageUtilities::getComponentFont();
+    if(owner->customFont.getHeight()>900)
+        font = CabbageUtilities::getComponentFont();
+    else
+        font = owner->customFont;
+    
+    
+    
     g.setFont (font);
     float strWidth = font.getStringWidthFloat (getText());
     g.drawText (getText(), getWidth() - strWidth - 10, getHeight() - (font.getHeight() + 3),
@@ -250,8 +266,8 @@ void CabbageXYPad::resized()
     xyPadRect.setHeight (getHeight()*.85);
     xyPadRect.setTop (getHeight()*.02);
     xyPadRect.setLeft (getWidth()*.02);
-    xValueLabel.setBounds (0, xyPadRect.getHeight(), getWidth() / 2, 20);
-    yValueLabel.setBounds (getWidth()*.5, xyPadRect.getHeight(), getWidth() / 2, 20);
+    xValueLabel.setBounds (0, xyPadRect.getHeight()+10, getWidth() / 2, 20);
+    yValueLabel.setBounds (getWidth()*.5, xyPadRect.getHeight()+10, getWidth() / 2, 20);
 }
 
 //==================================================================

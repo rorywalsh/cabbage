@@ -31,7 +31,8 @@ CabbageGroupBox::CabbageGroupBox (ValueTree wData, CabbagePluginEditor* _owner)
     justification (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align)),
     outlineColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)),
     owner (_owner),
-    widgetData (wData)
+    widgetData (wData),
+    lookAndFeel()
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
@@ -51,6 +52,9 @@ CabbageGroupBox::CabbageGroupBox (ValueTree wData, CabbagePluginEditor* _owner)
     getProperties().set ("linethickness", lineThickness);
     getProperties().set ("cornersize", corners);
     setImgProperties (*this, wData, "groupbox");
+    
+    lookAndFeel.customFont = owner->customFont;
+    setLookAndFeel(&lookAndFeel);
 }
 
 void CabbageGroupBox::changeListenerCallback (ChangeBroadcaster* source)
@@ -87,7 +91,7 @@ void CabbageGroupBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     
     isVisible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);
     
-    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 
     
     

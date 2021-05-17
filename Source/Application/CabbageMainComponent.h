@@ -94,7 +94,8 @@ public:
 	void showSettingsDialog();
 	void saveDocument(bool saveAs = false, bool recompile = true);
 	void runCsoundForNode(String file, int fileTabIndex = -99);
-	void stopCsoundForNode(String file, int fileTabIndex = -99);
+    StringArray preCompileCheckForIssues(File file);
+    void stopCsoundForNode(String file, int fileTabIndex = -99);
 	void stopFilterGraph();
 	void startFilterGraph();
 	void bringCodeEditorToFront(File file);
@@ -106,6 +107,9 @@ public:
 	void showGraph();
 	void showPluginListEditor();
 	void saveGraph(bool saveAs);
+    void covertToCamelCase();
+    void covertToLowerCase();
+    void updatePresetFile();
 	void openGraph(File fileToOpen = File());
 	File getCurrentCsdFile();
 	void setCurrentCsdFile(File file);

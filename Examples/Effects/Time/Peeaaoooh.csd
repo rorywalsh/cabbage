@@ -44,36 +44,36 @@
 ;        +----------------------------+
 
 <Cabbage>
-form caption("Peeaaoooh") size(650,207), pluginid("Peao") style("legacy")
-image pos(0, 0),          size(650,207), colour( 10, 20, 30), shape("sharp"), outlinecolour("white"), outlinethickness(0) 
+form caption("Peeaaoooh") size(650,207), pluginId("Peao") style("legacy")
+image pos(0, 0),          size(650,207), colour( 10, 20, 30), shape("sharp"), outlineColour("white"), outlineThickness(0) 
 
-rslider   bounds( 10, 10, 70, 70),  channel("Base"),text("Base"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(0.5, 1000, 50, 0.5, 0.001)
-rslider   bounds( 80, 10, 70, 70),  channel("Layers"),text("Layers"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(1, 60, 8,1,1)
-rslider   bounds(150, 10, 70, 70),  channel("Interval"),text("Interval"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(0.001, 1, 0.07,0.5,0.001)
-rslider   bounds(220, 10, 70, 70),  channel("Shape"),text("Shape"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(0, 3, 0,1,0.001)
-rslider   bounds(290, 10, 70, 70),  channel("Scatter"),text("Scatter"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(0, 1, 0,0.5,0.0001)
-rslider   bounds(360, 10, 70, 70),  channel("Spread"),text("Spread"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(0, 1, 0)
-rslider   bounds(430, 10, 70, 70),  channel("Feedback"),text("Feedback"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(0, 1.5, 0.95), identchannel("FeedbackID")
-checkbox  bounds(430, 82, 80, 14),  channel("Overload"),text("Overload"), colour(255, 60, 60), textcolour("white") shape("Ellipse"), active(0)
-rslider   bounds(500, 10, 70, 70),  channel("HPF"),   text("HPF"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(20,20000,20,0.5,1)
-rslider   bounds(570, 10, 70, 70),  channel("LPF"),   text("LPF"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(20,20000,20000,0.5,1)
+rslider   bounds( 10, 10, 70, 70),  channel("Base"),text("Base"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(0.5, 1000, 50, 0.5, 0.001)
+rslider   bounds( 80, 10, 70, 70),  channel("Layers"),text("Layers"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(1, 60, 8,1,1)
+rslider   bounds(150, 10, 70, 70),  channel("Interval"),text("Interval"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(0.001, 1, 0.07,0.5,0.001)
+rslider   bounds(220, 10, 70, 70),  channel("Shape"),text("Shape"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(0, 3, 0,1,0.001)
+rslider   bounds(290, 10, 70, 70),  channel("Scatter"),text("Scatter"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(0, 1, 0,0.5,0.0001)
+rslider   bounds(360, 10, 70, 70),  channel("Spread"),text("Spread"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(0, 1, 0)
+rslider   bounds(430, 10, 70, 70),  channel("Feedback"),text("Feedback"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(0, 1.5, 0.95), identChannel("FeedbackID")
+checkbox  bounds(430, 82, 80, 14),  channel("Overload"),text("Overload"), colour(255, 60, 60), textColour("white") shape("Ellipse"), active(0)
+rslider   bounds(500, 10, 70, 70),  channel("HPF"),   text("HPF"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(20,20000,20,0.5,1)
+rslider   bounds(570, 10, 70, 70),  channel("LPF"),   text("LPF"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(20,20000,20000,0.5,1)
 
-checkbox  bounds(320,112,110, 15), text("Test Clicks"), channel("TestNoise"), fontcolour("white")
+checkbox  bounds(320,112,110, 15), text("Test Clicks"), channel("TestNoise"), fontColour("white")
 
-label     bounds(320,137,110, 12), text("Separation Mode"), fontcolour("white") 
-combobox  bounds(320,150,110, 20),  channel("SepMode"),text("Linear","Exponential"), textcolour("white"), value(1)
+label     bounds(320,137,110, 12), text("Separation Mode"), fontColour("white") 
+combobox  bounds(320,150,110, 20),  channel("SepMode"),text("Linear","Exponential"), textColour("white"), value(1)
 
-image     bounds( 20,100,245, 95), outlinecolour("white"), outlinethickness(1), colour(50,50,50,100), plant("PostFilter") {
-label     bounds(  0,  6,245, 14), text("G l o b a l    F i l t e r"), fontcolour("white") 
-combobox  bounds( 10, 40, 75, 20),  channel("PrePostFilter"),text("Pre-mix","Post-mix"), textcolour("white"), value(2)
-rslider   bounds( 85, 22, 70, 70),  channel("PostHPF"),   text("HPF"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(20,20000,20,0.5,1)
-rslider   bounds(155, 22, 70, 70),  channel("PostLPF"),   text("LPF"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(20,20000,20000,0.5,1)
+image     bounds( 20,100,245, 95), outlineColour("white"), outlineThickness(1), colour(50,50,50,100), plant("PostFilter") {
+label     bounds(  0,  6,245, 14), text("G l o b a l    F i l t e r"), fontColour("white") 
+combobox  bounds( 10, 40, 75, 20),  channel("PrePostFilter"),text("Pre-mix","Post-mix"), textColour("white"), value(2)
+rslider   bounds( 85, 22, 70, 70),  channel("PostHPF"),   text("HPF"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(20,20000,20,0.5,1)
+rslider   bounds(155, 22, 70, 70),  channel("PostLPF"),   text("LPF"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(20,20000,20000,0.5,1)
 }
 
-rslider   bounds(480,110, 70, 70),  channel("Mix"),text("Mix"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(0, 1, 1)
-rslider   bounds(560,110, 70, 70),  channel("Level"),text("Level"), colour( 20, 60, 70), trackercolour(200,240,250), textcolour("white"), range(0, 2, 1,0.5,0.001)
+rslider   bounds(480,110, 70, 70),  channel("Mix"),text("Mix"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(0, 1, 1)
+rslider   bounds(560,110, 70, 70),  channel("Level"),text("Level"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(0, 2, 1,0.5,0.001)
 
-label     bounds(530,195,100, 10), text("Iain McCurdy |2015|"), fontcolour(200,200,200) 
+label     bounds(530,195,100, 10), text("Iain McCurdy |2015|"), fontColour(200,200,200) 
 
 </Cabbage>
 

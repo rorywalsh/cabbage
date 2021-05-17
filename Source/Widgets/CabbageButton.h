@@ -32,7 +32,10 @@ class CabbageButton : public TextButton, public ValueTree::Listener, public Cabb
 public:
 
 	CabbageButton(ValueTree wData, CabbagePluginEditor* owner);
-	~CabbageButton() { setLookAndFeel(nullptr); };
+	~CabbageButton() {
+		widgetData.removeListener(this);
+		setLookAndFeel(nullptr);
+	};
 
 	//ValueTree::Listener virtual methods....
 	void valueTreePropertyChanged(ValueTree& valueTree, const Identifier&) override;

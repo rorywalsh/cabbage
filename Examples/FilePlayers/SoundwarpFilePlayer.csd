@@ -6,44 +6,44 @@
 ;   (Transposition range when using mouse clicking-and-dragging is controlled using the 'Transposition' knob. Therefore if 'Transposition' = zero, no transposition occurs.)
 
 <Cabbage>
-form caption("Soundwarp File Player") size(835,340), colour(0,0,0) pluginid("SWPl"), guirefresh(32) style("legacy")
-image                       bounds(  0,  0,835,340), colour( 30, 90, 60), outlinecolour("White"), line(3), shape("sharp")	; main panel colouration    
+form caption("Soundwarp File Player") size(835,340), colour(0,0,0) pluginId("SWPl"), guiRefresh(32) style("legacy")
+image                       bounds(  0,  0,835,340), colour( 30, 90, 60), outlineColour("White"), line(3), shape("sharp")	; main panel colouration    
 
-soundfiler bounds(  5,  5,825,175), channel("beg","len"), channel("pos1","end1"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 
+soundfiler bounds(  5,  5,825,175), channel("beg","len"), channel("pos1","end1"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
 
-filebutton bounds(  5,185, 80, 22), text("Open File","Open File"), fontcolour("white") channel("filename"), shape("ellipse")
-checkbox   bounds(  5,210, 95, 17), channel("PlayStop"), text("Play/Stop"), fontcolour("white")
-label      bounds(  5,228,115, 10), text("[or right-click-and-drag]"), fontcolour("white")
-checkbox   bounds(  5,240,100, 17), channel("freeze"), text("Freeze"), colour("LightBlue"), fontcolour("white")
+filebutton bounds(  5,185, 80, 22), text("Open File","Open File"), fontColour("white") channel("filename"), shape("ellipse")
+checkbox   bounds(  5,210, 95, 17), channel("PlayStop"), text("Play/Stop"), fontColour("white")
+label      bounds(  5,228,115, 10), text("[or right-click-and-drag]"), fontColour("white")
+checkbox   bounds(  5,240,100, 17), channel("freeze"), text("Freeze"), colour("LightBlue"), fontColour("white")
 
-label      bounds(245,184,180, 8), text("G   R   A   I   N   S"), fontcolour("white")
-rslider    bounds(120,195, 60, 60), channel("overlap"),     range( 1, 100, 20, 1,1),            colour( 50,110, 80), text("Overlaps"),     textcolour("white"), trackercolour(150,210,180)
-rslider    bounds(175,195, 60, 60), channel("grsize"),      range( 1, 40000, 800, 0.5,1),       colour( 50,110, 80), text("Size"),         textcolour("white"), trackercolour(150,210,180)
-rslider    bounds(230,195, 60, 60), channel("grsizeOS"),    range( 0, 2.00,   0.5,  0.5),       colour( 50,110, 80), text("Size OS"),      textcolour("white"), trackercolour(150,210,180)
-rslider    bounds(285,195, 60, 60), channel("transpose"),   range(-48, 48, 0,1,0.001),          colour( 50,110, 80), text("Transpose"),    textcolour("white"), trackercolour(150,210,180)
+label      bounds(245,184,180, 8), text("G   R   A   I   N   S"), fontColour("white")
+rslider    bounds(120,195, 60, 60), channel("overlap"),     range( 1, 100, 20, 1,1),            colour( 50,110, 80), text("Overlaps"),     textColour("white"), trackerColour(150,210,180)
+rslider    bounds(175,195, 60, 60), channel("grsize"),      range( 1, 40000, 800, 0.5,1),       colour( 50,110, 80), text("Size"),         textColour("white"), trackerColour(150,210,180)
+rslider    bounds(230,195, 60, 60), channel("grsizeOS"),    range( 0, 2.00,   0.5,  0.5),       colour( 50,110, 80), text("Size OS"),      textColour("white"), trackerColour(150,210,180)
+rslider    bounds(285,195, 60, 60), channel("transpose"),   range(-48, 48, 0,1,0.001),          colour( 50,110, 80), text("Transpose"),    textColour("white"), trackerColour(150,210,180)
 
-label      bounds(367,198, 35, 10), text("M o d e"), fontcolour("white")
-combobox   bounds(348,208, 74, 17), channel("mode"), items("Speed", "Pointer", "Region"), value(1), fontcolour("white")
-label      bounds(364,227, 40, 10), text("S h a p e"), fontcolour("white")
-combobox   bounds(348,237, 74, 17), channel("shape"), items("Hanning", "Perc.1", "Perc.2", "Gate", "Rev.Perc.1", "Rev.Perc.2"), value(1), fontcolour("white")
+label      bounds(367,198, 35, 10), text("M o d e"), fontColour("white")
+combobox   bounds(348,208, 74, 17), channel("mode"), items("Speed", "Pointer", "Region"), value(1), fontColour("white")
+label      bounds(364,227, 40, 10), text("S h a p e"), fontColour("white")
+combobox   bounds(348,237, 74, 17), channel("shape"), items("Hanning", "Perc.1", "Perc.2", "Gate", "Rev.Perc.1", "Rev.Perc.2"), value(1), fontColour("white")
 
-rslider    bounds(425,195, 60, 60), channel("speed"),       range( 0.00, 5.00, 1,0.5,0.001),           colour( 50,110, 80), text("Speed"),   textcolour("white"), trackercolour(150,210,180), visible(1), identchannel("SpeedID")
-rslider    bounds(425,195, 60, 60), channel("ptr"),         range(     0,1.00, 0.5,1,0.001),           colour( 50,110, 80), text("Pointer"), textcolour("white"), trackercolour(150,210,180), visible(0), identchannel("PtrID")
-rslider    bounds(480,195, 60, 60), channel("ptrOS"),       range(     0, 1.000, 0, 0.5, 0.001),       colour( 50,110, 80), text("Ptr.OS"),  textcolour("white"), trackercolour(150,210,180), visible(0), identchannel("PtrOSID")
-rslider    bounds(535,195, 60, 60), channel("port"),        range(     0,30.000,0.01, 0.5,0.001),      colour( 50,110, 80), text("Port."),   textcolour("white"), trackercolour(150,210,180), visible(0), identchannel("PortID")
-rslider    bounds(535,195, 60, 60), channel("inskip"),      range(     0, 1.00, 0),                    colour( 50,110, 80), text("inskip"),  textcolour("white"), trackercolour(150,210,180), visible(1), identchannel("inskipID")
+rslider    bounds(425,195, 60, 60), channel("speed"),       range( 0.00, 5.00, 1,0.5,0.001),           colour( 50,110, 80), text("Speed"),   textColour("white"), trackerColour(150,210,180), visible(1), identChannel("SpeedID")
+rslider    bounds(425,195, 60, 60), channel("ptr"),         range(     0,1.00, 0.5,1,0.001),           colour( 50,110, 80), text("Pointer"), textColour("white"), trackerColour(150,210,180), visible(0), identChannel("PtrID")
+rslider    bounds(480,195, 60, 60), channel("ptrOS"),       range(     0, 1.000, 0, 0.5, 0.001),       colour( 50,110, 80), text("Ptr.OS"),  textColour("white"), trackerColour(150,210,180), visible(0), identChannel("PtrOSID")
+rslider    bounds(535,195, 60, 60), channel("port"),        range(     0,30.000,0.01, 0.5,0.001),      colour( 50,110, 80), text("Port."),   textColour("white"), trackerColour(150,210,180), visible(0), identChannel("PortID")
+rslider    bounds(535,195, 60, 60), channel("inskip"),      range(     0, 1.00, 0),                    colour( 50,110, 80), text("inskip"),  textColour("white"), trackerColour(150,210,180), visible(1), identChannel("inskipID")
 
 line       bounds(595,190,  2, 65), colour("Grey")
 
-label      bounds(595,184,120, 8), text("E   N   V   E   L   O   P   E"), fontcolour("white")
-rslider    bounds(598,195, 60, 60), channel("AttTim"),    range(0, 5.00, 0.01, 0.5, 0.001),  colour( 50,110, 80), text("Att.Tim"), textcolour("white"), trackercolour(150,210,180)
-rslider    bounds(650,195, 60, 60), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001),  colour( 50,110, 80), text("Rel.Tim"), textcolour("white"), trackercolour(150,210,180)
+label      bounds(595,184,120, 8), text("E   N   V   E   L   O   P   E"), fontColour("white")
+rslider    bounds(598,195, 60, 60), channel("AttTim"),    range(0, 5.00, 0.01, 0.5, 0.001),  colour( 50,110, 80), text("Att.Tim"), textColour("white"), trackerColour(150,210,180)
+rslider    bounds(650,195, 60, 60), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001),  colour( 50,110, 80), text("Rel.Tim"), textColour("white"), trackerColour(150,210,180)
 
 line       bounds(711,190,  2, 65), colour("Grey")
 
-label      bounds(732,184, 80, 8), text("C   O   N   T   R   O   L"), fontcolour("white")
-rslider    bounds(715,195, 60, 60), channel("MidiRef"),   range(0,127,60, 1, 1),            colour( 50,110, 80), text("MIDI Ref."), textcolour("white"), trackercolour(150,210,180)
-rslider    bounds(770,195, 60, 60), channel("level"),     range(  0,  1.00, 0.4, 0.5),      colour( 50,110, 80), text("Level"),     textcolour("white"), trackercolour(150,210,180)
+label      bounds(732,184, 80, 8), text("C   O   N   T   R   O   L"), fontColour("white")
+rslider    bounds(715,195, 60, 60), channel("MidiRef"),   range(0,127,60, 1, 1),            colour( 50,110, 80), text("MIDI Ref."), textColour("white"), trackerColour(150,210,180)
+rslider    bounds(770,195, 60, 60), channel("level"),     range(  0,  1.00, 0.4, 0.5),      colour( 50,110, 80), text("Level"),     textColour("white"), trackerColour(150,210,180)
 
 keyboard   bounds(5,260,825, 75)
 </Cabbage>
@@ -150,7 +150,7 @@ endif
   kMOUSE_X	chnget	"MOUSE_X"
   kMOUSE_Y	chnget	"MOUSE_Y"
   kMOUSE_X	=	(kMOUSE_X - 5) / 825
-  kMOUSE_Y	portk	1 - ((kMOUSE_Y - 5) / 175), krampup*0.05		; SOME SMOOTHING OF DENSITY CHANGES VIA THE MOUSE ENHANCES PERFORMANCE RESULTS. MAKE ANY ADJUSTMENTS WITH ADDITIONAL CONSIDERATION OF guirefresh VALUE 
+  kMOUSE_Y	portk	1 - ((kMOUSE_Y - 5) / 175), krampup*0.05		; SOME SMOOTHING OF DENSITY CHANGES VIA THE MOUSE ENHANCES PERFORMANCE RESULTS. MAKE ANY ADJUSTMENTS WITH ADDITIONAL CONSIDERATION OF guiRefresh VALUE 
   gkptr		limit	kMOUSE_X,0,1
   gklevel	limit	kMOUSE_Y^2, 0, 1
   gktranspose	=	((kMOUSE_Y*2)-1)*gktranspose	;, -gktranspose, gktranspose
@@ -246,7 +246,7 @@ instr	2	; triggered by 'play/stop' button
 
  ; print scrubber
  if(metro(10)==1) then
-  Smessage sprintfk "scrubberposition(%d)", kscrubber
+  Smessage sprintfk "scrubberPosition(%d)", kscrubber
   chnset Smessage, "filer1"
  endif
 
@@ -334,7 +334,7 @@ instr	3
  
   ; print scrubber
  if(metro(10)==1) then
-  Smessage sprintfk "scrubberposition(%d)", kscrubber
+  Smessage sprintfk "scrubberPosition(%d)", kscrubber
   chnset Smessage, "filer1"
  endif
 

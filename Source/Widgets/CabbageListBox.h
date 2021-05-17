@@ -24,7 +24,10 @@ class CabbageListBox : public Component, public ListBoxModel, public ValueTree::
 public:
 
     CabbageListBox (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageListBox() {};
+    ~CabbageListBox() {
+        widgetData.removeListener(this);
+        setLookAndFeel(nullptr);
+    };
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
@@ -39,7 +42,8 @@ public:
     String align, colour, highlightColour, fontColour, channelType;
     Justification justify;
     CabbagePluginEditor* owner;
-
+    //CabbageLookAndFeel2 lookAndFeel;
+    LookAndFeel_V4 lookAndFeel;
     File listboxDir;
     bool isStringCombo = false;
     bool isPresetCombo = false;

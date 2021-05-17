@@ -15,32 +15,32 @@
 ; Level			-	output level
 
 <Cabbage>
-form caption("") size(530,345), colour("black"), pluginid("SpDl") style("legacy")
-image     pos(0, 0), size(530,345), colour("black"), shape("rounded"), outlinecolour(125,130,155), outlinethickness(5) 
+form caption("") size(530,345), colour("black"), pluginId("SpDl") style("legacy")
+image     pos(0, 0), size(530,345), colour("black"), shape("rounded"), outlineColour(125,130,155), outlineThickness(5) 
 ;line      bounds(15, 53, 610,  1), colour(150,150,150)
 
-label   bounds(  0,  1,530, 58), text("SPECTRAL DELAY"), fontcolour( 70, 50, 50)
-label   bounds(  0,  4,530, 52), text("SPECTRAL DELAY"), fontcolour( 75, 95, 75)
-label   bounds(  0,  7,530, 46), text("SPECTRAL DELAY"), fontcolour(150,150,200)
-label   bounds(  0, 10,530, 40), text("SPECTRAL DELAY"), fontcolour(220,220,220)
+label   bounds(  0,  1,530, 58), text("SPECTRAL DELAY"), fontColour( 70, 50, 50)
+label   bounds(  0,  4,530, 52), text("SPECTRAL DELAY"), fontColour( 75, 95, 75)
+label   bounds(  0,  7,530, 46), text("SPECTRAL DELAY"), fontColour(150,150,200)
+label   bounds(  0, 10,530, 40), text("SPECTRAL DELAY"), fontColour(220,220,220)
 
-rslider bounds( 25, 60, 90,120), text("Max.Delay"), textbox(1), valuetextbox(1), channel("MaxDelay"), range(0.01, 8, 1, 0.5), colour(105,70,70), trackercolour(205,170,170)
+rslider bounds( 25, 60, 90,120), text("Max.Delay"), textBox(1), valueTextBox(1), channel("MaxDelay"), range(0.01, 8, 1, 0.5), colour(105,70,70), trackerColour(205,170,170)
 
 label    bounds(125, 65, 80, 14), text("FFT Size")
 combobox bounds(125, 80, 80, 20), text("64","128","256","512","1024","2048"), channel("FFTindex"), value(3)
 
-rslider  bounds(215, 60, 90,120), text("Feedback"), textbox(1), valuetextbox(1), channel("Feedback"), range(0, 1, 0.85), colour(105,70,70), trackercolour(205,170,170)
-rslider  bounds(315, 60, 90,120), text("Dry/Wet Mix"), textbox(1), valuetextbox(1), channel("DryWetMix"), range(0, 1, 1), colour(105,70,70), trackercolour(205,170,170)
-rslider  bounds(415, 60, 90,120), text("Level"), textbox(1), valuetextbox(1), channel("Level"), range(0, 1, 0.5), colour(105,70,70), trackercolour(205,170,170)
+rslider  bounds(215, 60, 90,120), text("Feedback"), textBox(1), valueTextBox(1), channel("Feedback"), range(0, 1, 0.85), colour(105,70,70), trackerColour(205,170,170)
+rslider  bounds(315, 60, 90,120), text("Dry/Wet Mix"), textBox(1), valueTextBox(1), channel("DryWetMix"), range(0, 1, 1), colour(105,70,70), trackerColour(205,170,170)
+rslider  bounds(415, 60, 90,120), text("Level"), textBox(1), valueTextBox(1), channel("Level"), range(0, 1, 0.5), colour(105,70,70), trackerColour(205,170,170)
 
 label    bounds( 20,193, 80, 14), text("Amp.Table")
 combobox bounds( 20,208, 80, 20), text("Hi to Lo","Lo to Hi","Random","Peak 1","Peak 2","Peak 3","Comb 1","Comb 2","Spring","Flat"), channel("AmpTable"), value(3)
-gentable bounds( 20,230,235, 90), identchannel("AmpTableID"), tablenumber(101), amprange(0,1,101), tablecolour("DarkBlue"), zoom(-1), tablebackgroundcolour(200,200,200), tablegridcolour(100,100,100)
+gentable bounds( 20,230,235, 90), identChannel("AmpTableID"), tableNumber(101), ampRange(0,1,101), tableColour("DarkBlue"), zoom(-1), tableBackgroundColour(200,200,200), tableGridColour(100,100,100)
 label    bounds( 20,322,235, 14), text("Amplitudes Table")
 
 label    bounds(275,193, 80, 14), text("Freq.Table")
 combobox bounds(275,208, 80, 20), text("Hi to Lo","Lo to Hi","Random","Peak 1","Peak 2","Peak 3","Comb 1","Comb 2","Spring","Flat"), channel("FrqTable"), value(7)
-gentable bounds(275,230,235, 90), identchannel("FrqTableID"), tablenumber(102), amprange(0,1,102), tablecolour("DarkGreen"), zoom(-1), tablebackgroundcolour(200,200,200), tablegridcolour(100,100,100)
+gentable bounds(275,230,235, 90), identChannel("FrqTableID"), tableNumber(102), ampRange(0,1,102), tableColour("DarkGreen"), zoom(-1), tableBackgroundColour(200,200,200), tableGridColour(100,100,100)
 label    bounds(275,322,235, 14), text("Frequencies Table")
 
 </Cabbage>
@@ -124,8 +124,8 @@ instr	1
 
  					tablecopy		101,200+i(kAmpTable)
  					tablecopy		102,200+i(kFrqTable)
- 					chnset			"tablenumber(101)","AmpTableID"
- 					chnset			"tablenumber(102)","FrqTableID"
+ 					chnset			"tableNumber(101)","AmpTableID"
+ 					chnset			"tableNumber(102)","FrqTableID"
  					
  fsig_outL			pvsinit			iFFT,iFFT/4,iFFT,1
  fsig_inL			pvsanal			aL,iFFT,iFFT/4,iFFT,1									; analyse signal

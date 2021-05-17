@@ -1,73 +1,67 @@
 <Cabbage>
-form caption("Encoder Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-encoder bounds(8, 38, 369, 50), channel("gain"), text("Gain") min(0), max(1), increment(.01) fontcolour(91, 46, 46, 255) textcolour(29, 29, 29, 255)
-groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-encoder bounds(70, 140, 41, 119) identchannel("widgetIdent"),  
+form caption("Encoder Example") size(380, 500), guiMode("queue"), colour(2, 145, 209) pluginId("def1")
+
+texteditor bounds(18, 281, 341, 204) channel("infoText"), readOnly(1), wrap(1), scrollbars(1)
+
+soundfiler bounds(18, 16, 339, 182), channel("soundfiler1"), file("Guitar3.wav") colour(147, 210, 0), tableBackgroundColour(0, 0, 0, 0)
+button bounds(18, 218, 84, 32) corners(5), channel("play"), text("Play", "Stop")
+
+encoder bounds(296, 204, 60, 60) channel("detune"), popupPrefix("Detune Amount: "), increment(0.001)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
--n -d -+rtmidi=NULL -M0 -m0d 
+-n -d -+rtmidi=NULL -M0 -m0d --midi-key=4 --midi-velocity-amp=5
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
-ksmps = 32
+ksmps = 16
 nchnls = 2
 0dbfs = 1
 
-seed 0 
-;basic usage
+
+; Rory Walsh 2021 
+;
+; License: CC0 1.0 Universal
+; You can copy, modify, and distribute this file, 
+; even for commercial purposes, all without asking permission. 
+
 instr 1
-    aTone oscili chnget:k("gain"), 300
-    outs aTone, aTone    
+
+    SText  = "A rotary controller can provide a high degree of precision, and offer fine tunings over certain parameters. In this example two diskin2 opcode are playing back the same sound file. When we move the endless encoder we can detune one of the samples by manipulating its playback speed. This gives a quick and simple chorus effect.\n\nThe popup value of the encoder is prefixed with \"detune Amount\" to provide more information to the user. All widget can have popup text appear when you hover over them. Only sliders offer popupPrefix and popupPostFix options."    
+    cabbageSet "infoText", "text", SText
+
+    ;trigger playback of sample
+    kPlayState, kPlayTrig cabbageGetValue "play"
+    if kPlayTrig == 1 then
+        if kPlayState == 1 then
+            event "i", "SamplePlayback", 0, -1
+        else
+            turnoff2 nstrnum("SamplePlayback"), 0, 0
+        endif
+    endif    
+    
 endin
 
-;WIDGET_ADVANCED_USAGE
 
-instr 2
-    if metro(1) == 1 then
-        event "i", "ChangeAttributes", 0, 1
-    endif
+instr SamplePlayback
+    
+    SFilename = "Guitar3.wav"
+    kDetune, kTrig cabbageGetValue "detune"    
+    iLen = filelen(SFilename)*sr
+    kScrubber phasor 1/(iLen/sr)
+    cabbageSet metro(20), "soundfiler1", "scrubberPosition", kScrubber*iLen
+    a1, a2 diskin2 SFilename, 1, 0, 1
+    a3, a4 diskin2 SFilename, 1+kDetune, 0, 1
+    aLeft = a1 + a3
+    aRight = a2 + a4
+    outs aLeft/2, aRight/2    
+        
 endin
 
-instr ChangeAttributes
-    SIdentifier init ""
-	SIdent sprintf "outlinecolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "trackercolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "textcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "text(\"TextOff %f\") ", rnd(100)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "alpha(%f) ", 50 + rnd(50)/50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "pos(%d, 140) ", 100 + rnd(100)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "size(%d, %d) ", abs(rnd(200))+40, abs(rnd(100))+50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "caption(\"Text%d\") ", rnd(100)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "colour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "fontcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "value(%f) ", rnd(1)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "visible(%d) ", (rnd(100) > 80 ? 0 : 1)
-	SIdentifier strcat SIdentifier, SIdent
-    ;send identifier string to Cabbage
-    chnset SIdentifier, "widgetIdent"           
-endin
-                
 
 </CsInstruments>
 <CsScore>
 ;causes Csound to run for about 7000 years...
-f0 z
-;starts instrument 1 and runs it for a week
 i1 0 z
-i2 0 z
 </CsScore>
 </CsoundSynthesizer>

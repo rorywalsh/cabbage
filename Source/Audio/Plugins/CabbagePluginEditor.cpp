@@ -35,7 +35,9 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 #endif
 {
     setName ("PluginEditor");
+
     setLookAndFeel (&lookAndFeel);
+    customFont = cabbageProcessor.getCustomFont();
     viewportContainer.reset (new ViewportContainer());
     addAndMakeVisible(viewportContainer.get());
     viewportContainer->addAndMakeVisible(mainComponent);
@@ -63,15 +65,22 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
     if(cabbageProcessor.getCsound())
         cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 1.0);
+
+    if(cabbageProcessor.currentPluginScale != -1)
+        resizePlugin(cabbageProcessor.currentPluginScale);
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
 {
+    setLookAndFeel (nullptr);
     popupPlants.clear();
     components.clear();
     radioGroups.clear();
     radioComponents.clear();
-    setLookAndFeel (nullptr);
+
+    
+
+    
     if(cabbageProcessor.getCsound())
     	cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 0.0);
 }
@@ -86,8 +95,20 @@ void CabbagePluginEditor::refreshValueTreeListeners()
 	}
 }
 
+void CabbagePluginEditor::setCurrentPreset(String preset)
+{
+    cabbageProcessor.currentPresetName = preset;
+}
+
+String CabbagePluginEditor::getCurrentPreset()
+{
+    return cabbageProcessor.currentPresetName;
+}
+
 void CabbagePluginEditor::resized()
 {
+    sendChannelDataToCsound("SCREEN_WIDTH", getWidth());
+    sendChannelDataToCsound("SCREEN_HEIGHT", getHeight());
 #ifdef Cabbage_IDE_Build
     layoutEditor.setBounds (getLocalBounds());
     
@@ -148,11 +169,17 @@ void CabbagePluginEditor::mouseUp (const MouseEvent& e)
 
 void CabbagePluginEditor::handleMouseMovement (const MouseEvent& e)
 {
+    if(e.eventComponent->getName().isNotEmpty())
+    {
+        const ValueTree vt = getValueTreeForComponent(e.eventComponent->getName());
+        sendChannelStringDataToCsound(CabbageIdentifierIds::currentWidgetChannel.toString(), CabbageWidgetData::getStringProp(vt, CabbageIdentifierIds::channel));
+    }
     int x = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().x;
     int yOffset = (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE ? 27 : 0 );
     int y = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().y - yOffset; //27 is the height of the standalone window frame
-    sendChannelDataToCsound (CabbageIdentifierIds::mousex, x);
-    sendChannelDataToCsound (CabbageIdentifierIds::mousey, y);
+    double scale = pluginSizes[cabbageProcessor.currentPluginScale-1];
+    sendChannelDataToCsound (CabbageIdentifierIds::mousex, x/scale);
+    sendChannelDataToCsound (CabbageIdentifierIds::mousey, y/scale);
 }
 
 void CabbagePluginEditor::handleMouseClicks (const MouseEvent& e, bool isMousePressed)
@@ -196,7 +223,7 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     const String titlebarColourString = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::titlebarcolour);
     titlebarGradientAmount = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::titlebargradient);
     const String fontColourString = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour);
-    lookAndFeel.setDefaultFont(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::typeface));
+    //lookAndFeel.setDefaultFont(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::typeface));
 
     globalStyle = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::style);
     
@@ -207,11 +234,13 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     if (fontColourString != "")
         defaultFontColour = false;
 
-    lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);  
+    lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);
     mainComponent.setColour (backgroundColour);
     instrumentBounds.setXY(width, height);
     setSize (width, height);
 
+    
+    
     repaint();
 }
 //======================================================================================================
@@ -311,6 +340,9 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
     else if (widgetType == CabbageWidgetTypes::infobutton)
         insertInfoButton (cabbageWidgetData);
 
+    else if (widgetType == CabbageWidgetTypes::optionbutton)
+        insertOptionButton (cabbageWidgetData);
+    
     else if (widgetType == CabbageWidgetTypes::signaldisplay)
         insertSignalDisplay (cabbageWidgetData);
 
@@ -343,6 +375,8 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
         insertRangeSlider (cabbageWidgetData);
 
 }
+
+/* these could be replaced with a templated function */
 
 void CabbagePluginEditor::insertCheckbox (ValueTree cabbageWidgetData)
 {
@@ -475,6 +509,15 @@ void CabbagePluginEditor::insertInfoButton (ValueTree cabbageWidgetData)
     components.add (infoButton = new CabbageInfoButton (cabbageWidgetData, globalStyle));
     addToEditorAndMakeVisible (infoButton, cabbageWidgetData);
     addMouseListenerAndSetVisibility (infoButton, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertOptionButton (ValueTree cabbageWidgetData)
+{
+    CabbageOptionButton* optionButton;
+    components.add (optionButton = new CabbageOptionButton (cabbageWidgetData, this));
+    optionButton->addListener (this);
+    addToEditorAndMakeVisible (optionButton, cabbageWidgetData);
+    addMouseListenerAndSetVisibility (optionButton, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertButton (ValueTree cabbageWidgetData)
@@ -618,19 +661,44 @@ CabbagePluginParameter* CabbagePluginEditor::getParameterForComponent (const Str
 }
 
 //======================================================================================================
+void CabbagePluginEditor::resizePlugin (int sizeIndex)
+{
+    
+    
+    cabbageProcessor.currentPluginScale =  sizeIndex;
+    //param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
+    
+    
+    setScaleFactor(pluginSizes[cabbageProcessor.currentPluginScale-1]);
+    resized();
+}
+//======================================================================================================
 void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 {
+    const String mode = CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::mode);
+    const String channel = CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::channel);
     if (CabbagePluginParameter* param = getParameterForComponent (combo->getName()))
     {
-        param->beginChangeGesture();
-
-        //preset combos work with 0 index, Cabbage string combos start at 1..
-        if (CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::filetype).contains ("snaps"))
-            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()));
+        if(mode == "resize")
+        {
+            if(combo->getSelectedItemIndex() != -1)
+            {
+//                param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
+                CabbageWidgetData::setNumProp(getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::value, combo->getSelectedItemIndex()+1);
+                resizePlugin(combo->getSelectedId());
+            }
+        }
         else
-            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
-
-        param->endChangeGesture();
+        {
+            param->beginChangeGesture();
+            //preset combos work with 0 index, Cabbage string combos start at 1..
+            if (CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::filetype).contains ("snaps"))
+                param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()));
+            else
+                param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
+            param->endChangeGesture();
+        }
+        
     }
 }
 //======================================================================================================
@@ -665,7 +733,23 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 		toggleButtonState(button, buttonState);
 		return;
 	}
-
+    else if (CabbageOptionButton* optionButton = dynamic_cast<CabbageOptionButton*> (button))
+    {
+        const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageProcessor.cabbageWidgets, optionButton->getName());
+        int value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
+        var textArray = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::text);
+        int comboRange = textArray.size();
+        value = (value < comboRange -1 ? value + 1 : 0);
+        //CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value, value);
+        if (CabbagePluginParameter* param = getParameterForComponent(button->getName()))
+        {
+            param->beginChangeGesture();
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (value));
+            param->endChangeGesture();
+        }
+        
+        return;
+    }
 
 }
 
@@ -828,8 +912,11 @@ ValueTree CabbagePluginEditor::getValueTreeForComponent (String compName)
         resetCurrentlySelectedComponents();
         return CabbageWidgetData::getValueTreeForComponent (cabbageProcessor.cabbageWidgets, "form");
     }
-    else
+    else if(getComponentFromName (compName))
         return CabbageWidgetData::getValueTreeForComponent (cabbageProcessor.cabbageWidgets, getComponentFromName (compName)->getName());
+    
+    else
+        return ValueTree();
 }
 
 void CabbagePluginEditor::updateLayoutEditorFrames()
@@ -979,7 +1066,7 @@ float CabbagePluginEditor::getChannelDataFromCsound (String channel)
 void CabbagePluginEditor::sendChannelStringDataToCsound (String channel, String value)
 {
     if (cabbageProcessor.csdCompiledWithoutError() && cabbageProcessor.getCsound())
-        cabbageProcessor.getCsound()->SetChannel (channel.getCharPointer(), value.toUTF8().getAddress());
+        cabbageProcessor.getCsound()->SetStringChannel (channel.getCharPointer(), value.toUTF8().getAddress());
 }
 
 void CabbagePluginEditor::sendScoreEventToCsound (String scoreEvent)
@@ -1045,28 +1132,18 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
     return cabbageProcessor;
 }
 
-void CabbagePluginEditor::savePluginStateToFile (File snapshotFile, String presetName)
+void CabbagePluginEditor::savePluginStateToFile (String presetName, bool removePreset)
 {
-    XmlElement xml = cabbageProcessor.savePluginState (instrumentName.replace (" ", "_"), snapshotFile, presetName);
-    xml.writeTo (snapshotFile);
+    //the error happens when we create a new preset not when we modify or delete one...
+    cabbageProcessor.addPluginPreset (presetName, removePreset);
 }
 
-void CabbagePluginEditor::restorePluginStateFrom (String childPreset, File xmlFile)
+void CabbagePluginEditor::restorePluginStateFrom (String presetName)
 {
-    std::unique_ptr<XmlElement> xmlElement (XmlDocument::parse (xmlFile));
-
-    if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
-    {
-        forEachXmlChildElement (*xmlElement, e)
-        {
-            if (e->getStringAttribute ("PresetName") == childPreset)
-                cabbageProcessor.restorePluginState (e);
-        }
-    }
-
+    cabbageProcessor.restorePluginPreset (presetName);
 }
 
-void CabbagePluginEditor::refreshComboListBoxContents()
+void CabbagePluginEditor::refreshComboListBoxContents(String presetName)
 {
     for ( int i = 0 ; i < cabbageProcessor.cabbageWidgets.getNumChildren() ; i++)
     {
@@ -1080,13 +1157,17 @@ void CabbagePluginEditor::refreshComboListBoxContents()
 
             if (CabbageComboBox* combo = dynamic_cast<CabbageComboBox*> (getComponentFromName (name)))
             {
+                const int numPresets = combo->getNumItems();
+                const int currentIndex = combo->getSelectedItemIndex();
                 if (fileType.isNotEmpty())
                 {
                     combo->addItemsToCombobox (cabbageProcessor.cabbageWidgets.getChild (i));
                 }
 
                 if(bool(combo->getProperties().getWithDefault("isPresetCombo", false)) == true)
-                   combo->setSelectedItemIndex(combo->getNumItems()-1);
+                {
+                    combo->setText(getCurrentPreset());
+                }
             }
 
             else if (CabbageListBox* listbox = dynamic_cast<CabbageListBox*> (getComponentFromName (name)))

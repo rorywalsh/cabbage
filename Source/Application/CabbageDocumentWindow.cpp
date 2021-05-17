@@ -323,10 +323,13 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::saveDocumentAs);
     menu.addCommandItem (&commandManager, CommandIDs::saveAll);
     menu.addSeparator();
-   // menu.addCommandItem (&commandManager, CommandIDs::openFromRPi);
-   // menu.addCommandItem (&commandManager, CommandIDs::saveDocumentToRPi);
+    menu.addCommandItem (&commandManager, CommandIDs::convertToCamelCase);
+    menu.addCommandItem (&commandManager, CommandIDs::convertToLowerCase);
+    menu.addCommandItem (&commandManager, CommandIDs::updatePresetFile);
     menu.addSeparator();
-    
+    menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::restartAudioDevice);
+    menu.addSeparator();
     if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
     {
         PopupMenu subMenu1, subMenu2, subMenu3;
@@ -560,6 +563,10 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::copy,
         CommandIDs::cut,
         CommandIDs::clearConsole,
+        CommandIDs::convertToCamelCase,
+        CommandIDs::convertToLowerCase,
+        CommandIDs::updatePresetFile,
+        CommandIDs::restartAudioDevice,
         CommandIDs::toggleComments,
         CommandIDs::zoomIn,
         CommandIDs::addCabbageSection,
@@ -643,6 +650,21 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         case CommandIDs::saveDocument:
             result.setInfo ("Save file", "Save a document", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('s', ModifierKeys::commandModifier, 0));
+            break;
+            
+        case CommandIDs::convertToCamelCase:
+            result.setInfo ("Convert Identifiers to camelCase", "Covert Identifiers to camelCase", CommandCategories::general, 0);
+            break;
+        case CommandIDs::convertToLowerCase:
+            result.setInfo ("Convert Identifiers to lower case", "Covert Identifiers to Lower Case", CommandCategories::general, 0);
+            break;
+        case CommandIDs::updatePresetFile:
+            result.setInfo ("Update XML Preset File to JSON", "Update form older version", CommandCategories::general, 0);
+            break;
+            
+        case CommandIDs::restartAudioDevice:
+            result.setInfo ("Restart Audio Device", "Restarts audio device", CommandCategories::general, 0);
+            result.defaultKeypresses.add (KeyPress ('d', ModifierKeys::commandModifier, 0));
             break;
             
         case CommandIDs::importTheme:
@@ -947,7 +969,6 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             
         case CommandIDs::runDiagnostics:
             result.setInfo (String ("Run diagnostics"), String ("Run diagnostics"), CommandCategories::edit, 0);
-            result.addDefaultKeypress ('d', ModifierKeys::commandModifier);
             break;
             
             // help command
@@ -1026,6 +1047,22 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             
         case CommandIDs::saveDocumentAs:
             getContentComponent()->saveDocument (true);
+            return true;
+            
+        case CommandIDs::convertToCamelCase:
+            getContentComponent()->covertToCamelCase();
+            return true;
+            
+        case CommandIDs::convertToLowerCase:
+            getContentComponent()->covertToLowerCase();
+            return true;
+ 
+        case CommandIDs::updatePresetFile:
+            getContentComponent()->updatePresetFile();
+            return true;
+            
+        case CommandIDs::restartAudioDevice:
+            getContentComponent()->reloadAudioDeviceState();
             return true;
             
         case CommandIDs::saveGraph:

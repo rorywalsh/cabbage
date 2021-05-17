@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.13"
+<JUCERPROJECT id="ETRteN" name="CabbagePlugin" projectType="audioplug" version="2.5.44"
               bundleIdentifier="com.cabbageaudio.CabbagePlugin" includeBinaryInAppConfig="1"
               buildVST="1" buildVST3="1" buildAU="1" buildAUv3="0" buildRTAS="0"
               buildAAX="0" pluginName="CabbageEffectNam" pluginDesc="CabbagePlugin"
@@ -16,6 +16,13 @@
               pluginRTASDisableMultiMono="0" pluginAAXDisableBypass="0" pluginAAXDisableMultiMono="0">
   <MAINGROUP id="MmKYZk" name="CabbagePlugin">
     <GROUP id="{5F824C1A-7415-6BE8-DF30-2E42B01BB5BE}" name="Source">
+      <GROUP id="{155EB1FE-8C62-16E7-B9F7-B0982065BB1C}" name="Opcodes">
+        <FILE id="Sf7FYO" name="CabbageIdentifierOpcodes.cpp" compile="1" resource="0"
+              file="Source/Opcodes/CabbageIdentifierOpcodes.cpp"/>
+        <FILE id="w7P2oq" name="CabbageIdentifierOpcodes.h" compile="0" resource="0"
+              file="Source/Opcodes/CabbageIdentifierOpcodes.h"/>
+        <FILE id="SngIVz" name="opcodes.hpp" compile="0" resource="0" file="Source/Opcodes/opcodes.hpp"/>
+      </GROUP>
       <GROUP id="{61A1582E-02D7-BC73-16CA-AB70EAB7BBA0}" name="Audio">
         <GROUP id="{4B714BDB-49F2-8D6E-A0E6-DD0C6491ADBA}" name="Plugins">
           <FILE id="LTlu6o" name="CabbageCsoundBreakpointData.h" compile="0"
@@ -90,6 +97,10 @@
         <FILE id="GGg8Tq" name="TableManager.h" compile="0" resource="0" file="Source/Widgets/Legacy/TableManager.h"/>
       </GROUP>
       <GROUP id="{06A9B370-E21A-01CA-7B69-FE3EB35876DF}" name="Widgets">
+        <FILE id="N7QXMo" name="CabbageOptionButton.cpp" compile="1" resource="0"
+              file="Source/Widgets/CabbageOptionButton.cpp"/>
+        <FILE id="tLG3Oi" name="CabbageOptionButton.h" compile="0" resource="0"
+              file="Source/Widgets/CabbageOptionButton.h"/>
         <FILE id="ZEyV21" name="CabbageRackWidgets.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageRackWidgets.cpp"/>
         <FILE id="vHAVok" name="CabbageRackWidgets.h" compile="0" resource="0"
@@ -352,7 +363,7 @@
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
   <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0"
-               JUCE_USE_OGGVORBIS="0" JUCE_USE_FLAC="0"/>
+               JUCE_USE_OGGVORBIS="0" JUCE_USE_FLAC="1"/>
   <LIVE_SETTINGS>
     <LINUX/>
     <OSX/>

@@ -72,7 +72,11 @@ class CabbageRangeSlider  : public Component, public ValueTree::Listener, public
 
 public:
     CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageRangeSlider() {slider.setLookAndFeel (nullptr); setLookAndFeel(nullptr);};
+    ~CabbageRangeSlider() {
+        widgetData.removeListener(this); 
+        slider.setLookAndFeel (nullptr); 
+        setLookAndFeel(nullptr);
+    };
 
     void setCurrentValues (float min, float max);
     void resized()  override;

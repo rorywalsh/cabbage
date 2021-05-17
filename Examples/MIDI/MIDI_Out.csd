@@ -1,16 +1,11 @@
 <Cabbage>
-form caption("MIDI Out"), size(400,80), pluginid("MOt1") style("legacy")
+form caption("MIDI Out"), size(400,80), pluginId("MOt1") style("legacy")
 keyboard bounds(0,0,400,80)
 </Cabbage>
-
 <CsoundSynthesizer>
-
 <CsOptions>
-;-dm0 --midi-key=4 --midi-velocity=5 -n -M0 -Q0
-;-dm0 -n -+rtmidi=null -M0 -Q0
--dm0 -n -+rtmidi=null -M0 -Q0
+-dm0 -+rtmidi=null --midi-key=4 --midi-velocity=5 -n -M0 -Q0
 </CsOptions>
-
 <CsInstruments>
 
 ;sr is set by the host
@@ -21,7 +16,7 @@ nchnls 	= 	2
 massign	0,1
 
 instr	1	; receive midi and note on
- prints	"note on\n"
+ prints	"note on p4\n"
  noteon	1,p4,p5
  krel release
  if krel==1 then
@@ -35,5 +30,7 @@ instr	3	; note off
 endin
 
 </CsInstruments>
-
+<CsScore>
+f0 z
+</CsScore>
 </CsoundSynthesizer>

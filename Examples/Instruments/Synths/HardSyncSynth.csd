@@ -57,86 +57,86 @@ z
 ; MONO/POLY	-	sets whether a single LFO is used for all notes played (MONO) or whether each note get its own LFO
 
 <Cabbage>
-form caption("Hard Sync Synth") size(1175, 325), pluginid("HdSy") style("legacy")
+form caption("Hard Sync Synth") size(1175, 325), pluginId("HdSy") style("legacy")
 
 ; main waveform
-image    bounds(  5,  0,135,115), plant("waveform"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp")
+image    bounds(  5,  0,135,115), plant("waveform"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp")
 {           
 label    bounds(  0,  3,135, 12), text("W a v e f o r m")
 combobox bounds(  5, 30, 80,20), channel("Waveform"), text("Sine","Triangle","Square","Sawtooth","Pulse","Half-Sine","Add 1","Add 2","Add 3","Add 4","Add 5","Add 6","Add 7"), value(3)
-gentable bounds( 85, 30, 40,20), tablenumber(1000), identchannel("Waveform_ID"), zoom(-1), amprange(1000,-1,1)
+gentable bounds( 85, 30, 40,20), tableNumber(1000), identChannel("Waveform_ID"), zoom(-1), ampRange(1000,-1,1)
 }
 
 ; voice 2
-image    bounds(145,  0,235,115), plant("voice2"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp")
+image    bounds(145,  0,235,115), plant("voice2"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp")
 {
 label    bounds(  0,  3,235, 12), text("V o i c e    2")
 checkbox bounds( 10, 25,100, 15), text("On/Off"), channel("Voice2OnOff"), value(1)
 rslider  bounds( 20, 47, 60, 60), channel("V2Lev"), text("Level"), range(0,1,1)
-rslider  bounds( 75, 15, 90, 90), channel("SubSemis"), text("Semitones"), valuetextbox(1), textbox(1), range(-24,24,-24,1,1)
-rslider  bounds(145, 15, 90, 90), channel("SubCents"), text("Cents"), valuetextbox(1), textbox(1), range(-100,100,0,1,1)
+rslider  bounds( 75, 15, 90, 90), channel("SubSemis"), text("Semitones"), valueTextBox(1), textBox(1), range(-24,24,-24,1,1)
+rslider  bounds(145, 15, 90, 90), channel("SubCents"), text("Cents"), valueTextBox(1), textBox(1), range(-100,100,0,1,1)
 }                                                                                       
 
 ; amplitude envelope
-image    bounds(385,  0,300,115), plant("AmpEnvelope"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp")
+image    bounds(385,  0,300,115), plant("AmpEnvelope"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp")
 {
 label   bounds(  0,  3,300, 12), text("A m p l i t u d e    E n v e l o p e")
-rslider bounds(  0,  15,90,90), channel("AAtt"), text("Attack"),  valuetextbox(1), textbox(1), range(0,8,0.05,0.5,0.001)
-rslider bounds( 70,  15,90,90), channel("ADec"), text("Decay"),   valuetextbox(1), textbox(1), range(0,8,0.5,0.5,0.001)
-rslider bounds(140,  15,90,90), channel("ASus"), text("Sustain"), valuetextbox(1), textbox(1), range(0,1,1,1,0.01)
-rslider bounds(210,  15,90,90), channel("ARel"), text("Release"), valuetextbox(1), textbox(1), range(0,8,5,0.5,0.001)
+rslider bounds(  0,  15,90,90), channel("AAtt"), text("Attack"),  valueTextBox(1), textBox(1), range(0,8,0.05,0.5,0.001)
+rslider bounds( 70,  15,90,90), channel("ADec"), text("Decay"),   valueTextBox(1), textBox(1), range(0,8,0.5,0.5,0.001)
+rslider bounds(140,  15,90,90), channel("ASus"), text("Sustain"), valueTextBox(1), textBox(1), range(0,1,1,1,0.01)
+rslider bounds(210,  15,90,90), channel("ARel"), text("Release"), valueTextBox(1), textBox(1), range(0,8,5,0.5,0.001)
 }
 
 ; mixer
-image    bounds(690,  0,160,115), plant("AmpEnvelope"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp")
+image    bounds(690,  0,160,115), plant("AmpEnvelope"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp")
 {
 label    bounds(  0,  3,160, 12), text("M i x e r")
-rslider  bounds(  0, 15,90,90), channel("Vel"), text("Velocity"), valuetextbox(1), textbox(1), range(0,1,0.5,0.5,0.001)
-rslider  bounds( 70, 15,90,90), channel("Lev"), text("Level"),    valuetextbox(1), textbox(1), range(0,1,0.05,0.5,0.001)
+rslider  bounds(  0, 15,90,90), channel("Vel"), text("Velocity"), valueTextBox(1), textBox(1), range(0,1,0.5,0.5,0.001)
+rslider  bounds( 70, 15,90,90), channel("Lev"), text("Level"),    valueTextBox(1), textBox(1), range(0,1,0.05,0.5,0.001)
 }
 
 ; presets
-image      bounds(855,  0, 80,115), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp"), plant("presets"){
+image      bounds(855,  0, 80,115), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp"), plant("presets"){
 label      bounds(  0,  3, 80, 12), text("P r e s e t s")
 combobox   bounds( 10, 35, 60, 18), channel("preset"), value(1), text("1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
 }
 
 ; stereo processing
-image    bounds(940,  0,230,115), plant("StereoProcessing"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp")
+image    bounds(940,  0,230,115), plant("StereoProcessing"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp")
 {
 label    bounds(  0,  3,230, 12), text("R e v e r b")
-rslider bounds(  0,  15,90,90), channel("StMix"), text("Width"),      valuetextbox(1), textbox(1), range(0,1,1)
-rslider bounds( 70,  15,90,90), channel("RvbMix"), text("Rvb.Mix"),   valuetextbox(1), textbox(1), range(0,1,0.2)
-rslider bounds(140,  15,90,90), channel("RvbSize"), text("Rvb.Size"), valuetextbox(1), textbox(1), range(0,1,0.8)
+rslider bounds(  0,  15,90,90), channel("StMix"), text("Width"),      valueTextBox(1), textBox(1), range(0,1,1)
+rslider bounds( 70,  15,90,90), channel("RvbMix"), text("Rvb.Mix"),   valueTextBox(1), textBox(1), range(0,1,0.2)
+rslider bounds(140,  15,90,90), channel("RvbSize"), text("Rvb.Size"), valueTextBox(1), textBox(1), range(0,1,0.8)
 }
 
 ; sync trigger envelope
-image   bounds(  5,120,740,115), plant("SyncEnvelope"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp")
+image   bounds(  5,120,740,115), plant("SyncEnvelope"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp")
 {
 label   bounds(  0,  3,740, 12), text("S y n c .    T r i g g e r    E n v e l o p e")
-rslider bounds(  0, 15, 90, 90), channel("Attack"), text("Attack"),   valuetextbox(1), textbox(1), range(0,8,2,0.5,0.001)
-rslider bounds( 70, 15, 90, 90), channel("Decay"), text("Decay"),     valuetextbox(1), textbox(1), range(0,8,5,0.5,0.001)
-rslider bounds(140, 15, 90, 90), channel("Sustain"), text("Sustain"), valuetextbox(1), textbox(1), range(0,1,1,1,0.01)
-rslider bounds(210, 15, 90, 90), channel("Release"), text("Release"), valuetextbox(1), textbox(1), range(0,8,5,0.5,0.001)
-rslider bounds(280, 15, 90, 90), channel("Minimum"), text("Minimum"), valuetextbox(1), textbox(1), range(-8, 4,-0.6,1,0.01)
-rslider bounds(350, 15, 90, 90), channel("Maximum"), text("Maximum"), valuetextbox(1), textbox(1), range(-8, 4,-0.7,1,0.01)
+rslider bounds(  0, 15, 90, 90), channel("Attack"), text("Attack"),   valueTextBox(1), textBox(1), range(0,8,2,0.5,0.001)
+rslider bounds( 70, 15, 90, 90), channel("Decay"), text("Decay"),     valueTextBox(1), textBox(1), range(0,8,5,0.5,0.001)
+rslider bounds(140, 15, 90, 90), channel("Sustain"), text("Sustain"), valueTextBox(1), textBox(1), range(0,1,1,1,0.01)
+rslider bounds(210, 15, 90, 90), channel("Release"), text("Release"), valueTextBox(1), textBox(1), range(0,8,5,0.5,0.001)
+rslider bounds(280, 15, 90, 90), channel("Minimum"), text("Minimum"), valueTextBox(1), textBox(1), range(-8, 4,-0.6,1,0.01)
+rslider bounds(350, 15, 90, 90), channel("Maximum"), text("Maximum"), valueTextBox(1), textBox(1), range(-8, 4,-0.7,1,0.01)
 label   bounds(440, 30,215, 14), text("Env<-->Man")
-hslider bounds(440, 30,215, 60), channel("SyncEnvMan"), range(0,1,0)		;, valuetextbox(1), text("Env<>Man")
-rslider bounds(650, 15, 90, 90), channel("SyncRate"), text("Manual"), valuetextbox(1), textbox(1), range(1,4000,440,0.5,0.1)
+hslider bounds(440, 30,215, 60), channel("SyncEnvMan"), range(0,1,0)		;, valueTextBox(1), text("Env<>Man")
+rslider bounds(650, 15, 90, 90), channel("SyncRate"), text("Manual"), valueTextBox(1), textBox(1), range(1,4000,440,0.5,0.1)
 }
 
 ; sync trigger lfo
-image    bounds(750,120,420,115), plant("SyncLFO"), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), shape("sharp")
+image    bounds(750,120,420,115), plant("SyncLFO"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp")
 {
 label    bounds(  0,  3,420, 12), text("S y n c    T r i g g e r    L F O")
 combobox bounds(  5, 30, 80, 20), channel("LFO_Shape"), text("Sine","Triangle","Square","Saw-up","Saw-Down","Random"), value(2)
-gentable bounds( 85, 30, 40, 20), tablenumber(2000), identchannel("LFO_Shape_ID"), zoom(-1), amprange(2000,-1,1)
-button   bounds( 35, 60, 50, 16), channel("MONO_LFO"), text("MONO","MONO"), colour:0(0,0,0), colour:1(200,200, 0), fontcolour:0(80,80,80), fontcolour:1(255,255,255), radiogroup(1)
-button   bounds( 35, 76, 50, 16), channel("POLY_LFO"), text("POLY","POLY"), colour:0(0,0,0), colour:1(200,200, 0), fontcolour:0(80,80,80), fontcolour:1(255,255,255), radiogroup(1), value(1)
-rslider  bounds(120, 15, 90, 90), channel("LFO_Depth"), text("Depth"), valuetextbox(1), textbox(1), range(0,4,2,0.5,0.01)
-rslider  bounds(190, 15, 90, 90), channel("LFO_Rate"), text("Rate"),   valuetextbox(1), textbox(1), range(0,99,0.07,0.5,0.01)
-rslider  bounds(260, 15, 90, 90), channel("LFO_Delay"), text("Delay"), valuetextbox(1), textbox(1), range(0,8,0,0.5,0.01)
-rslider  bounds(330, 15, 90, 90), channel("LFO_Rise"), text("Rise"),   valuetextbox(1), textbox(1), range(0,8,0,0.5,0.01)
+gentable bounds( 85, 30, 40, 20), tableNumber(2000), identChannel("LFO_Shape_ID"), zoom(-1), ampRange(2000,-1,1)
+button   bounds( 35, 60, 50, 16), channel("MONO_LFO"), text("MONO","MONO"), colour:0(0,0,0), colour:1(200,200, 0), fontColour:0(80,80,80), fontColour:1(255,255,255), radioGroup(1)
+button   bounds( 35, 76, 50, 16), channel("POLY_LFO"), text("POLY","POLY"), colour:0(0,0,0), colour:1(200,200, 0), fontColour:0(80,80,80), fontColour:1(255,255,255), radioGroup(1), value(1)
+rslider  bounds(120, 15, 90, 90), channel("LFO_Depth"), text("Depth"), valueTextBox(1), textBox(1), range(0,4,2,0.5,0.01)
+rslider  bounds(190, 15, 90, 90), channel("LFO_Rate"), text("Rate"),   valueTextBox(1), textBox(1), range(0,99,0.07,0.5,0.01)
+rslider  bounds(260, 15, 90, 90), channel("LFO_Delay"), text("Delay"), valueTextBox(1), textBox(1), range(0,8,0,0.5,0.01)
+rslider  bounds(330, 15, 90, 90), channel("LFO_Rise"), text("Rise"),   valueTextBox(1), textBox(1), range(0,8,0,0.5,0.01)
 }
 
 keyboard bounds(5,240,1165,80)
@@ -267,7 +267,7 @@ instr	1
   reinit SEND_WAVEFORM_VIEW
   SEND_WAVEFORM_VIEW:
   		tableicopy	1000,1000+i(gkWaveform)
-  		chnset		"tablenumber(1000)","Waveform_ID"  
+  		chnset		"tableNumber(1000)","Waveform_ID"  
  rireturn
  endif
  
@@ -277,7 +277,7 @@ instr	1
   reinit SEND_LFO_SHAPE_VIEW
   SEND_LFO_SHAPE_VIEW:
   		tableicopy	2000,2000+i(gkLFO_Shape)
-  		chnset		"tablenumber(2000)","LFO_Shape_ID"
+  		chnset		"tableNumber(2000)","LFO_Shape_ID"
  rireturn
  endif
  

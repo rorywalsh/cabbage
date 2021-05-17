@@ -46,9 +46,9 @@
 ; Layers - controls a number of additional dissonant layers added for each note played. This is a feature that is still under development
                                                            
 <Cabbage>
-form caption("Pad Synth"), size(1120, 420), pluginid("PdSy") style("legacy")
+form caption("Pad Synth"), size(1120, 420), pluginId("PdSy") style("legacy")
 
-#define PlantBoxAppearance # shape("sharp"), colour( 20, 20, 40), outlinecolour("grey"), outlinethickness(2) #
+#define PlantBoxAppearance # shape("sharp"), colour( 20, 20, 40), outlineColour("grey"), outlineThickness(2) #
 
 csoundoutput bounds(5,275,1110,60)
 
@@ -60,14 +60,14 @@ combobox bounds(  5, 42,100, 22), channel("Table"), text("User 30","D.Bass","Cla
 label    bounds(  5, 68,100, 13), text("Tuning")
 combobox bounds(  5, 82,100, 22), channel("Tuning"), text("Equal","Just","Pythagorean","Quarter Tones"), value(1)
 
-rslider  bounds(100, 25, 90, 90), channel("Base"), text("Base Freq."), range(0,127,60,1,1), valuetextbox(1), textbox(1), popuptext("Base frequency of the created waveform"), identchannel("BaseID")
-rslider  bounds(170, 25, 90, 90), channel("BW"),   text("Bandwidth"),  range(1,999,6,0.25,0.01), valuetextbox(1), textbox(1), popuptext("Bandwidth of Modulation")
-rslider  bounds(240, 25, 90, 90), channel("PartScal"), text("Part.Scal."),  range(1,30,1.6,0.5,0.01), valuetextbox(1), textbox(1), popuptext("Partial Scaling")
-rslider  bounds(310, 25, 90, 90), channel("HarmStr"), text("Harm.Str."),  range(0.1,8,1,0.5,0.01), valuetextbox(1), textbox(1), popuptext("Harmonic Stretch")
-rslider  bounds(380, 25, 90, 90), channel("TabSize"), text("Table Size"),  range(1,24,18,1,1), valuetextbox(1), textbox(1), popuptext("Larger values slow down table rebuilds!")
+rslider  bounds(100, 25, 90, 90), channel("Base"), text("Base Freq."), range(0,127,60,1,1), valueTextBox(1), textBox(1), popupText("Base frequency of the created waveform"), identChannel("BaseID")
+rslider  bounds(170, 25, 90, 90), channel("BW"),   text("Bandwidth"),  range(1,999,6,0.25,0.01), valueTextBox(1), textBox(1), popupText("Bandwidth of Modulation")
+rslider  bounds(240, 25, 90, 90), channel("PartScal"), text("Part.Scal."),  range(1,30,1.6,0.5,0.01), valueTextBox(1), textBox(1), popupText("Partial Scaling")
+rslider  bounds(310, 25, 90, 90), channel("HarmStr"), text("Harm.Str."),  range(0.1,8,1,0.5,0.01), valueTextBox(1), textBox(1), popupText("Harmonic Stretch")
+rslider  bounds(380, 25, 90, 90), channel("TabSize"), text("Table Size"),  range(1,24,18,1,1), valueTextBox(1), textBox(1), popupText("Larger values slow down table rebuilds!")
 }
 
-image    bounds(480,  5,635,130), plant("UserControlSliders"), identchannel("UserControlSlidersID"), $PlantBoxAppearance {
+image    bounds(480,  5,635,130), plant("UserControlSliders"), identChannel("UserControlSlidersID"), $PlantBoxAppearance {
 label    bounds(  4,  5,635, 15), text("User Table")
 vslider  bounds( 25, 25, 10, 85), channel("1"),  range(0,1,0 	,0.5), visible(0)
 vslider  bounds( 50, 25, 10, 85), channel("2"),  range(0,1,0.1 	,0.5), visible(0)
@@ -94,36 +94,36 @@ vslider  bounds(550, 25, 10, 85), channel("22"), range(0,1,0	,0.5), visible(0)
 vslider  bounds(575, 25, 10, 85), channel("23"), range(0,1,0	,0.5), visible(0)
 vslider  bounds(600, 25, 10, 85), channel("24"), range(0,1,0    ,0.5), visible(0)
 
-image  bounds( 20, 25, 20, 1), colour("silver"), identchannel("Slider1")  , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds( 40, 25, 20, 0), colour("silver"), identchannel("Slider2")  , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds( 60, 25, 20, 0), colour("silver"), identchannel("Slider3")  , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds( 80, 25, 20, 0), colour("silver"), identchannel("Slider4")  , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(100 ,25, 20, 0), colour("silver"), identchannel("Slider5")  , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(120, 25, 20, 0), colour("silver"), identchannel("Slider6")  , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(140, 25, 20, 0), colour("silver"), identchannel("Slider7")  , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(160, 25, 20, 0), colour("silver"), identchannel("Slider8")  , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(180, 25, 20, 0), colour("silver"), identchannel("Slider9")  , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(200, 25, 20, 0), colour("silver"), identchannel("Slider10") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(220, 25, 20, 0), colour("silver"), identchannel("Slider11") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(240, 25, 20, 0), colour("silver"), identchannel("Slider12") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(260, 25, 20, 0), colour("silver"), identchannel("Slider13") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(280, 25, 20, 0), colour("silver"), identchannel("Slider14") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(300, 25, 20, 0), colour("silver"), identchannel("Slider15") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(320, 25, 20, 0), colour("silver"), identchannel("Slider16") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(340, 25, 20, 0), colour("silver"), identchannel("Slider17") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(360, 25, 20, 0), colour("silver"), identchannel("Slider18") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(380, 25, 20, 0), colour("silver"), identchannel("Slider19") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(400, 25, 20, 0), colour("silver"), identchannel("Slider20") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(420, 25, 20, 0), colour("silver"), identchannel("Slider21") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(440, 25, 20, 0), colour("silver"), identchannel("Slider22") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(460, 25, 20, 0), colour("silver"), identchannel("Slider23") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(480, 25, 20, 0), colour("silver"), identchannel("Slider24") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(500, 25, 20, 0), colour("silver"), identchannel("Slider25") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(520, 25, 20, 0), colour("silver"), identchannel("Slider26") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(540, 25, 20, 0), colour("silver"), identchannel("Slider27") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(560, 25, 20, 0), colour("silver"), identchannel("Slider28") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(580, 25, 20, 0), colour("silver"), identchannel("Slider29") , outlinecolour( 20, 20, 40), outlinethickness(1)
-image  bounds(600, 25, 20, 0), colour("silver"), identchannel("Slider30") , outlinecolour( 20, 20, 40), outlinethickness(1)
+image  bounds( 20, 25, 20, 1), colour("silver"), identChannel("Slider1")  , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds( 40, 25, 20, 0), colour("silver"), identChannel("Slider2")  , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds( 60, 25, 20, 0), colour("silver"), identChannel("Slider3")  , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds( 80, 25, 20, 0), colour("silver"), identChannel("Slider4")  , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(100 ,25, 20, 0), colour("silver"), identChannel("Slider5")  , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(120, 25, 20, 0), colour("silver"), identChannel("Slider6")  , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(140, 25, 20, 0), colour("silver"), identChannel("Slider7")  , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(160, 25, 20, 0), colour("silver"), identChannel("Slider8")  , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(180, 25, 20, 0), colour("silver"), identChannel("Slider9")  , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(200, 25, 20, 0), colour("silver"), identChannel("Slider10") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(220, 25, 20, 0), colour("silver"), identChannel("Slider11") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(240, 25, 20, 0), colour("silver"), identChannel("Slider12") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(260, 25, 20, 0), colour("silver"), identChannel("Slider13") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(280, 25, 20, 0), colour("silver"), identChannel("Slider14") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(300, 25, 20, 0), colour("silver"), identChannel("Slider15") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(320, 25, 20, 0), colour("silver"), identChannel("Slider16") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(340, 25, 20, 0), colour("silver"), identChannel("Slider17") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(360, 25, 20, 0), colour("silver"), identChannel("Slider18") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(380, 25, 20, 0), colour("silver"), identChannel("Slider19") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(400, 25, 20, 0), colour("silver"), identChannel("Slider20") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(420, 25, 20, 0), colour("silver"), identChannel("Slider21") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(440, 25, 20, 0), colour("silver"), identChannel("Slider22") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(460, 25, 20, 0), colour("silver"), identChannel("Slider23") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(480, 25, 20, 0), colour("silver"), identChannel("Slider24") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(500, 25, 20, 0), colour("silver"), identChannel("Slider25") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(520, 25, 20, 0), colour("silver"), identChannel("Slider26") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(540, 25, 20, 0), colour("silver"), identChannel("Slider27") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(560, 25, 20, 0), colour("silver"), identChannel("Slider28") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(580, 25, 20, 0), colour("silver"), identChannel("Slider29") , outlineColour( 20, 20, 40), outlineThickness(1)
+image  bounds(600, 25, 20, 0), colour("silver"), identChannel("Slider30") , outlineColour( 20, 20, 40), outlineThickness(1)
 
 label  bounds( 20,106, 20,11), text("1")
 label  bounds( 40,106, 20,11), text("2")
@@ -159,39 +159,39 @@ label  bounds(600,106, 20,11), text("30")
                 
 image    bounds(  5,140,370,130), plant("AmplitudeEnvelope"), $PlantBoxAppearance {
 label    bounds(  5,  4,370, 15), text("Amplitude Envelope")
-rslider  bounds(  0, 30, 90, 90), channel("AAtt"), text("Attack"), range(0.001,5,0.5,0.5,0.001), valuetextbox(1), textbox(1)   
-rslider  bounds( 70, 30, 90, 90), channel("ADec"), text("Decay"),  range(0.001,5,0.01,0.5,0.001), valuetextbox(1), textbox(1)
-rslider  bounds(140, 30, 90, 90), channel("ASus"), text("Sustain"),range(0,    1,1,0.5,0.001), valuetextbox(1), textbox(1)
-rslider  bounds(210, 30, 90, 90), channel("ARel"), text("Release"),range(0.001,5,0.5,0.5,0.001), valuetextbox(1), textbox(1)
-rslider  bounds(280, 30, 90, 90), channel("AGain"),text("Gain"),   range(0.1,  5,1,0.5,0.001), valuetextbox(1), textbox(1)
+rslider  bounds(  0, 30, 90, 90), channel("AAtt"), text("Attack"), range(0.001,5,0.5,0.5,0.001), valueTextBox(1), textBox(1)   
+rslider  bounds( 70, 30, 90, 90), channel("ADec"), text("Decay"),  range(0.001,5,0.01,0.5,0.001), valueTextBox(1), textBox(1)
+rslider  bounds(140, 30, 90, 90), channel("ASus"), text("Sustain"),range(0,    1,1,0.5,0.001), valueTextBox(1), textBox(1)
+rslider  bounds(210, 30, 90, 90), channel("ARel"), text("Release"),range(0.001,5,0.5,0.5,0.001), valueTextBox(1), textBox(1)
+rslider  bounds(280, 30, 90, 90), channel("AGain"),text("Gain"),   range(0.1,  5,1,0.5,0.001), valueTextBox(1), textBox(1)
 }               
                 
 
 image    bounds(380,140, 55,130), plant("Layers"), $PlantBoxAppearance 
 {
 label    bounds(  5, 10, 45, 12), text("Layers")   
-rslider  bounds( 10, 25, 35, 35), channel("Layers"), range(1,20,1,1,1);, valuetextbox(1), textbox(1)
+rslider  bounds( 10, 25, 35, 35), channel("Layers"), range(1,20,1,1,1);, valueTextBox(1), textBox(1)
 label    bounds(  5, 65, 45, 12), text("Interval")   
-rslider  bounds( 10, 80, 35, 35), channel("Interval"), range(-12,12,5,1,0.1);, valuetextbox(1), textbox(1)
+rslider  bounds( 10, 80, 35, 35), channel("Interval"), range(-12,12,5,1,0.1);, valueTextBox(1), textBox(1)
 }
 
 image    bounds(440,140,440,130), plant("Filter"), $PlantBoxAppearance 
 {
 label    bounds(  5,  4,440, 15), text("Filter Bandwidth")
 checkbox bounds( 10, 10, 80, 12), channel("FOnOff"), text("On/Off"), value(1)
-rslider  bounds(  0, 30, 90, 90), channel("FL1"), text("Level 1"), range(0.001,9.999,9.999,0.5,0.001), valuetextbox(1), textbox(1)
-rslider  bounds( 70, 30, 90, 90), channel("FT1"), text("Attack"), range(0.001,8,3,0.5), valuetextbox(1), textbox(1)
-rslider  bounds(140, 30, 90, 90), channel("FSus"), text("Sustain"), range(0.001,9.999,1.5,0.5,0.01), valuetextbox(1), textbox(1)
-rslider  bounds(210, 30, 90, 90), channel("FRelTim"), text("Rel.Time"), range(0.001,8,0.25,0.5), valuetextbox(1), textbox(1)
-rslider  bounds(280, 30, 90, 90), channel("FRelLev"), text("Rel.Level"), range(0.001,9.999,0.1,0.5,0.01), valuetextbox(1), textbox(1)
-rslider  bounds(350, 30, 90, 90), channel("FPos"), text("Position"), range(1,24,3,1,1), valuetextbox(1), textbox(1)
+rslider  bounds(  0, 30, 90, 90), channel("FL1"), text("Level 1"), range(0.001,9.999,9.999,0.5,0.001), valueTextBox(1), textBox(1)
+rslider  bounds( 70, 30, 90, 90), channel("FT1"), text("Attack"), range(0.001,8,3,0.5), valueTextBox(1), textBox(1)
+rslider  bounds(140, 30, 90, 90), channel("FSus"), text("Sustain"), range(0.001,9.999,1.5,0.5,0.01), valueTextBox(1), textBox(1)
+rslider  bounds(210, 30, 90, 90), channel("FRelTim"), text("Rel.Time"), range(0.001,8,0.25,0.5), valueTextBox(1), textBox(1)
+rslider  bounds(280, 30, 90, 90), channel("FRelLev"), text("Rel.Level"), range(0.001,9.999,0.1,0.5,0.01), valueTextBox(1), textBox(1)
+rslider  bounds(350, 30, 90, 90), channel("FPos"), text("Position"), range(1,24,3,1,1), valueTextBox(1), textBox(1)
 }
 
 image    bounds(885,140,230,130), plant("Reverb"), $PlantBoxAppearance {
 label    bounds(  5,  4,230, 15), text("Reverb")
-rslider  bounds(  0, 30, 90, 90), channel("RSend"), text("Send"), range(0,1,0.5), valuetextbox(1), textbox(1)
-rslider  bounds( 70, 30, 90, 90), channel("RSize"), text("Size"),  range(0,0.99,0.85), valuetextbox(1), textbox(1)
-rslider  bounds(140, 30, 90, 90), channel("R__CF"), text("Damping"),range(20,20000,8000,0.5,1), valuetextbox(1), textbox(1)
+rslider  bounds(  0, 30, 90, 90), channel("RSend"), text("Send"), range(0,1,0.5), valueTextBox(1), textBox(1)
+rslider  bounds( 70, 30, 90, 90), channel("RSize"), text("Size"),  range(0,0.99,0.85), valueTextBox(1), textBox(1)
+rslider  bounds(140, 30, 90, 90), channel("R__CF"), text("Damping"),range(20,20000,8000,0.5,1), valueTextBox(1), textBox(1)
 }
 
 keyboard bounds(5,335,1110, 80)

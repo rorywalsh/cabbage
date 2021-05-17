@@ -4,38 +4,38 @@
 ; This doesn't make sound yet!
 
 <Cabbage>
-form caption("Windmills") size(700,500), colour(150,150,255), scrollbars(0), guirefresh(32), pluginid("WinM") style("legacy")
+form caption("Windmills") size(700,500), colour(150,150,255), scrollBars(0), guiRefresh(32), pluginId("WinM") style("legacy")
 ; SUN
 image bounds(610, 20,70,70), colour(250,250,100), shape(ellipse)			; sun
 
 ; CLOUDS
-image bounds( 30,50,40,40), colour(240,240,240), shape(ellipse), identchannel(cloud1_a)
-image bounds( 50,30,60,60), colour(240,240,240), shape(ellipse), identchannel(cloud1_b)
-image bounds( 90,50,40,40), colour(240,240,240), shape(ellipse), identchannel(cloud1_c)
-image bounds( 52,70,56,20), colour(240,240,240), shape(sharp),   identchannel(cloud1_d)
+image bounds( 30,50,40,40), colour(240,240,240), shape(ellipse), identChannel(cloud1_a)
+image bounds( 50,30,60,60), colour(240,240,240), shape(ellipse), identChannel(cloud1_b)
+image bounds( 90,50,40,40), colour(240,240,240), shape(ellipse), identChannel(cloud1_c)
+image bounds( 52,70,56,20), colour(240,240,240), shape(sharp),   identChannel(cloud1_d)
 
-image bounds(125, 90, 60,60), colour(240,240,240), shape(ellipse), identchannel(cloud2_a)
-image bounds(155, 60, 90,90), colour(240,240,240), shape(ellipse), identchannel(cloud2_b)
-image bounds(215, 90, 60,60), colour(240,240,240), shape(ellipse), identchannel(cloud2_c)
-image bounds(160,120, 80,30), colour(240,240,240), shape(sharp),   identchannel(cloud2_d)
+image bounds(125, 90, 60,60), colour(240,240,240), shape(ellipse), identChannel(cloud2_a)
+image bounds(155, 60, 90,90), colour(240,240,240), shape(ellipse), identChannel(cloud2_b)
+image bounds(215, 90, 60,60), colour(240,240,240), shape(ellipse), identChannel(cloud2_c)
+image bounds(160,120, 80,30), colour(240,240,240), shape(sharp),   identChannel(cloud2_d)
 
-image bounds(290, 80, 25, 25), colour(240,240,240), shape(ellipse), identchannel(cloud3_a)
-image bounds(305, 65, 35, 35), colour(240,240,240), shape(ellipse), identchannel(cloud3_b)
-image bounds(330, 80, 25, 25), colour(240,240,240), shape(ellipse), identchannel(cloud3_c)
-image bounds(302, 90, 36, 15), colour(240,240,240), shape(sharp),   identchannel(cloud3_d)
+image bounds(290, 80, 25, 25), colour(240,240,240), shape(ellipse), identChannel(cloud3_a)
+image bounds(305, 65, 35, 35), colour(240,240,240), shape(ellipse), identChannel(cloud3_b)
+image bounds(330, 80, 25, 25), colour(240,240,240), shape(ellipse), identChannel(cloud3_c)
+image bounds(302, 90, 36, 15), colour(240,240,240), shape(sharp),   identChannel(cloud3_d)
 
 ; WINDMILL 1
 image bounds( 96,150,  8,200), colour(white), shape(sharp) 				; post
 image bounds( 92,142, 16, 16), colour(white), shape(ellipse)				; joint
-image bounds( 98,154,  0,  0), colour(white), shape(ellipse), identchannel("Axle1")	; axle
-image bounds(  0,  0,  0,  0), colour(white), shape(ellipse), widgetarray("CircleSix1",6)
+image bounds( 98,154,  0,  0), colour(white), shape(ellipse), identChannel("Axle1")	; axle
+image bounds(  0,  0,  0,  0), colour(white), shape(ellipse), widgetArray("CircleSix1",6)
 
 
 ; WINDMILL 3
 image bounds(548,220, 4, 200), colour(white), shape(sharp) 				; post
 image bounds(546,216, 8,   8), colour(white), shape(ellipse)				; joint
-image bounds(548,224,  0,  0), colour(white), shape(ellipse),   identchannel("Axle3")	; axle
-image bounds(  0,  0,  0,  0), colour(white), shape(ellipse), widgetarray("CircleNine3",9)
+image bounds(548,224,  0,  0), colour(white), shape(ellipse),   identChannel("Axle3")	; axle
+image bounds(  0,  0,  0,  0), colour(white), shape(ellipse), widgetArray("CircleNine3",9)
 
 
 ; HILLS
@@ -48,21 +48,21 @@ image bounds(-400,300,900,500),  colour(  0,150,  0), shape(ellipse)			; hill
 image bounds(296,170, 8, 200), colour(white), shape(sharp) 				; post
 image bounds(296,368, 8,   4), colour(white), shape(ellipse) 				; base
 image bounds(292,162,16,  16), colour(white), shape(ellipse)				; joint
-image bounds(298,174,  0,  0), colour(white), shape(ellipse),   identchannel("Axle2")	; axle
-image bounds(  0,  0,  0,  0), colour(white), shape(ellipse), widgetarray("CircleSeven2",7)
+image bounds(298,174,  0,  0), colour(white), shape(ellipse),   identChannel("Axle2")	; axle
+image bounds(  0,  0,  0,  0), colour(white), shape(ellipse), widgetArray("CircleSeven2",7)
 
 
 ; WINDMILL 4
 image bounds(594,470, 12, 200), colour(white), shape(sharp) 				; post
 image bounds(588,458, 24, 24), colour(white), shape(ellipse)				; joint
-image bounds(600,474,  0,  0), colour(white), shape(ellipse),   identchannel("Axle4")	; axle
-image bounds(  0,  0,  0,  0), colour(white), shape(ellipse), widgetarray("CircleSeven4",7)
+image bounds(600,474,  0,  0), colour(white), shape(ellipse),   identChannel("Axle4")	; axle
+image bounds(  0,  0,  0,  0), colour(white), shape(ellipse), widgetArray("CircleSeven4",7)
 
 ; BLACK OUT SCREEN
-image bounds(  0,  0,700,500), colour("black"), shape(sharp), identchannel("Blackout")
+image bounds(  0,  0,700,500), colour("black"), shape(sharp), identChannel("Blackout")
 
 ; INSTRUCTIONS
-label    bounds(  0, 0,  0, 0), text("Blow into your microphone..."), align(centre), fontcolour(white), identchannel("instructions1")		; Instructions
+label    bounds(  0, 0,  0, 0), text("Blow into your microphone..."), align(centre), fontColour(white), identChannel("instructions1")		; Instructions
 
 </Cabbage>
 
@@ -267,7 +267,7 @@ instr	1001	; Print and then hide instructions
  kalpha2	linseg	255,2,255,1.5,0			; Blacking screen transparency
 
  if metro(giRefreshRate/ksmps)==1 then			; peg updates or interrupt if mouse has been clicked
-  Smess1	sprintfk	"bounds(%d,%d,400,25), fontcolour(255,255,255,%d)", (giPanelWidth*0.5) - 200, (giPanelHeight*0.5)-20, kalpha
+  Smess1	sprintfk	"bounds(%d,%d,400,25), fontColour(255,255,255,%d)", (giPanelWidth*0.5) - 200, (giPanelHeight*0.5)-20, kalpha
   chnset	Smess1,"instructions1"
   Smess2	sprintfk	"colour(0,0,0,%d)", kalpha2
   chnset	Smess2,"Blackout"

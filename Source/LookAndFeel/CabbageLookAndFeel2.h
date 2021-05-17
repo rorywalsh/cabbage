@@ -63,8 +63,8 @@ public:
     void drawLinearSliderBackground (Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider& slider) override;
 
     void drawLinearSliderThumb (Graphics& g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider& slider) override;
-
-    Slider::SliderLayout getSliderLayout (Slider& slider) override;
+    
+    Slider::SliderLayout getSliderLayout (Slider&) override;
 
     static Image drawToggleImage (float width, float height, bool isToggleOn, const Colour colour, const bool isRect, const float corners);
 
@@ -108,12 +108,14 @@ public:
                                              bool isMouseOver,
                                              bool isMouseDown) override;
 
-    void setDefaultFont(File fontFile);
+//    void setDefaultFont(File fontFile);
     void drawTooltip(Graphics&, const String& text, int width, int height) override;
-//    Font getTextButtonFont (TextButton&, int buttonHeight) override;
-//    Font getComboBoxFont (ComboBox&) override;
+    Font getTextButtonFont (TextButton&, int buttonHeight) override;
+    Font getComboBoxFont (ComboBox&) override;
     Font getLabelFont (Label&) override;
-//    Font getSliderPopupFont (Slider&) override;
+    Font getSliderPopupFont (Slider&) override;
+    void positionComboBoxText (ComboBox&, Label&) override;
+    Font customFont;
 
 //    Font getAlertWindowTitleFont() override;
 //    Font getAlertWindowMessageFont() override;
@@ -123,7 +125,7 @@ public:
 //    Font getMenuBarFont (MenuBarComponent&, int itemIndex, const String& itemText) override;
 private:
 
-    Font customFont;
+    
 
 };
 

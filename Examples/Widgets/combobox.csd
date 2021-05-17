@@ -1,75 +1,57 @@
 <Cabbage>
-form caption("Combobox Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-combobox bounds(36, 38, 150, 50), channel("combobox1"), items("100Hz", "200Hz", "300Hz")
-combobox bounds(200, 38, 150, 50), channel("combobox2"), populate("*.*", ".")
-combobox bounds(110, 140, 165, 62) identchannel("widgetIdent")
+form caption("Combobox Example") size(380, 500), guiMode("queue"), colour(2, 145, 209) pluginId("def1")
+
+rslider bounds(12, 9, 86, 90), channel("att"), range(0, 1, 0.01, 1, 0.001), text("Att.")
+rslider bounds(99, 9, 86, 90), channel("dec"), range(0, 1, 0.4, 1, 0.001), text("Dec.")
+rslider bounds(187, 9, 86, 90), channel("sus"), range(0, 1, 0.7, 1, 0.001), text("Sus.")
+rslider bounds(274, 9, 86, 90), channel("rel"), range(0, 1, 0.8, 1, 0.001), text("Rel.")
+
+texteditor bounds(18, 256, 341, 208) channel("infoText"), readOnly(1), wrap(1), scrollbars(1)
+keyboard bounds(12, 104, 348, 80) channel("keyboard")
+combobox bounds(260, 188, 100, 30) channel("waveform"), colour:0(147, 210, 0), corners(5), items("Saw", "Square", "Triangle")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
--n -d -+rtmidi=NULL -M0 -m0d 
-</CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d --midi-key=4 --midi-velocity-amp=5
+</CsOptions>e
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1
 
-seed 0 
-;basic usage
+
+; Rory Walsh 2021 
+;
+; License: CC0 1.0 Universal
+; You can copy, modify, and distribute this file, 
+; even for commercial purposes, all without asking permission. 
+
+instr 99
+
+    SText  = "An combobox used to toggle through different items. The widget will send its current index to is associated channel, starting from 1*.\n\nIn this example an combobox can be used to select a given waveform. We can't just pass these indices to the vco2 opcode. Instead we use them as indices to simple array that hold the appropriate vco2 waveform modes.\n\n [A combobox always start with index 1, not 0]"
+    cabbageSet "infoText", "text", SText
+
+endin
+
 instr 1
-    aTone oscili chnget:k("checkbutton1"), 300
-    outs aTone, aTone    
+    
+    iVcoModes[] fillarray 0, 10, 12
+    
+    iAtt cabbageGetValue "att"
+    iDec cabbageGetValue "dec"
+    iSus cabbageGetValue "sus"
+    iRel cabbageGetValue "rel"
+    kEnv madsr iAtt, iDec, iSus, iRel
+    aVco vco2 kEnv*p5*.5, cpsmidinn(p4), iVcoModes[cabbageGetValue:i("waveform")-1]
+    outs aVco, aVco    
 endin
 
-;WIDGET_ADVANCED_USAGE
-
-instr 2
-    if metro(1) == 1 then
-        event "i", "ChangeAttributes", 0, 1
-    endif
-endin
-
-instr ChangeAttributes
-    SIdentifier init ""
-	iChoice = rnd(300)
-	if iChoice > 0 && iChoice < 0 then
-	SIdentifier strcat SIdentifier, "align(\"left\") "
-	elseif iChoice > 100 && iChoice < 200 then
-	SIdentifier strcat SIdentifier, "align(\"centre\") "
-	else
-	SIdentifier strcat SIdentifier, "align(\"right\") "
-	endif
-	SIdent sprintf "items(\"Text%d\", \"Text%d\", \"Text%d\", \"Text%d\") ", rnd(100), rnd(100), rnd(100), rnd(100)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdentifier strcat SIdentifier, "populate(\"*.*\", \".\") "
-	SIdent sprintf "alpha(%f) ", 50 + rnd(50)/50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "pos(%d, 140) ", 100 + rnd(100)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "size(%d, %d) ", abs(rnd(200))+40, abs(rnd(100))+50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "colour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "fontcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "value(%f) ", rnd(1)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "visible(%d) ", (rnd(100) > 80 ? 0 : 1)
-	SIdentifier strcat SIdentifier, SIdent
-    ;send identifier string to Cabbage
-    chnset SIdentifier, "widgetIdent"           
-endin
-                
 
 </CsInstruments>
 <CsScore>
 ;causes Csound to run for about 7000 years...
 f0 z
-;starts instrument 1 and runs it for a week
-i1 0 z
-i2 0 z
+i99 0 z
 </CsScore>
 </CsoundSynthesizer>

@@ -1,63 +1,71 @@
 <Cabbage>
-form caption("File Button Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-filebutton bounds(108, 30, 150, 50), channel("filebutton1"), text("Browsse", "Browsse") value(0) file("/Users/walshr/sourcecode/cabbage/Examples/Widgets/Sliders.csd")
-button bounds(146, 140, 68, 127) identchannel("widgetIdent")
-texteditor bounds(10, 84, 379, 21), text(""), identchannel("editorIdent")
+form caption("Button Example") size(380, 500), guiMode("queue"), colour(2, 145, 209) pluginId("def1")
+
+filebutton bounds(16, 12, 117, 40) channel("loadfile"), text("Load Sample"), corners(5)
+button bounds(146, 12, 80, 40) channel("play"), text("Play", "Stop"), corners(5)
+button bounds(242, 12, 117, 40) channel("randomSpeed"), text("Random Speed"), corners(5)
+
+texteditor bounds(18, 256, 341, 208) channel("infoText"), readOnly(1), wrap(1), scrollbars(1)
+soundfiler bounds(18, 76, 342, 157), channel("soundfiler1"), showScrubber(0), colour(147, 210, 0), tableBackgroundColour(0, 0, 0, 0)
+
+label bounds(18, 230, 341, 24) visible(0), channel("warningLabel"), fontColour("white"), text("Plase load a sample first..."), colour(147, 210, 0)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
 -n -d -+rtmidi=NULL -M0 -m0d 
-</CsOptions>
+</CsOptions>e
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
 ksmps = 32
 nchnls = 2
 0dbfs = 1
 
-seed 0 
-;basic usage
+
+; Rory Walsh 2021 
+;
+; License: CC0 1.0 Universal
+; You can copy, modify, and distribute this file, 
+; even for commercial purposes, all without asking permission. 
+
+
 instr 1
-SFile chnget "filebutton1" 
-    if changed(SFile)== 1 then
-        printf "%s\n", k(1), SFile
-        SMessage sprintfk "text(\"Selected File:%s\") ", SFile
-        chnset SMessage, "editorIdent"
+
+    SText  = "This instrument shows an example of how file buttons can be used in Cabbage. A file button will launch a browser dialogue when clicked. The user selects a file or directory, depending on the mode. When they click Ok, it will return the name of the file or directory they just selected.\n\nIn the example above, a soundfiler widget is used to display the selected file"
+    cabbageSet "infoText", "text", SText
+
+    ;load sample to soundfiler - and dismiss wanring if it is showing
+    SFilename, kLoadFile cabbageGetValue "loadfile"
+    cabbageSet kLoadFile, "soundfiler1", "file", SFilename
+    cabbageSet kLoadFile, "warningLabel", "visible", 0
+
+    ;trigger playback of sample
+    kPlayState, kPlayTrig cabbageGetValue "play"
+    if kPlayTrig == 1 then
+        if kPlayState == 1 then
+            event "i", "SamplePlayback", 0, -1
+        else
+            turnoff2 nstrnum("SamplePlayback"), 0, 0
+        endif
     endif
+
+
 endin
 
-;WIDGET_ADVANCED_USAGE
+instr SamplePlayback
 
-instr 2
-    if metro(1) == 1 then
-        event "i", "ChangeAttributes", 0, 1
+    SFile cabbageGetValue "loadfile"
+    
+    if strlen(SFile) == 0 then    
+        cabbageSet "warningLabel", "visible", 1
+        turnoff        
+    else    
+        kRandomSpeed init 1
+        kRandom, kTrig cabbageGetValue "randomSpeed"    
+        kRandomSpeed = (kTrig == 1 ? random:k(-2, 2) : kRandomSpeed)
+        a1, a2 diskin2 SFile, kRandomSpeed, 0, 1
+        outs a1, a2
     endif
-endin
-
-instr ChangeAttributes
-    SIdentifier init ""
-	SIdent sprintf "alpha(%f) ", 50 + rnd(50)/50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "pos(%d, 140) ", 100 + rnd(100)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "size(%d, %d) ", abs(rnd(200))+40, abs(rnd(100))+50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "colour:0(%d, 255, 255) ", rnd(255)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "colour:1(%d, 0, 255) ", rnd(255)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "fontcolour:0(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "fontcolour:1(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent   
-	SIdent sprintf "text(\"TextOff %f\", \"TextOn %f\") ", rnd(100), rnd(100)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "visible(%d) ", (rnd(100) > 80 ? 0 : 1)
-	SIdentifier strcat SIdentifier, SIdent
-    ;send identifier string to Cabbage
-    chnset SIdentifier, "widgetIdent"           
+    
 endin
                 
 
@@ -67,6 +75,5 @@ endin
 f0 z
 ;starts instrument 1 and runs it for a week
 i1 0 z
-i2 0 z
 </CsScore>
 </CsoundSynthesizer>

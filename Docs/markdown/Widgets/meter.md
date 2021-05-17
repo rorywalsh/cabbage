@@ -2,6 +2,9 @@
 
 Meters can be used to create any kind of horizontal or vertical metering bar, such as VU meters. 
 
+<video width="800" height="600" controls>
+<source src="../../images/docs/meter.mp4">
+</video> 
 
 <big></pre>
 meter WIDGET_SYNTAX
@@ -11,13 +14,13 @@ meter WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/corners.md !} 
 
-{! ./markdown/Widgets/Properties/outlinecolour.md !}  
+{! ./markdown/Widgets/Properties/outlineColour.md !}  
 
-{! ./markdown/Widgets/Properties/outlinethickness.md !}  
+{! ./markdown/Widgets/Properties/outlineThickness.md !}  
 
-{! ./markdown/Widgets/Properties/overlaycolour.md !} 
+{! ./markdown/Widgets/Properties/overlayColour.md !} 
 
-{! ./markdown/Widgets/Properties/metercolour.md !} 
+{! ./markdown/Widgets/Properties/meterColour.md !} 
 
 
 ### Common Identifiers
@@ -30,15 +33,15 @@ meter WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/channel.md !}  Meter expect normalised values between 0 and 1.
  
-{! ./markdown/Widgets/Properties/identchannel.md !}  
+{! ./markdown/Widgets/Properties/identChannel.md !}  
 
 {! ./markdown/Widgets/Properties/rotate.md !}    
 
 {! ./markdown/Widgets/Properties/visible.md !}  
  
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 ##Slider types:
 
@@ -47,52 +50,82 @@ meter WIDGET_SYNTAX
 * *hslider*, a standard horizontal slider
 
 <!--(End of identifiers)/-->
-![](../images/meter.gif)
+
 
 ##Example
 <!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form caption("Meter example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-vmeter bounds(116, 32, 35, 80) channel("vMeter1") value(0) overlaycolour(70, 53, 53, 255) metercolour:0(0, 255, 0, 255) metercolour:1(0, 103, 171, 255) metercolour:2(23, 0, 123, 255) outlinethickness(2) 
-vmeter bounds(156, 32, 35, 80) channel("vMeter2") value(0) overlaycolour(70, 53, 53, 255) metercolour:0(0, 255, 0, 255) metercolour:1(0, 103, 171, 255) metercolour:2(23, 0, 123, 255) outlinethickness(2) 
-vmeter bounds(196, 32, 35, 80) channel("vMeter3") value(0) overlaycolour(70, 53, 53, 255) metercolour:0(0, 255, 0, 255) metercolour:1(0, 103, 171, 255) metercolour:2(23, 0, 123, 255) outlinethickness(2) 
-vmeter bounds(236, 32, 35, 80) channel("vMeter4") value(0) overlaycolour(70, 53, 53, 255) metercolour:0(0, 255, 0, 255) metercolour:1(0, 103, 171, 255) metercolour:2(23, 0, 123, 255) outlinethickness(2)
-groupbox bounds(8, 118, 380, 177), text("Randomly Updated Identifiers")
-vmeter bounds(142, 140, 46, 145), channel("meterTest") identchannel("widgetIdent")
+form caption("Meter Example") size(380, 500), guiMode("queue"), colour(2, 145, 209) pluginId("def1")
+
+texteditor bounds(18, 281, 341, 204) channel("infoText"), readOnly(1), wrap(1), scrollbars(1)
+
+soundfiler bounds(18, 16, 285, 182), channel("soundfiler1"), file("8BitStyle.wav") colour(147, 210, 0), tableBackgroundColour(0, 0, 0, 0)
+button bounds(18, 218, 84, 32) corners(5), channel("play"), text("Play", "Stop")
+
+vmeter bounds(332, 16, 10, 160) channel("vu1") value(0) outlineColour(0, 0, 0), overlayColour(0, 0, 0) meterColour:0(255, 0, 0) meterColour:1(255, 255, 0) meterColour:2(0, 255, 0) outlineThickness(1) 
+vmeter bounds(351, 16, 10, 160) channel("vu2") value(0) outlineColour(0, 0, 0), overlayColour(0, 0, 0) meterColour:0(255, 0, 0) meterColour:1(255, 255, 0) meterColour:2(0, 255, 0) outlineThickness(1) 
+
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
--n -d -+rtmidi=NULL -M0 -m0d 
+-n -d -+rtmidi=NULL -M0 -m0d --midi-key=4 --midi-velocity-amp=5
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
-ksmps = 32
+ksmps = 16
 nchnls = 2
 0dbfs = 1
 
-seed 0 
-;basic usage
-instr 1
-    if metro(20) == 1 then
-        chnset abs:k(randi:k(1.1, 100, 2)), "vMeter1"
-        chnset abs:k(randi:k(1.1, 100, 2)), "vMeter2"
-        chnset abs:k(randi:k(1.1, 100, 2)), "vMeter3"
-        chnset abs:k(randi:k(1.1, 100, 2)), "vMeter4"
-        chnset abs:k(randi:k(1.1, 100, 2)), "meterTest"
-	endif
-endin
 
-;WIDGET_ADVANCED_USAGE
+; Rory Walsh 2021 
+;
+; License: CC0 1.0 Universal
+; You can copy, modify, and distribute this file, 
+; even for commercial purposes, all without asking permission. 
+
+instr 1
+
+    SText  = "A meter widget can be used to display a audio level meter. It can accept up to three different colours to make up the level colour gradient. You need to send data to the widget from Csound in order for it to work. It does not calculate RMS values itself.\n\nIn this example, a sound file is loaded. The 'diskin2' opcode reads it back when the user hits play. The output from the file is sent to a pair of 'rms' opcodes which converts the audio signal to a k-rate rms value. A small portamento is applied to the RMS values in order to smoothen out the signal that is sent to the meter widgets."
+
+    cabbageSet "infoText", "text", SText
+    
+    ;trigger playback of sample
+    kPlayState, kPlayTrig cabbageGetValue "play"
+    if kPlayTrig == 1 then
+        if kPlayState == 1 then
+            event "i", "SamplePlayback", 0, -1
+        else
+            turnoff2 nstrnum("SamplePlayback"), 0, 0
+        endif
+    endif   
+        
+endin
+                
+instr SamplePlayback
+    
+    SFilename = "8BitStyle.wav"
+    iLen = filelen(SFilename)*sr
+    kScrubber phasor 1/(iLen/sr)
+    cabbageSet metro(20), "soundfiler1", "scrubberPosition", kScrubber*iLen
+    a1, a2 diskin2 SFilename, 1, 0, 1
+    
+    k1 rms a1, 20
+    k2 rms a2, 20
+    
+    cabbageSetValue "vu1", portk(k1*10, .25), metro(10)
+    cabbageSetValue "vu2", portk(k2*10, .25), metro(10)
+    
+    outs a1, a1
+        
+endin
 
 </CsInstruments>
 <CsScore>
 ;causes Csound to run for about 7000 years...
 i1 0 z
-i2 0 z
 </CsScore>
 </CsoundSynthesizer>
+
 ```
 <!--(End Widget Example)/-->

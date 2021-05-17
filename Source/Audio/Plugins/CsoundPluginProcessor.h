@@ -25,35 +25,58 @@
 #include <csdebug.h>
 #include "csdl.h"
 #include <cwindow.h>
+#include "../../Opcodes/opcodes.hpp"
+#include "../../Opcodes/CabbageIdentifierOpcodes.h"
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"
 #ifdef CabbagePro
 #include "../../Utilities/encrypt.h"
 #endif
 
+
+
 //==============================================================================
 class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater
 {
 public:
     //==============================================================================
-    CsoundPluginProcessor (File csoundInputFile, 
-		const AudioChannelSet ins, 
-		const AudioChannelSet outs, 
-		const AudioChannelSet sideChainChannels);
 	CsoundPluginProcessor(File csoundInputFile, 
-		const AudioChannelSet ins,
-		const AudioChannelSet outs);
+        const BusesProperties ioBuses);
 	~CsoundPluginProcessor();
 
+    void destroyCsoundGlobalVars();
+    void createCsoundGlobalVars(ValueTree cabbageData);
 	bool supportsSidechain = false;
 	bool matchingNumberOfIOChannels = true;
 	void resetCsound();
 	//==============================================================================
 	//pass the path to the temp file, along with the path to the original csd file so we can set correct working dir
-	bool setupAndCompileCsound(File csdFile, File filePath, int sr = 44100, bool isMono = false, bool debugMode = false);
+	bool setupAndCompileCsound(File csdFile, File filePath, int sr = 44100, bool debugMode = false);
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
-    bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
+    bool isBusesLayoutSupported (const BusesLayout& layouts) const override
+    {
+#if ! Cabbage_IDE_Build
+        if(AudioProcessor::wrapperType == wrapperType_AudioUnit)
+        {
+            if((layouts.getMainInputChannels() > 0 && layouts.getMainInputChannels() < 32 ) &&
+               (layouts.getMainOutputChannels() > 0 && layouts.getMainOutputChannels() < 32))
+                return true;
+        }
+        else if(AudioProcessor::wrapperType == wrapperType_VST)
+        {
+            //force Reaper and Live to take whatever IOs we give it
+            if(PluginHostType().isReaper() || PluginHostType().isAbletonLive())
+                return false;
+        }
+        else if(AudioProcessor::wrapperType == wrapperType_VST3)
+        {
+            return true;
+        }
+
+#endif
+        return true;
+    };
 
 	void performCsoundKsmps();
 	int result = -1;
@@ -74,9 +97,10 @@ public:
 	};
 
 	template< typename Type >
-	void processCsoundIOBuffers(int bufferType, Type*& buffer, int pos);
+    void processCsoundIOBuffers(int bufferType, Type* buffer, int samplePos, int csdPos);
     template< typename Type >
     void processCsoundIOSideChainBuffers(int bufferType, Type* buffer, int pos);
+
 
 	int numSideChainChannels = 0;
     //==============================================================================
@@ -129,9 +153,9 @@ public:
         return breakPointData.valueTree;
     }
 
-    int getAutomationMode()
+    int getChnsetGestureMode()
     {
-       return csound->GetControlChannel("AUTOMATION");
+       return csound->GetChannel("CHNSET_GESTURES");
     }
     StringArray getTableStatement (int tableNum);
     const Array<float, CriticalSection> getTableFloats (int tableNum);
@@ -165,6 +189,7 @@ public:
     //as is done in CabbagePluginprocessor.
     virtual void triggerCsoundEvents();
     virtual void sendChannelDataToCsound() {};
+    virtual void getIdentifierDataFromCsound() {};
     void sendHostDataToCsound();
     virtual void getChannelDataFromCsound() {};
     virtual void initAllCsoundChannels (ValueTree cabbageData);
@@ -174,7 +199,7 @@ public:
 
     void compileCsdFile (File csoundFile)
     {
-        csCompileResult = csound->Compile (const_cast<char*> (csoundFile.getFullPathName().toUTF8().getAddress()));
+        csCompileResult = csound->Compile (csoundFile.getFullPathName().toUTF8().getAddress());
     }
 
     void compileCsdString (String csdFileText)
@@ -254,8 +279,24 @@ public:
     OwnedArray <SignalDisplay, CriticalSection> signalArrays;   //holds values from FFT function table created using dispfft
     CsoundPluginProcessor::SignalDisplay* getSignalArray (String variableName, String displayType = "");
 
+    String getInternalState()
+    {
+        return internalStateData;
+    }
+
+
+    void pollingChannels(int shouldPoll)
+    {
+        polling = shouldPoll;
+    }
+    
+    int pollingChannels()
+    {
+        return polling;
+    }
 private:
     //==============================================================================
+    int polling = 1;
     MidiBuffer midiOutputBuffer;
     int guiCycles = 0;
     int guiRefreshRate = 128;
@@ -280,6 +321,7 @@ private:
     int busIndex = 0;
     bool disableLogging = false;
 	int preferredLatency = 32;
+    String internalStateData = {};
 
 
 

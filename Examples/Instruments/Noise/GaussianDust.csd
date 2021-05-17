@@ -5,20 +5,20 @@ A simple encapsulation of the 'gausstrig' opcode.
 Added features are stereo panning (spread) of the dust, a random tonal variation (lowpass filter with jumping cutoff frequency) and constant low and highpass filters.
 
 <Cabbage>
-form caption("Gaussian Dust"), size(490, 350), pluginid("gaus") style("legacy")
-image                  bounds(0, 0, 490, 350), colour("DarkSlateGrey"), shape("sharp"), outlinecolour("white"), outlinethickness(4) 
-checkbox bounds( 15, 10, 80, 15), text("On/Off"), channel("onoff"), value(1), fontcolour("white")
+form caption("Gaussian Dust"), size(490, 350), pluginId("gaus") style("legacy")
+image                  bounds(0, 0, 490, 350), colour("DarkSlateGrey"), shape("sharp"), outlineColour("white"), outlineThickness(4) 
+checkbox bounds( 15, 10, 80, 15), text("On/Off"), channel("onoff"), value(1), fontColour("white")
 combobox bounds( 10, 40, 70, 20), channel("mode"), value(2), text("Held", "Reinit")
-xypad bounds(  5, 78, 240, 260), text("Freq./Deviation"), channel("freq", "dev"), rangex(0.1, 10000, 10), rangey(0, 10.00, 0)
-xypad bounds(245, 78, 240, 260), text("LPF./HPF."), channel("LPF", "HPF"), rangex(20, 20000, 20000), rangey(20, 20000,20)
+xypad bounds(  5, 78, 240, 260), text("Freq./Deviation"), channel("freq", "dev"), rangeX(0.1, 10000, 10), rangeY(0, 10.00, 0)
+xypad bounds(245, 78, 240, 260), text("LPF./HPF."), channel("LPF", "HPF"), rangeX(20, 20000, 20000), rangeY(20, 20000,20)
 
-rslider  bounds(90, 10, 60, 60),  text("Amplitude"), channel("amp"),     range(0, 1, 0.5, 0.5, 0.001),      fontcolour("white"), colour(50,60,70), trackercolour(150,160,170), outlinecolour("SlateGrey")
-rslider  bounds(150, 10, 60, 60), text("Freq."),     channel("freq"),    range(0.1, 10000, 10, 0.25, 0.01), fontcolour("white"), colour(50,60,70), trackercolour(150,160,170), outlinecolour("SlateGrey")
-rslider  bounds(205, 10, 60, 60), text("Deviation"), channel("dev"),     range(0, 10, 1),                   fontcolour("white"), colour(50,60,70), trackercolour(150,160,170), outlinecolour("SlateGrey")
-rslider  bounds(260, 10, 60, 60), text("Spread"),    channel("spread"),  range(0, 1, 1),                    fontcolour("white"), colour(50,60,70), trackercolour(150,160,170), outlinecolour("SlateGrey")
-rslider  bounds(315, 10, 60, 60), text("Tone Var."), channel("ToneVar"), range(0, 1.00, 0),                 fontcolour("white"), colour(50,60,70), trackercolour(150,160,170), outlinecolour("SlateGrey")
-rslider  bounds(370, 10, 60, 60), text("Lowpass"),   channel("LPF"),     range(20,20000,20000,0.5),         fontcolour("white"), colour(50,60,70), trackercolour(150,160,170), outlinecolour("SlateGrey")
-rslider  bounds(425, 10, 60, 60), text("Highpass"),  channel("HPF"),     range(20,20000,20,0.5),            fontcolour("white"), colour(50,60,70), trackercolour(150,160,170), outlinecolour("SlateGrey")
+rslider  bounds(90, 10, 60, 60),  text("Amplitude"), channel("amp"),     range(0, 1, 0.5, 0.5, 0.001),      fontColour("white"), colour(50,60,70), trackerColour(150,160,170), outlineColour("SlateGrey")
+rslider  bounds(150, 10, 60, 60), text("Freq."),     channel("freq"),    range(0.1, 10000, 10, 0.25, 0.01), fontColour("white"), colour(50,60,70), trackerColour(150,160,170), outlineColour("SlateGrey")
+rslider  bounds(205, 10, 60, 60), text("Deviation"), channel("dev"),     range(0, 10, 1),                   fontColour("white"), colour(50,60,70), trackerColour(150,160,170), outlineColour("SlateGrey")
+rslider  bounds(260, 10, 60, 60), text("Spread"),    channel("spread"),  range(0, 1, 1),                    fontColour("white"), colour(50,60,70), trackerColour(150,160,170), outlineColour("SlateGrey")
+rslider  bounds(315, 10, 60, 60), text("Tone Var."), channel("ToneVar"), range(0, 1.00, 0),                 fontColour("white"), colour(50,60,70), trackerColour(150,160,170), outlineColour("SlateGrey")
+rslider  bounds(370, 10, 60, 60), text("Lowpass"),   channel("LPF"),     range(20,20000,20000,0.5),         fontColour("white"), colour(50,60,70), trackerColour(150,160,170), outlineColour("SlateGrey")
+rslider  bounds(425, 10, 60, 60), text("Highpass"),  channel("HPF"),     range(20,20000,20,0.5),            fontColour("white"), colour(50,60,70), trackerColour(150,160,170), outlineColour("SlateGrey")
 </Cabbage>
 
 <CsoundSynthesizer>

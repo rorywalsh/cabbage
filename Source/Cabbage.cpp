@@ -39,10 +39,16 @@ void Cabbage::initialise (const String& commandLine)
 
     if (sendCommandLineToPreexistingInstance())
     {
-//        DBG ("Another instance is running - quitting...");
-//        quit();
         return;
     }
+    
+    SystemStats::setApplicationCrashHandler ([](void*) {        
+        ofstream myfile;
+        String rootDir = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName();
+        myfile.open(String(rootDir+"/CabbageDump.txt").toStdString());
+        myfile << SystemStats::getStackBacktrace();
+        myfile.close();        
+    });
 
 }
 

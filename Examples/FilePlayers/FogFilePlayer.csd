@@ -54,81 +54,81 @@
 
 
 <Cabbage>
-form caption("fog File Player") size(1130,445), colour(0,0,0), pluginid("FgFP"), guirefresh(16)	; guirefresh value adjusts how often the cabbage valuators are read. This can affect the usability of parameters used in realtime gesturing. style("legacy")
+form caption("fog File Player") size(1130,445), colour(0,0,0), pluginId("FgFP"), guiRefresh(16)	; guiRefresh value adjusts how often the cabbage valuators are read. This can affect the usability of parameters used in realtime gesturing. style("legacy")
 
-#define RSliderStyle # trackercolour(130,135,170), textcolour("white"), outlinecolour( 10, 15, 50), colour( 50, 45, 90)#
+#define RSliderStyle # trackerColour(130,135,170), textColour("white"), outlineColour( 10, 15, 50), colour( 50, 45, 90)#
 
-image       bounds(  0,  0,1130,445), colour( 30, 35, 70), outlinecolour("White"), shape("sharp"), line(3)	; main panel colouration    
-soundfiler  bounds(  5,  5,1120,175), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 
-label bounds(7, 5, 560, 14), text(""), align(left), colour(0,0,0,0), fontcolour(200,200,200), identchannel("stringbox")
+image       bounds(  0,  0,1130,445), colour( 30, 35, 70), outlineColour("White"), shape("sharp"), line(3)	; main panel colouration    
+soundfiler  bounds(  5,  5,1120,175), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
+label bounds(7, 5, 560, 14), text(""), align(left), colour(0,0,0,0), fontColour(200,200,200), identChannel("stringbox")
 
 hslider    bounds(  0,180,1120, 15), channel("phs"),   range( 0,1,0,1,0.0001), $RSliderStyle
-label      bounds(  0,195,1120, 13), text("Manual"), fontcolour("white")
+label      bounds(  0,195,1120, 13), text("Manual"), fontColour("white")
 
-filebutton bounds(  5,210,  80, 25), text("Open File","Open File"), fontcolour("white") channel("filename"), shape("ellipse")
-checkbox   bounds(  5,240,  95, 20), channel("PlayStop"), text("Play/Stop"), fontcolour("white")
-label      bounds(  5,263, 145, 12), text("[or right-click and drag]"), fontcolour("white"), align("left")
+filebutton bounds(  5,210,  80, 25), text("Open File","Open File"), fontColour("white") channel("filename"), shape("ellipse")
+checkbox   bounds(  5,240,  95, 20), channel("PlayStop"), text("Play/Stop"), fontColour("white")
+label      bounds(  5,263, 145, 12), text("[or right-click and drag]"), fontColour("white"), align("left")
 
-label       bounds( 90,215, 75, 13), text("Ptr.Mode"), fontcolour("white")
-combobox    bounds( 90,230, 75, 18), channel("PhsMode"), items("Manual", "Speed"), value(2),fontcolour("white")
+label       bounds( 90,215, 75, 13), text("Ptr.Mode"), fontColour("white")
+combobox    bounds( 90,230, 75, 18), channel("PhsMode"), items("Manual", "Speed"), value(2),fontColour("white")
 
-rslider     bounds(170,215, 60, 60), channel("port"),     range( 0, 30.00, 0.01,0.5,0.01), text("Port."), identchannel("portID"), visible(0), $RSliderStyle
+rslider     bounds(170,215, 60, 60), channel("port"),     range( 0, 30.00, 0.01,0.5,0.01), text("Port."), identChannel("portID"), visible(0), $RSliderStyle
 
-rslider     bounds(170,215, 60, 60), channel("spd"),     range( -2.00, 2.00, 1), text("Speed"), identchannel("spdID"), visible(0), $RSliderStyle
-button      bounds(230,230, 60, 18), channel("freeze"),  colour:0(  0,  0,  0), colour:1(50,55,150), text("Freeze","Freeze"), fontcolour:0(50,50,50), fontcolour:1(200,200,255), identchannel("freezeID"), visible(0)
-rslider     bounds(290,215, 60, 60), channel("range"),   range(0.01,  1,  1),              text("Range"),  identchannel("rangeID"), visible(0), $RSliderStyle
-label       bounds(350,215, 60, 13), text("Shape"), fontcolour("white"), identchannel("shapelabelID")
-combobox    bounds(350,230, 60, 18), channel("shape"), items("phasor","tri.","sine"), value(1),fontcolour("white"), identchannel("shapeID"), visible(0)
+rslider     bounds(170,215, 60, 60), channel("spd"),     range( -2.00, 2.00, 1), text("Speed"), identChannel("spdID"), visible(0), $RSliderStyle
+button      bounds(230,230, 60, 18), channel("freeze"),  colour:0(  0,  0,  0), colour:1(50,55,150), text("Freeze","Freeze"), fontColour:0(50,50,50), fontColour:1(200,200,255), identChannel("freezeID"), visible(0)
+rslider     bounds(290,215, 60, 60), channel("range"),   range(0.01,  1,  1),              text("Range"),  identChannel("rangeID"), visible(0), $RSliderStyle
+label       bounds(350,215, 60, 13), text("Shape"), fontColour("white"), identChannel("shapelabelID")
+combobox    bounds(350,230, 60, 18), channel("shape"), items("phasor","tri.","sine"), value(1),fontColour("white"), identChannel("shapeID"), visible(0)
 
 rslider     bounds(410,215, 60, 60), channel("dens"),    range(  1,500,   30, 0.5),  text("Density"), $RSliderStyle
 rslider     bounds(470,215, 60, 60), channel("OctDiv"),  range(  0,  8,    0, 0.5),  text("Oct.Div."), $RSliderStyle
 rslider     bounds(530,215, 60, 60), channel("pch"),     range(-2,2,1,1,0.001),              text("Transpose"), $RSliderStyle
-label       bounds(595,210,120, 13), text("Transposition Mode"), fontcolour("white")
-combobox    bounds(595,225,120, 18), channel("TransMode"), items("Grain by Grain","Continuous"), value(1),fontcolour("white")
+label       bounds(595,210,120, 13), text("Transposition Mode"), fontColour("white")
+combobox    bounds(595,225,120, 18), channel("TransMode"), items("Grain by Grain","Continuous"), value(1),fontColour("white")
 
-image       bounds(730,202,260,75), colour(0,0,0,0), outlinecolour("grey"), outlinethickness(1), shape("sharp"), plant("GrainEnv"), { 
-label       bounds(  0,  3,260, 8), text("G  R  A  I  N     E  N  V  E  L  O  P  E"), fontcolour("white")
+image       bounds(730,202,260,75), colour(0,0,0,0), outlineColour("grey"), outlineThickness(1), shape("sharp"), plant("GrainEnv"), { 
+label       bounds(  0,  3,260, 8), text("G  R  A  I  N     E  N  V  E  L  O  P  E"), fontColour("white")
 rslider     bounds( 10, 13, 60, 60), channel("dur"),     range(0.01, 2,    0.1, 0.5,0.0001),                    text("Duration"),  $RSliderStyle
 rslider     bounds( 70, 13, 60, 60), channel("ris"),     range(0.001,0.2,  0.01,0.5,0.0001),  text("Rise"),      $RSliderStyle
 rslider     bounds(130, 13, 60, 60), channel("dec"),     range(0.001,0.2,  0.01,0.5,0.0001),                    text("Decay"),     $RSliderStyle
 rslider     bounds(190, 13, 60, 60), channel("band"),    range(0,    100,  10,  0.5,0.0001),                    text("Bandwidth"), $RSliderStyle
 }
 
-image      bounds(995,202,130,75), colour(0,0,0,0), outlinecolour("grey"), outlinethickness(1), shape("sharp"), plant("envelope"), { 
-label      bounds(  0,  3,130, 8), text("E   N   V   E   L   O   P   E"), fontcolour("white")
+image      bounds(995,202,130,75), colour(0,0,0,0), outlineColour("grey"), outlineThickness(1), shape("sharp"), plant("envelope"), { 
+label      bounds(  0,  3,130, 8), text("E   N   V   E   L   O   P   E"), fontColour("white")
 rslider    bounds(  5, 13, 60, 60), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       text("Attack"), $RSliderStyle
 rslider    bounds( 65, 13, 60, 60), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), text("Release"), $RSliderStyle
 }
 
-image       bounds(  5,282,250,75), colour(0,0,0,0), outlinecolour("grey"), outlinethickness(1), shape("sharp"), plant("randomise"), { 
-label       bounds(  0,  3,250, 8), text("R  A  N  D  O  M  I  S  E"), fontcolour("white")
+image       bounds(  5,282,250,75), colour(0,0,0,0), outlineColour("grey"), outlineThickness(1), shape("sharp"), plant("randomise"), { 
+label       bounds(  0,  3,250, 8), text("R  A  N  D  O  M  I  S  E"), fontColour("white")
 rslider     bounds(  5, 13, 60, 60), channel("fmd"),     range(    0, 1,    0), text("Trans.Mod."), $RSliderStyle
 rslider     bounds( 65, 13, 60, 60), channel("pmd"),     range(    0, 1,    0.0055,0.25,0.00001),  text("Ptr.Mod."), $RSliderStyle
 rslider     bounds(125, 13, 60, 60), channel("DensRnd"), range(    0, 2,    0), text("Dens.Mod."), $RSliderStyle
 rslider     bounds(185, 13, 60, 60), channel("AmpRnd"), range(    0, 1,    0), text("Amp.Mod."), $RSliderStyle
 }
 
-image      bounds(260,282,190,75), colour(0,0,0,0), outlinecolour("grey"), outlinethickness(1), shape("sharp"), plant("LFO"), { 
-label      bounds(  0,  3,190, 8), text("L  F  O"), fontcolour("white")
+image      bounds(260,282,190,75), colour(0,0,0,0), outlineColour("grey"), outlineThickness(1), shape("sharp"), plant("LFO"), { 
+label      bounds(  0,  3,190, 8), text("L  F  O"), fontColour("white")
 rslider    bounds(  5, 13, 60, 60), channel("DensLFODep"), range(-2, 2, 0, 1, 0.001),       text("Density"), $RSliderStyle
 rslider    bounds( 65, 13, 60, 60), channel("AmpLFODep"),  range(-1, 1, 0, 1, 0.001),  text("Amplitude"),  $RSliderStyle
 rslider    bounds(125, 13, 60, 60), channel("LFORte"),     range(0.01, 8, 0.1, 0.5, 0.001),  text("Rate"),  $RSliderStyle
 }
                               
-image      bounds(455,282,485,75), colour(0,0,0,0), outlinecolour("grey"), outlinethickness(1), shape("sharp"), plant("dual"), { 
-label      bounds(  0,  3,485, 8), text("V  O  I  C  E     2"), fontcolour("white")
-checkbox   bounds( 10, 10, 70, 15), channel("DualOnOff"), text("On/Off"), fontcolour("white")
+image      bounds(455,282,485,75), colour(0,0,0,0), outlineColour("grey"), outlineThickness(1), shape("sharp"), plant("dual"), { 
+label      bounds(  0,  3,485, 8), text("V  O  I  C  E     2"), fontColour("white")
+checkbox   bounds( 10, 10, 70, 15), channel("DualOnOff"), text("On/Off"), fontColour("white")
 rslider    bounds( 60, 13, 60, 60), channel("DensRatio"),   range(0.5,2,1,0.64,0.00001), text("Dens.Ratio"), $RSliderStyle
-nslider  bounds(120, 25, 60, 20), channel("DensRatio"),   range(0.5,2,1,0.64,0.00001),  textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
+nslider  bounds(120, 25, 60, 20), channel("DensRatio"),   range(0.5,2,1,0.64,0.00001),  textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
 rslider    bounds(180, 13, 60, 60), channel("PtrDiff"),   range(-1,1,0,1,0.00001), text("Ptr.Diff."), $RSliderStyle
-nslider  bounds(240, 25, 60, 20), channel("PtrDiff"),   range(-1,1,0,1,0.00001), textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
+nslider  bounds(240, 25, 60, 20), channel("PtrDiff"),   range(-1,1,0,1,0.00001), textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
 rslider    bounds(300, 13, 60, 60), channel("TransDiff"),   range(-2,2,0,1,0.00001), text("Trans.Diff."), $RSliderStyle
-nslider  bounds(360, 25, 60, 20), channel("TransDiff"),   range(-2,2,0,1,0.00001), textcolour("white"), trackercolour(190,170,130), outlinecolour(100,100,100)
+nslider  bounds(360, 25, 60, 20), channel("TransDiff"),   range(-2,2,0,1,0.00001), textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
 rslider    bounds(420, 13, 60, 60), channel("Delay"),       range(0,1,0,1,0.00001), text("Delay"), $RSliderStyle
 }
 
-image      bounds(945,282,130,75), colour(0,0,0,0), outlinecolour("grey"), outlinethickness(1), shape("sharp"), plant("control"), { 
-label      bounds(  0,  3,130, 8), text("C   O   N   T   R   O   L"), fontcolour("white")
+image      bounds(945,282,130,75), colour(0,0,0,0), outlineColour("grey"), outlineThickness(1), shape("sharp"), plant("control"), { 
+label      bounds(  0,  3,130, 8), text("C   O   N   T   R   O   L"), fontColour("white")
 rslider    bounds(  5, 13, 60, 60), channel("MidiRef"),   range(0,127,60, 1, 1),   text("MIDI Ref."), $RSliderStyle
 rslider    bounds( 65, 13, 60, 60), channel("level"),     range(  0,  3.00, 0.7, 0.5, 0.001), text("Level"), $RSliderStyle
 }
@@ -265,7 +265,7 @@ instr	1
   kMOUSE_X	portk	kMOUSE_X,gkport*kRampUp
   kMOUSE_Y	chnget	"MOUSE_Y"
   kMOUSE_X	=	(kMOUSE_X - 5) / 1120
-  kMOUSE_Y	portk	1 - ((kMOUSE_Y - 5) / 175), krampup*0.05		; SOME SMOOTHING OF DENSITY CHANGES VIA THE MOUSE ENHANCES PERFORMANCE RESULTS. MAKE ANY ADJUSTMENTS WITH ADDITIONAL CONSIDERATION OF guirefresh VALUE 
+  kMOUSE_Y	portk	1 - ((kMOUSE_Y - 5) / 175), krampup*0.05		; SOME SMOOTHING OF DENSITY CHANGES VIA THE MOUSE ENHANCES PERFORMANCE RESULTS. MAKE ANY ADJUSTMENTS WITH ADDITIONAL CONSIDERATION OF guiRefresh VALUE 
   gkphs		limit	kMOUSE_X,0,1
   gkdens	limit	((kMOUSE_Y^3) * 502) - 2, 0, 500
   schedkwhen	kStartScrub,0,0,2,0,-1

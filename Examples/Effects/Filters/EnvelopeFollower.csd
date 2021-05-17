@@ -2,19 +2,19 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("Envelope Follower") size(530, 100), pluginid("envf") style("legacy")
-image                  pos(0, 0), size(530, 100), colour("brown"), shape("rounded"), outlinecolour("white"), outlinethickness(4)
-vmeter   bounds(20, 10, 15, 80) channel("Meter") value(0) outlinecolour("black"), overlaycolour(20, 3, 3,255) metercolour:0(255,100,100,255) metercolour:1(255,150,155, 255) metercolour:2(255,255,123, 255) outlinethickness(3) 
+form caption("Envelope Follower") size(530, 100), pluginId("envf") style("legacy")
+image                  pos(0, 0), size(530, 100), colour("brown"), shape("rounded"), outlineColour("white"), outlineThickness(4)
+vmeter   bounds(20, 10, 15, 80) channel("Meter") value(0) outlineColour("black"), overlayColour(20, 3, 3,255) meterColour:0(255,100,100,255) meterColour:1(255,150,155, 255) meterColour:2(255,255,123, 255) outlineThickness(3) 
 
-rslider bounds( 40, 11, 75, 75), text("Sensitivity"), channel("sens"),  range(0, 1, 0.65),                   colour(255,100,100), textcolour(255,255,200), trackercolour(255,255,150)
-rslider bounds(110,  6, 45, 45), text("Att."),        channel("att"),   range(0.001, 0.5, 0.01, 0.5, 0.001), colour(255,200,100), textcolour(255,255,200), trackercolour(255,255,150)
-rslider bounds(110, 51, 45, 45), text("Dec."),        channel("rel"),   range(0.001, 0.5, 0.2, 0.5, 0.001),  colour(255,200,100), textcolour(255,255,200), trackercolour(255,255,150)
-rslider bounds(150, 11, 75, 75), text("Frequency"),   channel("freq"),  range(10, 10000, 1000, 0.5),         colour(255,100,100), textcolour(255,255,200), trackercolour(255,255,150)
-label    bounds(225, 15, 85, 14), text("Type"), fontcolour(255,255,200)
+rslider bounds( 40, 11, 75, 75), text("Sensitivity"), channel("sens"),  range(0, 1, 0.65),                   colour(255,100,100), textColour(255,255,200), trackerColour(255,255,150)
+rslider bounds(110,  6, 45, 45), text("Att."),        channel("att"),   range(0.001, 0.5, 0.01, 0.5, 0.001), colour(255,200,100), textColour(255,255,200), trackerColour(255,255,150)
+rslider bounds(110, 51, 45, 45), text("Dec."),        channel("rel"),   range(0.001, 0.5, 0.2, 0.5, 0.001),  colour(255,200,100), textColour(255,255,200), trackerColour(255,255,150)
+rslider bounds(150, 11, 75, 75), text("Frequency"),   channel("freq"),  range(10, 10000, 1000, 0.5),         colour(255,100,100), textColour(255,255,200), trackerColour(255,255,150)
+label    bounds(225, 15, 85, 14), text("Type"), fontColour(255,255,200)
 combobox bounds(225, 30, 85, 20), text("lpf18","moogladder","butlp","tone"), value("1"), channel("type")
-rslider bounds(310, 11, 75, 75), text("Resonance"),   channel("res"),   range(0,  1, 0.75),                  colour(255,100,100), textcolour(255,255,200), trackercolour(255,255,150), identchannel("resID")
-rslider bounds(380, 11, 75, 75), text("Distortion"),  channel("dist"),  range(0,  1.00, 0),                  colour(255,100,100), textcolour(255,255,200), trackercolour(255,255,150), identchannel("distID")
-rslider bounds(450, 11, 75, 75), text("Level"),       channel("level"), range(0, 1.00, 1),                   colour(255,200,100), textcolour(255,255,200), trackercolour(255,255,150)
+rslider bounds(310, 11, 75, 75), text("Resonance"),   channel("res"),   range(0,  1, 0.75),                  colour(255,100,100), textColour(255,255,200), trackerColour(255,255,150), identChannel("resID")
+rslider bounds(380, 11, 75, 75), text("Distortion"),  channel("dist"),  range(0,  1.00, 0),                  colour(255,100,100), textColour(255,255,200), trackerColour(255,255,150), identChannel("distID")
+rslider bounds(450, 11, 75, 75), text("Level"),       channel("level"), range(0, 1.00, 1),                   colour(255,200,100), textColour(255,255,200), trackerColour(255,255,150)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

@@ -7,17 +7,17 @@
 ;  resynthesising them one after another (Bin Incr.)
 
 <Cabbage>
-form caption("pvsAdsyn") size(580, 90), pluginid("adsy") style("legacy")
-image pos(0, 0), size(580, 90), colour(200,100,50,150), shape("rounded"), outlinecolour("white"), outlinethickness(5) 
-rslider bounds(10, 11, 70, 70),  text("Freq.Mod."),  channel("fmod"),      range(0.25, 4, 1),        textcolour("white"), colour(200,100,50,250), trackercolour(tan)
-rslider bounds(80, 11, 70, 70),  text("Num.Osc.s"),  channel("noscs"),     range(1, 1024, 256,1,1),  textcolour("white"), colour(200,100,50,250), trackercolour(tan)
-rslider bounds(150, 11, 70, 70), text("Bin Offset"), channel("binoffset"), range(0, 256, 1,1,1),     textcolour("white"), colour(200,100,50,250), trackercolour(tan)
-rslider bounds(220, 11, 70, 70), text("Bin Incr."),  channel("binincr"),   range(1, 32, 1,1,1),      textcolour("white"), colour(200,100,50,250), trackercolour(tan)
-label    bounds(295,20, 60,13), text("FFT Size"), fontcolour("white")
-combobox bounds(295,35, 60,18), text("64","128","256","512","1024","2048","4096","8192"), channel("att_table"), value(5), fontcolour(255,255,200)
-rslider bounds(360, 11, 70, 70), text("Feedback"),   channel("feedback"),  range(0, 0.99, 0),        textcolour("white"), colour(200,100,50,250), trackercolour(tan)
-rslider bounds(430, 11, 70, 70), text("Mix"),        channel("mix"),       range(0, 1.00, 1),        textcolour("white"), colour(200,100,50,250), trackercolour(tan)
-rslider bounds(500, 11, 70, 70), text("Level"),      channel("lev"),       range(0, 5.00, 0.5, 0.5), textcolour("white"), colour(200,100,50,250), trackercolour(tan)
+form caption("pvsAdsyn") size(580, 90), pluginId("adsy") style("legacy")
+image pos(0, 0), size(580, 90), colour(200,100,50,150), shape("rounded"), outlineColour("white"), outlineThickness(5) 
+rslider bounds(10, 11, 70, 70),  text("Freq.Mod."),  channel("fmod"),      range(0.25, 4, 1),        textColour("white"), colour(200,100,50,250), trackerColour(tan)
+rslider bounds(80, 11, 70, 70),  text("Num.Osc.s"),  channel("noscs"),     range(1, 1024, 256,1,1),  textColour("white"), colour(200,100,50,250), trackerColour(tan)
+rslider bounds(150, 11, 70, 70), text("Bin Offset"), channel("binoffset"), range(0, 256, 1,1,1),     textColour("white"), colour(200,100,50,250), trackerColour(tan)
+rslider bounds(220, 11, 70, 70), text("Bin Incr."),  channel("binincr"),   range(1, 32, 1,1,1),      textColour("white"), colour(200,100,50,250), trackerColour(tan)
+label    bounds(295,20, 60,13), text("FFT Size"), fontColour("white")
+combobox bounds(295,35, 60,18), text("64","128","256","512","1024","2048","4096","8192"), channel("att_table"), value(5), fontColour(255,255,200)
+rslider bounds(360, 11, 70, 70), text("Feedback"),   channel("feedback"),  range(0, 0.99, 0),        textColour("white"), colour(200,100,50,250), trackerColour(tan)
+rslider bounds(430, 11, 70, 70), text("Mix"),        channel("mix"),       range(0, 1.00, 1),        textColour("white"), colour(200,100,50,250), trackerColour(tan)
+rslider bounds(500, 11, 70, 70), text("Level"),      channel("lev"),       range(0, 5.00, 0.5, 0.5), textColour("white"), colour(200,100,50,250), trackerColour(tan)
 </Cabbage>
 
 <CsoundSynthesizer>

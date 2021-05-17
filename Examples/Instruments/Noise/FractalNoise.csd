@@ -4,20 +4,20 @@
 ; GUI colour indicates noise type: 'white' - 'pink' - 'brown'
 
 <Cabbage>
-form caption("Fractal Noise"), size(290,275), pluginid("fnse"), guirefresh(32) style("legacy")
-image bounds(  0,  0,290,275), colour("white"), shape("sharp"), , identchannel(BackgroundColour)
-checkbox bounds( 20, 10, 15, 15), channel("onoff"), value(0), fontcolour("black"), colour("yellow")
-label    bounds( 37, 11, 50, 13), text("On/Off"), fontcolour(30,30,30), identchannel("label1")
-rslider  bounds(100, 10, 50, 50), channel("amp"),     range(0, 2, 0.2, 0.5, 0.001), textcolour("black"), trackercolour("yellow"), colour(30,30,30)
-label    bounds(100, 60, 50, 13), text("Amp."), fontcolour(30,30,30), identchannel("label2")
-rslider  bounds(160, 10, 50, 50), channel("beta"),    range(-2, 5, 0, 1, 0.001),    textcolour("black"), trackercolour("yellow"), colour(30,30,30)
-label    bounds(160, 60, 50, 13), text("Beta"), fontcolour(30,30,30), identchannel("label3")
-rslider  bounds(220, 10, 50, 50), channel("width"),   range(0,0.05, 0, 0.5, 0.0001),    textcolour("black"), trackercolour("yellow"), colour(30,30,30)
-label    bounds(220, 60, 50, 13), text("Width"), fontcolour(30,30,30), identchannel("label4")
-gentable bounds(  5, 85 ,280, 90), tablenumber(10), amprange(-1,1,1), identchannel("table"),zoom(-1)
-label    bounds(  7, 85, 100, 11), text("Amp.Waveform"), fontcolour(255,255,255,150), align(left)
-gentable bounds(  5,180 ,280, 90), tablenumber(11), identchannel("FFT"), amprange(0,1,-1), outlinethickness(0), samplerange(0, 128), tablecolour("yellow"), zoom(-1)
-label    bounds(  7,180, 100, 11), text("FFT Spectrum"), fontcolour(255,255,255,150), align(left)
+form caption("Fractal Noise"), size(290,275), pluginId("fnse"), guiRefresh(32) style("legacy")
+image bounds(  0,  0,290,275), colour("white"), shape("sharp"), , identChannel(BackgroundColour)
+checkbox bounds( 20, 10, 15, 15), channel("onoff"), value(0), fontColour("black"), colour("yellow")
+label    bounds( 37, 11, 50, 13), text("On/Off"), fontColour(30,30,30), identChannel("label1")
+rslider  bounds(100, 10, 50, 50), channel("amp"),     range(0, 2, 0.2, 0.5, 0.001), textColour("black"), trackerColour("yellow"), colour(30,30,30)
+label    bounds(100, 60, 50, 13), text("Amp."), fontColour(30,30,30), identChannel("label2")
+rslider  bounds(160, 10, 50, 50), channel("beta"),    range(-2, 5, 0, 1, 0.001),    textColour("black"), trackerColour("yellow"), colour(30,30,30)
+label    bounds(160, 60, 50, 13), text("Beta"), fontColour(30,30,30), identChannel("label3")
+rslider  bounds(220, 10, 50, 50), channel("width"),   range(0,0.05, 0, 0.5, 0.0001),    textColour("black"), trackerColour("yellow"), colour(30,30,30)
+label    bounds(220, 60, 50, 13), text("Width"), fontColour(30,30,30), identChannel("label4")
+gentable bounds(  5, 85 ,280, 90), tableNumber(10), ampRange(-1,1,1), identChannel("table"),zoom(-1)
+label    bounds(  7, 85, 100, 11), text("Amp.Waveform"), fontColour(255,255,255,150), align(left)
+gentable bounds(  5,180 ,280, 90), tableNumber(11), identChannel("FFT"), ampRange(0,1,-1), outlineThickness(0), sampleRange(0, 128), tableColour("yellow"), zoom(-1)
+label    bounds(  7,180, 100, 11), text("FFT Spectrum"), fontColour(255,255,255,150), align(left)
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -78,7 +78,7 @@ instr	1
 	  	chnset		Smsg,"BackgroundColour"
 	 endif
 
-		chnset	"tablenumbers(10)","table"
+		chnset	"tableNumbers(10)","table"
 
 	endif
 
@@ -86,21 +86,21 @@ instr	1
 	kFlickOn	trigger	kbeta,2,0
 	kFlickOff	trigger	kbeta,2,1
 	if kFlickOn==1 then
-	  	chnset		"fontcolour(255,255,255)","label1"
-	  	chnset		"fontcolour(255,255,255)","label2"
-	  	chnset		"fontcolour(255,255,255)","label3"
-	  	chnset		"fontcolour(255,255,255)","label4"
+	  	chnset		"fontColour(255,255,255)","label1"
+	  	chnset		"fontColour(255,255,255)","label2"
+	  	chnset		"fontColour(255,255,255)","label3"
+	  	chnset		"fontColour(255,255,255)","label4"
 	elseif kFlickOff==1 then
-	  	chnset		"fontcolour(0,0,0)","label1"
-	  	chnset		"fontcolour(0,0,0)","label2"
-	  	chnset		"fontcolour(0,0,0)","label3"
-	  	chnset		"fontcolour(0,0,0)","label4"
+	  	chnset		"fontColour(0,0,0)","label1"
+	  	chnset		"fontColour(0,0,0)","label2"
+	  	chnset		"fontColour(0,0,0)","label3"
+	  	chnset		"fontColour(0,0,0)","label4"
 	endif
 	
 	fsig	pvsanal	aL*3, 256,64,256,1
   	kflag	pvsftw fsig, 11
  	if kflag==1 then
- 	 chnset	"tablenumber(11)", "FFT"
+ 	 chnset	"tableNumber(11)", "FFT"
  	endif
 
 endin

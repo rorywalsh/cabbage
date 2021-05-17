@@ -13,9 +13,9 @@ The simplest thing to do to get started with VCV Rack module is to create a new 
 
 * Of the standard set of Cabbage widgets, only rslider, label, groupbox, checkbox, button, combobox and image widgets are supported (with reduced functionality). Only the most basic identifiers are supported, so please keep things simple and keep testing your modules to make sure you are not using unsupported identifiers. Also note that the combobox is more like a multi-switch than a traditional combobox.  
 
-* CabbageRack provides 3 VCV Rack specific widgets, `cvinput` and `cvoutput`, (see below) and `light`. The `light` widget can be triggered from a Csound instrument to give users visual feedback their modules.
+* CabbageRack provides 3 VCV Rack specific widgets, `cvInput` and `cvOutput`, (see below) and `light`. The `light` widget can be triggered from a Csound instrument to give users visual feedback their modules.
 
-* Unlike the other audio plugin interfaces for Cabbage, CabbageRack does not use the `in` and `out` family of opcodes. It uses audio-rate channels instead. Each `cvinput` and `cvoutput` widget is linked to a set of a-rate `chnget` and `chnset` opcodes. The reason for this is allow maximum configurability of inputs and outputs.
+* Unlike the other audio plugin interfaces for Cabbage, CabbageRack does not use the `in` and `out` family of opcodes. It uses audio-rate channels instead. Each `cvInput` and `cvOutput` widget is linked to a set of a-rate `chnget` and `chnset` opcodes. The reason for this is allow maximum configurability of inputs and outputs.
 
 * Slider skew values are not yet supported. 
 

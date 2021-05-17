@@ -14,15 +14,15 @@
 ; If this becomes a problem, simply raise the value for excursion, even while the swarm is splatted.
 
 <Cabbage>
-form caption("Splat!"), size(1000,530), colour(230,230,230),guirefresh(64), pluginid("Splt") style("legacy")
-image bounds(0,   0, 0, 0), colour(white), shape(ellipse), widgetarray("fly",500)
-nslider  bounds(  5,495,60,34), channel("Population"),    range(1,100, 10,1,1),       textcolour(black), fontcolour(black), text("Population"), colour(white)
-nslider  bounds( 70,495,60,34), channel("Liveliness"),    range(0.1,10.00, 4,1,0.1),  textcolour(black), fontcolour(black), text("Liveliness"), colour(white)
-nslider  bounds(135,495,60,34), channel("Excursion"),     range(2,300, 50,1,1),       textcolour(black), fontcolour(black), text("Excursion"),  colour(white)
-nslider  bounds(200,495,60,34), channel("FlySize"),       range(2,12, 5,1,0.001),     textcolour(black), fontcolour(black), text("Fly Size"),   colour(white)
-nslider  bounds(265,495,80,34), channel("SwarmSpeed"),    range(0.1,10, 0.3,1,0.001), textcolour(black), fontcolour(black), text("Swarm Speed"),colour(white)
-label    bounds(  0, 0,  0, 0), text("Click swarm to splat. Click again to unsplat."), align(centre), fontcolour(white), identchannel("instructions1")		; Instructions
-label    bounds(350,519,100, 10), text("Iain McCurdy 2014"), align(left), fontcolour(0,0,0,150)
+form caption("Splat!"), size(1000,530), colour(230,230,230),guiRefresh(64), pluginId("Splt") style("legacy")
+image bounds(0,   0, 0, 0), colour(white), shape(ellipse), widgetArray("fly",500)
+nslider  bounds(  5,495,60,34), channel("Population"),    range(1,100, 10,1,1),       textColour(black), fontColour(black), text("Population"), colour(white)
+nslider  bounds( 70,495,60,34), channel("Liveliness"),    range(0.1,10.00, 4,1,0.1),  textColour(black), fontColour(black), text("Liveliness"), colour(white)
+nslider  bounds(135,495,60,34), channel("Excursion"),     range(2,300, 50,1,1),       textColour(black), fontColour(black), text("Excursion"),  colour(white)
+nslider  bounds(200,495,60,34), channel("FlySize"),       range(2,12, 5,1,0.001),     textColour(black), fontColour(black), text("Fly Size"),   colour(white)
+nslider  bounds(265,495,80,34), channel("SwarmSpeed"),    range(0.1,10, 0.3,1,0.001), textColour(black), fontColour(black), text("Swarm Speed"),colour(white)
+label    bounds(  0, 0,  0, 0), text("Click swarm to splat. Click again to unsplat."), align(centre), fontColour(white), identChannel("instructions1")		; Instructions
+label    bounds(350,519,100, 10), text("Iain McCurdy 2014"), align(left), fontColour(0,0,0,150)
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -204,7 +204,7 @@ instr	1001	; Print and then hide instructions
  kalpha	transeg	0,0.2,4,255,p3-0.4,0,255,0.2,-4,-1	; colour alpha channel: fades in, holds, fades out
 
  if metro(ksmps)==1||krel==1 then			; peg updates or interrupt if mouse has been clicked
-  Smess1	sprintfk	"bounds(%d,%d,400,17), fontcolour(0,0,0,%d)", (giPanelWidth*0.5) - 200, (giPanelHeight*0.5)-10, kalpha*(1-krel)
+  Smess1	sprintfk	"bounds(%d,%d,400,17), fontColour(0,0,0,%d)", (giPanelWidth*0.5) - 200, (giPanelHeight*0.5)-10, kalpha*(1-krel)
   chnset	Smess1,"instructions1"
  endif
 

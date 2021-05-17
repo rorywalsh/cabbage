@@ -1,5 +1,5 @@
 <Cabbage>
-form caption("Csound Filters") size(400, 220), colour(20, 20, 20), pluginid("CsFW")
+form caption("Csound Filters") size(400, 220), pluginId("CsFW")
 keyboard bounds(12, 84, 381, 95), value(20)
 combobox bounds(12, 8, 381, 30), align("centre"), channel("filerTypeCombo"), items("MOOG_LADDER", "MOOG_VCF   ", "LPF18      ", "BQREZ      ", "CLFILT     ", "BUTTERLP   ", "LOWRES     ", "REZZY      ", "SVFILTER   ", "VLOWRES    ", "STATEVAR   ", "MVCLPF1    ", "MVCLPF2    ", "MVCLPF3    ")
 hslider bounds(12, 40, 361, 39), channel("coeffSlider"), range(0.01, 2, .5), text("LFO Rate")
@@ -59,7 +59,7 @@ elseif kType == $LOWRES then
 elseif kType == $REZZY then
    aout     rezzy ain, kcfq, kres
 elseif kType == $SVFILTER then
-  aout, ahigh, aband  svfilter ain, kcfq, (499 / 10) * kres + 1 ; rescales to make it musical
+  aout, ahigh, aband  svfilter ain, kcfq, (499 / 10) * kres + 1 ; reScales to make it musical
 elseif kType == $VLOWRES then
     aout    vlowres ain, kcfq, kres, 2, 0
 elseif kType == $STATEVAR then

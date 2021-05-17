@@ -23,40 +23,40 @@
 ; Notch		-	turns on a notch filter operating at the fundemental frequency of the 'clang' sounds
 
 <Cabbage>
-form caption("Ping Clang") size(610,500), guirefresh(32), pluginid("PinC") style("legacy")
+form caption("Ping Clang") size(610,500), guiRefresh(32), pluginId("PinC") style("legacy")
 image              bounds(0,  0,610,500), shape("sharp"), colour("black") ;background
 image              bounds(0,465,610,35), shape("sharp"), colour(100,100,100) 		; floor
-image bounds( 0, 0, 0,0), shape("sharp"), colour(255,255, 50), identchannel("block1")	; blocks: yellow
-image bounds( 0, 0, 0,0), shape("sharp"), colour( 75,255, 75), identchannel("block2")	; green
-image bounds( 0, 0, 0,0), shape("sharp"), colour( 65, 65,255), identchannel("block3")	; blue
-image bounds( 0, 0, 0,0), shape("sharp"), colour(255, 15, 15), identchannel("block4")	; red
-image bounds( 0, 0, 0,0), shape("sharp"), colour(255,100, 50), identchannel("block5")	; orange
-image bounds( 0, 0, 0,0), shape("sharp"), colour(155, 50,255), identchannel("block6")	; purple
-image bounds( 0, 0, 0,0), shape("sharp"), colour(  0,230,255), identchannel("block7")	; turquoise
-image bounds( 0, 0, 0,0), shape("sharp"), colour(255,  0,255), identchannel("block8")	; pink
-image bounds( 0, 0, 0,0), shape("sharp"), colour(155,155,155), identchannel("block9")	; grey
+image bounds( 0, 0, 0,0), shape("sharp"), colour(255,255, 50), identChannel("block1")	; blocks: yellow
+image bounds( 0, 0, 0,0), shape("sharp"), colour( 75,255, 75), identChannel("block2")	; green
+image bounds( 0, 0, 0,0), shape("sharp"), colour( 65, 65,255), identChannel("block3")	; blue
+image bounds( 0, 0, 0,0), shape("sharp"), colour(255, 15, 15), identChannel("block4")	; red
+image bounds( 0, 0, 0,0), shape("sharp"), colour(255,100, 50), identChannel("block5")	; orange
+image bounds( 0, 0, 0,0), shape("sharp"), colour(155, 50,255), identChannel("block6")	; purple
+image bounds( 0, 0, 0,0), shape("sharp"), colour(  0,230,255), identChannel("block7")	; turquoise
+image bounds( 0, 0, 0,0), shape("sharp"), colour(255,  0,255), identChannel("block8")	; pink
+image bounds( 0, 0, 0,0), shape("sharp"), colour(155,155,155), identChannel("block9")	; grey
 
-image bounds(0,0,0,0), shape("ellipse"), colour(255,230,220), identchannel("ball")	; ball
+image bounds(0,0,0,0), shape("ellipse"), colour(255,230,220), identChannel("ball")	; ball
 
-nslider  bounds( 20,465,60,34), channel("damping"),    range(0.00, 0.999, 0.1,1,0.001),     textcolour(white),         text("Damping"),   colour(0,0,0)
-nslider  bounds( 90,465,60,34), channel("friction"),   range(0.001, 0.999, 0.03,1,0.001),   textcolour(white),         text("Friction"),  colour(0,0,0)
-nslider  bounds(160,465,50,34), channel("speed"),      range(0.01,  20, 1,1,0.01),          textcolour(white),         text("Speed"),     colour(0,0,0)
-nslider  bounds(220,465,40,34), channel("size"),       range(2, 80, 15,1,1),                textcolour(white),         text("Size"),      colour(0,0,0)
-nslider  bounds(270,465,50,34), channel("angle"),      range(0, 5, 3,1,0.001),              textcolour(white),         text("Angle"),     colour(0,0,0)
-nslider  bounds(330,465,70,34), channel("resonance"),  range(0.1, 30, 2,1,0.1),             textcolour(white),         text("Resonance"), colour(0,0,0)
-;nslider  bounds(410,415,40,34), channel("NBlocks"),    range(0, 7, 5,1,1),                 textcolour(white),         text("Blocks"),    colour(0,0,0)
-button     bounds(460,473,60,21), text("Notch","Notch"), channel("fundemental"), value(0),    fontcolour:0( 50, 50, 50), fontcolour:1(white)
-button     bounds(530,473,60,21), text("New Ball"), channel("NewBall"), value(0), latched(0), fontcolour:0(200,200,200), fontcolour:1(white)
+nslider  bounds( 20,465,60,34), channel("damping"),    range(0.00, 0.999, 0.1,1,0.001),     textColour(white),         text("Damping"),   colour(0,0,0)
+nslider  bounds( 90,465,60,34), channel("friction"),   range(0.001, 0.999, 0.03,1,0.001),   textColour(white),         text("Friction"),  colour(0,0,0)
+nslider  bounds(160,465,50,34), channel("speed"),      range(0.01,  20, 1,1,0.01),          textColour(white),         text("Speed"),     colour(0,0,0)
+nslider  bounds(220,465,40,34), channel("size"),       range(2, 80, 15,1,1),                textColour(white),         text("Size"),      colour(0,0,0)
+nslider  bounds(270,465,50,34), channel("angle"),      range(0, 5, 3,1,0.001),              textColour(white),         text("Angle"),     colour(0,0,0)
+nslider  bounds(330,465,70,34), channel("resonance"),  range(0.1, 30, 2,1,0.1),             textColour(white),         text("Resonance"), colour(0,0,0)
+;nslider  bounds(410,415,40,34), channel("NBlocks"),    range(0, 7, 5,1,1),                 textColour(white),         text("Blocks"),    colour(0,0,0)
+button     bounds(460,473,60,21), text("Notch","Notch"), channel("fundemental"), value(0),    fontColour:0( 50, 50, 50), fontColour:1(white)
+button     bounds(530,473,60,21), text("New Ball"), channel("NewBall"), value(0), latched(0), fontColour:0(200,200,200), fontColour:1(white)
 
-label      bounds(410,466,45,14), text("Blocks"), align(centre), fontcolour(white)
+label      bounds(410,466,45,14), text("Blocks"), align(centre), fontColour(white)
 button     bounds(410,483,15,14), text("<"), channel("NBlocksDn"), value(0), latched(0)
 button     bounds(440,483,15,14), text(">"), channel("NBlocksUp"), value(0), latched(0)
-label      bounds(425,483,15,14), text("5"), align(centre), colour(black), fontcolour(white), identchannel("NBlocksID")
+label      bounds(425,483,15,14), text("5"), align(centre), colour(black), fontColour(white), identChannel("NBlocksID")
 
-label    bounds(  0, 0,  0, 0), text("Use left click and drag to move blocks."), align(centre), fontcolour(white), identchannel("instructions1")		; Instructions
-label    bounds(  0, 0,  0, 0), text("Right click and drag to resize blocks."), align(centre), fontcolour(white), identchannel("instructions2")		; Instructions
+label    bounds(  0, 0,  0, 0), text("Use left click and drag to move blocks."), align(centre), fontColour(white), identChannel("instructions1")		; Instructions
+label    bounds(  0, 0,  0, 0), text("Right click and drag to resize blocks."), align(centre), fontColour(white), identChannel("instructions2")		; Instructions
 
-label    bounds(  1,454,100, 10), text("Iain McCurdy 2014"), align(left), fontcolour(255,255,255,100)
+label    bounds(  1,454,100, 10), text("Iain McCurdy 2014"), align(left), fontColour(255,255,255,100)
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -379,8 +379,8 @@ instr	1001	; Print and then hide instructions
  kalpha	transeg	0,0.5,4,255,p3-1,0,255,0.5,-4,-1	; colour alpha channel: fades in, holds, fades out
 
  if metro(ksmps)==1||krel==1 then			; peg updates or interrupt if mouse has been clicked
-  Smess1	sprintfk	"bounds(%d,%d,400,17), fontcolour(255,255,255,%d)", (giPanelWidth*0.5) - 200, (giPanelHeight*0.5) - 50, kalpha*(1-krel)
-  Smess2	sprintfk	"bounds(%d,%d,400,17), fontcolour(255,255,255,%d)", (giPanelWidth*0.5) - 200, (giPanelHeight*0.5) - 25, kalpha*(1-krel)
+  Smess1	sprintfk	"bounds(%d,%d,400,17), fontColour(255,255,255,%d)", (giPanelWidth*0.5) - 200, (giPanelHeight*0.5) - 50, kalpha*(1-krel)
+  Smess2	sprintfk	"bounds(%d,%d,400,17), fontColour(255,255,255,%d)", (giPanelWidth*0.5) - 200, (giPanelHeight*0.5) - 25, kalpha*(1-krel)
   chnset	Smess1,"instructions1"
   chnset	Smess2,"instructions2"
  endif

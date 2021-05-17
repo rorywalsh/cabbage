@@ -31,14 +31,14 @@
 ; Number of partials in the chosen algorithm is printed to the GUI for the user's information. Algorithms with high numbers of partials will demand more CPU and lower polyphony will be possible.
 
 <Cabbage>
-form caption("Rubbed Resonators"), size(640,320), pluginid("RubR"), guirefresh(32) style("legacy")
-image pos(0, 0),                   size(640,290), colour("Sienna"), shape("sharp"), oulinecolour("brown"), outlinethickness(4)
+form caption("Rubbed Resonators"), size(640,320), pluginId("RubR"), guiRefresh(32) style("legacy")
+image pos(0, 0),                   size(640,290), colour("Sienna"), shape("sharp"), oulinecolour("brown"), outlineThickness(4)
 
 ;EXCITATION
-groupbox bounds(10, 10, 330, 90), text("Excitation"), fontcolour("white"), plant("excitation"){
-label    bounds(  5, 22,70,13), text("Input"), fontcolour("white")
+groupbox bounds(10, 10, 330, 90), text("Excitation"), fontColour("white"), plant("excitation"){
+label    bounds(  5, 22,70,13), text("Input"), fontColour("white")
 combobox bounds(  5, 35,70,18), text("Rubbing","Strike","Live"), channel("Input")
-label    bounds(  5, 55,70,13), text("Movement"), fontcolour("white")
+label    bounds(  5, 55,70,13), text("Movement"), fontColour("white")
 combobox bounds(  5, 68,70,18), text("Random","Circular"), channel("Movement")
 rslider  bounds( 70, 25,60,60), text("Amp."), colour("Chocolate"), channel("ImpDB"), range(-70, 0, 0)
 rslider  bounds(120, 25,60,60), text("HPF"), colour("Chocolate"), channel("HPF"), range(20, 20000, 20, 0.5)
@@ -48,24 +48,24 @@ rslider  bounds(270, 25,60,60), text("Jit. Rate"), channel("JitRte"), colour("Ch
 }
 
 ;RESONATORS
-groupbox bounds(340, 10,290, 90), text("Resonators"), fontcolour("white"), plant("resonators"){
-label    bounds( 15, 21,140, 12), text("Instrument"), fontcolour("white")
+groupbox bounds(340, 10,290, 90), text("Resonators"), fontColour("white"), plant("resonators"){
+label    bounds( 15, 21,140, 12), text("Instrument"), fontColour("white")
 combobox bounds( 15, 36,140, 25), channel("sound"), value(4), text("Single", "Dahina", "Banyan", "Xylophone", "Tibetan Bowl 180mm", "Spinel Sphere", "Pot Lid", "Red Cedar Wood Plate", "Tubular Bell", "Redwood Wood Plate", "Douglas Fir Wood Plate", "Uniform Wooden Bar", "Uniform Aluminium Bar", "Vibraphone 1", "Vibraphone 2", "Chladni Plates", "Tibetan Bowl 152mm", "Tibetan Bowl 140mm", "Wine Glass", "Small Handbell", "Albert Clock Bell", "Wood Block","Harmonic 10","Harmonic 20","Harmonic 30","Harmonic Odd 10","Harmonic Odd 20","Anvil")
-label    bounds( 11, 62,120, 12), text("Number of Partials:"), fontcolour("white")
+label    bounds( 11, 62,120, 12), text("Number of Partials:"), fontColour("white")
 nslider  bounds( 126, 62, 29, 13), channel("npartials"), range(1, 10000, 6, 1, 1)
 rslider  bounds(160, 25, 60, 60), text("Q"), colour("orange"), channel("Q"), range(1, 10000, 2000, 0.5)
 rslider  bounds(220, 25, 60, 60), text("Bright"), colour("orange"), channel("bright"), range(-4.00, 4, 0)
 }
 
 ;TUNING                                        
-groupbox bounds( 10,100,160, 90), text("Tuning"), fontcolour("white"), plant("tuning"){
+groupbox bounds( 10,100,160, 90), text("Tuning"), fontColour("white"), plant("tuning"){
 rslider  bounds(  0, 25, 60, 60), text("Detune"), colour("orange"), channel("detune"), range(0, 5, 0)
 rslider  bounds( 50, 25, 60, 60), text("Shift"), colour("orange"), channel("shift"), range(0, 127, 0)
 rslider  bounds(100, 25, 60, 60), text("Compress"), colour("orange"), channel("compress"), range(0, 1, 0)
 }
 
 ;POLYPHONY                                        
-groupbox bounds(170,100,220, 90), text("Polyphony"), fontcolour("white"), plant("polyphony"){
+groupbox bounds(170,100,220, 90), text("Polyphony"), fontColour("white"), plant("polyphony"){
 button   bounds(  8, 25, 84, 20), text("Polyphonic","Monophonic"), channel("monopoly"), value(0)
 hslider  bounds(  5, 43, 95, 38), colour("chocolate"), channel("GlissTime"), range(0.005,20, 0.1, 0.5, 0.0001)
 label    bounds(  5, 74, 95, 12), text("Gliss Time")
@@ -74,21 +74,21 @@ rslider  bounds(155, 25, 60, 60), text("Rel.Time"), channel("RelTim"), range(0.0
 }
 
 ;CHORUS
-groupbox bounds(390,100,160, 90), text("Chorus"), fontcolour("white"), plant("chorus"){
+groupbox bounds(390,100,160, 90), text("Chorus"), fontColour("white"), plant("chorus"){
 rslider  bounds(  0, 25, 60, 60), text("Mix"), channel("ChoMix"), range(0, 1.00, 0.5), colour("yellow")
 rslider  bounds( 50, 25, 60, 60), text("Depth"), channel("ChoDep"), range(0, 0.1, 0.01,0.5, 0.001), colour("yellow")
 rslider  bounds(100, 25, 60, 60), text("Rate"), channel("ChoRte"), range(0, 20, 0.96, 0.5), colour("yellow")
 }                                                            
 
 ;OUTPUT
-groupbox bounds(550,100, 80, 90), text("Output"), fontcolour("white"), plant("output"){
+groupbox bounds(550,100, 80, 90), text("Output"), fontColour("white"), plant("output"){
 rslider  bounds( 10, 25, 60, 60), text("Level"), channel("OutLev"), range(0, 1.00, 0.25), colour("GoldenRod")
 }
 
 keyboard bounds(10, 195, 620, 85)
 
 image bounds(5, 295, 240, 22), colour(75, 85, 90, 100), plant("credit"){
-label bounds(0.03, 0.15, .9, .7), text("Author: Iain McCurdy |2012|"), fontcolour("white")
+label bounds(0.03, 0.15, .9, .7), text("Author: Iain McCurdy |2012|"), fontColour("white")
 }
 
 </Cabbage>
@@ -447,7 +447,7 @@ instr	3				;impulse and modal resonators instrument
 	endif
 	;xtratim	0.1						;this is needed to prevent initialisation crashes, I'm not sure why 
 
-			outs	amodes,amodes			;send mode filters output mixture to output and rescale according to the number of modes used
+			outs	amodes,amodes			;send mode filters output mixture to output and reScale according to the number of modes used
 	gasend	=	gasend+amodes*gkChoMix
 	gkNoteTrig	=	0				;reset new-note trigger (in case it was '1')
 endin

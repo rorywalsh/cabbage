@@ -2,14 +2,14 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("pvsBlur"), size(235,125) colour( 70, 90,100), pluginid("blur") style("legacy")
-image             bounds(0, 0,235,125), colour( 70, 90,100), shape("rounded"), outlinecolour("white"), outlinethickness(5) 
-label    bounds(15,20, 60,13), text("FFT Size"), fontcolour("white")
-combobox bounds(15,35, 60,20), text("128","256","512","1024","2048","4096","8192"), channel("att_table"), value(4), fontcolour(220,220,255)
-rslider bounds( 80, 10, 70, 70), text("Mix"),       channel("mix"),       range(0, 1.00, 1),                textcolour("white"), colour( 30, 50, 60),trackercolour("white")
-rslider bounds(150, 10, 70, 70), text("Level"),     channel("lev"),       range(0, 1.00, 0.5, 0.5),         textcolour("white"), colour( 30, 50, 60),trackercolour("white")
-hslider bounds( 10, 70,210, 40), channel("blurtime"),  range(0, 2.00, 0.0, 0.5, 0.0001),                    textcolour("white"), colour( 10, 30, 40),trackercolour("white")
-label   bounds( 85,103, 60, 11), text("Blur Time"), fontcolour("white")
+form caption("pvsBlur"), size(235,125) colour( 70, 90,100), pluginId("blur") style("legacy")
+image             bounds(0, 0,235,125), colour( 70, 90,100), shape("rounded"), outlineColour("white"), outlineThickness(5) 
+label    bounds(15,20, 60,13), text("FFT Size"), fontColour("white")
+combobox bounds(15,35, 60,20), text("128","256","512","1024","2048","4096","8192"), channel("att_table"), value(4), fontColour(220,220,255)
+rslider bounds( 80, 10, 70, 70), text("Mix"),       channel("mix"),       range(0, 1.00, 1),                textColour("white"), colour( 30, 50, 60),trackerColour("white")
+rslider bounds(150, 10, 70, 70), text("Level"),     channel("lev"),       range(0, 1.00, 0.5, 0.5),         textColour("white"), colour( 30, 50, 60),trackerColour("white")
+hslider bounds( 10, 70,210, 40), channel("blurtime"),  range(0, 2.00, 0.0, 0.5, 0.0001),                    textColour("white"), colour( 10, 30, 40),trackerColour("white")
+label   bounds( 85,103, 60, 11), text("Blur Time"), fontColour("white")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

@@ -27,7 +27,7 @@ class CabbagePluginEditor;
 
 class CabbageLabel : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
-
+    CabbageLookAndFeel2 lookAndFeel;
     float rotate, corners;
     int pivotx, pivoty, fontstyle;
     CabbagePluginEditor* owner;
@@ -39,7 +39,10 @@ class CabbageLabel : public Component, public ValueTree::Listener, public Cabbag
 public:
 
     CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageLabel() {};
+    ~CabbageLabel() {
+        widgetData.removeListener(this);
+        setLookAndFeel(nullptr);
+    };
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;

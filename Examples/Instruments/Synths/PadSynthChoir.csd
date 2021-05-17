@@ -34,21 +34,21 @@
 ; Filter	--	The filter section feature three stages in series: low cut (highpass), bandpass and high cut (lowpass)
 
 <Cabbage>
-form caption("Padsynth Choir"), size(1060, 420), pluginid("PSCh") style("legacy")
+form caption("Padsynth Choir"), size(1060, 420), pluginId("PSCh") style("legacy")
 
-#define PlantBoxAppearance # shape("rounded"), colour( 30, 20, 20), outlinecolour("silver"), outlinethickness(3) #
+#define PlantBoxAppearance # shape("rounded"), colour( 30, 20, 20), outlineColour("silver"), outlineThickness(3) #
 
 image    bounds(  5,  5,580,130), plant("Voice 1"), $PlantBoxAppearance {
 label    bounds(  5,  4,580, 15), text("Main")
 label    bounds( 15, 26,100, 13), text("Voice")
 combobox bounds( 15, 40,100, 25), channel("Voice"), text("Bass Ah","Bass Eh","Bass Eee","Bass Oh","Bass Ooh","Tenor Ah","Tenor Eh","Tenor Eee","Tenor Oh","Tenor Ooh","C.tenor Ah","C.tenor Eh","C.tenor Eee","C.tenor Oh","C.tenor Ooh","Alto Ah","Alto Eh","Alto Eee","Alto Oh","Alto Ooh","Soprano Ah","Soprano Eh","Soprano Eee","Soprano Oh","Soprano Ooh","Mixed Ah","Mixed Eh","Mixed Eee","Mixed Oh","Mixed Ooh"), value(26)
-rslider  bounds(130, 25, 90, 90), channel("BW"),   text("Bandwidth"),  range(1,999,100,0.25,0.1), valuetextbox(1), textbox(1), popuptext("Bandwidth of Modulation")
+rslider  bounds(130, 25, 90, 90), channel("BW"),   text("Bandwidth"),  range(1,999,100,0.25,0.1), valueTextBox(1), textBox(1), popupText("Bandwidth of Modulation")
 label    bounds(220, 29, 90, 13), text("B.width Kybd.")                                                            
-gentable bounds(220, 45, 90, 70), tablenumber(51), identchannel(BW_Kybd), amprange(0.001,2,51), zoom(-1), tablecolour(turquoise), active(1), fill(0)
-rslider  bounds(310, 25, 90, 90), channel("PartScal"), text("Part.Scal."),  range(1,30,1,0.5,0.01), valuetextbox(1), textbox(1), popuptext("Partial Scaling")
+gentable bounds(220, 45, 90, 70), tableNumber(51), identChannel(BW_Kybd), ampRange(0.001,2,51), zoom(-1), tableColour(turquoise), active(1), fill(0)
+rslider  bounds(310, 25, 90, 90), channel("PartScal"), text("Part.Scal."),  range(1,30,1,0.5,0.01), valueTextBox(1), textBox(1), popupText("Partial Scaling")
 label    bounds(400, 29, 90, 13), text("P.scal.Kybd.")
-gentable bounds(400, 45, 90, 70), tablenumber(52), identchannel(PS_Kybd), amprange(0,2,52), zoom(-1), tablecolour(turquoise), active(1), fill(0)
-rslider  bounds(490, 25, 90, 90), channel("TabSize"), text("Table Size"),  range(1,24,16,1,1), valuetextbox(1), textbox(1), popuptext("Larger values slow down table rebuilds!")
+gentable bounds(400, 45, 90, 70), tableNumber(52), identChannel(PS_Kybd), ampRange(0,2,52), zoom(-1), tableColour(turquoise), active(1), fill(0)
+rslider  bounds(490, 25, 90, 90), channel("TabSize"), text("Table Size"),  range(1,24,16,1,1), valueTextBox(1), textBox(1), popupText("Larger values slow down table rebuilds!")
 }
 
 image    bounds(590,  5,270,130), plant("Voice2"), $PlantBoxAppearance {
@@ -56,40 +56,40 @@ label    bounds(  5,  4,270, 15), text("Voice 2")
 checkbox bounds( 15, 33, 80, 15), channel("V2OnOff"), text("On/Off") value(1)
 label    bounds( 15, 56,100, 13), text("Voice 2")
 combobox bounds( 15, 70,100, 25), channel("Voice2"), text("Bass Ah","Bass Eh","Bass Eee","Bass Oh","Bass Ooh","Tenor Ah","Tenor Eh","Tenor Eee","Tenor Oh","Tenor Ooh","C.tenor Ah","C.tenor Eh","C.tenor Eee","C.tenor Oh","C.tenor Ooh","Alto Ah","Alto Eh","Alto Eee","Alto Oh","Alto Ooh","Soprano Ah","Soprano Eh","Soprano Eee","Soprano Oh","Soprano Ooh","Mixed Ah","Mixed Eh","Mixed Eee","Mixed Oh","Mixed Ooh"), value(30)
-rslider  bounds(110, 25, 90, 90), channel("BW_V2"), text("Bandwidth"), range(1,999,200,0.25,0.1), valuetextbox(1), textbox(1), popuptext("Bandwidth of Modulation")
-rslider  bounds(180, 25, 90, 90), channel("VoiceMix"), text("Manual"),  range(0,1,0), valuetextbox(1) textbox(1)
+rslider  bounds(110, 25, 90, 90), channel("BW_V2"), text("Bandwidth"), range(1,999,200,0.25,0.1), valueTextBox(1), textBox(1), popupText("Bandwidth of Modulation")
+rslider  bounds(180, 25, 90, 90), channel("VoiceMix"), text("Manual"),  range(0,1,0), valueTextBox(1) textBox(1)
 }
 
-image    bounds(865,  5,160,130), plant("Exciter"), identchannel("ExciterID") alpha(0.5) $PlantBoxAppearance {
+image    bounds(865,  5,160,130), plant("Exciter"), identChannel("ExciterID") alpha(0.5) $PlantBoxAppearance {
 label    bounds(  5,  4,160, 15), text("Exciter")
-rslider  bounds(  0, 25, 90, 90), channel("ExciterAmount"), text("Amount"),  range(0,100,0,1,0.1), valuetextbox(1), textbox(1)
-rslider  bounds( 70, 25, 90, 90), channel("ExciterFreq"), text("Freq."),  range(1000,10000,3000,1,1), valuetextbox(1), textbox(1)
+rslider  bounds(  0, 25, 90, 90), channel("ExciterAmount"), text("Amount"),  range(0,100,0,1,0.1), valueTextBox(1), textBox(1)
+rslider  bounds( 70, 25, 90, 90), channel("ExciterFreq"), text("Freq."),  range(1000,10000,3000,1,1), valueTextBox(1), textBox(1)
 }
 
 image    bounds(  5,140,370,130), plant("AmplitudeEnvelope") $PlantBoxAppearance {
 label    bounds(  5,  4,370, 15), text("Amplitude Envelope")
-rslider  bounds(  0, 30, 90, 90), channel("AAtt"), text("Attack"), range(0.001,5,0.5,0.5,0.001), valuetextbox(1), textbox(1)
-rslider  bounds( 70, 30, 90, 90), channel("ADec"), text("Decay"),  range(0.001,5,0.01,0.5,0.001), valuetextbox(1), textbox(1)
-rslider  bounds(140, 30, 90, 90), channel("ASus"), text("Sustain"),range(0,    1,1,0.5,0.001), valuetextbox(1), textbox(1)
-rslider  bounds(210, 30, 90, 90), channel("ARel"), text("Release"),range(0.001,5,0.5,0.5,0.001), valuetextbox(1), textbox(1)
-rslider  bounds(280, 30, 90, 90), channel("AGain"),text("Gain"),   range(0.1,  5,1,0.5,0.001), valuetextbox(1), textbox(1)
+rslider  bounds(  0, 30, 90, 90), channel("AAtt"), text("Attack"), range(0.001,5,0.5,0.5,0.001), valueTextBox(1), textBox(1)
+rslider  bounds( 70, 30, 90, 90), channel("ADec"), text("Decay"),  range(0.001,5,0.01,0.5,0.001), valueTextBox(1), textBox(1)
+rslider  bounds(140, 30, 90, 90), channel("ASus"), text("Sustain"),range(0,    1,1,0.5,0.001), valueTextBox(1), textBox(1)
+rslider  bounds(210, 30, 90, 90), channel("ARel"), text("Release"),range(0.001,5,0.5,0.5,0.001), valueTextBox(1), textBox(1)
+rslider  bounds(280, 30, 90, 90), channel("AGain"),text("Gain"),   range(0.1,  5,1,0.5,0.001), valueTextBox(1), textBox(1)
 }
 
 image    bounds(380,140,440,130), plant("FilterEnvelope"), $PlantBoxAppearance {
 label    bounds(  5,  4,440, 15), text("Filter Envelope")
 checkbox bounds( 15, 33, 80, 15), channel("FOnOff"), text("On/Off") value(1)
-rslider  bounds( 70, 30, 90, 90), channel("FiltLowCut"), text("Low Cut"), range(20,8000,20,0.5,1), valuetextbox(1), textbox(1)
-rslider  bounds(140, 30, 90, 90), channel("FiltCF"), text("Freq."), range(20,8000,150,0.5,1), valuetextbox(1), textbox(1)
-rslider  bounds(210, 30, 90, 90), channel("FiltBW"), text("Bandwidth"), range(0.1,10,1,0.5), valuetextbox(1), textbox(1)
-rslider  bounds(280, 30, 90, 90), channel("FiltGain"), text("Gain"), range(-24,24,12,1,0.1), valuetextbox(1), textbox(1)
-rslider  bounds(350, 30, 90, 90), channel("FiltHighCut"), text("High Cut"), range(100,20000,20000,0.25,1), valuetextbox(1), textbox(1)
+rslider  bounds( 70, 30, 90, 90), channel("FiltLowCut"), text("Low Cut"), range(20,8000,20,0.5,1), valueTextBox(1), textBox(1)
+rslider  bounds(140, 30, 90, 90), channel("FiltCF"), text("Freq."), range(20,8000,150,0.5,1), valueTextBox(1), textBox(1)
+rslider  bounds(210, 30, 90, 90), channel("FiltBW"), text("Bandwidth"), range(0.1,10,1,0.5), valueTextBox(1), textBox(1)
+rslider  bounds(280, 30, 90, 90), channel("FiltGain"), text("Gain"), range(-24,24,12,1,0.1), valueTextBox(1), textBox(1)
+rslider  bounds(350, 30, 90, 90), channel("FiltHighCut"), text("High Cut"), range(100,20000,20000,0.25,1), valueTextBox(1), textBox(1)
 }
 
 image    bounds(825,140,230,130), plant("Reverb"), $PlantBoxAppearance {
 label    bounds(  5,  4,230, 15), text("Reverb")
-rslider  bounds(  0, 30, 90, 90), channel("RSend"), text("Send"), range(0,1,0.5), valuetextbox(1), textbox(1)
-rslider  bounds( 70, 30, 90, 90), channel("RSize"), text("Size"),  range(0,0.99,0.85), valuetextbox(1), textbox(1)
-rslider  bounds(140, 30, 90, 90), channel("R__CF"), text("Damping"),range(20,20000,8000,0.5,1), valuetextbox(1), textbox(1)
+rslider  bounds(  0, 30, 90, 90), channel("RSend"), text("Send"), range(0,1,0.5), valueTextBox(1), textBox(1)
+rslider  bounds( 70, 30, 90, 90), channel("RSize"), text("Size"),  range(0,0.99,0.85), valueTextBox(1), textBox(1)
+rslider  bounds(140, 30, 90, 90), channel("R__CF"), text("Damping"),range(20,20000,8000,0.5,1), valueTextBox(1), textBox(1)
 }
 
 csoundoutput bounds(5,275,1050,60)

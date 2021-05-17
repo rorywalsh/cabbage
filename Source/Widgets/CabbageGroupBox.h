@@ -34,11 +34,14 @@ class CabbageGroupBox : public GroupComponent, public ValueTree::Listener, publi
     CabbagePluginEditor* owner = {};
     File svgPath = {}, svgFile = {};
     int isVisible = true;
-
+    CabbageLookAndFeel2 lookAndFeel;
 public:
 
     CabbageGroupBox (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageGroupBox() {};
+    ~CabbageGroupBox() {
+        widgetData.removeListener(this);
+        setLookAndFeel(nullptr);
+    };
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;

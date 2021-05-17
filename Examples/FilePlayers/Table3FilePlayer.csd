@@ -16,39 +16,39 @@
  
  
 <Cabbage>
-form caption("Table3 File Player") size(740,340), colour(0,0,0) pluginid("T3Pl"), guirefresh(64) style("legacy")
-image                    bounds(  0,  0,740,340), colour(30, 30, 70), outlinecolour("White"), line(3), shape("sharp")	; main panel colouration    
-soundfiler               bounds(  5,  5,730,175), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 
-label bounds(6, 4, 560, 14), text(""), align(left), colour(0,0,0,0), fontcolour(200,200,200), identchannel("stringbox")
+form caption("Table3 File Player") size(740,340), colour(0,0,0) pluginId("T3Pl"), guiRefresh(64) style("legacy")
+image                    bounds(  0,  0,740,340), colour(30, 30, 70), outlineColour("White"), line(3), shape("sharp")	; main panel colouration    
+soundfiler               bounds(  5,  5,730,175), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
+label bounds(6, 4, 560, 14), text(""), align(left), colour(0,0,0,0), fontColour(200,200,200), identChannel("stringbox")
 
-filebutton bounds(  5,190, 80, 25), text("Open File","Open File"), fontcolour("white") channel("filename"), shape("ellipse")
-checkbox   bounds(  5,220, 95, 25), channel("PlayStop"), text("Play/Stop"), colour("yellow"), fontcolour("white")
+filebutton bounds(  5,190, 80, 25), text("Open File","Open File"), fontColour("white") channel("filename"), shape("ellipse")
+checkbox   bounds(  5,220, 95, 25), channel("PlayStop"), text("Play/Stop"), colour("yellow"), fontColour("white")
 
-label      bounds(178,184, 45, 8), text("L   O   O   P"), fontcolour("white")
+label      bounds(178,184, 45, 8), text("L   O   O   P"), fontColour("white")
 
-groupbox   bounds(100,200,100, 50), plant("looping"), text("Looping Mode"), fontcolour("white"){
-combobox   bounds( 10, 25, 80, 20), channel("mode"), items("Forward", "Backward", "Fwd./Bwd."), value(1), fontcolour("white")
+groupbox   bounds(100,200,100, 50), plant("looping"), text("Looping Mode"), fontColour("white"){
+combobox   bounds( 10, 25, 80, 20), channel("mode"), items("Forward", "Backward", "Fwd./Bwd."), value(1), fontColour("white")
 }
-rslider    bounds(205,195, 60, 60), channel("LoopStart"), range(0, 1, 0),                   colour(60, 60,100), text("Start"),     textcolour("white"), trackercolour(210,210,250)
-rslider    bounds(260,195, 60, 60), channel("LoopEnd"),   range(0, 1, 1),                   colour(60, 60,100), text("End"),       textcolour("white"), trackercolour(210,210,250)
-rslider    bounds(315,195, 60, 60), channel("Portamento"),   range(0,0.1,0.01),                   colour(60, 60,100), text("Portamento"),       textcolour("white"), trackercolour(210,210,250)
+rslider    bounds(205,195, 60, 60), channel("LoopStart"), range(0, 1, 0),                   colour(60, 60,100), text("Start"),     textColour("white"), trackerColour(210,210,250)
+rslider    bounds(260,195, 60, 60), channel("LoopEnd"),   range(0, 1, 1),                   colour(60, 60,100), text("End"),       textColour("white"), trackerColour(210,210,250)
+rslider    bounds(315,195, 60, 60), channel("Portamento"),   range(0,0.1,0.01),                   colour(60, 60,100), text("Portamento"),       textColour("white"), trackerColour(210,210,250)
 
 line       bounds(375,190,  2, 65), colour("Grey")
 
-label      bounds(409,184, 55, 8), text("S   P   E   E   D"), fontcolour("white")
-rslider    bounds(380,195, 60, 60), channel("transpose"), range(-24, 24, 0,1,1),            colour(60, 60,100), text("Transpose"), textcolour("white"), trackercolour(210,210,250)
-rslider    bounds(435,195, 60, 60), channel("speed"),     range(0, 4.00, 1, 0.5, 0.001),    colour(60, 60,100), text("Speed"),     textcolour("white"), trackercolour(210,210,250)
+label      bounds(409,184, 55, 8), text("S   P   E   E   D"), fontColour("white")
+rslider    bounds(380,195, 60, 60), channel("transpose"), range(-24, 24, 0,1,1),            colour(60, 60,100), text("Transpose"), textColour("white"), trackerColour(210,210,250)
+rslider    bounds(435,195, 60, 60), channel("speed"),     range(0, 4.00, 1, 0.5, 0.001),    colour(60, 60,100), text("Speed"),     textColour("white"), trackerColour(210,210,250)
 
 line       bounds(495,190,  2, 65), colour("Grey")
 
-label      bounds(511,184, 90, 8), text("E   N   V   E   L   O   P   E"), fontcolour("white")
-rslider    bounds(500,195, 60, 60), channel("AttTim"),    range(0, 5, 0.01, 0.5, 0.001),    colour(60, 60,100), text("Att.Tim"),   textcolour("white"), trackercolour(210,210,250)
-rslider    bounds(555,195, 60, 60), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour(60, 60,100), text("Rel.Tim"),   textcolour("white"), trackercolour(210,210,250)
+label      bounds(511,184, 90, 8), text("E   N   V   E   L   O   P   E"), fontColour("white")
+rslider    bounds(500,195, 60, 60), channel("AttTim"),    range(0, 5, 0.01, 0.5, 0.001),    colour(60, 60,100), text("Att.Tim"),   textColour("white"), trackerColour(210,210,250)
+rslider    bounds(555,195, 60, 60), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour(60, 60,100), text("Rel.Tim"),   textColour("white"), trackerColour(210,210,250)
 line       bounds(615,190,  2, 65), colour("Grey")
 
-label      bounds(636,184, 80, 8), text("C   O   N   T   R   O   L"), fontcolour("white")
-rslider    bounds(620,195, 60, 60), channel("MidiRef"),   range(0,127,60, 1, 1),            colour(60, 60,100), text("MIDI Ref."), textcolour("white"), trackercolour(210,210,250)
-rslider    bounds(675,195, 60, 60), channel("level"),     range(  0,  3.00, 1, 0.5),        colour(60, 60,100), text("Level"),     textcolour("white"), trackercolour(210,210,250)
+label      bounds(636,184, 80, 8), text("C   O   N   T   R   O   L"), fontColour("white")
+rslider    bounds(620,195, 60, 60), channel("MidiRef"),   range(0,127,60, 1, 1),            colour(60, 60,100), text("MIDI Ref."), textColour("white"), trackerColour(210,210,250)
+rslider    bounds(675,195, 60, 60), channel("level"),     range(  0,  3.00, 1, 0.5),        colour(60, 60,100), text("Level"),     textColour("white"), trackerColour(210,210,250)
 
 keyboard bounds(5,260, 730, 75)
 </Cabbage>
@@ -143,7 +143,7 @@ instr	1	; Read in widgets
   kMOUSE_X	chnget	"MOUSE_X"
   kMOUSE_Y	chnget	"MOUSE_Y"
   kMOUSE_X	=	(kMOUSE_X - 5) / 730
-  kMOUSE_Y	portk	1 - ((kMOUSE_Y - 5) / 175), krampup*0.05		; SOME SMOOTHING OF DENSITY CHANGES VIA THE MOUSE ENHANCES PERFORMANCE RESULTS. MAKE ANY ADJUSTMENTS WITH ADDITIONAL CONSIDERATION OF guirefresh VALUE 
+  kMOUSE_Y	portk	1 - ((kMOUSE_Y - 5) / 175), krampup*0.05		; SOME SMOOTHING OF DENSITY CHANGES VIA THE MOUSE ENHANCES PERFORMANCE RESULTS. MAKE ANY ADJUSTMENTS WITH ADDITIONAL CONSIDERATION OF guiRefresh VALUE 
   gkLoopStart2		limit	kMOUSE_X,0,1
   gkLoopEnd2		limit	((kMOUSE_Y^2) * (1-kMOUSE_X)) + kMOUSE_X, 0, 1
   gktranspose	=	((kMOUSE_Y*2)-1)*gktranspose	;, -gktranspose, gktranspose
@@ -260,7 +260,7 @@ instr	2	; Sample triggered by 'play/stop' button
  ; print scrubber
  if(metro(20)==1) then
   kscrubber	downsamp	aphasor
-  Smessage sprintfk "scrubberposition(%d)", kscrubber
+  Smessage sprintfk "scrubberPosition(%d)", kscrubber
   chnset Smessage, "filer1"
  endif
 
@@ -353,7 +353,7 @@ instr	3	; sample triggered by midi note
  if active(p1)==1 then						; only print scrubber for first note
   if(metro(20)==1) then
    kscrubber	downsamp	aphasor
-   Smessage sprintfk "scrubberposition(%d)", kscrubber
+   Smessage sprintfk "scrubberPosition(%d)", kscrubber
    chnset Smessage, "filer1"
   endif
  endif

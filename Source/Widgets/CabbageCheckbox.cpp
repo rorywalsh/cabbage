@@ -55,6 +55,9 @@ CabbageCheckbox::CabbageCheckbox (ValueTree wData, CabbagePluginEditor* _owner)
 
     this->setWantsKeyboardFocus (false);
 
+    lookAndFeel.customFont = owner->customFont;
+    setLookAndFeel(&lookAndFeel);
+    
     setColour (TextButton::ColourIds::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     setColour (TextButton::ColourIds::textColourOnId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::onfontcolour)));
     setColour (TextButton::buttonColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
@@ -74,13 +77,14 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
     if (prop == CabbageIdentifierIds::value)
     {
-        bool state = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value) == 1 ? true : false;
+        const int newValue = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)  > 0.9 ? 1 : 0;
+        bool state = newValue == 1 ? true : false;
         setToggleState (state, sendNotification);
     }
 
     else
     {
-        handleCommonUpdates (this, valueTree);
+        handleCommonUpdates (this, valueTree, false, prop);
 
         setColour (TextButton::ColourIds::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
         setColour (TextButton::ColourIds::textColourOnId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::onfontcolour)));

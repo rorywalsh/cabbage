@@ -1,4 +1,5 @@
 # Reserved Channels
+
 Cabbage reserves several channels which are used to send information to Csound from either the host application, or from Cabbage itself. To retrieve info from any of these channels just use a chnget opcode.
 
 **CSD_PATH** This string channel will retrieve the full path to the current csd file.
@@ -19,6 +20,8 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **HOST_PPQ_POS** Return the position of the start of the last bar, in pulses-per-quarter-note.
 
+**AUTOMATION** Set the automation mode, 0/1. 0, the default mode instructs Cabbage to listen to automation from a host DAW. Use this mode is you wish to automate parameters using automation envelopes and curves in your DAW. The second mode, 1, will allow the host to track channel updates if they happen in Csound. If you wish to send automation changes from your instrument, you will need to enable this mode using a `chnset`. 
+
 **MOUSE_X** Returns the X coordinate of the current mouse position.
 
 **MOUSE_Y** Returns the Y coordinate of the current mouse position
@@ -29,14 +32,75 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **MOUSE_DOWN_RIGHT** Returns the current state of the right mouse button; 1 if pressed, and 0 if not. 
 
+**SCREEN_WIDTH** Returns the width of the plugin editor window
+
+**SCREEN_HEIGHT** Returns the height of the plugin editor window
+
+**LAST_FILE_DROPPED** This will hold the name of the last file dragged and released on the plugin window. 
+
+**LAST_TEXT_DROPPED** This will hold the string of the last piece of text that was dragged and released on the plugin window. 
+
 **IS_A_PLUGIN** Returns 1 if the instrument is running as an audio plugin, and 0 if the instrument is running as a standalone. 
 
-**LINUX** Returns 1 if Cabbage is running on a Linux OS. 
+**IS_EDITOR_OPEN** Returns 1 if the plugin editor window is currently open, or 0 if the user has closed it. 
 
-**Mac** Returns 1 if Cabbage is running on a Mac OS. 
+**WINDOWS** Returns 1 if Cabbage is running on a Windows machine
 
-**Windows** Returns 1 Cabbage is running on a Windows OS. 
+**LINUX** Returns 1 if Cabbage is running on a Linux machine
+
+**MACOS** Returns 1 if Cabbage is running on a MacOS machine
+
+**KEY_PRESSED** Returns the ASCII key code for the key currently being pressed
+
+**KEY_DOWN** Returns 1 a key-down event, and 0 for a key-up event.  
+
+**KEY_MODIFIERS** Returns a string with a list of current modifiers, i.e, Shift Ctrl Alt Command
 
 **SECONDS_SINCE_EPOCH** Return the number of seconds since the 1st of Jaunary 1970
 
-**CURRENT_DATE_TIME** Returns the current date and time in a string, e.g., "Sun Jan 10 09:36:02 2021" 
+**CURRENT_DATE_TIME** Returns the current date and time in a string, e.g., "Sun Jan 10 09:36:02 2021"
+
+**CURRENT_WIDGET** Returns the channel string of the widget currently under the mouse - if a channel has been assigned.
+
+**HOME_FOLDER_UID** Returns a unique ID for the users home folder.
+
+
+Cabbage also set the host type, which can be retrieved using the following channels. 
+
+**AbletonLive** Returns 1 if Cabbage is host is Ableton Live
+
+**AdobeAudition** Returns 1 if Cabbage is host is AdobeAudition
+
+**Ardour** Returns 1 if Cabbage is host is Adour
+
+**Bitwig** Returns 1 if Cabbage is host is Bitwig studio
+
+**Cubase** Returns 1 if Cabbage is host is Cubase
+
+**FLStudio** Returns 1 if Cabbage is host is FL Studio
+
+**GarageBand** Returns 1 if Cabbage is host is Garage band
+
+**Logic** Returns 1 if Cabbage is host is Logic
+
+**MainStage** Returns 1 if Cabbage is host is MainStage
+
+**Nuendo** Returns 1 if Cabbage is host is Nuendo
+
+**Renoise** Returns 1 if Cabbage is host is Renoise
+
+**Reaper** Returns 1 if Cabbage is host is Reaper
+
+**Samplitude** Returns 1 if Cabbage is host is Samplitude
+
+**Sonar** Returns 1 if Cabbage is host is Sonar
+
+**StudioOne** Returns 1 if Cabbage is host is Studio One
+
+**Tracktion** Returns 1 if Cabbage is host is Tracktion
+
+**Wavelab** Returns 1 if Cabbage is host is WaveLab
+
+
+
+

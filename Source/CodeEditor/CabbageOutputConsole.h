@@ -21,50 +21,86 @@
 
 #include "../CabbageIds.h"
 #include "../Settings/CabbageSettings.h"
+#include "CsoundTokeniser.h"
 
-class CabbageOutputConsole : public Component
+class CabbageOutputConsole : public Component, public KeyListener
 {
-    std::unique_ptr<TextEditor> textEditor;
+    std::unique_ptr<CodeEditorComponent> textEditor;
     int fontSize;
     Typeface::Ptr fontPtr;
 public:
-    CabbageOutputConsole (ValueTree valueTree): Component(), value (valueTree)
+    CabbageOutputConsole (ValueTree valueTree, CodeDocument& document): Component(), value (valueTree)
     {
-        textEditor.reset (new TextEditor());
+        textEditor.reset (new CodeEditorComponent(document, &consoleTokeniser));
         addAndMakeVisible (textEditor.get(), true);
         textEditor->setColour (Label::outlineColourId, Colours::white);
-        textEditor->setColour (TextEditor::textColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::consoleText, Colours::grey.darker()));
-        textEditor->setColour (TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::consoleBackground, Colours::grey.darker()));
-        textEditor->setColour (TextEditor::highlightColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::selectTextBackground, Colours::grey));
-        textEditor->setColour (TextEditor::highlightedTextColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::selectTextBackground, Colours::grey).contrasting(0.8f));
-        textEditor->setMultiLine (true);
-        textEditor->setReadOnly (true);
-
+        textEditor->setColour (CodeEditorComponent::ColourIds::defaultTextColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::consoleText, Colour(100, 100, 100)));
+        textEditor->setColour (CodeEditorComponent::ColourIds::backgroundColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::consoleBackground, Colours::grey.darker()));
+        textEditor->setColour (CodeEditorComponent::ColourIds::highlightColourId, CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::selectTextBackground, Colours::grey));
+        //textEditor->setReadOnly (true);
+        textEditor->setLineNumbersShown(false);
         fontPtr = Typeface::createSystemTypefaceFor (CabbageBinaryData::DejaVuSansMonoBold_ttf,  CabbageBinaryData::DejaVuSansMonoBold_ttfSize);
         textEditor->setFont (Font (fontPtr).withHeight (12));
-
+        textEditor->addKeyListener(this);
         setText ("Csound output message console\n");
+        updateColourScheme();
+
+
     };
 
-    ~CabbageOutputConsole() {};
-
+    ~CabbageOutputConsole() 
+    {
+        textEditor->getDocument().replaceAllContent("");
+        setLookAndFeel(nullptr);
+        DBG("cleaing");
+    };
 
     void setText (String text)
     {
         const MessageManagerLock lock;
-        textEditor->insertTextAtCaret (text);
-        textEditor->setCaretPosition (textEditor->getText().length());
+        String currentText = textEditor->getDocument().getAllContent();
+        textEditor->getDocument().replaceAllContent(currentText + text);
+
+        CodeDocument::Position endPos(textEditor->getDocument(), textEditor->getDocument().getAllContent().length());
+        textEditor->moveCaretTo(endPos, false);
+       
     }
 
     String getText()
     {
         const MessageManagerLock lock;
-        return textEditor->getText();
+        return textEditor->getDocument().getAllContent();
     }
 
     void updateColourScheme()
     {
 #ifndef CabbageLite
+        struct Type
+        {
+            const char* name;
+            uint32 colour;
+        };
+
+        const Type types[] =
+        {
+            { "Error",              Colours::yellow.getARGB() },
+            { "Comment",            Colours::yellow.getARGB() },
+            { "Keyword",            Colours::grey.getARGB() },
+            { "Identifier",         Colours::grey.getARGB() },
+            { "Integer",            Colours::cornflowerblue.getARGB() },
+            { "Float",              Colours::cornflowerblue.getARGB() },
+            { "String",             Colours::red.getARGB() }
+        };
+
+
+        CodeEditorComponent::ColourScheme cs;
+
+        for (std::size_t i = 0;
+            i < sizeof(types) / sizeof(types[0]); ++i) // (NB: numElementsInArray doesn't work here in GCC4.2)
+            cs.set(types[i].name, Colour(types[i].colour));
+
+        textEditor->setColourScheme(cs);
+
         textEditor->setColour (TextEditor::textColourId, CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleText, Colours::grey.darker()));
         textEditor->setColour (TextEditor::backgroundColourId, CabbageSettings::getColourFromValueTree (value, CabbageColourIds::consoleBackground, Colours::grey.darker()));
         textEditor->setColour (ScrollBar::ColourIds::thumbColourId,
@@ -95,23 +131,29 @@ public:
         else
             fontSize = fontSize > 6 ? fontSize - 1 : fontSize;
 
-        String currentText = textEditor->getText();
-        textEditor->setText ("");
+        String currentText = textEditor->getDocument().getAllContent();
+        textEditor->getDocument().replaceAllContent("");
         textEditor->setFont (Font (fontPtr).withHeight (fontSize));
-        textEditor->setText (currentText);
-        textEditor->setCaretPosition (textEditor->getText().length());
+        textEditor->getDocument().replaceAllContent(currentText);
+        CodeDocument::Position endPos(textEditor->getDocument(), currentText.length());
+        textEditor->moveCaretTo(endPos, false);
 
     }
 
     void clearText()
     {
-        textEditor->setText ("");
+        textEditor->getDocument().replaceAllContent("");
     }
 
     void resized() override
     {
         Rectangle<int> area (getLocalBounds());
         textEditor->setBounds (area.reduced (2).withY (0));
+    }
+
+    bool keyPressed(const juce::KeyPress&, juce::Component*) override
+    {
+        return false;
     }
 
     void paint (Graphics& g)  override
@@ -122,6 +164,10 @@ public:
     }
 
 private:
+    // this is the document that the editor component is showing
+    // this is a tokeniser to apply the C++ syntax highlighting
+    CsoundTokeniser consoleTokeniser;
+
     ValueTree value;
 
 };

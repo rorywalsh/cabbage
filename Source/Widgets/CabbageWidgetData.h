@@ -59,11 +59,13 @@ public:
     static void setCsoundOutputProperties (ValueTree widgetData, int ID);
     static void setKeyboardProperties (ValueTree widgetData, int ID, bool displayOnly);
     static void setTextBoxProperties (ValueTree widgetData, int ID);
+    static void setOptionBoxProperties (ValueTree widgetData, int ID);
     static void setLabelProperties (ValueTree widgetData, int ID);
     static void setListBoxProperties (ValueTree widgetData, int ID);
     static void setTextEditorProperties (ValueTree widgetData, int ID);
     static void setEncoderProperties (ValueTree widgetData, int ID);
     static void setSoundfilerProperties (ValueTree widgetData, int ID);
+    static void setOptionButtonProperties (ValueTree widgetData, int ID);
     static void setButtonProperties (ValueTree widgetData, int ID);
     static void setFileButtonProperties (ValueTree widgetData, int ID);
     static void setInfoButtonProperties (ValueTree widgetData, int ID);
@@ -107,7 +109,7 @@ public:
     static void setAmpRange (StringArray strTokens, ValueTree widgetData);
 	static void setSideChainChannels(StringArray strTokens, ValueTree widgetData);
     static void setTableNumberArrays (StringArray strTokens, ValueTree widgetData);
-    static void setColourByNumber (StringArray strTokens, ValueTree widgetData, String identifier);
+    static void setColourByNumber (String string, ValueTree widgetData, String identifier);
     static void setPopulateProps ( StringArray strTokens, ValueTree widgetData);
     static void setCellData(StringArray strTokens, String str, ValueTree widgetData);
 	static void setMatrixPrefix(StringArray strTokens, String str, ValueTree widgetData, String identifier);

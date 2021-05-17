@@ -1,111 +1,111 @@
 
 <Cabbage>
-form caption("gbuzz Synth") size(855, 375), pluginid("GBuz") style("legacy")
-image             bounds(  0,  0,855,295), colour("DarkSlateGrey"), outlinecolour("White"), outlinethickness(1), shape("sharp")	; main panel colouration    
+form caption("gbuzz Synth") size(855, 375), pluginId("GBuz") style("legacy")
+image             bounds(  0,  0,855,295), colour("DarkSlateGrey"), outlineColour("White"), outlineThickness(1), shape("sharp")	; main panel colouration    
 
 ;MAIN
-image    bounds( 10,  6,495, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlinethickness(2), shape("sharp"), plant("main"){	;main
-label    bounds(  0,  5,495, 12), text(".  M  A  I  N  ."), fontcolour(white)
-rslider  bounds(  0, 23, 62, 62), text("Level"),  colour(SlateGrey) channel("level"),  range(0,20, 10,0.5,0.001), textcolour(white)
-rslider  bounds( 60, 23, 62, 62), text("Power"),  colour(SlateGrey) channel("mul"),    range(0, 0.97, 0.1),       textcolour(white)
-rslider  bounds(120, 23, 62, 62), text("Lowest"), colour(SlateGrey) channel("lh"),     range(1, 40, 3,1,1),       textcolour(white)
-rslider  bounds(180, 23, 62, 62), text("Number"), colour(SlateGrey) channel("nh"),     range(1,200,10,1,1),       textcolour(white)
-rslider  bounds(240, 23, 62, 62), text("Jitter"), colour(SlateGrey) channel("jitter"), range(0, 1, 0.4),          textcolour(white)
-rslider  bounds(300, 23, 62, 62), text("Pan"),    colour(SlateGrey) channel("pan"),    range(0, 1, 0.5),          textcolour(white)
-label    bounds(368, 19, 55, 11), text("Waveform"), fontcolour(white)
+image    bounds( 10,  6,495, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlineThickness(2), shape("sharp"), plant("main"){	;main
+label    bounds(  0,  5,495, 12), text(".  M  A  I  N  ."), fontColour(white)
+rslider  bounds(  0, 23, 62, 62), text("Level"),  colour(SlateGrey) channel("level"),  range(0,20, 10,0.5,0.001), textColour(white)
+rslider  bounds( 60, 23, 62, 62), text("Power"),  colour(SlateGrey) channel("mul"),    range(0, 0.97, 0.1),       textColour(white)
+rslider  bounds(120, 23, 62, 62), text("Lowest"), colour(SlateGrey) channel("lh"),     range(1, 40, 3,1,1),       textColour(white)
+rslider  bounds(180, 23, 62, 62), text("Number"), colour(SlateGrey) channel("nh"),     range(1,200,10,1,1),       textColour(white)
+rslider  bounds(240, 23, 62, 62), text("Jitter"), colour(SlateGrey) channel("jitter"), range(0, 1, 0.4),          textColour(white)
+rslider  bounds(300, 23, 62, 62), text("Pan"),    colour(SlateGrey) channel("pan"),    range(0, 1, 0.5),          textColour(white)
+label    bounds(368, 19, 55, 11), text("Waveform"), fontColour(white)
 combobox bounds(365, 30, 60, 18), channel("waveform"), value(3), text("cosine", "sine", "user")
-label    bounds(368, 52, 60, 11), text("User Matrix"), fontcolour(white)
-checkbox bounds(368, 63, 10, 10), channel("part1"), fontcolour(white), colour("lime"), value(1)
-checkbox bounds(378, 63, 10, 10), channel("part2"), fontcolour(white), colour("lime"), value(0)
-checkbox bounds(388, 63, 10, 10), channel("part3"), fontcolour(white), colour("lime"), value(1)
-checkbox bounds(398, 63, 10, 10), channel("part4"), fontcolour(white), colour("lime"), value(0)
-checkbox bounds(408, 63, 10, 10), channel("part5"), fontcolour(white), colour("lime"), value(0)
-checkbox bounds(418, 63, 10, 10), channel("part6"), fontcolour(white), colour("lime"), value(0)
-checkbox bounds(368, 73, 10, 10), channel("part7"), fontcolour(white), colour("lime"), value(1)
-checkbox bounds(378, 73, 10, 10), channel("part8"), fontcolour(white), colour("lime"), value(0)
-checkbox bounds(388, 73, 10, 10), channel("part9"), fontcolour(white), colour("lime"), value(0)
-checkbox bounds(398, 73, 10, 10), channel("part10"), fontcolour(white), colour("lime"), value(1)
-checkbox bounds(408, 73, 10, 10), channel("part11"), fontcolour(white), colour("lime"), value(1)
-checkbox bounds(418, 73, 10, 10), channel("part12"), fontcolour(white), colour("lime"), value(0)
-rslider  bounds(430, 23, 62, 62), text("Octave"),    colour(SlateGrey) channel("octave"),range(-8, 8, -4,1,1), textcolour(white)
+label    bounds(368, 52, 60, 11), text("User Matrix"), fontColour(white)
+checkbox bounds(368, 63, 10, 10), channel("part1"), fontColour(white), colour("lime"), value(1)
+checkbox bounds(378, 63, 10, 10), channel("part2"), fontColour(white), colour("lime"), value(0)
+checkbox bounds(388, 63, 10, 10), channel("part3"), fontColour(white), colour("lime"), value(1)
+checkbox bounds(398, 63, 10, 10), channel("part4"), fontColour(white), colour("lime"), value(0)
+checkbox bounds(408, 63, 10, 10), channel("part5"), fontColour(white), colour("lime"), value(0)
+checkbox bounds(418, 63, 10, 10), channel("part6"), fontColour(white), colour("lime"), value(0)
+checkbox bounds(368, 73, 10, 10), channel("part7"), fontColour(white), colour("lime"), value(1)
+checkbox bounds(378, 73, 10, 10), channel("part8"), fontColour(white), colour("lime"), value(0)
+checkbox bounds(388, 73, 10, 10), channel("part9"), fontColour(white), colour("lime"), value(0)
+checkbox bounds(398, 73, 10, 10), channel("part10"), fontColour(white), colour("lime"), value(1)
+checkbox bounds(408, 73, 10, 10), channel("part11"), fontColour(white), colour("lime"), value(1)
+checkbox bounds(418, 73, 10, 10), channel("part12"), fontColour(white), colour("lime"), value(0)
+rslider  bounds(430, 23, 62, 62), text("Octave"),    colour(SlateGrey) channel("octave"),range(-8, 8, -4,1,1), textColour(white)
 }              
 
 ;POLYPHONY
-image    bounds(510,  6,170, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlinethickness(2), shape("sharp"), plant("polyphony"){	;polyphony
-label    bounds(  0,  5,170, 12), text(".  P  O  L  Y  P  H  O  N  Y  ."), fontcolour(white)
+image    bounds(510,  6,170, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlineThickness(2), shape("sharp"), plant("polyphony"){	;polyphony
+label    bounds(  0,  5,170, 12), text(".  P  O  L  Y  P  H  O  N  Y  ."), fontColour(white)
 button   bounds( 10, 24, 70, 25), text("poly", "mono"), channel("monopoly"), value(1) 
-rslider  bounds(110, 26, 60, 60), text("Leg.Time"), channel("LegTim"), range(0.01, 15, 0.05, 0.25, 0.00001), textcolour(white) colour(SlateGrey)
-label    bounds( 37, 54, 30, 11), text("Mode"), fontcolour(white)
+rslider  bounds(110, 26, 60, 60), text("Leg.Time"), channel("LegTim"), range(0.01, 15, 0.05, 0.25, 0.00001), textColour(white) colour(SlateGrey)
+label    bounds( 37, 54, 30, 11), text("Mode"), fontColour(white)
 combobox bounds( 10, 65, 90, 18), channel("PortMode"), value(1), text("Fixed", "Proportional")
 }
 
 
 ;PITCH BEND
-image   bounds(685,  6,160, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlinethickness(2), shape("sharp"), plant("pitchbend"){	;pitch bend
-label   bounds(  0,  5,160, 12), text(".  P  I  T  C  H     B  E  N  D  ."), fontcolour(white)
-rslider  bounds( 15, 23, 60, 60), textcolour("white"), text("P.Bend"),    channel("PBend"),    range(-1,1, 0), colour(SlateGrey)
-rslider  bounds( 90, 23, 60, 60), textcolour("white"), text("Bend Rng."), channel("BendRange"),   range(1, 24, 12, 1,1),   colour(SlateGrey)
+image   bounds(685,  6,160, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlineThickness(2), shape("sharp"), plant("pitchbend"){	;pitch bend
+label   bounds(  0,  5,160, 12), text(".  P  I  T  C  H     B  E  N  D  ."), fontColour(white)
+rslider  bounds( 15, 23, 60, 60), textColour("white"), text("P.Bend"),    channel("PBend"),    range(-1,1, 0), colour(SlateGrey)
+rslider  bounds( 90, 23, 60, 60), textColour("white"), text("Bend Rng."), channel("BendRange"),   range(1, 24, 12, 1,1),   colour(SlateGrey)
 }
 
 ;MULTIPLIER ENVELOPE
-image    bounds( 10,101,305, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlinethickness(2), shape("sharp"), plant("multiplierenvelope"){	;multiplier envelope
-label    bounds(  0,  5,305, 12), text(".  M  U  L  T  I  P  L  I  E  R      E  N  V  E  L  O  P  E  ."), fontcolour(white)
-rslider  bounds(  0, 23,  62, 62), text("Att"),  colour(SlateGrey) channel("MAtt"),range(0, 8.000, 0.01, 0.375,0.0001), textcolour(white)
-rslider  bounds( 60, 23, 62, 62), text("Lev"),  colour(SlateGrey) channel("MLev"),range(0, 1.000, 0.6),                textcolour(white)
-rslider  bounds(120, 23, 62, 62), text("Dec"),  colour(SlateGrey) channel("MDec"),range(0, 8.000, 3,  0.375,0.0001),   textcolour(white)
-rslider  bounds(180, 23, 62, 62), text("Sus"),  colour(SlateGrey) channel("MSus"),range(0, 1.000, 0),                  textcolour(white)
-rslider  bounds(240, 23, 62, 62), text("Rel"),  colour(SlateGrey) channel("MRel"),range(0, 8.000, 0.1,  0.375,0.0001), textcolour(white)
+image    bounds( 10,101,305, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlineThickness(2), shape("sharp"), plant("multiplierenvelope"){	;multiplier envelope
+label    bounds(  0,  5,305, 12), text(".  M  U  L  T  I  P  L  I  E  R      E  N  V  E  L  O  P  E  ."), fontColour(white)
+rslider  bounds(  0, 23,  62, 62), text("Att"),  colour(SlateGrey) channel("MAtt"),range(0, 8.000, 0.01, 0.375,0.0001), textColour(white)
+rslider  bounds( 60, 23, 62, 62), text("Lev"),  colour(SlateGrey) channel("MLev"),range(0, 1.000, 0.6),                textColour(white)
+rslider  bounds(120, 23, 62, 62), text("Dec"),  colour(SlateGrey) channel("MDec"),range(0, 8.000, 3,  0.375,0.0001),   textColour(white)
+rslider  bounds(180, 23, 62, 62), text("Sus"),  colour(SlateGrey) channel("MSus"),range(0, 1.000, 0),                  textColour(white)
+rslider  bounds(240, 23, 62, 62), text("Rel"),  colour(SlateGrey) channel("MRel"),range(0, 8.000, 0.1,  0.375,0.0001), textColour(white)
 }
 
 ;LOW CUT                                                                  
-image    bounds(320,101,125, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlinethickness(2), shape("sharp"), plant("lowcut"){	;Low Cut
-checkbox bounds( 30,  6, 70, 12), text("Low Cut") channel("LowCutOnOff"), fontcolour(white), colour("lime")
-rslider  bounds(  0, 23, 62, 62), text("Low Cut"),   colour(SlateGrey) channel("LowCut"),   range(0, 30.00, 0,1,0.0011), textcolour(white)
-rslider  bounds( 60, 23, 62, 62), text("Lo Poles"),  colour(SlateGrey) channel("LowPoles"), range(2, 30, 2,1,1),         textcolour(white)
+image    bounds(320,101,125, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlineThickness(2), shape("sharp"), plant("lowcut"){	;Low Cut
+checkbox bounds( 30,  6, 70, 12), text("Low Cut") channel("LowCutOnOff"), fontColour(white), colour("lime")
+rslider  bounds(  0, 23, 62, 62), text("Low Cut"),   colour(SlateGrey) channel("LowCut"),   range(0, 30.00, 0,1,0.0011), textColour(white)
+rslider  bounds( 60, 23, 62, 62), text("Lo Poles"),  colour(SlateGrey) channel("LowPoles"), range(2, 30, 2,1,1),         textColour(white)
 }
 
 ;HIGH CUT
-image    bounds(450,101,125, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlinethickness(2), shape("sharp"), plant("highcut"){	;High Cut
-checkbox bounds( 28,  6, 70, 12), text("High Cut") channel("HighCutOnOff"), fontcolour(white), colour("lime"), value(1)
-rslider  bounds(  2, 23, 62, 62), text("High Cut"),  colour(SlateGrey) channel("HighCut"),   range(1, 100.00, 7,0.25,0.0001), textcolour(white)
-rslider  bounds( 62, 23, 62, 62), text("Hi Poles"),  colour(SlateGrey) channel("HighPoles"), range(2, 30, 8,1,1),             textcolour(white)
+image    bounds(450,101,125, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlineThickness(2), shape("sharp"), plant("highcut"){	;High Cut
+checkbox bounds( 28,  6, 70, 12), text("High Cut") channel("HighCutOnOff"), fontColour(white), colour("lime"), value(1)
+rslider  bounds(  2, 23, 62, 62), text("High Cut"),  colour(SlateGrey) channel("HighCut"),   range(1, 100.00, 7,0.25,0.0001), textColour(white)
+rslider  bounds( 62, 23, 62, 62), text("Hi Poles"),  colour(SlateGrey) channel("HighPoles"), range(2, 30, 8,1,1),             textColour(white)
 }
 
 ;NOISE
-image   bounds(580,101,125, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlinethickness(2), shape("sharp"), plant("noise"){	;NOISE
-label   bounds(  0,  5,125, 12), text(".  N  O  I  S  E  ."), fontcolour(white)
-rslider bounds(  2, 23, 62, 62), text("Depth"), colour(SlateGrey) channel("NoiseAmp"),  range(0,300.00, 0, 1, 0.0001),     textcolour(white)
-rslider bounds( 62, 23, 62, 62), text("Damp"),  colour(SlateGrey) channel("NoiseDamp"), range(15, 10000, 1000, 0.5, 0.01), textcolour(white)
+image   bounds(580,101,125, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlineThickness(2), shape("sharp"), plant("noise"){	;NOISE
+label   bounds(  0,  5,125, 12), text(".  N  O  I  S  E  ."), fontColour(white)
+rslider bounds(  2, 23, 62, 62), text("Depth"), colour(SlateGrey) channel("NoiseAmp"),  range(0,300.00, 0, 1, 0.0001),     textColour(white)
+rslider bounds( 62, 23, 62, 62), text("Damp"),  colour(SlateGrey) channel("NoiseDamp"), range(15, 10000, 1000, 0.5, 0.01), textColour(white)
 }                 
 
 ;REVERB              
-image   bounds(710,101,135, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlinethickness(2), shape("sharp"), plant("reverb"){	;reverb
-label   bounds(  0,  5,135, 12), text(".  R  E  V  E  R  B  ."), fontcolour(white)
-rslider bounds(  5, 23, 60, 60), text("Mix"),  channel("RvbMix"),  range(0, 1, 0.3),   textcolour(white) colour(SlateGrey)
-rslider bounds( 70, 23, 60, 60), text("Size"), channel("RvbSize"), range(0.3, 1, 0.7), textcolour(white) colour(SlateGrey)
+image   bounds(710,101,135, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlineThickness(2), shape("sharp"), plant("reverb"){	;reverb
+label   bounds(  0,  5,135, 12), text(".  R  E  V  E  R  B  ."), fontColour(white)
+rslider bounds(  5, 23, 60, 60), text("Mix"),  channel("RvbMix"),  range(0, 1, 0.3),   textColour(white) colour(SlateGrey)
+rslider bounds( 70, 23, 60, 60), text("Size"), channel("RvbSize"), range(0.3, 1, 0.7), textColour(white) colour(SlateGrey)
 }                       
 
 ;AMPLITUDE ENVELOPE
-image    bounds( 10,196,305, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlinethickness(2), shape("sharp"), plant("amplitudeenvelope"){	;amplitude envelope
-label    bounds(  0,  5,305, 12), text(".  A  M  P  L  I  T  U  D  E        E  N  V  E  L  O  P  E  ."), fontcolour(white)
-rslider  bounds(  0, 23, 62, 62), text("Att"),  colour(SlateGrey) channel("AAtt"),range(0, 8.000, 0, 0.375,0.0001),    textcolour(white)
-rslider  bounds( 60, 23, 62, 62), text("Lev"),  colour(SlateGrey) channel("ALev"),range(0, 1.000, 1),                  textcolour(white)
-rslider  bounds(120, 23, 62, 62), text("Dec"),  colour(SlateGrey) channel("ADec"),range(0, 8.000, 3,  0.375,0.0001),   textcolour(white)
-rslider  bounds(180, 23, 62, 62), text("Sus"),  colour(SlateGrey) channel("ASus"),range(0, 1.000, 0),                  textcolour(white)
-rslider  bounds(240, 23, 62, 62), text("Rel"),  colour(SlateGrey) channel("ARel"),range(0, 8.000, 0.05, 0.375,0.0001), textcolour(white)
+image    bounds( 10,196,305, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlineThickness(2), shape("sharp"), plant("amplitudeenvelope"){	;amplitude envelope
+label    bounds(  0,  5,305, 12), text(".  A  M  P  L  I  T  U  D  E        E  N  V  E  L  O  P  E  ."), fontColour(white)
+rslider  bounds(  0, 23, 62, 62), text("Att"),  colour(SlateGrey) channel("AAtt"),range(0, 8.000, 0, 0.375,0.0001),    textColour(white)
+rslider  bounds( 60, 23, 62, 62), text("Lev"),  colour(SlateGrey) channel("ALev"),range(0, 1.000, 1),                  textColour(white)
+rslider  bounds(120, 23, 62, 62), text("Dec"),  colour(SlateGrey) channel("ADec"),range(0, 8.000, 3,  0.375,0.0001),   textColour(white)
+rslider  bounds(180, 23, 62, 62), text("Sus"),  colour(SlateGrey) channel("ASus"),range(0, 1.000, 0),                  textColour(white)
+rslider  bounds(240, 23, 62, 62), text("Rel"),  colour(SlateGrey) channel("ARel"),range(0, 8.000, 0.05, 0.375,0.0001), textColour(white)
 }
 
 ;MODULATION
-image   bounds(320,196,525, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlinethickness(2), shape("sharp"), plant("modulation"){	;MODULATION
-label   bounds(  0,  5,525, 12), text(".  M  O  D  U  L  A  T  I  O  N  ."), fontcolour(white)
-rslider bounds( 22, 23, 62, 62), text("Mod.Depth"), colour(SlateGrey) channel("mod"),    range(0, 1.00, 0.7), textcolour(white)
-rslider bounds( 82, 23, 62, 62), text("Delay"),     colour(SlateGrey) channel("VDel"),   range(0, 4.00, 0),   textcolour(white)
-rslider bounds(142, 23, 62, 62), text("Rise"),      colour(SlateGrey) channel("VRis"),   range(0, 5.00, 1.5), textcolour(white)
-rslider bounds(202, 23, 62, 62), text("Rate"),      colour(SlateGrey) channel("VRate"),  range(0,30.00, 2.7), textcolour(white)
-rslider bounds(262, 23, 62, 62), text("Rate Rnd."), colour(SlateGrey) channel("VRatRnd"),range(0, 2.00, 0.5), textcolour(white)
-rslider bounds(322, 23, 62, 62), text("Vib.Dep."),  colour(SlateGrey) channel("VibDep"), range(0, 1.00, 0.2), textcolour(white)
-rslider bounds(382, 23, 62, 62), text("Trem.Dep."), colour(SlateGrey) channel("TremDep"),range(0, 0.5, 0.3),  textcolour(white)
-rslider bounds(442, 23, 62, 62), text("Tone Dep."), colour(SlateGrey) channel("ToneDep"),range(0, 4.00, 0),   textcolour(white)
+image   bounds(320,196,525, 90), colour("DarkSlateGrey"), oulinecolour("white"), outlineThickness(2), shape("sharp"), plant("modulation"){	;MODULATION
+label   bounds(  0,  5,525, 12), text(".  M  O  D  U  L  A  T  I  O  N  ."), fontColour(white)
+rslider bounds( 22, 23, 62, 62), text("Mod.Depth"), colour(SlateGrey) channel("mod"),    range(0, 1.00, 0.7), textColour(white)
+rslider bounds( 82, 23, 62, 62), text("Delay"),     colour(SlateGrey) channel("VDel"),   range(0, 4.00, 0),   textColour(white)
+rslider bounds(142, 23, 62, 62), text("Rise"),      colour(SlateGrey) channel("VRis"),   range(0, 5.00, 1.5), textColour(white)
+rslider bounds(202, 23, 62, 62), text("Rate"),      colour(SlateGrey) channel("VRate"),  range(0,30.00, 2.7), textColour(white)
+rslider bounds(262, 23, 62, 62), text("Rate Rnd."), colour(SlateGrey) channel("VRatRnd"),range(0, 2.00, 0.5), textColour(white)
+rslider bounds(322, 23, 62, 62), text("Vib.Dep."),  colour(SlateGrey) channel("VibDep"), range(0, 1.00, 0.2), textColour(white)
+rslider bounds(382, 23, 62, 62), text("Trem.Dep."), colour(SlateGrey) channel("TremDep"),range(0, 0.5, 0.3),  textColour(white)
+rslider bounds(442, 23, 62, 62), text("Tone Dep."), colour(SlateGrey) channel("ToneDep"),range(0, 4.00, 0),   textColour(white)
 }
 
 keyboard pos(0, 295), size(855, 80)

@@ -49,9 +49,38 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
 
     soundfiler.setFile (File::getCurrentWorkingDirectory().getChildFile(file));
     soundfiler.addChangeListener (this);
+    
+    var tables = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablenumber);
+    
+    for (int y = 0; y < tables.size(); y++)
+    {
+        int tableNumber = tables[y];
+        tableValues.clear();
+        tableValues = owner->getTableFloats (tableNumber);
+        AudioBuffer<float> sampleBuffer;
+        sampleBuffer.setSize(1, tableValues.size());
+        //has to be a quicker way of doing this...
+        for ( int i = 0 ; i < tableValues.size() ; i++){
+            sampleBuffer.setSample(0, i, tableValues[i]);
+        }
 
-
-
+        setWaveform(sampleBuffer, 1);
+    }
+    
+    if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::startpos) > -1 && CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::endpos) > 0)
+    {
+        Range<double> newRange;
+        
+        newRange.setStart(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::startpos)/sampleRate);
+        newRange.setEnd(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::endpos)/sampleRate);
+        soundfiler.setRange (newRange);
+    }
+    
+    const int scrollbars = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrollbars);
+    if(scrollbars == 0)
+        soundfiler.showScrollbars(false);
+    
+    soundfiler.shouldShowScrubber(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::showscrubber) == 1 ? true : false );
 }
 
 void CabbageSoundfiler::changeListenerCallback (ChangeBroadcaster* source)
@@ -93,6 +122,8 @@ int CabbageSoundfiler::getLoopLength()
 
 void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
+    DBG(CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::identchannel));
+    
     if (file != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file))
     {
         file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
@@ -106,9 +137,22 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
         soundfiler.setZoomFactor (zoom);
     }
 
+    if(prop == CabbageIdentifierIds::startpos || prop == CabbageIdentifierIds::endpos)
+    {
+        if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::startpos) > -1 && CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::endpos) > 0)
+        {
+            Range<double> newRange;
+            newRange.setStart(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::startpos)/sampleRate);
+            newRange.setEnd(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::endpos)/sampleRate);
+            soundfiler.setRange (newRange);
+        }
+    }
+    
     soundfiler.setScrubberPos (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition));
     soundfiler.setWaveformColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
     soundfiler.setBackgroundColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour));
+    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     soundfiler.repaint();
-    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    repaint();
+
 }

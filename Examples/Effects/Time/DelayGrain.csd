@@ -24,48 +24,48 @@
 ; Delay Distr.		--	random delay time distribution: exponential, linear or logarithmic. Effect are quite subtle but exponential might be most natural sounding.
 
 <Cabbage>
-form caption("Delay Grain") size(410, 520), pluginid("DGrn") style("legacy")
+form caption("Delay Grain") size(410, 520), pluginId("DGrn") style("legacy")
 
 ;hslider2 bounds(  5,  5, 400, 30), channel("GSize1","GSize2"), min(0.01), max(0.09)    range(0.005, 2, 0.01, 0.5, 0.0001)
 hrange   bounds(  5,  5, 400, 30), channel("GSize1","GSize2"), range(0.005, 2, 0.01:0.09, 0.5, 0.0001)
-label    bounds(161, 29,  90, 11), text("G R A I N   S I Z E"), fontcolour(105,105,255)
+label    bounds(161, 29,  90, 11), text("G R A I N   S I Z E"), fontColour(105,105,255)
 
 hslider  bounds(  5, 50, 400, 25), channel("Dens"), range(0.2, 2000, 50,0.5,0.001)
-label    bounds(172, 69,  65, 11), text("D E N S I T Y"), fontcolour(105,105,255)
+label    bounds(172, 69,  65, 11), text("D E N S I T Y"), fontColour(105,105,255)
 
 ;hslider2 bounds(  5, 90, 400, 30), channel("Dly1","Dly2"), min(0.01), max(0.5)    range(0, 5, 0.01, 0.5, 0.0001)
 hrange   bounds(  5,  90, 400, 30), channel("Dly1","Dly2"), range(0, 5, 0.01:0.5, 0.5, 0.0001)
-label    bounds(180,114,  50, 11), text("D E L A Y"), fontcolour(105,105,255)
+label    bounds(180,114,  50, 11), text("D E L A Y"), fontColour(105,105,255)
 
 ;hslider2 bounds(  5,140, 400, 30), channel("Trns1","Trns2"), min(0), max(0)    range(-12, 12, 0, 1, 0.001)
 hrange   bounds(  5, 140, 400, 30), channel("Trns1","Trns2"), range(-12, 12, 0:0, 1, 0.001)
-label    bounds(162,164,  88, 11), text("T R A N S P O S E"), fontcolour(105,105,255)
+label    bounds(162,164,  88, 11), text("T R A N S P O S E"), fontColour(105,105,255)
 
 hslider  bounds(  5,195, 400, 25), channel("PanSpread"), range(0, 1.00, 0.5,1,0.001)
-label    bounds(158,214,  95, 11), text("P A N   S P R E A D"), fontcolour(105,105,255)
+label    bounds(158,214,  95, 11), text("P A N   S P R E A D"), fontColour(105,105,255)
 
 hslider  bounds(  5,240, 400, 25), channel("AmpSpread"), range(0, 1.00, 0.5,1,0.001)
-label    bounds(158,259,  95, 11), text("A M P   S P R E A D"), fontcolour(105,105,255)
+label    bounds(158,259,  95, 11), text("A M P   S P R E A D"), fontColour(105,105,255)
 
 hslider  bounds(  5,280, 400, 25), channel("FiltSpread"), range(0, 1.00, 0.5,1,0.001)
-label    bounds(147,299, 120, 11), text("F I L T E R   S P R E A D"), fontcolour(105,105,255)
+label    bounds(147,299, 120, 11), text("F I L T E R   S P R E A D"), fontColour(105,105,255)
 
 hslider  bounds(  5,320, 400, 25), channel("ampdecay"), range(0, 1.00, 0.5,1,0.001)
-label    bounds(131,339, 150, 11), text("A M P L I T U D E   D E C A Y"), fontcolour(105,105,255)
+label    bounds(131,339, 150, 11), text("A M P L I T U D E   D E C A Y"), fontColour(105,105,255)
 
 hslider  bounds(  5,360, 400, 25), channel("reverse"), range(0, 1.00, 0,1,0.001)
-label    bounds(112,379, 190, 11), text("R E V E R S A L   P R O B A B I L I T Y"), fontcolour(105,105,255)
+label    bounds(112,379, 190, 11), text("R E V E R S A L   P R O B A B I L I T Y"), fontColour(105,105,255)
 
 hslider  bounds(  5,400, 400, 25), channel("mix"), range(0, 1.00, 1,1,0.001)
-label    bounds(189,419,  30, 11), text("M I X"), fontcolour(105,105,255)
+label    bounds(189,419,  30, 11), text("M I X"), fontColour(105,105,255)
 
 hslider  bounds(  5,440, 400, 25), channel("level"), range(0, 2.00, 1, 0.5, 0.001)
-label    bounds(180,459,  50, 11), text("L E V E L"), fontcolour(105,105,255)
+label    bounds(180,459,  50, 11), text("L E V E L"), fontColour(105,105,255)
 
-label    bounds( 19,475,  70, 11), text("GRAIN ENV."), fontcolour(105,105,255)
+label    bounds( 19,475,  70, 11), text("GRAIN ENV."), fontColour(105,105,255)
 combobox bounds( 10,486,  90, 17), channel("window"), value(1), text("Hanning","Half Sine","Decay 1","Decay 2","Gate")
 
-label    bounds(117,475,  75, 11), text("DELAY DISTR."), fontcolour(105,105,255)
+label    bounds(117,475,  75, 11), text("DELAY DISTR."), fontColour(105,105,255)
 combobox bounds(110,486,  90, 17), channel("DlyDst"), value(1), text("Exp.","Lin.","Log")
 
 label    bounds(  5,508, 160, 11), text("Author: Iain McCurdy |2013|"), FontColour("grey")
@@ -124,7 +124,7 @@ aL, aR	ins				; read audio input
 /* WRITE TO BUFFER TABLES */
 ilen	=	ftlen(giBufL)		; table length (in samples)
 aptr	phasor	sr/ilen			; phase pointer used to write to table
-aptr	=	aptr*ilen		; rescale pointer according to table size
+aptr	=	aptr*ilen		; reScale pointer according to table size
 	tablew	aL, aptr, giBufL	; write audio to table
 	tablew	aR, aptr, giBufR	; write audio to table
 kptr	downsamp	aptr		; downsamp pointer to k-rate
@@ -136,7 +136,7 @@ kGSize		random	0,1		; random value 0 - 1
 ;kGSize	expcurve	kGSize,50	; exponentially redistribute range 0 - 1
 kMinGSize	min	kGSize1,kGSize2	; find minimum grain size limit
 kMaxGSize	max	kGSize1,kGSize2	; find maximum grain size limit
-kGSize		scale	kGSize,kMaxGSize,kMinGSize	; rescale random value according to minimum and maximum limits
+kGSize		scale	kGSize,kMaxGSize,kMinGSize	; reScale random value according to minimum and maximum limits
 
 /* DELAY TIME */
 kDly	random	0,1			; uniform random value 0 - 1
@@ -154,7 +154,7 @@ else
 endif
 
 ioffset	=	1/sr			; delay offset (can't read at same location as write pointer!)
-kDly	scale		kDly,kMaxDly,kMinDly; distribution rescaled to match the user defined limits
+kDly	scale		kDly,kMaxDly,kMinDly; distribution reScaled to match the user defined limits
 
 /* CALL GRAIN */
 ;		          p1 p2         p3     p4   p5         p6       p7   p8              p9             p10       p11         p12     p13        p14         p15    p16

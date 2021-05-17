@@ -2,17 +2,17 @@
 ; Written by Iain McCurdy, 2012
 
 <Cabbage>
-form caption("Lowpass Filter") size(435, 90), pluginid("LPFl") style("legacy")
-image    bounds(0, 0, 435, 90), colour(  70, 90,100), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
-label    bounds( 22, 22, 38, 11), text("INPUT:"), fontcolour("white")
+form caption("Lowpass Filter") size(435, 90), pluginId("LPFl") style("legacy")
+image    bounds(0, 0, 435, 90), colour(  70, 90,100), shape("rounded"), outlineColour("white"), outlineThickness(4) 
+label    bounds( 22, 22, 38, 11), text("INPUT:"), fontColour("white")
 combobox bounds( 10, 33, 60, 20), channel("input"), value(1), text("Live","Tone","Noise")
-rslider  bounds( 75, 11, 70, 70), channel("cf"),        text("Freq."), colour(  0, 40, 50), trackercolour(200,240,250), 	textcolour("white"), 	range(20, 20000, 20000, 0.333)
-rslider  bounds(140, 11, 70, 70), channel("res"),       text("Res."),  colour(  0, 40, 50), trackercolour(200,240,250), 	textcolour("white"),	range(0,1.00,0)
-rslider  bounds(205, 11, 70, 70), channel("mix"),       text("Mix"),   colour(  0, 40, 50), trackercolour(200,240,250),		textcolour("white"), 	range(0,1.00,1)
-label    bounds(285, 10, 70, 12), text("Steepness:"), fontcolour("white")
+rslider  bounds( 75, 11, 70, 70), channel("cf"),        text("Freq."), colour(  0, 40, 50), trackerColour(200,240,250), 	textColour("white"), 	range(20, 20000, 20000, 0.333)
+rslider  bounds(140, 11, 70, 70), channel("res"),       text("Res."),  colour(  0, 40, 50), trackerColour(200,240,250), 	textColour("white"),	range(0,1.00,0)
+rslider  bounds(205, 11, 70, 70), channel("mix"),       text("Mix"),   colour(  0, 40, 50), trackerColour(200,240,250),		textColour("white"), 	range(0,1.00,1)
+label    bounds(285, 10, 70, 12), text("Steepness:"), fontColour("white")
 button   bounds(280, 23, 80, 20), channel("steepness"), text("12dB/oct","24dB/oct"), value(0)
-checkbox bounds(280, 50, 80, 15), channel("ResType"), fontcolour("white"),  value(0), text("Resonant"), colour(yellow)
-rslider  bounds(360, 11, 70, 70), text("Level"),                       colour(  0, 40, 50), trackercolour(200,240,250),		textcolour("white"), 		channel("level"), 	range(0, 1.00, 1)
+checkbox bounds(280, 50, 80, 15), channel("ResType"), fontColour("white"),  value(0), text("Resonant"), colour(yellow)
+rslider  bounds(360, 11, 70, 70), text("Level"),                       colour(  0, 40, 50), trackerColour(200,240,250),		textColour("white"), 		channel("level"), 	range(0, 1.00, 1)
 </Cabbage>
 
 <CsoundSynthesizer>

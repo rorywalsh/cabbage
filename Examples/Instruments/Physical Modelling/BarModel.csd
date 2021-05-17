@@ -75,53 +75,53 @@
 
 
 <Cabbage>
-form caption("Bar Model"), size(955,340), pluginid("BaMo"), colour(0,0,0), guirefresh(128) style("legacy")
+form caption("Bar Model"), size(955,340), pluginId("BaMo"), colour(0,0,0), guiRefresh(128) style("legacy")
 label     bounds( 10, 15,150, 15), text("Boundary Conditions")
 combobox  bounds( 10, 32,150, 20), channel("bc"), value(2), text("Clamped-Clamped","Clamped-Pivoted","Pivoted-Pivoted","Clamped-Free")
 checkbox  bounds( 10, 70,150, 15), channel("KybdScal"), text("Keyboard Scaling") value(0)
-rslider   bounds(160,  5, 80, 80), text("Decay"), channel("T30"), valuetextbox(1), textbox(1), range(0.01,30,5.5,0.5,0.01), trackercolour("yellow")
-button    bounds(175, 90, 50, 15), text("HOLD","HOLD"), channel("T30_Hold"), fontcolour:0(30,30,30), fontcolour:1(255,255,100)
-rslider   bounds(220,  5, 80, 80), text("Release"), channel("rel"), valuetextbox(1), textbox(1), range(0.01,30,5.5,0.5,0.01), trackercolour("yellow")
-rslider   bounds(280,  5, 80, 80), text("Damping"), channel("b"), valuetextbox(1), textbox(1), range(0, 9.999,0.4,0.5,0.001), trackercolour("yellow")
-rslider   bounds(350,  5, 80, 80), text("Polyphony"), channel("PolyLimit"), valuetextbox(1), textbox(1), range(0, 20,5,1,1), trackercolour("yellow")
-;rslider   bounds(420,  5, 80, 80), text(""), channel(""), valuetextbox(1), range(0, 1,0.5,1,0.001), trackercolour("yellow")
-rslider   bounds(420,  5, 80, 80), text("Width"), channel("wid"), valuetextbox(1), textbox(1), range(0.01, 1,0.5,1,0.01), trackercolour("yellow")
+rslider   bounds(160,  5, 80, 80), text("Decay"), channel("T30"), valueTextBox(1), textBox(1), range(0.01,30,5.5,0.5,0.01), trackerColour("yellow")
+button    bounds(175, 90, 50, 15), text("HOLD","HOLD"), channel("T30_Hold"), fontColour:0(30,30,30), fontColour:1(255,255,100)
+rslider   bounds(220,  5, 80, 80), text("Release"), channel("rel"), valueTextBox(1), textBox(1), range(0.01,30,5.5,0.5,0.01), trackerColour("yellow")
+rslider   bounds(280,  5, 80, 80), text("Damping"), channel("b"), valueTextBox(1), textBox(1), range(0, 9.999,0.4,0.5,0.001), trackerColour("yellow")
+rslider   bounds(350,  5, 80, 80), text("Polyphony"), channel("PolyLimit"), valueTextBox(1), textBox(1), range(0, 20,5,1,1), trackerColour("yellow")
+;rslider   bounds(420,  5, 80, 80), text(""), channel(""), valueTextBox(1), range(0, 1,0.5,1,0.001), trackerColour("yellow")
+rslider   bounds(420,  5, 80, 80), text("Width"), channel("wid"), valueTextBox(1), textBox(1), range(0.01, 1,0.5,1,0.01), trackerColour("yellow")
 ;line      bounds(505, 15, 90,  1)
-image     bounds(505, 15, 90,  1), colour(30,30,30), identchannel("AttackLine")
-label     bounds(525,  9, 50, 12), text("Attack"), colour(0,0,0), fontcolour(30,30,30), identchannel("AttackLabel")
-rslider   bounds(490, 25, 61, 61), text("Time"), channel("AttTim"), range(0,3,0,0.5,0.001), trackercolour("yellow")
-rslider   bounds(550, 25, 61, 61), text("Amount"), channel("AttAmt"), range(0, 1, 0,1,0.001), trackercolour("yellow")
+image     bounds(505, 15, 90,  1), colour(30,30,30), identChannel("AttackLine")
+label     bounds(525,  9, 50, 12), text("Attack"), colour(0,0,0), fontColour(30,30,30), identChannel("AttackLabel")
+rslider   bounds(490, 25, 61, 61), text("Time"), channel("AttTim"), range(0,3,0,0.5,0.001), trackerColour("yellow")
+rslider   bounds(550, 25, 61, 61), text("Amount"), channel("AttAmt"), range(0, 1, 0,1,0.001), trackerColour("yellow")
 label     bounds(615, 15,150, 15), text("Presets")
 combobox  bounds(615, 32,140, 20), channel("preset"), value(1), text("Xylobar","Scan Envelope","Soft Sustain","Rhodes","Good Vibes","Bad Vibes","Hard Beater","Stacking Plates","Bowed Plank","Interference","Ride Cymbal","Tubular Bell", "Discord Bar")
 ;line      bounds(775, 15, 90,  1)
-image     bounds(775, 15, 90,  1), colour(30,30,30), identchannel("ReverbLine")
-label     bounds(795,  9, 50, 12), text("Reverb"), colour(0,0,0), fontcolour(30,30,30), identchannel("ReverbLabel")
-rslider   bounds(760, 25, 61, 61), text("Mix"), channel("RvbMix"), range(0, 1, 0,1,0.01), trackercolour("yellow")
-rslider   bounds(820, 25, 61, 61), text("Size"), channel("RvbSize"), range(0.5,0.99,0.8,1,0.01), trackercolour("yellow")
-rslider   bounds(870,  5, 80, 80), text("Level"), channel("OutAmp"), valuetextbox(1), textbox(1), range(0,9.999,0.8,0.5,0.001), trackercolour("yellow")
+image     bounds(775, 15, 90,  1), colour(30,30,30), identChannel("ReverbLine")
+label     bounds(795,  9, 50, 12), text("Reverb"), colour(0,0,0), fontColour(30,30,30), identChannel("ReverbLabel")
+rslider   bounds(760, 25, 61, 61), text("Mix"), channel("RvbMix"), range(0, 1, 0,1,0.01), trackerColour("yellow")
+rslider   bounds(820, 25, 61, 61), text("Size"), channel("RvbSize"), range(0.5,0.99,0.8,1,0.01), trackerColour("yellow")
+rslider   bounds(870,  5, 80, 80), text("Level"), channel("OutAmp"), valueTextBox(1), textBox(1), range(0,9.999,0.8,0.5,0.001), trackerColour("yellow")
 
 groupbox  bounds(  5,115,400,140), text("Velocity Mappings"), colour(0,0,0,60), shape("sharp"), plant("VelocityMappings"){
 label     bounds(  5, 25,120, 10), text("Strike Position")
-gentable  bounds(  5, 37,120, 90), tablenumber(2), identchannel(table2), amprange(0,1,2), zoom(-1), tablecolour(turquoise), active(1), fill(0)
+gentable  bounds(  5, 37,120, 90), tableNumber(2), identChannel(table2), ampRange(0,1,2), zoom(-1), tableColour(turquoise), active(1), fill(0)
 label     bounds(135, 25,120, 10), text("Tone")
-gentable  bounds(135, 37,120, 90), tablenumber(3), identchannel(table3), amprange(0,1,3), zoom(-1), tablecolour(turquoise), active(1), fill(0)
+gentable  bounds(135, 37,120, 90), tableNumber(3), identChannel(table3), ampRange(0,1,3), zoom(-1), tableColour(turquoise), active(1), fill(0)
 label     bounds(265, 25,120, 10), text("Amplitude")
-gentable  bounds(265, 37,120, 90), tablenumber(4), identchannel(table4), amprange(0.01,1,4), zoom(-1), tablecolour(turquoise), active(1), fill(0)
+gentable  bounds(265, 37,120, 90), tableNumber(4), identChannel(table4), ampRange(0.01,1,4), zoom(-1), tableColour(turquoise), active(1), fill(0)
 }
 
 ; MODULATION
 groupbox  bounds(410,115,540,140), text("Modulation"), colour(0,0,0,60), shape("sharp"), plant("modulation"){
-rslider   bounds(  5, 25, 80, 80), text("Mix"), channel("ScanMix"), valuetextbox(1), textbox(1), range(0, 1, 0,1,0.001), trackercolour("yellow")
-rslider   bounds( 65, 25, 80, 80), text("Rate"), channel("scan"), valuetextbox(1), textbox(1), range(0, 1, 0.1,0.5,0.001), trackercolour("yellow")
-button    bounds( 80,110, 50, 15), text("x 100","x 100"), channel("scan_x100"), fontcolour:0(30,30,30), fontcolour:1(255,255,100)
+rslider   bounds(  5, 25, 80, 80), text("Mix"), channel("ScanMix"), valueTextBox(1), textBox(1), range(0, 1, 0,1,0.001), trackerColour("yellow")
+rslider   bounds( 65, 25, 80, 80), text("Rate"), channel("scan"), valueTextBox(1), textBox(1), range(0, 1, 0.1,0.5,0.001), trackerColour("yellow")
+button    bounds( 80,110, 50, 15), text("x 100","x 100"), channel("scan_x100"), fontColour:0(30,30,30), fontColour:1(255,255,100)
 label     bounds(150, 25,120, 10), text("Envelope")
-gentable  bounds(150, 37,120, 90), tablenumber(5), identchannel(table5), amprange(0.01,2,-1), zoom(-1), tablecolour(yellow), active(1), fill(0)
-rslider   bounds(280, 25, 80, 80), text("Duration"), channel("ModEnvDur"), valuetextbox(1), textbox(1), range(0.1, 10, 1,0.5,0.01), trackercolour("yellow")
+gentable  bounds(150, 37,120, 90), tableNumber(5), identChannel(table5), ampRange(0.01,2,-1), zoom(-1), tableColour(yellow), active(1), fill(0)
+rslider   bounds(280, 25, 80, 80), text("Duration"), channel("ModEnvDur"), valueTextBox(1), textBox(1), range(0.1, 10, 1,0.5,0.01), trackerColour("yellow")
 line      bounds(365, 35, 90,  1)
 label     bounds(385, 29, 50, 12), text("Random"), colour(0,0,0)
-rslider   bounds(350, 45, 61, 61), text("Amount"), channel("RndModAmt"), range(0, 1, 0,1,0.001), trackercolour("yellow")
-rslider   bounds(410, 45, 61, 61), text("Rate"), channel("RndModRte"), range(0.01,10,0.1,0.5,0.001), trackercolour("yellow")
-rslider   bounds(460, 25, 80, 80), text("Panning"), channel("PanDepth"), valuetextbox(1), textbox(1), range(0, 0.5, 0,1,0.001), trackercolour("yellow")
+rslider   bounds(350, 45, 61, 61), text("Amount"), channel("RndModAmt"), range(0, 1, 0,1,0.001), trackerColour("yellow")
+rslider   bounds(410, 45, 61, 61), text("Rate"), channel("RndModRte"), range(0.01,10,0.1,0.5,0.001), trackerColour("yellow")
+rslider   bounds(460, 25, 80, 80), text("Panning"), channel("PanDepth"), valueTextBox(1), textBox(1), range(0, 0.5, 0,1,0.001), trackerColour("yellow")
 label bounds(440, 120,98,10),text("Iain McCurdy 2015")
 }
 
@@ -131,10 +131,10 @@ keyboard bounds(4, 254, 945, 80) mouseoeverkeycolour(255, 255, 0, 128)
 ;image     bounds(  0,350,955,170), plant("tuning"), colour(0,0,0,0) {
 ;nslider bounds(  0, 15,160, 70), caption("Note Number"), channel("note"), range(0,128,0,1,1)
 ;nslider bounds(260, 15,160, 70), caption("Output"), channel("output"), range(0,8000,0,1,0.001)
-;button    bounds(160,  0,100, 15), text("ZERO","ZERO"), channel("ZeroOffset"), fontcolour:0(30,30,30), fontcolour:1(255,255,100), latched(0)
+;button    bounds(160,  0,100, 15), text("ZERO","ZERO"), channel("ZeroOffset"), fontColour:0(30,30,30), fontColour:1(255,255,100), latched(0)
 ;nslider bounds(160, 15,100, 70), caption("Offset"), channel("offset"), range(-100,100,0,1,0.01)
 ;checkbox  bounds(425, 15,100, 20), text("Test Tone"), channel("TestTone"), value(0)
-;hslider   bounds(425, 40,120, 15), channel("TestVol"), range(0, 0.2, 0.05, 0.5,0.001), trackercolour("yellow")
+;hslider   bounds(425, 40,120, 15), channel("TestVol"), range(0, 0.2, 0.05, 0.5,0.001), trackerColour("yellow")
 ;csoundoutput bounds(545,0,400,170)
 ;}
 </Cabbage>
@@ -333,7 +333,7 @@ instr	3	; Sound producing instrument. Triggered from instrument 2.
  iwid		chnget	"wid"			; strike width
  ipos		tablei	ivel,giVelToPos,1	; map midi key velocity to strike position parameter
  itone		tablei	ivel,giVelToTone,1	; map midi key velocity to LPF cutoff frequency
- itone		scale_i	itone,14,4		; rescale 0 - 1 to 4 - 14 (oct format)
+ itone		scale_i	itone,14,4		; reScale 0 - 1 to 4 - 14 (oct format)
  iStrk		tablei	ivel,giVelToAmp,1	; map midi key velocity to strike velocity parameter
 
  ; STIFFNESS / PITCH
@@ -452,10 +452,10 @@ instr	80	; reverb
  kOnTrig	trigger	gkRvbMix,0.005,0
  kOffTrig	trigger	gkRvbMix,0.005,1
  if kOnTrig==1 then
-  chnset	"fontcolour(170,170,170)","ReverbLabel"
+  chnset	"fontColour(170,170,170)","ReverbLabel"
   chnset	"colour(170,170,170)","ReverbLine"
  elseif kOffTrig==1 then
-  chnset	"fontcolour(30,30,30)","ReverbLabel" 
+  chnset	"fontColour(30,30,30)","ReverbLabel" 
   chnset	"colour(30,30,30)","ReverbLine" 
  endif
 
@@ -463,10 +463,10 @@ instr	80	; reverb
  kOnTrig	trigger	gkAttTim,0.0005,0
  kOffTrig	trigger	gkAttTim,0.0005,1
  if kOnTrig==1 then
-  chnset	"fontcolour(170,170,170)","AttackLabel"
+  chnset	"fontColour(170,170,170)","AttackLabel"
   chnset	"colour(170,170,170)","AttackLine"
  elseif kOffTrig==1 then
-  chnset	"fontcolour(30,30,30)","AttackLabel" 
+  chnset	"fontColour(30,30,30)","AttackLabel" 
   chnset	"colour(30,30,30)","AttackLine" 
  endif
 
@@ -482,13 +482,13 @@ instr	99
   ipreset	init	i(kpreset)
   if ipreset==1 then	; xylobar
    giVelToPos	ftgen	2,0,128,-7,0.5,128,0			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,0.5,128,1			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.01,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,1,512,1			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	2, "bc"
 		chnset	5.5, "T30"
 		chnset	0, "T30_Hold"
@@ -511,13 +511,13 @@ instr	99
 
   elseif ipreset==2 then	; Scan Envelope
    giVelToPos	ftgen	2,0,128,-7,0,128,0.5			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,0.5,128,1			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.5,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,2,512,0.01			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	1, "bc"
 		chnset	7.4, "T30"
 		chnset	0, "T30_Hold"
@@ -540,13 +540,13 @@ instr	99
 
   elseif ipreset==3 then	; Soft Sustain
    giVelToPos	ftgen	2,0,128,-7,0.9,128,0.9			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,0.5,128,0.9			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.5,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,1,512,1			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	3, "bc"
 		chnset	7.4, "T30"
 		chnset	1, "T30_Hold"
@@ -568,13 +568,13 @@ instr	99
 		
   elseif ipreset==4 then	; Rhodes
    giVelToPos	ftgen	2,0,128,-7,0.5,128,0.9			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,0.5,128,0.7			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.1,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,1,512,1			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	3, "bc"
 		chnset	11.6, "T30"
 		chnset	0, "T30_Hold"
@@ -596,13 +596,13 @@ instr	99
 
   elseif ipreset==5 then	; Good Vibes
    giVelToPos	ftgen	2,0,128,-7,0.4,128,0.5			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,0.5,128,0.7			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.5,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,1,512,0.8			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	3, "bc"
 		chnset	16.6, "T30"
 		chnset	0, "T30_Hold"
@@ -625,13 +625,13 @@ instr	99
 
   elseif ipreset==6 then	; Bad Vibes
    giVelToPos	ftgen	2,0,128,-7,0,128,0.5			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,1,128,1			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.5,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,1,512,0.8			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	4, "bc"
 		chnset	16.6, "T30"
 		chnset	1, "T30_Hold"
@@ -654,13 +654,13 @@ instr	99
 
   elseif ipreset==7 then	; Hard Beater
    giVelToPos	ftgen	2,0,128,-7,0.3,128,0			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,0.5,128,1			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.01,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,1,512,1			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	1, "bc"
 		chnset	3.0, "T30"
 		chnset	0, "T30_Hold"
@@ -683,13 +683,13 @@ instr	99
 
   elseif ipreset==8 then	; Stacking Plates
    giVelToPos	ftgen	2,0,128,-7,0.3,128,0			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,1,128,1			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.01,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,1,512,1			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	4, "bc"
 		chnset	0.11, "T30"
 		chnset	0, "T30_Hold"
@@ -712,13 +712,13 @@ instr	99
 
   elseif ipreset==9 then	; Bowed Plank
    giVelToPos	ftgen	2,0,128,-7,0.3,128,0			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,1,128,1			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.01,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,1,512,1			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	2, "bc"
 		chnset	6, "T30"
 		chnset	0, "T30_Hold"
@@ -741,13 +741,13 @@ instr	99
 
   elseif ipreset==10 then	; Interference
    giVelToPos	ftgen	2,0,128,-7,0.33,128,0.1			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,0.6,128,1			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.1,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,1,512,0.2			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	1, "bc"
 		chnset	2.73, "T30"
 		chnset	0, "T30_Hold"
@@ -770,13 +770,13 @@ instr	99
 
   elseif ipreset==11 then	; Ride Cymbal
    giVelToPos	ftgen	2,0,128,-7,0.33,128,0.1			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,0,128,1			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.1,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,1,512,1			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	4, "bc"
 		chnset	18.12, "T30"
 		chnset	0, "T30_Hold"
@@ -799,13 +799,13 @@ instr	99
 
   elseif ipreset==12 then	; Tubular Bell
    giVelToPos	ftgen	2,0,128,-7,0.33,128,0.1			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,0,128,0.8			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.1,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,1,512,0.8			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	4, "bc"
 		chnset	30, "T30"
 		chnset	0, "T30_Hold"
@@ -828,13 +828,13 @@ instr	99
 
   elseif ipreset==13 then	; Discord Bar
    giVelToPos	ftgen	2,0,128,-7,0.33,128,0.1			; map MIDI velocity to barmodel strike position parameter
-   		chnset	"tablenumber(2)","table2"
+   		chnset	"tableNumber(2)","table2"
    giVelToTone	ftgen	3,0,128,-7,0,128,0.8			; map MIDI velocity to tone (LPF)
-   		chnset	"tablenumber(3)","table3"
+   		chnset	"tableNumber(3)","table3"
    giVelToAmp	ftgen	4,0,128,-5,0.1,128,1			; map MIDI velocity to amplitude
-   		chnset	"tablenumber(4)","table4"
+   		chnset	"tableNumber(4)","table4"
    giModEnv	ftgen	5,0,512,-5,1,512,1			; modulation rate envelope
-   		chnset	"tablenumber(5)","table5"
+   		chnset	"tableNumber(5)","table5"
 		chnset	4, "bc"
 		chnset	2.95, "T30"
 		chnset	0, "T30_Hold"

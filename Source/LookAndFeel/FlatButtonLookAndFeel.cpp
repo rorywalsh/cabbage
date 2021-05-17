@@ -51,7 +51,9 @@ namespace LookAndFeelHelpers
     }
 }
 
-FlatButtonLookAndFeel::FlatButtonLookAndFeel() {};
+FlatButtonLookAndFeel::FlatButtonLookAndFeel() {
+    //setDefaultFont(File("/Users/walshr/Documents/Csoundfiles/RobotoCondensed-Italic.ttf"));
+};
 FlatButtonLookAndFeel::~FlatButtonLookAndFeel() {};
 
 void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, const Colour &backgroundColour, bool isMouseOverButton, bool isButtonDown)
@@ -164,7 +166,7 @@ void FlatButtonLookAndFeel::drawLinearSlider(Graphics& g, int x, int y, int widt
     float sliderPos, float minSliderPos, float maxSliderPos,
     const Slider::SliderStyle style, Slider& slider)
 {
-    const int filmStrip = slider.getProperties().getWithDefault("filmStrip", 0);
+    const int filmStrip = slider.getProperties().getWithDefault("filmstrip", 0);
     if (filmStrip == 1)
     {
         g.fillAll(Colours::transparentWhite);
@@ -432,17 +434,18 @@ void FlatButtonLookAndFeel::drawTwoValueThumb (Graphics& g, float x, float y, fl
 void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int width, int height, float sliderPos,
     const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider)
 {
-    const int filmStrip = slider.getProperties().getWithDefault("filmStrip", 0);
+    const int filmStrip = slider.getProperties().getWithDefault("filmstrip", 0);
     if (filmStrip == 1)
     {
         g.fillAll(Colours::transparentWhite);
     }
     else
     {
-        const float radius = jmin(width / 2, height / 2) - 2.0f;
+        const Rectangle<int> bounds = getSliderLayout(slider).sliderBounds;
+        const float radius = jmin(bounds.getWidth() / 2, bounds.getHeight() / 2) - 2.0f;
         const float diameter = radius * 2.f;
-        const float centreX = x + width * 0.5f;
-        const float centreY = y + height * 0.5f;
+        const float centreX = bounds.getX()+ bounds.getWidth() * 0.5f;
+        const float centreY = bounds.getY() + bounds.getHeight() * 0.5f;
         const float rx = centreX - radius;
         const float ry = centreY - radius;
         const float rw = radius * 2.0f;
@@ -468,7 +471,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
         {
             Path filledArc;
             filledArc.addPieSegment(rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
-            filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+            filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, bounds.getWidth() / 2.f, bounds.getHeight() / 2.f));
             g.fillPath(filledArc);
         }
 
@@ -476,7 +479,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
         g.setColour(trackerBgColour);
         Path bgArc;
         bgArc.addPieSegment(rx, ry, rw, rw, angle, rotaryEndAngle, innerRadiusProportion);
-        bgArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+        bgArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, bounds.getWidth() / 2.f, bounds.getHeight() / 2.f));
         g.fillPath(bgArc);
 
         //outlinecolour
@@ -485,7 +488,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
 
         Path outlineArc;
         outlineArc.addPieSegment(rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, innerRadiusProportion);
-        outlineArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, width / 2.f, height / 2.f));
+        outlineArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, bounds.getWidth() / 2.f, bounds.getHeight() / 2.f));
         outlineArc.closeSubPath();
 
         g.strokePath(outlineArc, PathStrokeType(slider.isEnabled() ? (isMouseOver ? 2.0f : 1.2f) : 0.3f));
@@ -515,3 +518,125 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
         g.fillPath(p, AffineTransform::rotation(angle).translated(centreX, centreY));
     }
 }
+
+//===================================================================================
+Font FlatButtonLookAndFeel::getTextButtonFont (TextButton&, int buttonHeight)
+{
+    if(customFont.getHeight()>900)
+        return Font(jmin(15.0f, buttonHeight * 0.6f));
+    
+    customFont.setHeight(jmin(15.0f, buttonHeight * 0.6f));
+    return customFont;
+    
+}
+
+Font FlatButtonLookAndFeel::getComboBoxFont (ComboBox& box)
+{
+    if(customFont.getHeight()>900)
+        return Font(jmin (15.0f, box.getHeight() * 0.85f));
+    
+    customFont.setHeight(jmin (15.0f, box.getHeight() * 0.85f));
+    return customFont;
+}
+
+Font FlatButtonLookAndFeel::getLabelFont(Label& label)
+{
+    if(customFont.getHeight()>900)
+        return Font();
+    
+    return customFont;
+    //return CabbageUtilities::getComponentFont();
+}
+
+Font FlatButtonLookAndFeel::getSliderPopupFont (Slider&)
+{
+    if(customFont.getHeight()>900)
+    {
+        Font font(15.0f);
+        font.setBold(true);
+        return font;
+    }
+    customFont.setHeight(15.0f);
+    customFont.setBold(true);
+    return customFont;// (15.0f, Font::bold);
+}
+
+
+
+Slider::SliderLayout FlatButtonLookAndFeel::getSliderLayout(Slider& slider)
+{
+    Slider::SliderLayout layout;
+
+    layout.sliderBounds = slider.getLocalBounds();
+
+    int minXSpace = 0;
+    int minYSpace = 0;
+    
+    Slider::TextEntryBoxPosition textBoxPos = slider.getTextBoxPosition();
+    
+    if (textBoxPos == Slider::TextBoxLeft || textBoxPos == Slider::TextBoxRight)
+        minXSpace = 30;
+    else
+        minYSpace = 15;
+    
+    Rectangle<int> localBounds = slider.getLocalBounds();
+    
+    const int textBoxWidth = jmax(0, jmin(slider.getTextBoxWidth(), localBounds.getWidth() - minXSpace));
+    const int textBoxHeight = jmax(0, jmin(slider.getTextBoxHeight(), localBounds.getHeight() - minYSpace));
+    
+    
+    if (textBoxPos != Slider::NoTextBox)
+    {
+        if (slider.isBar())
+        {
+            layout.textBoxBounds = localBounds;
+        }
+        else
+        {
+            layout.textBoxBounds.setWidth(textBoxWidth);
+            layout.textBoxBounds.setHeight(textBoxHeight);
+            
+            if (textBoxPos == Slider::TextBoxLeft)           layout.textBoxBounds.setX(0);
+            else if (textBoxPos == Slider::TextBoxRight)     layout.textBoxBounds.setX(localBounds.getWidth() - textBoxWidth);
+            else /* above or below -> centre horizontally */ layout.textBoxBounds.setX((localBounds.getWidth() - textBoxWidth) / 2);
+            
+            if (textBoxPos == Slider::TextBoxAbove)          layout.textBoxBounds.setY(0);
+            else if (textBoxPos == Slider::TextBoxBelow)     layout.textBoxBounds.setY(localBounds.getHeight() - textBoxHeight);
+            else /* left or right -> centre vertically */    layout.textBoxBounds.setY((localBounds.getHeight() - textBoxHeight) / 2);
+        }
+    }
+    
+    layout.sliderBounds = localBounds;
+    
+    if (slider.isBar())
+    {
+        layout.sliderBounds.reduce(1, 1);   // bar border
+    }
+    else
+    {
+        if (textBoxPos == Slider::TextBoxLeft)       layout.sliderBounds.removeFromLeft(textBoxWidth);
+        else if (textBoxPos == Slider::TextBoxRight) layout.sliderBounds.removeFromRight(textBoxWidth);
+        else if (textBoxPos == Slider::TextBoxAbove) layout.sliderBounds.removeFromTop(textBoxHeight);
+        else if (textBoxPos == Slider::TextBoxBelow) layout.sliderBounds.removeFromBottom(textBoxHeight);
+        
+        const int thumbIndent = getSliderThumbRadius(slider);
+        
+        if (slider.isHorizontal())    layout.sliderBounds.reduce(thumbIndent, 0);
+        else if (slider.isVertical()) layout.sliderBounds.reduce(0, thumbIndent);
+    }
+    
+    var bounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::valuetextboxbounds, var());
+    if(bounds.isArray())
+    {
+        layout.textBoxBounds = Rectangle<int>(bounds[0], bounds[1], bounds[2], bounds[3]);
+    }
+    var sliderBounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::sliderbounds, var());
+    if(sliderBounds.isArray())
+    {
+        layout.sliderBounds = Rectangle<int>(sliderBounds[0], sliderBounds[1], sliderBounds[2], sliderBounds[3]);
+    }
+    
+    return layout;
+    
+}
+

@@ -1,25 +1,25 @@
 <Cabbage>
-form caption("Knobman Filmstrip Example") size(450, 180), colour(93, 93, 93), pluginid("KMSl")
+form caption("Knobman Filmstrip Example") size(450, 180), colour(93, 93, 93), pluginId("KMSl")
 
-image bounds(10, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent1")
+image bounds(10, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identChannel("sliderIdent1")
 vslider bounds(10, 22, 27, 106) channel("vslider1") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(50, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent2")
+image bounds(50, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identChannel("sliderIdent2")
 vslider bounds(50, 22, 32, 106) channel("vslider2") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(90, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent3")
+image bounds(90, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identChannel("sliderIdent3")
 vslider bounds(90, 22, 32, 106) channel("vslider3") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(130, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identchannel("sliderIdent4")
+image bounds(130, 23, 32, 107), file("roland SH 101 knob.png"), crop(0, 0, 32, 107), identChannel("sliderIdent4")
 vslider bounds(130, 22, 32, 106) channel("vslider4") range(0, 1, 0, 1, 0.001) alpha(0)
 
-image bounds(324, 24, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identchannel("rsliderIdent1")
+image bounds(324, 24, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identChannel("rsliderIdent1")
 rslider bounds(324, 24, 50, 50) channel("rslider1") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(390, 24, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identchannel("rsliderIdent2")
+image bounds(390, 24, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identChannel("rsliderIdent2")
 rslider bounds(390, 24, 50, 50) channel("rslider2") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(324, 74, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identchannel("rsliderIdent3")
+image bounds(324, 74, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identChannel("rsliderIdent3")
 rslider bounds(324, 74, 50, 50) channel("rslider3") range(0, 1, 0, 1, 0.001) alpha(0)
-image bounds(390, 74, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identchannel("rsliderIdent4")
+image bounds(390, 74, 50, 50) file("BigKnobSplit.png") crop(0, 0, 110, 110), identChannel("rsliderIdent4")
 rslider bounds(390, 74, 50, 50) channel("rslider4") range(0, 1, 0, 1, 0.001) alpha(0)
 
-image bounds(190, 18, 120, 120) crop(0, 0, 128, 128), file("meter_black.png") identchannel("vuMeterIdent")
+image bounds(190, 18, 120, 120) crop(0, 0, 128, 128), file("meter_black.png") identChannel("vuMeterIdent")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

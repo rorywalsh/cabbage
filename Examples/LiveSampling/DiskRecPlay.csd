@@ -2,7 +2,7 @@
 ; Written by Iain McCurdy, 2012
 
 <Cabbage>
-form caption("Disk Rec/Play") size(300, 400), pluginid("dkrp") style("legacy")
+form caption("Disk Rec/Play") size(300, 400), pluginId("dkrp") style("legacy")
 groupbox bounds(10,   0, 70, 80), text("Record")
 checkbox channel("Record"), bounds(20,25,50,50), value(0), shape("square"), colour("red")
 groupbox bounds(80,   0, 70, 80), text("Pause")

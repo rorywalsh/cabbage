@@ -1,0 +1,32 @@
+{
+    "1": {
+        "form1": 0.0,
+        "keyboard2": 60.0,
+        "grp1": 0.0,
+        "groupbox4": 0.0,
+        "rate": 3.7599997520446777,
+        "intensity": 0.5999999642372131,
+        "resonance": 0.019999999552965164,
+        "cutoff": 18908.201171875,
+        "cutoffCheckbox": 1.0,
+        "pitchCheckbox": 0.0,
+        "filebutton1": 0.0,
+        "filebutton16": 0.0,
+        "infoText": "\"\\\"A keyboard widget is a simple virtual keyboard that can be used to trigger instruments in Csound. By default it will trigger 'instr 1' on channel 1, 'instr 2' on channel 2 and so on. You can reassign the channels using the 'massign' opcodes in Csound.\n\nIt is set up to use midi note number 60 as C4 bu this can be changing. The keyboard is velocity sensitive. Pressing a key higher up the note will result in a quieter note.\n\nIn this instrument we are sending p4 and p5 to instrument 1. What those p-fields represent is set in the CsOptions section. In this case p4 is the MIDI note number, while p5 is an amplitude value between 0 and 1.\\\"\""
+    },
+    "2": {
+        "form1": 0.0,
+        "keyboard2": 60.0,
+        "grp1": 0.0,
+        "groupbox4": 0.0,
+        "rate": 3.7599997520446777,
+        "intensity": 0.8700000047683716,
+        "resonance": 0.8100000023841858,
+        "cutoff": 18908.201171875,
+        "cutoffCheckbox": 0.0,
+        "pitchCheckbox": 1.0,
+        "filebutton1": 0.0,
+        "filebutton16": 0.0,
+        "infoText": "\"\\\"\\\\\\\"A keyboard widget is a simple virtual keyboard that can be used to trigger instruments in Csound. By default it will trigger 'instr 1' on channel 1, 'instr 2' on channel 2 and so on. You can reassign the channels using the 'massign' opcodes in Csound.\n\nIt is set up to use midi note number 60 as C4 bu this can be changing. The keyboard is velocity sensitive. Pressing a key higher up the note will result in a quieter note.\n\nIn this instrument we are sending p4 and p5 to instrument 1. What those p-fields represent is set in the CsOptions section. In this case p4 is the MIDI note number, while p5 is an amplitude value between 0 and 1.\\\\\\\"\\\"\""
+    }
+}

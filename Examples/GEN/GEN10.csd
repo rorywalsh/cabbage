@@ -5,18 +5,18 @@
 ; Negative strength values result in inverted phase
 
 <Cabbage>
-form caption("GEN10"), size(410, 340), pluginid("gn10"), colour("20,70,170,150") style("legacy")
+form caption("GEN10"), size(410, 340), pluginId("gn10"), colour("20,70,170,150") style("legacy")
 
-gentable bounds(  5,  5, 400, 120), identchannel("table1"), tablenumber(1), tablecolour("yellow"), zoom(-1)
+gentable bounds(  5,  5, 400, 120), identChannel("table1"), tableNumber(1), tableColour("yellow"), zoom(-1)
 
-rslider bounds(  5,130, 50, 70), channel("str1"), text("Str.1"), valuetextbox(1), textbox(1), range(-1.00, 1.00, 1), colour(100,100,250,200)
-rslider bounds( 55,130, 50, 70), channel("str2"), text("Str.2"), valuetextbox(1), textbox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
-rslider bounds(105,130, 50, 70), channel("str3"), text("Str.3"), valuetextbox(1), textbox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
-rslider bounds(155,130, 50, 70), channel("str4"), text("Str.4"), valuetextbox(1), textbox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
-rslider bounds(205,130, 50, 70), channel("str5"), text("Str.5"), valuetextbox(1), textbox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
-rslider bounds(255,130, 50, 70), channel("str6"), text("Str.6"), valuetextbox(1), textbox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
-rslider bounds(305,130, 50, 70), channel("str7"), text("Str.7"), valuetextbox(1), textbox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
-rslider bounds(355,130, 50, 70), channel("str8"), text("Str.8"), valuetextbox(1), textbox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
+rslider bounds(  5,130, 50, 70), channel("str1"), text("Str.1"), valueTextBox(1), textBox(1), range(-1.00, 1.00, 1), colour(100,100,250,200)
+rslider bounds( 55,130, 50, 70), channel("str2"), text("Str.2"), valueTextBox(1), textBox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
+rslider bounds(105,130, 50, 70), channel("str3"), text("Str.3"), valueTextBox(1), textBox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
+rslider bounds(155,130, 50, 70), channel("str4"), text("Str.4"), valueTextBox(1), textBox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
+rslider bounds(205,130, 50, 70), channel("str5"), text("Str.5"), valueTextBox(1), textBox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
+rslider bounds(255,130, 50, 70), channel("str6"), text("Str.6"), valueTextBox(1), textBox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
+rslider bounds(305,130, 50, 70), channel("str7"), text("Str.7"), valueTextBox(1), textBox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
+rslider bounds(355,130, 50, 70), channel("str8"), text("Str.8"), valueTextBox(1), textBox(1), range(-1.00, 1.00, 0), colour(100,100,250,200)
 
 checkbox bounds( 24,203, 12, 12), channel("mute1"),  value(0), colour("red"), shape("square")
 checkbox bounds( 74,203, 12, 12), channel("mute2"),  value(0), colour("red"), shape("square")
@@ -131,7 +131,7 @@ instr	1
 	giwave	ftgen	1,0, 4096,10, i(gkstr1)*i(kstatus1),i(gkstr2)*i(kstatus2),i(gkstr3)*i(kstatus3),i(gkstr4)*i(kstatus4),i(gkstr5)*i(kstatus5),i(gkstr6)*i(kstatus6),i(gkstr7)*i(kstatus7),i(gkstr8)*i(kstatus8)
 	rireturn
 	if ktrig==1 then
-	 chnset	"tablenumber(1)", "table1"	; update table display	
+	 chnset	"tableNumber(1)", "table1"	; update table display	
 	endif
 endin
 

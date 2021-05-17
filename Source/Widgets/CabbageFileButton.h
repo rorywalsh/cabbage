@@ -23,7 +23,7 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 #include "../LookAndFeel/FlatButtonLookAndFeel.h"
-
+#include "../LookAndFeel/CabbageIDELookAndFeel.h"
 class CabbagePluginEditor;
 
 class CabbageFileButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase, public Button::Listener, public Timer
@@ -34,7 +34,11 @@ class CabbageFileButton : public TextButton, public ValueTree::Listener, public 
 public:
 
     CabbageFileButton (ValueTree wData, CabbagePluginEditor* owner);
-    ~CabbageFileButton() {  stopTimer();  setLookAndFeel(nullptr); };
+    ~CabbageFileButton() {  
+        stopTimer();  
+        setLookAndFeel(nullptr); 
+        widgetData.removeListener(this);
+    };
 
     //ValueTree::Listener virtual methods....
     void setFile(ValueTree wData);
@@ -45,13 +49,14 @@ public:
     void valueTreeParentChanged (ValueTree&) override {};
     String returnValidPath (File path);
     void setLookAndFeelColours (ValueTree wData);
-
+    bool allowPresetChanges(String presetName);
     void buttonClicked (Button* button)  override;
     ValueTree widgetData;
     
     void timerCallback() override;
 
     FlatButtonLookAndFeel flatLookAndFeel;
+    LookAndFeel_V4 lAndF;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageFileButton);
 };

@@ -43,6 +43,7 @@
 #include "../../Widgets/CabbageTextEditor.h"
 #include "../../Widgets/CabbageCsoundConsole.h"
 #include "../../Widgets/CabbageLabel.h"
+#include "../../Widgets/CabbageOptionButton.h"
 #include "../../Widgets/CabbageXYPad.h"
 #include "../../Widgets/CabbageKeyboard.h"
 #include "../../Widgets/CabbageKeyboardDisplay.h"
@@ -77,12 +78,15 @@ public:
     //==============================================================================
     void setupWindow (ValueTree cabbageWidgetData);
 
+    Component* getMainComponent(){  return &mainComponent;   }
+    void resizePlugin(int sizeIndex);
     void insertWidget (ValueTree cabbageWidgetData);
     // the following methods instantiate controls that CAN
     // be automated in a host...
     void insertSlider (ValueTree cabbageWidgetData);
     void insertComboBox (ValueTree cabbageWidgetData);
     void insertButton (ValueTree cabbageWidgetData);
+    void insertOptionButton (ValueTree cabbageWidgetData);
     void insertCheckbox (ValueTree cabbageWidgetData);
     void insertXYPad (ValueTree cabbageWidgetData);
     void insertRangeSlider (ValueTree cabbageWidgetData);
@@ -118,6 +122,7 @@ public:
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
     //=============================================================================
 	void refreshValueTreeListeners();
+
 	//=============================================================================
     // all these methods expose public methods in CabagePluginProcessor
     void sendChannelDataToCsound (String channel, float value);
@@ -127,13 +132,14 @@ public:
     void createEventMatrix(int cols, int rows, String channel);
     void setEventMatrixData(int cols, int rows, String channel, String data);
     void setEventMatrixCurrentPosition(int cols, int rows, String channel, int position);
-    bool isAudioUnit()
-    {
-        return processor.wrapperType_AudioUnit;
-    }
+
     bool shouldUpdateSignalDisplay(String variableName);
-    void savePluginStateToFile (File snapshotFile, String presetName="");
-    void restorePluginStateFrom (String childPreset, File xmlFile);
+    
+    void setCurrentPreset(String preset);
+    String getCurrentPreset();
+    
+    void savePluginStateToFile (String presetName="", bool remove = false);
+    void restorePluginStateFrom (String childPreset);
     const Array<float, CriticalSection> getArrayForSignalDisplay (const String signalVariable, const String displayType);
     const String getCsoundOutputFromProcessor();
     StringArray getTableStatement (int tableNumber);
@@ -142,7 +148,10 @@ public:
     CabbagePluginProcessor& getProcessor();
     void enableXYAutomator (String name, bool enable, Line<float> dragLine = Line<float> (0, 0, 1, 1));
 
-
+    int getPluginEditorScale()
+    {
+        return cabbageProcessor.currentPluginScale;
+    }
    /* void filesDropped(const StringArray &files, int x, int y) override;
     bool isInterestedInFileDrag(const StringArray &files) override;*/
     //=============================================================================
@@ -164,12 +173,32 @@ public:
         cabbageProcessor.getCsound()->SetChannel ("KEY_DOWN", isKeyDown);
 		return false;
 	}
+    
+    virtual void modifierKeysChanged(const ModifierKeys &modifiers)
+    {
+        StringArray mods;
+        if(modifiers.isAnyModifierKeyDown())
+        {
+            if(modifiers.isCommandDown())
+                mods.add("Command");
+            if(modifiers.isShiftDown())
+                mods.add("Shift");
+            if(modifiers.isCtrlDown())
+                mods.add("Ctrl");
+            if(modifiers.isAltDown())
+                mods.add("Alt");
+        }
+        
+        cabbageProcessor.getCsound()->SetChannel("KEY_MODIFIERS", mods.joinIntoString(" ").toUTF8().getAddress());
+    }
+
 	//=============================================================================
 
+    
     String createNewGenericNameForPresetFile();
     void addNewWidget (String widgetType, juce::Point<int> point, bool isPlant = false);
     //=============================================================================
-    void refreshComboListBoxContents();
+    void refreshComboListBoxContents(String presetName = "");
     void enableEditMode (bool enable);
     void setCurrentlySelectedComponents (StringArray componentNames);  
     void resetCurrentlySelectedComponents();
@@ -249,10 +278,11 @@ public:
     
     String changeMessage = "";
     juce::Point<int> customPlantPosition;
+    Font customFont;
 private:
 	  
     //---- main component that holds widgets -----
-    class MainComponent : public Component, public FileDragAndDropTarget
+    class MainComponent : public Component, public FileDragAndDropTarget, public TextDragAndDropTarget
     {
         Colour colour;
         CabbagePluginEditor* owner;
@@ -270,6 +300,8 @@ private:
             //g.setOpacity (0);
             g.fillAll (colour);
         }
+        
+        bool isInterestedInFileDrag (const StringArray& /*files*/) override{ return true; }
         void fileDragEnter (const StringArray& /*files*/, int /*x*/, int /*y*/) override{}
         void fileDragMove (const StringArray& /*files*/, int /*x*/, int /*y*/) override {}
         void fileDragExit (const StringArray& /*files*/) override {}
@@ -279,7 +311,17 @@ private:
 			owner->sendChannelDataToCsound(CabbageIdentifierIds::mousey, y); 
             owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastFileDropped, files[0]);
         }
-        bool isInterestedInFileDrag (const StringArray& /*files*/) override{ return true; }
+        
+        bool isInterestedInTextDrag (const String& /*files*/) override{ return true; }
+        void textDragEnter (const String& /*files*/, int /*x*/, int /*y*/) override {}
+        void textDragMove (const String& /*files*/, int /*x*/, int /*y*/) override {}
+        void textDragExit (const String& /*files*/) override {}
+        void textDropped (const String& text, int x, int y) override
+        {
+            owner->sendChannelDataToCsound(CabbageIdentifierIds::mousex, x);
+            owner->sendChannelDataToCsound(CabbageIdentifierIds::mousey, y);
+            owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastTextDropped, text);
+        }       
     };
 
     class ViewportContainer : public Component
@@ -309,6 +351,8 @@ private:
     OwnedArray<PopupDocumentWindow> popupPlants;
     String lastOpenedDirectory;
     MainComponent mainComponent;
+    float pluginSizes[7] = {.5, .75, 1, 1.25, 1.50, 1.75, 2};
+    
     int keyboardCount = 0;
     //int xyPadIndex = 0;
     int consoleCount = 0;

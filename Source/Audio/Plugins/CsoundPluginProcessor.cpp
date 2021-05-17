@@ -23,53 +23,27 @@
 #include "../../Widgets/CabbageWidgetData.h"
 
 
+
 //==============================================================================
-CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const AudioChannelSet ins, const AudioChannelSet outs)
-    : AudioProcessor (BusesProperties()
-#if ! JucePlugin_IsMidiEffect
-#if ! JucePlugin_IsSynth
-                                         .withInput  ("Input",  ins, true)
-#endif
-                                         .withOutput ("Output", outs, true)
-#endif
-                                        ),
-      csdFile (csdFile)
+CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const BusesProperties ioBuses)
+    : AudioProcessor (ioBuses),
+csdFile (csdFile)
 {
     hostInfo = {};
 	matchingNumberOfIOChannels = getTotalNumInputChannels() == getTotalNumOutputChannels() ? true : false;
-    numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
+
+#if ! JucePlugin_IsSynth && ! Cabbage_IDE_Build
+    numCsoundInputChannels = getTotalNumInputChannels();
+    numCsoundOutputChannels = getTotalNumOutputChannels();
+    CabbageUtilities::debug("Cabbage Csound Constructor - Requested input channels:", numCsoundInputChannels);
+    CabbageUtilities::debug("Cabbage Csound Constructor - Requested output channels:", numCsoundOutputChannels);
+
+#else
+    numCsoundOutputChannels = getTotalNumOutputChannels();
     CabbageUtilities::debug("Constructor - Requested output channels:", numCsoundOutputChannels);
-#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
-    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
-    CabbageUtilities::debug("Constructor - Requested input channels:", numCsoundInputChannels);
 #endif
-}
 
-//==============================================================================
-// side chain constructor
-//==============================================================================
-//==============================================================================
-CsoundPluginProcessor::CsoundPluginProcessor(File csdFile, const AudioChannelSet ins, const AudioChannelSet outs, const AudioChannelSet sideChainChannels)
-	: AudioProcessor(BusesProperties()
-#if ! JucePlugin_IsMidiEffect
-#if ! JucePlugin_IsSynth
-		.withInput("Input", ins, true).withInput("Sidechain", sideChainChannels, true)
-#endif
-		.withOutput("Output", outs, true)
-#endif
-	),
-	csdFile(csdFile)
-{
-    hostInfo = {};
-    numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
-#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
-
-    numCsoundInputChannels = getBus(true, 0)->getNumberOfChannels();
-#endif
-    //side chaining is supported, and matchingNumberOfIOChannels must false
-	matchingNumberOfIOChannels = false;
-	supportsSidechain = true;
-    numSideChainChannels = getBus(true, 1)->getNumberOfChannels();
+    
 }
 
 CsoundPluginProcessor::~CsoundPluginProcessor()
@@ -83,9 +57,10 @@ void CsoundPluginProcessor::resetCsound()
 
 	CabbageUtilities::debug("Plugin destructor");
 	Logger::setCurrentLogger(nullptr);
-
 	if (csound)
 	{
+        
+        //destroyCsoundGlobalVars();
 #if !defined(Cabbage_Lite)
 		csound = nullptr;
 #endif
@@ -95,8 +70,50 @@ void CsoundPluginProcessor::resetCsound()
 }
 
 //==============================================================================
+void CsoundPluginProcessor::destroyCsoundGlobalVars()
+{
+    if(getCsound())
+    {
+        CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+        if (pd != nullptr)
+            getCsound()->DestroyGlobalVariable("cabbageData");
+
+        CabbageWidgetIdentifiers** wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
+        if (wi != nullptr)
+            getCsound()->DestroyGlobalVariable("cabbageWidgetData");
+
+
+        CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
+        if (vt != nullptr) {
+            getCsound()->DestroyGlobalVariable("cabbageWidgetsValueTree");
+        }
+    }
+}
+
+void CsoundPluginProcessor::createCsoundGlobalVars(ValueTree cabbageData)
+{
+    CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+    if (pd == nullptr) {
+        getCsound()->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
+        pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+        *pd = new CabbagePersistentData();
+        auto pdClass = *pd;
+        pdClass->data = getInternalState().toStdString();
+    }
+
+
+    CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
+    if (vt == nullptr) {
+        getCsound()->CreateGlobalVariable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
+        vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
+        *vt = new CabbageWidgetsValueTree();
+        auto valueTree = *vt;
+        valueTree->data = cabbageData;
+    }
+}
+// 
 //==============================================================================
-bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File filePath, int sr, bool isMono, bool debugMode)
+bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File filePath, int sr, bool debugMode)
 {
     
     csdFile = currentCsdFile;
@@ -106,9 +123,15 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     for (auto line : csdLines)
     {
         ValueTree temp("temp");
+        
+        if(line.contains("populate") && line.contains("snaps") && line.contains("combobox"))
+            line = line.replace("combobox", "combobox channelType(\"string\")");
+        
         CabbageWidgetData::setWidgetState(temp, line, 0);
+        const String filetype = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::filetype);
+        const String typeOfWidget = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type);
 
-        if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
+        if (typeOfWidget == CabbageWidgetTypes::form)
         {
             if(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir).isNotEmpty()) {
                 const String opcodeDir = csdFile.getParentDirectory().getChildFile(
@@ -119,6 +142,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
                 preferredLatency = -1;
             }
         }
+
     }
     
     CabbageUtilities::debug(csdFile.getFullPathName());
@@ -126,17 +150,25 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     // the host should respect the default inputs and outs, which are determined by the
     // nhcnls and nchnls_i variables in Csound. But the host is king. If it requested a different
     // config, we must adhere to it.
-    numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
-    CabbageUtilities::debug("SetupAndCompile - Requested output channels:", numCsoundOutputChannels);
-#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
-    const int inputs = getBus(true, 0)->getNumberOfChannels();
+
+#if ! JucePlugin_IsSynth
+    const int inputs = getTotalNumInputChannels() - numSideChainChannels;
     numCsoundInputChannels = inputs + numSideChainChannels;
     CabbageUtilities::debug("SetupAndCompile - Requested input channels:", numCsoundInputChannels);
+#else
+    //numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
+    numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+    //numCsoundOutputChannels = getTotalNumOutputChannels();
 #endif
+
+
+    CabbageUtilities::debug("SetupAndCompile - Requested output channels:", numCsoundOutputChannels);
     //int test = csound->SetGlobalEnv("OPCODE6DIR64", );
     CabbageUtilities::debug("Env var set");
     //csoundSetOpcodedir("/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Opcodes64");
-    //Logger::writeToLog(String::formatted("Resetting csound ...\ncsound = 0x%p", csound.get()));
+    
+    Logger::writeToLog(String::formatted("Resetting csound ...\ncsound = 0x%p", csound.get()));
+
 	csound.reset (new Csound());
     
 	csdFilePath = filePath;
@@ -144,6 +176,79 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 	csound->SetHostImplementedMIDIIO(true);
 	csound->SetHostImplementedAudioIO(1, 0);
 	csound->SetHostData(this);
+
+    csnd::plugin<StrToFile>((csnd::Csound*) csound->GetCsound(), "strToFile.SSO", "i", "SSO", csnd::thread::i);
+    csnd::plugin<FileToStr>((csnd::Csound*) csound->GetCsound(), "fileToStr.i", "S", "S", csnd::thread::i);
+
+    csnd::plugin<ChannelStateSave>((csnd::Csound*) csound->GetCsound(), "cabbageChannelStateSave.i", "i", "S", csnd::thread::i);
+    csnd::plugin<ChannelStateSave>((csnd::Csound*) csound->GetCsound(), "cabbageChannelStateSave.k", "k", "S", csnd::thread::k);
+
+    csnd::plugin<ChannelStateRecall>((csnd::Csound*) csound->GetCsound(), "cabbageChannelStateRecall.i", "i", "S", csnd::thread::i);
+    csnd::plugin<ChannelStateRecall>((csnd::Csound*) csound->GetCsound(), "cabbageChannelStateRecall.k", "k", "SO", csnd::thread::k);
+    csnd::plugin<ChannelStateRecall>((csnd::Csound*) csound->GetCsound(), "cabbageChannelStateRecall.k", "k", "SS[]", csnd::thread::k);
+
+    
+    csnd::plugin<StrToArray>((csnd::Csound*) csound->GetCsound(), "strToArray.ii", "S[]", "SS", csnd::thread::i);
+    csnd::plugin<StrRemove>((csnd::Csound*) csound->GetCsound(), "strRemove.ii", "S", "SSo", csnd::thread::i);
+
+    csnd::plugin<WriteStateData>((csnd::Csound*) csound->GetCsound(), "cabbageWriteStateData.ss", "", "iS", csnd::thread::i);
+    csnd::plugin<ReadStateData>((csnd::Csound*) csound->GetCsound(), "cabbageReadStateData.i", "S", "", csnd::thread::ik);
+
+    csnd::plugin<GetStateFloatValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetStateValue.s", "i", "S", csnd::thread::i);
+    csnd::plugin<GetStateFloatValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetStateValue.s", "k", "S", csnd::thread::ik);
+    csnd::plugin<GetStateFloatValueArray>((csnd::Csound*) csound->GetCsound(), "cabbageGetStateValue.s", "k[]", "S", csnd::thread::ik);
+    csnd::plugin<GetStateFloatValueArray>((csnd::Csound*) csound->GetCsound(), "cabbageGetStateValue.s", "i[]", "S", csnd::thread::i);
+    csnd::plugin<GetStateStringValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetStateValue.s", "S", "S", csnd::thread::i);
+    csnd::plugin<GetStateStringValueArray>((csnd::Csound*) csound->GetCsound(), "cabbageGetStateValue.s", "S[]", "S", csnd::thread::ik);
+
+    csnd::plugin<SetStateFloatData>((csnd::Csound*) csound->GetCsound(), "cabbageSetStateValue.s", "", "Sk", csnd::thread::ik);
+    csnd::plugin<SetStateFloatData>((csnd::Csound*) csound->GetCsound(), "cabbageSetStateValue.s", "", "Si", csnd::thread::i);
+
+    csnd::plugin<SetStateFloatArrayData>((csnd::Csound*) csound->GetCsound(), "cabbageSetStateValue.s", "", "Si[]", csnd::thread::i);
+    csnd::plugin<SetStateFloatArrayData>((csnd::Csound*) csound->GetCsound(), "cabbageSetStateValue.s", "", "Sk[]", csnd::thread::ik);
+
+    csnd::plugin<SetStateStringData>((csnd::Csound*) csound->GetCsound(), "cabbageSetStateValue.s", "", "SS", csnd::thread::i);
+    csnd::plugin<SetStateStringData>((csnd::Csound*) csound->GetCsound(), "cabbageSetStateValue.s", "", "SS", csnd::thread::ik);
+
+    csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "cabbageSetStateValue.s", "", "SS[]", csnd::thread::i);
+    csnd::plugin<SetStateStringArrayData>((csnd::Csound*) csound->GetCsound(), "cabbageSetStateValue.s", "", "SS[]", csnd::thread::ik);
+
+    
+   
+    csnd::plugin<SetCabbageIdentifierITimeSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "SW", csnd::thread::i);
+    csnd::plugin<SetCabbageIdentifierITime>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "SSN", csnd::thread::i);
+
+    
+    //csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSW", csnd::thread::ik);
+    csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSS", csnd::thread::k);
+    csnd::plugin<SetCabbageIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSM", csnd::thread::k);
+    csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSW", csnd::thread::k);
+    
+    csnd::plugin<SetCabbageValueIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSetValue", "", "SkP", csnd::thread::ik);
+    
+    csnd::plugin<GetCabbageValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "k", "S", csnd::thread::ik);
+    csnd::plugin<GetCabbageValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "i", "S", csnd::thread::ik);
+    csnd::plugin<GetCabbageValueWithTrigger>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "kk", "S", csnd::thread::ik);
+    
+    csnd::plugin<GetCabbageStringValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "S", "S", csnd::thread::ik);
+    csnd::plugin<GetCabbageStringValueWithTrigger>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "Sk", "S", csnd::thread::ik);
+
+    csnd::plugin<GetCabbageIdentifierArray>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "k[]", "SS", csnd::thread::k);
+    csnd::plugin<GetCabbageIdentifierArray>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "i[]", "SS", csnd::thread::i);
+    csnd::plugin<GetCabbageStringIdentifierArray>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "S[]", "SS", csnd::thread::ik);
+    csnd::plugin<GetCabbageIdentifierSingle>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "k", "SS", csnd::thread::ik);
+    csnd::plugin<GetCabbageStringIdentifierSingle>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "S", "SS", csnd::thread::ik);
+
+    csnd::plugin<GetCabbageReservedChannelStringWithTrigger>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "Sk", "S", csnd::thread::ik);
+    csnd::plugin<GetCabbageReservedChannelString>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "S", "S", csnd::thread::ik);
+    
+    csnd::plugin<GetCabbageReservedChannelDataWithTrigger>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "kk", "S", csnd::thread::ik);
+    csnd::plugin<GetCabbageReservedChannelData>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "k", "S", csnd::thread::ik);
+
+    csnd::plugin<CreateCabbageWidget>((csnd::Csound*) csound->GetCsound(), "cabbageCreate", "", "SS", csnd::thread::i);
+
+    
+
 
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
@@ -174,25 +279,22 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 		csoundParams->ksmps_override = 4410;
 	}
 
-	
-    if(isMono)
+    if(hostRequestedMono)
     {
-        //this mode is for logic and cubase
+        //this mode is for logic and cubase as they both allow weird mono/stereo configs
         numCsoundOutputChannels = 1;
-        numCsoundInputChannels = 1 + (numSideChainChannels > 0 ? 1 : 0);
-        csoundParams->nchnls_override = numCsoundOutputChannels;
-        csoundParams->nchnls_i_override = numCsoundInputChannels;
-        if (supportsSidechain)
-        {
-            getBus(true, 1)->setNumberOfChannels(1);
-            numSideChainChannels = 1;
-        }
+        numCsoundInputChannels = 1;
+        csoundParams->nchnls_override = 1;
+        csoundParams->nchnls_i_override = 1;
     }
     else
     {
         csoundParams->nchnls_override = numCsoundOutputChannels;
         csoundParams->nchnls_i_override = numCsoundInputChannels;
     }
+//    csoundParams->nchnls_override = numCsoundOutputChannels;
+//    csoundParams->nchnls_i_override = numCsoundInputChannels;
+
     
     // Update the matchingNumberOfIOChannels flag so the MacOS auval tool doesn't crash when validating
     // different I/O channel configurations.
@@ -278,6 +380,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         return;
     }
     
+
     for (int i = 0; i < cabbageData.getNumChildren(); i++)
     {
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type);
@@ -285,14 +388,21 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         {
             const int latency = CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::latency);
             preferredLatency = latency;
+            //DBG(CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::width)
+            csound->SetChannel("SCREEN_WIDTH", CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::width));
+            csound->SetChannel("SCREEN_HEIGHT", CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::height));
         }
 
         if (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channeltype) == "string")
         {
             if (typeOfWidget == CabbageWidgetTypes::filebutton)
             {
-                csound->SetStringChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
+                const String mode = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::mode);
+                if( mode == "file" || mode == "save" || mode == "directory")
+                {
+                    csound->SetStringChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
                                           CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::file).toUTF8().getAddress());
+                }
             }
 
             else
@@ -367,17 +477,18 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
             }
             else
             {
-                const var value = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::value);
-                csound->SetChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
-                                    float (value));
+                const float value = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::value);
+                const String channel = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel);
+                csound->SetChannel (channel.getCharPointer(), value);
             }
 
         }
 
     }
 
-
-
+   // createCsoundGlobalVars(cabbageData);
+    
+    
     if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win32)
     {
         csound->SetChannel ("CSD_PATH", csdFilePath.getParentDirectory().getFullPathName().replace ("\\", "\\\\").toUTF8().getAddress());
@@ -392,6 +503,8 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     csound->SetChannel ("IS_EDITOR_OPEN", 0.0);
     csdFilePath.setAsCurrentWorkingDirectory();
 
+    DBG(File::getSpecialLocation (File::userHomeDirectory).getFileIdentifier());
+    csound->SetChannel("HOME_FOLDER_UID", File::getSpecialLocation (File::userHomeDirectory).getFileIdentifier());
 
     time_t seconds_past_epoch = time(0);
     csound->SetChannel("SECONDS_SINCE_EPOCH", (intmax_t)seconds_past_epoch);
@@ -419,7 +532,8 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("WINDOWS", 1.0);
     }
 
-    csound->SetChannel ("AUTOMATION", 0.0);
+    //csound->SetChannel ("CHNSET_GESTURES", 0.0);
+    
 #if !defined(Cabbage_IDE_Build)
     PluginHostType pluginType;
     if (pluginType.isFruityLoops())
@@ -507,14 +621,13 @@ void CsoundPluginProcessor::addMacros (String csdText)
             if (csdArray[i].trim().substring (0, 7) == "#define")
             {
 			    StringArray tokens;
-//              CabbageUtilities::debug(csdArray[i]);
+                //CabbageUtilities::debug(csdArray[i]);
                 tokens.addTokens (csdArray[i].replace ("#", "").trim() , " ");
-//              CabbageUtilities::debug(tokens[0]);
-                macroName = tokens[1];
-                tokens.remove (0);
+                tokens.removeEmptyStrings();
+                macroName = tokens[1].trim();
                 tokens.remove (0);
                 macroText = "\"" + tokens.joinIntoString (" ").replace (" ", "\ ").replace("\"", "\\\"")+"\"";
-                macroText = tokens.joinIntoString(" ");
+                //macroText = tokens.joinIntoString(" ");
                 String fullMacro = "--omacro:" + macroName + "=" + macroText;// + "\"";
                 csound->SetOption (fullMacro.toUTF8().getAddress());
             }
@@ -710,38 +823,31 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     if (pluginType.isCubase())
         hostIsCubase = true;
 #endif
-    
+
+    const int inputs = getTotalNumInputChannels();
+    const int outputs = getTotalNumOutputChannels();
+
 #if ! JucePlugin_IsSynth
-    const int inputs = getBus(true, 0)->getNumberOfChannels();
+    if(getBusesLayout().getMainOutputChannelSet() == AudioChannelSet::mono())
+        hostRequestedMono = true;
+    CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - inputBuses:", getBusCount(true));
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - inputs:", inputs);
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested input channels:", numCsoundInputChannels);
 #endif
-    const int outputs = getBus(false, 0)->getNumberOfChannels();
+    //const int outputs = getBus(false, 0)->getNumberOfChannels();
+    CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - outputBuses:", getBusCount(false));
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - outputs:", outputs);
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested output channels:", numCsoundOutputChannels);
 
-    int sideChainChannels = 0;
-    if (supportsSidechain)
-    {
-        numSideChainChannels = getBus(true, 0)->getNumberOfChannels();
-    }
-    
-    
     if((samplingRate != sampleRate)
-       || hostRequestedMono
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
        || numCsoundInputChannels != inputs
 #endif
-       || numCsoundOutputChannels != outputs 
-       || numSideChainChannels != sideChainChannels)
+       || numCsoundOutputChannels != outputs)
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = sampleRate;
-        //allow mono plugins for Logic only..
-        if(hostRequestedMono == true)
-            setupAndCompileCsound(csdFile, csdFilePath, samplingRate, true);
-        else
-            setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
+        setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
 
     if (preferredLatency == -1)
@@ -756,98 +862,6 @@ void CsoundPluginProcessor::releaseResources()
     // spare memory, etc.
 }
 
-bool CsoundPluginProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
-{
-
-#if JucePlugin_IsMidiEffectz
-        ignoreUnused (layouts);
-        return true;
-#else
-    
-    const AudioChannelSet& mainInput  = layouts.getMainInputChannelSet();
-    const AudioChannelSet& mainOutput = layouts.getMainOutputChannelSet();
-    
-    CabbageUtilities::debug("MainOutputSize:", mainOutput.size());
-    CabbageUtilities::debug("MainInputSize:", mainInput.size());
-    
-    if(AudioProcessor::wrapperType == wrapperType_AudioUnit)
-    {
-#if  JucePlugin_IsSynth
-        //synth can only be mono or stereo...
-//        if (mainInput.size() == 0 && mainOutput.size() == 1)
-//            return true;
-//        if (mainInput.size() == 0 && mainOutput.size() == 2)
-//            return true;
-        if (mainInput.size() == 0 && mainOutput.size() == numCsoundOutputChannels)
-            return true;
-
-#else
-#if !defined(Cabbage_IDE_Build) && !defined(Cabbage_Lite)
-        if (PluginHostType().isReaper())
-        {
-            if(numSideChainChannels > 0)
-            {
-                if ((mainInput.size() == numCsoundInputChannels - numSideChainChannels || mainInput.size() == mainOutput.size())
-                    && mainOutput.size() == numCsoundOutputChannels)
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                if(mainInput.size() == numCsoundInputChannels && mainOutput.size() == numCsoundOutputChannels)
-                    return true;
-            }
-            
-        }
-        else
-#endif
-        {   //hack to get passed AU validation in logic
-            
-        if((mainInput.size()> 0 && mainInput.size()<32) && (mainOutput.size()>0 && mainOutput.size()<32))
-            return true;
-        }
-#endif
-        return false;
-    }
-
-#if defined(Cabbage_IDE_Build) && defined(Cabbage_Lite)
-    if(mainInput.size() == numCsoundInputChannels && mainOutput.size() == numCsoundOutputChannels)
-        return true;
-#endif
-    
-    if ((mainInput.size() == numCsoundInputChannels - numSideChainChannels || mainInput.size() == mainOutput.size()) 
-        && mainOutput.size() == numCsoundOutputChannels)
-    {
-        return true;
-    }
-        
-
-//    if(numSideChainChannels==0)
-    if (mainInput.size() == 1 && mainOutput.size() == 1)
-    {
-#if defined(Cabbage_IDE_Build)
-        return true;
-#else
-        if (PluginHostType().isReaper())
-        {
-            // Return `false` to make Reaper test for layouts other than 1 in and 1 out.
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-#endif
-    }
-        
-
-    return false;
-    
-#endif
-
-}
-
 //==========================================================================
 void CsoundPluginProcessor::triggerCsoundEvents()
 {
@@ -856,8 +870,21 @@ void CsoundPluginProcessor::triggerCsoundEvents()
 
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
-    getChannelDataFromCsound();
-    sendChannelDataToCsound();
+    if(polling == 1)
+    {
+        getChannelDataFromCsound();
+        sendChannelDataToCsound();
+    }
+    else if(polling == 0)
+    {
+        getIdentifierDataFromCsound();
+    }
+    else{
+        getChannelDataFromCsound();
+        sendChannelDataToCsound();
+        getIdentifierDataFromCsound();
+    }
+    
 }
 
 void CsoundPluginProcessor::sendHostDataToCsound()
@@ -889,17 +916,21 @@ void CsoundPluginProcessor::performCsoundKsmps()
 
 	if (result == 0)
 	{
-		//slow down calls to these functions, no need for them to be firing at k-rate
-		if (guiCycles > guiRefreshRate)
-		{
-			guiCycles = 0;
-			triggerAsyncUpdate();
-		}
-		else
-			++guiCycles;
-
+        //slow down calls to these functions, no need for them to be firing at k-rate
+        if(polling == true){
+        if (guiCycles > guiRefreshRate)
+        {
+            guiCycles = 0;
+            triggerAsyncUpdate();
+        }
+        else
+            ++guiCycles;
+        }
+        else{
+            triggerAsyncUpdate();
+        }
 		//trigger any Csound score event on each k-boundary
-		triggerCsoundEvents();
+		//triggerCsoundEvents();
 		sendHostDataToCsound();
 
 		disableLogging = false;
@@ -911,37 +942,36 @@ void CsoundPluginProcessor::performCsoundKsmps()
 	}
 }
 
+
 template< typename Type >
-void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type*& buffer, int pos)
+void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type* buffer, int samplePosition, int csndPosition)
 {
+    //csdPos should go from 0 to (ksmps * number of channels)...
 	if (bufferType == BufferType::inputOutput)
 	{
-		Type*& current_sample = buffer;
-		MYFLT sample = *current_sample * cs_scale;
-		CSspin[pos] = sample;
+       // DBG("Input/Output Buffer Pos: +" + String(csndPosition));
+        MYFLT sample = buffer[samplePosition] * cs_scale;
+        CSspin[csndPosition] = sample;
+        
         //if we want 0 latency, we have to fill Csound spin buffer before we call performKsmps()
         if (preferredLatency == -1)
             performCsoundKsmps();
-		*current_sample = (CSspout[pos] / cs_scale);
-		++current_sample;
+        buffer[samplePosition] = (CSspout[csndPosition] / cs_scale);
 	}
 	else if (bufferType == BufferType::output)
 	{
-		Type*& current_sample = buffer;
-		*current_sample = (CSspout[pos] / cs_scale);
-		++current_sample;
+        //DBG("Output Buffer Pos: +" + String(csndPosition));
+        buffer[samplePosition] = (CSspout[csndPosition] / cs_scale);
 	}
 	else //input
 	{
         if(buffer != nullptr)
         {
-			Type*& current_sample = buffer;
-            MYFLT newSamp = *current_sample * cs_scale;
-            CSspin[pos] = newSamp;
-            current_sample++;
+            //DBG("Input Buffer Pos: +" + String(csndPosition) + "\n");
+            CSspin[csndPosition] = buffer[samplePosition] * cs_scale;
         }
         else
-            CSspin[pos] = 0;
+            CSspin[csndPosition] = 0;
 	}
 }
 
@@ -973,22 +1003,20 @@ template< typename Type >
 void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuffer& midiMessages)
 {
 	ScopedNoDenormals noDenormals;
-	auto mainOutput = getBusBuffer(buffer, false, 0);
+    auto mainOutput = getBusBuffer(buffer, false, 0);
 #if !JucePlugin_IsSynth
-	auto mainInput = getBusBuffer(buffer, true, 0);
+    auto mainInput = getBusBuffer(buffer, true, 0);
 #endif
     
-    const Type** sideChainCubase = nullptr;
     Type** sideChainBuffer = nullptr;
 
 	if (supportsSidechain)
 	{
-        sideChainCubase = getBusBuffer(buffer, true, 1).getArrayOfReadPointers();
-		sideChainBuffer = getBusBuffer(buffer, true, 1).getArrayOfWritePointers();
-		numSideChainChannels = getBusBuffer(buffer, true, 1).getNumChannels();
+		sideChainBuffer = getBusBuffer(buffer, true, getBusCount(true)-1).getArrayOfWritePointers();
+		numSideChainChannels = getBusBuffer(buffer, true, getBusCount(true) - 1).getNumChannels();
 	}
 
-    Type** outputBuffer = mainOutput.getArrayOfWritePointers();
+    Type** ioBuffer = buffer.getArrayOfWritePointers();
 #if !JucePlugin_IsSynth
 	Type** inputBuffer = mainInput.getArrayOfWritePointers();
 #endif
@@ -1012,15 +1040,26 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 
 	if (csdCompiledWithoutError())
 	{
-		//mute unused channels
+		////mute unused channels
 		for (int channelsToClear = outputChannelCount; channelsToClear < getTotalNumOutputChannels(); ++channelsToClear)
 		{
 			buffer.clear(channelsToClear, 0, buffer.getNumSamples());
 		}
 
+//        for (auto busNr = 0; busNr < getBusCount(false); ++busNr)
+//        {
+//            auto busBuffer = getBusBuffer(buffer, false, busNr);
+//
+//            for (int channel = 0; channel < busBuffer.getNumChannels(); channel++)
+//            {
+//                busBuffer.clear(channel, 0, busBuffer.getNumSamples());
+//            }
+//        }
+
+
 		for (int i = 0; i < numSamples; i++, ++csndIndex)
 		{
-			if (csndIndex == csdKsmps)
+			if (csndIndex >= csdKsmps)
 			{
                 //don't call performKsmps here if we want 0 latency
                 if(preferredLatency != -1)
@@ -1030,7 +1069,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
             
             while(iter.getNextEvent (message, samplePos))
             {
-                //if current sample position matches time code for MIDI event, add it to buffer...
+                //if current sample position matches time code for MIDI event, add it to buffer that gets sent to Csound as incoming MIDI...
                 if(samplePos == i)
                     midiBuffer.addEvent(message, samplePos);
             }
@@ -1040,61 +1079,55 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 	
 #if !JucePlugin_IsSynth
             //if using Logic process inputs and outputs separately - otherwise its mono to stereo features break...
-			if (matchingNumberOfIOChannels && !isLogic)
-			{
-				pos = csndIndex * outputChannelCount;
-				for (int channel = 0; channel < outputChannelCount; channel++)
-				{
-					processCsoundIOBuffers(BufferType::inputOutput, outputBuffer[channel], pos);
-					pos++;
-				}
-			}
-			else if (!supportsSidechain)
-			{
-				pos = csndIndex * inputChannelCount;
-				for (int channel = 0; channel < inputChannelCount; channel++)
-				{
-					processCsoundIOBuffers(BufferType::input, inputBuffer[channel], pos);
-					pos++;
-				}
+//            if (matchingNumberOfIOChannels)
+//            {
+//
+//                pos = csndIndex * outputChannelCount;
+//                for (int channel = 0; channel < outputChannelCount; channel++)
+//                {
+//                    processCsoundIOBuffers(BufferType::inputOutput, ioBuffer[channel], i, pos);
+//                    pos++;
+//                }
+//            }
+//            else
+//            {
+                //process each bus
+                const int numInputBuses = getBusCount(true);
+                pos = csndIndex * inputChannelCount;
+            
+                for (int busIndex = 0; busIndex < numInputBuses; busIndex++)
+                {
+                    auto inputBus = getBusBuffer(buffer, true, busIndex);
+                    Type** inputBuffer = inputBus.getArrayOfWritePointers();
 
-				pos = csndIndex * outputChannelCount;
-				for (int channel = 0; channel < outputChannelCount; channel++)
-				{
-					processCsoundIOBuffers(BufferType::output, outputBuffer[channel], pos);
-					pos++;
-				}
-			}
-			else {
-				//sidechain processing
-				pos = csndIndex * inputChannelCount;
-				for (int channel = 0; channel < inputChannelCount; channel++)
-				{
-					if(channel< numSideChainChannels)
-						processCsoundIOBuffers(BufferType::input, inputBuffer[channel], pos);
-                    else{
-                        if(hostIsCubase)
-                            processCsoundIOSideChainBuffers(BufferType::input, sideChainCubase[channel-numSideChainChannels], pos);
-                        else
-                            processCsoundIOBuffers(BufferType::input, sideChainBuffer[channel-numSideChainChannels], pos);
+                    for (int channel = 0; channel < inputBus.getNumChannels(); channel++)
+                    {
+                        processCsoundIOBuffers(BufferType::input, inputBuffer[channel], i, pos++);
                     }
-					pos++;
-				}
+                }
 
-				pos = csndIndex * outputChannelCount;
-				for (int channel = 0; channel < outputChannelCount; channel++)
-				{
-					processCsoundIOBuffers(BufferType::output, outputBuffer[channel], pos);
-					pos++;
-				}
-			}
+                const int numOutputBuses = getBusCount(false);
+                pos = csndIndex* outputChannelCount;
+            
+                for (int busIndex = 0; busIndex < numOutputBuses; busIndex++)
+                {
+                    auto outputBus = getBusBuffer(buffer, false, busIndex);
+                    Type** outputBuffer = outputBus.getArrayOfWritePointers();
+
+                    for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
+                    {
+                        processCsoundIOBuffers(BufferType::output, outputBuffer[channel], i, pos++);
+                    }
+                }
 #else
-            pos = csndIndex * outputChannelCount;
+            const int channelNum = buffer.getNumChannels();
+            pos = csndIndex * channelNum;
             for (int channel = 0; channel < outputChannelCount; channel++)
             {
-                processCsoundIOBuffers(BufferType::output, outputBuffer[channel], pos);
+                processCsoundIOBuffers(BufferType::output, ioBuffer[channel], i, pos);
                 pos++;
             }
+
 #endif
 		}
     }//if not compiled just mute output

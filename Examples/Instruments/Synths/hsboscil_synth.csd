@@ -64,10 +64,10 @@ Rate	-	Rate of modulation used in the chorus effect
 
 
 <Cabbage>
-form caption("hsboscil Synth") size(590, 450), pluginid("hsbo") style("legacy")
+form caption("hsboscil Synth") size(590, 450), pluginId("hsbo") style("legacy")
 
 ;AMPLITUDE
-groupbox bounds(0, 0, 590, 100), colour( 10, 15, 30, 100) text("Amplitude"), fontcolour(255,0,0), plant("Amplitude") {
+groupbox bounds(0, 0, 590, 100), colour( 10, 15, 30, 100) text("Amplitude"), fontColour(255,0,0), plant("Amplitude") {
 rslider  bounds(  5, 30, 60, 60), text("Amp."), channel("amp"), range(0, 1, 0.3)
 line bounds( 65,  30, 2, 60), colour("DarkSlateGrey")
 rslider  bounds( 70, 30, 60, 60), text("Att."), channel("AAtt"), range(   0, 8.00, 0.3,0.5)
@@ -84,7 +84,7 @@ rslider bounds(525, 30, 60, 60), text("Rise"), channel("ARis"), range(0, 2.00, 0
 }
 
 ;BRIGHTNESS
-groupbox bounds(0, 100,450,170), colour( 6, 18, 22, 100), text("Brightness"), fontcolour(205,10,10), plant("Brightness") {
+groupbox bounds(0, 100,450,170), colour( 6, 18, 22, 100), text("Brightness"), fontColour(205,10,10), plant("Brightness") {
 rslider bounds(  5, 35, 60, 60), text("Brite"), channel("brite"), range(-6, 6.00, -2)
 rslider bounds(  5,100, 60, 60), text("Vel."), channel("BVelDep"), range(0, 6.00, 3)
 rslider bounds( 65, 35, 60, 60), text("Oct.Cnt."), channel("octcnt"), range(2, 20, 3, 1, 1)
@@ -105,19 +105,19 @@ rslider bounds(335,100, 60, 60), text("Rise"), channel("BRis"), range(0, 4.00, 1
 }
 
 ;NOISE
-groupbox bounds(450, 100, 70,170), colour( 20, 7, 19, 100), text("Noise"), fontcolour(255,40,60), plant("Noise") {
+groupbox bounds(450, 100, 70,170), colour( 20, 7, 19, 100), text("Noise"), fontColour(255,40,60), plant("Noise") {
 rslider  bounds(  5,  35, 60, 60), text("Rate"), channel("NRte"), range(16,10000, 1000, 0.5)
 rslider  bounds(  5, 100, 60, 60), text("Depth"), channel("NDep"), range(0, 1.00, 0.05, 0.5)
 }
 
 ;REVERB
-groupbox bounds(520,100, 70,170), colour( 3, 25, 11, 100), text("Reverb"), fontcolour(255,0,100), plant("Reverb") {
+groupbox bounds(520,100, 70,170), colour( 3, 25, 11, 100), text("Reverb"), fontColour(255,0,100), plant("Reverb") {
 rslider  bounds(  5, 35, 60, 60), text("Mix"), channel("RvbMix"), range(0, 1.00, 0.3)
 rslider  bounds(  5,100, 60, 60), text("Size"), channel("RvbSize"), range(0, 1.00, 0.82)
 }
 
 ;PITCH MOD.
-groupbox bounds(  0,270,350,100), colour( 20, 25, 40, 100), text("Pitch Modulation"), fontcolour(255,100,0), plant("PitchMod") {
+groupbox bounds(  0,270,350,100), colour( 20, 25, 40, 100), text("Pitch Modulation"), fontColour(255,100,0), plant("PitchMod") {
 label    bounds( 10, 35, 65, 12), text("Mod.Shape")
 combobox bounds( 10, 50, 65, 20), channel("pitchlfo"), value(1), text("sine", "splines", "S+H", "square")
 rslider  bounds( 80, 30, 60, 60), text("Rate"), channel("PRte"), range(0, 16.00, 0, 0.5)
@@ -128,12 +128,12 @@ rslider  bounds(280, 30, 60, 60), text("Risset"), channel("TRate"), range(-3.00,
 }
 
 ;FREQ. SHIFT
-groupbox bounds(350,270, 70,100), colour( 20,  5, 25, 100), text("Freq.Shift"), fontcolour(200,0,0), plant("FreqShift") {
+groupbox bounds(350,270, 70,100), colour( 20,  5, 25, 100), text("Freq.Shift"), fontColour(200,0,0), plant("FreqShift") {
 rslider  bounds(  5, 30, 60, 60), text("Freq."), channel("FShift"), range(-1000, 1000, -1000)
 }
 
 ;CHORUS
-groupbox bounds(420,270,170,100), colour( 3, 10, 13, 100), text("Chorus"), fontcolour(255,200,0), plant("Chorus") {
+groupbox bounds(420,270,170,100), colour( 3, 10, 13, 100), text("Chorus"), fontColour(255,200,0), plant("Chorus") {
 rslider  bounds(  5, 30, 60, 60), text("Mix"), channel("ChoMix"), range(0, 1.00, 1)
 rslider  bounds( 55, 30, 60, 60), text("Depth"), channel("ChoDep"), range(0, 0.100, 0.01,0.5,0.0001)
 rslider  bounds(105, 30, 60, 60), text("Rate"), channel("ChoRte"), range(0, 20.0, 4, 0.5)

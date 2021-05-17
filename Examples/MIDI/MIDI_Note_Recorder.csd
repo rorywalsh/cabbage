@@ -25,22 +25,22 @@
 ; Does not record controllers.
 
 <Cabbage>
-form caption("MIDI Note Recorder") size(445,110), pluginid("MRec") style("legacy")
+form caption("MIDI Note Recorder") size(445,110), pluginId("MRec") style("legacy")
 image                    bounds(  0,  0,445,110), colour(0,0,0)
-button   bounds( 10, 10, 60, 20), fontcolour:0(50,50,50), fontcolour:1(255,205,205), colour:0(10,0,0), colour:1(150,0,0), text("RECORD","RECORD"), channel("Record"), latched(1), radiogroup(1)
-button   bounds( 10, 40, 60, 20), fontcolour:0(50,50,50), fontcolour:1(205,255,205), colour:0(0,10,0), colour:1(0,150,0), text("PLAY","PLAY"), channel("Play"), latched(1), radiogroup(1)
-button   bounds( 10, 70, 60, 20), fontcolour:0(50,50,50), fontcolour:1(205,205,255), colour:0(0,0,10), colour:1(0,0,150), text("STOP","STOP"), channel("Stop"), latched(1), radiogroup(1), value(1)
+button   bounds( 10, 10, 60, 20), fontColour:0(50,50,50), fontColour:1(255,205,205), colour:0(10,0,0), colour:1(150,0,0), text("RECORD","RECORD"), channel("Record"), latched(1), radioGroup(1)
+button   bounds( 10, 40, 60, 20), fontColour:0(50,50,50), fontColour:1(205,255,205), colour:0(0,10,0), colour:1(0,150,0), text("PLAY","PLAY"), channel("Play"), latched(1), radioGroup(1)
+button   bounds( 10, 70, 60, 20), fontColour:0(50,50,50), fontColour:1(205,205,255), colour:0(0,0,10), colour:1(0,0,150), text("STOP","STOP"), channel("Stop"), latched(1), radioGroup(1), value(1)
 
-label    bounds( 80, 10, 50, 15), text("Buffer");, fontcolour("white")
+label    bounds( 80, 10, 50, 15), text("Buffer");, fontColour("white")
 combobox bounds( 80, 28, 50, 20), text("1","2","3","6","5","6","7","8"), value(1), channel("Buffer")
 
-rslider  bounds(140,  5, 60, 90), channel("Speed"), text("Speed"), range(0.125,8,1,0.5,0.001), textbox(1)
-rslider  bounds(210,  5, 60, 90), channel("Transpose"), text("Transpose"), range(-24,24,0,1,1), textbox(1)
-rslider  bounds(280,  5, 60, 90), channel("Velocity"), text("Velocity"), range(0.5,2,1,0.5,0.01), textbox(1)
+rslider  bounds(140,  5, 60, 90), channel("Speed"), text("Speed"), range(0.125,8,1,0.5,0.001), textBox(1)
+rslider  bounds(210,  5, 60, 90), channel("Transpose"), text("Transpose"), range(-24,24,0,1,1), textBox(1)
+rslider  bounds(280,  5, 60, 90), channel("Velocity"), text("Velocity"), range(0.5,2,1,0.5,0.01), textBox(1)
 
-button   bounds(350, 10, 90, 20), fontcolour:0(50,50,50), fontcolour:1(255,205,255), colour:0(10,0,10), colour:1(150,0,150), text("RETROGRADE","RETROGRADE"), channel("Retrograde"), latched(0)
-button   bounds(350, 40, 90, 20), fontcolour:0(50,50,50), fontcolour:1(205,255,255), colour:0(0,10,10), colour:1(0,150,150), text("SHUFFLE","SHUFFLE"), channel("Shuffle"), latched(0)
-button   bounds(350, 70, 90, 20), fontcolour:0(50,50,50), fontcolour:1(255,255,205), colour:0(10,10,0), colour:1(150,150,0), text("RESTORE","RESTORE"), channel("Restore"), latched(0)
+button   bounds(350, 10, 90, 20), fontColour:0(50,50,50), fontColour:1(255,205,255), colour:0(10,0,10), colour:1(150,0,150), text("RETROGRADE","RETROGRADE"), channel("Retrograde"), latched(0)
+button   bounds(350, 40, 90, 20), fontColour:0(50,50,50), fontColour:1(205,255,255), colour:0(0,10,10), colour:1(0,150,150), text("SHUFFLE","SHUFFLE"), channel("Shuffle"), latched(0)
+button   bounds(350, 70, 90, 20), fontColour:0(50,50,50), fontColour:1(255,255,205), colour:0(10,10,0), colour:1(150,150,0), text("RESTORE","RESTORE"), channel("Restore"), latched(0)
 
 </Cabbage>
 

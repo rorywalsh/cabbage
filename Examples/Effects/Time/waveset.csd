@@ -11,17 +11,17 @@
 ; (resetting the opcode will reset its internal buffer and cancel out any time displacement induced by wavelet repetitions) 
 
 <Cabbage>
-form caption("waveset") size(510, 90), pluginid("wset") style("legacy")
-image pos(0, 0), size(510, 90), colour("Green"), shape("rounded"), outlinecolour("Grey"), outlinethickness(4) 
-rslider bounds(5, 10, 70, 70),   text("Repeats"), channel("repeats"), range(1, 100, 1, 1, 1),   colour("yellow"), textcolour("white"), trackercolour("white")
-rslider bounds(70, 10, 70, 70),  text("Mult."),   channel("mult"),    range(1, 100, 1, 0.5, 1), colour("yellow"), textcolour("white"), trackercolour("white")
-checkbox bounds(140, 23, 100, 30),          channel("freeze"), text("Freeze"), value(0), colour("red"), fontcolour("white"), shape("ellipse")
+form caption("waveset") size(510, 90), pluginId("wset") style("legacy")
+image pos(0, 0), size(510, 90), colour("Green"), shape("rounded"), outlineColour("Grey"), outlineThickness(4) 
+rslider bounds(5, 10, 70, 70),   text("Repeats"), channel("repeats"), range(1, 100, 1, 1, 1),   colour("yellow"), textColour("white"), trackerColour("white")
+rslider bounds(70, 10, 70, 70),  text("Mult."),   channel("mult"),    range(1, 100, 1, 0.5, 1), colour("yellow"), textColour("white"), trackerColour("white")
+checkbox bounds(140, 23, 100, 30),          channel("freeze"), text("Freeze"), value(0), colour("red"), fontColour("white"), shape("ellipse")
 line bounds(220, 2, 3, 86), colour("Grey")
-button bounds(235, 15, 45,45), channel("reset"), text("Reset","Reset"), fontcolour:0("grey"), latched(0)
-rslider bounds(290, 10, 70, 70), text("Threshold"),  channel("thresh"), range(0, 1.00, 1), colour("orange"), textcolour("white"), trackercolour("white")
-rslider bounds(355, 10, 70, 70), text("Metro Rate"), channel("rate"),   range(0, 5.00, 0), colour("orange"), textcolour("white"), trackercolour("white")
+button bounds(235, 15, 45,45), channel("reset"), text("Reset","Reset"), fontColour:0("grey"), latched(0)
+rslider bounds(290, 10, 70, 70), text("Threshold"),  channel("thresh"), range(0, 1.00, 1), colour("orange"), textColour("white"), trackerColour("white")
+rslider bounds(355, 10, 70, 70), text("Metro Rate"), channel("rate"),   range(0, 5.00, 0), colour("orange"), textColour("white"), trackerColour("white")
 line bounds(430, 2, 3, 86), colour("Grey")
-rslider bounds(435,  10, 70, 70), text("Level"), channel("level"), range(0, 1.00, 0.7), colour(255,150, 50), textcolour("white"), trackercolour("white")
+rslider bounds(435,  10, 70, 70), text("Level"), channel("level"), range(0, 1.00, 0.7), colour(255,150, 50), textColour("white"), trackerColour("white")
 }
 </Cabbage>
 

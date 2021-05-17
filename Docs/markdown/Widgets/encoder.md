@@ -1,6 +1,10 @@
 # Endless encoder
 
-Encoder creates an endless rotary encoder similar to those found in certain well-known hardware samplers. Unlike regular sliders, *encoder* doesn't have a start and stop point. One may set a starting point, but after this the user can drag up or down as long as they like. By setting a very small slider increment these widgets can offer a level of fine grain control not possible with regular sliders. 
+Encoder creates an endless rotary encoder similar to those found in certain well-known hardware samplers. Unlike regular sliders, *encoder* doesn't typically have a start and stop point. By setting a very small slider increment these widgets can offer a level of fine grain control not possible with regular sliders. Note that these sliders do not use the range() identifier. But you can set min and max values using `min()` and `max()`.
+
+<video width="800" height="600" controls>
+<source src="../../images/docs/encoder.mp4">
+</video> 
 
 <big></pre>
 encoder WIDGET_SYNTAX
@@ -14,13 +18,13 @@ encoder WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/min.md !} 
 
-{! ./markdown/Widgets/Properties/outlinecolour.md !} 
+{! ./markdown/Widgets/Properties/outlineColour.md !} 
 
-{! ./markdown/Widgets/Properties/trackercolour.md !} 
+{! ./markdown/Widgets/Properties/trackerColour.md !} 
 
-{! ./markdown/Widgets/Properties/textbox.md !} 
+{! ./markdown/Widgets/Properties/textBox.md !} 
 
-{! ./markdown/Widgets/Properties/textcolour.md !} 
+{! ./markdown/Widgets/Properties/textColour.md !} 
 
 {! ./markdown/Widgets/Properties/text_slider.md !} 
 
@@ -40,70 +44,102 @@ encoder WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !}  
 
-{! ./markdown/Widgets/Properties/fontcolour.md !}   
+{! ./markdown/Widgets/Properties/fontColour.md !}   
 
-{! ./markdown/Widgets/Properties/identchannel.md !}  
+{! ./markdown/Widgets/Properties/identChannel.md !}  
 
 {! ./markdown/Widgets/Properties/popup.md !}
 
+{! ./markdown/Widgets/Properties/presetIgnore.md !} 
+
 {! ./markdown/Widgets/Properties/rotate.md !}  
 
-{! ./markdown/Widgets/Properties/svgfile.md !} 
+
 
 {! ./markdown/Widgets/Properties/value.md !}
 
-{! ./markdown/Widgets/Properties/valueprefix.md !}
+{! ./markdown/Widgets/Properties/valuePrefix.md !}
 
-{! ./markdown/Widgets/Properties/valuepostfix.md !}
+{! ./markdown/Widgets/Properties/valuePostfix.md !}
 
 {! ./markdown/Widgets/Properties/visible.md !}  
 
-{! ./markdown/Widgets/Properties/tofront.md !} 
+{! ./markdown/Widgets/Properties/toFront.md !} 
 
-{! ./markdown/Widgets/Properties/widgetarray.md !}  
+{! ./markdown/Widgets/Properties/widgetArray.md !}  
 
 <!--(End of identifiers)/-->
-
-![Button](../images/encoder.gif)
 
 ##Example
 <!--(Widget Example)/-->
 ```csharp
 <Cabbage>
-form caption("Encoder Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-encoder bounds(8, 38, 369, 50), channel("gain"), text("Gain") min(0), max(1), increment(.01) fontcolour(91, 46, 46, 255) textcolour(29, 29, 29, 255)
-groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-encoder bounds(70, 140, 41, 119) identchannel("widgetIdent"),  
+form caption("Encoder Example") size(380, 500), guiMode("queue"), colour(2, 145, 209) pluginId("def1")
+
+texteditor bounds(18, 281, 341, 204) channel("infoText"), readOnly(1), wrap(1), scrollbars(1)
+
+soundfiler bounds(18, 16, 339, 182), channel("soundfiler1"), file("Guitar3.wav") colour(147, 210, 0), tableBackgroundColour(0, 0, 0, 0)
+button bounds(18, 218, 84, 32) corners(5), channel("play"), text("Play", "Stop")
+
+encoder bounds(296, 204, 60, 60) channel("detune"), popupPrefix("Detune Amount: "), increment(0.001)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
--n -d -+rtmidi=NULL -M0 -m0d 
+-n -d -+rtmidi=NULL -M0 -m0d --midi-key=4 --midi-velocity-amp=5
 </CsOptions>
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
-ksmps = 32
+ksmps = 16
 nchnls = 2
 0dbfs = 1
 
-seed 0 
-;basic usage
+
+; Rory Walsh 2021 
+;
+; License: CC0 1.0 Universal
+; You can copy, modify, and distribute this file, 
+; even for commercial purposes, all without asking permission. 
+
 instr 1
-    aTone oscili chnget:k("gain"), 300
-    outs aTone, aTone    
+
+    SText  = "A rotary controller can provide a high degree of precision, and offer fine tunings over certain parameters. In this example two diskin2 opcode are playing back the same sound file. When we move the endless encoder we can detune one of the samples by manipulating its playback speed. This gives a quick and simple chorus effect.\n\nThe popup value of the encoder is prefixed with \"detune Amount\" to provide more information to the user. All widget can have popup text appear when you hover over them. Only sliders offer popupPrefix and popupPostFix options."    
+    cabbageSet "infoText", "text", SText
+
+    ;trigger playback of sample
+    kPlayState, kPlayTrig cabbageGetValue "play"
+    if kPlayTrig == 1 then
+        if kPlayState == 1 then
+            event "i", "SamplePlayback", 0, -1
+        else
+            turnoff2 nstrnum("SamplePlayback"), 0, 0
+        endif
+    endif    
+    
 endin
 
-;WIDGET_ADVANCED_USAGE
+
+instr SamplePlayback
+    
+    SFilename = "Guitar3.wav"
+    kDetune, kTrig cabbageGetValue "detune"    
+    iLen = filelen(SFilename)*sr
+    kScrubber phasor 1/(iLen/sr)
+    cabbageSet metro(20), "soundfiler1", "scrubberPosition", kScrubber*iLen
+    a1, a2 diskin2 SFilename, 1, 0, 1
+    a3, a4 diskin2 SFilename, 1+kDetune, 0, 1
+    aLeft = a1 + a3
+    aRight = a2 + a4
+    outs aLeft/2, aRight/2    
+        
+endin
+
 
 </CsInstruments>
 <CsScore>
 ;causes Csound to run for about 7000 years...
-f0 z
-;starts instrument 1 and runs it for a week
 i1 0 z
-i2 0 z
 </CsScore>
 </CsoundSynthesizer>
+
 ```
 <!--(Widget Example)/-->

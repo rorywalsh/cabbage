@@ -1,63 +1,55 @@
 <Cabbage>
-form caption("Label Example") size(400, 300), colour(220, 220, 220), pluginID("def1")
-label bounds(8, 6, 368, 20), text("Basic Usage"), fontcolour("black")
-groupbox bounds(8, 110, 380, 177), text("Randomly Updated Identifiers")
-label bounds(50, 38, 300, 18), channel("label1"), colour(20, 20, 20), text("Label. Click to send info to Csound")
-label bounds(110, 140, 165, 62) identchannel("widgetIdent")
+form caption("Label Example") size(380, 500), guiMode("queue"), colour(2, 145, 209) pluginId("def1")
+
+texteditor bounds(12, 244, 352, 228) channel("infoText"), readOnly(1), wrap(1), scrollbars(1)
+label bounds(38, 6, 303, 26) channel("heading"), text("LABELS WILL BE LABELS"), fontColour(255, 255, 255, 255)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
--n -d -+rtmidi=NULL -M0 -m0d 
-</CsOptions>
+-n -d -+rtmidi=NULL -M0 -m0d --midi-key=4 --midi-velocity-amp=5
+</CsOptions>e
 <CsInstruments>
 ; Initialize the global variables. 
-sr = 44100
-ksmps = 32
+ksmps = 16
 nchnls = 2
 0dbfs = 1
 
-seed 0 
-;basic usage
-instr 1 
-    aTone oscili chnget:k("label1"), 300
-    outs aTone, aTone    
-endin
+; Rory Walsh 2021 
+;
+; License: CC0 1.0 Universal
+; You can copy, modify, and distribute this file, 
+; even for commercial purposes, all without asking permission. 
 
-;WIDGET_ADVANCED_USAGE
+instr 1
 
-instr 2
-    if metro(1) == 1 then
-        event "i", "ChangeAttributes", 0, 1
+    SText  = "A label is a simple widget that can be used to display text the screen. They can act as simple buttons sending a 0 or 1 when they are clicked. Press once for 1, press again for 0, again for 1, etc.\n\nInstrument 1 creates 16 labels in a loop, each with a channel name 'label1', 'label2', 'label3', etc. This is done dynamically using the 'cabbageCreate' opcode. A metro in instr 1 triggers the various labels to appear, and controls both position and fontColour alpha values as the labels are displayed."
+    cabbageSet "infoText", "text", SText
+    
+    iWidgetCount init 0
+    while iWidgetCount < 16 do
+        SWidget sprintf "bounds(%d, %d, 200, 23), channel(\"label%d\"), text(\"Cabbage Label %d\"), fontColour(147, 210, 0, 0)", random:i(0, 330), random:i(0, 200), iWidgetCount, iWidgetCount
+        cabbageCreate "label", SWidget
+        iWidgetCount += 1
+    od   
+    
+    kIndex init 1
+    if metro(4) == 1 then
+        event "i", "DisplayLabel", 0, 2, kIndex+1
+        kIndex = (kIndex < 16 ? kIndex+1 : 0)
     endif
+
 endin
 
-instr ChangeAttributes
-    SIdentifier init ""
-	iChoice = rnd(300)
-	if iChoice > 0 && iChoice < 0 then
-	SIdentifier strcat SIdentifier, "align(\"left\") "
-	elseif iChoice > 100 && iChoice < 200 then
-	SIdentifier strcat SIdentifier, "align(\"centre\") "
-	else
-	SIdentifier strcat SIdentifier, "align(\"right\") "
-	endif
-	SIdent sprintf "corners(%d) ", rnd(100)/80
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "alpha(%f) ", 50 + rnd(50)/50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "pos(%d, 140) ", 100 + rnd(100)
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "size(%d, %d) ", abs(rnd(200))+40, abs(rnd(100))+50
-	SIdentifier strcat SIdentifier, SIdent
-	SIdent sprintf "colour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "fontcolour(%d, %d, %d) ", rnd(255), rnd(255), rnd(255)
-	SIdentifier strcat SIdentifier, SIdent  
-	SIdent sprintf "visible(%d) ", (rnd(100) > 80 ? 0 : 1)
-	SIdentifier strcat SIdentifier, SIdent
-    ;send identifier string to Cabbage
-    chnset SIdentifier, "widgetIdent"           
+instr DisplayLabel
+
+    SWidgetChannel sprintf "label%d", p4
+    iColour[] cabbageGet SWidgetChannel, "fontColour"
+    kAlpha line 255, p3, 0    
+    cabbageSet SWidgetChannel, "bounds", random:i(-100, 360), random:i(50, 200), 200, 23
+    cabbageSet metro(10), SWidgetChannel, "fontColour", iColour[0], iColour[1], iColour[2], kAlpha
+    
 endin
+
                 
 </CsInstruments>
 <CsScore>
@@ -65,6 +57,5 @@ endin
 f0 z
 ;starts instrument 1 and runs it for a week
 i1 0 z
-i2 0 z
 </CsScore>
 </CsoundSynthesizer>

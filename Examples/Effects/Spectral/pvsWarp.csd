@@ -2,16 +2,16 @@
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form caption("pvsWarp") size(535, 90), pluginid("warp") style("legacy")
-image pos(0, 0), size(535, 90), colour( 80, 80,135,220), shape("rounded"), outlinecolour("white"), outlinethickness(4) 
-rslider bounds( 10, 11, 70, 70), text("Scale"),    channel("scal"),      range(0.1, 4, 1, 0.5, 0.001), colour("LightSlateGrey"), textcolour("white"), trackercolour("white")
-rslider bounds( 80, 11, 70, 70), text("Shift"),    channel("shift"),     range(-5000, 5000, 0),        colour("LightSlateGrey"), textcolour("white"), trackercolour("white")
-rslider bounds(150, 11, 70, 70), text("Feedback"), channel("FB"),        range(0, 0.99, 0),            colour("LightSlateGrey"), textcolour("white"), trackercolour("white")
-label    bounds(220,20, 60,13), text("FFT Size"), fontcolour("white")
-combobox bounds(220,35, 60,20), text("128","256","512","1024","2048","4096","8192"), channel("att_table"), value(4), fontcolour("lightblue")
-checkbox bounds(290,30, 95,15), channel("DelayComp"), text("Delay Comp."), fontcolour("white"), colour("lightblue")
-rslider bounds(385, 11, 70, 70), text("Mix"),      channel("mix"),       range(0, 1.00, 1),            colour("LightSlateGrey"), textcolour("white"), trackercolour("white")
-rslider bounds(455, 11, 70, 70), text("Level"),    channel("lev"),       range(0, 1.00, 0.5),          colour("LightSlateGrey"), textcolour("white"), trackercolour("white")
+form caption("pvsWarp") size(535, 90), pluginId("warp") style("legacy")
+image pos(0, 0), size(535, 90), colour( 80, 80,135,220), shape("rounded"), outlineColour("white"), outlineThickness(4) 
+rslider bounds( 10, 11, 70, 70), text("Scale"),    channel("scal"),      range(0.1, 4, 1, 0.5, 0.001), colour("LightSlateGrey"), textColour("white"), trackerColour("white")
+rslider bounds( 80, 11, 70, 70), text("Shift"),    channel("shift"),     range(-5000, 5000, 0),        colour("LightSlateGrey"), textColour("white"), trackerColour("white")
+rslider bounds(150, 11, 70, 70), text("Feedback"), channel("FB"),        range(0, 0.99, 0),            colour("LightSlateGrey"), textColour("white"), trackerColour("white")
+label    bounds(220,20, 60,13), text("FFT Size"), fontColour("white")
+combobox bounds(220,35, 60,20), text("128","256","512","1024","2048","4096","8192"), channel("att_table"), value(4), fontColour("lightblue")
+checkbox bounds(290,30, 95,15), channel("DelayComp"), text("Delay Comp."), fontColour("white"), colour("lightblue")
+rslider bounds(385, 11, 70, 70), text("Mix"),      channel("mix"),       range(0, 1.00, 1),            colour("LightSlateGrey"), textColour("white"), trackerColour("white")
+rslider bounds(455, 11, 70, 70), text("Level"),    channel("lev"),       range(0, 1.00, 0.5),          colour("LightSlateGrey"), textColour("white"), trackerColour("white")
 </Cabbage>
 
 <CsoundSynthesizer>

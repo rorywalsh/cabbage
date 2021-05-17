@@ -7,7 +7,7 @@
 ; TRANSFORM warps the function output by GENERATOR in one of a variety of ways.
 ; (Can also be bypassed.)
 
-; RESCALE rescales the function to lie between the given limits.
+; RESCALE reScales the function to lie between the given limits.
 
 ; GENERATOR
 ; sine		-	sine wave LFO
@@ -15,7 +15,7 @@
 ; Square	-	square wave LFO
 ; Pulse		-	pulse wave LFO.
 ;			'Width' controls the percentage of the pulse which is on/high.
-;			N.B. the pulse wave can also be inverted by swapping using the rescale values
+;			N.B. the pulse wave can also be inverted by swapping using the reScale values
 ; Saw Up	-	upward sawtooth wave LFO
 ; Saw Dn	-	downward sawtooth wave LFO
 ; Randomi	-	interpolating random function generator
@@ -47,47 +47,47 @@
 ;			A value of zero disables this function.
 		
 <Cabbage>
-form caption("MIDI Function Generator"), size(560,115), pluginid("FnGn") style("legacy")
+form caption("MIDI Function Generator"), size(560,115), pluginId("FnGn") style("legacy")
 
-image    bounds(  5,  5,150,105), colour("black"), shape("rounded"), outlinethickness("4"), outlinecolour("white")
-label    bounds( 10,  9,140, 11), text("G E N E R A T O R"), fontcolour("WHITE")
+image    bounds(  5,  5,150,105), colour("black"), shape("rounded"), outlineThickness("4"), outlineColour("white")
+label    bounds( 10,  9,140, 11), text("G E N E R A T O R"), fontColour("WHITE")
 combobox bounds( 30, 30,100, 20), channel("generator"), text("Sine","Triangle","Square","Pulse","Saw Up","Saw Down","Randomi","Randomh","Rspline","Gauss.Noise","Exp.Noise","Rand.Loop")
-rslider  bounds( 10, 55, 50, 50), channel("frq"), text("Freq."), range(0.01,100,1,0.375,0.01), identchannel("frqID")
-rslider  bounds( 60, 55, 50, 50), channel("wid"), text("Width"), range(1,99,50,1,1), identchannel("widID"), visible(0)
-rslider  bounds( 60, 55, 50, 50), channel("DeReg"), text("Dereg."), range(0,4,0,1,0.001), identchannel("DeRegID"), visible(0)
-rslider  bounds( 10, 55, 50, 50), channel("frq1"), text("Freq.1"), range(0.01,100,1,0.5,0.01), identchannel("frq1ID"), visible(0)
-rslider  bounds( 60, 55, 50, 50), channel("frq2"), text("Freq.2"), range(0.01,100,1,0.5,0.01), identchannel("frq2ID"), visible(0)
-rslider  bounds( 10, 55, 50, 50), channel("lambda"), text("Lambda"), range(0.01,1,0.125,0.5,0.001), identchannel("lambdaID"), visible(0)
-combobox bounds( 56, 60, 45, 20), channel("number"), text("2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"), value(7), identchannel("numberID"), visible(0)
-label    bounds( 56, 80, 45, 12), text("Number"), identchannel("numberID2"), visible(0)
-button   bounds(108, 60, 42, 23), text("Reset","Reset"), channel("reset"), latched(0), identchannel("resetID"), visible(0)
+rslider  bounds( 10, 55, 50, 50), channel("frq"), text("Freq."), range(0.01,100,1,0.375,0.01), identChannel("frqID")
+rslider  bounds( 60, 55, 50, 50), channel("wid"), text("Width"), range(1,99,50,1,1), identChannel("widID"), visible(0)
+rslider  bounds( 60, 55, 50, 50), channel("DeReg"), text("Dereg."), range(0,4,0,1,0.001), identChannel("DeRegID"), visible(0)
+rslider  bounds( 10, 55, 50, 50), channel("frq1"), text("Freq.1"), range(0.01,100,1,0.5,0.01), identChannel("frq1ID"), visible(0)
+rslider  bounds( 60, 55, 50, 50), channel("frq2"), text("Freq.2"), range(0.01,100,1,0.5,0.01), identChannel("frq2ID"), visible(0)
+rslider  bounds( 10, 55, 50, 50), channel("lambda"), text("Lambda"), range(0.01,1,0.125,0.5,0.001), identChannel("lambdaID"), visible(0)
+combobox bounds( 56, 60, 45, 20), channel("number"), text("2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"), value(7), identChannel("numberID"), visible(0)
+label    bounds( 56, 80, 45, 12), text("Number"), identChannel("numberID2"), visible(0)
+button   bounds(108, 60, 42, 23), text("Reset","Reset"), channel("reset"), latched(0), identChannel("resetID"), visible(0)
 
-image    bounds(160,  5,130,105), colour("black"), shape("rounded"), outlinethickness("4"), outlinecolour("white"), plant("transform") {
-label    bounds(  5,  9,120, 11), text("T R A N S F O R M"), fontcolour("WHITE")
+image    bounds(160,  5,130,105), colour("black"), shape("rounded"), outlineThickness("4"), outlineColour("white"), plant("transform") {
+label    bounds(  5,  9,120, 11), text("T R A N S F O R M"), fontColour("WHITE")
 combobox bounds( 15, 30,100, 20), channel("transform"), text("Bypass","Port","Lineto","Samp.Hold","Power Skew","Limit Skew","Gauss.Noise","Dual Port.","Quantise")
-rslider  bounds( 40, 55, 50, 50), channel("time"), text("Time"), range(0.002,1,0.1,0.5,0.001), identchannel("timeID"), visible(0)
-rslider  bounds( 15, 55, 50, 50), channel("timeUp"), text("Time Up"), range(0.002,1,0.003,0.5,0.001), identchannel("timeUpID"), visible(0)
-rslider  bounds( 65, 55, 50, 50), channel("timeDn"), text("Time Dn."), range(0.002,1,0.1,0.5,0.001), identchannel("timeDnID"), visible(0)
-rslider  bounds( 40, 55, 50, 50), channel("rate"), text("Rate"), range(0.1,50,3,0.5,0.001), identchannel("rateID"), visible(0)
-rslider  bounds( 40, 55, 50, 50), channel("power"), text("Power"), range(0.01,20,3,0.5,0.01), identchannel("powerID"), visible(0)
-rslider  bounds( 40, 55, 50, 50), channel("amount"), text("Amount"), range(0,1,0.1,0.5,0.01), identchannel("amountID"), visible(0)
-rslider  bounds( 40, 55, 50, 50), channel("LimSkew"), text("Amount"), range(0.1,20,1,0.5,0.01), identchannel("LimSkewID"), visible(0)
-rslider  bounds( 40, 55, 50, 50), channel("QuantVal"), text("Value"), range(0,1,0.1,1,0.01), identchannel("QuantValID"), visible(0)
+rslider  bounds( 40, 55, 50, 50), channel("time"), text("Time"), range(0.002,1,0.1,0.5,0.001), identChannel("timeID"), visible(0)
+rslider  bounds( 15, 55, 50, 50), channel("timeUp"), text("Time Up"), range(0.002,1,0.003,0.5,0.001), identChannel("timeUpID"), visible(0)
+rslider  bounds( 65, 55, 50, 50), channel("timeDn"), text("Time Dn."), range(0.002,1,0.1,0.5,0.001), identChannel("timeDnID"), visible(0)
+rslider  bounds( 40, 55, 50, 50), channel("rate"), text("Rate"), range(0.1,50,3,0.5,0.001), identChannel("rateID"), visible(0)
+rslider  bounds( 40, 55, 50, 50), channel("power"), text("Power"), range(0.01,20,3,0.5,0.01), identChannel("powerID"), visible(0)
+rslider  bounds( 40, 55, 50, 50), channel("amount"), text("Amount"), range(0,1,0.1,0.5,0.01), identChannel("amountID"), visible(0)
+rslider  bounds( 40, 55, 50, 50), channel("LimSkew"), text("Amount"), range(0.1,20,1,0.5,0.01), identChannel("LimSkewID"), visible(0)
+rslider  bounds( 40, 55, 50, 50), channel("QuantVal"), text("Value"), range(0,1,0.1,1,0.01), identChannel("QuantValID"), visible(0)
 }
 
-image    bounds(295,  5,130,105), colour("black"), shape("rounded"), outlinethickness("4"), outlinecolour("white"), plant("scale") {
-label    bounds(  5,  9,120, 11), text("S C A L E"), fontcolour("WHITE")
+image    bounds(295,  5,130,105), colour("black"), shape("rounded"), outlineThickness("4"), outlineColour("white"), plant("scale") {
+label    bounds(  5,  9,120, 11), text("S C A L E"), fontColour("WHITE")
 rslider  bounds( 10, 25, 55, 55), channel("ScaleMin"), text("Min"), range(0,127,0,  1,1)
 rslider  bounds( 65, 25, 55, 55), channel("ScaleMax"), text("Max"), range(0,127,127,1,1)
 checkbox bounds( 20, 83, 70, 12), channel("ScaleInt"), text("Integers")
 
 }
 
-image    bounds(430,  5,130,105), colour("black"), shape("rounded"), outlinethickness("4"), outlinecolour("white"), plant("output") {
-label    bounds(  5,  9,120, 11), text("O U T P U T"), fontcolour("WHITE")
-label    bounds( 25, 22, 80, 12), text("Channel"), fontcolour("WHITE")
+image    bounds(430,  5,130,105), colour("black"), shape("rounded"), outlineThickness("4"), outlineColour("white"), plant("output") {
+label    bounds(  5,  9,120, 11), text("O U T P U T"), fontColour("WHITE")
+label    bounds( 25, 22, 80, 12), text("Channel"), fontColour("WHITE")
 combobox bounds( 25, 35, 80, 20), channel("channel"), text("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"), value(1)
-label    bounds( 25, 57, 80, 12), text("Controller"), fontcolour("WHITE")
+label    bounds( 25, 57, 80, 12), text("Controller"), fontColour("WHITE")
 combobox bounds( 25, 70, 80, 20), channel("controller"), text("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122","123","124","125","126","127"), value(1)
 }
 </Cabbage>

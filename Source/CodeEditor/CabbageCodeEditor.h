@@ -22,6 +22,7 @@
 #include "../CabbageIds.h"
 #include "CsoundTokeniser.h"
 #include "../CabbageCommonHeaders.h"
+#include "../Utilities/CabbageStrings.h"
 
 
 class CabbageEditorContainer;
@@ -202,7 +203,7 @@ public:
     Label debugLabel;
     //=========================================================
     void setAllText (String text) {           getDocument().replaceAllContent (text);              }
-    void setOpcodeStrings (String opcodes) {  opcodeStrings.addLines (opcodes);                    }
+    void setOpcodeStrings () {  opcodeStrings = getOpcodeHints();                    }
     int getNumRows() override  {                       return variableNamesToShow.size();                  }
     bool hasFileChanged() {                  return getDocument().hasChangedSinceSavePoint();    }
     void setSavePoint() {                    getDocument().setSavePoint();                       }

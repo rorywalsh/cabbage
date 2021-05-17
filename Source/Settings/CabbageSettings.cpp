@@ -79,7 +79,8 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("CustomThemeDir", themePath);
     defaultPropSet->setValue ("DisableAutoComplete", 0);
     defaultPropSet->setValue ("DisableCompilerErrorWarning", 0);
-    defaultPropSet->setValue ("DisablePluginInfo", 0);
+    defaultPropSet->setValue ("DisableCabbageTagsWarning", 0);
+    defaultPropSet->setValue ("DisablePluginIdWarning", 0);
     defaultPropSet->setValue ("EditorColourScheme", 0);
     defaultPropSet->setValue ("EnableKioskMode", 0);
     defaultPropSet->setValue ("EnableNativePopup", 0);

@@ -63,6 +63,7 @@ CabbageEventSequencer::CabbageEventSequencer (ValueTree wData, CabbagePluginEdit
 
 CabbageEventSequencer::~CabbageEventSequencer()
 {
+    widgetData.removeListener(this);
     cells.getUnchecked (0)->clear();
     cells.clear();
 }
@@ -335,7 +336,7 @@ void CabbageEventSequencer::valueTreePropertyChanged (ValueTree& valueTree, cons
     else
     {
         repaint();
-        handleCommonUpdates(this, valueTree);      //handle common updates such as bounds, alpha, rotation, visible, etc
+        handleCommonUpdates(this, valueTree, false, prop);      //handle common updates such as bounds, alpha, rotation, visible, etc
         setColours(valueTree);
 
     }

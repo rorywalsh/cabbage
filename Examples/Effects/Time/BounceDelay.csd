@@ -31,36 +31,36 @@
 ; Note that the dry signal is included in amplitude and filtering shaping so depending on the three curve settings it may be filtered or even attenuated completely.
 	
 <Cabbage>
-form caption("Bounce Delay"), size(490,385), pluginid("BnDl") style("legacy")
-rslider   bounds( 10, 10, 70, 70), channel("TotalTime"), text("Total Time"), colour(  0, 40, 50), trackercolour(200,240,250), textcolour("white"), range(0.01, 4, 1.7, 0.5)
-rslider   bounds( 90, 10, 70, 70), channel("Number"), text("Number"),        colour(  0, 40, 50), trackercolour(200,240,250), textcolour("white"), range(1, 32,20, 1,1)
-rslider   bounds(170, 10, 70, 70), channel("Warp"), text("Warp"),            colour(  0, 40, 50), trackercolour(200,240,250), textcolour("white"), range(-3, 3, -0.5)
-rslider   bounds(250, 10, 70, 70), channel("Feedback"), text("Feedback"),    colour(  0, 40, 50), trackercolour(200,240,250), textcolour("white"), range(0, 1, 0)
-rslider   bounds(330, 10, 70, 70), channel("Mix"), text("Mix"),              colour(  0, 40, 50), trackercolour(200,240,250), textcolour("white"), range(0, 1, 0.5)
-rslider   bounds(410, 10, 70, 70), channel("Level"), text("Level"),          colour(  0, 40, 50), trackercolour(200,240,250), textcolour("white"), range(0, 1, 1)
+form caption("Bounce Delay"), size(490,385), pluginId("BnDl") style("legacy")
+rslider   bounds( 10, 10, 70, 70), channel("TotalTime"), text("Total Time"), colour(  0, 40, 50), trackerColour(200,240,250), textColour("white"), range(0.01, 4, 1.7, 0.5)
+rslider   bounds( 90, 10, 70, 70), channel("Number"), text("Number"),        colour(  0, 40, 50), trackerColour(200,240,250), textColour("white"), range(1, 32,20, 1,1)
+rslider   bounds(170, 10, 70, 70), channel("Warp"), text("Warp"),            colour(  0, 40, 50), trackerColour(200,240,250), textColour("white"), range(-3, 3, -0.5)
+rslider   bounds(250, 10, 70, 70), channel("Feedback"), text("Feedback"),    colour(  0, 40, 50), trackerColour(200,240,250), textColour("white"), range(0, 1, 0)
+rslider   bounds(330, 10, 70, 70), channel("Mix"), text("Mix"),              colour(  0, 40, 50), trackerColour(200,240,250), textColour("white"), range(0, 1, 0.5)
+rslider   bounds(410, 10, 70, 70), channel("Level"), text("Level"),          colour(  0, 40, 50), trackerColour(200,240,250), textColour("white"), range(0, 1, 1)
 
-rslider   bounds( 10,125, 70, 70), channel("AmpCurve"), text("Amp.Curve"),   colour(  0, 40, 50), trackercolour(200,240,250), textcolour("white"), range(-1, 1, -0.7)
+rslider   bounds( 10,125, 70, 70), channel("AmpCurve"), text("Amp.Curve"),   colour(  0, 40, 50), trackerColour(200,240,250), textColour("white"), range(-1, 1, -0.7)
 
-image     bounds( 90,100,180,100), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), plant("LPF"){
-label     bounds(  0,  3,180, 14), fontcolour("white"), text("L o w p a s s   F i l t e r")
-rslider   bounds( 10, 25, 70, 70), channel("LPFCurve"), text("Curve"),   colour(  0, 40, 50), trackercolour(200,240,250), textcolour("white"), range(-1, 1, -0.8)
-label     bounds( 80, 30, 80, 14), fontcolour("white"), text("Slope")
-combobox  bounds( 80, 45, 80, 20),  channel("LPFType"),text("Bypass","6dB/oct","12dB/oct"), colour(  0, 40, 50), textcolour("white"), value(2)
+image     bounds( 90,100,180,100), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), plant("LPF"){
+label     bounds(  0,  3,180, 14), fontColour("white"), text("L o w p a s s   F i l t e r")
+rslider   bounds( 10, 25, 70, 70), channel("LPFCurve"), text("Curve"),   colour(  0, 40, 50), trackerColour(200,240,250), textColour("white"), range(-1, 1, -0.8)
+label     bounds( 80, 30, 80, 14), fontColour("white"), text("Slope")
+combobox  bounds( 80, 45, 80, 20),  channel("LPFType"),text("Bypass","6dB/oct","12dB/oct"), colour(  0, 40, 50), textColour("white"), value(2)
 }
 
-image     bounds(285,100,180,100), colour(0,0,0,0), outlinecolour("white"), outlinethickness(1), plant("HPF"){
-label     bounds(  0,  3,180, 14), fontcolour("white"), text("H i g h p a s s   F i l t e r")
-rslider   bounds( 10, 25, 70, 70), channel("HPFCurve"), text("Curve"),   colour(  0, 40, 50), trackercolour(200,240,250), textcolour("white"), range(-1, 1, 0)
-label     bounds( 80, 30, 80, 14), fontcolour("white"), text("Slope")
-combobox  bounds( 80, 45, 80, 20),  channel("HPFType"),text("Bypass","6dB/oct","12dB/oct"), colour(  0, 40, 50), textcolour("white"), value(1)
+image     bounds(285,100,180,100), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), plant("HPF"){
+label     bounds(  0,  3,180, 14), fontColour("white"), text("H i g h p a s s   F i l t e r")
+rslider   bounds( 10, 25, 70, 70), channel("HPFCurve"), text("Curve"),   colour(  0, 40, 50), trackerColour(200,240,250), textColour("white"), range(-1, 1, 0)
+label     bounds( 80, 30, 80, 14), fontColour("white"), text("Slope")
+combobox  bounds( 80, 45, 80, 20),  channel("HPFType"),text("Bypass","6dB/oct","12dB/oct"), colour(  0, 40, 50), textColour("white"), value(1)
 }
 
-label     bounds( 10,370,110, 10), fontcolour(150,150,150), text("Iain McCurdy |2015|")
+label     bounds( 10,370,110, 10), fontColour(150,150,150), text("Iain McCurdy |2015|")
 
 ; display bars 
 image bounds( 18,218,454,124), colour(250,250,250), shape("sharp")
 image bounds( 20,220,450,120), colour( 20, 20, 20), shape("sharp"), plant("display") {
-image bounds(  -100,  0,  4,100), colour(250,250,250), shape(sharp), visible(1), widgetarray("Bars",32)
+image bounds(  -100,  0,  4,100), colour(250,250,250), shape(sharp), visible(1), widgetArray("Bars",32)
 }
 </Cabbage>
 

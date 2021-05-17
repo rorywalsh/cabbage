@@ -24,22 +24,22 @@
 ;			 Higher densities will result in higher amplitudes when stretching.
 
 <Cabbage>
-form caption("Time Slip"), size(700,210), pluginid("TmSl") style("legacy")
+form caption("Time Slip"), size(700,210), pluginId("TmSl") style("legacy")
 image                bounds(0,0,700,210), colour( 40, 40, 60), shape("sharp")
 groupbox bounds(  0,  0,700, 90), plant("SlowSlider"), text("Time Ratio"), colour(0,0,0,10) {
-hslider  bounds(  5, 15,690, 60), range(1,20,1,0.5,0.0001), channel("stretch"), trackercolour(140,140,160)
+hslider  bounds(  5, 15,690, 60), range(1,20,1,0.5,0.0001), channel("stretch"), trackerColour(140,140,160)
 label    bounds(  5, 65,690, 14), text("Time Stretch")
-button   bounds(  5, 65, 60, 18), fontcolour:0(50,50,50), fontcolour:1(205,255,205), colour:0(0,10,0), colour:1(150,250,150), text("Realtime","Realtime"),channel("realtime")
-button   bounds(630, 65, 60, 18), fontcolour:0(50,50,50), fontcolour:1(205,205,255), colour:0(0,0,10), colour:1(150,150,250), text("Freeze","Freeze"), channel("freeze")
+button   bounds(  5, 65, 60, 18), fontColour:0(50,50,50), fontColour:1(205,255,205), colour:0(0,10,0), colour:1(150,250,150), text("Realtime","Realtime"),channel("realtime")
+button   bounds(630, 65, 60, 18), fontColour:0(50,50,50), fontColour:1(205,205,255), colour:0(0,0,10), colour:1(150,150,250), text("Freeze","Freeze"), channel("freeze")
 }
 
-button   bounds( 60,145,90,18), fontcolour:0(50,50,50), fontcolour:1(255,205,205), colour:0(10,0,0), colour:1(250,150,150), text("Grain Scale","Grain Scale"), channel("GrainScale"), latched(1), value(1)
-rslider  bounds(170,100,80,95), range(1,50,4,1,1),         channel("overlaps"), valuetextbox(1), textbox(1), trackercolour(140,140,160), text("Overlaps")
-rslider  bounds(250,100,80,95), range(1,50,8,1,1),         channel("dens"),     valuetextbox(1), textbox(1), trackercolour(140,140,160), text("Density")
-rslider  bounds(330,100,80,95), range(0,1,0.05,0.5,0.001), channel("RndWhen"),  valuetextbox(1), textbox(1), trackercolour(140,140,160), text("Rand.When")
-rslider  bounds(410,100,80,95), range(0,1,0.05,0.5,0.001), channel("RndWhere"), valuetextbox(1), textbox(1), trackercolour(140,140,160), text("Rand.Where")
-rslider  bounds(490,100,80,95), range(0,1,0.5),            channel("wet"),      valuetextbox(1), textbox(1), trackercolour(140,140,160), text("Wet")
-rslider  bounds(570,100,80,95), range(0,1,1),              channel("level"),    valuetextbox(1), textbox(1), trackercolour(140,140,160), text("Level")
+button   bounds( 60,145,90,18), fontColour:0(50,50,50), fontColour:1(255,205,205), colour:0(10,0,0), colour:1(250,150,150), text("Grain Scale","Grain Scale"), channel("GrainScale"), latched(1), value(1)
+rslider  bounds(170,100,80,95), range(1,50,4,1,1),         channel("overlaps"), valueTextBox(1), textBox(1), trackerColour(140,140,160), text("Overlaps")
+rslider  bounds(250,100,80,95), range(1,50,8,1,1),         channel("dens"),     valueTextBox(1), textBox(1), trackerColour(140,140,160), text("Density")
+rslider  bounds(330,100,80,95), range(0,1,0.05,0.5,0.001), channel("RndWhen"),  valueTextBox(1), textBox(1), trackerColour(140,140,160), text("Rand.When")
+rslider  bounds(410,100,80,95), range(0,1,0.05,0.5,0.001), channel("RndWhere"), valueTextBox(1), textBox(1), trackerColour(140,140,160), text("Rand.Where")
+rslider  bounds(490,100,80,95), range(0,1,0.5),            channel("wet"),      valueTextBox(1), textBox(1), trackerColour(140,140,160), text("Wet")
+rslider  bounds(570,100,80,95), range(0,1,1),              channel("level"),    valueTextBox(1), textBox(1), trackerColour(140,140,160), text("Level")
 
 </Cabbage>
                     

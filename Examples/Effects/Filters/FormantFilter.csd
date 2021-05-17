@@ -7,26 +7,26 @@
 ; 'Freq.Mult.' is a factor by which all cutoff frequencies are multiplied by.
 
 <Cabbage>
-form caption("Formant Filter"), colour("SlateGrey"), size(550, 280), pluginid("form")   style("legacy")
+form caption("Formant Filter"), colour("SlateGrey"), size(550, 280), pluginId("form")   style("legacy")
 
-xypad bounds(5, 5, 350, 260), channel("x", "y"), rangex(0, 1, 0.5), rangey(0, 1, 0), text("upper edge:A E I | lower :U O"), fontcolour("white")
+xypad bounds(5, 5, 350, 260), channel("x", "y"), rangeX(0, 1, 0.5), rangeY(0, 1, 0), text("upper edge:A E I | lower :U O"), fontColour("white")
 
-vslider bounds(360,  0, 30,140), text("f1"), channel("f1"), range(0, 1.00, 1), textcolour("white")
-vslider bounds(380,  0, 30,140), text("f2"), channel("f2"), range(0, 1.00, 1), textcolour("white")
-vslider bounds(400,  0, 30,140), text("f3"), channel("f3"), range(0, 1.00, 1), textcolour("white")
-vslider bounds(420,  0, 30,140), text("f4"), channel("f4"), range(0, 1.00, 1), textcolour("white")
-vslider bounds(440,  0, 30,140), text("f5"), channel("f5"), range(0, 1.00, 1), textcolour("white")
+vslider bounds(360,  0, 30,140), text("f1"), channel("f1"), range(0, 1.00, 1), textColour("white")
+vslider bounds(380,  0, 30,140), text("f2"), channel("f2"), range(0, 1.00, 1), textColour("white")
+vslider bounds(400,  0, 30,140), text("f3"), channel("f3"), range(0, 1.00, 1), textColour("white")
+vslider bounds(420,  0, 30,140), text("f4"), channel("f4"), range(0, 1.00, 1), textColour("white")
+vslider bounds(440,  0, 30,140), text("f5"), channel("f5"), range(0, 1.00, 1), textColour("white")
 combobox bounds(365, 150,100, 20), channel("voice"), value(1), text("bass", "tenor", "countertenor", "alto", "soprano")
 combobox bounds(365, 180,100, 20), channel("filter"), value(1), text("reson 1", "reson 2", "butterworth")
-checkbox bounds(365, 210,100, 15), colour("yellow"), channel("balance"),  value(0), text("Balance"), fontcolour("white")
+checkbox bounds(365, 210,100, 15), colour("yellow"), channel("balance"),  value(0), text("Balance"), fontColour("white")
 
-label    bounds(365, 227,100, 12), text("Input Source"), fontcolour("white")
+label    bounds(365, 227,100, 12), text("Input Source"), fontColour("white")
 combobox bounds(365, 240,100, 20), channel("input"), value(1), text("Live", "Noise")
 
-rslider bounds(480,  5, 60, 60), text("BW.Mult"),   channel("BWMlt"),  range(0.01, 4, 1, 0.4), textcolour("white")
-rslider bounds(480, 70, 60, 60), text("Freq.Mult"), channel("FrqMlt"), range(0.25, 4, 1, 0.4), textcolour("white")
-rslider bounds(480,140, 60, 60), text("Mix"),       channel("mix"),    range(0, 1.00, 1),      textcolour("white")
-rslider bounds(480,210, 60, 60), text("Gain"),      channel("gain"),   range(0, 5.00, 1, 0.5), textcolour("white")
+rslider bounds(480,  5, 60, 60), text("BW.Mult"),   channel("BWMlt"),  range(0.01, 4, 1, 0.4), textColour("white")
+rslider bounds(480, 70, 60, 60), text("Freq.Mult"), channel("FrqMlt"), range(0.25, 4, 1, 0.4), textColour("white")
+rslider bounds(480,140, 60, 60), text("Mix"),       channel("mix"),    range(0, 1.00, 1),      textColour("white")
+rslider bounds(480,210, 60, 60), text("Gain"),      channel("gain"),   range(0, 5.00, 1, 0.5), textColour("white")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

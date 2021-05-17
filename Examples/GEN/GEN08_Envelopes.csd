@@ -34,17 +34,17 @@
 
 
 <Cabbage>
-form caption("GEN08 Envelopes"), size(800, 510), pluginid("G8En"), guirefresh(32), colour(0,0,0) style("legacy")
+form caption("GEN08 Envelopes"), size(800, 510), pluginId("G8En"), guiRefresh(32), colour(0,0,0) style("legacy")
 
-gentable bounds( 10,  5,380,290), tablenumber(1), tablecolour("silver"), identchannel("table1"), amprange(0,1,1), zoom(-1), tablegridcolour(0,0,0,0), tablebackgroundcolour(20,20,20), outlinethickness(2), identchannel("table1")
+gentable bounds( 10,  5,380,290), tableNumber(1), tableColour("silver"), identChannel("table1"), ampRange(0,1,1), zoom(-1), tableGridColour(0,0,0,0), tableBackgroundColour(20,20,20), outlineThickness(2), identChannel("table1")
 label bounds(10, 5,140,12), text("3 Break-point Envelope"), align("left")
 
-gentable bounds(410,  5,380,290), tablenumber(2), tablecolour("silver"), identchannel("table2"), amprange(0,1,2), zoom(-1), tablegridcolour(0,0,0,0), tablebackgroundcolour(20,20,20), outlinethickness(2), identchannel("table2")
+gentable bounds(410,  5,380,290), tableNumber(2), tableColour("silver"), identChannel("table2"), ampRange(0,1,2), zoom(-1), tableGridColour(0,0,0,0), tableBackgroundColour(20,20,20), outlineThickness(2), identChannel("table2")
 label bounds(410, 5,140,12), text("4 Break-point Envelope"), align("left")
 
-label   bounds( -5, -5, 10, 10), text("1"), colour("white"), fontcolour("black"), identchannel("node1")
-label   bounds( -5, -5, 10, 10), text("2"), colour("white"), fontcolour("black"), identchannel("node2")
-label   bounds( -5, -5, 10, 10), text("3"), colour("white"), fontcolour("black"), identchannel("node3")
+label   bounds( -5, -5, 10, 10), text("1"), colour("white"), fontColour("black"), identChannel("node1")
+label   bounds( -5, -5, 10, 10), text("2"), colour("white"), fontColour("black"), identChannel("node2")
+label   bounds( -5, -5, 10, 10), text("3"), colour("white"), fontColour("black"), identChannel("node3")
 
 nslider  bounds( 10,300, 50,30), text("Value 1"), channel("aV1"), range(0,1,0,1,0.001)
 nslider  bounds( 60,300, 50,30), text("Dur. 1"),  channel("aD1"), range(0,1024,0,1,1)
@@ -54,10 +54,10 @@ nslider  bounds(210,300, 50,30), text("Value 3"), channel("aV3"), range(0,1,0,1,
 nslider  bounds(290,300, 50,30), text("Max"), channel("aMax"), range(0,1000,0,1,0.001)
 nslider  bounds(340,300, 50,30), text("Min"), channel("aMin"), range(-1000,0,0,1,0.001)
 
-label   bounds( -5, -5, 10, 10), text("1"), colour("white"), fontcolour("black"), identchannel("node4")
-label   bounds( -5, -5, 10, 10), text("2"), colour("white"), fontcolour("black"), identchannel("node5")
-label   bounds( -5, -5, 10, 10), text("3"), colour("white"), fontcolour("black"), identchannel("node6")
-label   bounds( -5, -5, 10, 10), text("4"), colour("white"), fontcolour("black"), identchannel("node7")
+label   bounds( -5, -5, 10, 10), text("1"), colour("white"), fontColour("black"), identChannel("node4")
+label   bounds( -5, -5, 10, 10), text("2"), colour("white"), fontColour("black"), identChannel("node5")
+label   bounds( -5, -5, 10, 10), text("3"), colour("white"), fontColour("black"), identChannel("node6")
+label   bounds( -5, -5, 10, 10), text("4"), colour("white"), fontColour("black"), identChannel("node7")
 
 nslider  bounds(410,300, 50,30), text("Value 1"), channel("bV1"), range(0,1,0,1,0.001)
 nslider  bounds(460,300, 50,30), text("Dur. 1"),  channel("bD1"), range(0,1024,0,1,1)
@@ -196,7 +196,7 @@ opcode	GEN08_3NodeEnvelope,kkkk,kiiiiiiSSSS
   iy2		limit	1-((i(ky2)+(iNodeSize*0.5)-iTabY)/iTabHeight), 0, 1
   iy3		limit	1-((i(ky3)+(iNodeSize*0.5)-iTabY)/iTabHeight), 0, 1
   gitable1	ftgen	ifn,0,1024,8*inorm,	iy1, ix2, iy2, 1023-ix2, iy3
-  Smsg		sprintf	"tablenumber(%d)",ifn
+  Smsg		sprintf	"tableNumber(%d)",ifn
   	 	chnset	Smsg,STabIdent
   rireturn
  endif
@@ -303,7 +303,7 @@ opcode	GEN08_4NodeEnvelope,kkkkkk,kiiiiiiSSSSS
   iy3		limit	1-((i(ky3)+(iNodeSize*0.5)-iTabY)/iTabHeight), 0, 1
   iy4		limit	1-((i(ky4)+(iNodeSize*0.5)-iTabY)/iTabHeight), 0, 1
   gitable1	ftgen	ifn,0,1024,8*inorm,	iy1, ix2, iy2, ix3, iy3, 1023-ix2-ix3, iy4
-  Smsg		sprintf	"tablenumber(%d)",ifn
+  Smsg		sprintf	"tableNumber(%d)",ifn
   	 	chnset	Smsg,STabIdent
   kx2o	init	ix2/ftlen(ifn)
   kx3o	init	ix3/ftlen(ifn)

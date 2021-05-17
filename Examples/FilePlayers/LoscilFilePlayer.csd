@@ -11,36 +11,36 @@
 ;  - loscil will take the values from the last control input moved.
 
 <Cabbage>
-form caption("Loscil File Player") size(685,340), colour(0,0,0) pluginid("Losc") style("legacy")
-image                    bounds(  0,  0,685,340), colour(30, 70, 30), outlinecolour("White"), line(3), shape("sharp")	; main panel colouration    
+form caption("Loscil File Player") size(685,340), colour(0,0,0) pluginId("Losc") style("legacy")
+image                    bounds(  0,  0,685,340), colour(30, 70, 30), outlineColour("White"), line(3), shape("sharp")	; main panel colouration    
 
-soundfiler bounds(  5,  5,675,175), channel("beg","len"), identchannel("filer1"),  colour(0, 255, 255, 255), fontcolour(160, 160, 160, 255), 
+soundfiler bounds(  5,  5,675,175), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
 
-image    bounds(  0,180,685,160), colour(0,0,0,0), outlinecolour("white"), line(2), shape("sharp"), plant("controls"){
-filebutton bounds(  5, 10, 80, 25), text("Open File","Open File"), fontcolour("white") channel("filename"), shape("ellipse")
-checkbox   bounds(  5, 40, 95, 25), channel("PlayStop"), text("Play/Stop"), colour("yellow"), fontcolour("white")
+image    bounds(  0,180,685,160), colour(0,0,0,0), outlineColour("white"), line(2), shape("sharp"), plant("controls"){
+filebutton bounds(  5, 10, 80, 25), text("Open File","Open File"), fontColour("white") channel("filename"), shape("ellipse")
+checkbox   bounds(  5, 40, 95, 25), channel("PlayStop"), text("Play/Stop"), colour("yellow"), fontColour("white")
 
-label      bounds(110, 12, 80, 12), text("Looping Mode"), fontcolour("white")
-combobox   bounds(110, 25, 80, 20), channel("loop"), items("None", "Forward", "Fwd./Bwd."), value(1), fontcolour("white")
+label      bounds(110, 12, 80, 12), text("Looping Mode"), fontColour("white")
+combobox   bounds(110, 25, 80, 20), channel("loop"), items("None", "Forward", "Fwd./Bwd."), value(1), fontColour("white")
 
-label      bounds(241,  4, 43, 8), text("L   O   O   P"), fontcolour("white")
-rslider    bounds(205, 15, 60, 60), channel("LoopStart"), range(0, 1, 0),                   colour( 50, 90, 50), text("Start"),     textcolour("white")
-rslider    bounds(260, 15, 60, 60), channel("LoopEnd"),   range(0, 1, 1),                   colour( 50, 90, 50), text("End"),       textcolour("white")
+label      bounds(241,  4, 43, 8), text("L   O   O   P"), fontColour("white")
+rslider    bounds(205, 15, 60, 60), channel("LoopStart"), range(0, 1, 0),                   colour( 50, 90, 50), text("Start"),     textColour("white")
+rslider    bounds(260, 15, 60, 60), channel("LoopEnd"),   range(0, 1, 1),                   colour( 50, 90, 50), text("End"),       textColour("white")
 line       bounds(320, 10,  2, 65), colour("Grey")
 
-label      bounds(357,  4, 53, 8), text("S   P   E   E   D"), fontcolour("white")
-rslider    bounds(325, 15, 60, 60), channel("transpose"), range(-24, 24, 0,1,1),            colour( 50, 90, 50), text("Transpose"), textcolour("white")
-rslider    bounds(380, 15, 60, 60), channel("speed"),     range( 0, 4.00, 1, 0.5),          colour( 50, 90, 50), text("Speed"),     textcolour("white")
+label      bounds(357,  4, 53, 8), text("S   P   E   E   D"), fontColour("white")
+rslider    bounds(325, 15, 60, 60), channel("transpose"), range(-24, 24, 0,1,1),            colour( 50, 90, 50), text("Transpose"), textColour("white")
+rslider    bounds(380, 15, 60, 60), channel("speed"),     range( 0, 4.00, 1, 0.5),          colour( 50, 90, 50), text("Speed"),     textColour("white")
 line       bounds(440, 10,  2, 65), colour("Grey")
 
-label      bounds(456,  4, 90, 8), text("E   N   V   E   L   O   P   E"), fontcolour("white")
-rslider    bounds(445, 15, 60, 60), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       colour( 50, 90, 50), text("Att.Tim"),   textcolour("white")
-rslider    bounds(500, 15, 60, 60), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour( 50, 90, 50), text("Rel.Tim"),   textcolour("white")
+label      bounds(456,  4, 90, 8), text("E   N   V   E   L   O   P   E"), fontColour("white")
+rslider    bounds(445, 15, 60, 60), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       colour( 50, 90, 50), text("Att.Tim"),   textColour("white")
+rslider    bounds(500, 15, 60, 60), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour( 50, 90, 50), text("Rel.Tim"),   textColour("white")
 line       bounds(560, 10,  2, 65), colour("Grey")
 
-label      bounds(580,  4, 80, 8), text("C   O   N   T   R   O   L"), fontcolour("white")
-rslider    bounds(565, 15, 60, 60), channel("MidiRef"),   range(0,127,60, 1, 1),            colour( 50, 90, 50), text("MIDI Ref."), textcolour("white")
-rslider    bounds(620, 15, 60, 60), channel("level"),     range(  0,  3.00, 1, 0.5),        colour( 50, 90, 50), text("Level"),     textcolour("white")
+label      bounds(580,  4, 80, 8), text("C   O   N   T   R   O   L"), fontColour("white")
+rslider    bounds(565, 15, 60, 60), channel("MidiRef"),   range(0,127,60, 1, 1),            colour( 50, 90, 50), text("MIDI Ref."), textColour("white")
+rslider    bounds(620, 15, 60, 60), channel("level"),     range(  0,  3.00, 1, 0.5),        colour( 50, 90, 50), text("Level"),     textColour("white")
 
 keyboard bounds(5, 80, 675, 75)
 }

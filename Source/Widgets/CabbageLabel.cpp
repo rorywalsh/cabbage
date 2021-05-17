@@ -32,7 +32,8 @@ CabbageLabel::CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner)
     fontcolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)),
     align (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align)),
     textAlign (Justification::centred),
-    widgetData (wData)
+    widgetData (wData),
+    lookAndFeel()
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
 
@@ -40,6 +41,8 @@ CabbageLabel::CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner)
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
     textAlign = CabbageUtilities::getJustification (align);
+    
+    lookAndFeel.customFont = owner->customFont;
 
 }
 
@@ -48,9 +51,8 @@ void CabbageLabel::paint (Graphics& g)
     g.setColour (Colour::fromString (colour));
     g.fillRoundedRectangle (getLocalBounds().toFloat(), corners);
     g.setColour (Colour::fromString (fontcolour));
-    g.setFont (CabbageUtilities::getComponentFont (fontstyle));
-//    Label tmp;
-//    g.setFont (getLookAndFeel().getLabelFont(tmp).setStyleFlags(fontstyle));
+    owner->customFont.setStyleFlags(fontstyle);
+    g.setFont (owner->customFont);
 
 	if (fontsize == 0)
 	{
@@ -99,7 +101,7 @@ void CabbageLabel::valueTreePropertyChanged (ValueTree& valueTree, const Identif
         fontcolour = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour);
     }
 
-    handleCommonUpdates (this, valueTree);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 
     repaint();
 

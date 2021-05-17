@@ -57,6 +57,12 @@ void SliderThumb::mouseEnter(const MouseEvent& e)
 
     }
 }
+
+void SliderThumb::mouseUp(const MouseEvent& e)
+{
+    owner->getEditor()->sliderDragEnded(&owner->getSlider());
+}
+
 void SliderThumb::mouseDrag(const MouseEvent& e)
 {
     if(isEnabled())
@@ -72,7 +78,10 @@ void SliderThumb::mouseDrag(const MouseEvent& e)
 
             const auto prop = jmap(jlimit(0.f, (float)owner->getHeight() - getHeight(), (float)yPos), (float)0, (float)owner->getHeight() - getHeight(), 1.f, 0.f);
             const auto value = owner->getSlider().proportionOfLengthToValue(prop);
-            owner->getSlider().setValue(value);
+            
+            //this should be calling paramete gesture changes I think...
+
+            owner->getSlider().setValue(value, sendNotification);
         }
 
         if (owner->getSlider().getSliderStyle() == Slider::SliderStyle::LinearHorizontal)
@@ -86,7 +95,7 @@ void SliderThumb::mouseDrag(const MouseEvent& e)
 
             const auto prop = jmap(jlimit(0.f, (float)owner->getWidth() - getWidth(), (float)xPos), (float)0, (float)owner->getWidth() - getWidth(), 0.f, 1.f);
             const auto value = owner->getSlider().proportionOfLengthToValue(prop);
-            owner->getSlider().setValue(value);
+            owner->getSlider().setValue(value, sendNotification);
         }
         if (owner->shouldDisplayPopup)
             owner->showPopupBubble(500);
@@ -105,6 +114,10 @@ void SliderThumb::mouseDown(const MouseEvent& e)
         {
             xOffset = getX() - e.getEventRelativeTo(owner).getPosition().getX();
         }
+        
+        owner->getEditor()->sliderDragStarted(&owner->getSlider());
+
+
     }
 }
 
@@ -120,7 +133,7 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
     widgetData.addListener(this);
     addAndMakeVisible(textLabel);
-
+    
     addAndMakeVisible(&slider);
     addAndMakeVisible(thumb);
     slider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
@@ -133,8 +146,8 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     slider.getProperties().set("gapmarkers", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::gapmarkers));
     setImgProperties(this->slider, wData, "slider");
     setImgProperties(this->slider, wData, "sliderbg");
-
-
+    
+    
     filmStripValueBox.setEditable(true);
     filmStripValueBox.setJustificationType(Justification::centred);
     prefix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::valueprefix);
@@ -143,8 +156,10 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     popupPostfix = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuppostfix);
     initialiseSlider(wData, slider);
     initFilmStrip(wData);
+    
+    sliderBounds = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::sliderbounds);
 
-
+        
     const File sliderImageFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider));
     const File sliderBackgroundFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgsliderbg));
     if (!isFilmStripSlider) {
@@ -157,10 +172,10 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
         {
             sliderBgImage = ImageFileFormat::loadFrom(sliderBackgroundFile);
         }
-
+        
     }
-
-
+    
+    
     setLookAndFeelColours(widgetData);
     setTextBoxOrientation(sliderType, shouldShowTextBox);
     const String sliderImg = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider);
@@ -169,34 +184,39 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat"
         && sliderImg.isEmpty() && sliderImgBg.isEmpty())
     {
+        flatLookAndFeel.customFont = owner->customFont;
         slider.setLookAndFeel(&flatLookAndFeel);
+        textLabel.setLookAndFeel(&flatLookAndFeel);
     }
     slider.setTextValueSuffix(postfix);
-
-
+    
+    
     slider.onValueChange = [this] {
         if (isFilmStripSlider || sliderThumbImage.isValid())
             repaint();
         thumb.move(slider.getValue(), slider.getRange());
-
+        
         auto newValue = slider.getTextFromValue(slider.getValue());
         filmStripValueBox.setFont(25.f);
         filmStripValueBox.setText(newValue, dontSendNotification);
     };
-
+    
     filmStripValueBox.onTextChange = [this] {
         slider.setValue(float(filmStripValueBox.getTextValue().getValue()));
     };
-
+    
     textLabel.setVisible(false);
     initialiseCommonAttributes(this, wData);
     createPopupBubble();
+    
     
 }
 
 CabbageSlider::~CabbageSlider()
 {
+    widgetData.removeListener(this);
     slider.setLookAndFeel(nullptr);
+    textLabel.setLookAndFeel(nullptr);
 }
 
 void CabbageSlider::paint(Graphics& g)
@@ -208,8 +228,16 @@ void CabbageSlider::paint(Graphics& g)
 
         int sliderValue = sliderPos * (numFrames - 1);
 
+        if(!sliderBounds.isArray())
+        {
         g.drawImage(filmStrip, filmStripBounds.getX(), filmStripBounds.getY(), filmStripBounds.getWidth(), filmStripBounds.getHeight(),
             0, sliderValue * frameHeight, frameWidth, frameHeight);
+        }
+        else
+        {
+            g.drawImage(filmStrip, (int)sliderBounds[0], (int)sliderBounds[1], (int)sliderBounds[2], (int)sliderBounds[3],
+                        0, sliderValue * frameHeight, frameWidth, frameHeight);
+        }
     }
     else if (sliderBgImage.isValid())
     {
@@ -235,7 +263,7 @@ void CabbageSlider::initFilmStrip(ValueTree wData)
         filmStrip = ImageFileFormat::loadFrom(imageFile);
         if (!filmStrip.isNull())
         {
-            slider.getProperties().set("filmStrip", 1);
+            slider.getProperties().set("filmstrip", 1);
             frameHeight = filmStrip.getHeight() / numFrames;
             frameWidth = filmStrip.getWidth();
         }
@@ -311,19 +339,35 @@ void CabbageSlider::setTextBoxOrientation(String type, int showTextBox)
 
 void CabbageSlider::setTextBoxWidth()
 {
+    //override value text box bounds if needed...
+    var textBoxBounds = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::valuetextboxbounds);
+    if(textBoxBounds.isArray())
+    {
+        slider.getProperties().set("valueTextBoxBounds", textBoxBounds);
+    }
+
+    int w = jmin(55.f, getWidth() * .65f);
+    int h = 15;
+
     if (!isFilmStripSlider)
     {
         if (sliderType.contains("horizontal"))
-            getSlider().setTextBoxStyle(Slider::TextBoxRight, false, jmin(55.f, getWidth() * .65f), 15);
+            getSlider().setTextBoxStyle(Slider::TextBoxRight, false, w, h);
         else
-            getSlider().setTextBoxStyle(Slider::TextBoxBelow, false, jmin(55.f, getWidth() * .65f), 15);
+            getSlider().setTextBoxStyle(Slider::TextBoxBelow, false, w, h);
     }
     else
     {
         if (sliderType.contains("rotary"))
-            getSlider().setTextBoxStyle(Slider::TextBoxBelow, false, jmin(55.f, getWidth() * .65f), 15);
+            getSlider().setTextBoxStyle(Slider::TextBoxBelow, false, w, h);
     }
 
+
+    slider.sendLookAndFeelChange();
+    
+    
+    
+    
 }
 
 void CabbageSlider::resized()
@@ -589,6 +633,7 @@ void CabbageSlider::setSliderVelocity(ValueTree wData)
 
 void CabbageSlider::setLookAndFeelColours(ValueTree wData)
 {
+
     getSlider().setColour(Slider::thumbColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
     getSlider().setColour(Slider::trackColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackercolour)));
     getSlider().setColour(Slider::rotarySliderOutlineColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour)));
@@ -622,6 +667,7 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
 
     if (prop == CabbageIdentifierIds::value)
     {
+        const MessageManagerLock lock;
         getSlider().setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), dontSendNotification);
         if (sliderThumbImage.isValid())
             thumb.move(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), slider.getRange());
@@ -640,7 +686,7 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
         getSlider().getProperties().set("trackerinnerradius", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackerinsideradius));
         getSlider().getProperties().set("trackerouterradius", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackeroutsideradius));
 
-        handleCommonUpdates(this, valueTree);
+        handleCommonUpdates(this, valueTree, false, prop);
         setLookAndFeelColours(valueTree);
 
         const String popup = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);

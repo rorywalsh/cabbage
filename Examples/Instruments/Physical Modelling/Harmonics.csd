@@ -91,43 +91,43 @@
 ; Damping	-	Cutoff frequency of the damping of reverberant reflections
 
 <Cabbage>
-form caption("Harmonics"), size(970,320), colour(100,150,150), pluginid("Harm") style("legacy")
+form caption("Harmonics"), size(970,320), colour(100,150,150), pluginId("Harm") style("legacy")
 
-#define RSliderStyle valuetextbox(1), textbox(1), colour("silver"), trackercolour("silver"), textcolour("white"), fontcolour("white")
+#define RSliderStyle valueTextBox(1), textBox(1), colour("silver"), trackerColour("silver"), textColour("white"), fontColour("white")
 
 ;AMPLITUDE
-image    bounds(  5,  5,130,110), colour(100,150,150), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("amplitude"){
-label    bounds(  0,  4,130, 12), text("A M P L I T U D E"), fontcolour(white)
+image    bounds(  5,  5,130,110), colour(100,150,150), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("amplitude"){
+label    bounds(  0,  4,130, 12), text("A M P L I T U D E"), fontColour(white)
 rslider  bounds(  0, 25, 75, 75), text("Amp."),  channel("Amp"), range(0,1.00,0.3,0.5,0.001), $RSliderStyle
 rslider  bounds( 55, 25, 75, 75), text("Vel."),  channel("AmpVel"), range(0,1.00,0.5,1,0.01), $RSliderStyle
 }
 
 ;FUNDEMENTAL
-image    bounds(140,  5,130,110), colour(100,150,150), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("fundemental"){
-label    bounds(  0,  4,130, 12), text("F U N D A M E N T A L"), fontcolour(white)
+image    bounds(140,  5,130,110), colour(100,150,150), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("fundemental"){
+label    bounds(  0,  4,130, 12), text("F U N D A M E N T A L"), fontColour(white)
 rslider  bounds(  0, 25, 75, 75), text("Offset"),  channel("NumOffset"), range(0,127,30,1,0.01), $RSliderStyle
 rslider  bounds( 55, 25, 75, 75), text("Rnge."),  channel("NumRange"), range(0,127,15,1,0.1), $RSliderStyle
 }
 
 ;HARMONIC
-image    bounds(275,  5,390,110), colour(100,150,150), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("harmonic"){
-label    bounds(  0,  4,390, 12), text("H A R M O N I C"), fontcolour(white)
+image    bounds(275,  5,390,110), colour(100,150,150), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("harmonic"){
+label    bounds(  0,  4,390, 12), text("H A R M O N I C"), fontColour(white)
 rslider  bounds(  0, 25, 75, 75), text("Offset"),  channel("HarmOffset"), range(-1,1,0,1,0.001), $RSliderStyle
 rslider  bounds( 55, 25, 75, 75), text("Vel."),  channel("HarmRange"), range(0,2.00,0.645,0.5,0.01), $RSliderStyle
 rslider  bounds(110, 25, 75, 75), text("Kybd.Track"),  channel("HarmKybd"), range(0,1.000,0), $RSliderStyle
-label    bounds(180, 40, 70, 13), text("Algorithm"), fontcolour(white)
+label    bounds(180, 40, 70, 13), text("Algorithm"), fontColour(white)
 combobox bounds(180, 55, 70, 20), channel("AlgType"), text("Single","Series","Double"), value(1)
-checkbox bounds(180, 80, 70, 12), channel("HarmEnv"), text("Envelope"), fontcolour("white")
+checkbox bounds(180, 80, 70, 12), channel("HarmEnv"), text("Envelope"), fontColour("white")
 
 line     bounds(275, 20, 95, 1)
-label    bounds(302, 16, 40,10), text("G L I S S"), fontcolour("white"), colour(100,150,150)
+label    bounds(302, 16, 40,10), text("G L I S S"), fontColour("white"), colour(100,150,150)
 rslider  bounds(260, 25, 75, 75), text("Depth"),  channel("HarmSlideDep"), range(0,1.000,0), $RSliderStyle
 rslider  bounds(315, 25, 75, 75), text("Rate"),  channel("HarmSlideRate"), range(0.01,10.00,0.1,1,0.01), $RSliderStyle
 }
 
 ;STRINGS
-image    bounds(670,  5,295,110), colour(100,150,150), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("main"){
-label    bounds(  0,  4,295, 12), text("S T R I N G S"), fontcolour(white)
+image    bounds(670,  5,295,110), colour(100,150,150), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("main"){
+label    bounds(  0,  4,295, 12), text("S T R I N G S"), fontColour(white)
 rslider  bounds(  0, 25, 75, 75), text("Detune"),  channel("detune"), range(0,50.000,1.5,0.35,0.001), $RSliderStyle
 rslider  bounds( 55, 25, 75, 75), text("Release"),  channel("release"), range(0.01,12.000,0.15,0.5,0.001), $RSliderStyle
 rslider  bounds(110, 25, 75, 75), text("Sustain"),  channel("feedback"), range(0,1.000,1,8), $RSliderStyle
@@ -136,72 +136,72 @@ rslider  bounds(220, 25, 75, 75), text("Lo.Cut"),  channel("LoCut"), range(1,800
 }
 	
 ;IMPULSE
-image    bounds(  5,120,445,110), colour(100,150,150), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("hammer")
+image    bounds(  5,120,445,110), colour(100,150,150), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("hammer")
 {
-label    bounds(  0,  4,445, 12), text("I M P U L S E"), fontcolour(white)
-label    bounds( 15, 28, 70, 13), text("Type"), fontcolour(white)
+label    bounds(  0,  4,445, 12), text("I M P U L S E"), fontColour(white)
+label    bounds( 15, 28, 70, 13), text("Type"), fontColour(white)
 combobox bounds( 15, 43, 70, 20), channel("Impulse"), text("Hammer","Bow","Noise","Gliss","Pulses","Live"), value(1)
 }
 
-image    bounds( 85,145,355,100), colour(0,0,0,0), plant("Hammer"), identchannel("HammerID"), visible(1)
+image    bounds( 85,145,355,100), colour(0,0,0,0), plant("Hammer"), identChannel("HammerID"), visible(1)
 {
 rslider  bounds(  0,  0, 75, 75), text("Vel."),  channel("ToneVel"), range(0,1.00,0.75), $RSliderStyle
 rslider  bounds( 60,  0, 75, 75), text("Offset"),  channel("HammFrq"), range(1,4000,100,0.5,1), $RSliderStyle
 rslider  bounds(120,  0, 75, 75), text("Kybd.Track"),  channel("HammTrk"), range(0,1.00,0.33), $RSliderStyle
 }
 
-image    bounds( 85,145,355,100), colour(0,0,0,0), plant("Bow"), identchannel("BowID"), visible(0)
+image    bounds( 85,145,355,100), colour(0,0,0,0), plant("Bow"), identChannel("BowID"), visible(0)
 {
 rslider  bounds(  0,  0, 75, 75), text("Attack"),  channel("Attack"), range(0,5.00,0.2,0.5), $RSliderStyle
 rslider  bounds( 60,  0, 75, 75), text("Bright"),  channel("Bright"), range(0,1.00,0.3,0.5), $RSliderStyle
 rslider  bounds(120,  0, 75, 75), text("Noise"),  channel("Noise"), range(0,5.00,0.001,0.5), $RSliderStyle
 }
 
-image    bounds( 85,145,355,100), colour(0,0,0,0), plant("Noise"), identchannel("NoiseID"), visible(0)
+image    bounds( 85,145,355,100), colour(0,0,0,0), plant("Noise"), identChannel("NoiseID"), visible(0)
 {
 rslider  bounds(  0,  0, 75, 75), text("Density"),    channel("NseDens"), range(1,5000,100,0.5,1), $RSliderStyle
 rslider  bounds( 60,  0, 75, 75), text("Random"), channel("NseRand"), range(0,100,1,0.5), $RSliderStyle
 }
 
-image    bounds( 85,145,345,100), colour(0,0,0,0), plant("Gliss"), identchannel("GlissID"), visible(0)
+image    bounds( 85,145,345,100), colour(0,0,0,0), plant("Gliss"), identChannel("GlissID"), visible(0)
 {
 rslider  bounds(  0,  0, 75, 75), text("Rate"), channel("GlsRate"), range(0.01,5,0.1,0.5,0.01), $RSliderStyle
 rslider  bounds( 60,  0, 75, 75), text("Bandwidth"), channel("GlsBW"), range(0.001,1,0.01,0.5,0.001), $RSliderStyle
 }
 
-image    bounds( 85,145,355,100), colour(0,0,0,0), plant("Pulses"), identchannel("PulseID"), visible(0)
+image    bounds( 85,145,355,100), colour(0,0,0,0), plant("Pulses"), identChannel("PulseID"), visible(0)
 {
-label    bounds(245,  3, 60, 13), text("Clock"), fontcolour(white)
+label    bounds(245,  3, 60, 13), text("Clock"), fontColour(white)
 combobox bounds(245, 18, 60, 20), channel("PlsClock"), text("Local","Global"), value(2)
-label    bounds(245, 40, 60, 13), text("Filter"), fontcolour(white)
+label    bounds(245, 40, 60, 13), text("Filter"), fontColour(white)
 combobox bounds(245, 55, 60, 20), channel("PlsFilter"), text("Lowp.","Bandp.","Res.","Highp."), value(1)
 rslider  bounds(  0,  0, 75, 75), text("Tempo"),  channel("PlsRate"), range(0,960,120,1,1), $RSliderStyle
 rslider  bounds( 50,  0, 75, 75), text("Var."),  channel("PlsVar"), range(0,4, 0), $RSliderStyle
 rslider  bounds(100,  0, 75, 75), text("Min.LPF"),  channel("PlsMinCO"), range(5,14,6,1,0.1), $RSliderStyle
-vslider  bounds(170, 30, 15, 47), channel("PlsFiltRate"), range(0.1,1,0.1),  colour("silver"), trackercolour("silver"), textcolour("white"), fontcolour("white")
-label    bounds(158, 18, 40, 12), text("Rate"), fontcolour("white")
+vslider  bounds(170, 30, 15, 47), channel("PlsFiltRate"), range(0.1,1,0.1),  colour("silver"), trackerColour("silver"), textColour("white"), fontColour("white")
+label    bounds(158, 18, 40, 12), text("Rate"), fontColour("white")
 rslider  bounds(180,  0, 75, 75), text("Max.LPF"),  channel("PlsMaxCO"), range(5,14,12,1,0.1), $RSliderStyle
-checkbox bounds(315, 20, 60, 12), text("Rel."),  channel("PlsRel"), colour("yellow"), fontcolour("white")
+checkbox bounds(315, 20, 60, 12), text("Rel."),  channel("PlsRel"), colour("yellow"), fontColour("white")
 }
 
 ;RELEASE DAMPER
-image    bounds(455,120,185,110), colour(100,150,150), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("hammer_rel"){
-label    bounds(  0,  4,185, 12), text("R E L E A S E    D A M P E R"), fontcolour(white)
+image    bounds(455,120,185,110), colour(100,150,150), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("hammer_rel"){
+label    bounds(  0,  4,185, 12), text("R E L E A S E    D A M P E R"), fontColour(white)
 rslider  bounds(  0, 25, 75, 75), text("Ampl."),  channel("RelHammAmp"), range(0,1.00,0.3), $RSliderStyle
 rslider  bounds( 55, 25, 75, 75), text("Offset"),  channel("RelHammFrq"), range(1,4000,100,0.5,1), $RSliderStyle
 rslider  bounds(110, 25, 75, 75), text("Kybd.Track"),  channel("RelHammTrk"), range(0,1.00,0.4), $RSliderStyle
 }
 
 ;STEREO
-image    bounds(645,120,130,110), colour(100,150,150), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("stereo"){
-label    bounds(  0,  4,130, 12), text("S T E R E O"), fontcolour(white)
+image    bounds(645,120,130,110), colour(100,150,150), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("stereo"){
+label    bounds(  0,  4,130, 12), text("S T E R E O"), fontColour(white)
 rslider  bounds(  0, 25, 75, 75), text("Width"),  channel("StWidth"), range(0.0001,0.1,0.01,0.5), $RSliderStyle
 rslider  bounds( 55, 25, 75, 75), text("Dry/Wet"),  channel("StMix"), range(0,1,0.5),  textBox(1), $RSliderStyle
 }
 
 ;REVERB
-image    bounds(780,120,185,110), colour(100,150,150), outlinecolour("white"), outlinethickness(2), shape("sharp"), plant("reverb"){
-label    bounds(  0,  4,185, 12), text("R E V E R B"), fontcolour(white)
+image    bounds(780,120,185,110), colour(100,150,150), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("reverb"){
+label    bounds(  0,  4,185, 12), text("R E V E R B"), fontColour(white)
 rslider  bounds(  0, 25, 75, 75), text("Dry/Wet"),  channel("RvbDryWet"), range(0,1.000,0.3), $RSliderStyle
 rslider  bounds( 55, 25, 75, 75), text("Size"),  channel("RvbSize"), range(0.4,0.999,0.55), $RSliderStyle
 rslider  bounds(110, 25, 75, 75), text("EQ."),  channel("RvbEQ"), range(0,1,0.3), $RSliderStyle

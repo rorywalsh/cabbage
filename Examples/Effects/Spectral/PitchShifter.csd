@@ -19,34 +19,34 @@
 ; Window	-	Selects the window shape used to envelope the overlapping buffers
 
 <Cabbage>
-form caption("Pitch Shifter") size(840,  90), pluginid("PShf"), scrollbars(0) style("legacy")
+form caption("Pitch Shifter") size(840,  90), pluginId("PShf"), scrollBars(0) style("legacy")
 
-#define RSliderStyle # colour("Grey"), textcolour("white"), outlinecolour("DarkGrey"), trackercolour("Silver")#
+#define RSliderStyle # colour("Grey"), textColour("white"), outlineColour("DarkGrey"), trackerColour("Silver")#
 
-label    bounds( 10, 15, 80, 13), fontcolour("white"), text("Interval")
+label    bounds( 10, 15, 80, 13), fontColour("white"), text("Interval")
 combobox bounds( 10, 30, 80, 20), text("Semitone","Ratio"), channel("IntervalMode"),       value(1)
 
-image     bounds(120, 15, 35, 58), plant("Ratio"), colour(0,0,0,0), visible(0), identchannel("RatioPlant_ident") {
+image     bounds(120, 15, 35, 58), plant("Ratio"), colour(0,0,0,0), visible(0), identChannel("RatioPlant_ident") {
 nslider bounds(  5,  0, 25, 18), channel("Numerator"),        range(1,99,3,1,1)
 image     bounds(  0, 26, 35,  1), shape("sharp") 
 nslider bounds(  5, 35, 25, 18), channel("Denominator"),      range(1,99,2,1,1)
 }
 
-image    bounds(110, 10,130, 70), plant("Semitones"), colour(0,0,0,0), visible(1), identchannel("SemitonesPlant_ident") {
+image    bounds(110, 10,130, 70), plant("Semitones"), colour(0,0,0,0), visible(1), identChannel("SemitonesPlant_ident") {
 rslider  bounds(  0,  0, 70, 70), text("Semitones"),  channel("Semitones"),      range(-48,48,7,1,0.001), $RSliderStyle
-checkbox bounds( 70, 20, 60, 15), text("Snap"),       channel("Snap"), value(1), fontcolour("white")
+checkbox bounds( 70, 20, 60, 15), text("Snap"),       channel("Snap"), value(1), fontColour("white")
 }
 
-label     bounds(240, 15, 80, 13), fontcolour("white"), text("Mode")
+label     bounds(240, 15, 80, 13), fontColour("white"), text("Mode")
 combobox  bounds(240, 30, 80, 20), text("Feedback","Iteration","Harmonic"), channel("Mode"),       value(1)
-rslider  bounds(330, 10, 70, 70), text("Feedback"),    channel("Feedback"),       range(0,1,0.9,2,0.0001), visible(1), identchannel("Feedback_ident"),  $RSliderStyle
-label    bounds(400, 15, 70, 13), text("FB.Method"), fontcolour("White"), visible(1), identchannel("FBLabel_ident"),
-combobox bounds(400, 30, 70, 20), text("Indiv.","Global"),       channel("FBMethod"), visible(1), identchannel("FBMethod_ident"),
-rslider  bounds(400, 10, 70, 70), text("Iterations"),    channel("NIter"),       range(1,10,3,1,1), identchannel("NIter_ident"), visible(0)        $RSliderStyle
+rslider  bounds(330, 10, 70, 70), text("Feedback"),    channel("Feedback"),       range(0,1,0.9,2,0.0001), visible(1), identChannel("Feedback_ident"),  $RSliderStyle
+label    bounds(400, 15, 70, 13), text("FB.Method"), fontColour("White"), visible(1), identChannel("FBLabel_ident"),
+combobox bounds(400, 30, 70, 20), text("Indiv.","Global"),       channel("FBMethod"), visible(1), identChannel("FBMethod_ident"),
+rslider  bounds(400, 10, 70, 70), text("Iterations"),    channel("NIter"),       range(1,10,3,1,1), identChannel("NIter_ident"), visible(0)        $RSliderStyle
 
 rslider  bounds(470, 10, 70, 70), text("Delay"),       channel("Delay"),          range(0.01,4.00, 0.1,0.5),      $RSliderStyle
 rslider  bounds(540, 10, 70, 70), text("Smooth"),      channel("Smooth"),         range(0,99,0,0.5),              $RSliderStyle
-label    bounds(610, 15, 80, 13), text("Window"), fontcolour("White")
+label    bounds(610, 15, 80, 13), text("Window"), fontColour("White")
 combobox bounds(610, 30, 80, 20), text("Hanning","Triangle","Half Sine","Square","Pulse","Perc.","Rev.Perc."),  channel("Window")
 rslider  bounds(690, 10, 70, 70), text("Mix"),         channel("Mix"),            range(0, 1,0.5),                $RSliderStyle
 rslider  bounds(760, 10, 70, 70), text("Level"),       channel("Level"),          range(0, 1.00,1),               $RSliderStyle
