@@ -716,6 +716,54 @@ int GetCabbageReservedChannelDataWithTrigger::getAttribute()
     return OK;
 }
 
+//-----------------------------------------------------------------------------------------------------
+int CabbagePack::packageFiles()
+{
+    if (in_count() < 3)
+    {
+        csound->message("Not enough parameters passed to cabbagePack.\n");
+        return NOTOK;
+    }
+    
+    File::SpecialLocationType specialLocation;
+    
+//    String location(String(args.str_data(0).data));
+//    if(location == "userHomeDirectory")
+//        specialLocation = File::SpecialLocationType::userHomeDirectory;
+//    else if(location == "userDocumentsDirectory")
+//        specialLocation = File::SpecialLocationType::userDocumentsDirectory;
+//    else if(location == "userDesktopDirectory")
+//        specialLocation = File::SpecialLocationType::userDesktopDirectory;
+//    else if(location == "userMusicDirectory")
+//        specialLocation = File::SpecialLocationType::userMusicDirectory;
+//    else if(location == "userApplicationDataDirectory")
+//        specialLocation = File::SpecialLocationType::userApplicationDataDirectory;
+    
+    
+    for ( int i = 1 ; i < in_count() ; i++)
+    {
+        File file(File::getCurrentWorkingDirectory().getChildFile(String(args.str_data(i).data)));
+        if(file.existsAsFile())
+        {
+            const String folderAndFile = String(args.str_data(0).data) + "/" + String(args.str_data(i).data);
+            File newFile(File::getCurrentWorkingDirectory().getChildFile(folderAndFile));
+
+            MemoryBlock mem;
+            bool result = file.loadFileAsData(mem);
+            if(newFile.replaceWithData(mem.getData(), mem.getSize()))
+                csound->message("cabbagePack file has successfully replaced the file located at "+newFile.getFullPathName().toStdString());
+        }
+        else
+        {
+            csound->message("cabbagePack cannot find file "+file.getFullPathName().toStdString());
+        }
+        
+    }
+    
+    
+    return OK;
+}
+
 //====================================================================================================
 int GetCabbageReservedChannelString::getAttribute()
 {

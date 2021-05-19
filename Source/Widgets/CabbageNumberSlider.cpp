@@ -56,9 +56,6 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     slider.setColour (Slider::textBoxOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
 
 	slider.sendLookAndFeelChange();
-    slider.setVelocityBasedMode (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::velocity) == 1 ? true : false);
-    slider.setVelocityModeParameters (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::velocity));
-    slider.getProperties().set ("decimalPlaces", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces));
 
     const float min = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
     const float max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
@@ -72,6 +69,13 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     slider.setValue (defaultValue, sendNotification);
     slider.setTooltip (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
 
+    slider.setVelocityBasedMode (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::velocity) == 1 ? true : false);
+    slider.setVelocityModeParameters(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::velocity), 1);
+    slider.setSliderSnapsToMousePosition(false);
+    //slider.setMouseDragSensitivity(max*10);
+    slider.getProperties().set ("decimalPlaces", CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces));
+
+    
     postfix = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valuepostfix);
     slider.setTextValueSuffix(postfix);
 }

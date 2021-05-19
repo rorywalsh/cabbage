@@ -177,7 +177,7 @@ void CabbagePluginEditor::handleMouseMovement (const MouseEvent& e)
     int x = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().x;
     int yOffset = (CabbageUtilities::getTarget() == CabbageUtilities::TargetTypes::IDE ? 27 : 0 );
     int y = e.eventComponent->getTopLevelComponent()->getMouseXYRelative().y - yOffset; //27 is the height of the standalone window frame
-    double scale = pluginSizes[cabbageProcessor.currentPluginScale-1];
+    double scale = cabbageProcessor.currentPluginScale == -1 ? 1 : pluginSizes[cabbageProcessor.currentPluginScale-1];
     sendChannelDataToCsound (CabbageIdentifierIds::mousex, x/scale);
     sendChannelDataToCsound (CabbageIdentifierIds::mousey, y/scale);
 }

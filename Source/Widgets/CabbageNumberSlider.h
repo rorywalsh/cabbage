@@ -34,7 +34,7 @@ public:
 	~SliderLookAndFeel() {};
 	void setFontColour(Colour col) { fontColour = col; }
 	void setFontSize(int fS) { fontSize = fS; }
-
+    
 	Label* createSliderTextBox(Slider& slider) override
 	{
 		auto l = new Label();
@@ -95,6 +95,7 @@ public:
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
     void valueTreeParentChanged (ValueTree&) override {};
     void resized() override;
+    
 
     Slider& getSlider()
     {

@@ -203,3 +203,12 @@ struct GetCabbageReservedChannelData : csnd::Plugin<1, 1>
     int deinit(){ return OK;  }
     int getAttribute();
 };
+
+
+struct CabbagePack : csnd::InPlug<64>
+{
+    int init(){ return packageFiles(); };
+    int kperf(){ return packageFiles(); };
+    int deinit(){ return OK;  }
+    int packageFiles();
+};

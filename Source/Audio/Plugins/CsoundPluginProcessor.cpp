@@ -247,6 +247,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
     csnd::plugin<CreateCabbageWidget>((csnd::Csound*) csound->GetCsound(), "cabbageCreate", "", "SS", csnd::thread::i);
 
+    csnd::plugin<CabbagePack>((csnd::Csound*) csound->GetCsound(), "cabbagePack", "", "SW", csnd::thread::i);
     
 
 
