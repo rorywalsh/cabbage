@@ -65,25 +65,25 @@ export PROJUCER=$AGENT_BUILDDIRECTORY/JUCE/extras/Projucer/Builds/MacOSX/build/D
 
 #building sinmple Csound CLI for testing files
 $PROJUCER --resave ../../CabbageCsoundCLI.jucer
-xcodebuild -project CabbageCsoundCLI.xcodeproj/ ARCHS="x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
+xcodebuild -project CabbageCsoundCLI.xcodeproj/ ARCHS="x86_64 arm64" ONLY_ACTIVE_ARCH=NO -configuration Release
 
 $PROJUCER --resave ../../CabbageIDE.jucer
 xcodebuild -project Cabbage.xcodeproj/ clean
-xcodebuild -project Cabbage.xcodeproj/ ARCHS="x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release 
+xcodebuild -project Cabbage.xcodeproj/ ARCHS="x86_64 arm64" ONLY_ACTIVE_ARCH=NO -configuration Release 
 cp -rf ../../Themes ./build/Release/Cabbage.app/Contents/Themes
 
 $PROJUCER --resave ../../CabbageLite.jucer
-xcodebuild -project CabbageLite.xcodeproj/ ARCHS="x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release
+xcodebuild -project CabbageLite.xcodeproj/ ARCHS="x86_64 arm64" ONLY_ACTIVE_ARCH=NO -configuration Release
 
 $PROJUCER --resave ../../CabbagePluginMIDIEffect.jucer
 xcodebuild -project CabbagePlugin.xcodeproj clean
-xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 Cabbage_MIDI_Effect=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" 
+xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="x86_64 arm64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 Cabbage_MIDI_Effect=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1" 
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/Cabbage.app/Contents/CabbagePluginMIDIEffect.component
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/Contents/CabbagePluginMIDIEffect.component
 
 $PROJUCER --resave ../../CabbagePluginSynth.jucer
 xcodebuild -project CabbagePlugin.xcodeproj clean
-xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="x86_64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1"
+xcodebuild -project CabbagePlugin.xcodeproj/ ARCHS="x86_64 arm64" ONLY_ACTIVE_ARCH=NO -configuration Release GCC_PREPROCESSOR_DEFINITIONS="Cabbage_Plugin_Synth=1 USE_DOUBLE=1 CSOUND6=1 MACOSX=1"
 cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst
 cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Contents/CabbagePluginSynth.vst
 cp -rf ./build/Release/CabbagePlugin.vst3/ ./build/Release/Cabbage.app/Contents/CabbagePluginSynth.vst3
@@ -104,20 +104,20 @@ cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/
 cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
 cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples
 
-xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj clean
-xcodebuild -project ../../CsoundTestXcode/CsoundTest.xcodeproj -configuration Release
+# $PROJUCER --resave ../../CabbageCsoundCLI.jucer
+# xcodebuild -project CabbageCsoundCLI.xcodeproj clean
+# xcodebuild -project CabbageCsoundCLI.xcodeproj -configuration Release
+
+
 
 # cp ../../CsoundTestXcode/Build/Release/CsoundTest ./build/Release/Cabbage.app/Contents/MacOS/CsoundTest 
 cp -rf ./build/Release/CabbageCsoundCLI ./build/Release/Cabbage.app/Contents/MacOS/CabbageCsoundCLI 
-
 curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
 ls
-unzip -q "CabbageManual.zip"
+unzip -q -o "CabbageManual.zip" 
 ls
 cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/CabbageManual
 cp -rf CabbageManual ././build/Release/CabbageLite.app/Contents/CabbageManual
-
-cp ../opcodes.txt ./build/Release/Cabbage.app/Contents/MacOS/opcodes.txt 
 
 cd $SYSTEM_DEFAULTWORKINGDIRECTORY/Builds/MacOSX/build/Release/
 curl -L -o CabbageRack-1.0.0-mac.zip https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-mac.zip
