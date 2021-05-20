@@ -52,7 +52,7 @@ public:
     {
         String newCsoundFile =
             "<Cabbage>\n"
-            "form caption(\"Untitled\") size(400, 300), guiMode("queue"), pluginId(\"def1\")\n"
+            "form caption(\"Untitled\") size(400, 300), guiMode(\"queue\"), pluginId(\"def1\")\n"
             "keyboard bounds(8, 158, 381, 95)\n"
             "</Cabbage>\n"
             "<CsoundSynthesizer>\n"
@@ -140,7 +140,7 @@ public:
     {
         String newCsoundFile =
             "<Cabbage>\n"
-            "form caption(\"Untitled\") size(400, 300), guiMode("queue") pluginId(\"def1\")\n"
+            "form caption(\"Untitled\") size(400, 300), guiMode(\"queue\") pluginId(\"def1\")\n"
             "rslider bounds(296, 162, 100, 100), channel(\"gain\"), range(0, 1, 0, 1, .01), text(\"Gain\"), trackerColour(\"lime\"), outlineColour(0, 0, 0, 50), textColour(\"black\")\n"
             "\n"
             "</Cabbage>\n"
