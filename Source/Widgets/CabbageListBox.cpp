@@ -114,24 +114,24 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
              || CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype) == ".snaps"
              || CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype) == "snaps") //load items from directory
     {
-        const File fileName = File (getCsdFile()).withFileExtension (".snaps");
-
-        if (fileName.existsAsFile())
-        {
-            std::unique_ptr<XmlElement> xmlElement = XmlDocument::parse (fileName);
-
-            if (xmlElement)
-                if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
-                {
-                    forEachXmlChildElement (*xmlElement, e)
-                    {
-                        presets.add (e->getStringAttribute ("PresetName"));
-                        stringItems.add (e->getStringAttribute ("PresetName"));
-                    }
-                }
-
-            xmlElement = nullptr;
-        }
+//        const File fileName = File (getCsdFile()).withFileExtension (".snaps");
+//
+//        if (fileName.existsAsFile())
+//        {
+//            std::unique_ptr<XmlElement> xmlElement = XmlDocument::parse (fileName);
+//
+//            if (xmlElement)
+//                if (xmlElement->hasTagName ("CABBAGE_PRESETS"))
+//                {
+//                    forEachXmlChildElement (*xmlElement, e)
+//                    {
+//                        presets.add (e->getStringAttribute ("PresetName"));
+//                        stringItems.add (e->getStringAttribute ("PresetName"));
+//                    }
+//                }
+//
+//            xmlElement = nullptr;
+//        }
     }
     else
     {
@@ -235,19 +235,21 @@ void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps")
         || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("preset"))
     {
-        String newFileName;
-        newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
-
-
-        newFileName = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
+        const String presetFileName = CabbageWidgetData::getStringProp (widgetData, "fileType");
+        File fileName;
         
-        if (!File(newFileName).existsAsFile())
+        if(presetFileName.length() > 6 )
+            fileName = File (getCsdFile()).getParentDirectory().getChildFile(presetFileName);
+        else
+            fileName = File (getCsdFile()).withFileExtension (".snaps");
+        
+        if (!fileName.existsAsFile())
         {
-            newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
+            String path = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File(getCsdFile()).getFileNameWithoutExtension() + "/" + fileName.getFileName();
+            fileName = File(path);
         }
-
         
-        owner->restorePluginStateFrom (presets[row]);
+        owner->restorePluginStateFrom (presets[row], fileName.getFullPathName());
         owner->sendChannelDataToCsound (getChannel(), row);
     }
     else if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))

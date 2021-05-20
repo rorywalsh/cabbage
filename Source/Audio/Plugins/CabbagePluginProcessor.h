@@ -77,8 +77,8 @@ public:
     void setWidthHeight();
     
     //save and restore user plugin presets
-    void addPluginPreset(String presetName, bool remove);
-    void restorePluginPreset(String presetName);
+    void addPluginPreset(String presetName, String fileName, bool remove);
+    void restorePluginPreset(String presetName, String filename);
     
     bool addImportFiles (StringArray& lineFromCsd);
     void parseCsdFile (StringArray& linesFromCsd);

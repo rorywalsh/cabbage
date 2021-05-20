@@ -84,6 +84,20 @@ void CabbageFileButton::buttonClicked (Button* button)
     else
         currentDir = File::getCurrentWorkingDirectory();
     
+    const String presetFileName = CabbageWidgetData::getStringProp (widgetData, "fileType");
+    File fileName;
+    
+    if(presetFileName.length() > 6 )
+        fileName = File (getCsdFile()).getParentDirectory().getChildFile(presetFileName);
+    else
+        fileName = File (getCsdFile()).withFileExtension (".snaps");
+    
+    if (!fileName.existsAsFile())
+    {
+        String path = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File(getCsdFile()).getFileNameWithoutExtension() + "/" + fileName.getFileName();
+        fileName = File(path);
+    }
+    
     LookAndFeel_V4* tempLAF = new LookAndFeel_V4();
     
     if (mode == "file")
@@ -152,7 +166,7 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     else if (mode == "snapshot" || mode == "preset")
     {
-        owner->savePluginStateToFile ("");
+        owner->savePluginStateToFile ("", fileName.getFullPathName());
         owner->refreshComboListBoxContents();
     }
     
@@ -172,7 +186,7 @@ void CabbageFileButton::buttonClicked (Button* button)
             
             if (w.runModalLoop() != 0) // if they picked 'ok'
             {
-                owner->savePluginStateToFile(owner->getCurrentPreset(), true);
+                owner->savePluginStateToFile(owner->getCurrentPreset(), fileName.getFullPathName(), true);
                 owner->refreshComboListBoxContents();
             }
         }
@@ -214,7 +228,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         {
             owner->setCurrentPreset(presetName);
             owner->sendChannelStringDataToCsound(getChannel(), presetName);
-            owner->savePluginStateToFile(presetName, false);
+            owner->savePluginStateToFile(presetName, fileName.getFullPathName(), false);
             owner->refreshComboListBoxContents(presetName);
         }
         else

@@ -1132,15 +1132,15 @@ CabbagePluginProcessor& CabbagePluginEditor::getProcessor()
     return cabbageProcessor;
 }
 
-void CabbagePluginEditor::savePluginStateToFile (String presetName, bool removePreset)
+void CabbagePluginEditor::savePluginStateToFile (String presetName, String fileName, bool removePreset)
 {
     //the error happens when we create a new preset not when we modify or delete one...
-    cabbageProcessor.addPluginPreset (presetName, removePreset);
+    cabbageProcessor.addPluginPreset (presetName, fileName, removePreset);
 }
 
-void CabbagePluginEditor::restorePluginStateFrom (String presetName)
+void CabbagePluginEditor::restorePluginStateFrom (String presetName, String filename)
 {
-    cabbageProcessor.restorePluginPreset (presetName);
+    cabbageProcessor.restorePluginPreset (presetName, filename);
 }
 
 void CabbagePluginEditor::refreshComboListBoxContents(String presetName)

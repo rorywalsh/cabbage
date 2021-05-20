@@ -6,7 +6,7 @@ combobox bounds(178, 286, 100, 25), populate("*.snaps")
 filebutton bounds(116, 286, 60, 25), text("Save"), mode("preset")
 ```
 
-The preset file, which will be updated each time a user hit the 'Save' button will be written to the same directory as the current .csd file. It will also have the same name as the current .csd file, albeit with a ".snaps" extension
+The preset file, which will be updated each time a user hit the 'Save' button will be written to the same directory as the current .csd file. It will also have the same name as the current .csd file, albeit with a ".snaps" extension. You can also set the name of the custom preset file. Instead of passing "\*.snaps" as the file type, pass the full file name, i.e, "myPresets.snaps". Don't pass a full path here. Note that the same preset filename should be passed to all `filebutton` and `combobox` widgets involved in the management of the presets. 
 
 > If you set a channel for the preset combobox it will contain the most current preset selected.  
 

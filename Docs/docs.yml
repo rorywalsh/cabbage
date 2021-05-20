@@ -33,6 +33,7 @@
 - title: Cabbage Opcodes
   docs:
     - cabbage_opcodes
+    - cabbage_create
     - cabbage_get_value
     - cabbage_set_value
     - cabbage_get

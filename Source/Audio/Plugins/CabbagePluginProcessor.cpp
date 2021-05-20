@@ -918,19 +918,11 @@ void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInByt
 }
 
 //==============================================================================
-void CabbagePluginProcessor::addPluginPreset(String presetName, bool remove)
+void CabbagePluginProcessor::addPluginPreset(String presetName,  String fileName, bool remove)
 {
-    String newFileName;
-    //check user application data directory for the existance of a relevant snaps files before reading/writing from current directory...
-    newFileName = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
-    
-    if (!File(newFileName).existsAsFile())
-    {
-        newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
-    }
     
     nlohmann::ordered_json j;
-    File presetFile(newFileName);
+    File presetFile(fileName);
     String presetFileContents = presetFile.loadFileAsString();
     if(presetFileContents.isEmpty())
     {
@@ -1063,21 +1055,13 @@ void CabbagePluginProcessor::addPluginPreset(String presetName, bool remove)
 
 }
 
-void CabbagePluginProcessor::restorePluginPreset(String presetName)
+void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileName)
 {
-    String newFileName;
-    //check user application data directory for the existance of a relevant snaps files before reading/writing from current directory...
-    newFileName = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
-    
+
     currentPresetName = presetName;
     
-    if (!File(newFileName).existsAsFile())
-    {
-        newFileName = File(getCsdFile()).withFileExtension(".snaps").getFullPathName();
-    }
-    
     nlohmann::ordered_json j;
-    File presetFile(newFileName);
+    File presetFile(fileName);
     String presetFileContents = presetFile.loadFileAsString();
     j = nlohmann::ordered_json::parse(presetFileContents.toRawUTF8());
 

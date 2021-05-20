@@ -237,18 +237,24 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         }
     }
     //if dealing with preset files...
-    else if ( CabbageWidgetData::getStringProp (wData, "fileType") == "*.snaps"
-             || CabbageWidgetData::getStringProp (wData, "fileType") == ".snaps"
-             || CabbageWidgetData::getStringProp (wData, "fileType") == "snaps") //load items from directory
+    else if ( CabbageWidgetData::getStringProp (wData, "fileType").contains(".snaps")) //load items from directory
     {
-        File fileName = File (getCsdFile()).withFileExtension (".snaps");
+        const String presetFileName = CabbageWidgetData::getStringProp (wData, "fileType");
+        File fileName;
+        
+        if(presetFileName.length() > 6 )
+            fileName = File (getCsdFile()).getParentDirectory().getChildFile(presetFileName);
+        else
+            fileName = File (getCsdFile()).withFileExtension (".snaps");
 
         if (!fileName.existsAsFile())
         {
-            String path = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".snaps")).getFileName();
+            String path = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File(getCsdFile()).getFileNameWithoutExtension() + "/" + fileName.getFileName();
             fileName = File(path);
         }
 
+        presetFile = fileName;
+        
         clear (dontSendNotification);
         stringItems.clear();
         var presetNames;
@@ -334,7 +340,7 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
         owner->sendChannelStringDataToCsound (getChannel(), presets[combo->getSelectedItemIndex()]);
         owner->setCurrentPreset(presets[combo->getSelectedItemIndex()]);
         CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, presets[combo->getSelectedItemIndex()]);
-        owner->restorePluginStateFrom (presets[combo->getSelectedItemIndex()]);
+        owner->restorePluginStateFrom (presets[combo->getSelectedItemIndex()], presetFile.getFullPathName());
         
         
 
@@ -350,7 +356,7 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
             if (item->itemID == id)
             {
                 item->setAction([this, combo] {
-                    owner->restorePluginStateFrom(presets[combo->getSelectedItemIndex()]);
+                    owner->restorePluginStateFrom(presets[combo->getSelectedItemIndex()], presetFile.getFullPathName());
                     owner->sendChannelStringDataToCsound(getChannel(), presets[combo->getSelectedItemIndex()]);
                     CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::value, presets[combo->getSelectedItemIndex()]); 
                 });

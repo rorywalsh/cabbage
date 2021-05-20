@@ -44,6 +44,7 @@ class CabbageComboBox
     StringArray stringItems;
     StringArray presets;
     CabbageLookAndFeel2 lookAndFeel;
+    File presetFile;
 public:
 
     CabbageComboBox (ValueTree cAttr, CabbagePluginEditor* _owner);

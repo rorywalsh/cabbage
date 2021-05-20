@@ -1934,6 +1934,7 @@ void CabbageMainComponent::covertToLowerCase()
     String currentFileText = getCurrentCsdFile().loadFileAsString();
     
     CabbageIdentifierStrings camelCaseIdentifiers;
+
     for ( int i = camelCaseIdentifiers.size() ; i >=0 ; i--)
     {
         if(currentFileText.contains(camelCaseIdentifiers[i]))
