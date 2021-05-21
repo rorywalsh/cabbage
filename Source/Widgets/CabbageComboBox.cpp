@@ -249,7 +249,11 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 
         if (!fileName.existsAsFile())
         {
+#ifdef JUCE_MAC
+            String path = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File(getCsdFile()).getParentDirectory().getFileName() + "/" + fileName.getFileName();
+#else
             String path = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File(getCsdFile()).getFileNameWithoutExtension() + "/" + fileName.getFileName();
+#endif
             fileName = File(path);
         }
 
