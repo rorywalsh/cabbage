@@ -1077,15 +1077,6 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
                 const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
                 const String channelName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
                 
-                if(presetData.key() == "cabbageJSONData")
-                {
-                    CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-                    if (pd != nullptr)
-                    {
-                        auto pdClass = *pd;
-                        pdClass->data = presetData.value().dump();
-                    }
-                }
                 if(channelName == "PluginResizerCombBox")
                     currentPluginScale = presetData.value().get<int>();
                 
@@ -1210,6 +1201,17 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 	std::unique_ptr<XmlElement> xml;
     xml = std::unique_ptr<XmlElement>(new XmlElement("CABBAGE_PRESETS"));
     
+    
+    if (getCsound())
+    {
+        CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+        
+        if (pd != nullptr)
+        {
+            auto pdClass = *pd;
+            xml->setAttribute("cabbageJSONData", pdClass->data);
+        }
+    }
     
 	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
 		const String channelName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),

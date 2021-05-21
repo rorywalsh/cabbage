@@ -29,7 +29,6 @@ int CreateCabbageWidget::createWidget()
         vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
         *vt = new CabbageWidgetsValueTree();
         varData = *vt;
-        csound->message("Creating new internal state object...\n");
     }
     
     const String widgetTreeIdentifier = "TempWidget";
@@ -117,7 +116,6 @@ int GetCabbageStringIdentifierSingle::getAttribute()
         vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
         *vt = new CabbageWidgetsValueTree();
         varData = *vt;
-        csound->message("Creating new internal state object...\n");
     }
     
     const auto child = varData->data.getChildWithName(name);
@@ -159,7 +157,6 @@ int GetCabbageIdentifierArray::getAttribute()
         vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
         *vt = new CabbageWidgetsValueTree();
         varData = *vt;
-        csound->message("Creating new internal state object...\n");
     }
     
     const auto child = varData->data.getChildWithName(name);
@@ -211,7 +208,6 @@ int GetCabbageIdentifierSingle::getAttribute()
         vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
         *vt = new CabbageWidgetsValueTree();
         varData = *vt;
-        csound->message("Creating new internal state object...\n");
     }
     
     const auto child = varData->data.getChildWithName(name);
@@ -243,7 +239,6 @@ int GetCabbageStringIdentifierArray::getAttribute()
         vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
         *vt = new CabbageWidgetsValueTree();
         varData = *vt;
-        csound->message("Creating new internal state object...\n");
     }
     
     const auto child = varData->data.getChildWithName(name);
@@ -387,7 +382,6 @@ int SetCabbageValueIdentifier::setAttribute()
         vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
         *vt = new CabbageWidgetIdentifiers();
         varData = *vt;
-        //csound->message("Creating new internal state object...\n");
     }
     
     if(trigger == 1)
@@ -431,7 +425,6 @@ int SetCabbageIdentifier::setAttribute()
         vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
         *vt = new CabbageWidgetIdentifiers();
         varData = *vt;
-        csound->message("Creating new internal state object...\n");
     }
     
 
@@ -509,7 +502,6 @@ int SetCabbageIdentifierSArgs::setAttribute()
         vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
         *vt = new CabbageWidgetIdentifiers();
         varData = *vt;
-        csound->message("Creating new internal state object...\n");
     }
     
     //hack to trigger table update even if table number hasn't changed
@@ -571,7 +563,6 @@ int SetCabbageIdentifierITime::setAttribute()
         vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
         *vt = new CabbageWidgetIdentifiers();
         varData = *vt;
-        csound->message("Creating new internal state object...\n");
     }
     
     //hack to trigger table update even if table number hasn't changed
@@ -631,7 +622,6 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
         vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
         *vt = new CabbageWidgetIdentifiers();
         varData = *vt;
-        csound->message("Creating new internal state object...\n");
     }
     
     //hack to trigger table update even if table number hasn't changed
