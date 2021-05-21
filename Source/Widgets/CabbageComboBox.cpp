@@ -242,7 +242,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         const String presetFileName = CabbageWidgetData::getStringProp (wData, "fileType");
         File fileName;
         
-        if(presetFileName.length() > 6 )
+        if(presetFileName!="*.snaps" && presetFileName!=".snaps")
             fileName = File (getCsdFile()).getParentDirectory().getChildFile(presetFileName);
         else
             fileName = File (getCsdFile()).withFileExtension (".snaps");

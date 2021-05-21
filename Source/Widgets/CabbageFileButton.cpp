@@ -87,7 +87,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     const String presetFileName = CabbageWidgetData::getStringProp (widgetData, "fileType");
     File fileName;
     
-    if(presetFileName.length() > 6 )
+    if(presetFileName!="*.snaps" && presetFileName!=".snaps")
         fileName = File (getCsdFile()).getParentDirectory().getChildFile(presetFileName);
     else
         fileName = File (getCsdFile()).withFileExtension (".snaps");
@@ -95,7 +95,8 @@ void CabbageFileButton::buttonClicked (Button* button)
     if (!fileName.existsAsFile())
     {
         String path = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File(getCsdFile()).getFileNameWithoutExtension() + "/" + fileName.getFileName();
-        fileName = File(path);
+        if(File(path).existsAsFile())
+            fileName = File(path);
     }
     
     LookAndFeel_V4* tempLAF = new LookAndFeel_V4();
