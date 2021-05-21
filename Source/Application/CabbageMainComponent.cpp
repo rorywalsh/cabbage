@@ -1483,6 +1483,7 @@ void CabbageMainComponent::saveGraph (bool saveAs)
         if(fc.browseForFileToSave(true))
             getFilterGraph()->saveDocument(fc.getResult().withFileExtension(".cabbage"));
 
+    fileTree.refresh();
 }
 //==================================================================================
 void CabbageMainComponent::openFolder ()
@@ -1683,7 +1684,10 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 				}
                 else
                 {
-					writeFileToDisk(fc.getResult());
+                    if(fc.getResult().getFileName().contains("."))
+					    writeFileToDisk(fc.getResult());
+                    else
+                        writeFileToDisk(fc.getResult().withFileExtension(".csd"));
                 }
 				getCurrentCodeEditor()->setSavePoint();
 			}
@@ -1764,6 +1768,8 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
 			}
 		}
+
+        fileTree.refresh();
 	}
 
 }
