@@ -12,9 +12,9 @@ xypad WIDGET_SYNTAX
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/channel_xypad.md !} 
+{! ./markdown/Widgets/Properties/channel.md !} 
 
-{! ./markdown/Widgets/Properties/text_xypad.md !} 
+{! ./markdown/Widgets/Properties/text.md !} 
 
 **rangeX(min, max, value)** sets the range of the X axis. The first 2 parameters are required. The third is optional. The first two parameters let you set the minimum value and the maximum value. The next parameter determines the initial value. 
 
@@ -30,9 +30,9 @@ xypad WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/value.md !}
 
-{! ./markdown/Widgets/Properties/valuePrefix_xypad.md !}
+{! ./markdown/Widgets/Properties/valuePrefix.md !}
 
-{! ./markdown/Widgets/Properties/valuePostfix_xypad.md !}
+{! ./markdown/Widgets/Properties/valuePostfix.md !}
 
 {! ./markdown/Widgets/Properties/identChannel.md !}  
 

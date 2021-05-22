@@ -12,13 +12,15 @@ numberbox WIDGET_SYNTAX
 
 ### Specific Identifiers
 
+{! ./markdown/Widgets/Properties/fontSize.md !} 
+
 {! ./markdown/Widgets/Properties/max.md !} 
 
 {! ./markdown/Widgets/Properties/min.md !} 
 
 {! ./markdown/Widgets/Properties/range.md !} 
 
-{! ./markdown/Widgets/Properties/text_slider.md !} 
+{! ./markdown/Widgets/Properties/text.md !} 
 
 {! ./markdown/Widgets/Properties/textBox.md !} 
 

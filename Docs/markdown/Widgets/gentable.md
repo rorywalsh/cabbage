@@ -24,13 +24,15 @@ gentable WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/tableGridColour.md !} 
 
-{! ./markdown/Widgets/Properties/file_gentable.md !} 
+{! ./markdown/Widgets/Properties/file.md !} 
 
-{! ./markdown/Widgets/Properties/scrubberPosition_gentable.md !} 
+{! ./markdown/Widgets/Properties/scrubberPosition.md !} 
+
+{! ./markdown/Widgets/Properties/sampleRange.md !} 
 
 {! ./markdown/Widgets/Properties/sampleRange.md !} 
 
-{! ./markdown/Widgets/Properties/sampleRange.md !} 
+{! ./markdown/Widgets/Properties/fill.md !} 
 
 {! ./markdown/Widgets/Properties/outlineThickness.md !}  With regards to gentable, this sets the thickness of the waveform's outline. If you are drawing spectrograms setting this to 0 will speed up the process and reduce CPU drain. 
 

@@ -22,6 +22,10 @@ texteditor WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/scrollbars.md !} 
 
+{! ./markdown/Widgets/Properties/file.md !} 
+
+{! ./markdown/Widgets/Properties/mode.md !} 
+
 ### Common Identifiers
 
 {! ./markdown/Widgets/Properties/active.md !} 

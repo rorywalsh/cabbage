@@ -16,6 +16,7 @@ copyfile("../docs.yml", os.path.abspath(sys.argv[1])+"/_data/docs.yml")
 outputDir = os.path.abspath(sys.argv[1])+"/_docs"
 imagesDir = os.path.abspath(sys.argv[1])+"/images/docs/"
 copy_tree("../images/", imagesDir)
+properties = []
 
 if os.path.isdir("../markdown/WidgetVideos/"):
 	copy_tree("../markdown/WidgetVideos/", imagesDir)
@@ -24,10 +25,10 @@ directories = ["", "/Widgets/ExpandedWidgetEntries", "/Widgets/Properties"]
 currentDir = os.path.abspath("../markdown")
 for dir in directories[0:3]:
 	
-	print(dir)
+	# print(dir)
 	#print(sys.argv[1])
 	#print(os.path.abspath(sys.argv[1]))
-	print(currentDir+dir)
+	# print(currentDir+dir)
 	docfiles = listdir(currentDir+dir)
 	os.chdir(currentDir+dir)
 
@@ -39,7 +40,7 @@ for dir in directories[0:3]:
 
 			# add YAML
 			if "Properties" not in dir:
-				print(inputFile.name)
+				# print(inputFile.name)
 				fileNameOnly = os.path.basename(inputFile.name)
 				outputFile.write("---\n")
 				outputFile.write("layout: docs\n")
@@ -86,7 +87,6 @@ for dir in directories[0:3]:
 				if "(./cabbage_opcodes.md)" in line:
 					line = line.replace("(./cabbage_opcodes.md)", "(../cabbage_opcodes/index.html)")
 
-
 				if "(./beginners.md)" in line:
 					line = line.replace("(./beginners.md)", "(../beginners/index.html)")
 
@@ -99,8 +99,11 @@ for dir in directories[0:3]:
 				if "(./macros_and_reserved_channels.md)" in line:
 					line = line.replace("(./macros_and_reserved_channels.md)", "(../macros_and_reserved_channels/index.html)")
 
-				if "(./controlling.md)" in line:
-					line = line.replace("(./controlling.md)", "(../controlling/index.html)")
+				if "(./controlling_widgets.md)" in line:
+					line = line.replace("(./controlling_widgets.md)", "(../controlling_widgets/index.html)")
+
+				if "(./managing_large_numbers_of_widgets.md)" in line:
+					line = line.replace("(./managing_large_numbers_of_widgets.md)", "(../managing_large_numbers_of_widgets/index.html)")
 
 				if "(./sliders.md)" in line:
 					line = line.replace("(./sliders.md)", "(../sliders/index.html)")
@@ -122,4 +125,78 @@ for dir in directories[0:3]:
 
 			inputFile.close()
 			outputFile.close()
+	
+	if "Properties"  in dir:
+		for filename in docfiles:
+			lst = [filename, '']		
+			#filename is an array of all properties
+			properties.append(lst)
+
+
+docfiles = listdir(currentDir+"/Widgets")
+# print(currentDir+"/Widgets")
+os.chdir(currentDir+"/Widgets")
+for filename in docfiles:
+	if ".md" in filename:
+		inputFileText = open(filename).read()
+		for prop in properties:
+			if prop[0] in inputFileText:
+				properties[properties.index(prop)].append('`'+filename.replace('.md', '`'))
+
+
+allIdentifiersText = ''
+allIdentifiersText += ("---\n")
+allIdentifiersText += ("layout: docs\n")
+allIdentifiersText += ("title: All Identifiers\n")
+allIdentifiersText += ("permalink: /docs/all_identifiers/\n")
+allIdentifiersText += ("---\n\n")
+allIdentifiersText +='''
+# Cabbage Identifiers
+
+Each Cabbage widgets supports a set of identifiers. Below is the full list of all identifiers used across all widgets. Click on a link to read more about the identifier, and the widgets it supports.
+
+
+'''
+
+properties.sort(key=lambda x: x[0])
+
+linkedProps =  []
+cnt = 0
+for prop in properties:
+	linkedProps.append('')
+	list(filter(None, prop))
+	for widget in prop[1:]:
+
+		linkedProps[cnt]+= '['+widget.replace('`', '').replace('button_option', 'optionbutton').replace('button_info', 'infobutton').replace('button_file', 'filebutton').replace('csound_output', 'csoundoutput')+'](../'+widget.replace('`', '')+'/index.html) | '
+	print(linkedProps[cnt])
+	cnt += 1
+
+identifierEntries = ''
+cnt = 0
+# properties = [prop.replace('[colour_1]', '[colour:1]') for prop in properties]
+for prop in linkedProps:
+	identifierEntries += '\n{% include_relative '+ properties[cnt][0] + ' %}\n<h5 style="color:#333;background-color: rgb(147, 210, 10);">Supported Widgets:</h5>'+prop+'</h4>'
+	cnt += 1
+for prop in properties:
+	prop[0] = '['+prop[0].replace('.md', '')+'](#'+prop[0].replace('.md', '')+')'
+	prop[0] = prop[0].replace('[colour_1]', '[colour:1]')
+	prop[0] = prop[0].replace('[colour_0]', '[colour:0]')
+	prop[0] = prop[0].replace('[fontColour_0]', '[fontColour:0]')
+	prop[0] = prop[0].replace('[fontColour_1]', '[fontColour:1]')
+	prop[0] = prop[0].replace('[channel_type]', '[channelType]')
+	prop[0] = prop[0].replace('[checkbox_corner]', '[corners(`comboxbox`)]')
+	prop[0] = prop[0].replace('[file_combobox]', '[file(`comboxbox`)]')
+	prop[0] = prop[0].replace('[file_gentable]', '[file(`gentable`)]')
+	prop[0] = prop[0].replace('[file_image]', '[file(`image`)]')
+	prop[0] = prop[0].replace('[file_info_button]', '[file(`infobutton`)]')
+	prop[0] = prop[0].replace('[file_info_button]', '[file(`infobutton`)]')
+	# print(prop)
+	allIdentifiersText += prop[0] + '   |   '
+	# allIdentifiersText += (', '.join(list(filter(None, prop))))+'\n\n'
+
+
+allIdentifiersText += identifierEntries
+identifierOutputFile = open(outputDir+"/all_identifiers.md", 'w')
+identifierOutputFile.write(allIdentifiersText)
+identifierOutputFile.close()
 

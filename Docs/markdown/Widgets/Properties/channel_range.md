@@ -1,2 +1,0 @@
-<a name="channel_range"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
-**channel("min", "max")** The names of the channels that Cabbage will communicate with Csound on. The current value of this widget#s min and max can be retrieved in Csound using a chnget opcode, or can be set using a chnset opcode.

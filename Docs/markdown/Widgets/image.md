@@ -18,7 +18,7 @@ image WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/crop.md !}
 
-{! ./markdown/Widgets/Properties/file_image.md !}
+{! ./markdown/Widgets/Properties/file.md !}
 
 {! ./markdown/Widgets/Properties/outlineColour.md !}
 

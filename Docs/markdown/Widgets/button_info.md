@@ -14,7 +14,7 @@ infobutton WIDGET_SYNTAX
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/file_info_button.md !} 
+{! ./markdown/Widgets/Properties/file.md !} 
 
 ### Common Identifiers
 

@@ -13,7 +13,7 @@ slider WIDGET_SYNTAX
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/max.md !}  
+{! ./markdown/Widgets/Properties/gapMarkers.md !}  
 
 {! ./markdown/Widgets/Properties/markerColour.md !}  
 
@@ -22,8 +22,6 @@ slider WIDGET_SYNTAX
 {! ./markdown/Widgets/Properties/markerStart.md !} 
 
 {! ./markdown/Widgets/Properties/markerEnd.md !}  
-
-{! ./markdown/Widgets/Properties/min.md !}  
 
 {! ./markdown/Widgets/Properties/outlineColour.md !}  
 
@@ -37,13 +35,13 @@ slider WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/filmStrip.md !}   
 
-{! ./markdown/Widgets/Properties/imgFile_slider.md !} 
+{! ./markdown/Widgets/Properties/imgFile.md !} 
 
 {! ./markdown/Widgets/Properties/sliderBounds.md !}   
 
 {! ./markdown/Widgets/Properties/textColour.md !}   
 
-{! ./markdown/Widgets/Properties/text_slider.md !} 
+{! ./markdown/Widgets/Properties/text.md !} 
 
 {! ./markdown/Widgets/Properties/trackerThickness.md !} Not available for rsliders
 

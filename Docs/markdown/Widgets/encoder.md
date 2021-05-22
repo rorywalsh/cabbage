@@ -26,7 +26,7 @@ encoder WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/textColour.md !} 
 
-{! ./markdown/Widgets/Properties/text_slider.md !} 
+{! ./markdown/Widgets/Properties/text.md !} 
 
 ### Common Identifiers
 

@@ -18,11 +18,13 @@ combobox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/channel_type.md !} 
 
-{! ./markdown/Widgets/Properties/file_combobox.md !} 
+{! ./markdown/Widgets/Properties/file.md !} 
 
 {! ./markdown/Widgets/Properties/items.md !} 
 
-{! ./markdown/Widgets/Properties/populate_combobox.md !} 
+{! ./markdown/Widgets/Properties/populate.md !} 
+
+{! ./markdown/Widgets/Properties/sort.md !} 
 
 
 ### Common Identifiers

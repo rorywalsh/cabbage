@@ -12,7 +12,7 @@ hrange WIDGET_SYNTAX
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/channel_range.md !}   
+{! ./markdown/Widgets/Properties/channel.md !}   
 
 {! ./markdown/Widgets/Properties/max.md !} 
 

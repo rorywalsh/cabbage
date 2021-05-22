@@ -12,9 +12,9 @@ soundfiler WIDGET_SYNTAX
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/channel_soundfiler.md  !}
+{! ./markdown/Widgets/Properties/channel.md  !}
 
-{! ./markdown/Widgets/Properties/file_soundfiler.md !} 
+{! ./markdown/Widgets/Properties/file.md !} 
 
 {! ./markdown/Widgets/Properties/scrubberPosition.md !} 
 
@@ -26,7 +26,7 @@ soundfiler WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/sampleRange.md !}  
 
-{! ./markdown/Widgets/Properties/scrollBars.md !}  
+{! ./markdown/Widgets/Properties/scrollbars.md !}  
 
 ### Common Identifiers
 

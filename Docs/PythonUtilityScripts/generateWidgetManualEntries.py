@@ -25,6 +25,7 @@ for filename in docfiles:
             if "{! ./markdown/Widgets/Properties/" in line:
                 line = line.replace("{! ./markdown/Widgets/Properties/", "")
                 line = line[0:line.find(" !}")]
+                print(filename)
                 propFile = open("./Properties/"+line.rstrip())
                 content = propFile.readlines()
                 for propLine in content:

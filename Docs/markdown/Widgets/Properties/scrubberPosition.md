@@ -1,2 +1,3 @@
 <a name="scrubberPosition"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
-**scrubberPosition(val)** Sets the scrubber position where val is an integer value in samples. If you wish to update the scrubberPosition in real time use an identChannel identifier.
+_____________________________
+**scrubberPosition(val)** Sets the scrubber position where val is an integer value in samples. If you wish to update the scrubberPosition in real time use the cabbageSet [opcodes](./cabbage_opcodes.md). gentable can also take an optional parameter, `tableNum` which determine which table the scrubber will be placed on, if you are using multiple table. 

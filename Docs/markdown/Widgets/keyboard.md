@@ -32,9 +32,9 @@ keyboard WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/middleC.md !}
 
-{! ./markdown/Widgets/Properties/scrollBars.md !}
+{! ./markdown/Widgets/Properties/scrollbars.md !}
 
-{! ./markdown/Widgets/Properties/value_keyboard.md !}
+{! ./markdown/Widgets/Properties/value.md !}
 
 ### Common Identifiers
 

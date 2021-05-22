@@ -12,7 +12,7 @@ checkbox WIDGET_SYNTAX
 
 ### Specific Identifiers
 
-{! ./markdown/Widgets/Properties/checkbox_corner.md !} 
+{! ./markdown/Widgets/Properties/corners.md !} 
 
 {! ./markdown/Widgets/Properties/radioGroup.md !} 
 

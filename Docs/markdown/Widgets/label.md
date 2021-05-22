@@ -16,6 +16,8 @@ label WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/corners.md !} 
 
+{! ./markdown/Widgets/Properties/fontSize.md !} 
+
 **fontStyle("style")** Sets the style of the font. Valid styles are, "plain", "bold"(default), "bold italic", "italic", "underlined", "bold underlined", "italic underlined" and "bold italic underlined". 
 
 **text("text")** "text" will be the string to appear on the label

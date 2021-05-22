@@ -12,7 +12,7 @@ groupbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/outlineThickness.md !}  
 
-{! ./markdown/Widgets/Properties/text_groupbox.md !}
+{! ./markdown/Widgets/Properties/text.md !}
 
 {! ./markdown/Widgets/Properties/popup.md !} 
 

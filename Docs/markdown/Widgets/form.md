@@ -7,9 +7,12 @@ form WIDGET_SYNTAX
 </pre></big>
 
 ### Specific Identifiers
+
 {! ./markdown/Widgets/Properties/caption.md !} 
 
 {! ./markdown/Widgets/Properties/size.md !} 
+
+{! ./markdown/Widgets/Properties/bundle.md !}  
 
 {! ./markdown/Widgets/Properties/pluginId.md !} 
 
@@ -18,8 +21,6 @@ form WIDGET_SYNTAX
 {! ./markdown/Widgets/Properties/guiMode.md !}   
 
 {! ./markdown/Widgets/Properties/import.md !}  
-
-{! ./markdown/Widgets/Properties/bundle.md !}  
 
 {! ./markdown/Widgets/Properties/titleBarColour.md !}  
 
@@ -33,7 +34,8 @@ form WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/autoUpdate.md !}  
 
-{! ./markdown/Widgets/Properties/sideChain.md !}  
+{! ./markdown/Widgets/Properties/opcodeDir.md !} 
+
 
 ### Common Identifiers
 

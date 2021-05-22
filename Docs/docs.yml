@@ -53,6 +53,7 @@
   #   - /docs/widgets
   docs:
     - cabbage_syntax
+    - all_identifiers
     - button
     - button_file
     - button_info
@@ -75,4 +76,3 @@
     - texteditor
     - range
     - xypad
-    - all_identifiers
