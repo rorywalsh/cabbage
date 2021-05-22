@@ -29,6 +29,10 @@
 
 class CabbageIDELookAndFeel;
 
+#ifdef JUCE_MAC
+ #include <pwd.h>
+#endif
+
 #ifdef _MSC_VER
 #pragma warning(disable: 4244) // possible loss of data
 #pragma warning(disable: 4100) // possible loss of data
@@ -1008,6 +1012,19 @@ public:
         return skin;
     }
 
+#ifdef JUCE_MAC
+    static File getRealUserHomeDirectory ()
+    {
+        struct passwd *pw = getpwuid (getuid ());
+        if (pw == nullptr)
+        {
+            jassertfalse;   // unable to read the user info
+            return File::getSpecialLocation (File::userHomeDirectory);
+        }
+        
+        return File (String (pw->pw_dir));
+    }
+#endif
     //==========================================================================================
     static bool hasCabbageTags (File inputFile)
     {
