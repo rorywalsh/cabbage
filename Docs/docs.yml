@@ -44,6 +44,7 @@
     - cabbage_set_state_value
     - cabbage_channel_state_recall
     - cabbage_channel_state_save
+    - cabbage_file
     
   # href:
   #   - /docs/widgets

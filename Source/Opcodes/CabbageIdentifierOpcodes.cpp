@@ -707,6 +707,43 @@ int GetCabbageReservedChannelDataWithTrigger::getAttribute()
 }
 
 //-----------------------------------------------------------------------------------------------------
+int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type)
+{
+    
+    
+    if(String(opcodeData->inargs.str_data(0).data).isEmpty())
+    {
+        opcodeData->outargs.str_data(0).size = 0;
+        opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup("");
+        return OK;
+    }
+    
+    String inputFile = String(opcodeData->inargs.str_data(0).data);
+    if(File::isAbsolutePath(inputFile) == false)
+    {
+        opcodeData->csound->message(String(inputFile + " is not a valid path").toUTF8().getAddress());
+        return NOTOK;
+    }
+    
+    File file(String(opcodeData->inargs.str_data(0).data));
+    
+    String result = "";
+    
+    if(type == "name")
+        result = file.getFileName();
+    if(type == "path")
+        result = file.getParentDirectory().getFullPathName();
+    if(type == "extension")
+        result = file.getFileExtension();
+    if(type == "noExtension")
+        result = file.getFileNameWithoutExtension();
+    
+    opcodeData->outargs.str_data(0).size = strlen(result.toRawUTF8());
+    opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.toUTF8().getAddress());
+    return OK;
+    
+}
+//-----------------------------------------------------------------------------------------------------
 int CabbagePack::packageFiles()
 {
     if (in_count() < 3)

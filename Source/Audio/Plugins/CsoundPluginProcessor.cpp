@@ -248,8 +248,10 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<CreateCabbageWidget>((csnd::Csound*) csound->GetCsound(), "cabbageCreate", "", "SS", csnd::thread::i);
 
     csnd::plugin<CabbagePack>((csnd::Csound*) csound->GetCsound(), "cabbagePack", "", "SW", csnd::thread::i);
-    
-
+    csnd::plugin<CabbageGetFilename>((csnd::Csound*) csound->GetCsound(), "cabbageGetFilename", "S", "S", csnd::thread::ik);
+    csnd::plugin<CabbageGetFilePath>((csnd::Csound*) csound->GetCsound(), "cabbageGetFilePath", "S", "S", csnd::thread::ik);
+    csnd::plugin<CabbageGetFileExtension>((csnd::Csound*) csound->GetCsound(), "cabbageGetFileExtension", "S", "S", csnd::thread::ik);
+    csnd::plugin<CabbageGetFileNoExtension>((csnd::Csound*) csound->GetCsound(), "cabbageGetFileNoExtension", "S", "S", csnd::thread::ik);
 
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);

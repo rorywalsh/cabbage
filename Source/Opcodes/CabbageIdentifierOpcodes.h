@@ -204,6 +204,27 @@ struct GetCabbageReservedChannelData : csnd::Plugin<1, 1>
     int getAttribute();
 };
 
+int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type);
+struct CabbageGetFilename : csnd::Plugin<1, 1>
+{
+    int init(){ return getFileInfo(this, "name"); };
+    int kperf(){ return getFileInfo(this, "name"); };
+};
+struct CabbageGetFileExtension : csnd::Plugin<1, 1>
+{
+    int init(){ return getFileInfo(this, "extension"); };
+    int kperf(){ return getFileInfo(this, "extension"); };
+};
+struct CabbageGetFileNoExtension : csnd::Plugin<1, 1>
+{
+    int init(){ return getFileInfo(this, "noExtension"); };
+    int kperf(){ return getFileInfo(this, "noExtension"); };
+};
+struct CabbageGetFilePath : csnd::Plugin<1, 1>
+{
+    int init(){ return getFileInfo(this, "path"); };
+    int kperf(){ return getFileInfo(this, "path"); };
+};
 
 struct CabbagePack : csnd::InPlug<64>
 {
