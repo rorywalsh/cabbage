@@ -165,6 +165,7 @@ public:
     int currentPluginScale = -1;
     String currentPresetName = "";
     
+
 private:
     controlChannelInfo_s* csoundChanList;
     int numberOfLinesInPlantCode = 0;

@@ -80,7 +80,7 @@ public:
 
 	void performCsoundKsmps();
 	int result = -1;
-
+    bool isLMMS = false;
 
 	virtual void processBlock(AudioBuffer< float >&, MidiBuffer&) override;
 	virtual void processBlock(AudioBuffer< double >&, MidiBuffer&) override;

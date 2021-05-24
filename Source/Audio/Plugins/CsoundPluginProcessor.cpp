@@ -29,7 +29,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const BusesPropertie
     : AudioProcessor (ioBuses),
 csdFile (csdFile)
 {
-    hostInfo = {};
+    hostInfo = {};  
 	matchingNumberOfIOChannels = getTotalNumInputChannels() == getTotalNumOutputChannels() ? true : false;
 
 #if ! JucePlugin_IsSynth && ! Cabbage_IDE_Build
@@ -37,14 +37,17 @@ csdFile (csdFile)
     numCsoundOutputChannels = getTotalNumOutputChannels();
     CabbageUtilities::debug("Cabbage Csound Constructor - Requested input channels:", numCsoundInputChannels);
     CabbageUtilities::debug("Cabbage Csound Constructor - Requested output channels:", numCsoundOutputChannels);
-
-#else
+      
+#else  
     numCsoundOutputChannels = getTotalNumOutputChannels();
     CabbageUtilities::debug("Constructor - Requested output channels:", numCsoundOutputChannels);
 #endif
 
+    PluginHostType pluginHost;
+    if(pluginHost.getHostPath().contains("LMMS"))
+        isLMMS = true;
     
-}
+}  
 
 CsoundPluginProcessor::~CsoundPluginProcessor()
 {
@@ -1038,8 +1041,8 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 
 	keyboardState.processNextMidiBuffer(midiMessages, 0, numSamples, true);
     
-    //events need to be added at the correct time...
-	//midiBuffer.addEvents(midiMessages, 0, numSamples, 0);
+    if(isLMMS == true)
+	    midiBuffer.addEvents(midiMessages, 0, numSamples, 0);
     
     int samplePos = 0;
     MidiMessage message;
@@ -1074,58 +1077,49 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 				csndIndex = 0;
 			}
             
-            while(iter.getNextEvent (message, samplePos))
+            if (isLMMS == false)
             {
-                //if current sample position matches time code for MIDI event, add it to buffer that gets sent to Csound as incoming MIDI...
-                if(samplePos == i)
-                    midiBuffer.addEvent(message, samplePos);
+                while (iter.getNextEvent(message, samplePos))
+                {
+                    //if current sample position matches time code for MIDI event, add it to buffer that gets sent to Csound as incoming MIDI...
+                    if (samplePos == i)
+                        midiBuffer.addEvent(message, samplePos);
+                }
+
+                iter.setNextSamplePosition(0);
             }
             
             //reset the iterator each time, so that we can step through the events again to see if they should be added
-            iter.setNextSamplePosition(0);
+            
 	
 #if !JucePlugin_IsSynth
-            //if using Logic process inputs and outputs separately - otherwise its mono to stereo features break...
-//            if (matchingNumberOfIOChannels)
-//            {
-//
-//                pos = csndIndex * outputChannelCount;
-//                for (int channel = 0; channel < outputChannelCount; channel++)
-//                {
-//                    processCsoundIOBuffers(BufferType::inputOutput, ioBuffer[channel], i, pos);
-//                    pos++;
-//                }
-//            }
-//            else
-//            {
-                //process each bus
-                const int numInputBuses = getBusCount(true);
-                pos = csndIndex * inputChannelCount;
+            const int numInputBuses = getBusCount(true);
+            pos = csndIndex * inputChannelCount;
             
-                for (int busIndex = 0; busIndex < numInputBuses; busIndex++)
+            for (int busIndex = 0; busIndex < numInputBuses; busIndex++)
+            {
+                auto inputBus = getBusBuffer(buffer, true, busIndex);
+                Type** inputBuffer = inputBus.getArrayOfWritePointers();
+
+                for (int channel = 0; channel < inputBus.getNumChannels(); channel++)
                 {
-                    auto inputBus = getBusBuffer(buffer, true, busIndex);
-                    Type** inputBuffer = inputBus.getArrayOfWritePointers();
-
-                    for (int channel = 0; channel < inputBus.getNumChannels(); channel++)
-                    {
-                        processCsoundIOBuffers(BufferType::input, inputBuffer[channel], i, pos++);
-                    }
+                    processCsoundIOBuffers(BufferType::input, inputBuffer[channel], i, pos++);
                 }
+            }
 
-                const int numOutputBuses = getBusCount(false);
-                pos = csndIndex* outputChannelCount;
+            const int numOutputBuses = getBusCount(false);
+            pos = csndIndex* outputChannelCount;
             
-                for (int busIndex = 0; busIndex < numOutputBuses; busIndex++)
-                {
-                    auto outputBus = getBusBuffer(buffer, false, busIndex);
-                    Type** outputBuffer = outputBus.getArrayOfWritePointers();
+            for (int busIndex = 0; busIndex < numOutputBuses; busIndex++)
+            {
+                auto outputBus = getBusBuffer(buffer, false, busIndex);
+                Type** outputBuffer = outputBus.getArrayOfWritePointers();
 
-                    for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
-                    {
-                        processCsoundIOBuffers(BufferType::output, outputBuffer[channel], i, pos++);
-                    }
+                for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
+                {
+                    processCsoundIOBuffers(BufferType::output, outputBuffer[channel], i, pos++);
                 }
+            }
 #else
             const int channelNum = buffer.getNumChannels();
             pos = csndIndex * channelNum;
