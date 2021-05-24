@@ -117,9 +117,18 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 {
     
     csdFile = currentCsdFile;
-    
+    String csdFileText;
     StringArray csdLines;
+    
+#ifdef CabbagePro
+    csdLines.addLines(Encrypt::decode(csdFile));
+    csdFileText = Encrypt::decode(csdFile);
+    DBG(csdFileText);
+#else
     csdLines.addLines(csdFile.loadFileAsString());
+    csdFileText = csdFile.loadFileAsString();
+#endif
+    
     for (auto line : csdLines)
     {
         ValueTree temp("temp");
@@ -157,7 +166,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     CabbageUtilities::debug("SetupAndCompile - Requested input channels:", numCsoundInputChannels);
 #else
     //numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
-    numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "nchnls");
+    numCsoundOutputChannels = CabbageUtilities::getHeaderInfo(csdFileText, "nchnls");
     //numCsoundOutputChannels = getTotalNumOutputChannels();
 #endif
 
@@ -272,7 +281,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 	csound->SetOption((char*)"-d");
 	csound->SetOption((char*)"-b0");
     
-    addMacros(csdFile.loadFileAsString());
+    addMacros(csdFileText);
 
 	if (debugMode)
 	{
@@ -306,13 +315,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
         matchingNumberOfIOChannels = false;
     }
 	
-#ifdef CabbagePro
-	const int requestedSampleRate = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "sr");
-	const int requestedKsmpsRate = CabbageUtilities::getHeaderInfo(Encrypt::decode(csdFile), "ksmps");
-#else
-	const int requestedKsmpsRate = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "ksmps");
-	const int requestedSampleRate = CabbageUtilities::getHeaderInfo(csdFile.loadFileAsString(), "sr");
-#endif
+	const int requestedKsmpsRate = CabbageUtilities::getHeaderInfo(csdFileText, "ksmps");
+	const int requestedSampleRate = CabbageUtilities::getHeaderInfo(csdFileText, "sr");
+
 	
 	if (requestedKsmpsRate == -1)
 		csoundParams->ksmps_override = 32;
@@ -324,17 +329,16 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
 	csound->SetParams(csoundParams.get());
     
-    if (csdFile.loadFileAsString().contains("<Csound") || csdFile.loadFileAsString().contains("</Csound"))
+#ifdef CabbagePro
+    compileCsdString(csdFileText);
+    DBG(csdFileText);
+    csound->Start();
+#else
+    if (csdFileText.contains("<Csound") || csdFileText.contains("</Csound"))
     {
         compileCsdFile(csdFile);
     }
-    else
-	{
-#ifdef CabbagePro
-		compileCsdString(Encrypt::decode(csdFile));
-		csound->Start();
 #endif
-}
 
 
 	if (csdCompiledWithoutError())
