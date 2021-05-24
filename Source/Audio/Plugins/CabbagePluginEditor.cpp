@@ -36,9 +36,6 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 {
     setName ("PluginEditor");
 
-
-    CabbageUtilities::showMessage(cabbageProcessor.pluginType.getHostPath());
-
     setLookAndFeel (&lookAndFeel);
     customFont = cabbageProcessor.getCustomFont();
     viewportContainer.reset (new ViewportContainer());
