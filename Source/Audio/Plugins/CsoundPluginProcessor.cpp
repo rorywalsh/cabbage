@@ -43,9 +43,6 @@ csdFile (csdFile)
     CabbageUtilities::debug("Constructor - Requested output channels:", numCsoundOutputChannels);
 #endif
 
-    PluginHostType pluginHost;
-    if(pluginHost.getHostPath().contains("LMMS"))
-        isLMMS = true;
     
 }  
 
@@ -550,9 +547,15 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("FLStudio", 1.0);
     else if (pluginType.isAbletonLive())
         csound->SetChannel ("AbletonLive", 1.0);
-    else if (pluginType.isLogic()){
+    else if (pluginType.isLogic())
+    {
         csound->SetChannel ("Logic", 1.0);
         isLogic = true;
+    }
+    else if (pluginType.getHostPath().contains("LMMS"))
+    {
+        csound->SetChannel("LMMS", 1.0);
+        isLMMS = true;
     }
     else if (pluginType.isArdour())
         csound->SetChannel ("Ardour", 1.0);
