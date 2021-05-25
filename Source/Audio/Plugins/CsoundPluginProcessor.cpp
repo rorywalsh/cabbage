@@ -499,10 +499,20 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win32)
     {
         csound->SetChannel ("CSD_PATH", csdFilePath.getParentDirectory().getFullPathName().replace ("\\", "\\\\").toUTF8().getAddress());
+		csound->SetStringChannel("USER_HOME_DIRECTORY", CabbageUtilities::getRealUserHomeDirectory().getFullPathName().replace("\\", "\\\\").toUTF8().getAddress());
+		csound->SetStringChannel("USER_DESKTOP_DIRECTORY", File::getSpecialLocation(File::userDesktopDirectory).getFullPathName().replace("\\", "\\\\").toUTF8().getAddress());
+		csound->SetStringChannel("USER_MUSIC_DIRECTORY", File::getSpecialLocation(File::userMusicDirectory).getFullPathName().replace("\\", "\\\\").toUTF8().getAddress());
+		csound->SetStringChannel("USER_APPLICATION_DIRECTORY", File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName().replace("\\", "\\\\").toUTF8().getAddress());
+		csound->SetStringChannel("USER_DOCUMENTS_DIRECTORY", File::getSpecialLocation(File::userDocumentsDirectory).getFullPathName().replace("\\", "\\\\").toUTF8().getAddress());
     }
     else
     {
         csound->SetChannel ("CSD_PATH", csdFilePath.getFullPathName().toUTF8().getAddress());
+		csound->SetStringChannel("USER_HOME_DIRECTORY", CabbageUtilities::getRealUserHomeDirectory().getFullPathName().toUTF8().getAddress());
+		csound->SetStringChannel("USER_DESKTOP_DIRECTORY", File::getSpecialLocation(File::userDesktopDirectory).getFullPathName().toUTF8().getAddress());
+		csound->SetStringChannel("USER_MUSIC_DIRECTORY", File::getSpecialLocation(File::userMusicDirectory).getFullPathName().toUTF8().getAddress());
+		csound->SetStringChannel("USER_APPLICATION_DIRECTORY", File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName().toUTF8().getAddress());
+		csound->SetStringChannel("USER_DOCUMENTS_DIRECTORY", File::getSpecialLocation(File::userDocumentsDirectory).getFullPathName().toUTF8().getAddress());
     }
 
     csound->SetStringChannel ("LAST_FILE_DROPPED", const_cast<char*> (""));
@@ -510,7 +520,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     csound->SetChannel ("IS_EDITOR_OPEN", 0.0);
     csdFilePath.setAsCurrentWorkingDirectory();
 
-    DBG(File::getSpecialLocation (File::userHomeDirectory).getFileIdentifier());
+
     csound->SetChannel("HOME_FOLDER_UID", File::getSpecialLocation (File::userHomeDirectory).getFileIdentifier());
 
     time_t seconds_past_epoch = time(0);
@@ -539,25 +549,6 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("WINDOWS", 1.0);
     }
 
-    //    String location(String(args.str_data(0).data));
-//    if(location == "userHomeDirectory")
-//        specialLocation = File::SpecialLocationType::userHomeDirectory;
-//    else if(location == "userDocumentsDirectory")
-//        specialLocation = File::SpecialLocationType::userDocumentsDirectory;
-//    else if(location == "userDesktopDirectory")
-//        specialLocation = File::SpecialLocationType::userDesktopDirectory;
-//    else if(location == "userMusicDirectory")
-//        specialLocation = File::SpecialLocationType::userMusicDirectory;
-//    else if(location == "userApplicationDataDirectory")
-//        specialLocation = File::SpecialLocationType::userApplicationDataDirectory;
-
-    csound->SetStringChannel("USER_HOME_DIRECTORY", CabbageUtilities::getRealUserHomeDirectory().getFullPathName().toUTF8().getAddress());
-    csound->SetStringChannel("USER_DESKTOP_DIRECTORY", File::getSpecialLocation(File::userDesktopDirectory).getFullPathName().toUTF8().getAddress());
-    csound->SetStringChannel("USER_MUSIC_DIRECTORY", File::getSpecialLocation(File::userMusicDirectory).getFullPathName().toUTF8().getAddress());
-    csound->SetStringChannel("USER_APPLICATION_DIRECTORY", File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName().toUTF8().getAddress());
-    csound->SetStringChannel("USER_DOCUMENTS_DIRECTORY", File::getSpecialLocation(File::userDocumentsDirectory).getFullPathName().toUTF8().getAddress());
-
-    
 #if !defined(Cabbage_IDE_Build)
     PluginHostType pluginType;
     if (pluginType.isFruityLoops())
