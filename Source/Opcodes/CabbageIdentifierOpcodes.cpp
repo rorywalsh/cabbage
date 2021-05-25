@@ -11,7 +11,6 @@
 #include "../Audio/Plugins/CsoundPluginProcessor.h"
 #include "CabbageIdentifierOpcodes.h"
 #include <exception>
-#include <filesystem>
 #include <iostream>
 
 
