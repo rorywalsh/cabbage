@@ -247,9 +247,9 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             File pl (exportedPlugin.getFullPathName() + String ("/Contents/Info.plist"));
             String newPList = pl.loadFileAsString();
             
-            if(fileExtension.containsIgnoreCase("vst") || fileExtension.containsIgnoreCase("app"))
+            if(fileExtension.containsIgnoreCase("vst") || fileExtension.containsIgnoreCase("app") || fileExtension.containsIgnoreCase("component"))
             {
-                File pluginBinary (exportedPlugin.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
+                File pluginBinary (exportedPlugin.getFullPathName() + String ("/Contents/MacOS/") + exportedCsdFile.getFileNameWithoutExtension());
                 
                 if (bin.moveFileTo (pluginBinary) == false)
                     CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
@@ -264,6 +264,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             const String pluginName = "<string>" +manu + ": " + fc.getFileNameWithoutExtension() + "</string>";
             const String toReplace = "<string>"+manu+": CabbageEffectNam</string>";
 #ifdef CabbagePro
+            
             //be sure to remove CabbageAudio from plugin plist..
             const String toReplace2 = "<string>CabbageAudio: CabbageEffectNam<string>";
             newPList = newPList.replace (toReplace2, pluginName);
