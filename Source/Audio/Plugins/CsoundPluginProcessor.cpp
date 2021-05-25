@@ -539,7 +539,24 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("WINDOWS", 1.0);
     }
 
-    //csound->SetChannel ("CHNSET_GESTURES", 0.0);
+    //    String location(String(args.str_data(0).data));
+//    if(location == "userHomeDirectory")
+//        specialLocation = File::SpecialLocationType::userHomeDirectory;
+//    else if(location == "userDocumentsDirectory")
+//        specialLocation = File::SpecialLocationType::userDocumentsDirectory;
+//    else if(location == "userDesktopDirectory")
+//        specialLocation = File::SpecialLocationType::userDesktopDirectory;
+//    else if(location == "userMusicDirectory")
+//        specialLocation = File::SpecialLocationType::userMusicDirectory;
+//    else if(location == "userApplicationDataDirectory")
+//        specialLocation = File::SpecialLocationType::userApplicationDataDirectory;
+
+    csound->SetStringChannel("USER_HOME_DIRECTORY", CabbageUtilities::getRealUserHomeDirectory().getFullPathName().toUTF8().getAddress());
+    csound->SetStringChannel("USER_DESKTOP_DIRECTORY", File::getSpecialLocation(File::userDesktopDirectory).getFullPathName().toUTF8().getAddress());
+    csound->SetStringChannel("USER_MUSIC_DIRECTORY", File::getSpecialLocation(File::userMusicDirectory).getFullPathName().toUTF8().getAddress());
+    csound->SetStringChannel("USER_APPLICATION_DIRECTORY", File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName().toUTF8().getAddress());
+    csound->SetStringChannel("USER_DOCUMENTS_DIRECTORY", File::getSpecialLocation(File::userDocumentsDirectory).getFullPathName().toUTF8().getAddress());
+
     
 #if !defined(Cabbage_IDE_Build)
     PluginHostType pluginType;
