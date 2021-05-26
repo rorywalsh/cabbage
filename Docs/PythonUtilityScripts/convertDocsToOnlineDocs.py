@@ -63,11 +63,14 @@ for dir in directories[0:3]:
 				if "```html" in line:
 					line = line.replace("```html", "```csharp")
 
-				if "(./using_svgs.md)" in line:
-					line = line.replace("(./using_svgs.md)", "(../using_svgs/index.html)")
+				if "(./using_imgs.md)" in line:
+					line = line.replace("(./using_imgs.md)", "(../using_imgs/index.html)")
 
 				if "(./identchannels.md)" in line:
 					line = line.replace("(./identchannels.html)", "(../identchannels/index.html)")
+
+				if "(./encoder.md)" in line:
+					line = line.replace("(./encoder.md)", "(../encoder/index.html)")
 
 				if "(./widget_arrays.md)" in line:
 					line = line.replace("(./widget_arrays.md)", "(../widget_arrays/index.html)")
