@@ -68,7 +68,12 @@ public:
 		const Slider::SliderStyle style, Slider& slider) override
 	{
 		g.setColour(slider.findColour(Slider::thumbColourId));
-		g.fillRoundedRectangle(x, y, width, height, 3);		
+        const int corners = slider.getProperties().getWithDefault("corners", 3);
+        if(corners!=0)
+            g.fillRoundedRectangle(x, y, width, height, corners);
+        else
+            g.fillRect(x, y, width, height);
+            
 	}
 
 };

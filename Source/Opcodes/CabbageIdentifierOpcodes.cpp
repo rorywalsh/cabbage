@@ -10,7 +10,8 @@
 
 #include "../Audio/Plugins/CsoundPluginProcessor.h"
 #include "CabbageIdentifierOpcodes.h"
-
+#include <exception>
+#include <iostream>
 
 
 //====================================================================================================
@@ -707,15 +708,58 @@ int GetCabbageReservedChannelDataWithTrigger::getAttribute()
 }
 
 //-----------------------------------------------------------------------------------------------------
+int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type)
+{
+    
+    
+    if(String(opcodeData->inargs.str_data(0).data).isEmpty())
+    {
+        opcodeData->outargs.str_data(0).size = 0;
+        opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup("");
+        return OK;
+    }
+    
+    String inputFile = String(opcodeData->inargs.str_data(0).data);
+    if(File::isAbsolutePath(inputFile) == false)
+    {
+        opcodeData->csound->message(String(inputFile + " is not a valid path").toUTF8().getAddress());
+        return NOTOK;
+    }
+    
+    File file(String(opcodeData->inargs.str_data(0).data));
+    
+    String result = "";
+    
+    if(type == "name")
+        result = file.getFileName();
+    if(type == "path")
+        result = file.getParentDirectory().getFullPathName();
+    if(type == "extension")
+        result = file.getFileExtension();
+    if(type == "noExtension")
+        result = file.getFileNameWithoutExtension();
+   
+#ifdef JUCE_WINDOWS
+	opcodeData->outargs.str_data(0).size = strlen(result.replace("\\", "\\\\").toRawUTF8());
+	opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.replace("\\", "\\\\").toUTF8().getAddress());
+	return OK;
+#endif
+
+    opcodeData->outargs.str_data(0).size = strlen(result.toRawUTF8());
+    opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.toUTF8().getAddress());
+    return OK;
+    
+}
+//-----------------------------------------------------------------------------------------------------
 int CabbagePack::packageFiles()
 {
-    if (in_count() < 3)
+    if (in_count() < 2)
     {
         csound->message("Not enough parameters passed to cabbagePack.\n");
         return NOTOK;
     }
     
-    File::SpecialLocationType specialLocation;
+    //File::SpecialLocationType specialLocation;
     
 //    String location(String(args.str_data(0).data));
 //    if(location == "userHomeDirectory")
@@ -733,21 +777,11 @@ int CabbagePack::packageFiles()
     for ( int i = 1 ; i < in_count() ; i++)
     {
         File file(File::getCurrentWorkingDirectory().getChildFile(String(args.str_data(i).data)));
-        if(file.existsAsFile())
-        {
-            const String folderAndFile = String(args.str_data(0).data) + "/" + String(args.str_data(i).data);
-            File newFile(File::getCurrentWorkingDirectory().getChildFile(folderAndFile));
-
-            MemoryBlock mem;
-            bool result = file.loadFileAsData(mem);
-            if(newFile.replaceWithData(mem.getData(), mem.getSize()))
-                csound->message("cabbagePack file has successfully replaced the file located at "+newFile.getFullPathName().toStdString());
-        }
-        else
-        {
-            csound->message("cabbagePack cannot find file "+file.getFullPathName().toStdString());
-        }
+        File newFile(File::getCurrentWorkingDirectory().getChildFile(String(args.str_data(0).data)+"/"+ String(args.str_data(i).data)));
+        DBG(file.getFullPathName());
+        DBG(newFile.getFullPathName());
         
+      
     }
     
     

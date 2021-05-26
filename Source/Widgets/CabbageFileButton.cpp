@@ -98,9 +98,7 @@ void CabbageFileButton::buttonClicked (Button* button)
             String path = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(JucePlugin_Manufacturer) + "/" + File(getCsdFile()).getParentDirectory().getParentDirectory().getFileNameWithoutExtension() + "/" + fileName.getFileName();
 #else
             String path = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File(getCsdFile()).getFileNameWithoutExtension() + "/" + fileName.getFileName();
-#endif
-            fileName = File(path);
-        
+#endif        
         if(File(path).existsAsFile())
             fileName = File(path);
     }
@@ -214,7 +212,7 @@ void CabbageFileButton::buttonClicked (Button* button)
 #if JUCE_MODAL_LOOPS_PERMITTED
         String presetName;
         AlertWindow w("Preset",
-            "(will overwrite previous preset of same name)",
+            "(will overwrite previous preset of same name)",   
             AlertWindow::NoIcon);
 
         w.setLookAndFeel(tempLAF);

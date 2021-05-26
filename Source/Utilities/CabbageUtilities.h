@@ -1012,9 +1012,10 @@ public:
         return skin;
     }
 
-#ifdef JUCE_MAC
+
     static File getRealUserHomeDirectory ()
     {
+#ifdef JUCE_MAC
         struct passwd *pw = getpwuid (getuid ());
         if (pw == nullptr)
         {
@@ -1023,8 +1024,10 @@ public:
         }
         
         return File (String (pw->pw_dir));
-    }
 #endif
+        return File::getSpecialLocation(File::userHomeDirectory);
+    }
+
     //==========================================================================================
     static bool hasCabbageTags (File inputFile)
     {

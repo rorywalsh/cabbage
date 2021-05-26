@@ -62,7 +62,9 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
     const float incr = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     const float skew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
     const float defaultValue = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
+    const float corners = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners);
 
+    slider.getProperties().set("corners", corners);
     slider.setSkewFactor (skew);
 	
     slider.setRange (min, max, incr);
