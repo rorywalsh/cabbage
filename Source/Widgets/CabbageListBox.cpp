@@ -146,7 +146,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
 			listboxDir = File(getCsdFile()).getParentDirectory();
 
         filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype);
-        listboxDir.findChildFiles (dirFiles, 2, false, filetype);
+        listboxDir.findChildFiles (dirFiles, File::TypesOfFileToFind::findFilesAndDirectories, false, filetype);
         stringItems.add ("Select..");
 
         for (int i = 0; i < dirFiles.size(); ++i)
