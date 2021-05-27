@@ -324,6 +324,7 @@ public:
         add ("backgroundColor");
         add ("showStepNumbers");
         add ("markerThickness");
+        add ("numberOfClicks");
         add ("titleBarColour");
         add ("tableGridColor");
         add ("signalVariable");
@@ -661,6 +662,7 @@ namespace CabbageIdentifierIds
     static const Identifier minx = "minxX";
     static const Identifier miny = "minY";
     static const Identifier mode = "mode";
+    static const Identifier numberofclicks = "numberOfClicks";
     static const Identifier mouseinteraction = "mouseInteraction";
     static const Identifier mouseoverkeycolour = "mouseOverKeyColour";
     static const Identifier name = "name";

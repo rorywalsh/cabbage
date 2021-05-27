@@ -22,6 +22,8 @@ listbox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/items.md !}  
 
+{! ./markdown/Widgets/Properties/numberOfClicks.md !}  
+
 {! ./markdown/Widgets/Properties/populate.md !} 
 
 {! ./markdown/Widgets/Properties/sort.md !} 

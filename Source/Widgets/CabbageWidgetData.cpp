@@ -416,6 +416,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("markerEnd"):
             case HashStringToInt ("markerStart"):
             case HashStringToInt ("markerThickness"):
+            case HashStringToInt ("numberOfClicks"):
             case HashStringToInt ("middleC"):
             case HashStringToInt ("mouseInteraction"):
             case HashStringToInt ("outlineThickness"):

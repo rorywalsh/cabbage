@@ -52,10 +52,13 @@ public:
     StringArray stringItems;
     StringArray presets;
     ListBox listBox;
+    int numberOfClicks = 1;
 
 
     int getNumRows() override;
     void listBoxItemDoubleClicked(int row, const MouseEvent &e) override;
+    void listBoxItemClicked(int row, const MouseEvent &e) override;
+    void clicked(int row, const MouseEvent &e);
     void paintListBoxItem (int rowNumber, Graphics& g,
                            int width, int height, bool rowIsSelected) override;
     void selectedRowsChanged (int /*lastRowselected*/) override;

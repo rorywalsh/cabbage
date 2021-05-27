@@ -30,6 +30,7 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
     //listBox.setBounds(CabbageWidgetData::getBounds(wData).withTop(0).withLeft(0));
     addItemsToListbox(wData);
 
+    numberOfClicks = CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::numberofclicks);
     
     //lookAndFeel.customFont = owner->customFont;
     setLookAndFeel(&lookAndFeel);
@@ -232,6 +233,18 @@ int CabbageListBox::getNumRows()
 
 void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
 {
+    if(numberOfClicks == 2)
+        clicked(row, e);
+}
+
+void CabbageListBox::listBoxItemClicked(int row, const MouseEvent &e)
+{
+    if(numberOfClicks == 1)
+        clicked(row, e);
+}
+
+void CabbageListBox::clicked(int row, const MouseEvent &e)
+{
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps")
         || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("preset"))
     {
@@ -261,12 +274,12 @@ void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
     {
         const String fileType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype);
         const int index = row;
-
+        
         if (fileType.isNotEmpty())
             owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index - 1].getFullPathName());
         else
             owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
-
+        
     }
     else
     {
