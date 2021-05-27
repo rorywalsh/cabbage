@@ -32,6 +32,8 @@ numberbox WIDGET_SYNTAX
 
 ### Common Identifiers
 
+{! ./markdown/Widgets/Properties/corners.md !}  
+
 {! ./markdown/Widgets/Properties/active.md !}  
 
 {! ./markdown/Widgets/Properties/alpha.md !}

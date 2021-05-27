@@ -12,6 +12,7 @@
 #include "CabbageIdentifierOpcodes.h"
 #include <exception>
 #include <iostream>
+#include "filesystem.hpp"
 
 
 //====================================================================================================
@@ -745,7 +746,7 @@ int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type)
     
 }
 //-----------------------------------------------------------------------------------------------------
-int CabbagePack::packageFiles()
+int CabbageCopyFile::copyFiles()
 {
     if (in_count() < 2)
     {
@@ -753,32 +754,42 @@ int CabbagePack::packageFiles()
         return NOTOK;
     }
     
-    //File::SpecialLocationType specialLocation;
-    
-//    String location(String(args.str_data(0).data));
-//    if(location == "userHomeDirectory")
-//        specialLocation = File::SpecialLocationType::userHomeDirectory;
-//    else if(location == "userDocumentsDirectory")
-//        specialLocation = File::SpecialLocationType::userDocumentsDirectory;
-//    else if(location == "userDesktopDirectory")
-//        specialLocation = File::SpecialLocationType::userDesktopDirectory;
-//    else if(location == "userMusicDirectory")
-//        specialLocation = File::SpecialLocationType::userMusicDirectory;
-//    else if(location == "userApplicationDataDirectory")
-//        specialLocation = File::SpecialLocationType::userApplicationDataDirectory;
+    bool folderAlreadyExists = false;
+    String newLocation = File::getCurrentWorkingDirectory().getChildFile(String(args.str_data(0).data)).getFullPathName();
+    const String extension = File(newLocation).getFileExtension();
+    String newFolder = File(newLocation).getParentDirectory().getFullPathName()+"/"+File(newLocation).getFileNameWithoutExtension();
+
+    if(File(newLocation).exists() == false)
+    {
+        ghc::filesystem::create_directory(newFolder.toStdString());
+    }
+    else
+    {
+        newFolder = newLocation;
+        folderAlreadyExists = true;
+    }
     
     
     for ( int i = 1 ; i < in_count() ; i++)
     {
         File file(File::getCurrentWorkingDirectory().getChildFile(String(args.str_data(i).data)));
-        File newFile(File::getCurrentWorkingDirectory().getChildFile(String(args.str_data(0).data)+"/"+ String(args.str_data(i).data)));
-        DBG(file.getFullPathName());
-        DBG(newFile.getFullPathName());
-        
-      
+        File newFile(newFolder+"/"+ String(args.str_data(i).data));
+        if(file.existsAsFile())
+        {
+            const auto copyOptions = ghc::filesystem::copy_options::overwrite_existing;
+            ghc::filesystem::copy(file.getFullPathName().toStdString(), newFile.getFullPathName().toStdString(), copyOptions);
+        }
+        else
+        {
+            const String message = "cabbageCopyFile - Warning: The file '"+file.getFullPathName() +"' does not exist.";
+            csound->message(message.toStdString());
+        }
     }
     
-    
+    if(folderAlreadyExists == false)
+    {
+        ghc::filesystem::rename(newFolder.toStdString(), newLocation.toStdString());
+    }
     return OK;
 }
 

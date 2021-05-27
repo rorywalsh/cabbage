@@ -100,6 +100,7 @@ cp -rf ./build/Release/CabbagePlugin.vst/ ./build/Release/CabbageLite.app/Conten
 cp -rf ./build/Release/CabbagePlugin.vst3/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.vst3
 cp -rf ./build/Release/CabbagePlugin.vst3/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.vst3
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.component
+rm ./build/Release/Cabbage.app/Contents/CabbagePluginEffect.component/Contents/Resources/CabbagePlugin.rsrc
 cp -rf ./build/Release/CabbagePlugin.component/ ./build/Release/CabbageLite.app/Contents/CabbagePluginEffect.component
 cp -rf ../../Examples ./build/Release/Cabbage.app/Contents/Examples
 cp -rf ../../Examples ./build/Release/CabbageLite.app/Contents/Examples

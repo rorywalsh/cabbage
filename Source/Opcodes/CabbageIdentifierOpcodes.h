@@ -226,10 +226,10 @@ struct CabbageGetFilePath : csnd::Plugin<1, 1>
     int kperf(){ return getFileInfo(this, "path"); };
 };
 
-struct CabbagePack : csnd::InPlug<64>
+struct CabbageCopyFile : csnd::InPlug<64>
 {
-    int init(){ return packageFiles(); };
-    int kperf(){ return packageFiles(); };
+    int init(){ return copyFiles(); };
+    int kperf(){ return copyFiles(); };
     int deinit(){ return OK;  }
-    int packageFiles();
+    int copyFiles();
 };

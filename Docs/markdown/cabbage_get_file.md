@@ -1,6 +1,6 @@
-# cabbageGetFile
+# cabbageGetFile Opcodes
 
-These widgets will parse a full file path for useful strings. 
+These opcodes will parse a full file path for useful information. 
 
 ### Syntax
 
