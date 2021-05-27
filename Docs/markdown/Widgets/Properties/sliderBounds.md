@@ -1,3 +1,3 @@
-<a name="sliderbounds"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
+<a name="sliderBounds"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 _____________________________
-**sliderbounds(x, y, width, height)** Sets the x, y, width and height of a slider within a Cabbage slider component. The default size is automatically calculated by Cabbage depending on the size of the slider. Modify this only if you need to tweak the slider's position within its parent. 
+**sliderBounds(x, y, width, height)** Sets the x, y, width and height of a slider within a Cabbage slider component. The default size is automatically calculated by Cabbage depending on the size of the slider. Modify this only if you need to tweak the slider's position within its parent. 

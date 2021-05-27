@@ -32,6 +32,8 @@ combobox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/alpha.md !}
 
+{! ./markdown/Widgets/Properties/align.md !}  
+
 {! ./markdown/Widgets/Properties/automatable.md !} 
 
 {! ./markdown/Widgets/Properties/bounds.md !}   
