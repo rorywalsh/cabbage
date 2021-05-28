@@ -81,6 +81,8 @@ slider WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/popup.md !} Not available to nslider
 
+{! ./markdown/Widgets/Properties/parent.md !} 
+
 {! ./markdown/Widgets/Properties/presetIgnore.md !} 
 
 {! ./markdown/Widgets/Properties/valuePrefix.md !}

@@ -18,3 +18,5 @@ instr 1
     cabbageCopyFile "../package.pkz", "Sample1.wav", "Sample2.wav", "preset.json", "readme.md"
 endin
 ```
+
+> Added in Cabbage v2.6.6

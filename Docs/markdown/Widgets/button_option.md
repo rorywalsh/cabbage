@@ -41,6 +41,8 @@ button WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/outlineThickness.md !} 
 
+{! ./markdown/Widgets/Properties/parent.md !} 
+
 {! ./markdown/Widgets/Properties/popup.md !} 
 
 {! ./markdown/Widgets/Properties/radioGroup.md !} 

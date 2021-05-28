@@ -86,3 +86,5 @@ i10 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
+
+> Added in Cabbage v2.5.43

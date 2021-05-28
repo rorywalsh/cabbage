@@ -44,6 +44,8 @@ texteditor WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/popup.md !} 
 
+{! ./markdown/Widgets/Properties/parent.md !} 
+
 {! ./markdown/Widgets/Properties/rotate.md !} 
 
 {! ./markdown/Widgets/Properties/visible.md !} 

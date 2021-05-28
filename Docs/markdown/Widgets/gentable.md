@@ -42,6 +42,8 @@ gentable WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/alpha.md !} 
 
+{! ./markdown/Widgets/Properties/parent.md !} 
+
 {! ./markdown/Widgets/Properties/visible.md !} 
 
 {! ./markdown/Widgets/Properties/rotate.md !} 

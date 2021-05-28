@@ -46,6 +46,8 @@ combobox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/identChannel.md !}  
 
+{! ./markdown/Widgets/Properties/parent.md !} 
+
 {! ./markdown/Widgets/Properties/popup.md !}  
 
 {! ./markdown/Widgets/Properties/presetIgnore.md !} 

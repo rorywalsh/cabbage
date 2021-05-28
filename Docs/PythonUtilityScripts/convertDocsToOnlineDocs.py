@@ -81,6 +81,9 @@ for dir in directories[0:3]:
 				if "(./plants.md)" in line:
 					line = line.replace("(./plants.md)", "(../plants/index.html)")
 
+				if "(./cabbage_create.md)" in line:
+					line = line.replace("(./cabbage_create.md)", "(../cabbage_create/index.html)")
+
 				if "(./first_synth.md)" in line:
 					line = line.replace("(./first_synth.md)", "(../first_synth/index.html)")
 

@@ -133,6 +133,8 @@ i"GetStringArrayValue" 4 1
 ```
 
 
+> Added in Cabbage v2.5.44
+
 
 
 

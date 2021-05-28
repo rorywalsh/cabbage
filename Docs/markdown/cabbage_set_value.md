@@ -45,3 +45,5 @@ i1 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
+
+> Added in Cabbage v2.5.44

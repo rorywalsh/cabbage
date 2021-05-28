@@ -35,6 +35,8 @@ signaldisplay WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/toFront.md !} 
 
+{! ./markdown/Widgets/Properties/parent.md !} 
+
 {! ./markdown/Widgets/Properties/visible.md !}  
 
 <!--(End of identifiers)/-->
