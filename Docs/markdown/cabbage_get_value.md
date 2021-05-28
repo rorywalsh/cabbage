@@ -2,6 +2,8 @@
 
 Gets the current value of a widget, for example the current value of a `slider`, `combobox`, `button`, etc. You can add an optional trigger output argument. This will send a trigger signal of 1 whenever the value has changed.
 
+<blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.5.44</blockquote>
+
 ### Syntax
 
 <pre>kValue <b>cabbageGetValue</b> SChannel</pre>
@@ -49,5 +51,3 @@ i1 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
-
-> Added in Cabbage v2.5.44

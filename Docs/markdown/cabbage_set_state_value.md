@@ -1,8 +1,9 @@
 # cabbageSetStateValue
 
-Sets a value in the plugin's internal state object. Can set scalars or arrays. Each time a DAW session is saved, the plugins internal state will also be saved. This mean you can can quickly and easily save data across sessions. 
+Sets a value in the plugin's internal state object. Can set scalars or arrays. Each time a DAW session is saved, the plugins internal state will also be saved. This mean you can can quickly and easily save data across sessions. Note these opcodes only work when using Cabbage plugins with a host DAW. 
 
-> Note these plugins on work when working with a DAW. 
+<blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.5.44</blockquote>
+
 
 ### Syntax
 
@@ -132,9 +133,5 @@ i"GetStringArrayValue" 4 1
 </CsoundSynthesizer>
 
 ```
-
-> Added in Cabbage v2.5.44
-
-
 
 

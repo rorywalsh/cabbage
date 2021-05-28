@@ -2,6 +2,8 @@
 
 Will read the JSON data from a plugin's internal state and output it as a string. 
 
+<blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.5.44</blockquote>
+
 ### Syntax
 
 <pre>SData <b>cabbageReadStateData</b></pre>
@@ -37,5 +39,3 @@ i1 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
-
-> Added in Cabbage v2.5.44

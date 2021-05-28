@@ -3,6 +3,8 @@
 This opcode will save the value of each channel declared in a Csound orchestra to a JSON file on disk. It can be used with the channelStateRecall opcode to create a robust preset system.
 Syntax
 
+<blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.5.44</blockquote>
+
 ### Syntax
 
 <pre>iRes <b>channelStateSave</b> SFilename
