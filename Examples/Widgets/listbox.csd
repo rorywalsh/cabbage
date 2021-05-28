@@ -5,7 +5,7 @@ texteditor bounds(11, 300, 361, 205) channel("infoText"), readOnly(1), wrap(1), 
 
 soundfiler bounds(12, 16, 354, 160), channel("soundfiler1"), file("808loop.wav") zoom(.5), colour(147, 210, 0), tableBackgroundColour(0, 0, 0, 0)
 soundfiler bounds(12, 16, 354, 160), channel("soundfiler2"),file("808loop.wav") zoom(.5), alpha(0), colour(255, 255, 0), tableBackgroundColour(0, 0, 0, 0)
-listbox bounds(18, 186, 346, 79) channel("samples"), channelType("string"), populate("*.wav", ".") colour(34, 34, 34, 0), value("1")
+listbox bounds(18, 186, 346, 79) channel("samples"), align("left"), channelType("string"), populate("*.wav", ".") colour(34, 34, 34, 0), value("1")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
