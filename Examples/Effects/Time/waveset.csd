@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; waveset.csd
 
 ; 'freeze' is not technically a freeze but instead a very large number of repeats.
@@ -11,7 +18,7 @@
 ; (resetting the opcode will reset its internal buffer and cancel out any time displacement induced by wavelet repetitions) 
 
 <Cabbage>
-form caption("waveset") size(510, 90), pluginId("wset") style("legacy")
+form caption("waveset") size(510, 90), pluginId("wset")
 image pos(0, 0), size(510, 90), colour("Green"), shape("rounded"), outlineColour("Grey"), outlineThickness(4) 
 rslider bounds(5, 10, 70, 70),   text("Repeats"), channel("repeats"), range(1, 100, 1, 1, 1),   colour("yellow"), textColour("white"), trackerColour("white")
 rslider bounds(70, 10, 70, 70),  text("Mult."),   channel("mult"),    range(1, 100, 1, 0.5, 1), colour("yellow"), textColour("white"), trackerColour("white")
@@ -33,38 +40,38 @@ rslider bounds(435,  10, 70, 70), text("Level"), channel("level"), range(0, 1.00
 
 <CsInstruments>
 
-;sr is set by the host
-ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
-nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
-0dbfs		=	1
+; sr set by host
+ksmps         =     32    ;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls         =     2    ;NUMBER OF CHANNELS (2=STEREO)
+0dbfs        =    1
 
 ;Author: Iain McCurdy (2012)
 
-instr	1
-	krep		chnget	"repeats"				;READ WIDGETS...
-	kmult		chnget	"mult"					;
-	klevel		chnget	"level"					;
-	kreset		chnget	"reset"					;
-	kthresh		chnget	"thresh"				;
-	krate		chnget	"rate"					;
-	ktrigger	trigger	kreset,0.5,0			;
-	kmetro		metro	krate, 0.99
-	kfreeze		chnget	"freeze"
-	;asigL, asigR	diskin2	"Songpan.wav",1,0,1			;USE SOUND FILE FOR TESTING
-	asigL, asigR	ins
-	krms		rms	(asigL+asigR)*0.5
-	kDynTrig	trigger	krms,kthresh,0
+instr    1
+    krep        chnget    "repeats"                ;READ WIDGETS...
+    kmult        chnget    "mult"                    ;
+    klevel        chnget    "level"                    ;
+    kreset        chnget    "reset"                    ;
+    kthresh        chnget    "thresh"                ;
+    krate        chnget    "rate"                    ;
+    ktrigger    trigger    kreset,0.5,0            ;
+    kmetro        metro    krate, 0.99
+    kfreeze        chnget    "freeze"
+    ;asigL, asigR    diskin2    "Songpan.wav",1,0,1            ;USE SOUND FILE FOR TESTING
+    asigL, asigR    ins
+    krms        rms    (asigL+asigR)*0.5
+    kDynTrig    trigger    krms,kthresh,0
 
-	if (ktrigger+kmetro+kDynTrig)>0 then
-	 reinit UPDATE
-	endif
-	UPDATE:
-	aL 		waveset 	asigL,(krep*kmult)+(kfreeze*1000000000),5*60*sr		;PASS THE AUDIO SIGNAL THROUGH waveset OPCODE. Input duration is defined in samples - in this example the expression given equats to a 5 minute buffer
-	aR 		waveset 	asigR,(krep*kmult)+(kfreeze*1000000000),5*60*sr		;PASS THE AUDIO SIGNAL THROUGH waveset OPCODE. Input duration is defined in samples - in this example the expression given equats to a 5 minute buffer
-	rireturn
-			outs		aL*klevel, aR*klevel		;WAVESET OUTPUT ARE SENT TO THE SPEAKERS
+    if (ktrigger+kmetro+kDynTrig)>0 then
+     reinit UPDATE
+    endif
+    UPDATE:
+    aL         waveset     asigL,(krep*kmult)+(kfreeze*1000000000),5*60*sr        ;PASS THE AUDIO SIGNAL THROUGH waveset OPCODE. Input duration is defined in samples - in this example the expression given equats to a 5 minute buffer
+    aR         waveset     asigR,(krep*kmult)+(kfreeze*1000000000),5*60*sr        ;PASS THE AUDIO SIGNAL THROUGH waveset OPCODE. Input duration is defined in samples - in this example the expression given equats to a 5 minute buffer
+    rireturn
+            outs        aL*klevel, aR*klevel        ;WAVESET OUTPUT ARE SENT TO THE SPEAKERS
 endin
-		
+        
 </CsInstruments>
 
 <CsScore>

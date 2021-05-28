@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; BreakBeatCutter.csd
 ; Iain McCurdy, 2013.
 
@@ -60,7 +67,7 @@
 ; ========================================================================================================================
 
 <Cabbage>
-form          size(440,470), caption("Break Beat Cutter"), pluginId("bbct") style("legacy")
+form          size(440,470), caption("Break Beat Cutter"), pluginId("bbct")
 
 
 groupbox bounds( 0,  0,440,170), text("CUTTER"), plant("cutter"),colour(20,20,20), FontColour(silver){
@@ -124,168 +131,169 @@ rslider bounds(150, 25, 70, 70), colour("Tan"), trackerColour("Tan"), fontColour
 </CsOptions>
 
 <CsInstruments>
-;sr is set by the host
+
+; sr set by host
 ksmps = 64
 nchnls = 2
 0dbfs=1
-seed	0
+seed    0
 
-gisine	ftgen	0,0,131072,10,1
+gisine    ftgen    0,0,131072,10,1
 
-opcode	BBCutIteration,aa,aaiiiiiiiii
- aL,aR,iBPS, isubdiv,  ibarlen,  iphrase, irepeats, istutspd, istutchnc, icount, ilayers	xin
- abbcutL		bbcutm	aL,   iBPS, isubdiv,  ibarlen,  iphrase, irepeats, istutspd, istutchnc
- abbcutR		bbcutm	aR,   iBPS, isubdiv,  ibarlen,  iphrase, irepeats, istutspd, istutchnc
- amixL	=	0
- amixR	=	0
+opcode    BBCutIteration,aa,aaiiiiiiiii
+ aL,aR,iBPS, isubdiv,  ibarlen,  iphrase, irepeats, istutspd, istutchnc, icount, ilayers    xin
+ abbcutL        bbcutm    aL,   iBPS, isubdiv,  ibarlen,  iphrase, irepeats, istutspd, istutchnc
+ abbcutR        bbcutm    aR,   iBPS, isubdiv,  ibarlen,  iphrase, irepeats, istutspd, istutchnc
+ amixL    =    0
+ amixR    =    0
  if icount<ilayers then
-   amixL,amixR	BBCutIteration	aL,aR, iBPS, isubdiv,  ibarlen,  iphrase, irepeats, istutspd, istutchnc, icount+1, ilayers
+   amixL,amixR    BBCutIteration    aL,aR, iBPS, isubdiv,  ibarlen,  iphrase, irepeats, istutspd, istutchnc, icount+1, ilayers
  endif
- xout	abbcutL+amixL,abbcutR+amixL
+ xout    abbcutL+amixL,abbcutR+amixL
 endop
 
-opcode	FreqShifter,a,aki
-	ain,kfshift,ifn	xin					;READ IN INPUT ARGUMENTS
-	areal, aimag hilbert ain				;HILBERT OPCODE OUTPUTS TWO PHASE SHIFTED SIGNALS, EACH 90 OUT OF PHASE WITH EACH OTHER
-	asin 	oscili       1,    kfshift,     ifn,          0
-	acos 	oscili       1,    kfshift,     ifn,          0.25	
-	;RING MODULATE EACH SIGNAL USING THE QUADRATURE OSCILLATORS AS MODULATORS
-	amod1	=		areal * acos
-	amod2	=		aimag * asin	
-	;UPSHIFTING OUTPUT
-	aFS	= (amod1 - amod2)
-		xout	aFS				;SEND AUDIO BACK TO CALLER INSTRUMENT
+opcode    FreqShifter,a,aki
+    ain,kfshift,ifn    xin                    ;READ IN INPUT ARGUMENTS
+    areal, aimag hilbert ain                ;HILBERT OPCODE OUTPUTS TWO PHASE SHIFTED SIGNALS, EACH 90 OUT OF PHASE WITH EACH OTHER
+    asin     oscili       1,    kfshift,     ifn,          0
+    acos     oscili       1,    kfshift,     ifn,          0.25    
+    ;RING MODULATE EACH SIGNAL USING THE QUADRATURE OSCILLATORS AS MODULATORS
+    amod1    =        areal * acos
+    amod2    =        aimag * asin    
+    ;UPSHIFTING OUTPUT
+    aFS    = (amod1 - amod2)
+        xout    aFS                ;SEND AUDIO BACK TO CALLER INSTRUMENT
 endop
 
-instr 1	; read widgets
- gksubdiv 	chnget	"subdiv"	; read in widgets
- gkbarlen 	chnget	"barlen"
- gkphrase 	chnget	"phrase"
- gkrepeats	chnget	"repeats"
- gkstutspd	chnget	"stutspd"
- gkstutchnc	chnget	"stutchnc"
+instr 1    ; read widgets
+ gksubdiv     chnget    "subdiv"    ; read in widgets
+ gkbarlen     chnget    "barlen"
+ gkphrase     chnget    "phrase"
+ gkrepeats    chnget    "repeats"
+ gkstutspd    chnget    "stutspd"
+ gkstutchnc    chnget    "stutchnc"
 
- gkClockSource	chnget	"ClockSource"
+ gkClockSource    chnget    "ClockSource"
  if gkClockSource==0 then
-  gkBPM    	chnget	"BPM"
+  gkBPM        chnget    "BPM"
  else
-  gkBPM    	chnget	"HOST_BPM"
-  gkBPM		limit	gkBPM, 10,500	
+  gkBPM        chnget    "HOST_BPM"
+  gkBPM        limit    gkBPM, 10,500    
  endif
 
- gkfltdiv	chnget	"fltdiv"
- gkDryWet    	chnget	"DryWet"
- gkFltMix 	chnget	"FltMix"
- gkbw     	chnget	"bw"
- gkcfmin  	chnget	"cfmin"
- gkcfmax  	chnget	"cfmax"
- gki_h    	chnget	"i_h"
- gklayers    	chnget	"layers"
- gkgain		chnget	"gain"
- konoff		chnget	"onoff"
+ gkfltdiv    chnget    "fltdiv"
+ gkDryWet        chnget    "DryWet"
+ gkFltMix     chnget    "FltMix"
+ gkbw         chnget    "bw"
+ gkcfmin      chnget    "cfmin"
+ gkcfmax      chnget    "cfmax"
+ gki_h        chnget    "i_h"
+ gklayers        chnget    "layers"
+ gkgain        chnget    "gain"
+ konoff        chnget    "onoff"
 endin
 
-instr	2
- kmetro		metro		4
- kSwitch	init	0
+instr    2
+ kmetro        metro        4
+ kSwitch    init    0
  if kmetro==1 then
-  kSwitch	changed		gkBPM, gkrepeats, gkphrase, gkstutspd, gkstutchnc, gkbarlen, gksubdiv, gkfltdiv, gklayers	;GENERATE A MOMENTARY '1' PULSE IN OUTPUT 'kSwitch' IF ANY OF THE SCANNED INPUT VARIABLES CHANGE. (OUTPUT 'kSwitch' IS NORMALLY ZERO)
+  kSwitch    changed        gkBPM, gkrepeats, gkphrase, gkstutspd, gkstutchnc, gkbarlen, gksubdiv, gkfltdiv, gklayers    ;GENERATE A MOMENTARY '1' PULSE IN OUTPUT 'kSwitch' IF ANY OF THE SCANNED INPUT VARIABLES CHANGE. (OUTPUT 'kSwitch' IS NORMALLY ZERO)
  endif
- if	kSwitch==1	then		;IF I-RATE VARIABLE CHANGE TRIGGER IS '1'...
- 	reinit	UPDATE			;BEGIN A REINITIALISATION PASS FROM LABEL 'UPDATE'
+ if    kSwitch==1    then        ;IF I-RATE VARIABLE CHANGE TRIGGER IS '1'...
+     reinit    UPDATE            ;BEGIN A REINITIALISATION PASS FROM LABEL 'UPDATE'
  endif
  UPDATE:
 
  /* INPUT */
- aL,aR ins					; live input
+ aL,aR ins                    ; live input
 
 ;;;;  use a loop sound file for testing
-;#define SOUNDFILE	#"loop.wav"#		; macro
-; ilen	filelen	$SOUNDFILE			; length of sound file
-; ibeats =	8				; number of beats in the drum loop
-; ispd	=	(ilen/ibeats) * (i(gkBPM)/60)	; speed ratio for this sample to sync with master clock
-; aL	diskin	$SOUNDFILE,ispd,0,1		; read sound file
-; aR	=	aL				; right channel same as left
+;#define SOUNDFILE    #"loop.wav"#        ; macro
+; ilen    filelen    $SOUNDFILE            ; length of sound file
+; ibeats =    8                ; number of beats in the drum loop
+; ispd    =    (ilen/ibeats) * (i(gkBPM)/60)    ; speed ratio for this sample to sync with master clock
+; aL    diskin    $SOUNDFILE,ispd,0,1        ; read sound file
+; aR    =    aL                ; right channel same as left
 
- iBPS	=	i(gkBPM)/60
- kmetro	metro	iBPS		; metronome used for triggering random parameter changes
+ iBPS    =    i(gkBPM)/60
+ kmetro    metro    iBPS        ; metronome used for triggering random parameter changes
  
  ; call UDO
- ;OUTPUT		OPCODE	        INPUT |   BPM      | SUBDIVISION | BAR_LENGTH | PHRASE_LENGTH | NUM.OF_REPEATS | STUTTER_SPEED | STUTTER_CHANCE	
- abbcutL,abbcutR	BBCutIteration	aL,aR, i(gkBPM)/60, i(gksubdiv),  i(gkbarlen),   i(gkphrase),    i(gkrepeats),   i(gkstutspd),   i(gkstutchnc),  1, i(gklayers)
+ ;OUTPUT        OPCODE            INPUT |   BPM      | SUBDIVISION | BAR_LENGTH | PHRASE_LENGTH | NUM.OF_REPEATS | STUTTER_SPEED | STUTTER_CHANCE    
+ abbcutL,abbcutR    BBCutIteration    aL,aR, i(gkBPM)/60, i(gksubdiv),  i(gkbarlen),   i(gkphrase),    i(gkrepeats),   i(gkstutspd),   i(gkstutchnc),  1, i(gklayers)
  
  ;FILTER=================================================================================================================================================================
- ifreq	=	iBPS * i(gkfltdiv)			; FREQUENCY WITH WHICH NEW FILTER CUTOFF VALUES ARE GENERATED
+ ifreq    =    iBPS * i(gkfltdiv)            ; FREQUENCY WITH WHICH NEW FILTER CUTOFF VALUES ARE GENERATED
  
- kcf1h		randomh	gkcfmin, gkcfmax, ifreq		; sample and hold random frequency values
- kcf1i		lineto	kcf1h, 1/ifreq			; interpolate values
- kcf1		ntrpol	kcf1i, kcf1h, gki_h   		; crossfade between interpolating and sample and hold type random values
- abbFltL	resonz	abbcutL, kcf1, kcf1*gkbw, 2	; band-pass filter
- abbMixL	ntrpol	abbcutL, abbFltL, gkFltMix	; crossfade between unfiltered and filter audio signal
- kcf2h		randomh	gkcfmin, gkcfmax, ifreq		;   RIGHT CHANNEL
- kcf2i		lineto	kcf2h, 1/ifreq			; 
- kcf2		ntrpol	kcf2i, kcf2h, gki_h   		; 
- abbFltR	resonz	abbcutR, kcf2, kcf2*gkbw, 2	; 
- abbMixR	ntrpol	abbcutR, abbFltR, gkFltMix	; 
+ kcf1h        randomh    gkcfmin, gkcfmax, ifreq        ; sample and hold random frequency values
+ kcf1i        lineto    kcf1h, 1/ifreq            ; interpolate values
+ kcf1        ntrpol    kcf1i, kcf1h, gki_h           ; crossfade between interpolating and sample and hold type random values
+ abbFltL    resonz    abbcutL, kcf1, kcf1*gkbw, 2    ; band-pass filter
+ abbMixL    ntrpol    abbcutL, abbFltL, gkFltMix    ; crossfade between unfiltered and filter audio signal
+ kcf2h        randomh    gkcfmin, gkcfmax, ifreq        ;   RIGHT CHANNEL
+ kcf2i        lineto    kcf2h, 1/ifreq            ; 
+ kcf2        ntrpol    kcf2i, kcf2h, gki_h           ; 
+ abbFltR    resonz    abbcutR, kcf2, kcf2*gkbw, 2    ; 
+ abbMixR    ntrpol    abbcutR, abbFltR, gkFltMix    ; 
  ;=======================================================================================================================================================================
 
  ;WGUIDE1================================================================================================================================================================
- kchance	chnget	"WguideChnc"
- kdice		trandom	kmetro,0,1
+ kchance    chnget    "WguideChnc"
+ kdice        trandom    kmetro,0,1
  if kdice<kchance then
-  kwguidemin	chnget	"wguidemin"
-  kwguidemax	chnget	"wguidemax"
-  knum		randomh	kwguidemin,kwguidemax,iBPS
-  afrq		interp	cpsmidinn(int(knum))
-  kfb		randomi	0.8,0.99,iBPS/4
-  kcf		randomi	800,4000,iBPS
-  abbMixL	wguide1	abbMixL*0.7,afrq,kcf,kfb
-  abbMixR	wguide1	abbMixR*0.7,afrq,kcf,kfb
+  kwguidemin    chnget    "wguidemin"
+  kwguidemax    chnget    "wguidemax"
+  knum        randomh    kwguidemin,kwguidemax,iBPS
+  afrq        interp    cpsmidinn(int(knum))
+  kfb        randomi    0.8,0.99,iBPS/4
+  kcf        randomi    800,4000,iBPS
+  abbMixL    wguide1    abbMixL*0.7,afrq,kcf,kfb
+  abbMixR    wguide1    abbMixR*0.7,afrq,kcf,kfb
  endif  
  ;=======================================================================================================================================================================
 
  ;SQUARE MOD==============================================================================================================================================================
- kchance	chnget	"SqModChnc"			; read in widgets
- ksqmodmin	chnget	"sqmodmin"			;
- ksqmodmax	chnget	"sqmodmax"			; 
- kDiceRoll	trandom	kmetro,0,1			; new 'roll of the dice' upon each new time period
- if kDiceRoll<kchance then				; if 'roll of the dice' is within chance boundary... 
-  kratei	randomi	ksqmodmin,ksqmodmax,iBPS	; interpolating random function for modulating waveform frequency
-  krateh	randomh	ksqmodmin,ksqmodmax,iBPS	; sample and hold random function for modulating waveform frequency
-  kcross	randomi	0,1,iBPS			; crossfader for morphing between interpolating and S&H functions
-  krate		ntrpol	kratei,krateh,kcross		; create crossfaded rate function
-  amod		lfo	1,cpsoct(krate),2		; modulating waveform (square waveform)
-  kcf		limit	cpsoct(krate)*4,20,sr/3		; cutoff freq for filtering some of the high freq. content of the square wave
-  amod		clfilt	amod,kcf,0,2			; low-pass filter square wave
-  abbMixL	=	abbMixL*amod			; ring modulate audio
-  abbMixR	=	abbMixR*amod			;
+ kchance    chnget    "SqModChnc"            ; read in widgets
+ ksqmodmin    chnget    "sqmodmin"            ;
+ ksqmodmax    chnget    "sqmodmax"            ; 
+ kDiceRoll    trandom    kmetro,0,1            ; new 'roll of the dice' upon each new time period
+ if kDiceRoll<kchance then                ; if 'roll of the dice' is within chance boundary... 
+  kratei    randomi    ksqmodmin,ksqmodmax,iBPS    ; interpolating random function for modulating waveform frequency
+  krateh    randomh    ksqmodmin,ksqmodmax,iBPS    ; sample and hold random function for modulating waveform frequency
+  kcross    randomi    0,1,iBPS            ; crossfader for morphing between interpolating and S&H functions
+  krate        ntrpol    kratei,krateh,kcross        ; create crossfaded rate function
+  amod        lfo    1,cpsoct(krate),2        ; modulating waveform (square waveform)
+  kcf        limit    cpsoct(krate)*4,20,sr/3        ; cutoff freq for filtering some of the high freq. content of the square wave
+  amod        clfilt    amod,kcf,0,2            ; low-pass filter square wave
+  abbMixL    =    abbMixL*amod            ; ring modulate audio
+  abbMixR    =    abbMixR*amod            ;
  endif
  ;=======================================================================================================================================================================
 
  ;FSHIFT=================================================================================================================================================================
- kchance	chnget	"FshiftChnc"			; read in widgets                         
- kdice		trandom	kmetro,0,1			; new 'roll of the dice' upon each new time period                                                                         
- if kdice<kchance then					; if 'roll of the dice' is within chance boundary...                                                                           
-  kfshiftmin	chnget	"fshiftmin"                     ; read in widgets                           
-  kfshiftmax	chnget	"fshiftmax"			; 
-  kfsfrqi	randomi	kfshiftmin,kfshiftmax,iBPS*2	; interpolating random function for modulating waveform frequency          
-  kfsfrqh	randomh	kfshiftmin,kfshiftmax,iBPS*2	; sample and hold random function for modulating waveform frequency            
-  kcross	randomi	0,1,iBPS*2			; crossfader for morphing between interpolating and S&H functions          
-  kfsfrq	ntrpol	kfsfrqi,kfsfrqh,kcross          ; create crossfaded rate function  modulating waveform (square waveform)
-  abbMixL	FreqShifter	abbMixL,kfsfrq,gisine   ;                                                 
-  abbMixR	FreqShifter	abbMixR,kfsfrq,gisine   ;                                                         
+ kchance    chnget    "FshiftChnc"            ; read in widgets                         
+ kdice        trandom    kmetro,0,1            ; new 'roll of the dice' upon each new time period                                                                         
+ if kdice<kchance then                    ; if 'roll of the dice' is within chance boundary...                                                                           
+  kfshiftmin    chnget    "fshiftmin"                     ; read in widgets                           
+  kfshiftmax    chnget    "fshiftmax"            ; 
+  kfsfrqi    randomi    kfshiftmin,kfshiftmax,iBPS*2    ; interpolating random function for modulating waveform frequency          
+  kfsfrqh    randomh    kfshiftmin,kfshiftmax,iBPS*2    ; sample and hold random function for modulating waveform frequency            
+  kcross    randomi    0,1,iBPS*2            ; crossfader for morphing between interpolating and S&H functions          
+  kfsfrq    ntrpol    kfsfrqi,kfsfrqh,kcross          ; create crossfaded rate function  modulating waveform (square waveform)
+  abbMixL    FreqShifter    abbMixL,kfsfrq,gisine   ;                                                 
+  abbMixR    FreqShifter    abbMixR,kfsfrq,gisine   ;                                                         
  endif                                                  ;                                                                            
  ;=======================================================================================================================================================================
 
- rireturn						; RETURN FROM REINITIALISATION PASS TO PERFORMANCE TIME PASSES
+ rireturn                        ; RETURN FROM REINITIALISATION PASS TO PERFORMANCE TIME PASSES
  
- amixL	sum	aL*(1-gkDryWet), abbMixL*gkDryWet	;SUM AND MIX DRY SIGNAL AND BBCUT SIGNAL (LEFT CHANNEL)
- amixR	sum	aR*(1-gkDryWet), abbMixR*gkDryWet	;SUM AND MIX DRY SIGNAL AND BBCUT SIGNAL (RIGHT CHANNEL)
+ amixL    sum    aL*(1-gkDryWet), abbMixL*gkDryWet    ;SUM AND MIX DRY SIGNAL AND BBCUT SIGNAL (LEFT CHANNEL)
+ amixR    sum    aR*(1-gkDryWet), abbMixR*gkDryWet    ;SUM AND MIX DRY SIGNAL AND BBCUT SIGNAL (RIGHT CHANNEL)
 
 
 
 
- outs	amixL*gkgain, amixR*gkgain			;SEND AUDIO TO OUTPUTS
+ outs    amixL*gkgain, amixR*gkgain            ;SEND AUDIO TO OUTPUTS
 endin
 
 </CsInstruments>  

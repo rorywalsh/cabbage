@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; GEN21.csd
 ; Written by Iain McCurdy
 
@@ -8,7 +15,7 @@
 ; display is set between -1 and 1. Certain distributions may require reduction of the 'level' control in order for them to be fully displayed
 
 <Cabbage>
-form caption("GEN21"), size(410, 220), pluginId("gn21"), colour( 40,110, 80) style("legacy")
+form caption("GEN21"), size(410, 220), pluginId("gn21"), colour( 40,110, 80)
 
 gentable bounds(  5,  5, 400, 120), tableNumber(1), tableColour("lime"), identChannel("table1"), ampRange(-1,1,1), fill(0)
 
@@ -23,53 +30,53 @@ rslider  bounds(330, 130, 80, 80), text("Arg.2"), channel("arg2"),  range(0, 1.0
 <CsoundSynthesizer>
 
 <CsOptions>   
--dm0 -n -+rtmidi=null -M0
+-dm0 -n -+rtmidi=NULL -M0
 </CsOptions>
 
 <CsInstruments>
 
-;sr is set by the host
-ksmps 		= 	32	; NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
-nchnls 		= 	2	; NUMBER OF CHANNELS (1=MONO)
-0dbfs		=	1	; MAXIMUM AMPLITUDE
+; sr set by host
+ksmps         =     32    ; NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls         =     2    ; NUMBER OF CHANNELS (1=MONO)
+0dbfs        =    1    ; MAXIMUM AMPLITUDE
 
-giTabSize	=	128	
+giTabSize    =    128    
 
-gi_ ftgen	1,0,giTabSize,10,1
+gi_ ftgen    1,0,giTabSize,10,1
 
-instr	1
-	; read in widgets
-	gkdist	chnget	"dist"
-	gklevel	chnget	"level"
-	gkarg1	chnget	"arg1"
-	gkarg2	chnget	"arg2"
-	gkdist	init	1
-	
-	ktrig	changed	gkdist,gklevel,gkarg1,gkarg2
-	if ktrig==1 then
-	 reinit UPDATE
-	endif
-	UPDATE:
-	if i(gkdist)==9 then
-	 chnset "visible(1)", "ident_arg1"
-	 chnset "visible(1)", "ident_arg2"
-	elseif i(gkdist)==10 then
-	 chnset "visible(1)", "ident_arg1"
-	 chnset "visible(0)", "ident_arg2"
-	else
-	 chnset "visible(0)", "ident_arg1"
-	 chnset "visible(0)", "ident_arg2"
-	endif
-	idist	ftgen	1,0,giTabSize,-21,i(gkdist),i(gklevel),i(gkarg1),i(gkarg2)
-	iaud	ftgen	2,0,2^18,-21,i(gkdist),i(gklevel),i(gkarg1),i(gkarg2)
-	rireturn
-	if ktrig==1 then
-	 chnset	"tableNumber(1)", "table1"	; update table display	
-	endif
-	
-	kAudOnOff	chnget	"AudOnOff"
-	asig	poscil	0.1*kAudOnOff, sr/(2^18), iaud
-			outs	asig,asig
+instr    1
+    ; read in widgets
+    gkdist    chnget    "dist"
+    gklevel    chnget    "level"
+    gkarg1    chnget    "arg1"
+    gkarg2    chnget    "arg2"
+    gkdist    init    1
+    
+    ktrig    changed    gkdist,gklevel,gkarg1,gkarg2
+    if ktrig==1 then
+     reinit UPDATE
+    endif
+    UPDATE:
+    if i(gkdist)==9 then
+     chnset "visible(1)", "ident_arg1"
+     chnset "visible(1)", "ident_arg2"
+    elseif i(gkdist)==10 then
+     chnset "visible(1)", "ident_arg1"
+     chnset "visible(0)", "ident_arg2"
+    else
+     chnset "visible(0)", "ident_arg1"
+     chnset "visible(0)", "ident_arg2"
+    endif
+    idist    ftgen    1,0,giTabSize,-21,i(gkdist),i(gklevel),i(gkarg1),i(gkarg2)
+    iaud    ftgen    2,0,2^18,-21,i(gkdist),i(gklevel),i(gkarg1),i(gkarg2)
+    rireturn
+    if ktrig==1 then
+     chnset    "tableNumber(1)", "table1"    ; update table display    
+    endif
+    
+    kAudOnOff    chnget    "AudOnOff"
+    asig    poscil    0.1*kAudOnOff, sr/(2^18), iaud
+            outs    asig,asig
 endin
 
 </CsInstruments>

@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; RingModSynth.csd
 ; Iain McCurdy, 2015
 
@@ -17,51 +24,51 @@
 
 ; OSC.1
 ; -----
-; Decay		--	decay time in seconds. 
-;			Actually this affects the decay times for osc.2 and the modulator oscillator as they will be defined as ratios of this value.
-; Release	--	release time
+; Decay        --    decay time in seconds. 
+;            Actually this affects the decay times for osc.2 and the modulator oscillator as they will be defined as ratios of this value.
+; Release    --    release time
 
 ; OSC.2
 ; -----
-; Ratio		--	ratio of the frequency of oscillator 2 to that of oscillator 1. (Oscillator 1 takes the frequency of the note played.)
-; Decay		--	decay time for oscillator 2. A ratio of the decay time for oscillator 1.
+; Ratio        --    ratio of the frequency of oscillator 2 to that of oscillator 1. (Oscillator 1 takes the frequency of the note played.)
+; Decay        --    decay time for oscillator 2. A ratio of the decay time for oscillator 1.
 
 ; MOD
 ; ---
-; Ratio		--	ratio of the frequency of the modulator to that of oscillator 1.
-; Decay		--	decay time for the modulator oscillator. A ratio of the decay time for oscillator 1.
+; Ratio        --    ratio of the frequency of the modulator to that of oscillator 1.
+; Decay        --    decay time for the modulator oscillator. A ratio of the decay time for oscillator 1.
 
 ; SPACE (spatialising of the monophonic signal using comb filters)
 ; -----
-; Mix		--	Mix of the spacialising effect. 0=mono, 1=100%_stereo
-; Width		--	Width of the stereo effect - delay times for the comb filters.
+; Mix        --    Mix of the spacialising effect. 0=mono, 1=100%_stereo
+; Width        --    Width of the stereo effect - delay times for the comb filters.
 ;  NB the delay times will also be biased according to the note played so that lower notes are increasingly biased toward the left channel and higher notes increasingly to the right (using the Haas effect)
 
 ; VEL. (velocity response adjustment)
 ; ----
-; Amount	--	amount of velocity influence upon spectrum/brightness
-; Offset	--	shift of spectral brightness, independent of velocity received
+; Amount    --    amount of velocity influence upon spectrum/brightness
+; Offset    --    shift of spectral brightness, independent of velocity received
 
 ; RANDOM (note by note random offsets)
 ; ------
-; Fundemental	--	random offsets of the fundemental (as in an out of tune piano)
-; Spectrum	--	random offsets of osc.2 freq. ratio and the modulator ratio
+; Fundemental    --    random offsets of the fundemental (as in an out of tune piano)
+; Spectrum    --    random offsets of osc.2 freq. ratio and the modulator ratio
 
 ; SCALE (keyboard scaling of brightness, it is useful to suppress the brightness of higher notes)
 ; -----
-; Note		--	the note about which scaling pivots
-; Amount	--	amount of brightness scaling
+; Note        --    the note about which scaling pivots
+; Amount    --    amount of brightness scaling
 
 ; OUTPUT
 ; ------
-; High Cut	--	a static lowpass filter. Bypassed if control is maximum.
-; Level		--	output level
+; High Cut    --    a static lowpass filter. Bypassed if control is maximum.
+; Level        --    output level
 
 ; ratio 1 controls the ratio of the frequency of the second oscillator to the fundemental (frequency of the first oscillator.)
 ; ratio 2 controls the ratio of the frequency of the ring modulator to the fundemental (frequency of the first oscillator.)
 
 <Cabbage>
-form caption("Ring Modulation Synthesizer") size(875,267), pluginId("RMS1") style("legacy")
+form caption("Ring Modulation Synthesizer") size(875,267), pluginId("RMSy")
 
 image      bounds(  5,  5, 70,160), colour(0,0,0,0), outlineColour("white"), outlineThickness(4), shape("rounded"), plant("osc1") {
 label      bounds(  5,  5, 60, 14), text("OSC.1")
@@ -130,164 +137,165 @@ label bounds(5,256,97,10), colour("black"), text("Iain McCurdy |2015|") align("r
 <CsoundSynthesizer>
 
 <CsOptions>
--dm0 -n -+rtmidi=null -M0 --midi-key=4 --midi-velocity=5
+-dm0 -n -+rtmidi=NULL -M0 --midi-key=4 --midi-velocity=5
 </CsOptions>
 
 <CsInstruments>
-;sr is set by the host
+
+; sr set by host
 ksmps = 16
 nchnls = 2
 0dbfs = 1
-zakinit	2,2
-massign	0,2
+zakinit    2,2
+massign    0,2
 
 ; waveforms
-gisine	ftgen	1,0,4096,10,1
-giwave2	ftgen	2,0,4096,10,1,0.5
-giwave3	ftgen	3,0,4096,10,1,1
+gisine    ftgen    1,0,4096,10,1
+giwave2    ftgen    2,0,4096,10,1,0.5
+giwave3    ftgen    3,0,4096,10,1,1
 
-girnd	ftgen	4,0,512,21,6,1		; gaussian distribution
+girnd    ftgen    4,0,512,21,6,1        ; gaussian distribution
 
-opcode	FreqShifterSimple,a,aki					; SIMPLE FREQUENCY SHIFTER
-	asig,kfshift,ifn	xin				; READ IN INPUT ARGUMENTS
-	areal, aimag hilbert asig				; HILBERT OPCODE OUTPUTS TWO PHASE SHIFTED SIGNALS, EACH 90 OUT OF PHASE WITH EACH OTHER
-	asin 	oscili       1,    kfshift,     ifn,          0
-	acos 	oscili       1,    kfshift,     ifn,          0.25	
-	;RING MODULATE EACH SIGNAL USING THE QUADRATURE OSCILLATORS AS MODULATORS
-	amod1	=		areal * acos
-	amod2	=		aimag * asin	
-	;UPSHIFTING OUTPUT
-	ares	= (amod1 - amod2)				; MIX OUTPUTS (INVERTED WITH RESPECT TO EACH OTHER)
-		xout	ares					; SEND AUDIO BACK TO CALLER INSTRUMENT
+opcode    FreqShifterSimple,a,aki                    ; SIMPLE FREQUENCY SHIFTER
+    asig,kfshift,ifn    xin                ; READ IN INPUT ARGUMENTS
+    areal, aimag hilbert asig                ; HILBERT OPCODE OUTPUTS TWO PHASE SHIFTED SIGNALS, EACH 90 OUT OF PHASE WITH EACH OTHER
+    asin     oscili       1,    kfshift,     ifn,          0
+    acos     oscili       1,    kfshift,     ifn,          0.25    
+    ;RING MODULATE EACH SIGNAL USING THE QUADRATURE OSCILLATORS AS MODULATORS
+    amod1    =        areal * acos
+    amod2    =        aimag * asin    
+    ;UPSHIFTING OUTPUT
+    ares    = (amod1 - amod2)                ; MIX OUTPUTS (INVERTED WITH RESPECT TO EACH OTHER)
+        xout    ares                    ; SEND AUDIO BACK TO CALLER INSTRUMENT
 endop
 
 
-instr	2 
- inote	=	p4			
+instr    2 
+ inote    =    p4            
 
- iKybdNote	chnget	"KybdNote"						; pivot note for brightness scaling
- iKybdAmt	chnget	"KybdScal"						; amount of keyboard to brightness scaling
- iKybdScal	limit	1 + ( ((iKybdNote-inote)/127) *  iKybdAmt), 0, 5	; scaling value
+ iKybdNote    chnget    "KybdNote"                        ; pivot note for brightness scaling
+ iKybdAmt    chnget    "KybdScal"                        ; amount of keyboard to brightness scaling
+ iKybdScal    limit    1 + ( ((iKybdNote-inote)/127) *  iKybdAmt), 0, 5    ; scaling value
 
- iDurScal	limit	1 + ( ((64-inote)/127) * 3), 0.01, 5			; duration scaling (higher notes shorter, lower notes longer). No user control.
+ iDurScal    limit    1 + ( ((64-inote)/127) * 3), 0.01, 5            ; duration scaling (higher notes shorter, lower notes longer). No user control.
 
- iNoteOS	table	inote,girnd						; random fundemental offset value from table
- iRndTune	chnget	"RndTune"						; amount of random tuning offset
- inote	+=	iNoteOS * iRndTune						; add random offset
+ iNoteOS    table    inote,girnd                        ; random fundemental offset value from table
+ iRndTune    chnget    "RndTune"                        ; amount of random tuning offset
+ inote    +=    iNoteOS * iRndTune                        ; add random offset
 
- iSpecOS	table	inote+128,girnd						; spectral offset value from table
- iRndSpec	chnget	"RndSpec"						; amount of random spectral offset
- iSpec	=	iSpecOS * iRndSpec						; scale random value from table by GUI control
+ iSpecOS    table    inote+128,girnd                        ; spectral offset value from table
+ iRndSpec    chnget    "RndSpec"                        ; amount of random spectral offset
+ iSpec    =    iSpecOS * iRndSpec                        ; scale random value from table by GUI control
 
- iVelAmt	chnget	"VelAmt"						; amount of velocity control
- iVelOS		chnget	"VelOS"							; velocity offset
+ iVelAmt    chnget    "VelAmt"                        ; amount of velocity control
+ iVelOS        chnget    "VelOS"                            ; velocity offset
 
- ivel	=	(p5/127)^4							; velocity response shaped by being raised to the power of 4
- iDec	chnget	"Dec"								; decay time ratio
- iPDec	chnget	"PDec"								; timbral decay (a value 0 - 1 but probably closer to zero)
- iRDec	chnget	"MDec"								; timbral decay (a value 0 - 1 but probably closer to zero)
- iRel	chnget	"Rel"								; release time (a fixed value)
+ ivel    =    (p5/127)^4                            ; velocity response shaped by being raised to the power of 4
+ iDec    chnget    "Dec"                                ; decay time ratio
+ iPDec    chnget    "PDec"                                ; timbral decay (a value 0 - 1 but probably closer to zero)
+ iRDec    chnget    "MDec"                                ; timbral decay (a value 0 - 1 but probably closer to zero)
+ iRel    chnget    "Rel"                                ; release time (a fixed value)
 
  ; FREQUENCY RATIOS
- if0	=	1								; 1st partial (fundemental)
- if1	chnget	"PRat"								; 2nd partial
- imod	chnget	"MRat"								; ring modulator frequency ratio
+ if0    =    1                                ; 1st partial (fundemental)
+ if1    chnget    "PRat"                                ; 2nd partial
+ imod    chnget    "MRat"                                ; ring modulator frequency ratio
  
  ; AMPLITUDE ENVELOPES
- iSusLev	chnget	"SusLev"
- iSusLev	+=	0.0001
- aenv1	expsegr	1,      iDec*iDurScal,iSusLev,iRel,0.0001			; f0
- aenv2	expsegr	1,iPDec*iDec*iDurScal,iSusLev,iRel,0.0001			; f1
- aenv3	expsegr	1,iRDec*iDec*iDurScal,iSusLev,iRel,0.0001			; mod
+ iSusLev    chnget    "SusLev"
+ iSusLev    +=    0.0001
+ aenv1    expsegr    1,      iDec*iDurScal,iSusLev,iRel,0.0001            ; f0
+ aenv2    expsegr    1,iPDec*iDec*iDurScal,iSusLev,iRel,0.0001            ; f1
+ aenv3    expsegr    1,iRDec*iDec*iDurScal,iSusLev,iRel,0.0001            ; mod
  
  ; ENVELOPE SMOOTHING (SPECIFICALLY ATTACK)
- iAttTim	chnget	"AttTim"
- iAttSmooth	chnget	"AttSmooth"
+ iAttTim    chnget    "AttTim"
+ iAttSmooth    chnget    "AttSmooth"
  if iAttTim>0 then
-  aenv1	delay	aenv1,rnd(iAttTim*0.5)+(iAttTim*0.5)
-  aenv2	delay	aenv2,rnd(iAttTim*0.5)+(iAttTim*0.5)
-  aenv3	delay	aenv3,rnd(iAttTim*0.5)+(iAttTim*0.5)   
-  iAttSmooth	=	cpsoct(8 - (iAttSmooth*7)) 
-  aenv1	tone	aenv1,iAttSmooth
-  aenv2	tone	aenv2,iAttSmooth
-  aenv3	tone	aenv3,iAttSmooth
-  xtratim	iAttTim + iRel
+  aenv1    delay    aenv1,rnd(iAttTim*0.5)+(iAttTim*0.5)
+  aenv2    delay    aenv2,rnd(iAttTim*0.5)+(iAttTim*0.5)
+  aenv3    delay    aenv3,rnd(iAttTim*0.5)+(iAttTim*0.5)   
+  iAttSmooth    =    cpsoct(8 - (iAttSmooth*7)) 
+  aenv1    tone    aenv1,iAttSmooth
+  aenv2    tone    aenv2,iAttSmooth
+  aenv3    tone    aenv3,iAttSmooth
+  xtratim    iAttTim + iRel
  endif
   
  ; PARTIAL OSCILLATORS
- apart1	oscili	(aenv1-0.0001) * 1   , cpsmidinn(inote) * if0, gisine		; fundemental oscillato
- apart2	oscili	(aenv2-0.0001) * ((ivel*iVelAmt)+iVelOS) * iKybdScal, cpsmidinn(inote+iSpec) * if1, gisine	; partial 2 will be doubly affected by velocity (see further down) thereby creating a velocity-timbre mapping 
+ apart1    oscili    (aenv1-0.0001) * 1   , cpsmidinn(inote) * if0, gisine        ; fundemental oscillato
+ apart2    oscili    (aenv2-0.0001) * ((ivel*iVelAmt)+iVelOS) * iKybdScal, cpsmidinn(inote+iSpec) * if1, gisine    ; partial 2 will be doubly affected by velocity (see further down) thereby creating a velocity-timbre mapping 
 
  ; MIXER
- amix	sum	(apart1 + apart2) * ivel * 0.3					; mix the two main oscillators
+ amix    sum    (apart1 + apart2) * ivel * 0.3                    ; mix the two main oscillators
  
  ; RING MODULATION
- amod	poscil	aenv3,cpsmidinn(inote+iSpec) * imod, gisine			; ring modulation oscillators
- iLevel	chnget	"Level"
- amix	=	amix * iLevel * (1 - (amod*((ivel*iVelAmt)+iVelOS)*iKybdScal))	; amount of ring modulation dependent upon velocity
+ amod    poscil    aenv3,cpsmidinn(inote+iSpec) * imod, gisine            ; ring modulation oscillators
+ iLevel    chnget    "Level"
+ amix    =    amix * iLevel * (1 - (amod*((ivel*iVelAmt)+iVelOS)*iKybdScal))    ; amount of ring modulation dependent upon velocity
 
  ; DETUNING
- iDtnRnd	chnget	"DtnRnd"
- iDtnMan	chnget	"DtnMan"
- iDtnVel	chnget	"DtnVel"
+ iDtnRnd    chnget    "DtnRnd"
+ iDtnMan    chnget    "DtnMan"
+ iDtnVel    chnget    "DtnVel"
  if (iDtnRnd>0) || (iDtnMan!=0) then
-  iFSfrq	table	inote+256,girnd
-  iFSfrq	ntrpol	iDtnMan + (iFSfrq*iDtnRnd),(iDtnMan + (iFSfrq*iDtnRnd))*ivel,iDtnVel 
-  aFS	FreqShifterSimple	amix,iFSfrq,gisine
-  amix	=			(amix + aFS) * 0.8
+  iFSfrq    table    inote+256,girnd
+  iFSfrq    ntrpol    iDtnMan + (iFSfrq*iDtnRnd),(iDtnMan + (iFSfrq*iDtnRnd))*ivel,iDtnVel 
+  aFS    FreqShifterSimple    amix,iFSfrq,gisine
+  amix    =            (amix + aFS) * 0.8
  endif
  
- iSpatMix	chnget	"SpatMix"						; amount of spacial width mix
- iSpatWidth	chnget	"SpatWidth"						; width of spacial effect
- iDelL	=	0.0001 + ((1-(inote/127)) * iSpatWidth)				; derive delay times according to note played
- iDelR	=	0.0001 + ((inote/127) * iSpatWidth)
- aCL	comb	amix, 0.01, iDelL
- aCR	comb	amix, 0.01, iDelR
- aL	ntrpol	amix,aCL,iSpatMix						; mix
- aR	ntrpol	amix,aCR,iSpatMix
-	zawm	aL,1								; send to zak channels
-	zawm	aR,2
+ iSpatMix    chnget    "SpatMix"                        ; amount of spacial width mix
+ iSpatWidth    chnget    "SpatWidth"                        ; width of spacial effect
+ iDelL    =    0.0001 + ((1-(inote/127)) * iSpatWidth)                ; derive delay times according to note played
+ iDelR    =    0.0001 + ((inote/127) * iSpatWidth)
+ aCL    comb    amix, 0.01, iDelL
+ aCR    comb    amix, 0.01, iDelR
+ aL    ntrpol    amix,aCL,iSpatMix                        ; mix
+ aR    ntrpol    amix,aCR,iSpatMix
+    zawm    aL,1                                ; send to zak channels
+    zawm    aR,2
 endin
 
-instr	3		; output instrument (always on)
- aL	zar	1
- aR	zar	2
- kLPF	chnget	"LPF"
- if kLPF<12000 then								; low pass filter if control is below maximum
-  aL	butlp	aL,kLPF
-  aR	butlp	aR,kLPF
+instr    3        ; output instrument (always on)
+ aL    zar    1
+ aR    zar    2
+ kLPF    chnget    "LPF"
+ if kLPF<12000 then                                ; low pass filter if control is below maximum
+  aL    butlp    aL,kLPF
+  aR    butlp    aR,kLPF
  endif
-	outs	aL,aR 
-	zacl	1,2								; clear zak channels
+    outs    aL,aR 
+    zacl    1,2                                ; clear zak channels
 endin
 
 
-instr	99
-#define	PRESET(Dec'Rel'PRat'PDec'MRat'MDec'SpatMix'SpatWidth'VelAmt'VelOS'RndTune'RndSpec'KybdNote'KybdScal'AttTim'AttSmooth'DtnRnd'DtnMan'DtnVel'LPF'SusLev)
+instr    99
+#define    PRESET(Dec'Rel'PRat'PDec'MRat'MDec'SpatMix'SpatWidth'VelAmt'VelOS'RndTune'RndSpec'KybdNote'KybdScal'AttTim'AttSmooth'DtnRnd'DtnMan'DtnVel'LPF'SusLev)
 #
-	chnset	$Dec, 		"Dec"
- 	chnset	$Rel,      	"Rel"
- 	chnset	$PRat,     	"PRat"
- 	chnset	$PDec,     	"PDec"
- 	chnset	$MRat,     	"MRat"
- 	chnset	$MDec,     	"MDec"
- 	chnset	$SpatMix,  	"SpatMix"
- 	chnset	$SpatWidth,	"SpatWidth"
- 	chnset	$VelAmt,   	"VelAmt"
- 	chnset	$VelOS,    	"VelOS"
- 	chnset	$RndTune,  	"RndTune"
- 	chnset	$RndSpec,  	"RndSpec"
- 	chnset	$KybdNote, 	"KybdNote"
- 	chnset	$KybdScal, 	"KybdScal"
- 	chnset	$AttTim,   	"AttTim"
- 	chnset	$AttSmooth,	"AttSmooth"
- 	chnset	$DtnRnd,   	"DtnRnd"
- 	chnset	$DtnMan,   	"DtnMan"
- 	chnset	$DtnVel,   	"DtnVel"
- 	chnset	$LPF,      	"LPF"
- 	chnset	$SusLev,	"SusLev"	
+    chnset    $Dec,         "Dec"
+     chnset    $Rel,          "Rel"
+     chnset    $PRat,         "PRat"
+     chnset    $PDec,         "PDec"
+     chnset    $MRat,         "MRat"
+     chnset    $MDec,         "MDec"
+     chnset    $SpatMix,      "SpatMix"
+     chnset    $SpatWidth,    "SpatWidth"
+     chnset    $VelAmt,       "VelAmt"
+     chnset    $VelOS,        "VelOS"
+     chnset    $RndTune,      "RndTune"
+     chnset    $RndSpec,      "RndSpec"
+     chnset    $KybdNote,     "KybdNote"
+     chnset    $KybdScal,     "KybdScal"
+     chnset    $AttTim,       "AttTim"
+     chnset    $AttSmooth,    "AttSmooth"
+     chnset    $DtnRnd,       "DtnRnd"
+     chnset    $DtnMan,       "DtnMan"
+     chnset    $DtnVel,       "DtnVel"
+     chnset    $LPF,          "LPF"
+     chnset    $SusLev,    "SusLev"    
 #
- kpreset	chnget	"preset"
+ kpreset    chnget    "preset"
  if changed(kpreset)==1 then
   reinit UPDATE
  endif

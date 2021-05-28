@@ -26,11 +26,11 @@ for root, dirs, files in os.walk(currentDir):
         newFileText = ""
         if "Widgets" not in filename and "Miscellaneous" not in filename and ".csd" in filename:
             # print(filename)
-            with open(filename, "rt", encoding="utf-8") as inputFile:
+            with open(filename, "rt") as inputFile:
                 for line in inputFile:
                     if "form" in line and "caption" in line and "size" in line:
-                        line = line.replace('\n', '') +" style(\"legacy\")\n"
-
+                        line = line.rstrip() +" style(\"legacy\")\n"
+            
                     newFileText = newFileText+line
 
             with open(filename, "w") as f:

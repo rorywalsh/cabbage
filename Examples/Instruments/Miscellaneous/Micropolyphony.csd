@@ -11,78 +11,78 @@
 ; --------
 
 ; [MONO/POLY]
-; Leg.Time	-	time it will take to gliss 1 semitone
-; Smear		-	when using multiple voices, the glissandos will move in and out of sync if this control is above zero
-;				this will also affect realtime changed made to 'Spread'
+; Leg.Time    -    time it will take to gliss 1 semitone
+; Smear        -    when using multiple voices, the glissandos will move in and out of sync if this control is above zero
+;                this will also affect realtime changed made to 'Spread'
 
 ; [MICROPOLYPHONY]
-; N.Voices  -	number of voices
-; Spread	-	interval between adjacent voices
-;				What pitches are created depends upon the value of spread, the number of voices and whether an odd or even number of voices has been chosen.
-;				If an odd number of voices is selected, then a central static pitch which ignores the 'Spread' value will be created.
-;				If the number of voices is even then this central static pitch will not be created
-;				For example, if 'N.Voices'=5 and 'Spread'=1 then semitone transpositions for the 5 voices will be: 0, +1, -1, +2 and -2
-;				 if if 'N.Voices'=2 and 'Spread'=1 then the transpositions will be +1 and -1
-; Scale		-	scale expressed by the voices.
-;				when 'Chromatic' is selected spacing is defined purely by the spread control
-;				other scales can be expressed but in order to hear them as described, spread should be set to '1'
-; Synth		-	choice from four different synthesis engines:
-;				 Bowed string, sine tone, bandpass filtered sine tone, gbuzz 'brass' sound.
+; N.Voices  -    number of voices
+; Spread    -    interval between adjacent voices
+;                What pitches are created depends upon the value of spread, the number of voices and whether an odd or even number of voices has been chosen.
+;                If an odd number of voices is selected, then a central static pitch which ignores the 'Spread' value will be created.
+;                If the number of voices is even then this central static pitch will not be created
+;                For example, if 'N.Voices'=5 and 'Spread'=1 then semitone transpositions for the 5 voices will be: 0, +1, -1, +2 and -2
+;                 if if 'N.Voices'=2 and 'Spread'=1 then the transpositions will be +1 and -1
+; Scale        -    scale expressed by the voices.
+;                when 'Chromatic' is selected spacing is defined purely by the spread control
+;                other scales can be expressed but in order to hear them as described, spread should be set to '1'
+; Synth        -    choice from four different synthesis engines:
+;                 Bowed string, sine tone, bandpass filtered sine tone, gbuzz 'brass' sound.
 
 ; [KEYBOARD]
-; Interval	-	number of semitones interval between each key
-; Shift		-	transpose shift of all notes in semitones
+; Interval    -    number of semitones interval between each key
+; Shift        -    transpose shift of all notes in semitones
 
 ; [AMPLITUDE ENVELOPE] this envelope is applied to the opcode amplitude input, it is not a simple audio gain envelope 
-;							and instead affects tone in addition to other characteristics.
-; Attack	-	attack time
-; Release	-	release time after the note has been released
-; Amount	-	sustain level of the envelope. 
-;				 Gain compensations are made according to the setting of this control so that it doesn't really control amplitude level, 
-;				 instead it controls tone quality.
+;                            and instead affects tone in addition to other characteristics.
+; Attack    -    attack time
+; Release    -    release time after the note has been released
+; Amount    -    sustain level of the envelope. 
+;                 Gain compensations are made according to the setting of this control so that it doesn't really control amplitude level, 
+;                 instead it controls tone quality.
 
 ; [FILTER] a lowpass filter. 
-;			Cutoff is expressed using an arbitrary value, as the actual cutoff can be either a static value -
-;			- or a key-following value (or a mixture of both approaches)
-; Cutoff	-	cutoff setting
-; Follow	-	amount of key following/tracking to use. 0 = none/i.e. static value 1=completely track key played
+;            Cutoff is expressed using an arbitrary value, as the actual cutoff can be either a static value -
+;            - or a key-following value (or a mixture of both approaches)
+; Cutoff    -    cutoff setting
+; Follow    -    amount of key following/tracking to use. 0 = none/i.e. static value 1=completely track key played
 
 ; [STEREO]
-; Mode		-	choose from one of three modes for the placement of each voice:
-;				'Alternate' - voices are alternately sent to the left or right channels (Voice 1 central, Voice 2 right, Voice 3 left etc...)
-;				'Rnd.Fixed' - voices are randomly located in the stereo field. During a note, pan locations remain fixed. New locations are generated for each new note.
-;				'Rnd.Moving' - voices moving between left and right in random fashion (using an rspline)
-; Width		-	stereo width
+; Mode        -    choose from one of three modes for the placement of each voice:
+;                'Alternate' - voices are alternately sent to the left or right channels (Voice 1 central, Voice 2 right, Voice 3 left etc...)
+;                'Rnd.Fixed' - voices are randomly located in the stereo field. During a note, pan locations remain fixed. New locations are generated for each new note.
+;                'Rnd.Moving' - voices moving between left and right in random fashion (using an rspline)
+; Width        -    stereo width
 
 ; [BOW POSITION] Bow position is expressed as a ratio along the length of the string, 
-;				  0.5 will represent halfway along the string's length (flautando)
+;                  0.5 will represent halfway along the string's length (flautando)
 ;                 and close to 1 or close to zero will represent playing close to the bridge or nut (i.e. sul pointicello). 
 ;                 Zero or 1 will result in no sound.
-;				  Bow position can be randomly modulated between two values.
-; Min		-	minimum value in the random modulation
-; Max		-	maximum value in the random modulation
-; Movement	-	rate/frequency of the random modulation
+;                  Bow position can be randomly modulated between two values.
+; Min        -    minimum value in the random modulation
+; Max        -    maximum value in the random modulation
+; Movement    -    rate/frequency of the random modulation
 
-; [BOW PRESSURE]	Bow pressure will also affect note attack and whether or not it sounds at all
-; 					If bow pressure is low, higher pitches may not sound
-; 					Low bow pressures will tend to extend the attack of the note.
-; 					Very high bow pressures will also prevent high notes from sounding.
-;				 	Bow pressure can be randomly modulated between two values.
-; Min		-	minimum value in the random modulation
-; Max		-	maximum value in the random modulation
-; Movement	-	rate/frequency of the random modulation
+; [BOW PRESSURE]    Bow pressure will also affect note attack and whether or not it sounds at all
+;                     If bow pressure is low, higher pitches may not sound
+;                     Low bow pressures will tend to extend the attack of the note.
+;                     Very high bow pressures will also prevent high notes from sounding.
+;                     Bow pressure can be randomly modulated between two values.
+; Min        -    minimum value in the random modulation
+; Max        -    maximum value in the random modulation
+; Movement    -    rate/frequency of the random modulation
 
 ; [VIBRATO] both a tonal and a pitch vibrato.
-; Depth		-	depth of vibrato
-; Rate		-	rate of the vibrato. This is randomly modulated subtly so that when multiple voices are used, 
-;				 the vibrato modulations do no remain fixed in sync.
-; Shape		-	shape of the vibrato function: 'sine' or 'random'
+; Depth        -    depth of vibrato
+; Rate        -    rate of the vibrato. This is randomly modulated subtly so that when multiple voices are used, 
+;                 the vibrato modulations do no remain fixed in sync.
+; Shape        -    shape of the vibrato function: 'sine' or 'random'
 
 ; [REVERB] screverb is used 
 
 ; [PRESETS] some 'factory' presets to demonstrate some of the sounds possible
 
-; Level		-	output level
+; Level        -    output level
 
 <Cabbage>
 #define COLOUR  colour(172,127,100)
@@ -202,277 +202,277 @@ vslider bounds(1065,250, 20, 70),  channel("OutLevel"), range(0,10,2,1,0.01), $T
 <CsoundSynthesizer>
 
 <CsOptions>
--dm0 -n -+rtmidi=null -M0
+-dm0 -n -+rtmidi=NULL -M0
 </CsOptions>
 
 <CsInstruments>
 
-;sr is set by the host
-ksmps 		= 	32
-nchnls 		= 	2
-0dbfs		=	1	;MAXIMUM AMPLITUDE
+; sr set by host
+ksmps         =     32
+nchnls         =     2
+0dbfs        =    1    ;MAXIMUM AMPLITUDE
 
-seed	0				; random number generators seeded from system clock
-massign	0,2				; midi note triggering on all channels directed to instrument 2
-gkactive	init	0	; Will contain number of active instances of instr 3 when legato mode is chosen. NB. notes in release stage will not be regarded as active. 
+seed    0                ; random number generators seeded from system clock
+massign    0,2                ; midi note triggering on all channels directed to instrument 2
+gkactive    init    0    ; Will contain number of active instances of instr 3 when legato mode is chosen. NB. notes in release stage will not be regarded as active. 
 
-giVibFn1	ftgen	0,0,1024,10,1						; gisine
-giVibFn2 	ftgen 	0,0,1024,21,6,1 					; random (gaussian)
-giVibFn3	ftgen	0,0,1024,7,0,256,1,512,-1,256,0		; triangle
-giVibFn4	ftgen	0,0,1024,7,1,512,1,0,-1,512,-1		; square
-giVibFn5	ftgen	0,0,1024,10,1						; squarish
-giVibFn6	ftgen	0,0,1024,41,	(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50), \
-									(rnd(1)*2)-1,rnd(50)
+giVibFn1    ftgen    0,0,1024,10,1                        ; gisine
+giVibFn2     ftgen     0,0,1024,21,6,1                     ; random (gaussian)
+giVibFn3    ftgen    0,0,1024,7,0,256,1,512,-1,256,0        ; triangle
+giVibFn4    ftgen    0,0,1024,7,1,512,1,0,-1,512,-1        ; square
+giVibFn5    ftgen    0,0,1024,10,1                        ; squarish
+giVibFn6    ftgen    0,0,1024,41,    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50), \
+                                    (rnd(1)*2)-1,rnd(50)
                                                        
-icnt		init	0
+icnt        init    0
 loop:
-ival		table	icnt,giVibFn5
-			tableiw	(abs(ival)^0.125) * (ival<0?-1:1),icnt,giVibFn5
-			loop_lt	icnt,1,ftlen(giVibFn5),loop
+ival        table    icnt,giVibFn5
+            tableiw    (abs(ival)^0.125) * (ival<0?-1:1),icnt,giVibFn5
+            loop_lt    icnt,1,ftlen(giVibFn5),loop
 
-gitun1		ftgen	0,0,-7,-2,	0,2,4,5,7,9,11	; major scale
-gitun2		ftgen	0,0,-7,-2,	0,2,3,5,7,8,11	; minor scale
-gitun3		ftgen	0,0,-5,-2,	0,3,5,7,10		; pentatonic
+gitun1        ftgen    0,0,-7,-2,    0,2,4,5,7,9,11    ; major scale
+gitun2        ftgen    0,0,-7,-2,    0,2,3,5,7,8,11    ; minor scale
+gitun3        ftgen    0,0,-5,-2,    0,3,5,7,10        ; pentatonic
 
-gicos		ftgen	0,0,131072,11,1
+gicos        ftgen    0,0,131072,11,1
 
-opcode	Randomh2,k,kkkk
- kMin,kMax,kRateMin,kRateMax	xin
- ktrig	init	1
- kRate	trandom	ktrig,kRateMin,kRateMax
- kVal	randomh	kMin,kMax,kRate
- ktrig	changed	kVal
- 		xout	kVal
+opcode    Randomh2,k,kkkk
+ kMin,kMax,kRateMin,kRateMax    xin
+ ktrig    init    1
+ kRate    trandom    ktrig,kRateMin,kRateMax
+ kVal    randomh    kMin,kMax,kRate
+ ktrig    changed    kVal
+         xout    kVal
 endop
 
-opcode	SsplinePort,k,KkkO										; DEFINE OPCODE
-	knum,kporttime,kcurve,iopt	xin								; READ IN INPUT ARGUMENTS
-	kout	init	i(knum)										; INITIALISE TO OUTPUT VALUE (PORTAMENTO APPLIED VALUE)
-	ktrig	changed	knum										; ...GENERATE A TRIGGER IS A NEW NOTE NUMBER IS GENERATED (FROM INSTR. 1)
-	 if ktrig=1 then											; IF A NEW (LEGATO) NOTE HAS BEEN PRESSED 
-	  reinit	S_CURVE											; BEGIN A REINITIALISATION PASS FROM LABEL
-	 endif														; END OF CONDITIONAL BRANCH
-	 S_CURVE:													; A LABEL. REINITIALISATION BEGINS FROM HERE.
-	if iopt!=0 then												; IF ABSOLUTE/PROPORTIONAL SWITCH IS ON... (I.E. PROPORTIONAL)
-	 idiff	=	1+abs(i(knum)-i(kout))							; ABSOLUTE DIFFERENCE BETWEEN OLD NOTE AND NEW NOTE IN STEPS (+ 1)
-	 kporttime	=	kporttime*idiff								; SCALE PORTAMENTO TIME ACCORDING TO THE NOTE GAP
-	endif														; END OF CONDITIONAL BRANCH
-	imid	=	i(kout)+((i(knum)-i(kout))/2)					; SPLINE MID POINT VALUE
-	isspline	ftgentmp	0,0,4096,-16,i(kout),4096*0.5,i(kcurve),imid,(4096/2)-1,-i(kcurve),i(knum)	;GENERATE 'S' SPLINE
-	kspd	=	i(kporttime)/kporttime							; POINTER SPEED AS A RATIO (WITH REFERENCE TO THE ORIGINAL DURATION)
-	kptr	init	0											; POINTER INITIAL VALUE	
-	kout	tablei	kptr,isspline								; READ VALUE FROM TABLE
-	kptr	limit	kptr+((ftlen(isspline)/(i(kporttime)*kr))*kspd), 0, ftlen(isspline)-1				; INCREMENT THE POINTER BY THE REQUIRED NUMBER OF TABLE POINTS IN ONE CONTROL CYCLE AND LIMIT IT BETWEEN FIRST AND LAST TABLE POINT - FINAL VALUE WILL BE HELD IF POINTER ATTEMPTS TO EXCEED TABLE DURATION
-	rireturn													; RETURN FROM REINITIALISATION PASS
-	 		xout	kout                                                                                ; SEND PORTAMENTOED VALUES BACK TO CALLER INSTRUMENT
+opcode    SsplinePort,k,KkkO                                        ; DEFINE OPCODE
+    knum,kporttime,kcurve,iopt    xin                                ; READ IN INPUT ARGUMENTS
+    kout    init    i(knum)                                        ; INITIALISE TO OUTPUT VALUE (PORTAMENTO APPLIED VALUE)
+    ktrig    changed    knum                                        ; ...GENERATE A TRIGGER IS A NEW NOTE NUMBER IS GENERATED (FROM INSTR. 1)
+     if ktrig=1 then                                            ; IF A NEW (LEGATO) NOTE HAS BEEN PRESSED 
+      reinit    S_CURVE                                            ; BEGIN A REINITIALISATION PASS FROM LABEL
+     endif                                                        ; END OF CONDITIONAL BRANCH
+     S_CURVE:                                                    ; A LABEL. REINITIALISATION BEGINS FROM HERE.
+    if iopt!=0 then                                                ; IF ABSOLUTE/PROPORTIONAL SWITCH IS ON... (I.E. PROPORTIONAL)
+     idiff    =    1+abs(i(knum)-i(kout))                            ; ABSOLUTE DIFFERENCE BETWEEN OLD NOTE AND NEW NOTE IN STEPS (+ 1)
+     kporttime    =    kporttime*idiff                                ; SCALE PORTAMENTO TIME ACCORDING TO THE NOTE GAP
+    endif                                                        ; END OF CONDITIONAL BRANCH
+    imid    =    i(kout)+((i(knum)-i(kout))/2)                    ; SPLINE MID POINT VALUE
+    isspline    ftgentmp    0,0,4096,-16,i(kout),4096*0.5,i(kcurve),imid,(4096/2)-1,-i(kcurve),i(knum)    ;GENERATE 'S' SPLINE
+    kspd    =    i(kporttime)/kporttime                            ; POINTER SPEED AS A RATIO (WITH REFERENCE TO THE ORIGINAL DURATION)
+    kptr    init    0                                            ; POINTER INITIAL VALUE    
+    kout    tablei    kptr,isspline                                ; READ VALUE FROM TABLE
+    kptr    limit    kptr+((ftlen(isspline)/(i(kporttime)*kr))*kspd), 0, ftlen(isspline)-1                ; INCREMENT THE POINTER BY THE REQUIRED NUMBER OF TABLE POINTS IN ONE CONTROL CYCLE AND LIMIT IT BETWEEN FIRST AND LAST TABLE POINT - FINAL VALUE WILL BE HELD IF POINTER ATTEMPTS TO EXCEED TABLE DURATION
+    rireturn                                                    ; RETURN FROM REINITIALISATION PASS
+             xout    kout                                                                                ; SEND PORTAMENTOED VALUES BACK TO CALLER INSTRUMENT
 endop
 
 
-opcode	IntervalRescale,k,ki
- kstep,ifn	xin
- ilen	=	ftlen(ifn)
- kdir	=		kstep<0?-1:1		
- kval	tablei	wrap:k(kstep,-0.5,ilen-0.5),ifn,0,0,1
- koct	=		int(kstep / ftlen(ifn)) 
+opcode    IntervalRescale,k,ki
+ kstep,ifn    xin
+ ilen    =    ftlen(ifn)
+ kdir    =        kstep<0?-1:1        
+ kval    tablei    wrap:k(kstep,-0.5,ilen-0.5),ifn,0,0,1
+ koct    =        int(kstep / ftlen(ifn)) 
  if kdir=-1 then
-  kval	wrap	kval,0.5,12
-  kshft	=		(12-kval)*kdir + (koct*12)
+  kval    wrap    kval,0.5,12
+  kshft    =        (12-kval)*kdir + (koct*12)
  else
-  kshft	=		kval + koct*12
+  kshft    =        kval + koct*12
  endif
-  		xout	kshft
+          xout    kshft
 endop
 
 
-opcode	StringVoice,aa,kkkkkkkkkkkkkkkikkiiip
- knum,kspread,kPortSmear,kAEnv,kRMin,kRMax,kRMvt,kPMin,kPMax,kPMvt,kNFMin,kNFMax,kNFMvt,kVDep,kVRate,iStMode,kStSpeed,kSynth,iVShape,iVScale,ilayers,icnt		xin
- krndcent	rspline		-10,10,0.05,0.2							; random pitch wobble for this layer in cents. This feature can be defeated by reducing vibrato depth to zero.
+opcode    StringVoice,aa,kkkkkkkkkkkkkkkikkiiip
+ knum,kspread,kPortSmear,kAEnv,kRMin,kRMax,kRMvt,kPMin,kPMax,kPMvt,kNFMin,kNFMax,kNFMvt,kVDep,kVRate,iStMode,kStSpeed,kSynth,iVShape,iVScale,ilayers,icnt        xin
+ krndcent    rspline        -10,10,0.05,0.2                            ; random pitch wobble for this layer in cents. This feature can be defeated by reducing vibrato depth to zero.
 
-; krndcent	Randomh2	-100,100,10,15							; sample and hold
+; krndcent    Randomh2    -100,100,10,15                            ; sample and hold
 
- if frac(ilayers*0.5)==0 then									; if an even number of layers, increment the counter for this layer by 1
-  icntL	=	icnt+1												; 'icntL' = 'local counter'
+ if frac(ilayers*0.5)==0 then                                    ; if an even number of layers, increment the counter for this layer by 1
+  icntL    =    icnt+1                                                ; 'icntL' = 'local counter'
  else
-  icntL	=	icnt
+  icntL    =    icnt
  endif
- idir	=		(((icntL-1) % 2) * 2) - 1						; direction of pitch divergence, alternately +1 or -1, layer by layer
- kshft		=	( (int((icntL*0.5)+1)-1) * kspread * idir )		; pitch shift for this voice in semitones
+ idir    =        (((icntL-1) % 2) * 2) - 1                        ; direction of pitch divergence, alternately +1 or -1, layer by layer
+ kshft        =    ( (int((icntL*0.5)+1)-1) * kspread * idir )        ; pitch shift for this voice in semitones
  if iVScale>0 then
-  kshft		IntervalRescale	kshft,iVScale
+  kshft        IntervalRescale    kshft,iVScale
  endif
- knumL		vdel_k	knum+kshft,randomi:k(0,kPortSmear,0.3,1),8	; note number for this layer. It will be randomly delayed to implement the 'smearing' effect. Make sure that the maximum delay time specified here corresponds to the maximum value of the accompanying GUI control
+ knumL        vdel_k    knum+kshft,randomi:k(0,kPortSmear,0.3,1),8    ; note number for this layer. It will be randomly delayed to implement the 'smearing' effect. Make sure that the maximum delay time specified here corresponds to the maximum value of the accompanying GUI control
 
- kfreq		=		cpsmidinn(knumL)*cent(krndcent*ceil(kVDep))	; derive frequency for wgbow opcode
- aL,aR		init	0
+ kfreq        =        cpsmidinn(knumL)*cent(krndcent*ceil(kVDep))    ; derive frequency for wgbow opcode
+ aL,aR        init    0
  if kfreq>sr/3 goto SKIP
- kpres		rspline		kPMin,kPMax,kPMvt,kPMvt*2				; bow pressure
- krat		rspline		kRMin,kRMax,kRMvt,kRMvt*2				; bow position (ratio)
- kVRate		rspline		kVRate*0.75,kVRate*1.25,0.2,0.5			; vibrato rate (some randomness is incorporated to prevent sync. between layers)
- kvibamp	rspline		0,0.5,0.1,0.3							; vibrato amplitude (some randomness is incorporated to prevent parallel movement)
- iminfreq	=		20
+ kpres        rspline        kPMin,kPMax,kPMvt,kPMvt*2                ; bow pressure
+ krat        rspline        kRMin,kRMax,kRMvt,kRMvt*2                ; bow position (ratio)
+ kVRate        rspline        kVRate*0.75,kVRate*1.25,0.2,0.5            ; vibrato rate (some randomness is incorporated to prevent sync. between layers)
+ kvibamp    rspline        0,0.5,0.1,0.3                            ; vibrato amplitude (some randomness is incorporated to prevent parallel movement)
+ iminfreq    =        20
  if kSynth==1 then
-  asig		wgbow	kAEnv * ilayers/(ilayers^1.5), kfreq, kpres, krat, kVRate, kVDep, iVShape, iminfreq
-;  aNse		pinkish	1
-;  asig		streson	aNse, kfreq, 0.99
-;  asig		streson	asig, kfreq, 0.99
-;  asig		dcblock2	asig
-  asig		*=		kAEnv * ilayers/(ilayers^1.5)
+  asig        wgbow    kAEnv * ilayers/(ilayers^1.5), kfreq, kpres, krat, kVRate, kVDep, iVShape, iminfreq
+;  aNse        pinkish    1
+;  asig        streson    aNse, kfreq, 0.99
+;  asig        streson    asig, kfreq, 0.99
+;  asig        dcblock2    asig
+  asig        *=        kAEnv * ilayers/(ilayers^1.5)
  elseif kSynth==2 then
-  asig		poscil	kAEnv * ilayers/(ilayers^1.5) *0.3, kfreq
+  asig        poscil    kAEnv * ilayers/(ilayers^1.5) *0.3, kfreq
  elseif kSynth==3 then
-  asig		reson	pinkish:a(ilayers/(ilayers^1.5) *0.5), kfreq, kfreq*randomi:k(kNFMin,kNFMax,kNFMvt)*0.01, 2
-  asig		*=		kAEnv
+  asig        reson    pinkish:a(ilayers/(ilayers^1.5) *0.5), kfreq, kfreq*randomi:k(kNFMin,kNFMax,kNFMvt)*0.01, 2
+  asig        *=        kAEnv
  else
-  asig		gbuzz	kAEnv * ilayers/(ilayers^1.5) *0.4, kfreq, 30,1,rspline(0.1,0.9,0.1,0.2),gicos
+  asig        gbuzz    kAEnv * ilayers/(ilayers^1.5) *0.4, kfreq, 30,1,rspline(0.1,0.9,0.1,0.2),gicos
  endif 
  
- if icnt==1&&frac(ilayers*0.5)!=0 then							; if first voice and odd number of voices
-  aL	=	asig												; locate the first voice (unaffected by 'Spread') in the centre
-  aR	=	asig
+ if icnt==1&&frac(ilayers*0.5)!=0 then                            ; if first voice and odd number of voices
+  aL    =    asig                                                ; locate the first voice (unaffected by 'Spread') in the centre
+  aR    =    asig
  else
   if iStMode==1 then
-   ipan		init	wrap:i(icntL,0,2)
-   aL,aR		pan2	asig*6,ipan
+   ipan        init    wrap:i(icntL,0,2)
+   aL,aR        pan2    asig*6,ipan
   elseif iStMode==2 then
-   ipan		random	0,1
-   aL,aR		pan2	asig*6,ipan
+   ipan        random    0,1
+   aL,aR        pan2    asig*6,ipan
   else
-   kpan		rspline	0.1,0.9,kStSpeed,kStSpeed*2
-   aL,aR		pan2	asig*6,kpan
+   kpan        rspline    0.1,0.9,kStSpeed,kStSpeed*2
+   aL,aR        pan2    asig*6,kpan
   endif
  endif
  SKIP:
- aMixL		=	0												; clear accumulating 'mix' audio variables
- aMixR		=	0
+ aMixL        =    0                                                ; clear accumulating 'mix' audio variables
+ aMixR        =    0
  if icnt<ilayers then
-  aMixL,aMixR	StringVoice	knum,kspread,kPortSmear,kAEnv,kRMin,kRMax,kRMvt,kPMin,kPMax,kPMvt,kNFMin,kNFMax,kNFMvt,kVDep,kVRate,iStMode,kStSpeed,kSynth,iVShape,iVScale,ilayers,icnt+1
+  aMixL,aMixR    StringVoice    knum,kspread,kPortSmear,kAEnv,kRMin,kRMax,kRMvt,kPMin,kPMax,kPMvt,kNFMin,kNFMax,kNFMvt,kVDep,kVRate,iStMode,kStSpeed,kSynth,iVShape,iVScale,ilayers,icnt+1
  endif
- 			xout	aL + aMixL, aR + aMixR						; mix this layers will all subsequent layers
+             xout    aL + aMixL, aR + aMixR                        ; mix this layers will all subsequent layers
 endop
 
-instr	1	; always on. Read in widgets and send presets.
- gkmonopoly	chnget	"monopoly"		; read in widgets
- gkLegTim	chnget	"LegTim"
- gkspread	chnget	"spread"
- gkvoices	chnget	"voices"
- gkVScale	chnget	"VScale"
- gkSynth	chnget	"Synth"
- gkPortSmear	chnget	"PortSmear"
- gkAAtt		chnget	"AAtt"
- gkARel		chnget	"ARel"
- gkAAmt		chnget	"AAmt"
- gkRMin		chnget	"RMin"
- gkRMax		chnget	"RMax"
- gkRMvt		chnget	"RMvt"
- gkPMin		chnget	"PMin"
- gkPMax		chnget	"PMax"
- gkPMvt		chnget	"PMvt"
- gkNFMin	chnget	"NFMin"
- gkNFMax	chnget	"NFMax"
- gkNFMvt	chnget	"NFMvt"
- gkRvbMix	chnget	"RvbMix"
- gkRvbSiz	chnget	"RvbSiz"
- gkRvbDmp	chnget	"RvbDmp"
- gkVDep		chnget	"VDep"
- gkVRate		chnget	"VRate"
- gkVShape	chnget	"VShape"
- gkStWidth	chnget	"StWidth"
- gkStSpeed	chnget	"StSpeed"
- gkStMode	chnget	"StMode"
- gkOutLevel	port	chnget:k("OutLevel"),0.05
- gkFOnOff	chnget	"FOnOff"
- gkFCutoff	chnget	"FCutoff"
- gkFFollow	chnget	"FFollow"
- gkKIntvl	chnget	"KIntvl"
- gkKShift	chnget	"KShift"
- kpreset	chnget	"preset"
- ktrig		changed	kpreset
+instr    1    ; always on. Read in widgets and send presets.
+ gkmonopoly    chnget    "monopoly"        ; read in widgets
+ gkLegTim    chnget    "LegTim"
+ gkspread    chnget    "spread"
+ gkvoices    chnget    "voices"
+ gkVScale    chnget    "VScale"
+ gkSynth    chnget    "Synth"
+ gkPortSmear    chnget    "PortSmear"
+ gkAAtt        chnget    "AAtt"
+ gkARel        chnget    "ARel"
+ gkAAmt        chnget    "AAmt"
+ gkRMin        chnget    "RMin"
+ gkRMax        chnget    "RMax"
+ gkRMvt        chnget    "RMvt"
+ gkPMin        chnget    "PMin"
+ gkPMax        chnget    "PMax"
+ gkPMvt        chnget    "PMvt"
+ gkNFMin    chnget    "NFMin"
+ gkNFMax    chnget    "NFMax"
+ gkNFMvt    chnget    "NFMvt"
+ gkRvbMix    chnget    "RvbMix"
+ gkRvbSiz    chnget    "RvbSiz"
+ gkRvbDmp    chnget    "RvbDmp"
+ gkVDep        chnget    "VDep"
+ gkVRate        chnget    "VRate"
+ gkVShape    chnget    "VShape"
+ gkStWidth    chnget    "StWidth"
+ gkStSpeed    chnget    "StSpeed"
+ gkStMode    chnget    "StMode"
+ gkOutLevel    port    chnget:k("OutLevel"),0.05
+ gkFOnOff    chnget    "FOnOff"
+ gkFCutoff    chnget    "FCutoff"
+ gkFFollow    chnget    "FFollow"
+ gkKIntvl    chnget    "KIntvl"
+ gkKShift    chnget    "KShift"
+ kpreset    chnget    "preset"
+ ktrig        changed    kpreset
  if ktrig==1 then
-  reinit	PRESET
+  reinit    PRESET
   PRESET:
   
-  #define	SEND_SETTINGS(N'monopoly'LegTim'PortSmear'voices'spread'VScale'KIntvl'KShift'AAtt'ARel'AAmt'FOnOff'FCutoff'FFollow'StMode'StWidth'StSpeed'OutLevel'RMin'RMax'RMvt'PMin'PMax'PMvt'VDep'VRate'VShape'RvbMix'RvbSiz'RvbDmp)#
+  #define    SEND_SETTINGS(N'monopoly'LegTim'PortSmear'voices'spread'VScale'KIntvl'KShift'AAtt'ARel'AAmt'FOnOff'FCutoff'FFollow'StMode'StWidth'StSpeed'OutLevel'RMin'RMax'RMvt'PMin'PMax'PMvt'VDep'VRate'VShape'RvbMix'RvbSiz'RvbDmp)#
   if i(kpreset)==$N then
-   chnset	$monopoly	,"monopoly"
-   chnset	$LegTim   	,"LegTim"
-   chnset	$PortSmear	,"PortSmear"
-   chnset	$voices   	,"voices"
-   chnset	$spread   	,"spread"
-   chnset	$VScale   	,"VScale"
-   chnset	$KIntvl		,"KIntvl"
-   chnset	$KShift		,"KShift"
-   chnset	$AAtt     	,"AAtt"
-   chnset	$ARel     	,"ARel"
-   chnset	$AAmt     	,"AAmt"
-   chnset	$FOnOff   	,"FOnOff"
-   chnset	$FCutoff  	,"FCutoff"
-   chnset	$FFollow  	,"FFollow"
-   chnset	$StMode  	,"StMode"
-   chnset	$StWidth  	,"StWidth"
-   chnset	$StSpeed  	,"StSpeed"
-   chnset	$OutLevel 	,"OutLevel"
-   chnset	$RMin     	,"RMin"
-   chnset	$RMax     	,"RMax"
-   chnset	$RMvt     	,"RMvt"
-   chnset	$PMin     	,"PMin"
-   chnset	$PMax     	,"PMax"
-   chnset	$PMvt     	,"PMvt"
-   chnset	$VDep     	,"VDep"
-   chnset	$VRate    	,"VRate"
-   chnset	$VShape   	,"VShape"
-   chnset	$RvbMix   	,"RvbMix"
-   chnset	$RvbSiz   	,"RvbSiz"
-   chnset	$RvbDmp   	,"RvbDmp"
+   chnset    $monopoly    ,"monopoly"
+   chnset    $LegTim       ,"LegTim"
+   chnset    $PortSmear    ,"PortSmear"
+   chnset    $voices       ,"voices"
+   chnset    $spread       ,"spread"
+   chnset    $VScale       ,"VScale"
+   chnset    $KIntvl        ,"KIntvl"
+   chnset    $KShift        ,"KShift"
+   chnset    $AAtt         ,"AAtt"
+   chnset    $ARel         ,"ARel"
+   chnset    $AAmt         ,"AAmt"
+   chnset    $FOnOff       ,"FOnOff"
+   chnset    $FCutoff      ,"FCutoff"
+   chnset    $FFollow      ,"FFollow"
+   chnset    $StMode      ,"StMode"
+   chnset    $StWidth      ,"StWidth"
+   chnset    $StSpeed      ,"StSpeed"
+   chnset    $OutLevel     ,"OutLevel"
+   chnset    $RMin         ,"RMin"
+   chnset    $RMax         ,"RMax"
+   chnset    $RMvt         ,"RMvt"
+   chnset    $PMin         ,"PMin"
+   chnset    $PMax         ,"PMax"
+   chnset    $PMvt         ,"PMvt"
+   chnset    $VDep         ,"VDep"
+   chnset    $VRate        ,"VRate"
+   chnset    $VShape       ,"VShape"
+   chnset    $RvbMix       ,"RvbMix"
+   chnset    $RvbSiz       ,"RvbSiz"
+   chnset    $RvbDmp       ,"RvbDmp"
   endif#
   ;                 monopoly'LegTim'PortSmear'voices'spread'VScale'KIntvl'KShift'AAtt'ARel'AAmt 'FOnOff'FCutoff'FFollow'StMode'StWidth'StSpeed'OutLevel'RMin 'RMax 'RMvt'PMin'PMax'PMvt'VDep 'VRate'VShape'RvbMix'RvbSiz'RvbDmp)#
   $SEND_SETTINGS(1  '1      '0.8   '3        '18    '0.5   '1     '1     '0     '1   '10  '0.4  '1     '0.66   '0      '1     '0.7    '0.1    '4       '0.23 '0.35 '0.1 '1.0 '3   '0.23'0.001'0.5  '2     '0.4   '0.75  '8000  )            
@@ -496,176 +496,179 @@ endin
 
 
 
-instr	2	; triggered via MIDI
-	gkNoteTrig	init	1								; at the beginning of a new note set note trigger flag to '1'
+instr    2    ; triggered via MIDI
+    gkNoteTrig    init    1                                ; at the beginning of a new note set note trigger flag to '1'
 
-	inum		notnum									; read in midi note number
-	inum		=		(inum*i(gkKIntvl))+i(gkKShift)
-			
-	gknum	=	inum									; update a global krate variable for note pitch
-	ivel	veloc	0,1
-	
-	if i(gkmonopoly)==0 then							; if we are *not* in legato mode...
-	 inum	notnum										; read midi note number (0 - 127)
-	 	event_i	"i",p1+1+(inum*0.001),0,-1,inum,ivel	; call sound producing instr
-	 krel	release										; release flag (1 when note is released, 0 otherwise)
-	 if krel==1 then									; when note is released...
-	  turnoff2	p1+1+(inum*0.001),4,1					; turn off the called instrument
-	 endif												; end of conditional
-	else												; otherwise... (i.e. legato mode)
-	 iactive	=	i(gkactive)							; number of active notes of instr 3 (note in release are disregarded)
-	 if iactive==0 then									; ...if no notes are active
-	  event_i	"i",p1+1,0,-1,0,ivel					; ...start a new held note
-	 endif
-	endif
+    inum        notnum                                    ; read in midi note number
+    inum        =        (inum*i(gkKIntvl))+i(gkKShift)
+            
+    gknum    =    inum                                    ; update a global krate variable for note pitch
+    ivel    veloc    0,1
+    
+    if i(gkmonopoly)==0 then                            ; if we are *not* in legato mode...
+     inum    notnum                                        ; read midi note number (0 - 127)
+         event_i    "i",p1+1+(inum*0.001),0,-1,inum,ivel    ; call sound producing instr
+     krel    release                                        ; release flag (1 when note is released, 0 otherwise)
+     if krel==1 then                                    ; when note is released...
+      turnoff2    p1+1+(inum*0.001),4,1                    ; turn off the called instrument
+     endif                                                ; end of conditional
+    else                                                ; otherwise... (i.e. legato mode)
+     iactive    =    i(gkactive)                            ; number of active notes of instr 3 (note in release are disregarded)
+     if iactive==0 then                                    ; ...if no notes are active
+      event_i    "i",p1+1,0,-1,0,ivel                    ; ...start a new held note
+     endif
+    endif
 endin
 
-instr	3
-	kPortRamp	linseg	0,0.001,1						; portamento time function rises quickly from zero to a held value
-	kporttime	=	(kPortRamp*gkLegTim)				; scale portamento time function with value from GUI knob widget
-	if i(gkmonopoly)==1 then							; if we are in legato mode...
-	 krel	release										; sense when  note has been released
-	 gkactive	=	1-krel								; if note is in release, gkactive=0, otherwise =1
-	 if krel==0 then
- 	  knum	SsplinePort	gknum,kporttime,1,1				; GLISSANDO TIME PROPORTIONAL TO NOTE GAP (OPTION SET TO '1'), THEREFORE PORTAMENTO TIME DEPENDENT UPON NOTE GAP. LARGER INTERVALS WILL RESULT IN PROPORTIONALLY LONGER PORTAMENTO TIMES.
-	 endif
-	 kactive	active	p1-1							; ...check number of active midi notes (previous instrument)
-	 if kactive==0 then									; if no midi notes are active...
-	  turnoff											; ... turn this instrument off
-	 endif
-	else												; otherwise... (polyphonic / non-legato mode)
-	 knum	=	p4		 								; pitch equal to the original note pitch
-	endif
+instr    3
+    kPortRamp    linseg    0,0.001,1                        ; portamento time function rises quickly from zero to a held value
+    kporttime    =    (kPortRamp*gkLegTim)                ; scale portamento time function with value from GUI knob widget
+    if i(gkmonopoly)==1 then                            ; if we are in legato mode...
+     krel    release                                        ; sense when  note has been released
+     gkactive    =    1-krel                                ; if note is in release, gkactive=0, otherwise =1
+     if krel==0 then
+       knum    SsplinePort    gknum,kporttime,1,1                ; GLISSANDO TIME PROPORTIONAL TO NOTE GAP (OPTION SET TO '1'), THEREFORE PORTAMENTO TIME DEPENDENT UPON NOTE GAP. LARGER INTERVALS WILL RESULT IN PROPORTIONALLY LONGER PORTAMENTO TIMES.
+     endif
+     kactive    active    p1-1                            ; ...check number of active midi notes (previous instrument)
+     if kactive==0 then                                    ; if no midi notes are active...
+      turnoff                                            ; ... turn this instrument off
+     endif
+    else                                                ; otherwise... (polyphonic / non-legato mode)
+     knum    =    p4                                         ; pitch equal to the original note pitch
+    endif
 
  ; amplitude envelope
- kAEnv	linsegr	0,0.005+i(gkAAtt),1,0.01+i(gkARel),0
- kAEnv	expcurve	kAEnv,12
+ ;kAEnv    linsegr    0,0.005+i(gkAAtt),1,0.01+i(gkARel),0
+ ;kAEnv    expcurve    kAEnv,12
+ kAEnv    linsegr    0,0.005+i(gkAAtt),1,0.01+i(gkARel),0
+ aFiltMlt linsegr    0,0.005+i(gkAAtt),1,0.01+i(gkARel),0
+ 
  ; smooth changes in spread
- kspread	portk	gkspread, kporttime*gkLegTim
+ kspread    portk    gkspread, kporttime*gkLegTim
  
  
- if changed(gkvoices,gkVShape,gkVScale)==1 then							; changing number of voices requires a restart
+ if changed(gkvoices,gkVShape,gkVScale)==1 then                            ; changing number of voices requires a restart
   reinit RESTART
  endif
  RESTART:
  ; setup intervals scaling table
- iVScale	=	i(gkVScale)>1?gitun1+i(gkVScale)-2:0
+ iVScale    =    i(gkVScale)>1?gitun1+i(gkVScale)-2:0
  ; vibrato setup values
- iVShape	=	i(gkVShape)								; vibrato shape. 1=sine 2=random
- kVRate		=	iVShape==2?gkVRate/100:gkVRate			; if random shape, reduce rate
- aL,aR		StringVoice	knum,kspread,gkPortSmear,kAEnv*gkAAmt*p5,gkRMin,gkRMax,gkRMvt,gkPMin*p5,gkPMax*p5,gkPMvt,gkNFMin,gkNFMax,gkNFMvt,gkVDep,kVRate,i(gkStMode),gkStSpeed,gkSynth,giVibFn1+iVShape-1,iVScale,i(gkvoices)
- rireturn                                                       	
+ iVShape    =    i(gkVShape)                                ; vibrato shape. 1=sine 2=random
+ kVRate        =    iVShape==2?gkVRate/100:gkVRate            ; if random shape, reduce rate
+ aL,aR        StringVoice    knum,kspread,gkPortSmear,kAEnv*gkAAmt*p5,gkRMin,gkRMax,gkRMvt,gkPMin*p5,gkPMax*p5,gkPMvt,gkNFMin,gkNFMax,gkNFMvt,gkVDep,kVRate,i(gkStMode),gkStSpeed,gkSynth,giVibFn1+iVShape-1,iVScale,i(gkvoices)
+ rireturn                                                           
  
  ; scale according to opcode amplitude level to balance (we need to protect against a divide by zero), gkOutLevel offers independent gain control
- aL		*=		divz(1,gkAAmt,1) * gkOutLevel
- aR		*=		divz(1,gkAAmt,1) * gkOutLevel
+ aL        *=        divz(1,gkAAmt,1) * gkOutLevel
+ aR        *=        divz(1,gkAAmt,1) * gkOutLevel
                                        
  ; lowpass filter
- if gkFOnOff==1 then																; only do the filter code if filter on/off button is on
-  kCFstat	=		cpsoct(scale:k(gkFCutoff,14,6))									; static cutoff value
-  kCFfol	=		cpsmidinn(knum) * scale:k(gkFCutoff,128,0.5)					; key-following cutoff value
-  kCF		portk	limit:k(ntrpol(kCFstat,kCFfol,gkFFollow),20,sr/2),kPortRamp*0.1	; interpolate between the two according to user's setting of gkFFollow
+ if gkFOnOff==1 then                                                                ; only do the filter code if filter on/off button is on
+  kCFstat    =        cpsoct(scale:k(gkFCutoff,14,6))                                    ; static cutoff value
+  kCFfol    =        cpsmidinn(knum) * scale:k(gkFCutoff,128,0.5)                    ; key-following cutoff value
+  kCF        portk    limit:k(ntrpol(kCFstat,kCFfol,gkFFollow),20,sr/2),kPortRamp*0.1    ; interpolate between the two according to user's setting of gkFFollow
   
-  aFiltL	butlp	aL,kCF															; lowpass filter the sound
-  aFiltR	butlp	aR,kCF
+  aFiltL    butlp    aL,kCF*aFiltMlt                                                            ; lowpass filter the sound
+  aFiltR    butlp    aR,kCF*aFiltMlt
   
-  aL		balance	aFiltL,aL
-  aR		balance	aFiltR,aR
+  aL        balance    aFiltL,aL
+  aR        balance    aFiltR,aR
   
  endif
              
  ; stereo width control
- aL		ntrpol	(aL+aR)*0.5, aL, gkStWidth											; interpolate between hard stereo and mixed to mono
- aR		ntrpol	(aL+aR)*0.5, aR, gkStWidth
+ aL        ntrpol    (aL+aR)*0.5, aL, gkStWidth                                            ; interpolate between hard stereo and mixed to mono
+ aR        ntrpol    (aL+aR)*0.5, aR, gkStWidth
  
- 		outs	aL*(1-gkRvbMix),aR*(1-gkRvbMix)										; dry signal to output
- 		chnmix	aL*gkRvbMix,"sendL"													; send some signal to reverb
- 		chnmix	aR*gkRvbMix,"sendR"
- 		
+         outs    aL*(1-gkRvbMix),aR*(1-gkRvbMix)                                        ; dry signal to output
+         chnmix    aL*gkRvbMix,"sendL"                                                    ; send some signal to reverb
+         chnmix    aR*gkRvbMix,"sendR"
+         
 endin
 
-instr	99	; reverb
- if gkRvbMix>0 then																	; only do reverb code if mix is above zero
-  aInL	chnget	"sendL"																; read in send channels
-  aInR	chnget	"sendR"
- 		chnclear	"sendL"															; clear send channels
- 		chnclear	"sendR"
-  aL,aR	reverbsc	aInL,aInR,gkRvbSiz,gkRvbDmp
- 		outs		aL,aR
+instr    99    ; reverb
+ if gkRvbMix>0 then                                                                    ; only do reverb code if mix is above zero
+  aInL    chnget    "sendL"                                                                ; read in send channels
+  aInR    chnget    "sendR"
+         chnclear    "sendL"                                                            ; clear send channels
+         chnclear    "sendR"
+  aL,aR    reverbsc    aInL,aInR,gkRvbSiz,gkRvbDmp
+         outs        aL,aR
  endif
  
  ; activate reverb controls on or off as 'Mix' switches between zero and non-zero
  if trigger(gkRvbMix,0.001,2)==1 then
   if gkRvbMix>0 then
-   chnset	"alpha(1)","ReverbID1"
-   chnset	"alpha(1), active(1)","ReverbID2"
-   chnset	"alpha(1), active(1)","ReverbID3"
+   chnset    "alpha(1)","ReverbID1"
+   chnset    "alpha(1), active(1)","ReverbID2"
+   chnset    "alpha(1), active(1)","ReverbID3"
   else
-   chnset	"alpha(0.2)","ReverbID1"
-   chnset	"alpha(0.2), active(0)","ReverbID2"
-   chnset	"alpha(0.2), active(0)","ReverbID3"
+   chnset    "alpha(0.2)","ReverbID1"
+   chnset    "alpha(0.2), active(0)","ReverbID2"
+   chnset    "alpha(0.2), active(0)","ReverbID3"
   endif
  endif
  
  ; activate filter controls on or off as 'Filter On/Off' switches on or off
  if trigger(gkFOnOff,0.5,0)==1 then
-   chnset	"alpha(1)","FilterID0"
-   chnset	"alpha(1), active(1)","FilterID1"
-   chnset	"alpha(1), active(1)","FilterID2"
+   chnset    "alpha(1)","FilterID0"
+   chnset    "alpha(1), active(1)","FilterID1"
+   chnset    "alpha(1), active(1)","FilterID2"
   elseif trigger(gkFOnOff,0.5,1)==1 then
-   chnset	"alpha(0.2)","FilterID0"
-   chnset	"alpha(0.2), active(0)","FilterID1"
-   chnset	"alpha(0.2), active(0)","FilterID2"
+   chnset    "alpha(0.2)","FilterID0"
+   chnset    "alpha(0.2), active(0)","FilterID1"
+   chnset    "alpha(0.2), active(0)","FilterID2"
   endif
 
  ; activate filter controls on or off as 'Depth' switches between zero and non-zero
  if trigger(gkVDep,0.001,2)==1 then
   if gkVDep>0 then
-   chnset	"alpha(1)","VibratoID0"
-   chnset	"alpha(1)","VibratoID2"
-   chnset	"alpha(1), active(1)","VibratoID1"
-   chnset	"alpha(1), active(1)","VibratoID3"
+   chnset    "alpha(1)","VibratoID0"
+   chnset    "alpha(1)","VibratoID2"
+   chnset    "alpha(1), active(1)","VibratoID1"
+   chnset    "alpha(1), active(1)","VibratoID3"
   else
-   chnset	"alpha(0.2)","VibratoID0"
-   chnset	"alpha(0.2)","VibratoID2"
-   chnset	"alpha(0.2), active(0)","VibratoID1"
-   chnset	"alpha(0.2), active(0)","VibratoID3"
+   chnset    "alpha(0.2)","VibratoID0"
+   chnset    "alpha(0.2)","VibratoID2"
+   chnset    "alpha(0.2), active(0)","VibratoID1"
+   chnset    "alpha(0.2), active(0)","VibratoID3"
   endif
  endif
 
  ; Stereo Speed control on/off
  if changed(gkStMode)==1 then
   if gkStMode==3 then
-   chnset	"visible(1)","StSpeedID0"
-   chnset	"visible(1)","StSpeedID1"
+   chnset    "visible(1)","StSpeedID0"
+   chnset    "visible(1)","StSpeedID1"
   else
-   chnset	"visible(0)","StSpeedID0"
-   chnset	"visible(0)","StSpeedID1"
+   chnset    "visible(0)","StSpeedID0"
+   chnset    "visible(0)","StSpeedID1"
   endif
  endif
 
  ; Stereo Speed control on/off
  if changed(gkSynth)==1 then
   if gkSynth==1 then
-   chnset	"visible(1)","Bow1"
-   chnset	"visible(1)","Bow2"
-   chnset	"visible(1)","Bow3"
-   chnset	"visible(0)","NoisyToneID"
+   chnset    "visible(1)","Bow1"
+   chnset    "visible(1)","Bow2"
+   chnset    "visible(1)","Bow3"
+   chnset    "visible(0)","NoisyToneID"
   elseif gkSynth==2 then
-   chnset	"visible(0)","Bow1"
-   chnset	"visible(0)","Bow2"
-   chnset	"visible(0)","Bow3"
-   chnset	"visible(0)","NoisyToneID"
+   chnset    "visible(0)","Bow1"
+   chnset    "visible(0)","Bow2"
+   chnset    "visible(0)","Bow3"
+   chnset    "visible(0)","NoisyToneID"
   elseif gkSynth==3 then
-   chnset	"visible(0)","Bow1"
-   chnset	"visible(0)","Bow2"
-   chnset	"visible(0)","Bow3"
-   chnset	"visible(1)","NoisyToneID"
+   chnset    "visible(0)","Bow1"
+   chnset    "visible(0)","Bow2"
+   chnset    "visible(0)","Bow3"
+   chnset    "visible(1)","NoisyToneID"
   elseif gkSynth==4 then
-   chnset	"visible(0)","Bow1"
-   chnset	"visible(0)","Bow2"
-   chnset	"visible(0)","Bow3"
-   chnset	"visible(0)","NoisyToneID"
+   chnset    "visible(0)","Bow1"
+   chnset    "visible(0)","Bow2"
+   chnset    "visible(0)","Bow3"
+   chnset    "visible(0)","NoisyToneID"
   endif
  endif
 
@@ -674,8 +677,8 @@ endin
 </CsInstruments>
 
 <CsScore>
-i 1  0 z	; read in widgets / send presets
-i 99 0 z 	; reverb / 'turn on and off' bits of the GUI
+i 1  0 z    ; read in widgets / send presets
+i 99 0 z     ; reverb / 'turn on and off' bits of the GUI
 </CsScore>
 
 </CsoundSynthesizer>

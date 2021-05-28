@@ -168,74 +168,74 @@ label bounds(2,424,100, 10), text("Iain McCurdy |2013|"), fontColour(110,110,110
 <CsoundSynthesizer>                                                                                                 
                                                                                                                     
 <CsOptions>                                                                                                         
--d -n
+-dm0 -n
 </CsOptions>
 
 <CsInstruments>
 
-;sr is set by the host
-ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
-nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
-0dbfs		=	1
+; sr set by host
+ksmps         =     32    ;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls         =     2    ;NUMBER OF CHANNELS (2=STEREO)
+0dbfs        =    1
 
-opcode	UnlatchedToLatched,k,k			; THIS UDO LATCHES AN UNLATCHED SWITCH.
-	kTrigIn		xin			; READ IN INPUT ARGUMENT 
-	kTrigOut	init	0		; INITIALISE OUTPUT TRIGGER VALUE
-	kcross		trigger	kTrigIn,0,2	; IF INPUT TRIGGER CHANGES FROM ZERO OR BACK TO ZERO SWITCH THE OUTPUT TRIGGER VALUE ACCORDING TO ITS CURRENT VALUE
-	if kcross==1 then			; IF INPUT TRIGGER HAS CHANGED FROM ZERO OR BACK TO ZERO...
-	 kTrigOut	=	abs(kTrigOut-1)	; FLIP THE OUTPUT TRIGGER FROM 0 TO 1 OR FROM 1 TO 0 (DEPENDING UPON WHAT ITS CURRENT VALUE IS)
-	endif					; END OF CONDITIONAL BRANCH
-			xout	kTrigOut	; SEND OUTPUT TRIGGER BACK TO CALLER INSTRUMENT
+opcode    UnlatchedToLatched,k,k            ; THIS UDO LATCHES AN UNLATCHED SWITCH.
+    kTrigIn        xin            ; READ IN INPUT ARGUMENT 
+    kTrigOut    init    0        ; INITIALISE OUTPUT TRIGGER VALUE
+    kcross        trigger    kTrigIn,0,2    ; IF INPUT TRIGGER CHANGES FROM ZERO OR BACK TO ZERO SWITCH THE OUTPUT TRIGGER VALUE ACCORDING TO ITS CURRENT VALUE
+    if kcross==1 then            ; IF INPUT TRIGGER HAS CHANGED FROM ZERO OR BACK TO ZERO...
+     kTrigOut    =    abs(kTrigOut-1)    ; FLIP THE OUTPUT TRIGGER FROM 0 TO 1 OR FROM 1 TO 0 (DEPENDING UPON WHAT ITS CURRENT VALUE IS)
+    endif                    ; END OF CONDITIONAL BRANCH
+            xout    kTrigOut    ; SEND OUTPUT TRIGGER BACK TO CALLER INSTRUMENT
 endop
 
-opcode	scale_i,i,iii					; UDO for an i-rate version of the 'scale' opcode
- ival,imax,imin	xin
- ival	=	(ival * (imax-imin)) + imin
-	xout	ival
+opcode    scale_i,i,iii                    ; UDO for an i-rate version of the 'scale' opcode
+ ival,imax,imin    xin
+ ival    =    (ival * (imax-imin)) + imin
+    xout    ival
 endop
 
 
-instr	1
+instr    1
  ;; Read in data from the mouse within the Cabbage GUI window
- kMOUSE_X		chnget	"MOUSE_X"
- kMOUSE_Y		chnget	"MOUSE_Y"
- kMOUSE_DOWN_LEFT	chnget	"MOUSE_DOWN_LEFT"
- kMOUSE_DOWN_MIDDLE	chnget	"MOUSE_DOWN_MIDDLE"
- kMOUSE_DOWN_RIGHT	chnget	"MOUSE_DOWN_RIGHT"
+ kMOUSE_X        chnget    "MOUSE_X"
+ kMOUSE_Y        chnget    "MOUSE_Y"
+ kMOUSE_DOWN_LEFT    chnget    "MOUSE_DOWN_LEFT"
+ kMOUSE_DOWN_MIDDLE    chnget    "MOUSE_DOWN_MIDDLE"
+ kMOUSE_DOWN_RIGHT    chnget    "MOUSE_DOWN_RIGHT"
 
- kClick	trigger	kMOUSE_DOWN_LEFT,0.5,2
+ kClick    trigger    kMOUSE_DOWN_LEFT,0.5,2
  
-#define	SENSE_INSIDE(N'X'Y'X_SIZE'Y_SIZE)
+#define    SENSE_INSIDE(N'X'Y'X_SIZE'Y_SIZE)
 #
- k$N	init	0	; On / Off value for this circle
+ k$N    init    0    ; On / Off value for this circle
 
  ; SENSE INSIDE
  if kMOUSE_X>=$X && kMOUSE_X<=($X+$X_SIZE) && kMOUSE_Y>=$Y && kMOUSE_Y<=($Y+$Y_SIZE) then
-  kInside$N	=	1	; If mouse pointer is within this square indicator flag (kInside$N) is '1'
+  kInside$N    =    1    ; If mouse pointer is within this square indicator flag (kInside$N) is '1'
  else
-  kInside$N	=	0	; If mouse pointer is outside this square indicator flag (kInside$N) is '0'
+  kInside$N    =    0    ; If mouse pointer is outside this square indicator flag (kInside$N) is '0'
  endif
  
 
  ; TURN LIGHT ON OR OFF
  if kInside$N==1&&kClick=1 then
-  k$N	UnlatchedToLatched	kMOUSE_DOWN_LEFT
+  k$N    UnlatchedToLatched    kMOUSE_DOWN_LEFT
 
-  							; (so that clicking can toggle circles on and off)
+                              ; (so that clicking can toggle circles on and off)
 
-  if changed(k$N)==1 then						; If switch has been changed...
-   if k$N==1 then							; If switch has been turned on...
+  if changed(k$N)==1 then                        ; If switch has been changed...
+   if k$N==1 then                            ; If switch has been turned on...
     ; Calculate RED / GREEN / BLUE values for this button based on its location in the grid
-    iR$N	mirror	$Y,0,255
-    iG$N	mirror	$X+100,0,255
-    iB$N	mirror	$Y+100,0,255
+    iR$N    mirror    $Y,0,255
+    iG$N    mirror    $X+100,0,255
+    iB$N    mirror    $Y+100,0,255
     
-    Smessage sprintfk "colour(%d,%d,%d,%d)", iR$N,iG$N,iB$N, 255	; Colour note to its 'on' state.
-    event	"i",2+($N*0.001),0,-1,$N				; play a note
+    Smessage sprintfk "colour(%d,%d,%d,%d)", iR$N,iG$N,iB$N, 255    ; Colour note to its 'on' state.
+    event    "i",2+($N*0.001),0,-1,$N                ; play a note
 
-   else									; Otherwise (note has been turned off)...
-    Smessage sprintfk "colour(%d,%d,%d,%d)", 0, 0, 0, 255		; Remove colour from note.
-    turnoff2	2+($N*0.001),4,1					; turnoff a note
+   else                                    ; Otherwise (note has been turned off)...
+    Smessage sprintfk "colour(%d,%d,%d,%d)", 0, 0, 0, 255        ; Remove colour from note.
+    turnoff2    2+($N*0.001),4,1                    ; turnoff a note
    endif
    chnset Smessage, "image$N"
   endif
@@ -361,258 +361,258 @@ endin
 
 ;; UDOS
 
-opcode	Oscil1a,a,iii					; an oscillator that plays a single cycle of an audio waveform at a-rate
- iamp,ifrq,ifn	xin
- aptr	line	0,1/ifrq,1
- asig	tablei	aptr,ifn,1
- aenv	linseg	1,1/ifrq,1,0.001,0
-	xout	asig*iamp*aenv
+opcode    Oscil1a,a,iii                    ; an oscillator that plays a single cycle of an audio waveform at a-rate
+ iamp,ifrq,ifn    xin
+ aptr    line    0,1/ifrq,1
+ asig    tablei    aptr,ifn,1
+ aenv    linseg    1,1/ifrq,1,0.001,0
+    xout    asig*iamp*aenv
 endop
 
-opcode	uniform_wooden_bar, a, akk
-	ain, kbasfrq, kq	xin
-	amix	init	0
-#define	MODE_PARTIAL(FRQ)
-	#
-	kfrq	=	kbasfrq*$FRQ
-	if (sr/kfrq)>=$M_PI then
-	 asig	mode	ain, kfrq, kq
-	 amix	=	amix + asig
-	endif
-	#
-	$MODE_PARTIAL(1    )
-	$MODE_PARTIAL(2.572)
-	$MODE_PARTIAL(4.644)
-	$MODE_PARTIAL(6.984)
-	$MODE_PARTIAL(9.723)
-	$MODE_PARTIAL(12   )
-		xout	amix/6
-		clear	amix
+opcode    uniform_wooden_bar, a, akk
+    ain, kbasfrq, kq    xin
+    amix    init    0
+#define    MODE_PARTIAL(FRQ)
+    #
+    kfrq    =    kbasfrq*$FRQ
+    if (sr/kfrq)>=$M_PI then
+     asig    mode    ain, kfrq, kq
+     amix    =    amix + asig
+    endif
+    #
+    $MODE_PARTIAL(1    )
+    $MODE_PARTIAL(2.572)
+    $MODE_PARTIAL(4.644)
+    $MODE_PARTIAL(6.984)
+    $MODE_PARTIAL(9.723)
+    $MODE_PARTIAL(12   )
+        xout    amix/6
+        clear    amix
 endop
 
-opcode	red_cedar_wood_plate, a, akk
-	ain, kbasfrq, kq	xin
-	amix	init	0
-#define	MODE_PARTIAL(FRQ)
-	#
-	kfrq	=	kbasfrq*$FRQ
-	if (sr/kfrq)>=$M_PI then
-	 asig	mode	ain, kfrq, kq
-	 amix	=	amix + asig
-	endif
-	#
-	$MODE_PARTIAL(1   )
-	$MODE_PARTIAL(1.47)
-	$MODE_PARTIAL(2.09)
-	$MODE_PARTIAL(2.56)
-		xout	amix/4
-		clear	amix
+opcode    red_cedar_wood_plate, a, akk
+    ain, kbasfrq, kq    xin
+    amix    init    0
+#define    MODE_PARTIAL(FRQ)
+    #
+    kfrq    =    kbasfrq*$FRQ
+    if (sr/kfrq)>=$M_PI then
+     asig    mode    ain, kfrq, kq
+     amix    =    amix + asig
+    endif
+    #
+    $MODE_PARTIAL(1   )
+    $MODE_PARTIAL(1.47)
+    $MODE_PARTIAL(2.09)
+    $MODE_PARTIAL(2.56)
+        xout    amix/4
+        clear    amix
 endop
 
 
 
 
 ; Global variables and function tables
-giImp	ftgen	0,0,4097,9,0.5,1,0			; shape for the hammer inpulse
-gaSendL,gaSendR	init	0
-gisine	ftgen	0,0,4096,10,1
-gicos	ftgen	0,0,131072,11,1
-gihann	ftgen	0, 0, 8192,  20, 2, 1			; Hanning window
-giSoftSaw	ftgen	0,0,131072,10,1,1/8,1/16,1/32,1/64,1/128,1/256
+giImp    ftgen    0,0,4097,9,0.5,1,0            ; shape for the hammer inpulse
+gaSendL,gaSendR    init    0
+gisine    ftgen    0,0,4096,10,1
+gicos    ftgen    0,0,131072,11,1
+gihann    ftgen    0, 0, 8192,  20, 2, 1            ; Hanning window
+giSoftSaw    ftgen    0,0,131072,10,1,1/8,1/16,1/32,1/64,1/128,1/256
 
 
 
 
-instr	2	; produce a sound
- kporttime	linseg	0,0.001,1
+instr    2    ; produce a sound
+ kporttime    linseg    0,0.001,1
  
- iCF_Time	=	0.05			; cross-fade time (when changing 'SOUND' selector
+ iCF_Time    =    0.05            ; cross-fade time (when changing 'SOUND' selector
  
- kSoundSelect	chnget	"SoundSelect"
- kSoundSelect	init	2
- kSoundSelectD	delayk	 kSoundSelect,iCF_Time	; delayed 'SOUND' selector control
+ kSoundSelect    chnget    "SoundSelect"
+ kSoundSelect    init    2
+ kSoundSelectD    delayk     kSoundSelect,iCF_Time    ; delayed 'SOUND' selector control
 
- kOctave	chnget	"Octave" 
- kSemitone	chnget	"Semitone" 
- kStrike	chnget	"Strike"
- kChangeTrans	changed	kOctave,kSemitone,kSoundSelect	; Impulse generated when transposition is changed (used to retrigger percussive sounds)
- kStrike	trigger	kStrike+kChangeTrans, 0.5, 0	; Impulse generated when 'STRIKE' button is clicked
- kModifier	chnget	"Modifier"
+ kOctave    chnget    "Octave" 
+ kSemitone    chnget    "Semitone" 
+ kStrike    chnget    "Strike"
+ kChangeTrans    changed    kOctave,kSemitone,kSoundSelect    ; Impulse generated when transposition is changed (used to retrigger percussive sounds)
+ kStrike    trigger    kStrike+kChangeTrans, 0.5, 0    ; Impulse generated when 'STRIKE' button is clicked
+ kModifier    chnget    "Modifier"
 
- kModifier	portk	kModifier,0.1*kporttime
- kOctave	portk	kOctave,0.002*kporttime
- kSemitone	portk	kSemitone,0.002*kporttime
+ kModifier    portk    kModifier,0.1*kporttime
+ kOctave    portk    kOctave,0.002*kporttime
+ kSemitone    portk    kSemitone,0.002*kporttime
 
  ; A MECHANISM IS IMPLEMENTED TO PREVENT CLICKS WHEN CHANGING 'SOUND'
- kEnv2	init	0			;
- ksmooth	init	1		;
- if changed(kSoundSelect)==1 then	; If 'SOUND' switch is changed...
-  ksmooth	=	0		; ...smoothing mode set to '0' (ramp amplitude down)
+ kEnv2    init    0            ;
+ ksmooth    init    1        ;
+ if changed(kSoundSelect)==1 then    ; If 'SOUND' switch is changed...
+  ksmooth    =    0        ; ...smoothing mode set to '0' (ramp amplitude down)
   reinit RAMP_DOWN
- elseif changed(kSoundSelectD)==1 then	; Shortly after 'SOUND' switch has been changed...
-  ksmooth	=	1		; ...smoothing mode set to '1' (ramp amplitude back up and hold)
+ elseif changed(kSoundSelectD)==1 then    ; Shortly after 'SOUND' switch has been changed...
+  ksmooth    =    1        ; ...smoothing mode set to '1' (ramp amplitude back up and hold)
   reinit NORMAL_ENV
  endif
  
  RAMP_DOWN:
- kEnv1	linseg	i(kEnv2),iCF_Time,0	; Ramp amplitude down to prevent clicks when sound is changed
- rireturn				
+ kEnv1    linseg    i(kEnv2),iCF_Time,0    ; Ramp amplitude down to prevent clicks when sound is changed
+ rireturn                
  
- NORMAL_ENV:				; Ramp amplitude up and hold. Release smoothly if note is released.
- kEnv2	linsegr	0,iCF_Time,1,1,0
+ NORMAL_ENV:                ; Ramp amplitude up and hold. Release smoothly if note is released.
+ kEnv2    linsegr    0,iCF_Time,1,1,0
  rireturn
  
- kEnv	=	(ksmooth==0?kEnv1:kEnv2); Choose appropriate envelope based on mode: crossfade down / crossfade up. 
+ kEnv    =    (ksmooth==0?kEnv1:kEnv2); Choose appropriate envelope based on mode: crossfade down / crossfade up. 
  
  
  
- kdtn	jspline	10,0.05,0.2		; A detuning function - producing a slow instability in pitch. Range roughly -10 to +10 cents.
+ kdtn    jspline    10,0.05,0.2        ; A detuning function - producing a slow instability in pitch. Range roughly -10 to +10 cents.
 
  
- if kSoundSelectD==1 then		; sine modifying to buzz
-  kmul	scale	kModifier,0.8,0
-  asig	gbuzz	0.04*kEnv,cpsmidinn(p4+11)*cent(kdtn)*octave(kOctave)*semitone(kSemitone),80, 1, kmul, gicos
+ if kSoundSelectD==1 then        ; sine modifying to buzz
+  kmul    scale    kModifier,0.8,0
+  asig    gbuzz    0.04*kEnv,cpsmidinn(p4+11)*cent(kdtn)*octave(kOctave)*semitone(kSemitone),80, 1, kmul, gicos
 
- elseif kSoundSelectD==2 then	; undulating buzz
-  kmul	rspline	0.1,0.8,0.1,0.4
-  kmul	limit	kmul+kModifier,0,0.9
-  asig	gbuzz	0.04*kEnv,cpsmidinn(p4+11)*cent(kdtn)*octave(kOctave)*semitone(kSemitone),20, 1, kmul^2, gicos
+ elseif kSoundSelectD==2 then    ; undulating buzz
+  kmul    rspline    0.1,0.8,0.1,0.4
+  kmul    limit    kmul+kModifier,0,0.9
+  asig    gbuzz    0.04*kEnv,cpsmidinn(p4+11)*cent(kdtn)*octave(kOctave)*semitone(kSemitone),20, 1, kmul^2, gicos
 
 
- elseif kSoundSelectD==3 then	; hsboscil
-  ktone		=	0
-  kbrite	rspline	-2,2,0.1,0.2
-  kocts		scale	kModifier,6,1
+ elseif kSoundSelectD==3 then    ; hsboscil
+  ktone        =    0
+  kbrite    rspline    -2,2,0.1,0.2
+  kocts        scale    kModifier,6,1
   if changed(kOctave+kSemitone+kocts)==1 then
    reinit RESTART_HSBOSCIL
   endif
   RESTART_HSBOSCIL:
-  asig	hsboscil	0.04*kEnv, ktone+(kdtn/1000), kbrite, cpsmidinn(p4+11)*octave(i(kOctave))*semitone(i(kSemitone)), gisine, gihann, i(kocts), -1
+  asig    hsboscil    0.04*kEnv, ktone+(kdtn/1000), kbrite, cpsmidinn(p4+11)*octave(i(kOctave))*semitone(i(kSemitone)), gisine, gihann, i(kocts), -1
   rireturn
 
 
- elseif kSoundSelectD==4 then	; whistle (filtered noise)
-  ;asig	pinkish	0.04*kEnv
-  asig	noise	0.04*kEnv,0.9
-  kbw	scale	kModifier,0.1,0.0005
-  asig	reson	asig,cpsmidinn(p4+11)*cent(kdtn)*octave(kOctave)*semitone(kSemitone), cpsmidinn(p4+11)*cent(kdtn)*kbw*octave(kOctave)*semitone(kSemitone), 2
-  ;asig	buthp	asig,cpsmidinn(p4+11)*cent(kdtn)*octave(kOctave)*semitone(kSemitone)
+ elseif kSoundSelectD==4 then    ; whistle (filtered noise)
+  ;asig    pinkish    0.04*kEnv
+  asig    noise    0.04*kEnv,0.9
+  kbw    scale    kModifier,0.1,0.0005
+  asig    reson    asig,cpsmidinn(p4+11)*cent(kdtn)*octave(kOctave)*semitone(kSemitone), cpsmidinn(p4+11)*cent(kdtn)*kbw*octave(kOctave)*semitone(kSemitone), 2
+  ;asig    buthp    asig,cpsmidinn(p4+11)*cent(kdtn)*octave(kOctave)*semitone(kSemitone)
 
- elseif kSoundSelectD==5 then	; wgflute
-  kjet	scale	kModifier,1.5,0.28	;0.28
-  kngain	=	0.05
-  kvibf	=	0.2
-  kvamp	=	0.05
-  asig	wgflute 0.04*kEnv, cpsmidinn(p4+12)*cent(kdtn)*octave(kOctave)*semitone(kSemitone-1.55), kjet, 0.1, 0.1, kngain, kvibf, kvamp, gisine
-
-
- elseif kSoundSelectD==6 then	; wgclar
-  kstiff	scale	kModifier,1,-0.3	;-0.3
-  kngain	scale	kModifier,0.9,0.05		;0.05
-  kvibf	=	0
-  kvamp	=	0
-  asig	wgclar	0.1, cpsmidinn(p4+12)*cent(kdtn)*octave(kOctave)*semitone(kSemitone-1), kstiff, 0.1, 0.1, kngain, kvibf, kvamp, gisine, 1
-  asig	dcblock2	asig*kEnv
+ elseif kSoundSelectD==5 then    ; wgflute
+  kjet    scale    kModifier,1.5,0.28    ;0.28
+  kngain    =    0.05
+  kvibf    =    0.2
+  kvamp    =    0.05
+  asig    wgflute 0.04*kEnv, cpsmidinn(p4+12)*cent(kdtn)*octave(kOctave)*semitone(kSemitone-1.55), kjet, 0.1, 0.1, kngain, kvibf, kvamp, gisine, 50
 
 
- elseif kSoundSelectD==7 then	; wgbow
-  kpres	scale	kModifier,10,3	;3
-  krat	scale	kModifier,0.8,0.127236	;	0.127236
-  kvibf	=	rnd(1)+randomi(1,4,0.2,1)
-  kvamp	=	0.001
-  asig	wgbow	0.1*kEnv, cpsmidinn(p4+12)*cent(kdtn)*octave(kOctave)*semitone(kSemitone-1.1), kpres, krat, kvibf, kvamp, gisine, 1
+ elseif kSoundSelectD==6 then    ; wgclar
+  kstiff    scale    kModifier,1,-0.3    ;-0.3
+  kngain    scale    kModifier,0.9,0.05        ;0.05
+  kvibf    =    0
+  kvamp    =    0
+  asig    wgclar    0.1, cpsmidinn(p4+12)*cent(kdtn)*octave(kOctave)*semitone(kSemitone-1), kstiff, 0.1, 0.1, kngain, kvibf, kvamp, gisine, 1
+  asig    dcblock2    asig*kEnv
 
 
- elseif kSoundSelectD==8 then 	; struck wooden bar
+ elseif kSoundSelectD==7 then    ; wgbow
+  kpres    scale    kModifier,10,3    ;3
+  krat    scale    kModifier,0.8,0.127236    ;    0.127236
+  kvibf    =    rnd(1)+randomi(1,4,0.2,1)
+  kvamp    =    0.001
+  asig    wgbow    0.1*kEnv, cpsmidinn(p4+12)*cent(kdtn)*octave(kOctave)*semitone(kSemitone-1.1), kpres, krat, kvibf, kvamp, gisine, 1
+
+
+ elseif kSoundSelectD==8 then     ; struck wooden bar
   if kStrike==1 then
    reinit UNIFORM_WOODEN_BAR
   endif
   UNIFORM_WOODEN_BAR:
-  aImpls	Oscil1a	0.04,cpsmidinn(p4+11)*octave(i(kOctave))*semitone(i(kSemitone)),giImp
-  kres	scale	kModifier,2000,250
-  asig	uniform_wooden_bar	aImpls,cpsmidinn(p4+11)*octave(kOctave)*semitone(kSemitone),kres 
-  asig	delay	asig,rnd(0.05)+0.0001
+  aImpls    Oscil1a    0.04,cpsmidinn(p4+11)*octave(i(kOctave))*semitone(i(kSemitone)),giImp
+  kres    scale    kModifier,2000,250
+  asig    uniform_wooden_bar    aImpls,cpsmidinn(p4+11)*octave(kOctave)*semitone(kSemitone),kres 
+  asig    delay    asig,rnd(0.05)+0.0001
   rireturn
-  kRel	linsegr	1,0.1,0
-  asig	=	asig * kRel
+  kRel    linsegr    1,0.1,0
+  asig    =    asig * kRel
 
  elseif kSoundSelectD==9 then ; struck cedar wood
   if kStrike==1 then
    reinit RED_CEDAR_WOOD_PLATE
   endif
   RED_CEDAR_WOOD_PLATE:
-  aImpls	Oscil1a	0.04,cpsmidinn(p4+11)*octave(i(kOctave))*semitone(i(kSemitone)),giImp
-  kres	scale	kModifier,2000,250
-  asig	red_cedar_wood_plate	aImpls,cpsmidinn(p4+11)*octave(kOctave)*semitone(kSemitone),kres 
-  asig	delay	asig,rnd(0.05)+0.0001
+  aImpls    Oscil1a    0.04,cpsmidinn(p4+11)*octave(i(kOctave))*semitone(i(kSemitone)),giImp
+  kres    scale    kModifier,2000,250
+  asig    red_cedar_wood_plate    aImpls,cpsmidinn(p4+11)*octave(kOctave)*semitone(kSemitone),kres 
+  asig    delay    asig,rnd(0.05)+0.0001
   rireturn
-  kRel	linsegr	1,0.1,0
-  asig	=	asig * kRel
+  kRel    linsegr    1,0.1,0
+  asig    =    asig * kRel
 
 
- elseif kSoundSelectD==10 then	; plucked string
+ elseif kSoundSelectD==10 then    ; plucked string
   if kStrike==1 then
    reinit WGUIDE2
   endif
   WGUIDE2:
-  aImpls	Oscil1a	0.3,300,giImp
+  aImpls    Oscil1a     0.3, 300, giImp
   rireturn
-  kLPF		scale	kModifier, 20000,3000
-  asig		wguide1	aImpls,cpsmidinn(p4+11)*octave(kOctave)*semitone(kSemitone+0.5), kLPF, 0.99995  
-  kdltim	trandom	kStrike,0.001,0.0501
-  asig		vdelay	asig,kdltim*1000,0.0501*1000
-  asig		dcblock2	asig
-  kRel	linsegr	1,0.1,0
-  asig	=	asig * kRel
+  kLPF        scale      kModifier, 20000,3000
+  kdltim    trandom      kStrike, 0.001, 0.0601           ; offset impulses slightly
+  aImpls    vdelay    aImpls, kdltim*1000,0.0601*1000
+  asig        wguide1      aImpls,cpsmidinn(p4+11)*octave(kOctave)*semitone(kSemitone+0.5), kLPF, 0.99995  
+  asig        dcblock2  asig
+  kRel      linsegr   1, 0.1, 0
+  asig      =         asig * kRel
 
 
- elseif kSoundSelectD==11 then	; FM marimba
-  idur	scale_i	(p4/127)^0.5,0.2,10
-  kRat	scale	kModifier,5.12,2.15
-  print	idur
+ elseif kSoundSelectD==11 then    ; FM marimba
+  idur    scale_i    (p4/127)^0.5,0.2,10
+  kRat    scale    kModifier,5.12,2.15
+;  print    idur
   if kStrike==1 then
    reinit FM_MARIMBA
   endif
   FM_MARIMBA:
-  aAEnv	transeg	1,idur,-8,0
-  kIEnv	transeg	1,idur,-100,0
-  asig	foscil aAEnv*0.1, cpsmidinn(p4+11)*octave(kOctave)*semitone(kSemitone), 1, kRat, 0.55*kIEnv, gisine
-  asig	delay	asig,rnd(0.05)+0.0001
+  aAEnv    transeg    1,idur,-8,0
+  kIEnv    transeg    1,idur,-100,0
+  asig    foscil aAEnv*0.1, cpsmidinn(p4+11)*octave(kOctave)*semitone(kSemitone), 1, kRat, 0.55*kIEnv, gisine
+  asig    delay    asig,rnd(0.05)+0.0001
   rireturn
- 	outs	asig,asig
+     outs    asig,asig
 
  endif
 
- kLevel	chnget	"Level"
- kLevel	portk	kLevel,0.05*kporttime
- asig	=	asig * kLevel
+ kLevel    chnget    "Level"
+ kLevel    portk    kLevel,0.05*kporttime
+ asig    =    asig * kLevel
 
 
- iSide	random	0,1
- iDelTim	random	0.001,0.04
+ iSide    random    0,1
+ iDelTim    random    0.001,0.04
  if iSide>0.5 then
-  aL	delay	asig,iDelTim
-  aR	=	asig
+  aL    delay    asig,iDelTim
+  aR    =    asig
  else
-  aR	delay	asig,iDelTim
-  aL	=	asig
+  aR    delay    asig,iDelTim
+  aL    =    asig
  endif
 
-	outs aL, aR
+    outs aL, aR
 
- kReverb	chnget	"Reverb"
- gaSendL	=	gaSendL + (aL*kReverb)
- gaSendR	=	gaSendR + (aR*kReverb)
+ kReverb    chnget    "Reverb"
+ gaSendL    =    gaSendL + (aL*kReverb)
+ gaSendR    =    gaSendR + (aR*kReverb)
  
 endin
 
 
 
-instr	99	; Reverb
+instr    99    ; Reverb
  
- aL,aR	reverbsc	gaSendL,gaSendR,0.83,6000
- 	outs		aL,aR
- 	clear		gaSendL,gaSendR
+ aL,aR    reverbsc    gaSendL,gaSendR,0.83,6000
+     outs        aL,aR
+     clear        gaSendL,gaSendR
 endin
 
 </CsInstruments>

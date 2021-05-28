@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; CrossedDelays.csd
 ; Written by Iain McCurdy, 2016
 
@@ -23,23 +30,23 @@
 ; Controls
 ; --------
 ;  [DELAYS]
-; Clock Source	-	tempo source can be from the built-in 'Tempo' control or from the host's tempo, if used as a VST plugin
-; Tempo			-	Cabbage defined tempo used in defining actual delay times (in conjunction with subdivision values)
-; Mix			-	dry/wet mix for the effect
-; Feedback		-	delay feedback. Caution: this can be set above 100%, feedback will be attenuated by ring modulation (not frequency shifting),
-; 					 but if feedback is greater than '1', soft clipping will be applied to protect against samples out of range
-; Subdiv.1/Subdiv.2	-	metrical subdivisionsof the two delay times
+; Clock Source    -    tempo source can be from the built-in 'Tempo' control or from the host's tempo, if used as a VST plugin
+; Tempo            -    Cabbage defined tempo used in defining actual delay times (in conjunction with subdivision values)
+; Mix            -    dry/wet mix for the effect
+; Feedback        -    delay feedback. Caution: this can be set above 100%, feedback will be attenuated by ring modulation (not frequency shifting),
+;                      but if feedback is greater than '1', soft clipping will be applied to protect against samples out of range
+; Subdiv.1/Subdiv.2    -    metrical subdivisionsof the two delay times
 
 ;  [MODULATION]
-; Type			-	choose between ring modulation and frequency shifting
-; Freq.1/Freq.2	-	the frequencies of the ring modulators or frequency shifters
+; Type            -    choose between ring modulation and frequency shifting
+; Freq.1/Freq.2    -    the frequencies of the ring modulators or frequency shifters
 
 ;  [OUTPUT]
-; Pan1/Pan2 	-	pan locations of the outputs of the two delays (OUT_1 and OUT_2 in the diagram above)
-; Level			-	output level (dry and wet signals)
+; Pan1/Pan2     -    pan locations of the outputs of the two delays (OUT_1 and OUT_2 in the diagram above)
+; Level            -    output level (dry and wet signals)
 
 <Cabbage>
-form caption("Crossed Delays") size(815, 130), pluginId("CrDl") style("legacy")
+form caption("Crossed Delays") size(815, 130), pluginId("CrDl")
 
 
 image   bounds(  5,  5,370,120), outlineThickness(1), outlineColour("white"), colour("black"), plant("Delays_Plant")
@@ -84,93 +91,93 @@ rslider  bounds(120, 20, 90, 90), text("Level"), channel("Level"), valueTextBox(
 
 <CsInstruments>
 
-;sr is set by the host
+; sr set by host
 ksmps = 16
 nchnls = 2
 0dbfs = 1
 
-gkDivs[]	fillarray	1,2,3,4,6,8,12,16,24,32,48,64,96,128
+gkDivs[]    fillarray    1,2,3,4,6,8,12,16,24,32,48,64,96,128
 
-opcode	FreqShifterSimple,a,aki					; SIMPLE FREQUENCY SHIFTER
-	asig,kfshift,ifn	xin				; READ IN INPUT ARGUMENTS
-	areal, aimag hilbert asig				; HILBERT OPCODE OUTPUTS TWO PHASE SHIFTED SIGNALS, EACH 90 OUT OF PHASE WITH EACH OTHER
-	asin 	oscili       1,    kfshift,     ifn,          0
-	acos 	oscili       1,    kfshift,     ifn,          0.25	
-	;RING MODULATE EACH SIGNAL USING THE QUADRATURE OSCILLATORS AS MODULATORS
-	amod1	=		areal * acos
-	amod2	=		aimag * asin	
-	;UPSHIFTING OUTPUT
-	ares	= (amod1 - amod2)				; MIX OUTPUTS (INVERTED WITH RESPECT TO EACH OTHER)
-		xout	ares					; SEND AUDIO BACK TO CALLER INSTRUMENT
+opcode    FreqShifterSimple,a,aki                    ; SIMPLE FREQUENCY SHIFTER
+    asig,kfshift,ifn    xin                ; READ IN INPUT ARGUMENTS
+    areal, aimag hilbert asig                ; HILBERT OPCODE OUTPUTS TWO PHASE SHIFTED SIGNALS, EACH 90 OUT OF PHASE WITH EACH OTHER
+    asin     oscili       1,    kfshift,     ifn,          0
+    acos     oscili       1,    kfshift,     ifn,          0.25    
+    ;RING MODULATE EACH SIGNAL USING THE QUADRATURE OSCILLATORS AS MODULATORS
+    amod1    =        areal * acos
+    amod2    =        aimag * asin    
+    ;UPSHIFTING OUTPUT
+    ares    = (amod1 - amod2)                ; MIX OUTPUTS (INVERTED WITH RESPECT TO EACH OTHER)
+        xout    ares                    ; SEND AUDIO BACK TO CALLER INSTRUMENT
 endop
 
-gisine	ftgen	0,0,131072,10,1
+gisine    ftgen    0,0,131072,10,1
 
-instr	1
-; aSig		diskin2	"808loopMono.wav",1,0,1
-; ilen		filelen	"808loopMono.wav"
-; klen		init	ilen
+instr    1
+; aSig        diskin2    "808loopMono.wav",1,0,1
+; ilen        filelen    "808loopMono.wav"
+; klen        init    ilen
 
- kbpm		chnget	"HOST_BPM"
- kClockSource	chnget	"ClockSource"
- kClockSource	init	1
- if kClockSource==1 then				;if internal clock source has been chosen...
-  ktempo	chnget	"Tempo"				;tempo taken from GUI knob control
+ kbpm        chnget    "HOST_BPM"
+ kClockSource    chnget    "ClockSource"
+ kClockSource    init    1
+ if kClockSource==1 then                ;if internal clock source has been chosen...
+  ktempo    chnget    "Tempo"                ;tempo taken from GUI knob control
  else
-  ktempo	chnget	"bpm"				;tempo taken from host BPM
-  ktempo	limit	ktempo,20,500		;limit range of possible tempo values. i.e. a tempo of zero would result in a delay time of infinity.
+  ktempo    chnget    "bpm"                ;tempo taken from host BPM
+  ktempo    limit    ktempo,20,500        ;limit range of possible tempo values. i.e. a tempo of zero would result in a delay time of infinity.
  endif
 
- aL,aR		ins
- klen		=		60*2/ktempo
+ aL,aR        ins
+ klen        =        60*2/ktempo
 
- kMix		chnget	"Mix" 
- kFeedback	chnget	"Feedback"
- kModOnOff	chnget	"ModOnOff"
- kFreq1		chnget	"Freq1"
- kFreq2		chnget	"Freq2" 
- kDiv1		chnget	"Div1"
- kDiv2		chnget	"Div2"
- kModType	chnget	"ModType"
+ kMix        chnget    "Mix" 
+ kFeedback    chnget    "Feedback"
+ kModOnOff    chnget    "ModOnOff"
+ kFreq1        chnget    "Freq1"
+ kFreq2        chnget    "Freq2" 
+ kDiv1        chnget    "Div1"
+ kDiv2        chnget    "Div2"
+ kModType    chnget    "ModType"
  
- aTap1,aTap2	init	0
+ aTap1,aTap2    init    0
  
- aBuf		delayr	60*2/20
- aTap1		deltapi	klen/gkDivs[kDiv1]
- aMod1		poscil	1,kFreq1
+ aBuf        delayr    60*2/20
+ aTap1        deltapi    klen/gkDivs[kDiv1]
+ aMod1        poscil    1,kFreq1
  if kModOnOff==1 then
   if kModType==1 then
-   aTap1		*=		aMod1
+   aTap1        *=        aMod1
   else
-   aTap1		FreqShifterSimple	aTap1,kFreq1,gisine
+   aTap1        FreqShifterSimple    aTap1,kFreq1,gisine
   endif
  endif
- 			delayw	aL + (aTap2 * kFeedback)
+             delayw    aL + (aTap2 * kFeedback)
  
- aBuf		delayr	60*2/20
- aTap2		deltapi	klen/gkDivs[kDiv2]
- aMod2		poscil	1,kFreq2
+ aBuf        delayr    60*2/20
+ aTap2        deltapi    klen/gkDivs[kDiv2]
+ aMod2        poscil    1,kFreq2
  if kModOnOff==1 then
   if kModType==1 then
-   aTap2		*=		aMod2
+   aTap2        *=        aMod2
   else
-   aTap2		FreqShifterSimple	aTap2,kFreq2,gisine
+   aTap2        FreqShifterSimple    aTap2,kFreq2,gisine
   endif                                               
  endif
- 			delayw	aR + (aTap1 * kFeedback)
+             delayw    aR + (aTap1 * kFeedback)
  
  if kFeedback>1 then
-  aTap1 clip 	aTap1, 0, 0dbfs, 0dbfs
-  aTap2 clip 	aTap2, 0, 0dbfs, 0dbfs
+  aTap1 clip     aTap1, 0, 0dbfs, 0dbfs
+  aTap2 clip     aTap2, 0, 0dbfs, 0dbfs
  endif
 
- kPan1		chnget	"Pan1"
- kPan2		chnget	"Pan2"
- kLevel		chnget	"Level"
- 			
- aMixL		ntrpol	aL, aTap1*(1-kPan1) + aTap2*(1-kPan2), kMix
- aMixR		ntrpol	aR, aTap1*kPan1 + aTap2*kPan2, kMix
-			outs	aMixL*kLevel, aMixR*kLevel
+ kPan1        chnget    "Pan1"
+ kPan2        chnget    "Pan2"
+ kLevel        chnget    "Level"
+             
+ aMixL        ntrpol    aL, aTap1*(1-kPan1) + aTap2*(1-kPan2), kMix
+ aMixR        ntrpol    aR, aTap1*kPan1 + aTap2*kPan2, kMix
+            outs    aMixL*kLevel, aMixR*kLevel
 endin
 
 </CsInstruments>

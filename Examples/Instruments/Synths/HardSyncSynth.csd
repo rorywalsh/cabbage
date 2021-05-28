@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; HardSync.csd
 ; Written by Iain McCurdy 2016
 
@@ -9,55 +16,55 @@
 ; This action can naturally induce discontinuities in the audio output and in the digital domain this is liable to cause aliasing.
 ; To prevent this the slave oscillator audio output needs to be amplitude enveloped using a window function in order to ramp is down to zero whenever a resync. occurs.
 ; This window function is therefore cycled using the phase pointer of the master oscillator.
-z
+
 ; Controls
 ; --------
-; Waveform	-	waveform used by the slave oscillator
+; Waveform    -    waveform used by the slave oscillator
 
 ;  (Voice 2)
-; On/Off	-	turns a second master/slave oscillator pairing on or off
-; Level		-	amplitude level of the second oscillator pairing
-; Semitones	-	transposition of the 2nd voice in semitones
-; Cents		-	transposition of the 2nd voice in cents
+; On/Off    -    turns a second master/slave oscillator pairing on or off
+; Level        -    amplitude level of the second oscillator pairing
+; Semitones    -    transposition of the 2nd voice in semitones
+; Cents        -    transposition of the 2nd voice in cents
 
 ;  (Amplitude Envelope)
-; Attack	-	attack time in seconds
-; Decay		-	decay time in seconds
-; Sustain	-	sustain level
-; Release	-	release time in seconds
+; Attack    -    attack time in seconds
+; Decay        -    decay time in seconds
+; Sustain    -    sustain level
+; Release    -    release time in seconds
 
 ;  (Mixer)
-; Velocity	-	amount of influence of note velocity upon sync trigger envelope and output amplitude
-; Level		-	output level control
+; Velocity    -    amount of influence of note velocity upon sync trigger envelope and output amplitude
+; Level        -    output level control
 
 ;  (Presets)
 ; Choose from 10 factory presets
 
 ;  (Reverb)
-; Width		-	stereo width derived from a stereo modulating delay effect, i.e. chorus
-; Rvb.Mix	-	dry/wet reverb mix
-; Rvb.Size	-	size/length of the reverb effect
+; Width        -    stereo width derived from a stereo modulating delay effect, i.e. chorus
+; Rvb.Mix    -    dry/wet reverb mix
+; Rvb.Size    -    size/length of the reverb effect
 
 ;  (Sync Trigger Frequency Envelope), i.e. master frequency
-; Attack	-	attack time in seconds
-; Decay		-	decay time in seconds
-; Sustain	-	sustain level
-; Release	-	release time in seconds
-; Minimum	-	minimum level of the envelope (start and end values)
-; Maximum	-	maximum level of the envelope (attack and sustain levels)
-; Env<-->Man	-	morph between envelope controlling sync retrigger frequency
-; Manual	-	manual frequency control
+; Attack    -    attack time in seconds
+; Decay        -    decay time in seconds
+; Sustain    -    sustain level
+; Release    -    release time in seconds
+; Minimum    -    minimum level of the envelope (start and end values)
+; Maximum    -    maximum level of the envelope (attack and sustain levels)
+; Env<-->Man    -    morph between envelope controlling sync retrigger frequency
+; Manual    -    manual frequency control
 
 ;  (Sync Trigger LFO)
 ; LFO Waveshape
-; Depth		-	absolute maximum amplitude of the LFO
-; Rate		-	rate of the LFO
-; Delay		-	time delay before LFO begins to have an influence
-; Rise		-	time it takes the LFO to rise to maximum amplitude
-; MONO/POLY	-	sets whether a single LFO is used for all notes played (MONO) or whether each note get its own LFO
+; Depth        -    absolute maximum amplitude of the LFO
+; Rate        -    rate of the LFO
+; Delay        -    time delay before LFO begins to have an influence
+; Rise        -    time it takes the LFO to rise to maximum amplitude
+; MONO/POLY    -    sets whether a single LFO is used for all notes played (MONO) or whether each note get its own LFO
 
 <Cabbage>
-form caption("Hard Sync Synth") size(1175, 325), pluginId("HdSy") style("legacy")
+form caption("Hard Sync Synth") size(1175, 325), pluginId("HdSy")
 
 ; main waveform
 image    bounds(  5,  0,135,115), plant("waveform"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp")
@@ -121,7 +128,7 @@ rslider bounds(210, 15, 90, 90), channel("Release"), text("Release"), valueTextB
 rslider bounds(280, 15, 90, 90), channel("Minimum"), text("Minimum"), valueTextBox(1), textBox(1), range(-8, 4,-0.6,1,0.01)
 rslider bounds(350, 15, 90, 90), channel("Maximum"), text("Maximum"), valueTextBox(1), textBox(1), range(-8, 4,-0.7,1,0.01)
 label   bounds(440, 30,215, 14), text("Env<-->Man")
-hslider bounds(440, 30,215, 60), channel("SyncEnvMan"), range(0,1,0)		;, valueTextBox(1), text("Env<>Man")
+hslider bounds(440, 30,215, 60), channel("SyncEnvMan"), range(0,1,0)        ;, valueTextBox(1), text("Env<>Man")
 rslider bounds(650, 15, 90, 90), channel("SyncRate"), text("Manual"), valueTextBox(1), textBox(1), range(1,4000,440,0.5,0.1)
 }
 
@@ -152,171 +159,171 @@ keyboard bounds(5,240,1165,80)
 
 <CsInstruments>
 
-;sr is set by the host
+; sr set by host
 ksmps = 32
 nchnls = 2
 0dbfs = 1
 
-massign	0,2
+massign    0,2
 
-gisine		ftgen	3000, 0, 4096, 10, 1   												; Sine
-gihalfsine	ftgen	3001, 0, 4096, 9,  0.5, 1, 0 										; Half-Sine
+gisine        ftgen    3000, 0, 4096, 10, 1                                                   ; Sine
+gihalfsine    ftgen    3001, 0, 4096, 9,  0.5, 1, 0                                         ; Half-Sine
 
-i_			ftgen	3002, 0,131073,9,  1,1,0, 2,1/4,0
-i_			ftgen	3003, 0,131073,9,  1,1,0, 5,1/4,0
-i_			ftgen	3004, 0,131073,9,  1,1,0,11,1/4,0
-i_			ftgen	3005, 0,131073,9,  6,1,0,    9,1/10,0, 13,1/14,0, 17,1/18,0, 21,1/22,0,  25,1/26,0,  29,1/30,0,  33,1/34,0
-i_			ftgen	3006, 0,131073,9,  8,1,0,   11,1/10,0, 15,1/14,0, 19,1/18,0, 23,1/22,0,  27,1/26,0,  31,1/30,0,  35,1/34,0
-i_			ftgen	3007, 0,131073,9, 10,1,0,   13,1/10,0, 17,1/14,0, 21,1/18,0, 25,1/22,0,  29,1/26,0,  33,1/30,0,  37,1/34,0
-i_			ftgen	3008, 0,131073,9, 12,1/4,0, 25,1,0,    39,1/14,0, 63,1/18,0, 87,1/22,0, 111,1/26,0, 135,1/30,0, 159,1/34,0
+i_            ftgen    3002, 0,131073,9,  1,1,0, 2,1/4,0
+i_            ftgen    3003, 0,131073,9,  1,1,0, 5,1/4,0
+i_            ftgen    3004, 0,131073,9,  1,1,0,11,1/4,0
+i_            ftgen    3005, 0,131073,9,  6,1,0,    9,1/10,0, 13,1/14,0, 17,1/18,0, 21,1/22,0,  25,1/26,0,  29,1/30,0,  33,1/34,0
+i_            ftgen    3006, 0,131073,9,  8,1,0,   11,1/10,0, 15,1/14,0, 19,1/18,0, 23,1/22,0,  27,1/26,0,  31,1/30,0,  35,1/34,0
+i_            ftgen    3007, 0,131073,9, 10,1,0,   13,1/10,0, 17,1/14,0, 21,1/18,0, 25,1/22,0,  29,1/26,0,  33,1/30,0,  37,1/34,0
+i_            ftgen    3008, 0,131073,9, 12,1/4,0, 25,1,0,    39,1/14,0, 63,1/18,0, 87,1/22,0, 111,1/26,0, 135,1/30,0, 159,1/34,0
 
 ; 127 band limited triangles
-gitri		ftgen	0,0,4097,7,1,2048,1,0,-1,2048,-1
-icount	=	0
+gitri        ftgen    0,0,4097,7,1,2048,1,0,-1,2048,-1
+icount    =    0
 loop1:
-imaxh	=  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
-ifn	ftgen	4000+icount,0,4097,-30,gitri,1,imaxh
-	loop_le	icount,1,127,loop1
+imaxh    =  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
+ifn    ftgen    4000+icount,0,4097,-30,gitri,1,imaxh
+    loop_le    icount,1,127,loop1
 
 ; 127 band limited squares
-gisquare	ftgen	0, 0, 4097, 10, 7, 1, 2048, 1, 0, -1, 2048, -1					; Square
-icount	=	0
+gisquare    ftgen    0, 0, 4097, 10, 7, 1, 2048, 1, 0, -1, 2048, -1                    ; Square
+icount    =    0
 loop2:
-imaxh	=  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
-ifn	ftgen	5000+icount,0,4097,-30,gisquare,1,imaxh
-	loop_le	icount,1,127,loop2
+imaxh    =  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
+ifn    ftgen    5000+icount,0,4097,-30,gisquare,1,imaxh
+    loop_le    icount,1,127,loop2
 
 ; 127 band limited saws
-gisaw		ftgen	0, 0, 4097, 7, 1, 4096, -1   									; Sawtooth
-icount	=	0
+gisaw        ftgen    0, 0, 4097, 7, 1, 4096, -1                                       ; Sawtooth
+icount    =    0
 loop3:
-imaxh	=  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
-ifn	ftgen	6000+icount,0,4097,-30,gisaw,1,imaxh
-	loop_le	icount,1,127,loop3
+imaxh    =  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
+ifn    ftgen    6000+icount,0,4097,-30,gisaw,1,imaxh
+    loop_le    icount,1,127,loop3
 
 ; 127 band limited pulses
-gipulse		ftgen	0, 0, 4097, 7, 1, 128, 1, 0, 0, 4096-128, 0				  		; Pulse
-icount	=	0
+gipulse        ftgen    0, 0, 4097, 7, 1, 128, 1, 0, 0, 4096-128, 0                          ; Pulse
+icount    =    0
 loop4:
-imaxh	=  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
-ifn	ftgen	7000+icount,0,4097,-30,gipulse,1,imaxh
-	loop_le	icount,1,127,loop4
+imaxh    =  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
+ifn    ftgen    7000+icount,0,4097,-30,gipulse,1,imaxh
+    loop_le    icount,1,127,loop4
 
-giWndw		ftgen	0, 0, 4097,   20,  2												; window used to envelope out dicontinuity at sync retrigger point
+giWndw        ftgen    0, 0, 4097,   20,  2                                                ; window used to envelope out dicontinuity at sync retrigger point
 
 ; main waveform shapes for display
-i_	ftgen	1000,0,-40,10,1						; display
-i_	ftgen	1001,0,-40,10,1						; sine
-i_	ftgen	1002,0,-40,7,0,10,1,20,-1,10,0		; triangle
-i_	ftgen	1003,0,-40,7,0,1,1,19,1,0,-1,20,-1	; square
-i_	ftgen	1004,0,-40,7,0,1,1,39,-1			; saw
-i_	ftgen	1005,0,-40,7,0,1,1,3,1,0,0,36,0		; pulse
-i_	ftgen	1006,0,-40, 9,  0.5, 1, 0 										; Half-Sine
-i_	ftgen	1007, 0,-40,9,  1,1,0, 2,1/4,0
-i_	ftgen	1008, 0,-40,9,  1,1,0, 5,1/4,0
-i_	ftgen	1009, 0,-40,9,  1,1,0,11,1/4,0
-i_	ftgen	1010, 0,-40,9,  6,1,0,    9,1/10,0, 13,1/14,0, 17,1/18,0, 21,1/22,0,  25,1/26,0,  29,1/30,0,  33,1/34,0
-i_	ftgen	1011, 0,-40,9,  8,1,0,   11,1/10,0, 15,1/14,0, 19,1/18,0, 23,1/22,0,  27,1/26,0,  31,1/30,0,  35,1/34,0
-i_	ftgen	1012, 0,-40,9, 10,1,0,   13,1/10,0, 17,1/14,0, 21,1/18,0, 25,1/22,0,  29,1/26,0,  33,1/30,0,  37,1/34,0
-i_	ftgen	1013, 0,-40,9, 12,1/4,0, 25,1,0,    39,1/14,0, 63,1/18,0, 87,1/22,0, 111,1/26,0, 135,1/30,0, 159,1/34,0
+i_    ftgen    1000,0,-40,10,1                        ; display
+i_    ftgen    1001,0,-40,10,1                        ; sine
+i_    ftgen    1002,0,-40,7,0,10,1,20,-1,10,0        ; triangle
+i_    ftgen    1003,0,-40,7,0,1,1,19,1,0,-1,20,-1    ; square
+i_    ftgen    1004,0,-40,7,0,1,1,39,-1            ; saw
+i_    ftgen    1005,0,-40,7,0,1,1,3,1,0,0,36,0        ; pulse
+i_    ftgen    1006,0,-40, 9,  0.5, 1, 0                                         ; Half-Sine
+i_    ftgen    1007, 0,-40,9,  1,1,0, 2,1/4,0
+i_    ftgen    1008, 0,-40,9,  1,1,0, 5,1/4,0
+i_    ftgen    1009, 0,-40,9,  1,1,0,11,1/4,0
+i_    ftgen    1010, 0,-40,9,  6,1,0,    9,1/10,0, 13,1/14,0, 17,1/18,0, 21,1/22,0,  25,1/26,0,  29,1/30,0,  33,1/34,0
+i_    ftgen    1011, 0,-40,9,  8,1,0,   11,1/10,0, 15,1/14,0, 19,1/18,0, 23,1/22,0,  27,1/26,0,  31,1/30,0,  35,1/34,0
+i_    ftgen    1012, 0,-40,9, 10,1,0,   13,1/10,0, 17,1/14,0, 21,1/18,0, 25,1/22,0,  29,1/26,0,  33,1/30,0,  37,1/34,0
+i_    ftgen    1013, 0,-40,9, 12,1/4,0, 25,1,0,    39,1/14,0, 63,1/18,0, 87,1/22,0, 111,1/26,0, 135,1/30,0, 159,1/34,0
 
 ; LFO waveform shapes for display
-i_	ftgen	2000,0,-40,10,1						; display
-i_	ftgen	2001,0,-40,10,1						; sine
-i_	ftgen	2002,0,-40,7,0,10,1,20,-1,10,0		; triangle
-i_	ftgen	2003,0,-40,7,0,1,1,19,1,0,-1,20,-1	; square
-i_	ftgen	2004,0,-40,7,0,1,-1,39,1			; saw-up
-i_	ftgen	2005,0,-40,7,0,1,1,39,-1			; saw-down
-i_	ftgen	2006,0,-40,21,3						; random
+i_    ftgen    2000,0,-40,10,1                        ; display
+i_    ftgen    2001,0,-40,10,1                        ; sine
+i_    ftgen    2002,0,-40,7,0,10,1,20,-1,10,0        ; triangle
+i_    ftgen    2003,0,-40,7,0,1,1,19,1,0,-1,20,-1    ; square
+i_    ftgen    2004,0,-40,7,0,1,-1,39,1            ; saw-up
+i_    ftgen    2005,0,-40,7,0,1,1,39,-1            ; saw-down
+i_    ftgen    2006,0,-40,21,3                        ; random
 
-instr	1
- gkVoice2OnOff		chnget	"Voice2OnOff"
- gkSyncRate			chnget	"SyncRate"
- gkSyncEnvMan		chnget	"SyncEnvMan"
- kSubSemis			chnget	"SubSemis"
- kSubCents			chnget	"SubCents"
- gkSubTrans			=		semitone(kSubSemis)*cent(kSubCents)
- gkLFO_Shape		chnget	"LFO_Shape"
- gkLFO_Depth		chnget	"LFO_Depth"
- gkLFO_Rate			chnget	"LFO_Rate"
- gkLFO_Delay		chnget	"LFO_Delay"
- gkLFO_Rise			chnget	"LFO_Rise"
- gkV2Lev			chnget	"V2Lev"
- gkVel				chnget	"Vel"
- gkLev				chnget	"Lev"
- gkMONO_LFO			chnget	"MONO_LFO"
+instr    1
+ gkVoice2OnOff        chnget    "Voice2OnOff"
+ gkSyncRate            chnget    "SyncRate"
+ gkSyncEnvMan        chnget    "SyncEnvMan"
+ kSubSemis            chnget    "SubSemis"
+ kSubCents            chnget    "SubCents"
+ gkSubTrans            =        semitone(kSubSemis)*cent(kSubCents)
+ gkLFO_Shape        chnget    "LFO_Shape"
+ gkLFO_Depth        chnget    "LFO_Depth"
+ gkLFO_Rate            chnget    "LFO_Rate"
+ gkLFO_Delay        chnget    "LFO_Delay"
+ gkLFO_Rise            chnget    "LFO_Rise"
+ gkV2Lev            chnget    "V2Lev"
+ gkVel                chnget    "Vel"
+ gkLev                chnget    "Lev"
+ gkMONO_LFO            chnget    "MONO_LFO"
  if gkMONO_LFO==1 then
   if gkLFO_Shape==1 then
-   gaLFO	poscil	gkLFO_Depth,gkLFO_Rate										; sine
+   gaLFO    poscil    gkLFO_Depth,gkLFO_Rate                                        ; sine
   elseif gkLFO_Shape==2 then
-   gaLFO	lfo		gkLFO_Depth,gkLFO_Rate,1									; triangle
+   gaLFO    lfo        gkLFO_Depth,gkLFO_Rate,1                                    ; triangle
   elseif gkLFO_Shape==3 then
-   gaLFO	lfo		gkLFO_Depth,gkLFO_Rate,2									; bipolar square
+   gaLFO    lfo        gkLFO_Depth,gkLFO_Rate,2                                    ; bipolar square
   elseif gkLFO_Shape==4 then 
-   gaLFO	lfo		gkLFO_Depth,gkLFO_Rate,4									; saw up
+   gaLFO    lfo        gkLFO_Depth,gkLFO_Rate,4                                    ; saw up
   elseif gkLFO_Shape==5 then
-   gaLFO	lfo		gkLFO_Depth,gkLFO_Rate,5									; saw down
+   gaLFO    lfo        gkLFO_Depth,gkLFO_Rate,5                                    ; saw down
   elseif gkLFO_Shape==6 then
-   gaLFO	rspline	-gkLFO_Depth,gkLFO_Depth,gkLFO_Rate,gkLFO_Rate*2	; random
+   gaLFO    rspline    -gkLFO_Depth,gkLFO_Depth,gkLFO_Rate,gkLFO_Rate*2    ; random
   endif
  endif
    
  ; update view of main waveform
- gkWaveform			chnget	"Waveform"
+ gkWaveform            chnget    "Waveform"
  if changed(gkWaveform)==1 then
   reinit SEND_WAVEFORM_VIEW
   SEND_WAVEFORM_VIEW:
-  		tableicopy	1000,1000+i(gkWaveform)
-  		chnset		"tableNumber(1000)","Waveform_ID"  
+          tableicopy    1000,1000+i(gkWaveform)
+          chnset        "tableNumber(1000)","Waveform_ID"  
  rireturn
  endif
  
  ; update view of LFO waveform
- gkLFO_Shape			chnget	"LFO_Shape"
+ gkLFO_Shape            chnget    "LFO_Shape"
  if changed(gkLFO_Shape)==1 then
   reinit SEND_LFO_SHAPE_VIEW
   SEND_LFO_SHAPE_VIEW:
-  		tableicopy	2000,2000+i(gkLFO_Shape)
-  		chnset		"tableNumber(2000)","LFO_Shape_ID"
+          tableicopy    2000,2000+i(gkLFO_Shape)
+          chnset        "tableNumber(2000)","LFO_Shape_ID"
  rireturn
  endif
  
- kpreset	chnget	"preset"
- ktrig		changed	kpreset
+ kpreset    chnget    "preset"
+ ktrig        changed    kpreset
  if ktrig==1 then
-  reinit	PRESET
+  reinit    PRESET
  PRESET:
   
-  #define	SEND_SETTINGS(N'Waveform'Voice2OnOff'SubSemis'SubCents'Attack'Decay'Sustain'Release'Minimum'Maximum'SyncEnvMan'SyncRate'LFO_Shape'LFO_Depth'LFO_Rate'LFO_Delay'LFO_Rise'AAtt'ADec'ASus'ARel'StMix'RvbMix'RvbSize'RvbCF'V2Lev'Vel'Lev)#
+  #define    SEND_SETTINGS(N'Waveform'Voice2OnOff'SubSemis'SubCents'Attack'Decay'Sustain'Release'Minimum'Maximum'SyncEnvMan'SyncRate'LFO_Shape'LFO_Depth'LFO_Rate'LFO_Delay'LFO_Rise'AAtt'ADec'ASus'ARel'StMix'RvbMix'RvbSize'RvbCF'V2Lev'Vel'Lev)#
   if i(kpreset)==$N then
-   chnset	$Waveform	,"Waveform"
-   chnset	$Voice2OnOff	,"Voice2OnOff"
-   chnset	$SubSemis	,"SubSemis"
-   chnset	$SubCents	,"SubCents"
-   chnset	$Attack	,"Attack"
-   chnset	$Decay	,"Decay"
-   chnset	$Sustain	,"Sustain"
-   chnset	$Release	,"Release"
-   chnset	$Minimum	,"Minimum"
-   chnset	$Maximum	,"Maximum"
-   chnset	$SyncEnvMan	,"SyncEnvMan"
-   chnset	$SyncRate	,"SyncRate"
-   chnset	$LFO_Shape	,"LFO_Shape"
-   chnset	$LFO_Depth	,"LFO_Depth"
-   chnset	$LFO_Rate	,"LFO_Rate"
-   chnset	$LFO_Delay	,"LFO_Delay"
-   chnset	$LFO_Rise	,"LFO_Rise"
-   chnset	$AAtt	,"AAtt"
-   chnset	$ADec	,"ADec"
-   chnset	$ASus	,"ASus"
-   chnset	$ARel	,"ARel"
-   chnset	$StMix	,"StMix"
-   chnset	$RvbMix	,"RvbMix"
-   chnset	$RvbSize	,"RvbSize"
-   chnset	$RvbCF	,"RvbCF"
-   chnset	$V2Lev	,"V2Lev"
-   chnset	$Vel	,"Vel"
-   chnset	$Lev	,"Lev"
+   chnset    $Waveform    ,"Waveform"
+   chnset    $Voice2OnOff    ,"Voice2OnOff"
+   chnset    $SubSemis    ,"SubSemis"
+   chnset    $SubCents    ,"SubCents"
+   chnset    $Attack    ,"Attack"
+   chnset    $Decay    ,"Decay"
+   chnset    $Sustain    ,"Sustain"
+   chnset    $Release    ,"Release"
+   chnset    $Minimum    ,"Minimum"
+   chnset    $Maximum    ,"Maximum"
+   chnset    $SyncEnvMan    ,"SyncEnvMan"
+   chnset    $SyncRate    ,"SyncRate"
+   chnset    $LFO_Shape    ,"LFO_Shape"
+   chnset    $LFO_Depth    ,"LFO_Depth"
+   chnset    $LFO_Rate    ,"LFO_Rate"
+   chnset    $LFO_Delay    ,"LFO_Delay"
+   chnset    $LFO_Rise    ,"LFO_Rise"
+   chnset    $AAtt    ,"AAtt"
+   chnset    $ADec    ,"ADec"
+   chnset    $ASus    ,"ASus"
+   chnset    $ARel    ,"ARel"
+   chnset    $StMix    ,"StMix"
+   chnset    $RvbMix    ,"RvbMix"
+   chnset    $RvbSize    ,"RvbSize"
+   chnset    $RvbCF    ,"RvbCF"
+   chnset    $V2Lev    ,"V2Lev"
+   chnset    $Vel    ,"Vel"
+   chnset    $Lev    ,"Lev"
   endif#
   ;                 Waveform'Voice2OnOff'SubSemis'SubCents'Attack'Decay'Sustain'Release'Minimum'Maximum'SyncEnvMan'SyncRate'LFO_Shape'LFO_Depth'LFO_Rate'LFO_Delay'LFO_Rise'AAtt'ADec'ASus'ARel'StMix'RvbMix'RvbSize'RvbCF'V2Lev'Vel'Lev)#
   $SEND_SETTINGS(1  '1      '0          '-12     '0       '0.1   '0.5  '0.1    '0.2    '-2     '2      '0         '440     '1        '0        '5       '1        '2       '0.01'0.1 '0.6 '0.2 '1    '0.2   '0.8    '8000 '1    '0.5'0.05)            
@@ -334,128 +341,128 @@ instr	1
  
 endin
 
-instr	2	; MIDI triggered instrument
- icps	cpsmidi
- inum	notnum
- iVel	ampmidi	i(gkVel)
- iVel	+=		1-i(gkVel)
+instr    2    ; MIDI triggered instrument
+ icps    cpsmidi
+ inum    notnum
+ iVel    ampmidi    i(gkVel)
+ iVel    +=        1-i(gkVel)
  
  ; sync trigger envelope
- iAttack	chnget	"Attack"
- iDecay		chnget	"Decay"
- iSustain	chnget	"Sustain"
- iRelease	chnget	"Release"
- iMinimum	chnget	"Minimum"
- iMaximum	chnget	"Maximum"
- kcps		linsegr	0,iAttack+0.0001,1,iDecay+0.0001,iSustain,iRelease+0.0001,0
- kcps		*=		iVel
- kcps		scale	kcps,iMaximum,iMinimum
- acps		=		icps * octave(a(kcps))
+ iAttack    chnget    "Attack"
+ iDecay        chnget    "Decay"
+ iSustain    chnget    "Sustain"
+ iRelease    chnget    "Release"
+ iMinimum    chnget    "Minimum"
+ iMaximum    chnget    "Maximum"
+ kcps        linsegr    0,iAttack+0.0001,1,iDecay+0.0001,iSustain,iRelease+0.0001,0
+ kcps        *=        iVel
+ kcps        scale    kcps,iMaximum,iMinimum
+ acps        =        icps * octave(a(kcps))
 
- acps	ntrpol	acps,a(gkSyncRate),gkSyncEnvMan
+ acps    ntrpol    acps,a(gkSyncRate),gkSyncEnvMan
  ; sync trigger LFO
- kLFO_Env	linseg	0, i(gkLFO_Delay)+0.001, 0, i(gkLFO_Rise)+0.001, 1				; lfo envelope
+ kLFO_Env    linseg    0, i(gkLFO_Delay)+0.001, 0, i(gkLFO_Rise)+0.001, 1                ; lfo envelope
  if i(gkMONO_LFO)==0 then
   if i(gkLFO_Shape)==1 then
-   aLFO	poscil	gkLFO_Depth*kLFO_Env,gkLFO_Rate										; sine
+   aLFO    poscil    gkLFO_Depth*kLFO_Env,gkLFO_Rate                                        ; sine
   elseif i(gkLFO_Shape)==2 then
-   aLFO	lfo		gkLFO_Depth*kLFO_Env,gkLFO_Rate,1									; triangle
+   aLFO    lfo        gkLFO_Depth*kLFO_Env,gkLFO_Rate,1                                    ; triangle
   elseif i(gkLFO_Shape)==3 then
-   aLFO	lfo		gkLFO_Depth*kLFO_Env,gkLFO_Rate,2									; bipolar square
+   aLFO    lfo        gkLFO_Depth*kLFO_Env,gkLFO_Rate,2                                    ; bipolar square
   elseif i(gkLFO_Shape)==4 then 
-   aLFO	lfo		gkLFO_Depth*kLFO_Env,gkLFO_Rate,4									; saw up
+   aLFO    lfo        gkLFO_Depth*kLFO_Env,gkLFO_Rate,4                                    ; saw up
   elseif i(gkLFO_Shape)==5 then
-   aLFO	lfo		gkLFO_Depth*kLFO_Env,gkLFO_Rate,5									; saw down
+   aLFO    lfo        gkLFO_Depth*kLFO_Env,gkLFO_Rate,5                                    ; saw down
   elseif i(gkLFO_Shape)==6 then
-   aLFO	rspline	-gkLFO_Depth*kLFO_Env,gkLFO_Depth*kLFO_Env,gkLFO_Rate,gkLFO_Rate*2	; random
+   aLFO    rspline    -gkLFO_Depth*kLFO_Env,gkLFO_Depth*kLFO_Env,gkLFO_Rate,gkLFO_Rate*2    ; random
   endif
  else
-   aLFO	=	gaLFO * kLFO_Env
+   aLFO    =    gaLFO * kLFO_Env
  endif
- acps	*=	octave(aLFO)
+ acps    *=    octave(aLFO)
  
  ; voice 1
  if i(gkWaveform)==1 then
-  iWaveform	=	3000
+  iWaveform    =    3000
  elseif i(gkWaveform)>5 then
-  iWaveform	=	3000 + i(gkWaveform) - 5 
+  iWaveform    =    3000 + i(gkWaveform) - 5 
  else
-  iWaveform	=	2000 + i(gkWaveform)*1000 + inum
+  iWaveform    =    2000 + i(gkWaveform)*1000 + inum
  endif
- aPhaseMast,aSyncMast 	syncphasor icps, a(0)										; 
- aWndw	table3	aPhaseMast,giWndw,1
+ aPhaseMast,aSyncMast     syncphasor icps, a(0)                                        ; 
+ aWndw    table3    aPhaseMast,giWndw,1
  aPhaseSlave,aSyncSlave syncphasor acps, aSyncMast
- asig	table3	aPhaseSlave,iWaveform,1
+ asig    table3    aPhaseSlave,iWaveform,1
  ; anti-alias filter
- asig	buthp	asig,icps
- asig	buthp	asig,icps
- asig	*=		aWndw
+ asig    buthp    asig,icps
+ asig    buthp    asig,icps
+ asig    *=        aWndw
 
  ; voice 2
  if gkVoice2OnOff==1 then
-  aPhaseMast,aSyncMast 	syncphasor icps*gkSubTrans, a(0)
-  aWndw	tablei	aPhaseMast,giWndw,1
+  aPhaseMast,aSyncMast     syncphasor icps*gkSubTrans, a(0)
+  aWndw    tablei    aPhaseMast,giWndw,1
   aPhaseSlave,aSyncSlave syncphasor acps, aSyncMast
-  asig2	tablei	aPhaseSlave,iWaveform,1
+  asig2    tablei    aPhaseSlave,iWaveform,1
   ; anti-alias filter
-  asig2	buthp	asig2,icps*gkSubTrans
-  asig2	buthp	asig2,icps*gkSubTrans
-  asig2	*=		aWndw
-  asig	+=		asig2*gkV2Lev
+  asig2    buthp    asig2,icps*gkSubTrans
+  asig2    buthp    asig2,icps*gkSubTrans
+  asig2    *=        aWndw
+  asig    +=        asig2*gkV2Lev
  endif
  
  ; amplitude envelope
  ; sync trigger envelope
- iAAtt	chnget	"AAtt"
- iADec	chnget	"ADec"                                        
- iASus	chnget	"ASus"
- iARel	chnget	"ARel"
- kEnv	linsegr	0,    iAAtt+0.0001,1,    iADec+0.0001,iASus,      iARel+0.0001,0
- asig	*=		a(expcurve(kEnv,4))
+ iAAtt    chnget    "AAtt"
+ iADec    chnget    "ADec"                                        
+ iASus    chnget    "ASus"
+ iARel    chnget    "ARel"
+ kEnv    linsegr    0,    iAAtt+0.0001,1,    iADec+0.0001,iASus,      iARel+0.0001,0
+ asig    *=        a(expcurve(kEnv,4))
 
- ivel	ampmidi	0.2	
- 		chnmix	asig*iVel,"Send"													; mix into global send channel
+ ivel    ampmidi    0.2    
+         chnmix    asig*iVel,"Send"                                                    ; mix into global send channel
 
 endin
 
-instr	10	; output
- aSig		chnget	"Send"
- aSig		*=		gkLev
+instr    10    ; output
+ aSig        chnget    "Send"
+ aSig        *=        gkLev
  ; voicing filter
- aSig	pareq	aSig,150,ampdbfs(12),0.01
+ aSig    pareq    aSig,150,ampdbfs(12),0.01
  
  ; lowpass filter
- iCF	=		4000
- aSig	tone	aSig,iCF
+ iCF    =        4000
+ aSig    tone    aSig,iCF
  
  ; stereo processing
- kDep	=1		;chnget	"StDep"
- kRte	=0.1	;chnget	"StRte"
- kWid	=	(chnget:k("StWid")*0.5) + 0.5
- iMaxDel	=	0.03
- kDlt1	rspline	1/kr,iMaxDel*kDep,kRte,kRte*2
- kDlt2	rspline	1/kr,iMaxDel*kDep,kRte,kRte*2
- kDlt1	limit	kDlt1,1/kr,iMaxDel*kDep
- kDlt2	limit	kDlt2,1/kr,iMaxDel*kDep
- aDel1	vdelay	aSig,a(kDlt1)*1000,iMaxDel*1000
- aDel2	vdelay	aSig,a(kDlt2)*1000,iMaxDel*1000
+ kDep    =1        ;chnget    "StDep"
+ kRte    =0.1    ;chnget    "StRte"
+ kWid    =    (chnget:k("StWid")*0.5) + 0.5
+ iMaxDel    =    0.03
+ kDlt1    rspline    1/kr,iMaxDel*kDep,kRte,kRte*2
+ kDlt2    rspline    1/kr,iMaxDel*kDep,kRte,kRte*2
+ kDlt1    limit    kDlt1,1/kr,iMaxDel*kDep
+ kDlt2    limit    kDlt2,1/kr,iMaxDel*kDep
+ aDel1    vdelay    aSig,a(kDlt1)*1000,iMaxDel*1000
+ aDel2    vdelay    aSig,a(kDlt2)*1000,iMaxDel*1000
  
- kMix	chnget	"StMix"
- ;aL		ntrpol	aSig,aDel1*(1-kWid)  +  aDel2*kWid,     kMix
- ;aR		ntrpol	aSig,aDel1*kWid      +  aDel2*(1-kWid), kMix
- aL		ntrpol	aSig, aDel1, kMix
- aR		ntrpol	aSig, aDel2, kMix
+ kMix    chnget    "StMix"
+ ;aL        ntrpol    aSig,aDel1*(1-kWid)  +  aDel2*kWid,     kMix
+ ;aR        ntrpol    aSig,aDel1*kWid      +  aDel2*(1-kWid), kMix
+ aL        ntrpol    aSig, aDel1, kMix
+ aR        ntrpol    aSig, aDel2, kMix
  
  ; reverb
- kRvbMix	chnget	"RvbMix"
- kRvbSize	chnget  "RvbSize"
- kRvbCF		=	8000	;chnget  "RvbCF"
- aRvbL,aRvbR	reverbsc	aL,aR,kRvbSize,kRvbCF
- aL			ntrpol	aL,aRvbL,kRvbMix
- aR			ntrpol	aR,aRvbR,kRvbMix
+ kRvbMix    chnget    "RvbMix"
+ kRvbSize    chnget  "RvbSize"
+ kRvbCF        =    8000    ;chnget  "RvbCF"
+ aRvbL,aRvbR    reverbsc    aL,aR,kRvbSize,kRvbCF
+ aL            ntrpol    aL,aRvbL,kRvbMix
+ aR            ntrpol    aR,aRvbR,kRvbMix
  
- 		outs	aL,aR
- 		chnclear	"Send"
+         outs    aL,aR
+         chnclear    "Send"
 endin
 
 </CsInstruments>

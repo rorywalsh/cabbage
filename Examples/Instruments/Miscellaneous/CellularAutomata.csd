@@ -21,36 +21,36 @@
 
 ; Trigger Change sets how the cellular automata algorithm will be triggered to apply a change
 ; --------------
-; Trigger	--	this button triggers an update manually
-; Auto		--	if this checkbox is active, triggers will be generated automatically by a metronome at a rate 'Rate'
-; Rate		--	the rate at which triggers will be generated if 'Auto' is active
+; Trigger    --    this button triggers an update manually
+; Auto        --    if this checkbox is active, triggers will be generated automatically by a metronome at a rate 'Rate'
+; Rate        --    the rate at which triggers will be generated if 'Auto' is active
 
 ; Sonification allows for some setting of how the 'Output States' table is sonified
 ; ------------
-; Note Centre	--	defines the central note of the distribution (MIDI note number)
-; Note Range	--	defines the range (+ and -) of the distribution of notes
-; Duration	--	defines the duration of notes
-; Amplitude	--	ampltude of note (there is some randomisation of amplitude in order the make the results slightly less mechanical)
-; Free/Sync. (combobox)	--	sets how the rate of the metronome for generation of notes is controlled
-;			if 'free' then rate is independent of the cell tranformation metronome and is defined by the adjacent 'Rate' nslider
-;			if 'sync' then it is synced to the cell transformation metronome. In this mode the actual rate of note/rest generation will be: cell_rate x n_elements x repeats
+; Note Centre    --    defines the central note of the distribution (MIDI note number)
+; Note Range    --    defines the range (+ and -) of the distribution of notes
+; Duration    --    defines the duration of notes
+; Amplitude    --    ampltude of note (there is some randomisation of amplitude in order the make the results slightly less mechanical)
+; Free/Sync. (combobox)    --    sets how the rate of the metronome for generation of notes is controlled
+;            if 'free' then rate is independent of the cell tranformation metronome and is defined by the adjacent 'Rate' nslider
+;            if 'sync' then it is synced to the cell transformation metronome. In this mode the actual rate of note/rest generation will be: cell_rate x n_elements x repeats
 
 ; Rule defines the rule that will be applied to determine future statuses of cells in the output group
 ; ----
-; Length	--	length of the rule (the white bracket over the table indicates how many elements of the table will be used)
-; Radius	--	Number of cells (to the left and to the right) to include when applying the rule
-; Elements	--	Number of elements to apply the rule to when triggered (the white bracket over the input and output groups indicates how many elements of the tables will be used)
+; Length    --    length of the rule (the white bracket over the table indicates how many elements of the table will be used)
+; Radius    --    Number of cells (to the left and to the right) to include when applying the rule
+; Elements    --    Number of elements to apply the rule to when triggered (the white bracket over the input and output groups indicates how many elements of the tables will be used)
 
 
 ; Initial States defines the initial states (alive(on) / dead(off) of each of the 32 cells)
 ; --------------
-; Resend Initial State	--	pressing this button will reset the cellular group to its original state
-;			If cell evolution gets stuck (e.g. all on, all off or alternating between all on and all off)
-;			   click this the reset.
+; Resend Initial State    --    pressing this button will reset the cellular group to its original state
+;            If cell evolution gets stuck (e.g. all on, all off or alternating between all on and all off)
+;               click this the reset.
 
 ; Output States is for the display of cells living (on) or dead (off) in the output group
 ; -------------
-; Iterations	--	this number box is for output only and displays the number of iterations we are away from the original state.
+; Iterations    --    this number box is for output only and displays the number of iterations we are away from the original state.
 
 ; A simple sonification is created by reading through the output cell group to play a rhythm (on=play a note, off=rest)
 ; Each cell is associated with a particular note.
@@ -115,136 +115,136 @@ label bounds(5,345,110,11), text("Iain McCurdy |2015|")
                                   
 <CsInstruments>
 
-;sr is set by the host
-ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
-nchnls 		= 	2	;NUMBER OF CHANNELS (1=MONO)
-0dbfs		=	1	;MAXIMUM AMPLITUDE     
-seed	0
+; sr set by host
+ksmps         =     32    ;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls         =     2    ;NUMBER OF CHANNELS (1=MONO)
+0dbfs        =    1    ;MAXIMUM AMPLITUDE     
+seed    0
 
-giInitTable	ftgen	1,0, 64,-2,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0	; initial states table
-giOutTable	ftgen	2,0, 64, 2,0			; output states table
-giRuleFunc	ftgen	3,0,-27,-2,0,1,0,1,0,0,0,1 ,0,0,1,0,1,0,0,1, 0,0,1,1,0,1,0,0	; rule function table
+giInitTable    ftgen    1,0, 64,-2,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0    ; initial states table
+giOutTable    ftgen    2,0, 64, 2,0            ; output states table
+giRuleFunc    ftgen    3,0,-27,-2,0,1,0,1,0,0,0,1 ,0,0,1,0,1,0,0,1, 0,0,1,1,0,1,0,0    ; rule function table
 
 opcode TriggerToGatei,k,ki
  ktrig,idur xin
- kdlytrig  delayk	ktrig,idur
- kgate	   samphold	ktrig,ktrig + kdlytrig
+ kdlytrig  delayk    ktrig,idur
+ kgate       samphold    ktrig,ktrig + kdlytrig
            xout         kgate
 endop
 
-instr	1
- kgenerate	chnget	"generate"			; manual trigger
- kreinit	chnget	"reinit"			; reinitialise cell group trigger
- kAutoGenerate	chnget	"AutoGenerate"			; metronome trigger on/off
- kCRate		chnget	"rate"				; rate of cell metronome
+instr    1
+ kgenerate    chnget    "generate"            ; manual trigger
+ kreinit    chnget    "reinit"            ; reinitialise cell group trigger
+ kAutoGenerate    chnget    "AutoGenerate"            ; metronome trigger on/off
+ kCRate        chnget    "rate"                ; rate of cell metronome
  
- ktrig		trigger	kgenerate,0.5,0			; generate a 'bang' if manual trigger button (Trigger) is pressed
- kReinitTrig	trigger	kreinit,0.5,0			; generate a 'bang' if reinitialise cell group trigger button (Restart) is pressed
+ ktrig        trigger    kgenerate,0.5,0            ; generate a 'bang' if manual trigger button (Trigger) is pressed
+ kReinitTrig    trigger    kreinit,0.5,0            ; generate a 'bang' if reinitialise cell group trigger button (Restart) is pressed
 
- if kAutoGenerate==1 then				; if 'Auto' is 'on'...
-  kAutoTrig	metro	kCRate				; metronome
-  ktrig		+=	kAutoTrig			; add metronome triggers to manual triggers
+ if kAutoGenerate==1 then                ; if 'Auto' is 'on'...
+  kAutoTrig    metro    kCRate                ; metronome
+  ktrig        +=    kAutoTrig            ; add metronome triggers to manual triggers
  endif 
  
- kRuleLen	chnget	"RuleLen"			; rule length (in bits)
- kRuleLen	init	8				; initial value for rule length (zero would cause a crash)
- kradius	chnget	"radius"			; radius of test group each time rule is applied to a cell
- kradius	init	1				; initial value for radius (zero would cause a crash)
- kelements	chnget	"elements"			; number of elements to use (in the output group)
- kelements	init	32				; initial value for number of elements (zero would cause a crash)
- kiter		init	0				; number of iterations we are away from the initial state
+ kRuleLen    chnget    "RuleLen"            ; rule length (in bits)
+ kRuleLen    init    8                ; initial value for rule length (zero would cause a crash)
+ kradius    chnget    "radius"            ; radius of test group each time rule is applied to a cell
+ kradius    init    1                ; initial value for radius (zero would cause a crash)
+ kelements    chnget    "elements"            ; number of elements to use (in the output group)
+ kelements    init    32                ; initial value for number of elements (zero would cause a crash)
+ kiter        init    0                ; number of iterations we are away from the initial state
  
- if changed(kelements)==1 then				; if number of elements counter has been changed...
-  Smsg	sprintfk	"size(%d,33)",25*kelements*0.5	; new length string
-  	chnset		Smsg,"InputRange"		; send to input group bracket
-  	chnset		Smsg,"OutputRange"		; send to output group bracket
+ if changed(kelements)==1 then                ; if number of elements counter has been changed...
+  Smsg    sprintfk    "size(%d,33)",25*kelements*0.5    ; new length string
+      chnset        Smsg,"InputRange"        ; send to input group bracket
+      chnset        Smsg,"OutputRange"        ; send to output group bracket
  endif
 
- if changed(kRuleLen)==1 then				; if rule length counter has been changed...
-  Smsg	sprintfk	"size(%d,45)",25*kRuleLen	; new length string
-  	chnset		Smsg,"RuleRange"		; send to rule function bracket
+ if changed(kRuleLen)==1 then                ; if rule length counter has been changed...
+  Smsg    sprintfk    "size(%d,45)",25*kRuleLen    ; new length string
+      chnset        Smsg,"RuleRange"        ; send to rule function bracket
  endif
  
- kIChange	changed	kRuleLen,kradius,kelements	;
- if kIChange==1 then					; if any of these i-rate parameters has been changed
-  reinit UPDATE						; begin a reinitialisation pass from the label
+ kIChange    changed    kRuleLen,kradius,kelements    ;
+ if kIChange==1 then                    ; if any of these i-rate parameters has been changed
+  reinit UPDATE                        ; begin a reinitialisation pass from the label
  endif
- if kReinitTrig==1||kIChange==1 then			; if 'Restart' button has been pressed
-  kiter		=	0				; reset iterations counter
-  chnset	kiter,"iter"				; send zero value to GUI counter
+ if kReinitTrig==1||kIChange==1 then            ; if 'Restart' button has been pressed
+  kiter        =    0                ; reset iterations counter
+  chnset    kiter,"iter"                ; send zero value to GUI counter
  endif  
 
- UPDATE:						; reinitialise from here
- 	vcella ktrig, kReinitTrig, giOutTable, giInitTable, giRuleFunc, i(kelements), i(kRuleLen), i(kradius)
+ UPDATE:                        ; reinitialise from here
+     vcella ktrig, kReinitTrig, giOutTable, giInitTable, giRuleFunc, i(kelements), i(kRuleLen), i(kradius)
 
- if ktrig==1 then					; if a trigger has been generated...
-  kiter		+=	1				; ...increment iterations counter
-  chnset	kiter,"iter"				; send new value to counter
-  chnset	"tableNumber(2)","OutTable"		; update table display of cell output states
+ if ktrig==1 then                    ; if a trigger has been generated...
+  kiter        +=    1                ; ...increment iterations counter
+  chnset    kiter,"iter"                ; send new value to counter
+  chnset    "tableNumber(2)","OutTable"        ; update table display of cell output states
  endif
  
  ; SONIFICATION
- ksonify	chnget	"sonify"
+ ksonify    chnget    "sonify"
  if ksonify==1 then
   if kReinitTrig==1 then
    reinit NEW_RANDOM_ROW
   endif
   NEW_RANDOM_ROW:
-  girnd	ftgen	999,0,128,21,1				; set random distribution (32 uniform random values in the range 0-1)
+  girnd    ftgen    999,0,128,21,1                ; set random distribution (32 uniform random values in the range 0-1)
  
   rireturn
-  ksync		chnget	"sync"				; sync to cell metronome
-  ksync		init	2
+  ksync        chnget    "sync"                ; sync to cell metronome
+  ksync        init    2
   if changed(ksync)==1 then
    if ksync==1 then
-    chnset	"visible(1)","NRateID"
-    chnset	"visible(0)","SyncRepeatsID"
+    chnset    "visible(1)","NRateID"
+    chnset    "visible(0)","SyncRepeatsID"
    else
-    chnset	"visible(1)","NRateID"
-    chnset	"visible(0)","SyncRepeatsID"
+    chnset    "visible(1)","NRateID"
+    chnset    "visible(0)","SyncRepeatsID"
    endif
   endif
   
-  if ksync==2&&kAutoGenerate==1 then			; sync to cell metronome (only also if it as running)
-   if ktrig==1 then 					; resync note metronome to cell metronome
+  if ksync==2&&kAutoGenerate==1 then            ; sync to cell metronome (only also if it as running)
+   if ktrig==1 then                     ; resync note metronome to cell metronome
     reinit RESET_METRO
    endif
    RESET_METRO:
-   iSyncRepeats	chnget	"SyncRepeats"
-   kNTrig	metro	kCRate*iSyncRepeats*kelements	; mstronome synced to cell metronome
+   iSyncRepeats    chnget    "SyncRepeats"
+   kNTrig    metro    kCRate*iSyncRepeats*kelements    ; mstronome synced to cell metronome
    rireturn
-  else							; free metronome
-   kNRate	chnget	"NRate"				; note rate (notes per second)
-   kNTrig	metro	kNRate				; metronome to trigger notes
+  else                            ; free metronome
+   kNRate    chnget    "NRate"                ; note rate (notes per second)
+   kNTrig    metro    kNRate                ; metronome to trigger notes
   endif
-  kstep	init	0					; initial step
-  if kNTrig==1 then					; if metronome trigger is received
-   kact	table	kstep,giOutTable			; read cell state 1=alive 0=dead
-   if kact==1 then					; if 'alive'
-    kNoteDur	chnget	"NoteDur"
-    event	"i",2,0,kNoteDur,kstep			; play a note
+  kstep    init    0                    ; initial step
+  if kNTrig==1 then                    ; if metronome trigger is received
+   kact    table    kstep,giOutTable            ; read cell state 1=alive 0=dead
+   if kact==1 then                    ; if 'alive'
+    kNoteDur    chnget    "NoteDur"
+    event    "i",2,0,kNoteDur,kstep            ; play a note
    endif
-   kstep	wrap	kstep+1,0,kelements		; increment step counter
+   kstep    wrap    kstep+1,0,kelements        ; increment step counter
   endif
  endif
 endin
 
 
-instr	2	; sonification
- iRndAmp	random	0.5,1				; random amplitude (to make sonification a little less mechanical)
- iAmp	chnget	"NoteAmp"
- iNC	chnget	"NoteCentre"
- iNR	chnget	"NoteRange"
- irnd	table	p4,girnd				; read fixed random value for this cell
- inote	limit	iNC + ((irnd-0.5)*iNR),0,127		; note number (offset + random offset). Limited 0 - 127.
- p3	=	p3 * octave((52-inote)/24)		; scale duration according to note number. (Higher notes shorter, lower notes longer)
- aenv	expon	1,p3,0.0001				; amplitude envelope
- acps	expon	cpsmidinn(inote),p3,cpsmidinn(inote)/8	; glissando
- asig	poscil	(aenv-0.0001)*iAmp*iRndAmp,acps	; audio oscillator
- asig	*=	poscil:a(1,100)				; ring modulate
- ipan	random	0.4,0.6					; random pan value (to make sonification a little less mechanical)
- aL,aR	pan2	asig,ipan				; stereo panned
- 	outs	aL,aR					; send audio to outputs
+instr    2    ; sonification
+ iRndAmp    random    0.5,1                ; random amplitude (to make sonification a little less mechanical)
+ iAmp    chnget    "NoteAmp"
+ iNC    chnget    "NoteCentre"
+ iNR    chnget    "NoteRange"
+ irnd    table    p4,girnd                ; read fixed random value for this cell
+ inote    limit    iNC + ((irnd-0.5)*iNR),0,127        ; note number (offset + random offset). Limited 0 - 127.
+ p3    =    p3 * octave((52-inote)/24)        ; scale duration according to note number. (Higher notes shorter, lower notes longer)
+ aenv    expon    1,p3,0.0001                ; amplitude envelope
+ acps    expon    cpsmidinn(inote),p3,cpsmidinn(inote)/8    ; glissando
+ asig    poscil    (aenv-0.0001)*iAmp*iRndAmp,acps    ; audio oscillator
+ asig    *=    poscil:a(1,100)                ; ring modulate
+ ipan    random    0.4,0.6                    ; random pan value (to make sonification a little less mechanical)
+ aL,aR    pan2    asig,ipan                ; stereo panned
+     outs    aL,aR                    ; send audio to outputs
 endin
 
 

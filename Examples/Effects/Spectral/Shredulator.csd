@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; Shredulator.csd
 ; Written by Iain McCurdy, 2016
 
@@ -7,26 +14,26 @@
 ; CONTROLS
 ; --------
 
-; FFT Size		-	size of FFT window: smaller sizes provides better time resolution but possible distortion of frequency components
-; Max Delay		-	Maximum delay time as defined by the circular (pvs) buffer. This is i-rate so altering it will cause discontinuities in the realtime audio stream.
-;					 Note that maximum delay time can modulated at k-rate using the 'Depth' control
-; Rate			-	Rate at which new random delay times are generated. This also controls the rate at which new random amplitude ('Granulation') 
-;  					 and random transposition ('Randomise') values are generated.
-;					This control can also be thought of as 'grain size'.
-; Depth			-	Amplitude of the random delay time generator. This, along with 'Max.Delay', controls the maximum random delay time possible.
-; Granulation	-	Amount of random amplitude variation
-; Feedback		-	Ratio of output (pvs) signal that is fed back into the input
+; FFT Size        -  size of FFT window: smaller sizes provides better time resolution but possible distortion of frequency components
+; Max Delay       -  Maximum delay time as defined by the circular (pvs) buffer. This is i-rate so altering it will cause discontinuities in the realtime audio stream.
+;                    Note that maximum delay time can modulated at k-rate using the 'Depth' control
+; Rate            -  Rate at which new random delay times are generated. This also controls the rate at which new random amplitude ('Granulation') 
+;                    and random transposition ('Randomise') values are generated.
+;                    This control can also be thought of as 'grain size'.
+; Depth           -  Amplitude of the random delay time generator. This, along with 'Max.Delay', controls the maximum random delay time possible.
+; Granulation     -  Amount of random amplitude variation
+; Feedback        -  Ratio of output (pvs) signal that is fed back into the input
 
-; Semitones		-	Number of semitones transposition
-; Cents			-	Number of cents transposition
-; Pre/Post		-	If 'Pre' is selected, the signal before transposition is sent to the output (transposition are only heard via the feedback signal), 
-;					 if 'Post' is selected the, the transposed signal is sent directly to the output
-; Randomise		-	If raised above zero, rather than transposition being a fixed value as defined by 'Semitones' and 'Cents' 
-;               	 it will be a bipolar random value in the range +/- the offset defined by 'Semitones' and 'Cents'.
+; Semitones       -  Number of semitones transposition
+; Cents           -  Number of cents transposition
+; Pre/Post        -  If 'Pre' is selected, the signal before transposition is sent to the output (transposition are only heard via the feedback signal), 
+;                    if 'Post' is selected the, the transposed signal is sent directly to the output
+; Randomise       -  If raised above zero, rather than transposition being a fixed value as defined by 'Semitones' and 'Cents' 
+;                    it will be a bipolar random value in the range +/- the offset defined by 'Semitones' and 'Cents'.
 
 
 <Cabbage>
-form caption("") size(460,395), colour(225,230,255), pluginId("Shrd"), scrollBars(0) style("legacy")
+form  size(460,395), caption("_"),colour(225,230,255), pluginId("Shrd"), scrollBars(0)
 image   bounds(  0,-10,460, 45), colour(0,0,0,0), outlineThickness(0), plant("title")
 {
 label   bounds(  0,  1,460, 51), text("SHREDULATOR"), fontColour(155,155,155)
@@ -86,88 +93,88 @@ rslider  bounds(250, 15, 90,90), text("Level"), textBox(1), valueTextBox(1), cha
                                            
 <CsInstruments>
 
-;sr is set by the host
+; sr is set by host
 ksmps = 16
 nchnls = 2
 0dbfs = 1
 
 
-instr	1
- kMaxDelay			chnget		"MaxDelay"
- kMaxDelay			init		1
- kSemitones			chnget		"Semitones"
- kCents				chnget		"Cents"
- kTransRand			chnget		"TransRand"
- kDepth				chnget		"Depth"
- kRate				chnget		"Rate"
- kTranspose			=			kSemitones + kCents*0.01
- kFeedback			chnget		"Feedback"
- kWidth				chnget		"Width"
- kDryWetMix			chnget		"DryWetMix"
- kLevel				chnget		"Level"
- kFFTindex			chnget		"FFTindex"
- kFFTindex			init		4
- kGranulation		chnget		"Granulation"
- kPrePost			chnget		"PrePost"
- kPrePost			init		1
- iFFTsizes[]		fillarray	128,256,512,1024,2048,4096	; array of FFT size values
+
+
+opcode SHREDULATOR_LAYER, a, kkkkkkkikkp
+ kMaxDelay,kDepth,kRate,kGranulation,kTranspose,kTransRand,kTime,iHandle1,kFeedback,kPrePost,iCount xin
+ kDly1                randomh        0,i(kMaxDelay)*kDepth, kRate, 1                ; delay time
+ kAmp1                trandom        changed(kDly1),-kGranulation*60,0
+ kTranspose1_2        trandom        changed(kDly1),kTranspose-(2*kTranspose*kTransRand),kTranspose
+ fsigOut              pvsbufread     kTime-kDly1, iHandle1                        ; read from buffer
+ fsigGran             pvsgain        fsigOut,ampdbfs(kAmp1)
+ fScale               pvscale        fsigGran,semitone(kTranspose1_2)
+ fsigFB               pvsgain       fScale, kFeedback            ; create feedback signal for next pass
+ if kPrePost==1 then
+  aDly                pvsynth       fsigGran                                     ; resynthesise read buffer output
+ else
+  aDly                pvsynth       fScale                                     ; resynthesise read buffer output
+ endif
+ xout aDly
+endop
+
+instr    1
+ kMaxDelay            chnget        "MaxDelay"
+ kMaxDelay            init          1
+ kSemitones           chnget        "Semitones"
+ kCents               chnget        "Cents"
+ kTransRand           chnget        "TransRand"
+ kDepth               chnget        "Depth"
+ kRate                chnget        "Rate"
+ kTranspose           =             kSemitones + kCents*0.01
+ kFeedback            chnget        "Feedback"
+ kWidth               chnget        "Width"
+ kDryWetMix           chnget        "DryWetMix"
+ kLevel               chnget        "Level"
+ kFFTindex            chnget        "FFTindex"
+ kFFTindex            init          4
+ kGranulation         chnget        "Granulation"
+ kPrePost             chnget        "PrePost"
+ kPrePost             init          1
+ iFFTsizes[]          fillarray     128,256,512,1024,2048,4096    ; array of FFT size values
  
- ;aL		diskin	"JAG.wav",1,0,1											; read in sound file
- ;aL		poscil	0.4,300
- ;aR		=		aL
- aL,aR		ins
+ ;aL        diskin    "JAG.wav",1,0,1                                            ; read in sound file
+ ;aL        poscil    0.4,300
+ ;aR        =        aL
+ aL,aR        ins
  
  if changed(kMaxDelay,kFFTindex)==1 then
   reinit RESTART
  endif
  RESTART:
 
- iFFTsize			=			iFFTsizes[i(kFFTindex)-1]	; retrieve FFT size value from array
+ iFFTsize             =              iFFTsizes[i(kFFTindex)-1]    ; retrieve FFT size value from array
 
- fsigInL			pvsanal		aL, iFFTsize, iFFTsize/4, iFFTsize, 1	; FFT analyse audio
- fsigInR			pvsanal		aR, iFFTsize, iFFTsize/4, iFFTsize, 1	; FFT analyse audio
- fsigFB				pvsinit 	iFFTsize									; initialise feedback signal
- fsigMixL 			pvsmix 		fsigInL, fsigFB								; mix feedback with input
- fsigMixR 			pvsmix 		fsigInR, fsigFB								; mix feedback with input
+ fsigInL              pvsanal        aL, iFFTsize, iFFTsize/4, iFFTsize, 1    ; FFT analyse audio
+ fsigInR              pvsanal        aR, iFFTsize, iFFTsize/4, iFFTsize, 1    ; FFT analyse audio
+ fsigFB               pvsinit        iFFTsize                                    ; initialise feedback signal
+ fsigMixL             pvsmix         fsigInL, fsigFB                                ; mix feedback with input
+ fsigMixR             pvsmix         fsigInR, fsigFB                                ; mix feedback with input
 
- iHandle1, kTime	pvsbuffer	fsigMixL, i(kMaxDelay)								; create a circular fsig buffer
- kDly1				randomh		0,i(kMaxDelay)*kDepth, kRate, 1				; delay time
- kAmp1				trandom		changed(kDly1),-kGranulation*60,0
- kTranspose1_2		trandom		changed(kDly1),kTranspose-(2*kTranspose*kTransRand),kTranspose
- fsigOut			pvsbufread 	kTime-kDly1, iHandle1						; read from buffer
- fsigGran			pvsgain		fsigOut,ampdbfs(kAmp1)
- fScale				pvscale		fsigGran,semitone(kTranspose1_2)
- fsigFB				pvsgain 	fScale, kFeedback			; create feedback signal for next pass
- if kPrePost==1 then
-  aDly				pvsynth		fsigGran 									; resynthesise read buffer output
- else
-  aDly				pvsynth		fScale 									; resynthesise read buffer output
- endif
- aMix				ntrpol		aL,aDly,kDryWetMix 						; dry/wet audio mix
- 					outs		aMix*kLevel*(1-kWidth),aMix*kLevel
+ iHandle1, kTime      pvsbuffer      fsigMixL, i(kMaxDelay)                                ; create a circular fsig buffer
+  
+  kLayers  =   1
+  
+ aDly                 SHREDULATOR_LAYER kMaxDelay,kDepth,kRate,kGranulation,kTranspose,kTransRand,kTime,iHandle1,kFeedback,kPrePost,i(kLayers)
+ aMix                 ntrpol        aL,aDly,kDryWetMix                         ; dry/wet audio mix
+                      outs          aMix*kLevel*(1-kWidth),aMix*kLevel
 
- iHandle2, kTime	pvsbuffer	fsigMixR, i(kMaxDelay)								; create a circular fsig buffer
- kDly2				randomh		0,i(kMaxDelay)*kDepth, kRate, 1				; delay time
- kAmp2				trandom		changed(kDly2),-kGranulation*60,0
- kTranspose2_2		trandom		changed(kDly2),kTranspose-(2*kTranspose*kTransRand),kTranspose
- fsigOut			pvsbufread 	kTime-kDly2, iHandle2 						; read from buffer
- fsigGran			pvsgain		fsigOut,ampdbfs(kAmp2)
- fScale				pvscale		fsigGran,semitone(kTranspose2_2)
- fsigFB				pvsgain 	fScale, kFeedback			; create feedback signal for next pass
- if kPrePost==1 then
-  aDly				pvsynth		fsigGran 									; resynthesise read buffer output
- else
-  aDly				pvsynth		fScale 									; resynthesise read buffer output
- endif
- aMix				ntrpol		aR,aDly,kDryWetMix 						; dry/wet audio mix
- 					outs		aMix*kLevel,aMix*kLevel*(1-kWidth)
+ iHandle2, kTime      pvsbuffer     fsigMixR, i(kMaxDelay)                                ; create a circular fsig buffer
+ aDly                 SHREDULATOR_LAYER kMaxDelay,kDepth,kRate,kGranulation,kTranspose,kTransRand,kTime,iHandle2,kFeedback,kPrePost,i(kLayers)
+ aMix                 ntrpol        aR,aDly,kDryWetMix                         ; dry/wet audio mix
+                      outs          aMix*kLevel,aMix*kLevel*(1-kWidth)
+
 endin
 
 </CsInstruments>
 
 <CsScore>
-i 1 0 -1
-f 0 3700
+i 1 0 [60*60*24*365]
 </CsScore>
 
 </CsoundSynthesizer>

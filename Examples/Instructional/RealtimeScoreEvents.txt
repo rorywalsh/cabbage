@@ -1,0 +1,22 @@
+; The Instruments
+
+instr   2    ; sine test instrument
+ifreq   =       p4
+; For example enter: "i 2 0 3 440"
+
+asig    poscil  0.1,ifreq,-1
+        outs    asig,asig
+endin
+
+
+instr   3    ; FM synthesis instrument
+ifreq   =       p4
+indx    =       p5
+iratio  =       p6
+; For example enter: "i 3 0 3 440 3 3.173"
+
+aenv    expon   0.1,p3,0.0001
+kndx    expon   indx,p3,0.001
+asig    foscili aenv,ifreq,1,iratio,kndx-0.001,gisine
+        outs    asig,asig
+endin

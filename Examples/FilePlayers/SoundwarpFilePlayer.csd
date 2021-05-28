@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; SoundwarpFilePlayer.csd
 ; Written by Iain McCurdy, 2014
 
@@ -6,10 +13,10 @@
 ;   (Transposition range when using mouse clicking-and-dragging is controlled using the 'Transposition' knob. Therefore if 'Transposition' = zero, no transposition occurs.)
 
 <Cabbage>
-form caption("Soundwarp File Player") size(835,340), colour(0,0,0) pluginId("SWPl"), guiRefresh(32) style("legacy")
-image                       bounds(  0,  0,835,340), colour( 30, 90, 60), outlineColour("White"), line(3), shape("sharp")	; main panel colouration    
+form caption("Soundwarp File Player") size(835,340), colour(0,0,0) pluginId("SWPl"), guiRefresh(32)
+image                       bounds(  0,  0,835,340), colour( 30, 90, 60), outlineColour("White"), line(3), shape("sharp")    ; main panel colouration    
 
-soundfiler bounds(  5,  5,825,175), channel("beg","len"), channel("pos1","end1"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
+soundfiler bounds(  5,  5,825,175), channel("beg","len"), identChannel("filer1"), colour(0, 255, 255, 255), fontColour(160, 160, 160, 255)
 
 filebutton bounds(  5,185, 80, 22), text("Open File","Open File"), fontColour("white") channel("filename"), shape("ellipse")
 checkbox   bounds(  5,210, 95, 17), channel("PlayStop"), text("Play/Stop"), fontColour("white")
@@ -56,190 +63,194 @@ keyboard   bounds(5,260,825, 75)
 
 <CsInstruments>
 
-;sr is set by the host
+sr = 48000
 ksmps = 64
 nchnls = 2
 0dbfs=1
 
-massign	0,3
-gichans		init	0
-giFileLen	init	0
-giReady		init	0
-gSfilepath	init	""
+massign    0,3
+gichans        init    0
+giFileLen    init    0
+giReady        init    0
+gSfilepath    init    ""
 
 ; WINDOWING FUNCTIONS USED TO DYNAMICALLY SHAPE THE GRAINS
 ; NUM | INIT_TIME | SIZE | GEN_ROUTINE | PARTIAL_NUM | STRENGTH | PHASE
 ; GRAIN ENVELOPE WINDOW FUNCTION TABLES:
-;giwfn1	ftgen	0,  0, 131072,  20,   1, 1 					; HANNING
-giwfn1	ftgen	0,  0, 131072,  9,    0.5, 1,0 					; HALF SINE
-giwfn2	ftgen	0,  0, 131072,  7,    0, 3072,   1, 128000,    0		; PERCUSSIVE - STRAIGHT SEGMENTS
-giwfn3	ftgen	0,  0, 131072,  5, .001, 3072,   1, 128000, .001		; PERCUSSIVE - EXPONENTIAL SEGMENTS
-giwfn4	ftgen	0,  0, 131072,  7,    0, 1536,   1, 128000,    1, 1536, 0	; GATE - WITH DE-CLICKING RAMP UP AND RAMP DOWN SEGMENTS
-giwfn5	ftgen	0,  0, 131072,  7,    0, 128000, 1, 3072,      0		; REVERSE PERCUSSIVE - STRAIGHT SEGMENTS
-giwfn6	ftgen	0,  0, 131072,  5, .001, 128000, 1, 3072,   .001		; REVERSE PERCUSSIVE - EXPONENTIAL SEGMENTS
+;giwfn1    ftgen    0,  0, 131072,  20,   1, 1                     ; HANNING
+giwfn1    ftgen    0,  0, 131072,  9,    0.5, 1,0                     ; HALF SINE
+giwfn2    ftgen    0,  0, 131072,  7,    0, 3072,   1, 128000,    0        ; PERCUSSIVE - STRAIGHT SEGMENTS
+giwfn3    ftgen    0,  0, 131072,  5, .001, 3072,   1, 128000, .001        ; PERCUSSIVE - EXPONENTIAL SEGMENTS
+giwfn4    ftgen    0,  0, 131072,  7,    0, 1536,   1, 128000,    1, 1536, 0    ; GATE - WITH DE-CLICKING RAMP UP AND RAMP DOWN SEGMENTS
+giwfn5    ftgen    0,  0, 131072,  7,    0, 128000, 1, 3072,      0        ; REVERSE PERCUSSIVE - STRAIGHT SEGMENTS
+giwfn6    ftgen    0,  0, 131072,  5, .001, 128000, 1, 3072,   .001        ; REVERSE PERCUSSIVE - EXPONENTIAL SEGMENTS
 
-instr	1
- gkloop		chnget	"loop"
- gkPlayStop	chnget	"PlayStop"
- gkfreeze	chnget	"freeze"
- gkfreeze	=	1-gkfreeze
- gktranspose	chnget	"transpose"
- gkoverlap	chnget	"overlap"
- gkgrsize	chnget	"grsize"
- gkgrsizeOS	chnget	"grsizeOS"
- gkshape	chnget	"shape"
- gkmode		chnget	"mode"
- gkmode		init	1
- gkspeed	chnget	"speed"
- gkptrOS	chnget	"ptrOS"
- gkport		chnget	"port"
- kporttime	linseg	0,0.001,1
- gkinskip	chnget	"inskip"
- gklevel	chnget	"level"
- gkLoopStart	chnget	"beg"		;from soundfiler
- gkLoopEnd	chnget	"len"			;from soundfiler
+instr    1
+ gkloop        chnget    "loop"
+ gkPlayStop    chnget    "PlayStop"
+ gkfreeze    chnget    "freeze"
+ gkfreeze    =    1-gkfreeze
+ gktranspose    chnget    "transpose"
+ gkoverlap    chnget    "overlap"
+ gkgrsize    chnget    "grsize"
+ gkgrsizeOS    chnget    "grsizeOS"
+ gkshape    chnget    "shape"
+ gkmode        chnget    "mode"
+ gkmode        init    1
+ gkspeed    chnget    "speed"
+ gkptrOS    chnget    "ptrOS"
+ gkport        chnget    "port"
+ kporttime    linseg    0,0.001,1
+ gkinskip    chnget    "inskip"
+ gklevel    chnget    "level"
+ gkLoopStart    chnget    "beg"        ;from soundfiler
+ gkLoopLen    chnget    "len"            ;from soundfiler
  
  
  ; SHOW OR HIDE WIDGETS -------------------------------------
- kchange	changed	gkmode
+ kchange    changed    gkmode
  if(kchange==1) then
-	if gkmode==1 then
-	 chnset "visible(1)", "SpeedID"
-	 chnset "visible(0)", "PtrOSID"
-	 chnset "visible(0)", "PtrID"
-	 chnset "visible(0)", "PortID"
-	 chnset "visible(1)", "inskipID"
-	endif
-	if gkmode==2 then
-	 chnset "visible(0)", "SpeedID"
-	 chnset "visible(1)", "PtrOSID"
-	 chnset "visible(1)", "PtrID"
-	 chnset "visible(1)", "PortID"
-	 chnset "visible(0)", "inskipID"
-	endif
-	if gkmode==3 then
-	 chnset "visible(0)", "SpeedID"
-	 chnset "visible(0)", "PtrOSID"
-	 chnset "visible(0)", "PtrID"
-	 chnset "visible(0)", "PortID"
-	 chnset "visible(0)", "inskipID"
-	endif
+    if gkmode==1 then
+     chnset "visible(1)", "SpeedID"
+     chnset "visible(0)", "PtrOSID"
+     chnset "visible(0)", "PtrID"
+     chnset "visible(0)", "PortID"
+     chnset "visible(1)", "inskipID"
+    endif
+    if gkmode==2 then
+     chnset "visible(0)", "SpeedID"
+     chnset "visible(1)", "PtrOSID"
+     chnset "visible(1)", "PtrID"
+     chnset "visible(1)", "PortID"
+     chnset "visible(0)", "inskipID"
+    endif
+    if gkmode==3 then
+     chnset "visible(0)", "SpeedID"
+     chnset "visible(0)", "PtrOSID"
+     chnset "visible(0)", "PtrID"
+     chnset "visible(0)", "PortID"
+     chnset "visible(0)", "inskipID"
+    endif
 endif
 ; -----------------------------------------------------------
 
- gSfilepath	chnget	"filename"
- kNewFileTrg	changed	gSfilepath		; if a new file is loaded generate a trigger
- if kNewFileTrg==1 then				; if a new file has been loaded...
-  event	"i",99,0,0				; call instrument to update sample storage function table 
+ gSfilepath    chnget    "filename"
+ kNewFileTrg    changed    gSfilepath        ; if a new file is loaded generate a trigger
+ if kNewFileTrg==1 then                ; if a new file has been loaded...
+  event    "i",99,0,0                ; call instrument to update sample storage function table 
  endif  
 
- ktrig	trigger	gkPlayStop,0.5,0
- schedkwhen	ktrig,0,0,2,0,-1
+ ktrig    trigger    gkPlayStop,0.5,0
+ schedkwhen    ktrig,0,0,2,0,-1
 
  /* MOUSE SCRUBBING */
- gkMOUSE_DOWN_RIGHT	chnget	"MOUSE_DOWN_RIGHT"	; Read in mouse left click status
- kStartScrub		trigger	gkMOUSE_DOWN_RIGHT,0.5,0
+ gkMOUSE_DOWN_RIGHT    chnget    "MOUSE_DOWN_RIGHT"    ; Read in mouse left click status
+ kStartScrub        trigger    gkMOUSE_DOWN_RIGHT,0.5,0
  if gkMOUSE_DOWN_RIGHT==1 then
-  gkmode	=	2
+  gkmode    =    2
   if kStartScrub==1 then 
    reinit RAMP_FUNC
   endif
   RAMP_FUNC:
-  krampup	linseg	0,0.001,1
+  krampup    linseg    0,0.001,1
   rireturn
-  kMOUSE_X	chnget	"MOUSE_X"
-  kMOUSE_Y	chnget	"MOUSE_Y"
-  kMOUSE_X	=	(kMOUSE_X - 5) / 825
-  kMOUSE_Y	portk	1 - ((kMOUSE_Y - 5) / 175), krampup*0.05		; SOME SMOOTHING OF DENSITY CHANGES VIA THE MOUSE ENHANCES PERFORMANCE RESULTS. MAKE ANY ADJUSTMENTS WITH ADDITIONAL CONSIDERATION OF guiRefresh VALUE 
-  gkptr		limit	kMOUSE_X,0,1
-  gklevel	limit	kMOUSE_Y^2, 0, 1
-  gktranspose	=	((kMOUSE_Y*2)-1)*gktranspose	;, -gktranspose, gktranspose
-  schedkwhen	kStartScrub,0,0,2,0,-1
+  kMOUSE_X    chnget    "MOUSE_X"
+  kMOUSE_Y    chnget    "MOUSE_Y"
+  kMOUSE_X    =    (kMOUSE_X - 5) / 825
+  kMOUSE_Y    portk    1 - ((kMOUSE_Y - 5) / 175), krampup*0.05        ; SOME SMOOTHING OF DENSITY CHANGES VIA THE MOUSE ENHANCES PERFORMANCE RESULTS. MAKE ANY ADJUSTMENTS WITH ADDITIONAL CONSIDERATION OF guiRefresh VALUE 
+  gkptr        limit    kMOUSE_X,0,1
+  gklevel    limit    kMOUSE_Y^2, 0, 1
+  gktranspose    =    ((kMOUSE_Y*2)-1)*gktranspose    ;, -gktranspose, gktranspose
+  schedkwhen    kStartScrub,0,0,2,0,-1
  else
-  kptr		chnget	"ptr"
-  gkptr		portk	kptr,gkport*kporttime
-  gklevel	chnget	"level"
+  kptr        chnget    "ptr"
+  gkptr        portk    kptr, gkport * kporttime
+  gklevel    chnget    "level"
  endif 
  
 endin
 
 
 
-instr	99	; load sound file
- gichans	filenchnls	gSfilepath			; derive the number of channels (mono=1,stereo=2) in the sound file
- giFileLen	filelen		gSfilepath			; derive the number of channels (mono=1,stereo=2) in the sound file
- gitableL	ftgen	1,0,0,1,gSfilepath,0,0,1
+instr    99    ; load sound file
+ gichans    filenchnls    gSfilepath            ; derive the number of channels (mono=1,stereo=2) in the sound file
+ giFileLen    filelen        gSfilepath            ; derive the number of channels (mono=1,stereo=2) in the sound file
+ gitableL    ftgen    1,0,0,1,gSfilepath,0,0,1
  if gichans==2 then
-  gitableR	ftgen	2,0,0,1,gSfilepath,0,0,2
+  gitableR    ftgen    2,0,0,1,gSfilepath,0,0,2
  endif
- giReady 	=	1					; if no string has yet been loaded giReady will be zero
+ giReady     =    1                    ; if no string has yet been loaded giReady will be zero
 
  Smessage sprintfk "file(%s)", gSfilepath
- chnset Smessage, "filer1"	
+ chnset Smessage, "filer1"    
 
 endin
 
 
 
-instr	2	; triggered by 'play/stop' button
+instr    2    ; triggered by 'play/stop' button
  if gkPlayStop==0&&gkMOUSE_DOWN_RIGHT==0 then
   turnoff
  endif
- if giReady = 1 then						; i.e. if a file has been loaded
-  iAttTim	chnget	"AttTim"				; read in widgets
-  iRelTim	chnget	"RelTim"
-  if iAttTim>0 then						; is amplitude envelope attack time is greater than zero...
-   kenv	linsegr	0,iAttTim,1,iRelTim,0				; create an amplitude envelope with an attack, a sustain and a release segment (senses realtime release)
+ if giReady = 1 then                        ; i.e. if a file has been loaded
+  iAttTim    chnget    "AttTim"                ; read in widgets
+  iRelTim    chnget    "RelTim"
+  if iAttTim>0 then                        ; is amplitude envelope attack time is greater than zero...
+   kenv    linsegr    0,iAttTim,1,iRelTim,0                ; create an amplitude envelope with an attack, a sustain and a release segment (senses realtime release)
   else            
-   kenv	linsegr	1,iRelTim,0					; create an amplitude envelope with a sustain and a release segment (senses realtime release)
+   kenv    linsegr    1,iRelTim,0                    ; create an amplitude envelope with a sustain and a release segment (senses realtime release)
   endif
-  kenv	expcurve	kenv,8					; remap amplitude value with a more natural curve
-  aenv	interp		kenv					; interpolate and create a-rate envelope
+  kenv    expcurve    kenv,8                    ; remap amplitude value with a more natural curve
+  aenv    interp        kenv                    ; interpolate and create a-rate envelope
 
-  kporttime	linseg	0,0.001,0.02				; portamento time function. (Rises quickly from zero to a held value.)
+  kporttime    linseg    0,0.001,0.02                ; portamento time function. (Rises quickly from zero to a held value.)
 
-  kspeed	portk	gkspeed, kporttime
-  kptr		portk	gkptr, kporttime
+  kspeed    portk    gkspeed, kporttime
+  kptr        portk    gkptr, kporttime
   
-  ktranspose	portk	gktranspose,kporttime*3			; 
+  ktranspose    portk    gktranspose,kporttime*3            ; 
   
-  ktrig	changed	gkshape,gkoverlap,gkgrsize,gkgrsizeOS,gkmode,gkinskip
+  ktrig    changed    gkshape,gkoverlap,gkgrsize,gkgrsizeOS,gkmode,gkinskip
   if ktrig==1 then
-   reinit	UPDATE
+   reinit    UPDATE
   endif
   UPDATE:
   
-  iwfn		=	i(gkshape) + giwfn1 - 1
-  imode		=	i(gkmode) - 1
+  iwfn        =    i(gkshape) + giwfn1 - 1
+  imode        =    i(gkmode) - 1
 
-  if imode==0 then						; timestretch mode
-   kwarp	=	1/(kspeed*gkfreeze)
-   ibeg		=	i(gkinskip) * giFileLen
-   kscrubber	init	ibeg*sr
-   kscrubber	+=	kspeed*ksmps*gkfreeze
-  elseif imode==1 then						; pointer mode
-   kwarp	=	giFileLen * kptr
-   ibeg		=	0
-   kptrOS	random	0, (giFileLen - kwarp) * gkptrOS
-   kwarp	=	kwarp + kptrOS
-   kscrubber	=	(kwarp + kptrOS) * sr
-  else								; region mode
-   imode	=	1					; sndwarp mode used in region mode will be pointer mode
-   kwarp	random	gkLoopStart/sr,(gkLoopStart+gkLoopEnd)/sr
-   ibeg		=	0
-   kscrubber	=	kwarp * sr
+  if imode==0 then                        ; timestretch mode
+   iPMode   =   0       ; pointer mode
+   kwarp    =    1/(kspeed*gkfreeze)
+   ibeg        =    i(gkinskip) * giFileLen
+   kscrubber    init    ibeg*sr
+   kscrubber    +=    kspeed*ksmps*gkfreeze
+  elseif imode==1 then                        ; pointer mode
+   iPMode   =   1       ; pointer mode
+   kwarp    =    giFileLen * kptr
+   ibeg        =    0
+   kptrOS    random    0, (giFileLen - kwarp) * gkptrOS
+   kwarp    =    kwarp + kptrOS
+   kscrubber    =    (kwarp + kptrOS) * sr
+  else                                ; region mode
+   iPMode    =    1                    ; sndwarp mode used in region mode will be pointer mode
+   kwarp    random    gkLoopStart/sr,(gkLoopStart+gkLoopLen)/sr
+   ibeg        =    0
+   kscrubber    =    kwarp * sr
   endif
 
-  apch		interp	semitone(ktranspose)
-  klevel	portk	gklevel/(i(gkoverlap)^0.25), kporttime		; apply portamento smoothing to changes in level
+ 
+
+  apch        interp    semitone(ktranspose)
+  klevel    portk    gklevel/(i(gkoverlap)^0.25), kporttime        ; apply portamento smoothing to changes in level
   
-  if gichans==1 then						; if mono...   
-   a1	sndwarp		klevel, kwarp, apch, gitableL, ibeg, i(gkgrsize), i(gkgrsize) * i(gkgrsizeOS), i(gkoverlap), iwfn, imode
- 	outs	a1*aenv,a1*aenv					; send mono audio to both outputs 
-  elseif gichans==2 then						; otherwise, if stereo...
-   a1	sndwarp		klevel, kwarp, apch, gitableL, ibeg, i(gkgrsize), i(gkgrsize) * i(gkgrsizeOS), i(gkoverlap), iwfn, imode
-   a2	sndwarp		klevel, kwarp, apch, gitableR, ibeg, i(gkgrsize), i(gkgrsize) * i(gkgrsizeOS), i(gkoverlap), iwfn, imode
- 	outs	a1*aenv,a2*aenv					; send stereo signal to outputs
+  if gichans==1 then                        ; if mono...   
+   a1    sndwarp        klevel, kwarp, apch, gitableL, ibeg, i(gkgrsize), i(gkgrsize) * i(gkgrsizeOS), i(gkoverlap), iwfn, iPMode
+     outs    a1*aenv,a1*aenv                    ; send mono audio to both outputs 
+  elseif gichans==2 then                        ; otherwise, if stereo...
+   a1    sndwarp        klevel, kwarp, apch, gitableL, ibeg, i(gkgrsize), i(gkgrsize) * i(gkgrsizeOS), i(gkoverlap), iwfn, iPMode
+   a2    sndwarp        klevel, kwarp, apch, gitableR, ibeg, i(gkgrsize), i(gkgrsize) * i(gkgrsizeOS), i(gkoverlap), iwfn, iPMode
+     outs    a1*aenv,a2*aenv                    ; send stereo signal to outputs
   endif
   rireturn
  endif
@@ -252,84 +263,84 @@ instr	2	; triggered by 'play/stop' button
 
 endin
 
-instr	3
- icps	cpsmidi							; read in midi note data as cycles per second
- iamp	ampmidi	1						; read in midi velocity (as a value within the range 0 - 1)
- iAttTim	chnget	"AttTim"				; read in widgets
- iRelTim	chnget	"RelTim"
- iMidiRef	chnget	"MidiRef"
- iFrqRatio		=	icps/cpsmidinn(iMidiRef)	; derive playback speed from note played in relation to a reference note (MIDI note 60 / middle C)
+instr    3
+ icps    cpsmidi                            ; read in midi note data as cycles per second
+ iamp    ampmidi    1                        ; read in midi velocity (as a value within the range 0 - 1)
+ iAttTim    chnget    "AttTim"                ; read in widgets
+ iRelTim    chnget    "RelTim"
+ iMidiRef    chnget    "MidiRef"
+ iFrqRatio        =    icps/cpsmidinn(iMidiRef)    ; derive playback speed from note played in relation to a reference note (MIDI note 60 / middle C)
 
- if giReady = 1 then						; i.e. if a file has been loaded
-  iAttTim	chnget	"AttTim"				; read in widgets
-  iRelTim	chnget	"RelTim"
-  if iAttTim>0 then						; is amplitude envelope attack time is greater than zero...
-   kenv	linsegr	0,iAttTim,1,iRelTim,0				; create an amplitude envelope with an attack, a sustain and a release segment (senses realtime release)
+ if giReady = 1 then                        ; i.e. if a file has been loaded
+  iAttTim    chnget    "AttTim"                ; read in widgets
+  iRelTim    chnget    "RelTim"
+  if iAttTim>0 then                        ; is amplitude envelope attack time is greater than zero...
+   kenv    linsegr    0,iAttTim,1,iRelTim,0                ; create an amplitude envelope with an attack, a sustain and a release segment (senses realtime release)
   else            
-   kenv	linsegr	1,iRelTim,0					; create an amplitude envelope with a sustain and a release segment (senses realtime release)
+   kenv    linsegr    1,iRelTim,0                    ; create an amplitude envelope with a sustain and a release segment (senses realtime release)
   endif
-  kenv	expcurve	kenv,8					; remap amplitude value with a more natural curve
-  aenv	interp		kenv					; interpolate and create a-rate envelope
+  kenv    expcurve    kenv,8                    ; remap amplitude value with a more natural curve
+  aenv    interp        kenv                    ; interpolate and create a-rate envelope
 
-  kporttime	linseg	0,0.001,0.05				; portamento time function. (Rises quickly from zero to a held value.)
+  kporttime    linseg    0,0.001,0.05                ; portamento time function. (Rises quickly from zero to a held value.)
 
-  kspeed	portk	gkspeed,kporttime
-  kptr		portk	gkptr, kporttime
+  kspeed    portk    gkspeed,kporttime
+  kptr        portk    gkptr, kporttime
   
-  ktranspose	portk	gktranspose,kporttime			; 
+  ktranspose    portk    gktranspose,kporttime            ; 
   
-  ktrig	changed	gkshape,gkoverlap,gkgrsize,gkgrsizeOS,gkmode,gkinskip
+  ktrig    changed    gkshape,gkoverlap,gkgrsize,gkgrsizeOS,gkmode,gkinskip
   if ktrig==1 then
-   reinit	UPDATE
+   reinit    UPDATE
   endif
   UPDATE:
   
-  iwfn		=	i(gkshape) + giwfn1 - 1
-  imode		=	i(gkmode) - 1
+  iwfn        =    i(gkshape) + giwfn1 - 1
+  imode        =    i(gkmode) - 1
   
-  if imode==0 then						; timestretch mode
-   kwarp	=	1/(kspeed*gkfreeze)
-   ibeg		=	i(gkinskip) * giFileLen
-   kscrubber	init	ibeg*sr
-   kscrubber	+=	kspeed*ksmps*gkfreeze
-  elseif imode==1 then						; pointer mode
-   kwarp	=	giFileLen * kptr
-   kptrOS	random	0, (giFileLen - kwarp) * gkptrOS
-   kwarp	=	kwarp + kptrOS
-   ibeg		=	0
-   kscrubber	=	(kwarp + kptrOS) * sr
-  else								; region mode
-   imode	=	1					; sndwarp mode used in region mode will be pointer mode
-   kwarp	random	gkLoopStart/sr,(gkLoopStart+gkLoopEnd)/sr
-   ibeg		=	0
-   kscrubber	=	kwarp * sr
+  if imode==0 then                        ; timestretch mode
+   kwarp    =    1/(kspeed*gkfreeze)
+   ibeg        =    i(gkinskip) * giFileLen
+   kscrubber    init    ibeg*sr
+   kscrubber    +=    kspeed*ksmps*gkfreeze
+  elseif imode==1 then                        ; pointer mode
+   kwarp    =    giFileLen * kptr
+   kptrOS    random    0, (giFileLen - kwarp) * gkptrOS
+   kwarp    =    kwarp + kptrOS
+   ibeg        =    0
+   kscrubber    =    (kwarp + kptrOS) * sr
+  else                                ; region mode
+   imode    =    1                    ; sndwarp mode used in region mode will be pointer mode
+   kwarp    random    gkLoopStart/sr,(gkLoopStart+gkLoopLen)/sr
+   ibeg        =    0
+   kscrubber    =    kwarp * sr
   endif
 
 
-  apch		interp	semitone(ktranspose)
-  klevel	portk	gklevel/(i(gkoverlap)^0.25), kporttime		; apply portamento smoothing to changes in level
+  apch        interp    semitone(ktranspose)
+  klevel    portk    gklevel/(i(gkoverlap)^0.25), kporttime        ; apply portamento smoothing to changes in level
 
-  if gichans==1 then						; if mono...
-   a1	sndwarp		klevel*iamp, kwarp, iFrqRatio, gitableL, ibeg, i(gkgrsize), i(gkgrsize) * i(gkgrsizeOS), i(gkoverlap), iwfn, imode
- 	outs	a1*aenv,a1*aenv					; send mono audio to both outputs 
-  elseif gichans==2 then						; otherwise, if stereo...
-   a1	sndwarp		klevel*iamp, kwarp, iFrqRatio, gitableL, ibeg, i(gkgrsize), i(gkgrsize) * i(gkgrsizeOS), i(gkoverlap), iwfn, imode
-   a2	sndwarp		klevel*iamp, kwarp, iFrqRatio, gitableR, ibeg, i(gkgrsize), i(gkgrsize) * i(gkgrsizeOS), i(gkoverlap), iwfn, imode
- 	outs	a1*aenv,a2*aenv					; send stereo signal to outputs
+  if gichans==1 then                        ; if mono...
+   a1    sndwarp        klevel*iamp, kwarp, iFrqRatio, gitableL, ibeg, i(gkgrsize), i(gkgrsize) * i(gkgrsizeOS), i(gkoverlap), iwfn, imode
+     outs    a1*aenv,a1*aenv                    ; send mono audio to both outputs 
+  elseif gichans==2 then                        ; otherwise, if stereo...
+   a1    sndwarp        klevel*iamp, kwarp, iFrqRatio, gitableL, ibeg, i(gkgrsize), i(gkgrsize) * i(gkgrsizeOS), i(gkoverlap), iwfn, imode
+   a2    sndwarp        klevel*iamp, kwarp, iFrqRatio, gitableR, ibeg, i(gkgrsize), i(gkgrsize) * i(gkgrsizeOS), i(gkoverlap), iwfn, imode
+     outs    a1*aenv,a2*aenv                    ; send stereo signal to outputs
   endif
   rireturn
  endif
 
 
- iactive	active	p1
+ iactive    active    p1
  if iactive==1 then 
-  if imode==0 then						; timestretch mode
-   kscrubber	init	0
-   kscrubber	+=	kspeed*ksmps*gkfreeze
-  else								; pointer mode
-   kptrOS	random	0, (giFileLen - kwarp) * gkptrOS
-   kwarp	=	kwarp + kptrOS
-   kscrubber	=	(kwarp + kptrOS) * sr
+  if imode==0 then                        ; timestretch mode
+   kscrubber    init    0
+   kscrubber    +=    kspeed*ksmps*gkfreeze
+  else                                ; pointer mode
+   kptrOS    random    0, (giFileLen - kwarp) * gkptrOS
+   kwarp    =    kwarp + kptrOS
+   kscrubber    =    (kwarp + kptrOS) * sr
   endif
  
   ; print scrubber
@@ -342,10 +353,10 @@ instr	3
 endin
 
 /*
-event_i	"i",999,0,3600
-instr	999
- aL,aR	monitor
- 		fout	"SndWarpOut.wav",4,aL,aR
+event_i    "i",999,0,3600
+instr    999
+ aL,aR    monitor
+         fout    "SndWarpOut.wav",4,aL,aR
 endin
 */
 

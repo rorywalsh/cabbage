@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; LiveSndwarp.csd
 ; Iain McCurdy (2012)
 ; 
@@ -47,7 +54,7 @@
 ; the buffered audio. The feedback loop will also be deactivated when 'freeze' is active.
 
 <Cabbage>
-form caption("Live Sndwarp") size(530, 495), pluginId("lwrp") style("legacy")
+form caption("Live Sndwarp") size(530, 495), pluginId("lwrp")
 
 groupbox bounds(  0,  0, 300,100), text("Master"), colour(30, 30, 40), fontColour(255,125,125), plant("Master")
 {
@@ -105,219 +112,219 @@ label bounds( 3,   3, 210, 14), text("Author: Iain McCurdy |2012|"), fontColour(
 <CsoundSynthesizer>
 
 <CsOptions>
--dm0 -n -+rtmidi=null -M0
+-dm0 -n -+rtmidi=NULL -M0
 </CsOptions>
 
 <CsInstruments>
 
-;sr is set by the host
-ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
-nchnls 		= 	2	;NUMBER OF CHANNELS (2=STEREO)
-0dbfs		=	1
-massign	0,2
+; sr is set by host
+ksmps         =     32    ;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls         =     2    ;NUMBER OF CHANNELS (2=STEREO)
+0dbfs        =    1
+massign    0,2
 
-giview		ftgen	1, 0, 512, 2, 0		; display buffer
+giview        ftgen    1, 0, 512, 2, 0        ; display buffer
 
-gibuffer	ftgen	0, 0, 1048576, 2, 0	; Buffer table. Roughly 23 seconds duration.
-gibufferR	ftgen	0, 0, 1048576, 2, 0	; right channel
+gibuffer    ftgen    0, 0, 1048576, 2, 0    ; Buffer table. Roughly 23 seconds duration.
+gibufferR    ftgen    0, 0, 1048576, 2, 0    ; right channel
 
 ;GRAIN ENVELOPE WINDOW FUNCTION TABLES:
-giwfn1	ftgen	0,  0, 131072,  9,   .5, 1, 	0 							; HALF SINE
-giwfn2	ftgen	0,  0, 131072,  7,    0, 3072,  1, 128000,     0			; PERCUSSIVE - STRAIGHT SEGMENTS
-giwfn3	ftgen	0,  0, 131072,  5, .001, 3072,  1, 128000, 0.001			; PERCUSSIVE - EXPONENTIAL SEGMENTS
-giwfn4	ftgen	0,  0, 131072,  7,    0, 1536,  1, 128000,     1, 1536, 0	; GATE - WITH ANTI-CLICK RAMP UP AND RAMP DOWN SEGMENTS
-giwfn5	ftgen	0,  0, 131072,  7,    0, 128000,1, 3072,       0			; REVERSE PERCUSSIVE - STRAIGHT SEGMENTS
-giwfn6	ftgen	0,  0, 131072,  5, .001, 128000,1, 3072,   0.001			; REVERSE PERCUSSIVE - EXPONENTIAL SEGMENTS
+giwfn1    ftgen    0,  0, 131072,  9,   .5, 1,     0                             ; HALF SINE
+giwfn2    ftgen    0,  0, 131072,  7,    0, 3072,  1, 128000,     0            ; PERCUSSIVE - STRAIGHT SEGMENTS
+giwfn3    ftgen    0,  0, 131072,  5, .001, 3072,  1, 128000, 0.001            ; PERCUSSIVE - EXPONENTIAL SEGMENTS
+giwfn4    ftgen    0,  0, 131072,  7,    0, 1536,  1, 128000,     1, 1536, 0    ; GATE - WITH ANTI-CLICK RAMP UP AND RAMP DOWN SEGMENTS
+giwfn5    ftgen    0,  0, 131072,  7,    0, 128000,1, 3072,       0            ; REVERSE PERCUSSIVE - STRAIGHT SEGMENTS
+giwfn6    ftgen    0,  0, 131072,  5, .001, 128000,1, 3072,   0.001            ; REVERSE PERCUSSIVE - EXPONENTIAL SEGMENTS
 
-instr	1
-	gkOnOff		chnget	"OnOff"
-	ktrigger	trigger	gkOnOff,0.5,0
-	schedkwhen	ktrigger,0,0,2,0,-1
+instr    1
+    gkOnOff        chnget    "OnOff"
+    ktrigger    trigger    gkOnOff,0.5,0
+    schedkwhen    ktrigger,0,0,2,0,-1
 
-	ginsamp		=	ftlen(gibuffer)-1			;index of the final sample in the function table
+    ginsamp        =    ftlen(gibuffer)-1            ;index of the final sample in the function table
 
-	gkamp		chnget	"amp"
-	gkInGain	chnget	"InGain"
-	gkmix		chnget	"mix"
-	gkbalance	chnget	"balance"
-	gkmonostereo	chnget	"monostereo"
-	gkfback		chnget	"feedback"
-	gkclip  	chnget	"clip"
-	gkClipLev  	chnget	"ClipLev"
-	gkCutoff	chnget	"Cutoff"
-	gkpch		chnget	"pch"
-	gkLPF_On  	chnget	"LPF_On"
-	gkwsize		chnget	"wsize"
-	gkwsize		=	int(gkwsize)	; workaround
-	gkrnd		chnget	"rnd"
-	gkornd		=	int(gkrnd)	; workaround
-	gkolap		chnget	"olaps"
-	gkolap		=	int(gkolap)	; workaround
-	gkwfn		chnget	"wfn"
-	gkdly		chnget	"dly"
-	gkbeta		chnget	"beta"
-	gkfreeze	chnget	"freeze"
-	gkManPtrPort	chnget	"ManPtrPort"
-	gkManPtr	chnget	"ManPtr"
-	gkUniNote	chnget	"UniNote"
+    gkamp        chnget    "amp"
+    gkInGain    chnget    "InGain"
+    gkmix        chnget    "mix"
+    gkbalance    chnget    "balance"
+    gkmonostereo    chnget    "monostereo"
+    gkfback        chnget    "feedback"
+    gkclip      chnget    "clip"
+    gkClipLev      chnget    "ClipLev"
+    gkCutoff    chnget    "Cutoff"
+    gkpch        chnget    "pch"
+    gkLPF_On      chnget    "LPF_On"
+    gkwsize        chnget    "wsize"
+    gkwsize        =    int(gkwsize)    ; workaround
+    gkrnd        chnget    "rnd"
+    gkornd        =    int(gkrnd)    ; workaround
+    gkolap        chnget    "olaps"
+    gkolap        =    int(gkolap)    ; workaround
+    gkwfn        chnget    "wfn"
+    gkdly        chnget    "dly"
+    gkbeta        chnget    "beta"
+    gkfreeze    chnget    "freeze"
+    gkManPtrPort    chnget    "ManPtrPort"
+    gkManPtr    chnget    "ManPtr"
+    gkUniNote    chnget    "UniNote"
 
-	ktrigger	trigger	gkfreeze,0.5,1				; if 'freeze' switch is turned off...
-	if ktrigger==1 then						
-	 chnset	1-ktrigger,"ManPtr"					; reset Manual Pointer slider to its default (maximum) position
-	endif
+    ktrigger    trigger    gkfreeze,0.5,1                ; if 'freeze' switch is turned off...
+    if ktrigger==1 then                        
+     chnset    1-ktrigger,"ManPtr"                    ; reset Manual Pointer slider to its default (maximum) position
+    endif
 
-	ain	inch	1						; read audio input from the left input channel
-	ain	=	ain*gkInGain					; scale input signal according to 'In Gain' control position
-		outch	1,ain*(1-gkmix)					; send some dry signal to output according to dry/wet 'Mix' control position
-	gaFBackSig,gaFBackSigR	init	0				; audio feedback signal (initialised for first performance iteration)
-	
-	/*DC offset filter feedback signal*/
-	aFBackSig	dcblock2	gaFBackSig			; filter dc offset from left channel feedback signal
-	if gkmonostereo==3 then						; if 'stereo in' mode is active...
-	 aFBackSigR	dcblock2	gaFBackSigR			; filter dc offset from right channel feedback signal
-	endif
-	
-	/*lowpass filter feedback signal*/
-	if gkLPF_On==1 then						; if lowpass filter button is on...
-	 aFBackSig tone	aFBackSig,gkCutoff				; ...filter left feedback channel
-	 if gkmonostereo==3 then					; if 'stereo in' mode is active...
-	  aFBackSigR tone	aFBackSigR,gkCutoff			; lowpass filter the right channel
-	 endif
-	endif
+    ain    inch    1                        ; read audio input from the left input channel
+    ain    =    ain*gkInGain                    ; scale input signal according to 'In Gain' control position
+        outch    1,ain*(1-gkmix)                    ; send some dry signal to output according to dry/wet 'Mix' control position
+    gaFBackSig,gaFBackSigR    init    0                ; audio feedback signal (initialised for first performance iteration)
+    
+    /*DC offset filter feedback signal*/
+    aFBackSig    dcblock2    gaFBackSig            ; filter dc offset from left channel feedback signal
+    if gkmonostereo==3 then                        ; if 'stereo in' mode is active...
+     aFBackSigR    dcblock2    gaFBackSigR            ; filter dc offset from right channel feedback signal
+    endif
+    
+    /*lowpass filter feedback signal*/
+    if gkLPF_On==1 then                        ; if lowpass filter button is on...
+     aFBackSig tone    aFBackSig,gkCutoff                ; ...filter left feedback channel
+     if gkmonostereo==3 then                    ; if 'stereo in' mode is active...
+      aFBackSigR tone    aFBackSigR,gkCutoff            ; lowpass filter the right channel
+     endif
+    endif
 
-	/*clip feedback signal*/
-	if gkclip==1 then						; if clip switch is on...
-	 ktrig	changed	gkClipLev					; if clip level control is adjusted generate a trigger impulse (momentary '1')
-	 if ktrig==1 then						; if a trigger impulse has been received...
-	  reinit	UPDATE_CLIP_L					; reinitialise clip opcode (clip level is i-rate only)
-	 endif
-	 UPDATE_CLIP_L:
-	 aFBackSig	clip	aFBackSig, 0, 0dbfs*i(gkClipLev)	; clip left feedback signal at maximum amplitude using bram de jong method
-	 if gkmonostereo==3 then					; and if stereo in/out mode is also chosen
-	  aFBackSigR	clip	aFBackSigR, 0, 0dbfs*i(gkClipLev)	; clip right channel feedback signal
-	  rireturn
-	 endif
-	endif
-	gaphsW	phasor	(sr*(1-gkfreeze))/ginsamp			; pointer 0 - 1	;create a moving phase value that will be used to point to locations in a function table where input audio signal will be written
+    /*clip feedback signal*/
+    if gkclip==1 then                        ; if clip switch is on...
+     ktrig    changed    gkClipLev                    ; if clip level control is adjusted generate a trigger impulse (momentary '1')
+     if ktrig==1 then                        ; if a trigger impulse has been received...
+      reinit    UPDATE_CLIP_L                    ; reinitialise clip opcode (clip level is i-rate only)
+     endif
+     UPDATE_CLIP_L:
+     aFBackSig    clip    aFBackSig, 0, 0dbfs*i(gkClipLev)    ; clip left feedback signal at maximum amplitude using bram de jong method
+     if gkmonostereo==3 then                    ; and if stereo in/out mode is also chosen
+      aFBackSigR    clip    aFBackSigR, 0, 0dbfs*i(gkClipLev)    ; clip right channel feedback signal
+      rireturn
+     endif
+    endif
+    gaphsW    phasor    (sr*(1-gkfreeze))/ginsamp            ; pointer 0 - 1    ;create a moving phase value that will be used to point to locations in a function table where input audio signal will be written
 
-	/*write audio from left input to function table*/
-	if gkfreeze==0 then
-		tablew	ain+aFBackSig,gaphsW,gibuffer,1			; write input audio to table
-		tablew	k(ain)*5,1-k(gaphsW),giview,1			; write a value to the view table (k-rate is sufficient). Boost its amplitude before writing.
-	 if metro(32)==1 then								; peg rate of table updates
-       	  chnset	"tableNumber(1)", "table"			; update table display	
-	 endif
+    /*write audio from left input to function table*/
+    if gkfreeze==0 then
+        tablew    ain+aFBackSig,gaphsW,gibuffer,1            ; write input audio to table
+        tablew    k(ain)*5,1-k(gaphsW),giview,1            ; write a value to the view table (k-rate is sufficient). Boost its amplitude before writing.
+     if metro(32)==1 then                                ; peg rate of table updates
+             chnset    "tableNumber(1)", "table"            ; update table display    
+     endif
 
-	endif
-	
-	/*if stereo in - stereo out mode*/
-	if gkmonostereo==3 then						; if stereo in/out mode has been chosen...
-	 aR	inch	2						; read right channel audio input
-	 aR	=	aR*gkInGain					; reScale its amplitude with 'Input Gain' slider
-	 if gkfreeze==0 then
-		tablew	aR+aFBackSigR,gaphsW,gibufferR,1		; write right channel audio input audio to table
-	 endif
-		outch	2,aR*(1-gkmix)					; if 'stereo in' mode is selected, send some right channel dry signal to output according to dry/wet 'Mix' control position
-	else
-		outch	2,ain*(1-gkmix)					; otherwise not 'stereo in' mode so just send some left channel dry signal to output
-	endif
-		clear	gaFBackSig,gaFBackSigR				; clear feedback signals
-		
-	if changed(gkManPtr)==1 then
-	 Smsg	sprintfk	"pos(%d,250)",10+((gkManPtr+1)*508)
-	 	chnset		Smsg,"wiper"
-	endif
+    endif
+    
+    /*if stereo in - stereo out mode*/
+    if gkmonostereo==3 then                        ; if stereo in/out mode has been chosen...
+     aR    inch    2                        ; read right channel audio input
+     aR    =    aR*gkInGain                    ; reScale its amplitude with 'Input Gain' slider
+     if gkfreeze==0 then
+        tablew    aR+aFBackSigR,gaphsW,gibufferR,1        ; write right channel audio input audio to table
+     endif
+        outch    2,aR*(1-gkmix)                    ; if 'stereo in' mode is selected, send some right channel dry signal to output according to dry/wet 'Mix' control position
+    else
+        outch    2,ain*(1-gkmix)                    ; otherwise not 'stereo in' mode so just send some left channel dry signal to output
+    endif
+        clear    gaFBackSig,gaFBackSigR                ; clear feedback signals
+        
+    if changed(gkManPtr)==1 then
+     Smsg    sprintfk    "pos(%d,250)",10+((gkManPtr+1)*508)
+         chnset        Smsg,"wiper"
+    endif
 endin
 
-instr	2
-	iMIDIActiveValue	=	1							; IF MIDI ACTIVATED
-	iMIDIflag		=	0							; IF FLTK ACTIVATED
-	mididefault	iMIDIActiveValue, iMIDIflag						; IF NOTE IS MIDI ACTIVATED REPLACE iMIDIflag WITH iMIDIActiveValue 
-	kMIDIflag	init	iMIDIflag
-	if gkOnOff==0&&iMIDIflag==0 then
-	 turnoff
-	endif
+instr    2
+    iMIDIActiveValue    =    1                            ; IF MIDI ACTIVATED
+    iMIDIflag        =    0                            ; IF FLTK ACTIVATED
+    mididefault    iMIDIActiveValue, iMIDIflag                        ; IF NOTE IS MIDI ACTIVATED REPLACE iMIDIflag WITH iMIDIActiveValue 
+    kMIDIflag    init    iMIDIflag
+    if gkOnOff==0&&iMIDIflag==0 then
+     turnoff
+    endif
 
-	if iMIDIflag==1 then
-	 icps	cpsmidi
-	 kpch	=	icps/cpsmidinn(gkUniNote)
-	else
-	 kpch		=	gkpch
-	endif	
+    if iMIDIflag==1 then
+     icps    cpsmidi
+     kpch    =    icps/cpsmidinn(gkUniNote)
+    else
+     kpch        =    gkpch
+    endif    
 
-	kporttime	linseg	0,0.001,0.03							; portamento time. Rises quickly from zero to a held value.
-	kpch		portk	kpch,kporttime							; Apply portamento smoothing to changes made to the pitch multiplier
-	apch	interp	kpch									; interpolate pitch multiplier variable to create an a-rate version. This will produce higher quality results when pitch is modulated.
-	
-	kManPtr	portk	gkManPtr,kporttime*10*gkfreeze*gkManPtrPort
+    kporttime    linseg    0,0.001,0.03                            ; portamento time. Rises quickly from zero to a held value.
+    kpch        portk    kpch,kporttime                            ; Apply portamento smoothing to changes made to the pitch multiplier
+    apch    interp    kpch                                    ; interpolate pitch multiplier variable to create an a-rate version. This will produce higher quality results when pitch is modulated.
+    
+    kManPtr    portk    gkManPtr,kporttime*10*gkfreeze*gkManPtrPort
 
-	kmetro	metro	5									; peg rate of reinits
-	if kmetro==1 then
-	 ktrig	changed	gkwsize,gkrnd,gkolap,gkwfn						; if any of the list of input args. change, generate a trigger impulse (momentary '1'). The input args are all i-rate in sndwarp so reinitialisation will be required for their changes to register.
-	endif
-	if ktrig==1 then									; if a trigger has been generated... 
-	 reinit	UPDATE_SNDWARP									; ... begin a reinitialisation pass from the given label
-	endif
-	UPDATE_SNDWARP:										; a label. Reinitialisation begins from here.
-	imode	=	1									; sndwarp mode. (1=pointer mode, timestretch mode not so useful in a live audio in application)
-	ibeg	=	0									; point in the function table from which to begin reading audio (0=beginning)
-	iwsize	=	i(gkwsize)								; window (grain) size in samples
-	irnd	=	i(gkrnd)								; window (grain) size randomisation bandwidth in samples
-	iolap	=	i(gkolap)								; number of grain overlaps
-	kRndDly	betarand	gkdly,1,gkbeta							; random grain delay time
-	if gkmonostereo!=0 then
-	 kRndDlyR	betarand	gkdly,1,gkbeta						; random grain delay time
-	endif
-	
-	iMaxDur	=	(iwsize+irnd)/sr							; maximum grain duration in seconds
-	kTransComp	limit	iMaxDur*(kpch-1),0,ginsamp/sr
-	kdelay	=	(kTransComp+kRndDly) / (ginsamp/sr)					; delay time required when reading grains from the function table
-	if gkmonostereo!=0 then
-	 kdelayR	=	(kTransComp+kRndDlyR) / (ginsamp/sr)				; delay time required when reading grains from the function table
-	endif
-	if gkfreeze==1 then
-	 kdelay		=	kdelay + (sr/(ginsamp)*1.75*iwsize/sr)				; if freeze mode is active regress the read pointer a small amount
-	 if gkmonostereo!=0 then
-	  kdelayR	=	kdelayR + (sr/(ginsamp)*1.75*iwsize/sr)				; if freeze mode is active regress the read pointer a small amount
-	 endif
-	endif
-	aphsR	wrap	(gaphsW-kdelay+kManPtr)*(ginsamp/sr),0,(ginsamp-iwsize-irnd)/sr		; location from which to read grain. This is always directly related to the poistion of the write pointer.
-	aphsR_R	wrap	(gaphsW-kdelayR+kManPtr)*(ginsamp/sr),0,(ginsamp-iwsize-irnd)/sr	; location from which to read grain. This is always directly related to the poistion of the write pointer.
-	iwfn	=	giwfn1+i(gkwfn)-1							; Grain amplitude windowing shape
-	
-	/*sndwarp*/
-	asig,ac	sndwarp 1, aphsR, apch, gibuffer, ibeg, iwsize, irnd, iolap, iwfn, imode
-	if gkbalance==1 then									; if 'balance switch is on...
-	 asig	balance	asig,ac									; ... amplitude balance the signal
-	endif
-	if gkmonostereo==1 then									; if 'mono' mode seleced...
-	 gaFBackSig	=	gaFBackSig+(asig*gkfback)					; create feedback signal for next iteration. (This will be written into the function table along with the live audio in.)
-	 aR	=	asig
-	elseif gkmonostereo==2 then								; or if 'stereo out' mode
-	 aR,acR	sndwarp 1, aphsR_R, apch, gibuffer, ibeg, iwsize, irnd, iolap, iwfn, imode
-	 if gkbalance==1 then
-	  aR	balance	aR,acR
-	 endif
-	 gaFBackSig	=	gaFBackSig+((asig+aR)*gkfback)					; create feedback signal, a mixture of the left and right sndwarp output channels
-	else											; otherwise 'stereo in/out' mode
-	 aR,acR	sndwarp 1, aphsR_R, apch, gibufferR, ibeg, iwsize, irnd, iolap, iwfn, imode
-	 if gkbalance==1 then
-	  aR	balance	aR,acR
-	 endif
-	 gaFBackSig	=	gaFBackSig+(asig*gkfback)					; left channel feedback signal
-	 gaFBackSig	=	gaFBackSig+(aR*gkfback)						; right channel feedback signal
-	endif	
-	rireturn										; return from reinitialisation
-	aAntiClick	linsegr	0,0.03,1,0.03,0
-		outs	asig*gkamp*gkmix*aAntiClick, aR*gkamp*gkmix*aAntiClick			; send audio to outputs
+    kmetro    metro    5                                    ; peg rate of reinits
+    if kmetro==1 then
+     ktrig    changed    gkwsize,gkrnd,gkolap,gkwfn                        ; if any of the list of input args. change, generate a trigger impulse (momentary '1'). The input args are all i-rate in sndwarp so reinitialisation will be required for their changes to register.
+    endif
+    if ktrig==1 then                                    ; if a trigger has been generated... 
+     reinit    UPDATE_SNDWARP                                    ; ... begin a reinitialisation pass from the given label
+    endif
+    UPDATE_SNDWARP:                                        ; a label. Reinitialisation begins from here.
+    imode    =    1                                    ; sndwarp mode. (1=pointer mode, timestretch mode not so useful in a live audio in application)
+    ibeg    =    0                                    ; point in the function table from which to begin reading audio (0=beginning)
+    iwsize    =    i(gkwsize)                                ; window (grain) size in samples
+    irnd    =    i(gkrnd)                                ; window (grain) size randomisation bandwidth in samples
+    iolap    =    i(gkolap)                                ; number of grain overlaps
+    kRndDly    betarand    gkdly,1,gkbeta                            ; random grain delay time
+    if gkmonostereo!=0 then
+     kRndDlyR    betarand    gkdly,1,gkbeta                        ; random grain delay time
+    endif
+    
+    iMaxDur    =    (iwsize+irnd)/sr                            ; maximum grain duration in seconds
+    kTransComp    limit    iMaxDur*(kpch-1),0,ginsamp/sr
+    kdelay    =    (kTransComp+kRndDly) / (ginsamp/sr)                    ; delay time required when reading grains from the function table
+    if gkmonostereo!=0 then
+     kdelayR    =    (kTransComp+kRndDlyR) / (ginsamp/sr)                ; delay time required when reading grains from the function table
+    endif
+    if gkfreeze==1 then
+     kdelay        =    kdelay + (sr/(ginsamp)*1.75*iwsize/sr)                ; if freeze mode is active regress the read pointer a small amount
+     if gkmonostereo!=0 then
+      kdelayR    =    kdelayR + (sr/(ginsamp)*1.75*iwsize/sr)                ; if freeze mode is active regress the read pointer a small amount
+     endif
+    endif
+    aphsR    wrap    (gaphsW-kdelay+kManPtr)*(ginsamp/sr),0,(ginsamp-iwsize-irnd)/sr        ; location from which to read grain. This is always directly related to the poistion of the write pointer.
+    aphsR_R    wrap    (gaphsW-kdelayR+kManPtr)*(ginsamp/sr),0,(ginsamp-iwsize-irnd)/sr    ; location from which to read grain. This is always directly related to the poistion of the write pointer.
+    iwfn    =    giwfn1+i(gkwfn)-1                            ; Grain amplitude windowing shape
+    
+    /*sndwarp*/
+    asig,ac    sndwarp 1, aphsR, apch, gibuffer, ibeg, iwsize, irnd, iolap, iwfn, imode
+    if gkbalance==1 then                                    ; if 'balance switch is on...
+     asig    balance    asig,ac                                    ; ... amplitude balance the signal
+    endif
+    if gkmonostereo==1 then                                    ; if 'mono' mode seleced...
+     gaFBackSig    =    gaFBackSig+(asig*gkfback)                    ; create feedback signal for next iteration. (This will be written into the function table along with the live audio in.)
+     aR    =    asig
+    elseif gkmonostereo==2 then                                ; or if 'stereo out' mode
+     aR,acR    sndwarp 1, aphsR_R, apch, gibuffer, ibeg, iwsize, irnd, iolap, iwfn, imode
+     if gkbalance==1 then
+      aR    balance    aR,acR
+     endif
+     gaFBackSig    =    gaFBackSig+((asig+aR)*gkfback)                    ; create feedback signal, a mixture of the left and right sndwarp output channels
+    else                                            ; otherwise 'stereo in/out' mode
+     aR,acR    sndwarp 1, aphsR_R, apch, gibufferR, ibeg, iwsize, irnd, iolap, iwfn, imode
+     if gkbalance==1 then
+      aR    balance    aR,acR
+     endif
+     gaFBackSig    =    gaFBackSig+(asig*gkfback)                    ; left channel feedback signal
+     gaFBackSig    =    gaFBackSig+(aR*gkfback)                        ; right channel feedback signal
+    endif    
+    rireturn                                        ; return from reinitialisation
+    aAntiClick    linsegr    0,0.03,1,0.03,0
+        outs    asig*gkamp*gkmix*aAntiClick, aR*gkamp*gkmix*aAntiClick            ; send audio to outputs
 endin
 
-instr	UpdateWidgets
-	ksemis	chnget	"semis"									; read in 'semis' widget
-	ktrig1	changed	ksemis									; if 'semis' knob is moved...
-	if ktrig1==1 then			
-	 chnset	semitone(ksemis), "pch"								; update 'Pitch' knob with the value of semis (converted to a ratio)
-	endif
+instr    UpdateWidgets
+    ksemis    chnget    "semis"                                    ; read in 'semis' widget
+    ktrig1    changed    ksemis                                    ; if 'semis' knob is moved...
+    if ktrig1==1 then            
+     chnset    semitone(ksemis), "pch"                                ; update 'Pitch' knob with the value of semis (converted to a ratio)
+    endif
 endin
 
 </CsInstruments>

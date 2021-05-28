@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; Harmonics.csd
 ; Written by Iain McCurdy, 2014
 
@@ -6,17 +13,17 @@
 ; As well as emulating the hammer striking the string in the first place, a release hammer (or string damping mechanism is emulated)
 
 ; AMPLITUDE
-; Amp.		-	Global amplitude control
-; Vel.		-	key velocity influence upon hammer amplitude
+; Amp.        -    Global amplitude control
+; Vel.        -    key velocity influence upon hammer amplitude
 
 ; FUNDAMENTAL (how midi note maps to fundamental frequency of the tone)
-; Offset	-	fixed offset applied to all values in the mapping. For normal keyboard mapping set to '0'
-; Rnge.		-	range of the mapping. For normal keyboard mapping set to '1'
+; Offset    -    fixed offset applied to all values in the mapping. For normal keyboard mapping set to '0'
+; Rnge.        -    range of the mapping. For normal keyboard mapping set to '1'
 
 ; HARMONIC
-; Offset	-	offset of harmonic position (0 = no harmonic)
-; Vel		-	key velocity influence upon harmonic position
-; Kybd.Track	-	the amount to which keyboard tracking influences harmonic position
+; Offset    -    offset of harmonic position (0 = no harmonic)
+; Vel        -    key velocity influence upon harmonic position
+; Kybd.Track    -    the amount to which keyboard tracking influences harmonic position
 ; Algorithm Selector: 
 ;
 ;  1. "Single"   IMPULSE-->WAVEGUIDE-->OUT
@@ -27,18 +34,18 @@
 ;                                     |               +-->OUT
 ;                                     +---------------+
 ;
-; Double Strength	-	adds another waveguide in series thereby increasing the filtering effect and the sustain.
-; Series Mix		-	mix the outputs of both the first and the second waveguides in a series of two, 
-;						 i.e. more of the attack of the hammer (or impulse sounds) will be retained.
-; Envelope	-	A switch which, if selected, will apply an AR envelope to the harmonic offset value. 
-;   			 This will add a timbral attack and release to the sound.
-;				 For result to be heard most clearly, choose "Series" algorithm and increase "Release" (STRINGS) section.
+; Double Strength    -    adds another waveguide in series thereby increasing the filtering effect and the sustain.
+; Series Mix        -    mix the outputs of both the first and the second waveguides in a series of two, 
+;                         i.e. more of the attack of the hammer (or impulse sounds) will be retained.
+; Envelope    -    A switch which, if selected, will apply an AR envelope to the harmonic offset value. 
+;                This will add a timbral attack and release to the sound.
+;                 For result to be heard most clearly, choose "Series" algorithm and increase "Release" (STRINGS) section.
  
 ; STRING
-; Detune	-	maximum possible detuning between the two strings (in cents) triggered by each note (the actual detuning will be unique and fixed for each note)
-; Release	-	envelope release time once a key is released
-; Sustain	-	the sustain time of the strings. (Feedback in the double waveguide.)
-; Damping	-	high frequency damping. (Cutoff frequencies of two lowpass filters in the waveguide network.)
+; Detune    -    maximum possible detuning between the two strings (in cents) triggered by each note (the actual detuning will be unique and fixed for each note)
+; Release    -    envelope release time once a key is released
+; Sustain    -    the sustain time of the strings. (Feedback in the double waveguide.)
+; Damping    -    high frequency damping. (Cutoff frequencies of two lowpass filters in the waveguide network.)
 
 ; IMPULSE 
 ; Type:
@@ -51,47 +58,47 @@
 
 ; If "Hammer" ise selected, the following options are revealed.
 ; (keyboard mapping for the frequency of the hammer that strikes the string)
-; Vel.		-	key velocity influence upon hammer frequency (hammer impulse only sustains for one cycle so this effectively controls the duration or period of that cycle)
-; Offset	-	Fundemental frequency of the hammer (before keyboard tracking is applied)
-; Keybd.Track	-	Amount of keyboard tracking to be applied. Increasing this value causes higher note to use a higher frequency hammer impulse.
+; Vel.        -    key velocity influence upon hammer frequency (hammer impulse only sustains for one cycle so this effectively controls the duration or period of that cycle)
+; Offset    -    Fundemental frequency of the hammer (before keyboard tracking is applied)
+; Keybd.Track    -    Amount of keyboard tracking to be applied. Increasing this value causes higher note to use a higher frequency hammer impulse.
 
 ; If "Bowed" is selected, the following options are revealed.
-; Density	-	Density of noise impulses.
-; Random	-	amount of randomness in timing  of the noise impulses.
+; Density    -    Density of noise impulses.
+; Random    -    amount of randomness in timing  of the noise impulses.
 
 ; If "Noise" is selected, the following options are revealed.
-; Attack	-	attack time of the bowing
-; Bright	-	brightness of the bowing impulse
-; Noise		-	amount of randomness in the bowing impulse 
+; Attack    -    attack time of the bowing
+; Bright    -    brightness of the bowing impulse
+; Noise        -    amount of randomness in the bowing impulse 
 
 ; If "Gliss" is selected, the following options are revealed.
-; Rate		-	Rate of movement of the glissando.
-; Bandwidth	-	Bandwidth of the filter applied to the noise source.
+; Rate        -    Rate of movement of the glissando.
+; Bandwidth    -    Bandwidth of the filter applied to the noise source.
 
 ; If "Pulse" is selected, the following options are revealed.
-; Tempo		-	Tempo of impulses (BPM).
-; Var.		-	Amount of sliding variation of Tempo.
-; Min.LPF	-	Minimum limit of random lowpass filter.
-; Max.LPF	-	Maximum limit of random lowpass filter.
-; Clock		-	Defines whether all note use a shared pulse (global) or if each new note uses its own new pulse generator (local).
+; Tempo        -    Tempo of impulses (BPM).
+; Var.        -    Amount of sliding variation of Tempo.
+; Min.LPF    -    Minimum limit of random lowpass filter.
+; Max.LPF    -    Maximum limit of random lowpass filter.
+; Clock        -    Defines whether all note use a shared pulse (global) or if each new note uses its own new pulse generator (local).
 
 ; RELEASE HAMMER (string vibration stopping mechanism)
-; Ampl.		-	Amplitude of the release hammer. Set to zero to remove the release hammer altogether. 
-;			Release hammer amplitude is also affected by the current vibration amplitude of the strings so that the longer a note is allowed to decay the lower the release hammer amplitude will be.
-; Offset	-	Fundemental frequency of the release hammer (before keyboard tracking is applied)
-; Keybd.Track	-	Amount of keyboard tracking to be applied to the frequency of release hammer. Increasing this value causes higher note to use a higher frequency hammer impulse.
+; Ampl.        -    Amplitude of the release hammer. Set to zero to remove the release hammer altogether. 
+;            Release hammer amplitude is also affected by the current vibration amplitude of the strings so that the longer a note is allowed to decay the lower the release hammer amplitude will be.
+; Offset    -    Fundemental frequency of the release hammer (before keyboard tracking is applied)
+; Keybd.Track    -    Amount of keyboard tracking to be applied to the frequency of release hammer. Increasing this value causes higher note to use a higher frequency hammer impulse.
 
 ; STEREO (a stereophonic widening effect using a delay of random duration on each channel)
-; Width		-	Width of the effect. Effectively the maximum duration of the two random delay times.
-; Mix		-	Dry/wet mix between the mono string output and the two delays.
+; Width        -    Width of the effect. Effectively the maximum duration of the two random delay times.
+; Mix        -    Dry/wet mix between the mono string output and the two delays.
 
 ; REVERB (a reverb effect using screverb)
-; Mix		-	Dry/wet mix between the dry signal (including stereo signal) and the reverberated signal
-; Size		-	Size or decay time of the reverb effect
-; Damping	-	Cutoff frequency of the damping of reverberant reflections
+; Mix        -    Dry/wet mix between the dry signal (including stereo signal) and the reverberated signal
+; Size        -    Size or decay time of the reverb effect
+; Damping    -    Cutoff frequency of the damping of reverberant reflections
 
 <Cabbage>
-form caption("Harmonics"), size(970,320), colour(100,150,150), pluginId("Harm") style("legacy")
+form caption("Harmonics"), size(970,320), colour(100,150,150), pluginId("Harm")
 
 #define RSliderStyle valueTextBox(1), textBox(1), colour("silver"), trackerColour("silver"), textColour("white"), fontColour("white")
 
@@ -102,7 +109,7 @@ rslider  bounds(  0, 25, 75, 75), text("Amp."),  channel("Amp"), range(0,1.00,0.
 rslider  bounds( 55, 25, 75, 75), text("Vel."),  channel("AmpVel"), range(0,1.00,0.5,1,0.01), $RSliderStyle
 }
 
-;FUNDEMENTAL
+;FUNDAMENTAL
 image    bounds(140,  5,130,110), colour(100,150,150), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("fundemental"){
 label    bounds(  0,  4,130, 12), text("F U N D A M E N T A L"), fontColour(white)
 rslider  bounds(  0, 25, 75, 75), text("Offset"),  channel("NumOffset"), range(0,127,30,1,0.01), $RSliderStyle
@@ -117,7 +124,7 @@ rslider  bounds( 55, 25, 75, 75), text("Vel."),  channel("HarmRange"), range(0,2
 rslider  bounds(110, 25, 75, 75), text("Kybd.Track"),  channel("HarmKybd"), range(0,1.000,0), $RSliderStyle
 label    bounds(180, 40, 70, 13), text("Algorithm"), fontColour(white)
 combobox bounds(180, 55, 70, 20), channel("AlgType"), text("Single","Series","Double"), value(1)
-checkbox bounds(180, 80, 70, 12), channel("HarmEnv"), text("Envelope"), fontColour("white")
+checkbox bounds(180, 80, 70, 12), channel("HarmEnv"), text("Envelope"), fontColour:0("white"), fontColour:1("white")
 
 line     bounds(275, 20, 95, 1)
 label    bounds(302, 16, 40,10), text("G L I S S"), fontColour("white"), colour(100,150,150)
@@ -134,7 +141,7 @@ rslider  bounds(110, 25, 75, 75), text("Sustain"),  channel("feedback"), range(0
 rslider  bounds(165, 25, 75, 75), text("Damping"),  channel("cutoff"), range(0.001,1.000,1,0.5), $RSliderStyle
 rslider  bounds(220, 25, 75, 75), text("Lo.Cut"),  channel("LoCut"), range(1,8000,1,0.5,1), $RSliderStyle
 }
-	
+    
 ;IMPULSE
 image    bounds(  5,120,445,110), colour(100,150,150), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("hammer")
 {
@@ -214,192 +221,192 @@ keyboard bounds(  5,235,960, 80)
 <CsoundSynthesizer>
 
 <CsOptions>   
--dm0 -n -+rtmidi=null -M0
+-dm0 -n -+rtmidi=NULL -M0
 </CsOptions>
 
 <CsInstruments>
 
-;sr is set by the host
-ksmps 		= 	32	; NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
-nchnls 		= 	2	; NUMBER OF CHANNELS (1=MONO)
-0dbfs		=	1	; MAXIMUM AMPLITUDE
+; sr set by host
+ksmps         =     32    ; NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls         =     2    ; NUMBER OF CHANNELS (1=MONO)
+0dbfs        =    1    ; MAXIMUM AMPLITUDE
 
-massign	0,2
-giImp	ftgen	0,0,4097,9,0.5,1,0			; shape for the hammer inpulse
-gidetuning	ftgen	0,0,128,21,1,1			; random array used for fixing unique detune values for each note
-giDryMap	ftgen	0,0,4096,7,1,2048,1,2048,0	; dry mixer control mapping
-giWetMap	ftgen	0,0,4096,7,0,2048,1,2048,1	; wet mixer control mapping
-gaSendM,gaSendL,gaSendR	init	0			; initialise variable used for sending audio between instruments
-giAmpMap	ftgen	0, 0, -1400, -16, 200, 500, 0, 150, 500, -8, 0.8, 400, 0.8
+massign    0,2
+giImp    ftgen    0,0,4097,9,0.5,1,0            ; shape for the hammer inpulse
+gidetuning    ftgen    0,0,128,21,1,1            ; random array used for fixing unique detune values for each note
+giDryMap    ftgen    0,0,4096,7,1,2048,1,2048,0    ; dry mixer control mapping
+giWetMap    ftgen    0,0,4096,7,0,2048,1,2048,1    ; wet mixer control mapping
+gaSendM,gaSendL,gaSendR    init    0            ; initialise variable used for sending audio between instruments
+giAmpMap    ftgen    0, 0, -1400, -16, 200, 500, 0, 150, 500, -8, 0.8, 400, 0.8
 
-opcode	Oscil1a,a,iii					; an oscillator that plays a single cycle of an audio waveform at a-rate
- iamp,ifrq,ifn	xin
- aptr	line	0,1/ifrq,1
- asig	tablei	aptr,ifn,1
- aenv	linseg	1,1/ifrq,1,0.001,0
-	xout	asig*iamp*aenv
+opcode    Oscil1a,a,iii                    ; an oscillator that plays a single cycle of an audio waveform at a-rate
+ iamp,ifrq,ifn    xin
+ aptr    line    0,1/ifrq,1
+ asig    tablei    aptr,ifn,1
+ aenv    linseg    1,1/ifrq,1,0.001,0
+    xout    asig*iamp*aenv
 endop
 
-instr	1						; read in widgets
- kPortTime	linseg	0,0.01,0.1
- gkdetune	chnget	"detune"
- gkdetune		portk	gkdetune,kPortTime
- gkrelease	chnget	"release"
- gkHarmRange	chnget	"HarmRange"
- gkHarmOffset	chnget	"HarmOffset"
- gkHarmOffset	portk	gkHarmOffset,kPortTime
- gkHarmKybd	chnget	"HarmKybd"
- gkNumRange	chnget	"NumRange"
- gkNumOffset	chnget	"NumOffset"
- gkNumRange	portk	gkNumRange,kPortTime
- gkNumOffset	portk	gkNumOffset,kPortTime
- gkHammFrq	chnget	"HammFrq"
- gkHammTrk	chnget	"HammTrk"
- gkRelHammAmp	chnget	"RelHammAmp"
- gkRelHammFrq	chnget	"RelHammFrq"
- gkRelHammTrk	chnget	"RelHammTrk"
- gkAmpVel	chnget	"AmpVel"
- gkAmp		chnget	"Amp"
- gkAmp		portk	gkAmp,kPortTime
- gkToneVel	chnget	"ToneVel"
- gkDryWet	chnget	"RvbDryWet"
- gkDry		table	gkDryWet,giDryMap,1		; map dry/wet control
- gkWet		table	gkDryWet,giWetMap,1		;
- gkRvbSize	chnget	"RvbSize"
- gkRvbEQ	chnget	"RvbEQ"
- gkStWidth	chnget	"StWidth"
- gkStWidth	init	0.01				; (can't be zero at i-time)
- gkStMix	chnget	"StMix"
- gkfeedback	chnget	"feedback"
- gkcutoff	chnget	"cutoff"
- gkLoCut	chnget	"LoCut"
- gkLoCut	portk	gkLoCut,kPortTime
- gkAttack	chnget	"Attack"
- gkBright	chnget	"Bright"
- gkNoise	chnget	"Noise"
- gkAlgType	chnget	"AlgType"
- gkImpulse	chnget	"Impulse"
- gkNseDens	chnget	"NseDens"
- gkNseRand	chnget	"NseRand"
- gkGlsRate	chnget	"GlsRate"
- gkGlsBW	chnget	"GlsBW"
- gkHarmEnv	chnget	"HarmEnv"
- gkPlsRate	chnget	"PlsRate"
- gkPlsVar	chnget	"PlsVar"
- gkPlsMinCO	chnget	"PlsMinCO"
- gkPlsMaxCO	chnget	"PlsMaxCO"
- gkPlsFiltRate	chnget	"PlsFiltRate"
- gkPlsClock	chnget	"PlsClock"
- gkPlsFilter	chnget	"PlsFilter"
- gkPlsRel	chnget	"PlsRel"
- gkHarmSlideDep	chnget	"HarmSlideDep"
- gkHarmSlideRate	chnget	"HarmSlideRate"
+instr    1                        ; read in widgets
+ kPortTime    linseg    0,0.01,0.1
+ gkdetune    chnget    "detune"
+ gkdetune        portk    gkdetune,kPortTime
+ gkrelease    chnget    "release"
+ gkHarmRange    chnget    "HarmRange"
+ gkHarmOffset    chnget    "HarmOffset"
+ gkHarmOffset    portk    gkHarmOffset,kPortTime
+ gkHarmKybd    chnget    "HarmKybd"
+ gkNumRange    chnget    "NumRange"
+ gkNumOffset    chnget    "NumOffset"
+ gkNumRange    portk    gkNumRange,kPortTime
+ gkNumOffset    portk    gkNumOffset,kPortTime
+ gkHammFrq    chnget    "HammFrq"
+ gkHammTrk    chnget    "HammTrk"
+ gkRelHammAmp    chnget    "RelHammAmp"
+ gkRelHammFrq    chnget    "RelHammFrq"
+ gkRelHammTrk    chnget    "RelHammTrk"
+ gkAmpVel    chnget    "AmpVel"
+ gkAmp        chnget    "Amp"
+ gkAmp        portk    gkAmp,kPortTime
+ gkToneVel    chnget    "ToneVel"
+ gkDryWet    chnget    "RvbDryWet"
+ gkDry        table    gkDryWet,giDryMap,1        ; map dry/wet control
+ gkWet        table    gkDryWet,giWetMap,1        ;
+ gkRvbSize    chnget    "RvbSize"
+ gkRvbEQ    chnget    "RvbEQ"
+ gkStWidth    chnget    "StWidth"
+ gkStWidth    init    0.01                ; (can't be zero at i-time)
+ gkStMix    chnget    "StMix"
+ gkfeedback    chnget    "feedback"
+ gkcutoff    chnget    "cutoff"
+ gkLoCut    chnget    "LoCut"
+ gkLoCut    portk    gkLoCut,kPortTime
+ gkAttack    chnget    "Attack"
+ gkBright    chnget    "Bright"
+ gkNoise    chnget    "Noise"
+ gkAlgType    chnget    "AlgType"
+ gkImpulse    chnget    "Impulse"
+ gkNseDens    chnget    "NseDens"
+ gkNseRand    chnget    "NseRand"
+ gkGlsRate    chnget    "GlsRate"
+ gkGlsBW    chnget    "GlsBW"
+ gkHarmEnv    chnget    "HarmEnv"
+ gkPlsRate    chnget    "PlsRate"
+ gkPlsVar    chnget    "PlsVar"
+ gkPlsMinCO    chnget    "PlsMinCO"
+ gkPlsMaxCO    chnget    "PlsMaxCO"
+ gkPlsFiltRate    chnget    "PlsFiltRate"
+ gkPlsClock    chnget    "PlsClock"
+ gkPlsFilter    chnget    "PlsFilter"
+ gkPlsRel    chnget    "PlsRel"
+ gkHarmSlideDep    chnget    "HarmSlideDep"
+ gkHarmSlideRate    chnget    "HarmSlideRate"
  
  if changed(gkImpulse)==1 then
-  if gkImpulse==6 then				; live
-   chnset	"visible(0)","HammerID"
-   chnset	"visible(0)","BowID"
-   chnset	"visible(0)","NoiseID"
-   chnset	"visible(0)","GlissID"
-   chnset	"visible(0)","PulseID"
-  elseif gkImpulse==5 then				; pulse
-   chnset	"visible(0)","HammerID"
-   chnset	"visible(0)","BowID"
-   chnset	"visible(0)","NoiseID"
-   chnset	"visible(0)","GlissID"
-   chnset	"visible(1)","PulseID"
-  elseif gkImpulse==4 then				; gliss
-   chnset	"visible(0)","HammerID"
-   chnset	"visible(0)","BowID"
-   chnset	"visible(0)","NoiseID"
-   chnset	"visible(1)","GlissID"
-   chnset	"visible(0)","PulseID"
-  elseif gkImpulse==3 then			; noise
-   chnset	"visible(0)","HammerID"
-   chnset	"visible(0)","BowID"
-   chnset	"visible(1)","NoiseID"
-   chnset	"visible(0)","GlissID"
-   chnset	"visible(0)","PulseID"
-  elseif gkImpulse==2 then			; bow
-   chnset	"visible(0)","HammerID"
-   chnset	"visible(1)","BowID"
-   chnset	"visible(0)","NoiseID"
-   chnset	"visible(0)","GlissID"
-   chnset	"visible(0)","PulseID"
-  else								; hammer
-   chnset	"visible(1)","HammerID"
-   chnset	"visible(0)","BowID"
-   chnset	"visible(0)","NoiseID"
-   chnset	"visible(0)","GlissID"
-   chnset	"visible(0)","PulseID"
+  if gkImpulse==6 then                ; live
+   chnset    "visible(0)","HammerID"
+   chnset    "visible(0)","BowID"
+   chnset    "visible(0)","NoiseID"
+   chnset    "visible(0)","GlissID"
+   chnset    "visible(0)","PulseID"
+  elseif gkImpulse==5 then                ; pulse
+   chnset    "visible(0)","HammerID"
+   chnset    "visible(0)","BowID"
+   chnset    "visible(0)","NoiseID"
+   chnset    "visible(0)","GlissID"
+   chnset    "visible(1)","PulseID"
+  elseif gkImpulse==4 then                ; gliss
+   chnset    "visible(0)","HammerID"
+   chnset    "visible(0)","BowID"
+   chnset    "visible(0)","NoiseID"
+   chnset    "visible(1)","GlissID"
+   chnset    "visible(0)","PulseID"
+  elseif gkImpulse==3 then            ; noise
+   chnset    "visible(0)","HammerID"
+   chnset    "visible(0)","BowID"
+   chnset    "visible(1)","NoiseID"
+   chnset    "visible(0)","GlissID"
+   chnset    "visible(0)","PulseID"
+  elseif gkImpulse==2 then            ; bow
+   chnset    "visible(0)","HammerID"
+   chnset    "visible(1)","BowID"
+   chnset    "visible(0)","NoiseID"
+   chnset    "visible(0)","GlissID"
+   chnset    "visible(0)","PulseID"
+  else                                ; hammer
+   chnset    "visible(1)","HammerID"
+   chnset    "visible(0)","BowID"
+   chnset    "visible(0)","NoiseID"
+   chnset    "visible(0)","GlissID"
+   chnset    "visible(0)","PulseID"
   endif
  endif
 endin
 
-instr	2						; hammered string instrument
+instr    2                        ; hammered string instrument
  ;==Fundemental==
- inum	notnum
- kcps		=	cpsmidinn(((inum/127) * gkNumRange) + gkNumOffset)	; derive fundemental frequency
+ inum    notnum
+ kcps        =    cpsmidinn(((inum/127) * gkNumRange) + gkNumOffset)    ; derive fundemental frequency
  
  ;==Impulse==
  ;;(click impulse)
- ;aImpls	mpulse	1,0
+ ;aImpls    mpulse    1,0
 
  ;;(noise impulse)
- ;aNoise	pinkish	1
- ;iatt	=	0.001
- ;isus	=	0.05
- ;idec	=	0.01
- ;isuslev	veloc	0.5,1
- ;aEnv	linseg	0,iatt,isuslev,isus,isuslev,idec,0
- ;aImpls	=	aNoise * aEnv
- ;aImpls	butlp	aImpls,1000
+ ;aNoise    pinkish    1
+ ;iatt    =    0.001
+ ;isus    =    0.05
+ ;idec    =    0.01
+ ;isuslev    veloc    0.5,1
+ ;aEnv    linseg    0,iatt,isuslev,isus,isuslev,idec,0
+ ;aImpls    =    aNoise * aEnv
+ ;aImpls    butlp    aImpls,1000
  
  ;(hammer impulse)
- krel	release
- krel	init	0
- krms	init	0
- ktrig	trigger	krel,0.5,0
+ krel    release
+ krel    init    0
+ krms    init    0
+ ktrig    trigger    krel,0.5,0
  if ktrig==1 then
   reinit RELEASE_HAMMER
  endif
 
  RELEASE_HAMMER:
- if i(krel)==1 then							; Insert release hammer values
-  iAmpVel	=		i(gkRelHammAmp) * (( i(krms) * 3) + 0.03)
-  ifrq		=		i(gkRelHammFrq) * semitone(i(gkRelHammTrk)*inum)
+ if i(krel)==1 then                            ; Insert release hammer values
+  iAmpVel    =        i(gkRelHammAmp) * (( i(krms) * 3) + 0.03)
+  ifrq        =        i(gkRelHammFrq) * semitone(i(gkRelHammTrk)*inum)
  else
-  ifrq		=		i(gkHammFrq) * semitone(i(gkHammTrk)*inum)
-  iAmpVel	veloc	1-i(gkAmpVel),1
+  ifrq        =        i(gkHammFrq) * semitone(i(gkHammTrk)*inum)
+  iAmpVel    veloc    1-i(gkAmpVel),1
  endif
 
  ;==Detuning==
- idetune	table	inum,gidetuning		;=	i(gkdetune)
- kdetune	=	idetune * gkdetune
+ idetune    table    inum,gidetuning        ;=    i(gkdetune)
+ kdetune    =    idetune * gkdetune
  
  ;==Main Impulse==
- if i(gkImpulse)==1 then										; Hammer
-  aImpls	Oscil1a	iAmpVel,ifrq,giImp
- elseif i(gkImpulse)==2 then									; Bow
-  aImpls1	gausstrig	iAmpVel, kcps*cent(kdetune), gkNoise
-  aImpls2	gausstrig	iAmpVel, kcps*cent(-kdetune), gkNoise
-  aImpls	=			aImpls1 + aImpls2
-  ;aImpls	buthp		aImpls, kcps*2
-  ;aImpls	buthp		aImpls, kcps*2
-  aCF		expsegr		50, i(gkAttack), (sr/10), 0.3, 50
-  aImpls	butlp		aImpls, aCF*gkBright
- elseif i(gkImpulse)==3 then									; Noise
-  aImpls	gausstrig	iAmpVel, gkNseDens, gkNseRand
- elseif i(gkImpulse)==4 then									; Gliss
-  aNse	pinkish	iAmpVel
-  aOct	rspline	octmidi(),12,gkGlsRate,gkGlsRate*2
-  aImpls	reson	aNse, cpsoct(aOct), cpsoct(aOct)*gkGlsBW, 1
- elseif i(gkImpulse)==5 then									; Repeated pulses
-  if active:i(p1,0,1)<=1 || gkPlsClock==1 then					; if this is the first note or if local clock is selected
-   kPlsRate	rspline	gkPlsRate*octave(gkPlsVar)/60, gkPlsRate*octave(-gkPlsVar)/60, kPlsRate*0.1, kPlsRate*0.2 
+ if i(gkImpulse)==1 then                                        ; Hammer
+  aImpls    Oscil1a    iAmpVel,ifrq,giImp
+ elseif i(gkImpulse)==2 then                                    ; Bow
+  aImpls1    gausstrig    iAmpVel, kcps*cent(kdetune), gkNoise
+  aImpls2    gausstrig    iAmpVel, kcps*cent(-kdetune), gkNoise
+  aImpls    =            aImpls1 + aImpls2
+  ;aImpls    buthp        aImpls, kcps*2
+  ;aImpls    buthp        aImpls, kcps*2
+  aCF        expsegr        50, i(gkAttack), (sr/10), 0.3, 50
+  aImpls    butlp        aImpls, aCF*gkBright
+ elseif i(gkImpulse)==3 then                                    ; Noise
+  aImpls    gausstrig    iAmpVel, gkNseDens, gkNseRand
+ elseif i(gkImpulse)==4 then                                    ; Gliss
+  aNse    pinkish    iAmpVel
+  aOct    rspline    octmidi(),12,gkGlsRate,gkGlsRate*2
+  aImpls    reson    aNse, cpsoct(aOct), cpsoct(aOct)*gkGlsBW, 1
+ elseif i(gkImpulse)==5 then                                    ; Repeated pulses
+  if active:i(p1,0,1)<=1 || gkPlsClock==1 then                    ; if this is the first note or if local clock is selected
+   kPlsRate    rspline    gkPlsRate*octave(gkPlsVar)/60, gkPlsRate*octave(-gkPlsVar)/60, kPlsRate*0.1, kPlsRate*0.2 
    
-   ;;if (gkPlsRel==0) then			; why doesn't this work??
-   ;; kPlsRate	*=	1-release()
+   ;;if (gkPlsRel==0) then            ; why doesn't this work??
+   ;; kPlsRate    *=    1-release()
    ;;endif
 
    if metro:k(kPlsRate)==1 then
@@ -409,127 +416,127 @@ instr	2						; hammered string instrument
    krelease release
 
    NewPulse:
-   aImpls	Oscil1a	iAmpVel*(1-i(krelease)),ifrq,giImp
+   aImpls    Oscil1a    iAmpVel*(1-i(krelease)),ifrq,giImp
    rireturn
    
-   kCO		rspline	gkPlsMinCO, gkPlsMaxCO, kPlsRate*gkPlsFiltRate, kPlsRate*gkPlsFiltRate
-   kCO		limit	kCO,4,14
-   ;;kAmp		tablei	kCO*100,giAmpMap
-   ;;aImpls	mpulse	kAmp*(1-release:k()), 1/kPlsRate
-   if gkPlsFilter==1 then											; lowpass
-    aImpls	butlp	aImpls, a(cpsoct(kCO))
-   elseif gkPlsFilter==2 then										; bandpass
-    aImpls	reson	aImpls, a(cpsoct(kCO)), a(cpsoct(kCO))*0.1, 1
-   elseif gkPlsFilter==3 then										; resonant lowpass
-    aImpls	moogladder	aImpls, a(cpsoct(kCO)),0.6
-   else																; highpass
-    aImpls	buthp	aImpls, a(cpsoct(kCO))
+   kCO        rspline    gkPlsMinCO, gkPlsMaxCO, kPlsRate*gkPlsFiltRate, kPlsRate*gkPlsFiltRate
+   kCO        limit    kCO,4,14
+   ;;kAmp        tablei    kCO*100,giAmpMap
+   ;;aImpls    mpulse    kAmp*(1-release:k()), 1/kPlsRate
+   if gkPlsFilter==1 then                                            ; lowpass
+    aImpls    butlp    aImpls, a(cpsoct(kCO))
+   elseif gkPlsFilter==2 then                                        ; bandpass
+    aImpls    reson    aImpls, a(cpsoct(kCO)), a(cpsoct(kCO))*0.1, 1
+   elseif gkPlsFilter==3 then                                        ; resonant lowpass
+    aImpls    moogladder    aImpls, a(cpsoct(kCO)),0.6
+   else                                                                ; highpass
+    aImpls    buthp    aImpls, a(cpsoct(kCO))
    endif
-   gaImpls	=		aImpls
-  else															; not the first note (use the global pulse
-   aImpls	vdelay	gaImpls, randomi:a(0.001,0.02,1,1)*1000,100	; add some local flam
+   gaImpls    =        aImpls
+  else                                                            ; not the first note (use the global pulse
+   aImpls    vdelay    gaImpls, randomi:a(0.001,0.02,1,1)*1000,100    ; add some local flam
   endif
  else
-   aL,aR		ins
-   aImpls		sum		aL,aR
+   aL,aR        ins
+   aImpls        sum        aL,aR
  endif 
  
  rireturn
- icf	veloc	12-(8*i(gkToneVel)),12
- aImpls	butlp	aImpls,cpsoct(icf)
+ icf    veloc    12-(8*i(gkToneVel)),12
+ aImpls    butlp    aImpls,cpsoct(icf)
 
  ;==Harmonic==
- iHarmVel	veloc	i(gkHarmRange),0
- iHarmKybd	=		(i(gkHarmKybd) * (128-inum))/128
- iHarmRatio	=		1 + i(gkHarmOffset) + iHarmVel + iHarmKybd
- kHarmRatio	=		1 + gkHarmOffset + iHarmVel + iHarmKybd
- kHarmRatio	init	iHarmRatio
- aHarmRatio	=		a(kHarmRatio)
+ iHarmVel    veloc    i(gkHarmRange),0
+ iHarmKybd    =        (i(gkHarmKybd) * (128-inum))/128
+ iHarmRatio    =        1 + i(gkHarmOffset) + iHarmVel + iHarmKybd
+ kHarmRatio    =        1 + gkHarmOffset + iHarmVel + iHarmKybd
+ kHarmRatio    init    iHarmRatio
+ aHarmRatio    =        a(kHarmRatio)
  
  ;==Waveguide Frequencies
- aFund1		interp	kcps * cent(kdetune), 0, 1
- aFund2		interp	kcps * cent(-kdetune), 0, 1
+ aFund1        interp    kcps * cent(kdetune), 0, 1
+ aFund2        interp    kcps * cent(-kdetune), 0, 1
  if gkHarmEnv==1 then
-  kHarmEnv	expsegr	0.9,0.03,1,0.9,0.9
-  aHarmRatio	interp	kHarmRatio*kHarmEnv, 0, 1 
+  kHarmEnv    expsegr    0.9,0.03,1,0.9,0.9
+  aHarmRatio    interp    kHarmRatio*kHarmEnv, 0, 1 
  else
-  aHarmRatio	interp	kHarmRatio, 0, 1 
+  aHarmRatio    interp    kHarmRatio, 0, 1 
  endif
  ;==sliding harmonic modulation
  if gkHarmSlideDep>0 then
-  aMod		rspline	-gkHarmSlideDep,gkHarmSlideDep,gkHarmSlideRate,gkHarmSlideRate*2
-  aHarmRatio	=		aHarmRatio * semitone(aMod)
+  aMod        rspline    -gkHarmSlideDep,gkHarmSlideDep,gkHarmSlideRate,gkHarmSlideRate*2
+  aHarmRatio    =        aHarmRatio * semitone(aMod)
  endif
- aHarm1		=		aFund1 * aHarmRatio
- aHarm2		=		aFund2 * aHarmRatio
+ aHarm1        =        aFund1 * aHarmRatio
+ aHarm2        =        aFund2 * aHarmRatio
  
  ;==Double Waveguide Filter==
- if changed:k(gkAlgType)==1 then	; to prevent explosive clicks
+ if changed:k(gkAlgType)==1 then    ; to prevent explosive clicks
   reinit RestartWaveguides
  endif
  RestartWaveguides:
- kcutoff	=		(sr/2)*gkcutoff
- kfeedback	=		0.249999999*gkfeedback
- aWg2		wguide2	aImpls,aFund1, aHarm1, kcutoff,kcutoff, kfeedback, kfeedback
- aWg2_2		wguide2	aImpls,aFund2, aHarm2, kcutoff,kcutoff, kfeedback, kfeedback
+ kcutoff    =        (sr/2)*gkcutoff
+ kfeedback    =        0.249999999*gkfeedback
+ aWg2        wguide2    aImpls,aFund1, aHarm1, kcutoff,kcutoff, kfeedback, kfeedback
+ aWg2_2        wguide2    aImpls,aFund2, aHarm2, kcutoff,kcutoff, kfeedback, kfeedback
  if (gkAlgType==2) then
-  aWg2		wguide2	aWg2*  0.13,aFund1, aHarm1 , kcutoff,kcutoff, kfeedback, kfeedback
-  aWg2_2	wguide2	aWg2_2*0.13,aFund2, aHarm2, kcutoff,kcutoff, kfeedback, kfeedback
+  aWg2        wguide2    aWg2*  0.13,aFund1, aHarm1 , kcutoff,kcutoff, kfeedback, kfeedback
+  aWg2_2    wguide2    aWg2_2*0.13,aFund2, aHarm2, kcutoff,kcutoff, kfeedback, kfeedback
  elseif (gkAlgType==3) then
-  aWg2b		wguide2	aWg2*  0.13,aFund1, aHarm1, kcutoff,kcutoff, kfeedback, kfeedback
-  aWg2_2b	wguide2	aWg2_2*0.13,aFund2, aHarm2, kcutoff,kcutoff, kfeedback, kfeedback
-  aWg2		+=		aWg2b
-  aWg2_2	+=		aWg2_2b
+  aWg2b        wguide2    aWg2*  0.13,aFund1, aHarm1, kcutoff,kcutoff, kfeedback, kfeedback
+  aWg2_2b    wguide2    aWg2_2*0.13,aFund2, aHarm2, kcutoff,kcutoff, kfeedback, kfeedback
+  aWg2        +=        aWg2b
+  aWg2_2    +=        aWg2_2b
  endif
- aWg2	dcblock2	aWg2+aWg2_2
+ aWg2    dcblock2    aWg2+aWg2_2
  if gkLoCut>1 then
-  aWg2	buthp	aWg2,gkLoCut
+  aWg2    buthp    aWg2,gkLoCut
  endif
- icps	cpsmidi
- aWg2	butbr	aWg2, icps, icps*0.1
- krms	rms		aWg2
+ icps    cpsmidi
+ aWg2    butbr    aWg2, icps, icps*0.1
+ krms    rms        aWg2
  
  ;==Release==
- irel	=		i(gkrelease)
- kCF	expsegr		sr/3,irel,20
- aEnv	expsegr		1,irel,0.001
- aWg2	tone		aWg2, kCF
- aWg2	=		aWg2 * aEnv
+ irel    =        i(gkrelease)
+ kCF    expsegr        sr/3,irel,20
+ aEnv    expsegr        1,irel,0.001
+ aWg2    tone        aWg2, kCF
+ aWg2    =        aWg2 * aEnv
 
- gaSendM	=	gaSendM + aWg2
+ gaSendM    =    gaSendM + aWg2
 endin
 
-instr	98	; spatialising short delays
- ktrig	changed	gkStWidth
+instr    98    ; spatialising short delays
+ ktrig    changed    gkStWidth
  if ktrig==1 then
-  reinit	UPDATE
+  reinit    UPDATE
  endif
  UPDATE:
- iDelTimL	random	0.00001,i(gkStWidth)
- aDelSigL	delay	gaSendM, iDelTimL
- iDelTimR	random	0.00001,i(gkStWidth)
- aDelSigR	delay	gaSendM, iDelTimR
+ iDelTimL    random    0.00001,i(gkStWidth)
+ aDelSigL    delay    gaSendM, iDelTimL
+ iDelTimR    random    0.00001,i(gkStWidth)
+ aDelSigR    delay    gaSendM, iDelTimR
  rireturn
- kDry		table	gkStMix,giDryMap,1
- kWet		table	gkStMix,giWetMap,1
- aL		=	((gaSendM*kDry)+(aDelSigL*kWet)) * gkDry
- aR		=	((gaSendM*kDry)+(aDelSigR*kWet)) * gkDry
- gaSendL	=	gaSendL + gaSendM + aDelSigL
- gaSendR	=	gaSendR + gaSendM + aDelSigR
- 		outs	aL*gkAmp, aR*gkAmp
- 		clear	gaSendM
+ kDry        table    gkStMix,giDryMap,1
+ kWet        table    gkStMix,giWetMap,1
+ aL        =    ((gaSendM*kDry)+(aDelSigL*kWet)) * gkDry
+ aR        =    ((gaSendM*kDry)+(aDelSigR*kWet)) * gkDry
+ gaSendL    =    gaSendL + gaSendM + aDelSigL
+ gaSendR    =    gaSendR + gaSendM + aDelSigR
+         outs    aL*gkAmp, aR*gkAmp
+         clear    gaSendM
 endin
 
-instr	99
+instr    99
  if gkRvbEQ>=0.5 then
-  kRvbHPF	limit	cpsoct(4+((gkRvbEQ-0.5)*2*10)),20,sr/2	  
-  gaSendL	buthp		gaSendL,kRvbHPF
-  gaSendR	buthp		gaSendR,kRvbHPF
+  kRvbHPF    limit    cpsoct(4+((gkRvbEQ-0.5)*2*10)),20,sr/2      
+  gaSendL    buthp        gaSendL,kRvbHPF
+  gaSendR    buthp        gaSendR,kRvbHPF
  endif
- kRvbLPF	limit	cpsoct(4+(gkRvbEQ*2*10)),20,sr/2	
- aL,aR	reverbsc	gaSendL,gaSendR,gkRvbSize,kRvbLPF
- 	outs		aL*gkWet*gkAmp,aR*gkWet*gkAmp
- 	clear		gaSendL,gaSendR
+ kRvbLPF    limit    cpsoct(4+(gkRvbEQ*2*10)),20,sr/2    
+ aL,aR    reverbsc    gaSendL,gaSendR,gkRvbSize,kRvbLPF
+     outs        aL*gkWet*gkAmp,aR*gkWet*gkAmp
+     clear        gaSendL,gaSendR
 endin
 
 </CsInstruments>

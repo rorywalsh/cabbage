@@ -12,23 +12,23 @@
 
 ; Parameters
 ; ----------
-; Sigma      --  the Prandtl number or sigma
-; Rayleigh   --  the Rayleigh number
-; Len:Wid    --  the ratio of the length and width of the box in which the convection currents are generated
+; Sigma      --  the Prandtl number or sigma 
+; Rayleigh   --  the Rayleigh number 
+; Len:Wid    --  the ratio of the length and width of the box in which the convection currents are generated 
 ; Step Size  --  the step size used in approximating the differential equation. This can be used to control the speed/pitch of the output.
 ; X Scale    --  scaling of x output
-; Y Scale    --  scaling of y output
+; Y Scale    --  scaling of y output  
 ; Z Scale    --  scaling of z output
 ; Skip Step  --  can be used to speed up the output
 
 ; x output visualised by the horizonatal location of the balls, y output by vertical position and z output by the size of the balls.
 
 ; Three visualisations/sonifications are implemented represented by the three balls: red, green, blue
+ 
 
 
-
-<Cabbage>
-form size(1000,550), guiRefresh(32), text("Lorenz Synth"), colour(220,220,220), pluginId("LorS")
+<Cabbage> 
+form size(1000,550), guiRefresh(32), text("Lorenz Synth"), colour(220,220,220), pluginId("Lore")
 
 image bounds(0,0,-30,-30), shape("ellipse"), identChannel("IndicatorBallRed"), colour("red"), visible(0), alpha(0.85)
 image bounds(0,0,-30,-30), shape("ellipse"), identChannel("IndicatorBallGreen"), colour("green"), visible(0), alpha(0.85)
@@ -59,27 +59,27 @@ label bounds(0,530,100,10), text("Iain McCurdy |2015|"), fontColour(50,50,50)
 
 <CsInstruments>
 
-;sr is set by the host
+; sr set by host
 ksmps = 32
 nchnls = 2
 0dbfs = 1
 
-giPanel_Width	=	1000
-giPanel_Height	=	550
-giHalfSine	ftgen	0,0,4096,-19, 0.5,1,0,0
+giPanel_Width    =    1000
+giPanel_Height    =    550
+giHalfSine    ftgen    0,0,4096,-19, 0.5,1,0,0
 
-instr	1
+instr    1
 
 #define TURN_BALL_ON_OFF(COLOUR)
 #
- k$COLOUR.Ball	chnget	"$COLOUR.Ball"
+ k$COLOUR.Ball    chnget    "$COLOUR.Ball"
  if changed(k$COLOUR.Ball)==1 then
   if k$COLOUR.Ball==1 then
-   chnset	"visible(1)","IndicatorBall$COLOUR"
+   chnset    "visible(1)","IndicatorBall$COLOUR"
    event "i","$COLOUR",0,-1
   else
    turnoff2 "$COLOUR",0,1
-   chnset	"visible(0)","IndicatorBall$COLOUR"
+   chnset    "visible(0)","IndicatorBall$COLOUR"
   endif
  endif
 #
@@ -102,36 +102,36 @@ endin
 
 #define LORENZ_GENERATOR(COLOUR)
 #
- ksv	chnget	"sv"				; Prandtl number or sigma
- krv	chnget	"rv"				; Rayleigh number
- kbv	chnget	"bv"				; ratio of the length and width of the box in which the convection currents are generated
- kh	chnget	"h"				; step size used in approximating the differential equation
- krestart	chnget	"restart"               ; restart button
- krestart	trigger	krestart,0.5,0		; trigger generated whenever restart button is clicked
- kskip		chnget	"skip"			; skip generated values. Can be used to speed up output changes.
- if changed(krestart,kskip)==1 then		; test for reiniting for i-rate input parameters
-  reinit UPDATE
+ ksv    chnget    "sv"                ; Prandtl number or sigma 
+ krv    chnget    "rv"                ; Rayleigh number 
+ kbv    chnget    "bv"                ; ratio of the length and width of the box in which the convection currents are generated 
+ kh    chnget    "h"                ; step size used in approximating the differential equation
+ krestart    chnget    "restart"               ; restart button
+ krestart    trigger    krestart,0.5,0        ; trigger generated whenever restart button is clicked
+ kskip        chnget    "skip"            ; skip generated values. Can be used to speed up output changes.
+ if changed(krestart,kskip)==1 then        ; test for reiniting for i-rate input parameters
+  reinit UPDATE                    
  endif
  UPDATE:
   ax, ay, az lorenz ksv, krv, kbv, kh, (rnd(1)*2)-1, (rnd(1)*2)-1, rnd(1), i(kskip)
  rireturn
- kx	downsamp	ax			; create k-rate versions
- ky	downsamp	ay
- kz	downsamp	az
- kx_scal	chnget		"x_scal"	; read scaling values
- ky_scal	chnget		"y_scal"
- kz_scal	chnget		"z_scal"
- kx		*=	kx_scal			; scale x, y and z values
- ky		*=	ky_scal
- kz		*=	kz_scal
- kx_norm	limit	kx + 0.5, 0, 1		; create normalised x, y and z values
- ky_norm	limit	ky + 0.5, 0, 1
- kz_norm	limit	kz      , 0, 1
+ kx    downsamp    ax            ; create k-rate versions
+ ky    downsamp    ay
+ kz    downsamp    az
+ kx_scal    chnget        "x_scal"    ; read scaling values
+ ky_scal    chnget        "y_scal"    
+ kz_scal    chnget        "z_scal"
+ kx        *=    kx_scal            ; scale x, y and z values
+ ky        *=    ky_scal    
+ kz        *=    kz_scal    
+ kx_norm    limit    kx + 0.5, 0, 1        ; create normalised x, y and z values
+ ky_norm    limit    ky + 0.5, 0, 1    
+ kz_norm    limit    kz      , 0, 1    
  if metro(32)==1 then
-  krel	release
-  Smsg	sprintfk	"visible(%d), pos(%d,%d), size(%d,%d)",1-krel, (giPanel_Width*0.5) + (kx * giPanel_Width*0.6), (giPanel_Height*0.5)  + (ky * giPanel_Height*0.5), 1 + (kz^2)*200, 1 + (kz^2)*200
-  chnset	Smsg,"IndicatorBall$COLOUR"
- endif
+  krel    release
+  Smsg    sprintfk    "visible(%d), pos(%d,%d), size(%d,%d)",1-krel, (giPanel_Width*0.5) + (kx * giPanel_Width*0.6), (giPanel_Height*0.5)  + (ky * giPanel_Height*0.5), 1 + (kz^2)*200, 1 + (kz^2)*200
+  chnset    Smsg,"IndicatorBall$COLOUR"
+ endif    
 #
 
 
@@ -140,33 +140,33 @@ endin
 
 
 
-instr	Red	; red / fof instrument
+instr    Red    ; red / fof instrument
  $LORENZ_GENERATOR(Red)
  ; sonify
- kNumMin	=	4
- kNumMax	=	72
- knum	scale	kx_norm,kNumMax,kNumMin
- knum	limit	knum,kNumMin,kNumMax
- kpan	scale	kx_norm,0,1
- kpan	limit	kpan,0,1
- kCFmin	=	6
- kCFmax	=	10
- kcfoct	scale	1-ky_norm,kCFmax,kCFmin	; invert
- kcfoct	limit	kcfoct,kCFmin,kCFmax
- kamp	scale	kz_norm,1,0
- kamp	limit	kamp,0,1
- aamp	interp	kamp
- aenv	linsegr	1,0.1,0
- kamp	tablei	kx_norm,giHalfSine,1
- kamp	pow	kamp,0.5
- gisine	ftgenonce	0, 0, 1024, 10, 1		;SINE WAVE
- giexp	ftgenonce	0, 0, 1024, 19, .5, .5, 270, .5	;EXPONENTIAL CURVE
+ kNumMin    =    4
+ kNumMax    =    72
+ knum    scale    kx_norm,kNumMax,kNumMin
+ knum    limit    knum,kNumMin,kNumMax
+ kpan    scale    kx_norm,0,1
+ kpan    limit    kpan,0,1
+ kCFmin    =    6
+ kCFmax    =    10
+ kcfoct    scale    1-ky_norm,kCFmax,kCFmin    ; invert
+ kcfoct    limit    kcfoct,kCFmin,kCFmax
+ kamp    scale    kz_norm,1,0
+ kamp    limit    kamp,0,1
+ aamp    interp    kamp
+ aenv    linsegr    1,0.1,0 
+ kamp    tablei    kx_norm,giHalfSine,1
+ kamp    pow    kamp,0.5
+ gisine    ftgenonce    0, 0, 1024, 10, 1        ;SINE WAVE
+ giexp    ftgenonce    0, 0, 1024, 19, .5, .5, 270, .5    ;EXPONENTIAL CURVE
  ;SOUND IS PRODUCED BY THE FOF OPCODE:
- ;ASIG 	FOF 	GKAMP  |      KFUND      |      KFORM    | GKOCT | GKBAND | GKRIS | GKDUR | GKDEC | IOLAPS | IFNA |  IFNB |  ITOTDUR
- asig 	fof 	0.2*kamp,      cpsmidinn(knum),  cpsoct(kcfoct),    0,    100,    0.003,  0.1,   0.07,   500,  gisine,  giexp,     3600
- asig	*=	aamp*aenv
- aL,aR	pan2	asig,kpan
- 	outs	aL,aR
+ ;ASIG     FOF     GKAMP  |      KFUND      |      KFORM    | GKOCT | GKBAND | GKRIS | GKDUR | GKDEC | IOLAPS | IFNA |  IFNB |  ITOTDUR
+ asig     fof     0.2*kamp,      cpsmidinn(knum),  cpsoct(kcfoct),    0,    100,    0.003,  0.1,   0.07,   500,  gisine,  giexp,     3600
+ asig    *=    aamp*aenv
+ aL,aR    pan2    asig,kpan
+     outs    aL,aR
 endin
 
 
@@ -177,30 +177,30 @@ endin
 
 
 
-instr	Green	; green / vco moogladder
+instr    Green    ; green / vco moogladder
  $LORENZ_GENERATOR(Green)
  ; sonify
- kNumMin	=	24
- kNumMax	=	96
- knum	scale	kx_norm,kNumMax,kNumMin
- knum	limit	knum,kNumMin,kNumMax
- kpan	scale	kx_norm,0,1
- kpan	limit	kpan,0,1
- kCFmin	=	8
- kCFmax	=	10
- kcfoct	scale	1-ky_norm,kCFmax,kCFmin	; invert
- kcfoct	limit	kcfoct,kCFmin,kCFmax
- kamp	scale	kz_norm,1,0
- kamp	limit	kamp,0,1
- aenv	linsegr	1,0.1,0
- aamp	interp	kamp
- kamp	tablei	kx_norm,giHalfSine,1
- kamp	pow	kamp,0.5
- asig	vco2	kamp*0.2,cpsmidinn(knum),2,0.5
- asig	moogladder	asig,cpsoct(kcfoct),0.6
- asig	*=	aamp*aenv
- aL,aR	pan2	asig,kpan
- 	outs	aL,aR
+ kNumMin    =    24
+ kNumMax    =    96
+ knum    scale    kx_norm,kNumMax,kNumMin
+ knum    limit    knum,kNumMin,kNumMax
+ kpan    scale    kx_norm,0,1
+ kpan    limit    kpan,0,1
+ kCFmin    =    8
+ kCFmax    =    10
+ kcfoct    scale    1-ky_norm,kCFmax,kCFmin    ; invert
+ kcfoct    limit    kcfoct,kCFmin,kCFmax
+ kamp    scale    kz_norm,1,0
+ kamp    limit    kamp,0,1
+ aenv    linsegr    1,0.1,0
+ aamp    interp    kamp 
+ kamp    tablei    kx_norm,giHalfSine,1
+ kamp    pow    kamp,0.5
+ asig    vco2    kamp*0.2,cpsmidinn(knum),2,0.5
+ asig    moogladder    asig,cpsoct(kcfoct),0.6
+ asig    *=    aamp*aenv
+ aL,aR    pan2    asig,kpan
+     outs    aL,aR
 endin
 
 
@@ -209,35 +209,35 @@ endin
 
 
 
-giwfn	ftgen	1, 0, 131072, 10, 1			;WAVEFORM USED BY THE HSBOSCIL OSCILLATOR
-gioctfn	ftgen	0, 0, 4096, -19, 1, 0.5, 270, 0.5	;A HANNING-TYPE WINDOW
+giwfn    ftgen    1, 0, 131072, 10, 1            ;WAVEFORM USED BY THE HSBOSCIL OSCILLATOR
+gioctfn    ftgen    0, 0, 4096, -19, 1, 0.5, 270, 0.5    ;A HANNING-TYPE WINDOW
 
 
-instr	Blue ; blue / hsbocil
+instr    Blue ; blue / hsbocil
  $LORENZ_GENERATOR(Blue)
  ; sonify
- kToneMin	=	-4
- kToneMax	=	4
- ktone	scale	kx_norm,kToneMax,kToneMin
- kpan	scale	kx_norm,0,1
- kpan	limit	kpan,0,1
- kBriteMin	=	-2
- kBriteMax	=	4
- kbrite	scale	1-ky_norm,kBriteMax,kBriteMin; invert
- kbrite	limit	kbrite,kBriteMin,kBriteMax
- kamp	scale	kz_norm,1,0
- kamp	limit	kamp,0,1
- aenv	linsegr	1,0.1,0
- aamp	interp	kamp
- kamp	tablei	kx_norm,giHalfSine,1
- kamp	pow	kamp,0.5
- ibasfreq	=	100
- ioctcnt	=	2
- iphs		=	0
- asig	hsboscil	kamp*0.2, ktone, kbrite, ibasfreq, giwfn, gioctfn, ioctcnt, iphs	;CREATE AN hsboscil TONE
- asig	*=	aamp*aenv
- aL,aR	pan2	asig,kpan
- 	outs	aL,aR
+ kToneMin    =    -4
+ kToneMax    =    4
+ ktone    scale    kx_norm,kToneMax,kToneMin
+ kpan    scale    kx_norm,0,1
+ kpan    limit    kpan,0,1
+ kBriteMin    =    -2
+ kBriteMax    =    4
+ kbrite    scale    1-ky_norm,kBriteMax,kBriteMin; invert
+ kbrite    limit    kbrite,kBriteMin,kBriteMax
+ kamp    scale    kz_norm,1,0
+ kamp    limit    kamp,0,1
+ aenv    linsegr    1,0.1,0
+ aamp    interp    kamp 
+ kamp    tablei    kx_norm,giHalfSine,1
+ kamp    pow    kamp,0.5
+ ibasfreq    =    100
+ ioctcnt    =    2
+ iphs        =    0
+ asig    hsboscil    kamp*0.2, ktone, kbrite, ibasfreq, giwfn, gioctfn, ioctcnt, iphs    ;CREATE AN hsboscil TONE
+ asig    *=    aamp*aenv
+ aL,aR    pan2    asig,kpan
+     outs    aL,aR
 endin
 
 </CsInstruments>

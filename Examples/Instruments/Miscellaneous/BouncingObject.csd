@@ -79,222 +79,222 @@ keyboard bounds(  0,555,390, 80)
 <CsoundSynthesizer>
 
 <CsOptions>   
--dm0 -n -+rtmidi=null -M0
+-dm0 -n -+rtmidi=NULL -M0
 </CsOptions>
 
 <CsInstruments>
 
-;sr is set by the host
-ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
-nchnls 		= 	2	;NUMBER OF CHANNELS (1=MONO)
-0dbfs		=	1	;MAXIMUM AMPLITUDE
+; sr set by host
+ksmps         =     32    ;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls         =     2    ;NUMBER OF CHANNELS (1=MONO)
+0dbfs        =    1    ;MAXIMUM AMPLITUDE
 
-massign	0,2
+massign    0,2
 
-giTabSize	=	4096
+giTabSize    =    4096
 
-gitimes		ftgen	1,0,giTabSize,-16, 1,giTabSize,0,0
-gitrans		ftgen	2,0,giTabSize,-16, 0,giTabSize,0,0
-gifilter	ftgen	3,0,giTabSize,-16,14,giTabSize,0,4
-giamp		ftgen	4,0,giTabSize,-16, 1,giTabSize,0,0.5
-giElementAmp	ftgen	5,0,giTabSize,-16, 1,giTabSize,0,0.5
+gitimes        ftgen    1,0,giTabSize,-16, 1,giTabSize,0,0
+gitrans        ftgen    2,0,giTabSize,-16, 0,giTabSize,0,0
+gifilter    ftgen    3,0,giTabSize,-16,14,giTabSize,0,4
+giamp        ftgen    4,0,giTabSize,-16, 1,giTabSize,0,0.5
+giElementAmp    ftgen    5,0,giTabSize,-16, 1,giTabSize,0,0.5
 
-gisine		ftgen	6,0,4096,10,1
+gisine        ftgen    6,0,4096,10,1
 
-gichans		init	0
-giReady		init	0
-gSfilepath	init	""
+gichans        init    0
+giReady        init    0
+gSfilepath    init    ""
 
 
-instr	1
- gkGestureTrigger	chnget	"GestureTrigger"
- gkdur		chnget	"dur"
- gkinput	chnget	"input"
- gkFiltType	chnget	"FiltType"
- gkFiltType	init	1
- gkbandwidth	chnget	"bandwidth"
+instr    1
+ gkGestureTrigger    chnget    "GestureTrigger"
+ gkdur        chnget    "dur"
+ gkinput    chnget    "input"
+ gkFiltType    chnget    "FiltType"
+ gkFiltType    init    1
+ gkbandwidth    chnget    "bandwidth"
 
- gkTimeS	chnget	"TimeS"
- gkTimeC	chnget	"TimeC"
- gkTimeE	chnget	"TimeE"
+ gkTimeS    chnget    "TimeS"
+ gkTimeC    chnget    "TimeC"
+ gkTimeE    chnget    "TimeE"
 
- gkTransS	chnget	"TransS"
- gkTransC	chnget	"TransC"
- gkTransE	chnget	"TransE"
+ gkTransS    chnget    "TransS"
+ gkTransC    chnget    "TransC"
+ gkTransE    chnget    "TransE"
  
- gkFilterS	chnget	"FilterS"
- gkFilterC	chnget	"FilterC"
- gkFilterE	chnget	"FilterE"
+ gkFilterS    chnget    "FilterS"
+ gkFilterC    chnget    "FilterC"
+ gkFilterE    chnget    "FilterE"
 
- gkAmpS	chnget	"AmpS"
- gkAmpC	chnget	"AmpC"
- gkAmpE	chnget	"AmpE"
+ gkAmpS    chnget    "AmpS"
+ gkAmpC    chnget    "AmpC"
+ gkAmpE    chnget    "AmpE"
 
- gkElementAmpS	chnget	"ElementAmpS"
- gkElementAmpC	chnget	"ElementAmpC"
- gkElementAmpE	chnget	"ElementAmpE"
+ gkElementAmpS    chnget    "ElementAmpS"
+ gkElementAmpC    chnget    "ElementAmpC"
+ gkElementAmpE    chnget    "ElementAmpE"
 
- gSfilepath	chnget	"filename"
- kNewFileTrg	changed	gSfilepath		; if a new file is loaded generate a trigger
- if kNewFileTrg==1 then				; if a new file has been loaded...
-  event	"i",99,0,0				; call instrument to update sample storage function table 
+ gSfilepath    chnget    "filename"
+ kNewFileTrg    changed    gSfilepath        ; if a new file is loaded generate a trigger
+ if kNewFileTrg==1 then                ; if a new file has been loaded...
+  event    "i",99,0,0                ; call instrument to update sample storage function table 
  endif  
  
- ktrig	changed	gkTimeS,gkTimeE,gkTimeC
+ ktrig    changed    gkTimeS,gkTimeE,gkTimeC
  if ktrig==1 then
-  reinit	UPDATE
+  reinit    UPDATE
   UPDATE:
-  gitimes	ftgen	1,0,giTabSize,-16,i(gkTimeS),giTabSize,i(gkTimeC),i(gkTimeE)
+  gitimes    ftgen    1,0,giTabSize,-16,i(gkTimeS),giTabSize,i(gkTimeC),i(gkTimeE)
   rireturn
- 		chnset	"tableNumber(1)", "table1"
+         chnset    "tableNumber(1)", "table1"
  endif
 
- ktrig	changed	gkTransS,gkTransE,gkTransC
+ ktrig    changed    gkTransS,gkTransE,gkTransC
  if ktrig==1 then
-  reinit	UPDATE2
+  reinit    UPDATE2
   UPDATE2:
-  gitrans	ftgen	2,0,giTabSize,-16,i(gkTransS),giTabSize,i(gkTransC),i(gkTransE)
+  gitrans    ftgen    2,0,giTabSize,-16,i(gkTransS),giTabSize,i(gkTransC),i(gkTransE)
   rireturn
- 		chnset	"tableNumber(2)", "table2"
+         chnset    "tableNumber(2)", "table2"
  endif
 
- ktrig	changed	gkFilterS,gkFilterE,gkFilterC
+ ktrig    changed    gkFilterS,gkFilterE,gkFilterC
  if ktrig==1 then
-  reinit	UPDATE3
+  reinit    UPDATE3
   UPDATE3:
-  gifilter	ftgen	3,0,giTabSize,-16,i(gkFilterS),giTabSize,i(gkFilterC),i(gkFilterE)
+  gifilter    ftgen    3,0,giTabSize,-16,i(gkFilterS),giTabSize,i(gkFilterC),i(gkFilterE)
   rireturn
- 		chnset	"tableNumber(3)", "table3"
+         chnset    "tableNumber(3)", "table3"
  endif
 
- ktrig	changed	gkAmpS,gkAmpE,gkAmpC
+ ktrig    changed    gkAmpS,gkAmpE,gkAmpC
  if ktrig==1 then
-  reinit	UPDATE4
+  reinit    UPDATE4
   UPDATE4:
-  giamp		ftgen	4,0,giTabSize,-16,i(gkAmpS),giTabSize,i(gkAmpC),i(gkAmpE)
+  giamp        ftgen    4,0,giTabSize,-16,i(gkAmpS),giTabSize,i(gkAmpC),i(gkAmpE)
   rireturn
- 		chnset	"tableNumber(4)", "table4"
+         chnset    "tableNumber(4)", "table4"
  endif
 
- ktrig	changed	gkElementAmpS,gkElementAmpE,gkElementAmpC
+ ktrig    changed    gkElementAmpS,gkElementAmpE,gkElementAmpC
  if ktrig==1 then
-  reinit	UPDATE5
+  reinit    UPDATE5
   UPDATE5:
-  giElementAmp	ftgen	5,0,giTabSize,-16,i(gkElementAmpS),4096,i(gkElementAmpC),i(gkElementAmpE)
+  giElementAmp    ftgen    5,0,giTabSize,-16,i(gkElementAmpS),4096,i(gkElementAmpC),i(gkElementAmpE)
   rireturn
- 		chnset	"tableNumber(5)", "table5"
+         chnset    "tableNumber(5)", "table5"
  endif
 
  if trigger:k(gkGestureTrigger,0.6,0)==1 then
-  event	"i",3,0,gkdur,60
+  event    "i",3,0,gkdur,60
  endif
 endin
 
-instr	2
- inum		notnum
- ivel		veloc	0,1
- event_i	"i",3,0,i(gkdur)*ivel,inum
+instr    2
+ inum        notnum
+ ivel        veloc    0,1
+ event_i    "i",3,0,i(gkdur)*ivel,inum
 endin
 
-instr	3	; TRIGGERS GESTURE
- iInSkip	=	(i(gkdur)-p3)/i(gkdur)
- iOffset	=	p4-60
- itrans		tablei	0,gitrans,1
- ifilter	tablei	0,gifilter,1
- iamp		tablei	0,giamp,1
- itime		tablei	1,gitimes
- kphase		line		0,p3,1
- ktime		table		kphase+iInSkip,gitimes,1
- ktrans		table		kphase+iInSkip,gitrans,1
- kfilter	table		kphase,gifilter,1
- kamp		table		kphase+iInSkip,giamp,1
+instr    3    ; TRIGGERS GESTURE
+ iInSkip    =    (i(gkdur)-p3)/i(gkdur)
+ iOffset    =    p4-60
+ itrans        tablei    0,gitrans,1
+ ifilter    tablei    0,gifilter,1
+ iamp        tablei    0,giamp,1
+ itime        tablei    1,gitimes
+ kphase        line        0,p3,1
+ ktime        table        kphase+iInSkip,gitimes,1
+ ktrans        table        kphase+iInSkip,gitrans,1
+ kfilter    table        kphase,gifilter,1
+ kamp        table        kphase+iInSkip,giamp,1
 
- ktrig		metro		1/ktime
- 	schedkwhen	ktrig, 0, 0, 4, 0, 0.01, ktrans+iOffset, kfilter, kamp
+ ktrig        metro        1/ktime
+     schedkwhen    ktrig, 0, 0, 4, 0, 0.01, ktrans+iOffset, kfilter, kamp
  
 endin
 
 
 
-instr	4	; INDIVIDUAL IMPULSE SOUNDS
- if giReady==1||i(gkinput)!=1 then						; i.e. if a file has been loaded
+instr    4    ; INDIVIDUAL IMPULSE SOUNDS
+ if giReady==1||i(gkinput)!=1 then                        ; i.e. if a file has been loaded
   if i(gkinput)==1 then
-   ifn		=		101
-   iNChans	=		ftchnls(ifn)
-   imlt		=		semitone(p4)
-   p3		=		ftlen(ifn)/(sr*imlt)
+   ifn        =        101
+   iNChans    =        ftchnls(ifn)
+   imlt        =        semitone(p4)
+   p3        =        ftlen(ifn)/(sr*imlt)
   else
-   p3		=		0.1
+   p3        =        0.1
   endif
-  icf		=		cpsoct(p5)
-  aline		line		0,p3,1
-  aenv		tablei		aline,giElementAmp,1
-  ilevel	=		p6
-  ;iFiltType	=		i(gkFiltType)  
+  icf        =        cpsoct(p5)
+  aline        line        0,p3,1
+  aenv        tablei        aline,giElementAmp,1
+  ilevel    =        p6
+  ;iFiltType    =        i(gkFiltType)  
   if iNChans==1||i(gkinput)!=1 then
    if i(gkinput)==1 then
-    ;asig		loscil3		ilevel,imlt,ifn,1   ; commented while loscil transposition is broken
-    asig		poscil		ilevel,imlt/p3,ifn
+    ;asig        loscil3        ilevel,imlt,ifn,1   ; commented while loscil transposition is broken
+    asig        poscil        ilevel,imlt/p3,ifn
    elseif i(gkinput)==2 then
-    aenv2	linseg	0,0.005,1,p3-0.005,0
-    asig	poscil	aenv2*ilevel*0.2,cpsmidinn(p4+60),gisine
+    aenv2    linseg    0,0.005,1,p3-0.005,0
+    asig    poscil    aenv2*ilevel*0.2,cpsmidinn(p4+60),gisine
    elseif i(gkinput)==3 then
-    kenv2	linseg	0,0.005,1,p3-0.005,0
-    asig	vco2	kenv2*ilevel*0.2,cpsmidinn(p4+60),0
+    kenv2    linseg    0,0.005,1,p3-0.005,0
+    asig    vco2    kenv2*ilevel*0.2,cpsmidinn(p4+60),0
    elseif i(gkinput)==4 then
-    kenv2	linseg	0,0.005,1,p3-0.005,0
-    asig	vco2	kenv2*ilevel*0.2,cpsmidinn(p4+60),2,0.5
+    kenv2    linseg    0,0.005,1,p3-0.005,0
+    asig    vco2    kenv2*ilevel*0.2,cpsmidinn(p4+60),2,0.5
    elseif i(gkinput)==5 then
-    kenv2	linseg	0,0.005,1,p3-0.005,0
-    asig	vco2	kenv2*ilevel*0.2,cpsmidinn(p4+60),4,0.5
+    kenv2    linseg    0,0.005,1,p3-0.005,0
+    asig    vco2    kenv2*ilevel*0.2,cpsmidinn(p4+60),4,0.5
    elseif i(gkinput)==6 then
-    kenv	linseg	0,0.005,1,p3-0.005,0
-    asig	pinkish	kenv2*ilevel
+    kenv    linseg    0,0.005,1,p3-0.005,0
+    asig    pinkish    kenv2*ilevel
    endif
-   ;asig		poscil3		ilevel,imlt,ifn
+   ;asig        poscil3        ilevel,imlt,ifn
    if i(gkFiltType)==1 then
-    asig		butlp		asig,icf
+    asig        butlp        asig,icf
    elseif i(gkFiltType)==2 then
-    asig		butbp		asig,icf,icf*i(gkbandwidth)
+    asig        butbp        asig,icf,icf*i(gkbandwidth)
    elseif i(gkFiltType)==3 then
-    asig		reson		asig,icf,icf*i(gkbandwidth),1
+    asig        reson        asig,icf,icf*i(gkbandwidth),1
    elseif i(gkFiltType)==4 then
-    asig		buthp		asig,icf
+    asig        buthp        asig,icf
    elseif i(gkFiltType)==5 then
-    asig		moogladder	asig,icf,i(gkbandwidth)*0.49
+    asig        moogladder    asig,icf,i(gkbandwidth)*0.49
    endif
-   asig		=		asig * aenv
-   		outs		asig,asig
+   asig        =        asig * aenv
+           outs        asig,asig
   elseif iNChans==2 then
-   aL,aR		loscil3		ilevel,imlt,ifn,1
+   aL,aR        loscil3        ilevel,imlt,ifn,1
    if i(gkFiltType)==1 then
-    aL		butlp		aL,icf
-    aR		butlp		aR,icf
+    aL        butlp        aL,icf
+    aR        butlp        aR,icf
    elseif i(gkFiltType)==2 then
-    aL		butbp		aL,icf,icf*i(gkbandwidth)
-    aR		butbp		aR,icf,icf*i(gkbandwidth)
+    aL        butbp        aL,icf,icf*i(gkbandwidth)
+    aR        butbp        aR,icf,icf*i(gkbandwidth)
    elseif i(gkFiltType)==3 then
-    aL		reson		aL,icf,icf*i(gkbandwidth),1
-    aR		reson		aR,icf,icf*i(gkbandwidth),1
+    aL        reson        aL,icf,icf*i(gkbandwidth),1
+    aR        reson        aR,icf,icf*i(gkbandwidth),1
    elseif i(gkFiltType)==4 then
-    aL		buthp		aL,icf
-    aR		buthp		aR,icf
+    aL        buthp        aL,icf
+    aR        buthp        aR,icf
    elseif i(gkFiltType)==5 then
-    aL		moogladder	aL,icf,i(gkbandwidth)*0.49
-    aR		moogladder	aR,icf,i(gkbandwidth)*0.49
+    aL        moogladder    aL,icf,i(gkbandwidth)*0.49
+    aR        moogladder    aR,icf,i(gkbandwidth)*0.49
    endif
-   aL		=		aL * aenv
-   aR		=		aR * aenv
-   		outs		aL,aR
+   aL        =        aL * aenv
+   aR        =        aR * aenv
+           outs        aL,aR
   endif
  endif
 endin
 
 
-instr	99	; load sound file
- gitable	ftgen	101,0,0,1,gSfilepath,0,0,0		; load sound file into a GEN 01 function table 
- gichans	filenchnls	gSfilepath			; derive the number of channels (mono=1,stereo=2) in the sound file
- giReady 	=	1					; if no string has yet been loaded giReady will be zero
+instr    99    ; load sound file
+ gitable    ftgen    101,0,0,1,gSfilepath,0,0,0        ; load sound file into a GEN 01 function table 
+ gichans    filenchnls    gSfilepath            ; derive the number of channels (mono=1,stereo=2) in the sound file
+ giReady     =    1                    ; if no string has yet been loaded giReady will be zero
 endin
 
 

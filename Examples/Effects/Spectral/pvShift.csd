@@ -1,10 +1,17 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; pvShift.csd
 ; Written by Iain McCurdy, 2012.
 
 ; Streaming phase vocoding frequency shifter.
 
 <Cabbage>
-form caption("pvshift Frequency Shifter") size(510,  90), pluginId("shft"), scrollBars(0) style("legacy")
+form caption("pvshift Frequency Shifter") size(510,  90), pluginId("shft"), scrollBars(0)
 
 image bounds( 15,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlineThickness(0)
 image bounds( 85,  9, 60, 60), colour(30,30,30,100), shape("ellipse"), outlineThickness(0)
@@ -29,72 +36,72 @@ rslider bounds(430, 15, 70, 70), text("Level"),      channel("lev"),       range
 </CsOptions>
 <CsInstruments>
 
-;sr is set by the host
-ksmps 		= 	32
-nchnls 		= 	2
-0dbfs		=	1	;MAXIMUM AMPLITUDE
+; sr set by host
+ksmps         =     32
+nchnls         =     2
+0dbfs        =    1    ;MAXIMUM AMPLITUDE
 
 ;Iain McCurdy
 ;http://iainmccurdy.org/csound.html
 ;Frequency shifting effect using pvshift opcode.
 
 /* FFT attribute tables */
-giFFTattributes1	ftgen	0, 0, 4, -2,   64,  32,   64, 1
-giFFTattributes2	ftgen	0, 0, 4, -2,  128,  64,  128, 1
-giFFTattributes3	ftgen	0, 0, 4, -2,  256, 128,  256, 1
-giFFTattributes4	ftgen	0, 0, 4, -2,  512, 128,  512, 1
-giFFTattributes5	ftgen	0, 0, 4, -2, 1024, 256, 1024, 1
-giFFTattributes6	ftgen	0, 0, 4, -2, 2048, 512, 2048, 1
-giFFTattributes7	ftgen	0, 0, 4, -2, 4096,1024, 4096, 1
-giFFTattributes8	ftgen	0, 0, 4, -2, 8192,2048, 8192, 1
+giFFTattributes1    ftgen    0, 0, 4, -2,   64,  32,   64, 1
+giFFTattributes2    ftgen    0, 0, 4, -2,  128,  64,  128, 1
+giFFTattributes3    ftgen    0, 0, 4, -2,  256, 128,  256, 1
+giFFTattributes4    ftgen    0, 0, 4, -2,  512, 128,  512, 1
+giFFTattributes5    ftgen    0, 0, 4, -2, 1024, 256, 1024, 1
+giFFTattributes6    ftgen    0, 0, 4, -2, 2048, 512, 2048, 1
+giFFTattributes7    ftgen    0, 0, 4, -2, 4096,1024, 4096, 1
+giFFTattributes8    ftgen    0, 0, 4, -2, 8192,2048, 8192, 1
 
-opcode	pvshift_module,a,akkkkkiiii
-	ain,kshift,klowest,kfeedback,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype	xin
-	f_FB		pvsinit iFFTsize,ioverlap,iwinsize,iwintype, 0			; INITIALISE FEEDBACK FSIG
-	f_anal  	pvsanal	ain, iFFTsize, ioverlap, iwinsize, iwintype		; ANALYSE AUDIO INPUT SIGNAL AND OUTPUT AN FSIG
-	f_mix		pvsmix	f_anal, f_FB									; MIX AUDIO INPUT WITH FEEDBACK SIGNAL
-	f_shift		pvshift f_mix, kshift, klowest							; SHIFT FREQUENCIES
-	f_FB		pvsgain f_shift, kfeedback 								; CREATE FEEDBACK F-SIGNAL FOR NEXT PASS
-	aout		pvsynth f_shift                      					; RESYNTHESIZE THE f-SIGNAL AS AN AUDIO SIGNAL
-	amix		ntrpol		ain, aout, kmix								; CREATE DRY/WET MIX
-			xout		amix*klev	
+opcode    pvshift_module,a,akkkkkiiii
+    ain,kshift,klowest,kfeedback,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype    xin
+    f_FB        pvsinit iFFTsize,ioverlap,iwinsize,iwintype, 0            ; INITIALISE FEEDBACK FSIG
+    f_anal      pvsanal    ain, iFFTsize, ioverlap, iwinsize, iwintype        ; ANALYSE AUDIO INPUT SIGNAL AND OUTPUT AN FSIG
+    f_mix        pvsmix    f_anal, f_FB                                    ; MIX AUDIO INPUT WITH FEEDBACK SIGNAL
+    f_shift        pvshift f_mix, kshift, klowest                            ; SHIFT FREQUENCIES
+    f_FB        pvsgain f_shift, kfeedback                                 ; CREATE FEEDBACK F-SIGNAL FOR NEXT PASS
+    aout        pvsynth f_shift                                          ; RESYNTHESIZE THE f-SIGNAL AS AN AUDIO SIGNAL
+    amix        ntrpol        ain, aout, kmix                                ; CREATE DRY/WET MIX
+            xout        amix*klev    
 endop
 
-instr	1
-	ainL,ainR	ins
-	;gicos	ftgen	0,0,131072,11,1			; test tone
-	;ainL	gbuzz	0.1,330,80,1,0.7,gicos	; test tone
-	ainR	=		ainL
-	
-	
-	;ainL,ainR	diskin2	"SynthPad.wav",1,0,1
-	kcoarse	chnget	"coarse"	; coarse freq. shift
-	kfine	chnget	"fine"		; fine freq. control (multipler)
-	kporttime	linseg	0,0.001,0.2
-	kshift	lineto	kcoarse*kfine, kporttime	; ultimate freq. shift is sum of coarse and fine controls
-	klowest	chnget	"lowest"	; lowest shifted frequency
-	kFB	chnget	"FB"		; feedback amount
-	kmix		chnget	"mix"
-	klev		chnget	"lev"
+instr    1
+    ainL,ainR    ins
+    ;gicos    ftgen    0,0,131072,11,1            ; test tone
+    ;ainL    gbuzz    0.1,330,80,1,0.7,gicos    ; test tone
+    ainR    =        ainL
+    
+    
+    ;ainL,ainR    diskin2    "SynthPad.wav",1,0,1
+    kcoarse    chnget    "coarse"    ; coarse freq. shift
+    kfine    chnget    "fine"        ; fine freq. control (multipler)
+    kporttime    linseg    0,0.001,0.2
+    kshift    lineto    kcoarse*kfine, kporttime    ; ultimate freq. shift is sum of coarse and fine controls
+    klowest    chnget    "lowest"    ; lowest shifted frequency
+    kFB    chnget    "FB"        ; feedback amount
+    kmix        chnget    "mix"
+    klev        chnget    "lev"
 
-	/* SET FFT ATTRIBUTES */
-	katt_table	chnget	"att_table"	; FFT atribute table
-	katt_table	init	5
-	ktrig		changed	katt_table
-	if ktrig==1 then
-	 reinit update
-	endif
-	update:
-	iFFTsize	table	0, giFFTattributes1 + i(katt_table) - 1
-	ioverlap	table	1, giFFTattributes1 + i(katt_table) - 1
-	iwinsize	table	2, giFFTattributes1 + i(katt_table) - 1
-	iwintype	table	3, giFFTattributes1 + i(katt_table) - 1
-	/*-------------------*/
-	
-	aoutL		pvshift_module	ainL,kshift,klowest,kFB,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype	; call UDO for each channel
-	aoutR		pvshift_module	ainR,kshift,klowest,kFB,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype
+    /* SET FFT ATTRIBUTES */
+    katt_table    chnget    "att_table"    ; FFT atribute table
+    katt_table    init    5
+    ktrig        changed    katt_table
+    if ktrig==1 then
+     reinit update
+    endif
+    update:
+    iFFTsize    table    0, giFFTattributes1 + i(katt_table) - 1
+    ioverlap    table    1, giFFTattributes1 + i(katt_table) - 1
+    iwinsize    table    2, giFFTattributes1 + i(katt_table) - 1
+    iwintype    table    3, giFFTattributes1 + i(katt_table) - 1
+    /*-------------------*/
+    
+    aoutL        pvshift_module    ainL,kshift,klowest,kFB,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype    ; call UDO for each channel
+    aoutR        pvshift_module    ainR,kshift,klowest,kFB,kmix,klev,iFFTsize,ioverlap,iwinsize,iwintype
 
-			outs	aoutR,aoutR
+            outs    aoutR,aoutR
 endin
 
 </CsInstruments>

@@ -1,19 +1,26 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; Ball_in_a_Box.csd
 ; Written by Iain McCurdy, 2015
 
 ; Ball in a Box is a physical model reverb based on the notional idea of a ball (sound) within a bax (reverberant space)
 
-; Room Size (X, Y, Z)		-	room size in metres
-; Source Location (X, Y, Z)	-	location of the sound as a ratio 0 to 1 of the entire space
-; Receive Location (X, Y, Z)	-	receiver location - in metres - from the centre of the space
-; Reverb Decay			-	main decay of the resonator (default: 0.99)
-; High Frequency Diffusion	-	is the coefficient of diffusion at the walls, which regulates the amount of diffusion (0-1, where 0 = no diffusion, 1 = maximum diffusion - default: 1)
-; Direct Signal Attenuation	-	the attenuation of the direct signal (0-1, default: 0.5)
-; Early Reflection Diffusion	-	the attenuation coefficient of the early reflections (0-1, default: 0.8)
-; Pick-up Separation		-	the distance in meters between the two pickups (your ears, for example - default: 0.3)
+; Room Size (X, Y, Z)        -    room size in metres
+; Source Location (X, Y, Z)    -    location of the sound as a ratio 0 to 1 of the entire space
+; Receive Location (X, Y, Z)    -    receiver location - in metres - from the centre of the space
+; Reverb Decay            -    main decay of the resonator (default: 0.99)
+; High Frequency Diffusion    -    is the coefficient of diffusion at the walls, which regulates the amount of diffusion (0-1, where 0 = no diffusion, 1 = maximum diffusion - default: 1)
+; Direct Signal Attenuation    -    the attenuation of the direct signal (0-1, default: 0.5)
+; Early Reflection Diffusion    -    the attenuation coefficient of the early reflections (0-1, default: 0.8)
+; Pick-up Separation        -    the distance in meters between the two pickups (your ears, for example - default: 0.3)
 
 <Cabbage>
-form caption("Ball in a Box") size(800,395), pluginId("BABO"), colour(100,100,120) style("legacy")
+form caption("Ball in a Box") size(800,395), pluginId("BABO"), colour(100,100,120)
 
 image   bounds(  3,  5,394,125), outlineColour("white"), outlineThickness(1), colour(0,0,0,0), plant("RoomSize") {
 hslider bounds(  5, 10,390, 30), textColour(white), channel("rx"), range(0.1,20.00, 5), colour(220,220,250), trackerColour(240,210,170)
@@ -74,59 +81,59 @@ label   bounds(  5,245,390, 12), text("Pick-up Separation"), fontColour(200,200,
 
 <CsInstruments>
 
-;sr is set by the host
-ksmps 		= 	32
-nchnls 		= 	2
-0dbfs		=	1
+; sr set by host
+ksmps         =     32
+nchnls         =     2
+0dbfs        =    1
 
 ;Author: Iain McCurdy (2015)
 
-instr	1	; read widgets
- gkrx		chnget	"rx"        
- gkry           chnget	"ry"        
- gkrz           chnget	"rz"        
- gksrcx         chnget	"srcx"      
- gksrcy         chnget	"srcy"      
- gksrcz         chnget	"srcz"      
- gkdiff         chnget	"diff"      
- gkdecay        chnget	"decay"     
- gkrdistance    chnget	"rdistance" 
- gkhydecay      chnget	"hydecay"   
- gkdirect       chnget	"direct"    
- gkearly_diff   chnget	"early_diff"
- gkrcvx         chnget	"rcvx"      
- gkrcvy         chnget	"rcvy"      
- gkrcvz         chnget	"rcvz"
- gkmix          chnget	"mix"
- gklevel	chnget	"level"
+instr    1    ; read widgets
+ gkrx        chnget    "rx"        
+ gkry           chnget    "ry"        
+ gkrz           chnget    "rz"        
+ gksrcx         chnget    "srcx"      
+ gksrcy         chnget    "srcy"      
+ gksrcz         chnget    "srcz"      
+ gkdiff         chnget    "diff"      
+ gkdecay        chnget    "decay"     
+ gkrdistance    chnget    "rdistance" 
+ gkhydecay      chnget    "hydecay"   
+ gkdirect       chnget    "direct"    
+ gkearly_diff   chnget    "early_diff"
+ gkrcvx         chnget    "rcvx"      
+ gkrcvy         chnget    "rcvy"      
+ gkrcvz         chnget    "rcvz"
+ gkmix          chnget    "mix"
+ gklevel    chnget    "level"
 endin
 
-instr	2	;REVERB
- aL,aR	ins	; read 
- kSwitch		changed		gkrx, gkry, gkrz, gksrcx, gksrcy, gksrcz, gkdiff, gkdecay, gkrdistance, gkhydecay, gkdirect, gkearly_diff, gkrcvx, gkrcvy, gkrcvz	;GENERATE A MOMENTARY '1' PULSE IN OUTPUT 'kSwitch' IF ANY OF THE SCANNED INPUT VARIABLES CHANGE. (OUTPUT 'kSwitch' IS NORMALLY ZERO)
- if	kSwitch=1	then	;IF kSwitch=1 THEN
- 	reinit	UPDATE		;BEGIN A REINITIALIZATION PASS FROM LABEL 'UPDATE'
- endif				;END OF CONDITIONAL BRANCHING
- UPDATE:				;A LABEL
- irx		init	i(gkrx)	;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
- iry		init	i(gkry) ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
- irz		init	i(gkrz) ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
- ksrcx		init	i(gksrcx) * irx	;THE ACTUAL LOCATION OF THE SOURCE SOUND IS DEFINED RELATIVE TO THE SIZE OF THE ROOM
- ksrcy		init	i(gksrcy) * iry	;THE ACTUAL LOCATION OF THE SOURCE SOUND IS DEFINED RELATIVE TO THE SIZE OF THE ROOM
- ksrcz		init	i(gksrcz) * irz	;THE ACTUAL LOCATION OF THE SOURCE SOUND IS DEFINED RELATIVE TO THE SIZE OF THE ROOM
- idiff		init	i(gkdiff) ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
- giBaboVals	ftgen	1, 0, 8, -2, i(gkdecay), i(gkhydecay), i(gkrcvx), i(gkrcvy), i(gkrcvz), i(gkrdistance), i(gkdirect), i(gkearly_diff)
- aRvbL, aRvbR	babo	aL + aR, ksrcx, ksrcy, ksrcz, irx, iry, irz, idiff, giBaboVals	;BABO REVERBERATOR
- rireturn			;RETURN TO PERFORMANCE TIME PASSES
- 		outs	((aRvbL*gkmix)+(aL*(1-gkmix)))*gklevel, ((aRvbR*gkmix)+(aR*(1-gkmix)))*gklevel
+instr    2    ;REVERB
+ aL,aR    ins    ; read 
+ kSwitch        changed        gkrx, gkry, gkrz, gksrcx, gksrcy, gksrcz, gkdiff, gkdecay, gkrdistance, gkhydecay, gkdirect, gkearly_diff, gkrcvx, gkrcvy, gkrcvz    ;GENERATE A MOMENTARY '1' PULSE IN OUTPUT 'kSwitch' IF ANY OF THE SCANNED INPUT VARIABLES CHANGE. (OUTPUT 'kSwitch' IS NORMALLY ZERO)
+ if    kSwitch=1    then    ;IF kSwitch=1 THEN
+     reinit    UPDATE        ;BEGIN A REINITIALIZATION PASS FROM LABEL 'UPDATE'
+ endif                ;END OF CONDITIONAL BRANCHING
+ UPDATE:                ;A LABEL
+ irx        init    i(gkrx)    ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
+ iry        init    i(gkry) ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
+ irz        init    i(gkrz) ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
+ ksrcx        init    i(gksrcx) * irx    ;THE ACTUAL LOCATION OF THE SOURCE SOUND IS DEFINED RELATIVE TO THE SIZE OF THE ROOM
+ ksrcy        init    i(gksrcy) * iry    ;THE ACTUAL LOCATION OF THE SOURCE SOUND IS DEFINED RELATIVE TO THE SIZE OF THE ROOM
+ ksrcz        init    i(gksrcz) * irz    ;THE ACTUAL LOCATION OF THE SOURCE SOUND IS DEFINED RELATIVE TO THE SIZE OF THE ROOM
+ idiff        init    i(gkdiff) ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
+ giBaboVals    ftgen    1, 0, 8, -2, i(gkdecay), i(gkhydecay), i(gkrcvx), i(gkrcvy), i(gkrcvz), i(gkrdistance), i(gkdirect), i(gkearly_diff)
+ aRvbL, aRvbR    babo    aL + aR, ksrcx, ksrcy, ksrcz, irx, iry, irz, idiff, giBaboVals    ;BABO REVERBERATOR
+ rireturn            ;RETURN TO PERFORMANCE TIME PASSES
+         outs    ((aRvbL*gkmix)+(aL*(1-gkmix)))*gklevel, ((aRvbR*gkmix)+(aR*(1-gkmix)))*gklevel
 endin
 
-		
+        
 </CsInstruments>
 
 <CsScore>
 i 1 0   3600
-i 2 0.1 3600	;REVERB INSTRUMENT PLAYS FOR 1 HOUR (AND KEEPS PERFORMANCE GOING)
+i 2 0.1 3600    ;REVERB INSTRUMENT PLAYS FOR 1 HOUR (AND KEEPS PERFORMANCE GOING)
 </CsScore>
 
 </CsoundSynthesizer>

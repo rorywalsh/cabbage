@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; CZSynth.csd
 ; Iain McCurdy, 2015
 
@@ -7,63 +14,64 @@
 ; This is left in as a chacteristic of the instrument but if desired, raising the sample rate can reduce or prevent this aliasing 
 
 ; The basic waveform (before phase distortion) can be designed in one of three ways:
-; Additive	-	is constructed from 16 harmonic partials selectable using the checkboxes.
-; Buzz		-	is constructed from a stack of harmonically related cosines using GEN11 and in a manner similar to the buzz and gbuzz opcodes.
-; Noise		-	is a table of triangle noise derived samples.
+; Additive    -    is constructed from 16 harmonic partials selectable using the checkboxes.
+; Buzz        -    is constructed from a stack of harmonically related cosines using GEN11 and in a manner similar to the buzz and gbuzz opcodes.
+; Noise        -    is a table of triangle noise derived samples.
 
 ; PHASE DISTORTION
-; Distort	-	manual offset for the amount of phase distortion
-; Env.		-	amount of influence of the envelope upon distortion amount
-; Att.		-	attack time for the phase distortion amount envelope
-; Dec.		-	decay time for the phase distortion amount envelope
-; Retrig.(checkbox)	-	if ticked, in mono mode the envelope will be retriggered each time a new note is played
-; Vel.		-	amount of influence of key velocity upon phase distortion amount (affects both manual and envelope)
-; LFO SHAPE (COMBOBOX)	- LFO shape can be either triangle or random (random splines). Random splines LFO can be useful in adding a natural fluctuation to the sound.
-; LFO		-	amount of LFO influence upon phase distortion amount
-; Rate		-	rate of the LFO
+; Distort    -    manual offset for the amount of phase distortion
+; Env.        -    amount of influence of the envelope upon distortion amount
+; Att.        -    attack time for the phase distortion amount envelope
+; Dec.        -    decay time for the phase distortion amount envelope
+; Retrig.(checkbox)    -    if ticked, in mono mode the envelope will be retriggered each time a new note is played
+; Vel.        -    amount of influence of key velocity upon phase distortion amount (affects both manual and envelope)
+; LFO SHAPE (COMBOBOX)    - LFO shape can be either triangle or random (random splines). Random splines LFO can be useful in adding a natural fluctuation to the sound.
+; LFO        -    amount of LFO influence upon phase distortion amount
+; Rate        -    rate of the LFO
 ; Note that the manual control 'Distort', the envelope and the LFO are added together, therefore the influence of the envelope (or the LFO) may not be heard if 'Distort' is at its maximum setting  
-; Kybd.Scal.	-	amount of keyboard scaling of phase distortion amount. 
-;			 Increasing this will result in attenuation of phase distortion of higher notes.
-;			 This can be used to reduce of prevent aliasing in higher notes. 
+; Kybd.Scal.    -    amount of keyboard scaling of phase distortion amount. 
+;             Increasing this will result in attenuation of phase distortion of higher notes.
+;             This can be used to reduce of prevent aliasing in higher notes. 
 
 ; FILTER (a filter built using the clfilt opcode - lowpass Cheyshev I)
-; On/Off	-	turns the filter on and off
-; Cutoff	-	cutoff frequency manual control expressed as a ratio of the frequency of the note played
-; Poles		-	number of poles employed by the filter
-; Ripple	-	amount of ripple at the cutoff point
-; Env.		-	amount of influence of the envelope upon filter cutoff
-; Att.		-	attack time for the envelope
-; Dec.		-	decay time for the envelope
-; Retrig.(checkbox)	-	if ticked, in mono mode the envelope will be retriggered each time a new note is played
-; Vel.		-	amount of influence of key velocity upon filter cutoff (affects both manual and envelope)
-; LFO SHAPE (COMBOBOX)	- LFO shape can be either triangle or random (random splines). Random splines LFO can be useful in adding a natural fluctuation to the sound. 
-; LFO		-	amount of LFO influence upon filter cutoff
-; Rate		-	rate of the LFO
+; On/Off    -    turns the filter on and off
+; Cutoff    -    cutoff frequency manual control expressed as a ratio of the frequency of the note played
+; Poles        -    number of poles employed by the filter
+; Ripple    -    amount of ripple at the cutoff point
+; Env.        -    amount of influence of the envelope upon filter cutoff
+; Att.        -    attack time for the envelope
+; Dec.        -    decay time for the envelope
+; Retrig.(checkbox)    -    if ticked, in mono mode the envelope will be retriggered each time a new note is played
+; Vel.        -    amount of influence of key velocity upon filter cutoff (affects both manual and envelope)
+; LFO SHAPE (COMBOBOX)    - LFO shape can be either triangle or random (random splines). Random splines LFO can be useful in adding a natural fluctuation to the sound. 
+; LFO        -    amount of LFO influence upon filter cutoff
+; Rate        -    rate of the LFO
 ; Note that 'Cutoff', the envelope and the LFO are simply added together, but that their combined output is internally limited to prevent the filter from 'blowing up'
 
-; OSCILLATOR 2	-	besides transposition the second oscillator is identical to the main oscillator
-; On/Off	-	turns the second oscillator on or off
-; Semitone	-	transposition of the second oscillator in semitones
-; Cents		-	transposition of the second oscillator in cents
+; OSCILLATOR 2    -    besides transposition the second oscillator is identical to the main oscillator
+; On/Off    -    turns the second oscillator on or off
+; Semitone    -    transposition of the second oscillator in semitones
+; Cents        -    transposition of the second oscillator in cents
 
 ; POLYPHONY
 ; Mono/Poly (button) - select mode
-; Port.Time	-	portamento time in mono (legato) mode
+; Port.Time    -    portamento time in mono (legato) mode
 
 ; AMPLITUDE
-; Att.		-	attack time for the amplitude envelope
-; Dec.		-	decay time for the amplitude envelope
-; Sus.		-	sustain level for the amplitude envelope
-; Rel.		-	release time for the amplitude envelope
-; Vel.		-	amount of influence of key velocity upon amplitude
-; Clip		-	amount of clipping of the sound. This can be used to apply further waveshaping.
-; Level		-	output level
+; Att.        -    attack time for the amplitude envelope
+; Dec.        -    decay time for the amplitude envelope
+; Sus.        -    sustain level for the amplitude envelope
+; Rel.        -    release time for the amplitude envelope
+; Vel.        -    amount of influence of key velocity upon amplitude
+; Clip        -    amount of clipping of the sound. This can be used to apply further waveshaping.
+; Level        -    output level
 
 <Cabbage>
-#define	SLIDER_STYLE trackerColour(150,150,255)
-#define	CHECKBOX_STYLE colour(255,255,100)
 
-form caption("CZ Synthesiser") size(1075,365), pluginId("RMSy") style("legacy")
+#define SLIDER_STYLE trackerColour(150,150,255)
+#define CHECKBOX_STYLE colour(255,255,100)
+
+form caption("CZ Synthesiser") size(1075,365), pluginId("RMSy")
 
 ; PHASE DISTORTION
 image      bounds(  5,  5,500,130), colour(0,0,0,0), plant("ShapeAmount"), outlineColour("white"), outlineThickness(1), shape("sharp") {
@@ -194,323 +202,321 @@ keyboard   bounds(  5,275,1065, 85)
 
 <CsoundSynthesizer>
 
-<CsoundSynthesizer>
 
 <CsOptions>
--dm0 -n -+rtmidi=null -M0
+-dm0 -n -+rtmidi=NULL -M0
 </CsOptions>
 
 <CsInstruments>
-;sr is set by the host
+
+; sr set by host
 ksmps = 16
 nchnls = 2
 0dbfs = 1
-massign	0,2
+
+massign    0,2
 maxalloc 3,1
 
-giUniSine	ftgen	0,0,4097,19,1,0.5,0,0.5
-giUniTri	ftgen	0,0,4097,7,0,2048,1,2048,0
-giSine		ftgen	0,0,4096,10,1
+giUniSine    ftgen    0, 0, 4097, 19, 1, 0.5, 0, 0.5
+giUniTri     ftgen    0, 0, 4097, 7, 0, 2048, 1, 2048, 0
+giSine       ftgen    0, 0, 4096, 10, 1
 
-giKybdScal	ftgen	0,0,128,7,1,127,0
-gaL,gaR		init	0
+giKybdScal   ftgen    0, 0, 128, 7, 1, 127, 0
+gaL,gaR      init     0
 
-opcode	lineto2,k,kk
- kinput,ktime	xin
- ktrig	changed	kinput,ktime				; reset trigger
- if ktrig==1 then					; if new note has been received or if portamento time has been changed...
+opcode    lineto2,k,kk
+ kinput,ktime    xin
+ ktrig    changed    kinput,ktime    ; reset trigger
+ if ktrig==1 then                    ; if new note has been received or if portamento time has been changed...
   reinit RESTART
  endif
- RESTART:						; restart 'linseg' envelope
- if i(ktime)==0 then					; 'linseg' fails if duration is zero...
-  koutput	=	i(kinput)			; ...in which case output simply equals input
+ RESTART:                            ; restart 'linseg' envelope
+ if i(ktime)==0 then                 ; 'linseg' fails if duration is zero...
+  koutput    =    i(kinput)          ; ...in which case output simply equals input
  else
-  koutput	linseg	i(koutput),i(ktime),i(kinput)	; linseg envelope from old value to new value
+  koutput    linseg    i(koutput),i(ktime),i(kinput)    ; linseg envelope from old value to new value
  endif
  rireturn
- 		xout	koutput
+         xout    koutput
 endop
 
-instr	1
- gkMonoPoly	chnget	"MonoPoly"
- gkFilterOnOff	chnget	"FilterOnOff"
+instr    1
+ gkMonoPoly    chnget    "MonoPoly"
+ gkFilterOnOff    chnget    "FilterOnOff"
 
  if changed(gkMonoPoly)==1 then
   if gkMonoPoly==0 then
-  	chnset	"visible(1)", "SARetrigID"
+      chnset    "visible(1)", "SARetrigID"
    if gkFilterOnOff==1 then
-  	chnset	"visible(1)", "FRetrigID"
+      chnset    "visible(1)", "FRetrigID"
    endif
-  	chnset	"visible(1)", "PortTimeID"
+      chnset    "visible(1)", "PortTimeID"
   elseif gkMonoPoly==1 then
-  	chnset	"visible(0)", "SARetrigID"
-  	chnset	"visible(0)", "FRetrigID"
-  	chnset	"visible(0)", "PortTimeID"
+      chnset    "visible(0)", "SARetrigID"
+      chnset    "visible(0)", "FRetrigID"
+      chnset    "visible(0)", "PortTimeID"
   endif
+
  endif
  
- kWaveformMode	chnget	"WaveformMode"
+ kWaveformMode    chnget    "WaveformMode"
  if changed(kWaveformMode)==1 then
   if kWaveformMode==1 then
-  	chnset	"visible(1)", "WaveformAddID"
-  	chnset	"visible(0)", "WaveformBuzzID"
-  	chnset	"visible(0)", "WaveformNoiseID"
+      chnset    "visible(1)", "WaveformAddID"
+      chnset    "visible(0)", "WaveformBuzzID"
+      chnset    "visible(0)", "WaveformNoiseID"
   elseif kWaveformMode==2 then
-  	chnset	"visible(0)", "WaveformAddID"
-  	chnset	"visible(1)", "WaveformBuzzID"
-  	chnset	"visible(0)", "WaveformNoiseID"
+      chnset    "visible(0)", "WaveformAddID"
+      chnset    "visible(1)", "WaveformBuzzID"
+      chnset    "visible(0)", "WaveformNoiseID"
   else
-  	chnset	"visible(0)", "WaveformAddID"
-  	chnset	"visible(0)", "WaveformBuzzID"
-  	chnset	"visible(1)", "WaveformNoiseID"
+      chnset    "visible(0)", "WaveformAddID"
+      chnset    "visible(0)", "WaveformBuzzID"
+      chnset    "visible(1)", "WaveformNoiseID"
   endif
  endif
- kHarms		chnget	"Harms"
- kLowest	chnget	"Lowest"
- kPower		chnget	"Power"
- kHarms		init	5
- kLowest	init	7
- kPower		init	0.9
- kNoiseSize	chnget	"NoiseSize"
- kNoiseSize	init	3
+ kHarms         chnget    "Harms"
+ kLowest        chnget    "Lowest"
+ kPower         chnget    "Power"
+ kHarms         init      5
+ kLowest        init      7
+ kPower         init      0.9
+ kNoiseSize     chnget    "NoiseSize"
+ kNoiseSize     init      3
  
- kShapeAmount	chnget	"ShapeAmount"
- gkSARetrig	chnget	"SARetrig"
- gkSAEnv	chnget	"SAEnv"
- gkSAAtt	chnget	"SAAtt"
- gkSADec	chnget	"SADec"
- gkSAVel	chnget	"SAVel"
- gkSALFOShape	chnget	"SALFOShape"
- gkSALFO	chnget	"SALFO"
- gkSARate	chnget	"SARate"
- gkKybdScal	chnget	"KybdScal"
+ kShapeAmount   chnget    "ShapeAmount"
+ gkSARetrig     chnget    "SARetrig"
+ gkSAEnv        chnget    "SAEnv"
+ gkSAAtt        chnget    "SAAtt"
+ gkSADec        chnget    "SADec"
+ gkSAVel        chnget    "SAVel"
+ gkSALFOShape   chnget    "SALFOShape"
+ gkSALFO        chnget    "SALFO"
+ gkSARate       chnget    "SARate"
+ gkKybdScal     chnget    "KybdScal"
  
- kClip		chnget	"Clip"
+ kClip          chnget    "Clip"
  
  if changed(gkFilterOnOff)==1 then
   if gkFilterOnOff==1 then
-  	if gkMonoPoly==0 then
-  	 chnset	"visible(1)", "FRetrigID"
-  	endif
-  	chnset	"visible(1)", "ID1"
-  	chnset	"visible(1)", "ID2"
-  	chnset	"visible(1)", "ID3"
-  	chnset	"visible(1)", "ID4"
-  	chnset	"visible(1)", "ID5"
-  	chnset	"visible(1)", "ID6"
-  	chnset	"visible(1)", "ID7"
-  	chnset	"visible(1)", "ID8"
-  	chnset	"visible(1)", "ID9"
-  	chnset	"visible(1)", "ID10"
+      if gkMonoPoly==0 then
+       chnset    "visible(1)", "FRetrigID"
+      endif
+      chnset    "visible(1)", "ID1"
+      chnset    "visible(1)", "ID2"
+      chnset    "visible(1)", "ID3"
+      chnset    "visible(1)", "ID4"
+      chnset    "visible(1)", "ID5"
+      chnset    "visible(1)", "ID6"
+      chnset    "visible(1)", "ID7"
+      chnset    "visible(1)", "ID8"
+      chnset    "visible(1)", "ID9"
+      chnset    "visible(1)", "ID10"
   elseif gkFilterOnOff==0 then
-  	chnset	"visible(0)", "FRetrigID"
-  	chnset	"visible(0)", "ID1"
-  	chnset	"visible(0)", "ID2"
-  	chnset	"visible(0)", "ID3"
-  	chnset	"visible(0)", "ID4"
-  	chnset	"visible(0)", "ID5"
-  	chnset	"visible(0)", "ID6"
-  	chnset	"visible(0)", "ID7"
-  	chnset	"visible(0)", "ID8"
-  	chnset	"visible(0)", "ID9"
-  	chnset	"visible(0)", "ID10"
+      chnset    "visible(0)", "FRetrigID"
+      chnset    "visible(0)", "ID1"
+      chnset    "visible(0)", "ID2"
+      chnset    "visible(0)", "ID3"
+      chnset    "visible(0)", "ID4"
+      chnset    "visible(0)", "ID5"
+      chnset    "visible(0)", "ID6"
+      chnset    "visible(0)", "ID7"
+      chnset    "visible(0)", "ID8"
+      chnset    "visible(0)", "ID9"
+      chnset    "visible(0)", "ID10"
   endif
  endif
 
- kCutoff	chnget	"Cutoff"
- gkPoles	chnget	"Poles"
- gkRipple	chnget	"Ripple"
- gkFRetrig	chnget	"FRetrig"
- gkFEnv		chnget	"FEnv"
- gkFAtt		chnget	"FAtt"
- gkFDec		chnget	"FDec"
- gkFVel		chnget	"FVel"
- gkFLFOShape	chnget	"FLFOShape"
- gkFLFO		chnget	"FLFO"
- gkFRate	chnget	"FRate"
+ kCutoff    chnget    "Cutoff"
+ gkPoles    chnget    "Poles"
+ gkRipple    chnget    "Ripple"
+ gkFRetrig    chnget    "FRetrig"
+ gkFEnv        chnget    "FEnv"
+ gkFAtt        chnget    "FAtt"
+ gkFDec        chnget    "FDec"
+ gkFVel        chnget    "FVel"
+ gkFLFOShape    chnget    "FLFOShape"
+ gkFLFO        chnget    "FLFO"
+ gkFRate    chnget    "FRate"
 
- kPortTime	linseg	0,0.001,0.1
- gkShapeAmount	portk	kShapeAmount,kPortTime
- gkClip		portk	kClip,kPortTime
- gkCutoff	portk	kCutoff,kPortTime    
+ kPortTime    linseg    0,0.001,0.1
+ gkShapeAmount    portk    kShapeAmount,kPortTime
+ gkClip        portk    kClip,kPortTime
+ gkCutoff    portk    kCutoff,kPortTime    
 
- gkOctShift	chnget	"OctShift"
- gkOctShift	=	-(gkOctShift-1)
+ gkOctShift    chnget    "OctShift"
+ gkOctShift    =    -(gkOctShift-1)
 
- gkOsc2OnOff	chnget	"Osc2OnOff"
- kSemitones	chnget	"Semitones"
- kCents		chnget	"Cents"
- gkTransRto	=	semitone(kSemitones)*cent(kCents)
- gkPortTime	chnget	"PortTime"
- kF0		chnget	"F0"		
- kF1		chnget	"F1"		
- kF2		chnget	"F2"
- kF3		chnget	"F3"
- kF4		chnget	"F4"
- kF5		chnget	"F5"
- kF6		chnget	"F6"
- kF7		chnget	"F7"
- kF8		chnget	"F8"
- kF9		chnget	"F9"
- kF10		chnget	"F10"
- kF11		chnget	"F11"
- kF12		chnget	"F12"
- kF13		chnget	"F13"
- kF14		chnget	"F14"
- kF15		chnget	"F15"
- kF16		chnget	"F16"
- kF17		chnget	"F17"
- kF18		chnget	"F18"
- kF19		chnget	"F19"
+ gkOsc2OnOff    chnget    "Osc2OnOff"
+ kSemitones    chnget    "Semitones"
+ kCents        chnget    "Cents"
+ gkTransRto    =    semitone(kSemitones)*cent(kCents)
+ gkPortTime    chnget    "PortTime"
+ kF0        chnget    "F0"        
+ kF1        chnget    "F1"        
+ kF2        chnget    "F2"
+ kF3        chnget    "F3"
+ kF4        chnget    "F4"
+ kF5        chnget    "F5"
+ kF6        chnget    "F6"
+ kF7        chnget    "F7"
+ kF8        chnget    "F8"
+ kF9        chnget    "F9"
+ kF10        chnget    "F10"
+ kF11        chnget    "F11"
+ kF12        chnget    "F12"
+ kF13        chnget    "F13"
+ kF14        chnget    "F14"
+ kF15        chnget    "F15"
+ kF16        chnget    "F16"
+ kF17        chnget    "F17"
+ kF18        chnget    "F18"
+ kF19        chnget    "F19"
  cngoto changed(kF0,kF1,kF2,kF3,kF4,kF5,kF6,kF7,kF8,kF9,kF10,kF11,kF12,kF13,kF14,kF15,kF16,kF17,kF18,kF19,kWaveformMode,kHarms,kLowest,kPower,kNoiseSize)==1, CREATE_TABLE
  reinit CREATE_TABLE
  CREATE_TABLE:
  if i(kWaveformMode)==1 then
-  gisource	ftgen	1,0,131072,9,   1, i(kF0),   90,   \
- 				2, i(kF1),   90,   \
- 				3, i(kF2),   90,   \
- 				4, i(kF3),   90,   \
- 				5, i(kF4),   90,   \
- 				6, i(kF5),   90,   \
- 				7, i(kF6),   90,   \
- 				8, i(kF7),   90,   \
- 				9, i(kF8),   90,   \
- 				10,i(kF9),   90,   \
- 				11,i(kF10),  90,   \
- 				12,i(kF11),  90,   \
- 				13,i(kF12),  90,   \
- 				14,i(kF13),  90,   \
- 				15,i(kF14),  90,   \
- 				16,i(kF15),  90,   \
- 				17,i(kF16),  90,   \
- 				18,i(kF17),  90,   \
- 				19,i(kF18),  90,   \
- 				20,i(kF19),  90
+  gisource    ftgen    1,0,131072,9,   1, i(kF0),   90,   \
+                 2, i(kF1),   90,   \
+                 3, i(kF2),   90,   \
+                 4, i(kF3),   90,   \
+                 5, i(kF4),   90,   \
+                 6, i(kF5),   90,   \
+                 7, i(kF6),   90,   \
+                 8, i(kF7),   90,   \
+                 9, i(kF8),   90,   \
+                 10,i(kF9),   90,   \
+                 11,i(kF10),  90,   \
+                 12,i(kF11),  90,   \
+                 13,i(kF12),  90,   \
+                 14,i(kF13),  90,   \
+                 15,i(kF14),  90,   \
+                 16,i(kF15),  90,   \
+                 17,i(kF16),  90,   \
+                 18,i(kF17),  90,   \
+                 19,i(kF18),  90,   \
+                 20,i(kF19),  90
  elseif i(kWaveformMode)==2 then
-  gisource	ftgen	1,0,131072,11,   i(kHarms), i(kLowest), i(kPower)
+  gisource    ftgen    1,0,131072,11,   i(kHarms), i(kLowest), i(kPower)
  else
-  gisource	ftgen	1,0,2^i(kNoiseSize),21,3,1
+  gisource    ftgen    1,0,2^i(kNoiseSize),21,3,1
  endif
  
- gkAAtt		chnget		"AAtt"
- gkADec		chnget		"ADec"
- gkASus		chnget		"ASus"
- gkARel		chnget		"ARel"
- gkAVel		chnget		"AVel"
- gkLevel	chnget		"Level"
-
+ gkAAtt        chnget        "AAtt"
+ gkADec        chnget        "ADec"
+ gkASus        chnget        "ASus"
+ gkARel        chnget        "ARel"
+ gkAVel        chnget        "AVel"
+ gkLevel       chnget        "Level"
 endin
 
 
-instr	2			; RESPOND TO MIDI NOTES
- icps	cpsmidi
- inum	notnum
- givel	veloc	0,1
- gkVel	init	givel
- gkcps	=	icps
- gicps	init	icps
- if i(gkMonoPoly)==0 then	; IF MONO MODE SELECTED...
-  event_i	"i",3,0,-1, icps, inum
- else				; OTHERWISE POLYPHONIC MODE HAS BEEN SELECTED
-  aL,aR	subinstr	3, icps, inum
-  	outs		aL,aR
+instr    2                                ; RESPOND TO MIDI NOTES
+ icps     cpsmidi
+ inum     notnum
+ givel    veloc    0,1
+ gkVel    init     givel
+ gkcps    =        icps
+ gicps    init     icps
+ if i(gkMonoPoly)==0 then                 ; IF MONO MODE SELECTED...
+          event_i  "i",3,0,-1, icps, inum
+ else                                     ; OTHERWISE POLYPHONIC MODE HAS BEEN SELECTED
+  aL,aR   subinstr    3, icps, inum
+          outs        aL,aR
  endif
  
- gkNewNote	init	1
+ gkNewNote init    1
 endin
 
-instr	3
- if active:k(2)==0 then			; IF ALL INSTANCES OF INSTR 2 HAVE BEEN TURNED OFF...
-  turnoff				; TURN OFF THIS INSTRUMENT
+
+instr    3
+ if active:k(2)==0 then                   ; IF ALL INSTANCES OF INSTR 2 HAVE BEEN TURNED OFF...
+  turnoff                                 ; TURN OFF THIS INSTRUMENT
  endif
- kPortTime	linseg	0,0.001,1
+ kPortTime linseg  0, 0.001, 1
 
  if i(gkMonoPoly)==0 then
-  kcps		lineto2	gkcps,kPortTime*gkPortTime		
+  kcps     lineto2    gkcps, kPortTime * gkPortTime        
  else
-  kcps		init	p4
+  kcps     init       p4
  endif
  
- aosc		phasor	kcps * octave(gkOctShift)
+ aosc      phasor     kcps * octave(gkOctShift)
  
  cngoto gkNewNote==1&&gkSARetrig==1&&i(gkMonoPoly)==0, SHAPE_ENV
  reinit SHAPE_ENV
  SHAPE_ENV:
- kShapeEnv	transeg	0,i(gkSAAtt)+0.000001,1, i(gkSAEnv),i(gkSADec)+0.000001,-2,0 	; SHAPE AMOUNT ENVELOPE
+ kShapeEnv transeg    0, i(gkSAAtt)+0.000001, 1, i(gkSAEnv),i(gkSADec)+0.000001, -2, 0     ; SHAPE AMOUNT ENVELOPE
  rireturn
- iSAVel	init	(i(gkVel)*i(gkSAVel)) + (1-i(gkSAVel))					; SHAPE AMOUNT VELOCITY
- if gkSALFOShape==1 then								; SHAPE AMOUNT LFO
-  kSALFO	oscili	gkSALFO,gkSARate,giUniTri					; TRIANGLE LFO
+ iSAVel    init    (i(gkVel)*i(gkSAVel)) + (1-i(gkSAVel))                    ; SHAPE AMOUNT VELOCITY
+ if gkSALFOShape==1 then                                ; SHAPE AMOUNT LFO
+  kSALFO   oscili    gkSALFO,gkSARate,giUniTri                    ; TRIANGLE LFO
  else
-  kSALFO	rspline	0,gkSALFO,gkSARate,gkSARate*4					; RANDOM LFO
+  kSALFO   rspline    0,gkSALFO,gkSARate,gkSARate*4                    ; RANDOM LFO
  endif
  
- iSAKybdScal	table	p5+((i(gkKybdScal)*256)-128), giKybdScal		; SHAPE AMOUNT KEYBOARD SCALING (REDUCING SHAPE AMOUNT FOR HIGHER NOTE CAN REDUCE ALIASING
- kShapeAmount	=	(gkShapeAmount+kShapeEnv+kSALFO)*iSAVel*iSAKybdScal
- ibipolar	=	0							; UNIPOLAR/BIPOLAR SWITCH (0=UNIPOLAR 1=BIPOLAR)
- ifullscale	=	1							; FULLSCALE VALUE
- apd         	pdhalf	aosc, kShapeAmount, ibipolar, ifullscale		; PHASE DISTORT THE PHASOR (aosc) CREATED 4 LINES ABOVE
- asig		tablei	apd,gisource,1
+ iSAKybdScal    table   p5+((i(gkKybdScal)*256)-128), giKybdScal            ; SHAPE AMOUNT KEYBOARD SCALING (REDUCING SHAPE AMOUNT FOR HIGHER NOTE CAN REDUCE ALIASING
+ kShapeAmount   =       (gkShapeAmount+kShapeEnv+kSALFO)*iSAVel*iSAKybdScal
+ ibipolar       =       0                                                   ; UNIPOLAR/BIPOLAR SWITCH (0=UNIPOLAR 1=BIPOLAR)
+ ifullscale     =       1                                                   ; FULLSCALE VALUE
+ apd            pdhalf  aosc, kShapeAmount, ibipolar, ifullscale            ; PHASE DISTORT THE PHASOR (aosc) CREATED 4 LINES ABOVE
+ asig           tablei  apd,gisource,1
  
  if gkOsc2OnOff==1 then
-  aosc2		phasor	kcps * octave(gkOctShift) * gkTransRto
-  apd2        	pdhalf	aosc2, kShapeAmount, ibipolar, ifullscale		; PHASE DISTORT THE PHASOR (aosc) CREATED 4 LINES ABOVE
-  asig		+=	tablei:a(apd2,gisource,1)
+  aosc2        phasor   kcps * octave(gkOctShift) * gkTransRto
+  apd2         pdhalf   aosc2, kShapeAmount, ibipolar, ifullscale           ; PHASE DISTORT THE PHASOR (aosc) CREATED 4 LINES ABOVE
+  asig         +=       tablei:a(apd2,gisource,1)
  endif
  
- /*
- asig 		clip 	asig*gkClip*0.5, 0, 1, 1
- asig		/=	gkClip^0.5
- */
  
- /* POWERSHAPE DISTORTION */
- ifullscale	=	0dbfs	;DEFINE FULLSCALE AMPLITUDE VALUE
- asig 		powershape 	asig, gkClip, ifullscale			; CREATE POWERSHAPED SIGNAL 
+ ; POWERSHAPE DISTORTION
+ ifullscale    =           0dbfs                     ; DEFINE FULLSCALE AMPLITUDE VALUE
+ asig          powershape  asig, gkClip, ifullscale  ; CREATE POWERSHAPED SIGNAL 
  
- /* FILTER */
+ ; FILTER
  if gkFilterOnOff==1 then
 
   if gkFLFOShape==1 then
-   kFLFO	oscili	gkFLFO,gkFRate,giUniTri
+   kFLFO       oscili    gkFLFO,gkFRate,giUniTri
   else
-   kFLFO	rspline	0,gkFLFO,gkFRate,gkFRate*4
+   kFLFO       rspline    0,gkFLFO,gkFRate,gkFRate*4
   endif
   cngoto gkNewNote==1&&gkFRetrig==1&&i(gkMonoPoly)==0, FILTER_ENV
   reinit FILTER_ENV
   FILTER_ENV:
-  kFiltEnv	transeg	0,i(gkFAtt)+0.000001,2, i(gkFEnv),i(gkFDec)+0.000001,-2,0 
+  kFiltEnv     transeg    0,i(gkFAtt)+0.000001,2, i(gkFEnv),i(gkFDec)+0.000001,-2,0 
   rireturn
-  iFVel	init	(i(gkVel)*i(gkFVel)) + (1-i(gkFVel))
-  kCF	limit	kcps*((gkCutoff+kFiltEnv+kFLFO)*iFVel),1,sr/3
-  cngoto changed(gkPoles,gkRipple)==1, FILTER
+  iFVel        init     (i(gkVel)*i(gkFVel)) + (1-i(gkFVel))
+  kCF          limit    kcps*((gkCutoff+kFiltEnv+kFLFO)*iFVel),1,sr/3
+               cngoto   changed(gkPoles,gkRipple)==1, FILTER
   reinit FILTER
   FILTER:
-  asig		clfilt	asig*8,kCF,0,i(gkPoles),1,i(gkRipple)
+  asig         clfilt   asig*8,kCF,0,i(gkPoles),1,i(gkRipple)
  endif
  
- /* AMPLITUDE ENVELOPE */
- aEnv		expsegr	0.01,i(gkAAtt)+0.00001,1.01,i(gkADec)+0.00001,i(gkASus)+0.01,i(gkARel)+0.00001,0.01
- aEnv		-=	0.01
- iAVel	init	(i(gkVel)*i(gkAVel)) + (1-i(gkAVel))
- asig		*=	aEnv*iAVel
+ ; AMPLITUDE ENVELOPE
+ aEnv         expsegr  0.01,i(gkAAtt)+0.00001,1.01,i(gkADec)+0.00001,i(gkASus)+0.01,i(gkARel)+0.00001,0.01
+ aEnv         -=       0.01
+ iAVel        init     (i(gkVel)*i(gkAVel)) + (1-i(gkAVel))
+ asig         *=       aEnv*iAVel
  
- /* STEREO RIGHT CHANNEL */
- aDly		interp	0.5/kcps					; RIGHT CHANNEL WILL BE DELAYED BY 1/2 PERIOD OF THE FUNDEMENTAL					
- aR		vdelay	asig,aDly*1000,(0.5/cpsmidinn(0))*1000		; VARIABLE DELAY (NEEDS TO BE VARIABLE FOR MONOPHONIC/LEGATO MODE)
+ ; STEREO RIGHT CHANNEL
+ aDly        interp    0.5 / kcps                               ; RIGHT CHANNEL WILL BE DELAYED BY 1/2 PERIOD OF THE FUNDEMENTAL                    
+ aR          vdelay    asig, aDly*1000, (0.5/cpsmidinn(0))*1000 ; VARIABLE DELAY (NEEDS TO BE VARIABLE FOR MONOPHONIC/LEGATO MODE)
  
- /* OUTPUT */
-;		outs	asig*gkLevel, aR*gkLevel
- gaL	+=	asig*gkLevel
- gaR	+=	aR*gkLevel
+ ; OUTPUT
+;        outs    asig*gkLevel, aR*gkLevel
+ gaL        +=         asig * gkLevel
+ gaR        +=         aR * gkLevel
  
- gkNewNote	=	0						; RESET NEW NOTE FLAG
+ gkNewNote  =          0                                        ; RESET NEW NOTE FLAG
 endin
 
-instr	4
- aL	resonr	gaL,100,10,1
- aR	resonr	gaR,100,10,1
- 	outs	aL+gaL/4,aR+gaR/4
- 	clear	gaL,gaR
+instr    4
+ aL         resonr     gaL, 100, 10, 1
+ aR         resonr     gaR, 100, 10, 1
+            outs       aL + gaL / 4, aR + gaR / 4
+            clear      gaL, gaR
 endin
 
 </CsInstruments>  

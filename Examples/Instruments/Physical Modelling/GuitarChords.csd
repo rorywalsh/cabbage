@@ -1,11 +1,18 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; GuitarChords.csd
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form size(650, 265), caption("Guitar Chords"), pluginId("guit"), guiRefresh(64) style("legacy")
+form size(650, 265), caption("Guitar Chords"), pluginId("guit"), guiRefresh(64)
 
-label  bounds( 54, -1, 25, 10), text("Mute"), FontColour("white")
-label  bounds( 84, -1, 25, 10), text("Open"), FontColour("white")
+label  bounds( 54, -1, 25, 10), text("Mute"), fontColour("white")
+label  bounds( 84, -1, 25, 10), text("Open"), fontColour("white")
 
 combobox bounds(  3, 10, 50, 15), channel("TuneHighE"), value(64), text("G9","F#9","F9","E9","D#9","D9","C#9","C9","B8","A#8","A8","G#8","G8","F#8","F8","E8","D#8","D8","C#8","C8","B7","A#7","A7","G#7","G7","F#7","F7","E7","D#7","D7","C#7","C7","B6","A#6","A6","G#6","G6","F#6","F6","E6","D#6","D6","C#6","C6","B5","A#5","A5","G#5","G5","F#5","F5","E5","D#5","D5","C#5","C5","B4","A#4","A4","G#4","G4","F#4","F4","E4","D#4","D4","C#4","C4","B3","A#3","A3","G#3","G3","F#3","F3","E3","D#3","D3","C#3","C3","B2","A#2","A2","G#2","G2","F#2","F2","E2","D#2","D2","C#2","C2","B1","A#1","A1","G#1","G1","F#1","F1","E1","D#1","D1","C#1","C1","B0","A#0","A0","G#0","G0","F#0","F0","E0","D#0","D0","C#0","C0","B-1","A#-1","A-1","G#-1","G-1","F#-1","F-1","E-1","D#-1","D-1","C#-1","C-1")
 combobox bounds(  3, 30, 50, 15), channel("TuneB"),     value(69), text("G9","F#9","F9","E9","D#9","D9","C#9","C9","B8","A#8","A8","G#8","G8","F#8","F8","E8","D#8","D8","C#8","C8","B7","A#7","A7","G#7","G7","F#7","F7","E7","D#7","D7","C#7","C7","B6","A#6","A6","G#6","G6","F#6","F6","E6","D#6","D6","C#6","C6","B5","A#5","A5","G#5","G5","F#5","F5","E5","D#5","D5","C#5","C5","B4","A#4","A4","G#4","G4","F#4","F4","E4","D#4","D4","C#4","C4","B3","A#3","A3","G#3","G3","F#3","F3","E3","D#3","D3","C#3","C3","B2","A#2","A2","G#2","G2","F#2","F2","E2","D#2","D2","C#2","C2","B1","A#1","A1","G#1","G1","F#1","F1","E1","D#1","D1","C#1","C1","B0","A#0","A0","G#0","G0","F#0","F0","E0","D#0","D0","C#0","C0","B-1","A#-1","A-1","G#-1","G-1","F#-1","F-1","E-1","D#-1","D-1","C#-1","C-1")
@@ -33,12 +40,12 @@ checkbox bounds( 89, 10, 15, 15), channel("HighE0"), colour(  0,255,  0), radioG
 image bounds(110,  0,540,135), shape("sharp"), lineThickness(0), colour(white)
 
 ; dots
-image bounds(232, 60, 15,15), colour(0,0,0), shape("ellipse")	; 3rd fret
-image bounds(325, 60, 15,15), colour(0,0,0), shape("ellipse")	; 5th fret
-image bounds(411, 60, 15,15), colour(0,0,0), shape("ellipse")	; 7th fret
-image bounds(490, 60, 15,15), colour(0,0,0), shape("ellipse")	; 9th fret
-image bounds(591, 30, 15,15), colour(0,0,0), shape("ellipse")	; 12th fret
-image bounds(591, 90, 15,15), colour(0,0,0), shape("ellipse")	; 12th fret
+image bounds(232, 60, 15,15), colour(0,0,0), shape("ellipse")    ; 3rd fret
+image bounds(325, 60, 15,15), colour(0,0,0), shape("ellipse")    ; 5th fret
+image bounds(411, 60, 15,15), colour(0,0,0), shape("ellipse")    ; 7th fret
+image bounds(490, 60, 15,15), colour(0,0,0), shape("ellipse")    ; 9th fret
+image bounds(591, 30, 15,15), colour(0,0,0), shape("ellipse")    ; 12th fret
+image bounds(591, 90, 15,15), colour(0,0,0), shape("ellipse")    ; 12th fret
 
 checkbox bounds(131, 10, 15, 15), channel("HighE1"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
 checkbox bounds(183, 10, 15, 15), channel("HighE2"),  colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(1)
@@ -125,32 +132,32 @@ checkbox bounds(591,110, 15, 15), channel("LowE12"), colour:0(0,0,0,0), colour:1
 checkbox bounds(621,110, 15, 15), channel("LowE13"), colour:0(0,0,0,0), colour:1(250,250,  0), shape("ellipse"), radioGroup(6);
                                                                
 ; frets
-line bounds(164,  5,  2, 125), colour(50,50,50)	      	;	;
-line bounds(215,  5,  2, 125), colour(50,50,50)		;3      ;
-line bounds(262,  5,  2, 125), colour(50,50,50)		;       ;
-line bounds(309,  5,  2, 125), colour(50,50,50)      	;5      ;
-line bounds(354,  5,  2, 125), colour(50,50,50)       	;       ;
-line bounds(397,  5,  2, 125), colour(50,50,50)       	;7      ;
-line bounds(438,  5,  2, 125), colour(50,50,50)       	;       ;
-line bounds(477,  5,  2, 125), colour(50,50,50)       	;9      ;
-line bounds(514,  5,  2, 125), colour(50,50,50)       	;       ;
-line bounds(549,  5,  2, 125), colour(50,50,50)       	;       ;
-line bounds(582,  5,  2, 125), colour(50,50,50)       	;12     ;
-line bounds(613,  5,  2, 125), colour(50,50,50)       	;       ;
+line bounds(164,  5,  2, 125), colour(50,50,50)              ;    ;
+line bounds(215,  5,  2, 125), colour(50,50,50)        ;3      ;
+line bounds(262,  5,  2, 125), colour(50,50,50)        ;       ;
+line bounds(309,  5,  2, 125), colour(50,50,50)          ;5      ;
+line bounds(354,  5,  2, 125), colour(50,50,50)           ;       ;
+line bounds(397,  5,  2, 125), colour(50,50,50)           ;7      ;
+line bounds(438,  5,  2, 125), colour(50,50,50)           ;       ;
+line bounds(477,  5,  2, 125), colour(50,50,50)           ;9      ;
+line bounds(514,  5,  2, 125), colour(50,50,50)           ;       ;
+line bounds(549,  5,  2, 125), colour(50,50,50)           ;       ;
+line bounds(582,  5,  2, 125), colour(50,50,50)           ;12     ;
+line bounds(613,  5,  2, 125), colour(50,50,50)           ;       ;
 line bounds(642,  5,  2, 125), colour(50,50,50)                 ;
 
 
 button   bounds(  5,150,175, 50), text("strum"), channel("strum"), value(0), colour:0(50,50,50), colour:1(50,50,50), latched(0)
 combobox bounds(185,175, 85, 25), channel("GuitarType"), value(1), text("6 String","12 String")
 checkbox bounds(185,150,100, 20), channel("ReverseStrum"), text("Reverse") colour("lime")
-hslider bounds(280,143,350, 40), text("Gap"),    colour("tan"), FontColour(195,126,  0), channel("gap"),   range(0,0.5,0.05,0.5,0.0001)
-hslider bounds(280,168,350, 40), text("Damp"),   colour("tan"), FontColour(195,126,  0), channel("damp"),   range(0.01,0.99,0.17)
-hslider bounds(280,193,350, 40), text("Pos."),   colour("tan"), FontColour(195,126,  0), channel("pos"),   range(0.0001, 0.5, 0.02, 0.5, 0.001)
-filebutton bounds(5, 207, 98, 27), text("Store Chord", "Store Chord"), populate("*.snaps*", ""), colour:1(20, 20, 20), mode("snapshot"), channel("ChordSave")
-combobox bounds(110, 207, 105, 26), populate("*.snaps", ""), channel("ChordChoose") 
+hslider bounds(280,143,350, 40), text("Gap"),    colour("tan"), fontColour(195,126,  0), channel("gap"),   range(0,0.5,0.05,0.5,0.0001)
+hslider bounds(280,168,350, 40), text("Damp"),   colour("tan"), fontColour(195,126,  0), channel("damp"),   range(0.01,0.99,0.17)
+hslider bounds(280,193,350, 40), text("Pos."),   colour("tan"), fontColour(195,126,  0), channel("pos"),   range(0.0001, 0.5, 0.02, 0.5, 0.001)
+combobox bounds(110, 207, 105, 26), populate("*.snaps"), channelType("string"), channel("ChordChoose")
+filebutton bounds(5, 207, 98, 27), text("Store Chord", "Store Chord"), colour:1(20, 20, 20), mode("snapshot"), channel("ChordSave")
 
 image bounds(5, 242, 190, 19), colour(75, 85, 90, 50), plant("credit"){
-label bounds(0.005, 0.2, 1, .7), text("Author: Iain McCurdy |2013|"), FontColour(195,126,  0)
+label bounds(0.005, 3 , 170, 12), text("Author: Iain McCurdy |2013|"), fontColour(195,126,  0)
 }
 </Cabbage>
 
@@ -159,22 +166,23 @@ label bounds(0.005, 0.2, 1, .7), text("Author: Iain McCurdy |2013|"), FontColour
 -n -dm0 -+rtmidi=NULL -M0 --midi-key-cps=4 --midi-velocity-amp=5
 </CsOptions>
 <CsInstruments>
-;sr is set by the host
+
+; sr set by host
 ksmps = 64
 nchnls = 2
 0dbfs = 1
 
 ; A small amount of fixed random detuning improves the 12 string guitar sound
-iDetuneRange	=	0.025
-gidetune	ftgen	0, 0, 8, -21, 6, iDetuneRange	; table of detuning values for each string in a 12 string guitar configuration
+iDetuneRange    =    0.025
+gidetune    ftgen    0, 0, 8, -21, 6, iDetuneRange    ; table of detuning values for each string in a 12 string guitar configuration
 
-instr	1
+instr    1
 
  ; macro for string set-up
- #define	STRING_SETUP(NAME)
+ #define    STRING_SETUP(NAME)
  #
- k$NAME._Mute	chnget	"$NAME._Mute"
- kTune$NAME	chnget	"Tune$NAME"
+ k$NAME._Mute    chnget    "$NAME._Mute"
+ kTune$NAME    chnget    "Tune$NAME"
  #
 
  $STRING_SETUP(HighE)
@@ -190,8 +198,8 @@ instr	1
  ; macro that creates a value equivalent to the fretted note for that string
  #define SumString(NAME'N)
  #
- k$NAME.$N	chnget	"$NAME.$N"
- k$NAME._Sum	+=	k$NAME.$N * $N
+ k$NAME.$N    chnget    "$NAME.$N"
+ k$NAME._Sum    +=    k$NAME.$N * $N
  #
 
 
@@ -199,7 +207,7 @@ instr	1
  ; macro that expands the previous macro for each fret and converts the result to cycles per second
  #define ExpandSummingMacro(NAME)
  #
- k$NAME._Sum	=	0 
+ k$NAME._Sum    =    0 
  $SumString($NAME'0)
  $SumString($NAME'1)
  $SumString($NAME'2)
@@ -214,8 +222,8 @@ instr	1
  $SumString($NAME'11)
  $SumString($NAME'12)
  $SumString($NAME'13) 
- kNoteNum$NAME	=	(128 - kTune$NAME) + k$NAME._Sum	; derive note number using open string tuning value
- kCps$NAME	=	cpsmidinn(kNoteNum$NAME)		; convert to cps 
+ kNoteNum$NAME    =    (128 - kTune$NAME) + k$NAME._Sum    ; derive note number using open string tuning value
+ kCps$NAME    =    cpsmidinn(kNoteNum$NAME)        ; convert to cps 
  #
  $ExpandSummingMacro(HighE)
  $ExpandSummingMacro(B)
@@ -226,39 +234,39 @@ instr	1
 
 
 
- kTimeElapsed	timeinsts					; elapsed time form the start of this note (this will be used to prevent premature triggering of the string) 
+ kTimeElapsed    timeinsts                    ; elapsed time form the start of this note (this will be used to prevent premature triggering of the string) 
  
  ; macro for playing an individual string
- #define	PLAY_STRING(NAME'N)
+ #define    PLAY_STRING(NAME'N)
  #
- if(k$NAME._Mute==1) kgoto SKIP$NAME				; if this is an open and muted string jump string playing code
- kRndStrt	random	0,kgap*0.15
- schedkwhen	ktrig,0,0,2.$N,kstart+kRndStrt,20,kCps$NAME,$N	; play string (instr 2)
- kstart	=	kstart + kgap					; increment start time
- SKIP$NAME:							; label
+ if(k$NAME._Mute==1) kgoto SKIP$NAME                ; if this is an open and muted string jump string playing code
+ kRndStrt    random    0,kgap*0.15
+ schedkwhen    ktrig,0,0,2.$N,kstart+kRndStrt,20,kCps$NAME,$N    ; play string (instr 2)
+ kstart    =    kstart + kgap                    ; increment start time
+ SKIP$NAME:                            ; label
  if k$NAME._Mute==1 then
-  turnoff2	2.$N,4,1						; turn off string  
+  turnoff2    2.$N,4,1                        ; turn off string  
  endif
- if changed(kCps$NAME)==1 && timeinstk()>1 then						; ...
-  turnoff2	2.$N,4,1						; turn off string
-  event	"i",2.$N,0,20,kCps$NAME,$N
+ if changed(kCps$NAME)==1 && timeinstk()>1 then                        ; ...
+  turnoff2    2.$N,4,1                        ; turn off string
+  event    "i",2.$N,0,20,kCps$NAME,$N
  endif
  #
  
- kstrum	chnget	"strum"						; 'strum' button
- ktrig	trigger	kstrum,0.5,0					; if 'strum' button has been clicked...
+ kstrum    chnget    "strum"                        ; 'strum' button
+ ktrig    trigger    kstrum,0.5,0                    ; if 'strum' button has been clicked...
  
- if ktrig==1 then						; ...
-  turnoff2	2,0,1						; turn off all playing strings (in preparation for the new chord)
+ if ktrig==1 then                        ; ...
+  turnoff2    2,0,1                        ; turn off all playing strings (in preparation for the new chord)
  endif
  
- kgap	chnget	"gap"
- kreverse	chnget	"ReverseStrum"
+ kgap    chnget    "gap"
+ kreverse    chnget    "ReverseStrum"
  if kreverse==0 then
-  kstart	=	0					; start time (for first string plucked)
+  kstart    =    0                    ; start time (for first string plucked)
  else
-  kstart	=	kgap*5
-  kgap		=	-kgap
+  kstart    =    kgap*5
+  kgap        =    -kgap
  endif
 
  $PLAY_STRING(LowE'1)
@@ -284,42 +292,42 @@ endin
 
 
 
-instr	2	; string pluck
- kdamp	chnget	"damp"	; damping
- iplk	chnget	"pos"	; pluck position
- iamp	random	0.1,0.2
+instr    2    ; string pluck
+ kdamp    chnget    "damp"    ; damping
+ iplk    chnget    "pos"    ; pluck position
+ iamp    random    0.1,0.2
  
- iGuitarType	chnget	"GuitarType"
-  if(iGuitarType==2) then					; if 12 string guitar...
-  kmvt1	jspline		0.15,0.2,0.4				; a bit of random pick-up movement animates the tone of the guitar	
-  kmvt2	jspline		0.15,0.2,0.4		
-  idtn	table		p5,gidetune				; detuning value. used in 12 string guitar only.
-  if p5<5 then							; strings 1 - 4 are in octaves in a 12-string guitar
-   a1	wgpluck2	iplk, iamp/2, p4,          0.2+kmvt1, kdamp
-   a2	wgpluck2	iplk, iamp/2, p4*(2+idtn), 0.2+kmvt2, kdamp
-  else								; strings 5 & 6 are in unison in a 12-string guitar
-   a1	wgpluck2	iplk, iamp/2, p4,          0.2         +kmvt1, kdamp
-   a2	wgpluck2	iplk, iamp/2, p4*(1+idtn), 0.2+rnd(0.5)+kmvt2, kdamp
+ iGuitarType    chnget    "GuitarType"
+  if(iGuitarType==2) then                    ; if 12 string guitar...
+  kmvt1    jspline        0.15,0.2,0.4                ; a bit of random pick-up movement animates the tone of the guitar    
+  kmvt2    jspline        0.15,0.2,0.4        
+  idtn    table        p5,gidetune                ; detuning value. used in 12 string guitar only.
+  if p5<5 then                            ; strings 1 - 4 are in octaves in a 12-string guitar
+   a1    wgpluck2    iplk, iamp/2, p4,          0.2+kmvt1, kdamp
+   a2    wgpluck2    iplk, iamp/2, p4*(2+idtn), 0.2+kmvt2, kdamp
+  else                                ; strings 5 & 6 are in unison in a 12-string guitar
+   a1    wgpluck2    iplk, iamp/2, p4,          0.2         +kmvt1, kdamp
+   a2    wgpluck2    iplk, iamp/2, p4*(1+idtn), 0.2+rnd(0.5)+kmvt2, kdamp
   endif
-   a2	delay	a2,0.01+rnd(0.01)				; slight delay to second string
-  asig	=	a1+a2
- else									; otherwise 6 string
-  kmvt	jspline		0.15,0.2,0.4		
-  asig	wgpluck2	iplk, iamp, p4,   0.2+kmvt,          kdamp
+   a2    delay    a2,0.01+rnd(0.01)                ; slight delay to second string
+  asig    =    a1+a2
+ else                                    ; otherwise 6 string
+  kmvt    jspline        0.15,0.2,0.4        
+  asig    wgpluck2    iplk, iamp, p4,   0.2+kmvt,          kdamp
  endif
  
- aenv		linsegr	0, 0.0008, 1, p3-0.1008, 0, 0.05, 0	; amplitude envelope. Attack removes excessive 'click'. Decays to nothing across note duration (p3). Short release stage prevents click if a note is interrupted.
+ aenv        linsegr    0, 0.0008, 1, p3-0.1008, 0, 0.05, 0    ; amplitude envelope. Attack removes excessive 'click'. Decays to nothing across note duration (p3). Short release stage prevents click if a note is interrupted.
  
  /* FILTERING TO IMPROVE THE SOUND */
- af1	resonz	asig,200,200
- af2	resonz	asig,550,550
- af3	resonz	asig,2100,2100
- asig	sum	af1,af2*5,af3
- asig	=	asig/200
+ af1    resonz    asig,200,200
+ af2    resonz    asig,550,550
+ af3    resonz    asig,2100,2100
+ asig    sum    af1,af2*5,af3
+ asig    =    asig/200
  /* ------------------------------ */
  
- asig	=	asig*aenv
- 	outs	asig, asig
+ asig    =    asig*aenv
+     outs    asig, asig
 endin
 
 

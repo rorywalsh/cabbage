@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; GEN05.csd
 ; Demonstration of GEN05
 ; Written by Iain McCurdy, 2014
@@ -12,7 +19,7 @@
 ; The offset value is subtracted so that the envelope can experience values of zero. 
 
 <Cabbage>
-form caption("GEN05"), size(245, 390), pluginId("gn05"), colour(13, 50, 67,50) style("legacy")
+form caption("GEN05"), size(245, 390), pluginId("gn05"), colour(13, 50, 67,50)
 
 label    bounds( 10,  8, 95, 15), text("Edit Method:")
 combobox bounds(105,  5, 80, 20), text("sliders","drawing"), value(1), channel("mode")
@@ -39,61 +46,61 @@ rslider  bounds(180,310, 70, 70), channel("lev"),   text("Level"), textBox(1), r
 <CsoundSynthesizer>
 
 <CsOptions>   
--dm0 -n -+rtmidi=null -M0
+-dm0 -n -+rtmidi=NULL -M0
 </CsOptions>
 
 <CsInstruments>
 
-;sr is set by the host
-ksmps 		= 	32	;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
-nchnls 		= 	2	;NUMBER OF CHANNELS (1=MONO)
-0dbfs		=	1	;MAXIMUM AMPLITUDE
+; sr set by host
+ksmps         =     32    ;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls         =     2    ;NUMBER OF CHANNELS (1=MONO)
+0dbfs        =    1    ;MAXIMUM AMPLITUDE
 
-instr	1
-	kmode	chnget	"mode"
-	if kmode==1 then
+instr    1
+    kmode    chnget    "mode"
+    if kmode==1 then
 
-		; read in widgets
-		gkval1	chnget	"val1"
-		gkval2	chnget	"val2"
-		gkval3	chnget	"val3"
-        	
-		gkdur1	chnget	"dur1"
-		gkdur2	chnget	"dur2"
-        	
-		gkoffset	chnget	"offset"
-		gkoffset	init	0.001
-		
-		; if any of the variables in the input list are changed, a momentary '1' trigger is generated at the output. This trigger is used to update function tables.
-		ktrig	changed		gkval1,gkval2,gkval3,gkdur1,gkdur2,gkoffset
-		if ktrig==1 then
-		 reinit	UPDATE
-		endif
-		UPDATE:
-		; Update function table
-		  if	(i(gkdur1)+i(gkdur2))>4096 then				; if sum of segments exceeds table size...
-		   idur1	=	i(gkdur1)* (4096/(i(gkdur1)+i(gkdur2)))	; ...scale segment durations down
-		   idur2	=	i(gkdur2)* (4096/(i(gkdur1)+i(gkdur2)))
-		   irem		=	0					; remainder duration of table
-		  else								; if sum of segments is less than table size...
-		   idur1	=	i(gkdur1)
-		   idur2	=	i(gkdur2)
-		   irem		=	4096 - (i(gkdur1) + i(gkdur2))		; remainder duration of table
-		  endif
-		gi1	ftgen	1, 0,   4096, -5, i(gkval1)+i(gkoffset), idur1, i(gkval2)+i(gkoffset), idur2, i(gkval3)+i(gkoffset), irem, i(gkoffset)
-		chnset	"tableNumber(1)", "table"	; update table display	
-		rireturn
-	endif
+        ; read in widgets
+        gkval1    chnget    "val1"
+        gkval2    chnget    "val2"
+        gkval3    chnget    "val3"
+            
+        gkdur1    chnget    "dur1"
+        gkdur2    chnget    "dur2"
+            
+        gkoffset    chnget    "offset"
+        gkoffset    init    0.001
+        
+        ; if any of the variables in the input list are changed, a momentary '1' trigger is generated at the output. This trigger is used to update function tables.
+        ktrig    changed        gkval1,gkval2,gkval3,gkdur1,gkdur2,gkoffset
+        if ktrig==1 then
+         reinit    UPDATE
+        endif
+        UPDATE:
+        ; Update function table
+          if    (i(gkdur1)+i(gkdur2))>4096 then                ; if sum of segments exceeds table size...
+           idur1    =    i(gkdur1)* (4096/(i(gkdur1)+i(gkdur2)))    ; ...scale segment durations down
+           idur2    =    i(gkdur2)* (4096/(i(gkdur1)+i(gkdur2)))
+           irem        =    0                    ; remainder duration of table
+          else                                ; if sum of segments is less than table size...
+           idur1    =    i(gkdur1)
+           idur2    =    i(gkdur2)
+           irem        =    4096 - (i(gkdur1) + i(gkdur2))        ; remainder duration of table
+          endif
+        gi1    ftgen    1, 0,   4096, -5, i(gkval1)+i(gkoffset), idur1, i(gkval2)+i(gkoffset), idur2, i(gkval3)+i(gkoffset), irem, i(gkoffset)
+        chnset    "tableNumber(1)", "table"    ; update table display    
+        rireturn
+    endif
 
-	kTestGen	chnget	"TestGen"				; test generator on/off
-	kspeed	chnget	"speed"
-	kamp	chnget	"lev"
-	kfreq	chnget	"freq"
-	aphasor	phasor	kspeed
-	aenv	tablei	aphasor,gi1,1
-	asig	vco2	0.4*kamp*kTestGen,kfreq,4,0.5			; triangle audio wave
-	asig	=	asig * (aenv - gkoffset)			; remove GEN05 offset
-		outs	asig, asig
+    kTestGen    chnget    "TestGen"                ; test generator on/off
+    kspeed    chnget    "speed"
+    kamp    chnget    "lev"
+    kfreq    chnget    "freq"
+    aphasor    phasor    kspeed
+    aenv    tablei    aphasor,gi1,1
+    asig    vco2    0.4*kamp*kTestGen,kfreq,4,0.5            ; triangle audio wave
+    asig    =    asig * (aenv - gkoffset)            ; remove GEN05 offset
+        outs    asig, asig
 endin
 
 </CsInstruments>
