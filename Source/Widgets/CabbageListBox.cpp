@@ -147,7 +147,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
 
         filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype);
         listboxDir.findChildFiles (dirFiles, File::TypesOfFileToFind::findFilesAndDirectories, false, filetype);
-        stringItems.add ("Select..");
+//        stringItems.add ("Select..");
 
         for (int i = 0; i < dirFiles.size(); ++i)
             folderFiles.add (dirFiles[i]);
@@ -209,7 +209,7 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
         fontColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour);
         //setTooltip (getCurrentPopupText (valueTree));
 
-        if (workingDir != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir))
+        if (workingDir != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir) || prop == CabbageIdentifierIds::populate)
         {
             addItemsToListbox (valueTree);
             workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
@@ -218,7 +218,7 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
         if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles)==1)
         {
             CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::refreshfiles, 0);
-            addItemsToListbox (valueTree);
+            //addItemsToListbox (valueTree);
         }
       
         listBox.repaint();
@@ -268,12 +268,12 @@ void CabbageListBox::clicked(int row, const MouseEvent &e)
         }
         
         owner->restorePluginStateFrom (presets[row], fileName.getFullPathName());
-        owner->sendChannelDataToCsound (getChannel(), row);
+        owner->sendChannelDataToCsound (getChannel(), row+1);
     }
     else if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))
     {
         const String fileType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype);
-        const int index = row;
+        const int index = row+1;
         
         if (fileType.isNotEmpty())
             owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index - 1].getFullPathName());
@@ -283,7 +283,7 @@ void CabbageListBox::clicked(int row, const MouseEvent &e)
     }
     else
     {
-        owner->sendChannelDataToCsound(getChannel(), row);
+        owner->sendChannelDataToCsound(getChannel(), row+1);
     }
 }
 

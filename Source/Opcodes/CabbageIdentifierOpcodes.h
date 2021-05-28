@@ -226,6 +226,25 @@ struct CabbageGetFilePath : csnd::Plugin<1, 1>
     int kperf(){ return getFileInfo(this, "path"); };
 };
 
+struct CabbageFindFilesI : csnd::Plugin<1, 4>
+{
+    int init(){ return findFiles(); };
+    int kperf(){ return findFiles(); };
+    int findFiles();
+};
+
+struct CabbageFindFilesK : csnd::Plugin<1, 4>
+{
+    Array<File> dirFiles;
+    int init(){ return findFiles(); };
+    int kperf(){ return findFiles(); };
+    int deinit(){
+        dirFiles.clear();
+        return OK;
+    }
+    int findFiles();
+};
+
 struct CabbageCopyFile : csnd::InPlug<64>
 {
     int init(){ return copyFiles(); };

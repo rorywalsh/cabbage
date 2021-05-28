@@ -723,8 +723,8 @@ int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type)
     String inputFile = String(opcodeData->inargs.str_data(0).data);
     if(File::isAbsolutePath(inputFile) == false)
     {
-        opcodeData->csound->message(String(inputFile + " is not a valid path").toUTF8().getAddress());
-        return NOTOK;
+        //opcodeData->csound->message(String(inputFile + " is not a valid path").toUTF8().getAddress());
+        return OK;
     }
     
     File file(String(opcodeData->inargs.str_data(0).data));
@@ -752,11 +752,98 @@ int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type)
     
 }
 //-----------------------------------------------------------------------------------------------------
+int CabbageFindFilesI::findFiles()
+{
+    if (in_count() < 1)
+    {
+        csound->message("Not enough parameters passed to cabbageFindFiles.\n");
+        return NOTOK;
+    }
+    
+    String fileExt = "*";
+    File::TypesOfFileToFind typeOfFiles = File::TypesOfFileToFind::findFiles;
+    csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
+    
+    if (in_count() == 3)
+        fileExt = String(inargs.str_data(2).data);
+    
+    if (in_count() == 2)
+    {
+        const String types = String(inargs.str_data(1).data);
+        if(types == "filesAndDirectories")
+        {
+            typeOfFiles = File::TypesOfFileToFind::findFilesAndDirectories;
+        }
+        else if(types == "directories")
+        {
+            typeOfFiles = File::TypesOfFileToFind::findDirectories;
+        }
+    }
+    
+    Array<File> dirFiles;
+    
+    File dirToSearch = File::getCurrentWorkingDirectory().getChildFile(String(inargs.str_data(0).data));
+    
+    
+    dirToSearch.findChildFiles (dirFiles, typeOfFiles, false, fileExt);
+    out.init(csound, (int)dirFiles.size());
+    
+    for ( int i = 0 ; i < dirFiles.size() ; i++)
+    {
+        out[i].data = csound->strdup(dirFiles[i].getFullPathName().toUTF8().getAddress());
+    }
+    return OK;
+}
+
+int CabbageFindFilesK::findFiles()
+{
+    if (in_count() < 2)
+    {
+        csound->message("Not enough parameters passed to cabbageFindFiles.\n");
+        return NOTOK;
+    }
+    
+    String fileExt = "*";
+    File::TypesOfFileToFind typeOfFiles = File::TypesOfFileToFind::findFiles;
+    csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
+    
+    if (in_count() == 4)
+        fileExt = String(inargs.str_data(2).data);
+    
+    if (in_count() == 3)
+    {
+        const String types = String(inargs.str_data(2).data);
+        if(types == "filesAndDirectories")
+        {
+            typeOfFiles = File::TypesOfFileToFind::findFilesAndDirectories;
+        }
+        else if(types == "directories")
+        {
+            typeOfFiles = File::TypesOfFileToFind::findDirectories;
+        }
+    }
+    
+    File dirToSearch = File::getCurrentWorkingDirectory().getChildFile(String(inargs.str_data(1).data));
+    
+    if( inargs[0] == 1 )
+    {
+        dirToSearch.findChildFiles (dirFiles, typeOfFiles, false, fileExt);
+    }
+    
+    out.init(csound, (int)dirFiles.size());
+    
+    for ( int i = 0 ; i < dirFiles.size() ; i++)
+    {
+        out[i].data = csound->strdup(dirFiles[i].getFullPathName().toUTF8().getAddress());
+    }
+    return OK;
+}
+//-----------------------------------------------------------------------------------------------------
 int CabbageCopyFile::copyFiles()
 {
     if (in_count() < 2)
     {
-        csound->message("Not enough parameters passed to cabbagePack.\n");
+        csound->message("Not enough parameters passed to cabbageCopyFile.\n");
         return NOTOK;
     }
     

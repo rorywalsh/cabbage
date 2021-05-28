@@ -467,8 +467,9 @@ void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
     menu.addCommandItem(&commandManager, CommandIDs::toggleProperties);
     menu.addCommandItem(&commandManager, CommandIDs::toggleFileBrowser);
     menu.addCommandItem(&commandManager, CommandIDs::showPluginListEditor);
-    
     menu.addSeparator();
+    menu.addCommandItem (&commandManager, CommandIDs::zoomIn);
+    menu.addCommandItem (&commandManager, CommandIDs::zoomOut);
 }
 
 

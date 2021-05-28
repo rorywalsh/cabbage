@@ -1433,6 +1433,10 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                         else
                             cabbageWidgets.getChildWithName(name).setProperty(identifier, CabbageWidgetData::getColourFromText(colourTokens.dropLastCharacters(1)).toString(), nullptr);
                     }
+                    else if(identifier == CabbageIdentifierIds::populate)
+                    {
+                        cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::refreshfiles,Random::getSystemRandom().nextInt(), nullptr);
+                    }
                     else if(identifier == CabbageIdentifierIds::bounds)
                     {
                         CabbageWidgetData::setBounds(cabbageWidgets.getChildWithName(name), Rectangle<int>( identData->data[i].args[0],
