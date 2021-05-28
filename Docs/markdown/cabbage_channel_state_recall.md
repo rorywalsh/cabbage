@@ -2,6 +2,8 @@
 
 This opcode will read a previously saved state JSON file and update all channels accordingly. It can be used to with the channelStateSave opcode to create a robust preset system. 
 
+<blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.5.43</blockquote>
+
 ### Syntax
 
 <pre>iRes <b>channelStateRecall</b> SFilename
@@ -84,5 +86,3 @@ i10 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
-
-> Added in Cabbage v2.5.43

@@ -2,6 +2,8 @@
 
 Sets the current numeric value of a widget, for example the current value of a `slider`, `combobox`, `button`, etc. If you add an optional trigger input argument, updates will only be sent to the widget when the trigger variable is 1.
 
+<blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.5.44</blockquote>
+
 ### Syntax
 
 <pre><b>cabbageSetValue</b> SChannel, kValue [, kTrig]</pre>
@@ -45,5 +47,3 @@ i1 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
-
-> Added in Cabbage v2.5.44

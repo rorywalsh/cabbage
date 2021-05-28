@@ -30,6 +30,36 @@
     - macros
     - managing_large_numbers_of_widgets
 
+- title: Cabbage Widgets
+  # href:
+  #   - /docs/widgets
+  docs:
+    - cabbage_syntax
+    - all_identifiers
+    - button
+    - button_file
+    - button_info
+    - button_option
+    - checkbox
+    - combobox
+    - csound_output
+    - encoder
+    - form
+    - gentable
+    - groupbox
+    - image
+    - keyboard
+    - label
+    - listbox
+    - numberbox
+    - meter
+    - signaldisplay
+    - sliders
+    - soundfiler
+    - texteditor
+    - range
+    - xypad
+
 - title: Cabbage Opcodes
   docs:
     - cabbage_opcodes
@@ -50,32 +80,3 @@
     
   # href:
   #   - /docs/widgets
-
-- title: Cabbage Widgets
-  # href:
-  #   - /docs/widgets
-  docs:
-    - cabbage_syntax
-    - all_identifiers
-    - button
-    - button_file
-    - button_info
-    - checkbox
-    - combobox
-    - csound_output
-    - encoder
-    - form
-    - gentable
-    - groupbox
-    - image
-    - keyboard
-    - label
-    - listbox
-    - numberbox
-    - meter
-    - signaldisplay
-    - sliders
-    - soundfiler
-    - texteditor
-    - range
-    - xypad
