@@ -770,7 +770,7 @@ int CabbageFindFilesI::findFiles()
     if (in_count() == 2)
     {
         const String types = String(inargs.str_data(1).data);
-        if(types == "filesAndDirectories")
+        if(types == "filesAndDirectories" || types == "directoriesAndFiles")
         {
             typeOfFiles = File::TypesOfFileToFind::findFilesAndDirectories;
         }
