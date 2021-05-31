@@ -120,6 +120,8 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{FE7B8445-EC0A-528F-DC90-0F4F2117A865}" name="Widgets">
+        <FILE id="rvK7cm" name="CabbagePath.cpp" compile="1" resource="0" file="Source/Widgets/CabbagePath.cpp"/>
+        <FILE id="mOgqJj" name="CabbagePath.h" compile="0" resource="0" file="Source/Widgets/CabbagePath.h"/>
         <FILE id="dJcXQb" name="CabbageOptionButton.cpp" compile="1" resource="0"
               file="Source/Widgets/CabbageOptionButton.cpp"/>
         <FILE id="Wzn0MC" name="CabbageOptionButton.h" compile="0" resource="0"
