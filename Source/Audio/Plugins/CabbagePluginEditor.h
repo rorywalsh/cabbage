@@ -44,6 +44,7 @@
 #include "../../Widgets/CabbageCsoundConsole.h"
 #include "../../Widgets/CabbageLabel.h"
 #include "../../Widgets/CabbageOptionButton.h"
+#include "../../Widgets/CabbagePath.h"
 #include "../../Widgets/CabbageXYPad.h"
 #include "../../Widgets/CabbageKeyboard.h"
 #include "../../Widgets/CabbageKeyboardDisplay.h"
@@ -114,7 +115,7 @@ public:
     void insertSignalDisplay (ValueTree cabbageWidgetData);
     void insertStepper (ValueTree cabbageWidgetData) {};
     void insertMeter (ValueTree cabbageWidgetData);
-    
+    void insertPath (ValueTree cabbageWidgetData);
     void insertPort (ValueTree cabbageWidgetData);
     void insertScrew (ValueTree cabbageWidgetData);
     void insertLight (ValueTree cabbageWidgetData);

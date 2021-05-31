@@ -666,6 +666,31 @@ void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID, bool i
     setProperty(widgetData, CabbageIdentifierIds::automatable, 0.0f);
 }
 
+void CabbageWidgetData::setPathProperties (ValueTree widgetData, int ID)
+{
+    setProperty (widgetData, CabbageIdentifierIds::top, 10);
+    setProperty (widgetData, CabbageIdentifierIds::left, 10);
+    setProperty (widgetData, CabbageIdentifierIds::width, 100);
+    setProperty (widgetData, CabbageIdentifierIds::text, "");
+    setProperty (widgetData, CabbageIdentifierIds::height, 30);
+    setProperty (widgetData, CabbageIdentifierIds::channel, "path");
+    var points;
+    points.append (0);
+    points.append (0);
+    setProperty (widgetData, CabbageIdentifierIds::points, points);
+    setProperty (widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colours::transparentBlack.toString());
+    setProperty (widgetData, CabbageIdentifierIds::name, "path");
+    setProperty (widgetData, CabbageIdentifierIds::type, "path");
+    setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
+    setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty (widgetData, CabbageIdentifierIds::readonly, 0);
+    setProperty (widgetData, CabbageIdentifierIds::doubleclicktogglesedit, 0);
+    setProperty(widgetData, CabbageIdentifierIds::channel, getProperty(widgetData, CabbageIdentifierIds::type).toString() + String(ID));
+    setProperty(widgetData, CabbageIdentifierIds::automatable, 0.0f);
+    
+}
+
 void CabbageWidgetData::setTextEditorProperties (ValueTree widgetData, int ID)
 {
     setProperty (widgetData, CabbageIdentifierIds::top, 10);

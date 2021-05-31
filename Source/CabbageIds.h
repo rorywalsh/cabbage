@@ -216,6 +216,7 @@ public:
         add ("csoundoutput");
         add ("textbox");
         add ("label");
+        add ("path");
         add ("hostbpm");
         add ("hosttime");
         add ("hostplaying");
@@ -438,6 +439,7 @@ public:
         add ("reScale");
         add ("toFront");
         add ("guiMode");
+        add ("points");
         add ("bundle");
         add ("import");
         add ("bounds");
@@ -518,6 +520,7 @@ namespace CabbageWidgetTypes
 	static const String nslider = "nslider";
 	static const String oscserver = "oscserver";
 	static const String popupmenu = "popupmenu";
+    static const String path = "path";
 	static const String rslider = "rslider";
 	static const String signaldisplay = "signaldisplay";
 	static const String soundfiler = "soundfiler";
@@ -686,6 +689,7 @@ namespace CabbageIdentifierIds
     static const Identifier populate = "populate";
     static const Identifier popup = "popup";
     static const Identifier pos = "pos";
+    static const Identifier points = "points";
     static const Identifier position = "position";
     static const Identifier popuppostfix = "popupPostfix";
     static const Identifier popupprefix = "popupPrefix";

@@ -130,6 +130,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::hmeter))
         setMeterProperties (widgetData, ID, false);
 
+    else if (strTokens[0].trim() == String(CabbageWidgetTypes::path))
+        setPathProperties (widgetData, ID);
+    
     else if (strTokens[0].trim() == String(CabbageWidgetTypes::vmeter))
         setMeterProperties (widgetData, ID, true);
 
@@ -452,6 +455,9 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
                     setProperty (widgetData, identifier, strTokens[0].trim().getFloatValue());
                 
                 break;
+                
+            case HashStringToInt("points"):
+                setProperty(widgetData, CabbageIdentifierIds::points, getVarArrayFromTokens(strTokens));
             case HashStringToInt ("refreshFiles"):
                 setProperty (widgetData, identifier, 1);
             case HashStringToInt ("crop"):
@@ -639,6 +645,7 @@ var CabbageWidgetData::getVarArrayFromTokens (StringArray strTokens)
 
     for (int i = 1; i < strTokens.size(); i++)
     {
+        DBG(strTokens[i].trim());
         array.append (strTokens[i].trim());
     }
 

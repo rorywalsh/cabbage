@@ -790,6 +790,7 @@ int CabbageFindFilesI::findFiles()
     
     for ( int i = 0 ; i < dirFiles.size() ; i++)
     {
+        out[i].size = strlen(dirFiles[i].getFullPathName().toUTF8().getAddress());
         out[i].data = csound->strdup(dirFiles[i].getFullPathName().toUTF8().getAddress());
     }
     return OK;
@@ -834,6 +835,7 @@ int CabbageFindFilesK::findFiles()
     
     for ( int i = 0 ; i < dirFiles.size() ; i++)
     {
+        out[i].size = strlen(dirFiles[i].getFullPathName().toUTF8().getAddress());
         out[i].data = csound->strdup(dirFiles[i].getFullPathName().toUTF8().getAddress());
     }
     return OK;

@@ -81,6 +81,7 @@ public:
     static void setLightProperties (ValueTree widgetData, int ID);
     static void setMeterProperties (ValueTree widgetData, int ID, bool isVertical);
     static void setEventSequencerProperties (ValueTree widgetData, int ID);
+    static void setPathProperties (ValueTree widgetData, int ID);
     //============================================================================
     static float getNumProp (ValueTree widgetData, Identifier prop);
     static void setNumProp (ValueTree widgetData, Identifier prop, float val);
