@@ -1,6 +1,8 @@
 # cabbageCreate
 
-This opcode can be used to create widgets directly within a Csound orchestra.  
+This opcode can be used to create widgets directly within a Csound orchestra. Note that widgets created in this way must be created at time 0. This is because the host needs to register the parameters when it is instantiated.  
+
+<blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.5.48</blockquote>
 
 ### Syntax
 

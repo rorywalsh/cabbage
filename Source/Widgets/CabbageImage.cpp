@@ -45,6 +45,7 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
 	
     //int isParent = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::isparent);
     String fileBase64 = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
+
 	if (fileBase64.isNotEmpty()) {
 		MemoryOutputStream out;
 		bool result = Base64::convertFromBase64(out, fileBase64);
@@ -54,7 +55,7 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
 		}
 		else
 		{
-			imgFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file));
+			imgFile = File::getCurrentWorkingDirectory().getChildFile (fileBase64).getFullPathName();
 			if (File(imgFile).existsAsFile())
 				img = ImageFileFormat::loadFrom(imgFile);
 		}
