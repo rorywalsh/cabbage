@@ -195,7 +195,7 @@ void CabbageImage::updateImage(ValueTree& valueTree)
 		}
 		else
 		{
-			imgFile = File(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file));
+			imgFile = File::getCurrentWorkingDirectory().getChildFile (fileBase64).getFullPathName();
 			if (File(imgFile).existsAsFile())
 				img = ImageFileFormat::loadFrom(imgFile);
 		}
