@@ -434,7 +434,18 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         }
 		else
 		{
-          //we're not concerned here if the preset combob has been updated...
+            if (owner->getCurrentPreset().isNotEmpty())
+            {
+                String presetName = owner->getCurrentPreset();
+
+                const int index = presets.indexOf(presetName);
+                if (index == -1 && presets.size() > 0)
+                    presetName = presets[0];
+
+                owner->setCurrentPreset(presetName);
+                owner->sendChannelStringDataToCsound(getChannel(), presetName);
+                setSelectedItemIndex((index - 1 >= 0 ? index : 0), dontSendNotification);
+            }
 		}
 
     }
