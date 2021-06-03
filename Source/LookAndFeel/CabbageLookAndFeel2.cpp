@@ -1168,18 +1168,21 @@ void CabbageLookAndFeel2::drawTwoValueThumb(Graphics& g, float x, float y, float
 //if using an SVG..
 void CabbageLookAndFeel2::drawFromSVG(Graphics& g, File svgFile, int x, int y, int newWidth, int newHeight, AffineTransform affine)
 {
-    std::unique_ptr<XmlElement> svg(XmlDocument::parse(svgFile.loadFileAsString()));
-
-    if (svg == nullptr)
-        jassert(false);
-
-    std::unique_ptr<Drawable> drawable;
-
-    if (svg != nullptr)
+    if(svgFile.existsAsFile())
     {
-        drawable = Drawable::createFromSVG(*svg);
-        drawable->setTransformToFit(Rectangle<float>(x, y, newWidth, newHeight), RectanglePlacement::stretchToFit);
-        drawable->draw(g, 1.f, affine);
+        std::unique_ptr<XmlElement> svg(XmlDocument::parse(svgFile.loadFileAsString()));
+
+        if (svg == nullptr)
+            jassert(false);
+
+        std::unique_ptr<Drawable> drawable;
+
+        if (svg != nullptr)
+        {
+            drawable = Drawable::createFromSVG(*svg);
+            drawable->setTransformToFit(Rectangle<float>(x, y, newWidth, newHeight), RectanglePlacement::stretchToFit);
+            drawable->draw(g, 1.f, affine);
+        }
     }
 }
 

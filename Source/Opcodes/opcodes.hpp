@@ -720,7 +720,7 @@ struct GetStateFloatValueArray : csnd::Plugin<1, 1>
 
         if (json::accept(jsonData) == false)
         {
-            csound->message("Invalid JSON data:" + jsonData + "\n");
+            //csound->message("Invalid JSON data (might be caused by precompile..:" + jsonData + "\n");
             out.init(csound, 1);
             out[0] = -1;
             return;

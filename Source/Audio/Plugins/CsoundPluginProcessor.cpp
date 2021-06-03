@@ -613,11 +613,12 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel (CabbageIdentifierIds::timeSigNum.toUTF8(), hostInfo.timeSigNumerator);
     }
 
-
-    csound->PerformKsmps();
+    //csound->Message("Running single k-cycle...\n");
+    //csound->PerformKsmps();
+    //csound->RewindScore();
+    //csound->Message("Rewinding...\n");
 
     Logger::writeToLog("initAllCsoundChannels (ValueTree cabbageData) - done");
-
 }
 //==============================================================================
 void CsoundPluginProcessor::addMacros (String csdText)
