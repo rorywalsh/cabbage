@@ -76,7 +76,7 @@ CabbageMainComponent::CabbageMainComponent (CabbageDocumentWindow* owner, Cabbag
       lookAndFeel(new CabbageIDELookAndFeel()),
       cycleTabsButton ("..."),
       resizerBar(settings->getValueTree(), this),
-wildcardFilter(new WildcardFileFilter("*.csd;*.txt;*.js;*.html;*.snaps;*.plant;*.xml", "*.*", "")),
+wildcardFilter(new WildcardFileFilter("*.csd;*.sco;*.orc;*.txt;*.js;*.html;*.snaps;*.plant;*.xml", "*.*", "")),
       fileTree(FileBrowserComponent::FileChooserFlags::openMode | FileBrowserComponent::FileChooserFlags::canSelectFiles, File::getSpecialLocation (File::currentExecutableFile), wildcardFilter.get(), nullptr),
       owner(owner),
       lookAndFeel4(),
