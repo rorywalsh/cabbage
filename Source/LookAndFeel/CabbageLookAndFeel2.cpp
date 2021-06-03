@@ -76,6 +76,7 @@ const Drawable* CabbageFoldersLookAndFeel::getDefaultFolderImage()
 //Cabbage IDE look and feel class
 CabbageLookAndFeel2::CabbageLookAndFeel2()
 {
+    customFont = Font(999);
     //setDefaultFont(File("/Users/walshr/Documents/Csoundfiles/RobotoCondensed-Italic.ttf"));
 }
 //
@@ -1084,7 +1085,7 @@ void CabbageLookAndFeel2::drawButtonText(Graphics& g, TextButton& button, bool i
     Font font;
     
     if(customFont.getHeight()>900)
-        font = Font(getTextButtonFont(button, button.getHeight()));
+        font = Font(CabbageLookAndFeel2::getTextButtonFont(button, button.getHeight()));
     else
         font = customFont;
     
@@ -1322,9 +1323,9 @@ Font CabbageLookAndFeel2::getTextButtonFont (TextButton&, int buttonHeight)
 Font CabbageLookAndFeel2::getComboBoxFont (ComboBox& box)
 {
     if(customFont.getHeight()>900)
-        return Font(jmin (10.0f, box.getHeight() * 0.85f));
+        return Font(jmin (15.0f, box.getHeight() * 0.85f));
 
-    customFont.setHeight(jmin (10.0f, box.getHeight() * 0.85f));
+    customFont.setHeight(jmin (15.0f, box.getHeight() * 0.85f));
     return customFont;
 }
 

@@ -59,7 +59,9 @@ lAndF()
     
     
     if(globalStyle == "legacy")
-    {
+    {        
+        int fontstyle = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontstyle);
+        owner->customFont.setStyleFlags(fontstyle);
         return;
     }
     
@@ -67,6 +69,11 @@ lAndF()
     if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat" &&
         imgOff.isEmpty() && imgOn.isEmpty() && imgOver.isEmpty())
     {
+        int fontstyle = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontstyle);
+        owner->customFont.setStyleFlags(fontstyle);
+        flatLookAndFeel.customFont = owner->customFont;
+        setLookAndFeel(&flatLookAndFeel);
+        lookAndFeelChanged();
         setLookAndFeel(&flatLookAndFeel);
     }
     

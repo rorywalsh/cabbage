@@ -83,7 +83,7 @@ void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, co
 
 void FlatButtonLookAndFeel::drawButtonText(Graphics &g, TextButton &button, bool isMouseOverButton, bool isButtonDown)
 {
-    Font font (getTextButtonFont (button, button.getHeight() * 1.6));
+    Font font (FlatButtonLookAndFeel::getTextButtonFont (button, button.getHeight() * 1.6));
     g.setFont (font);
     g.setColour (button.findColour (button.getToggleState() ? TextButton::textColourOnId
         : TextButton::textColourOffId)
