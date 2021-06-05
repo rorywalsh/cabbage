@@ -53,7 +53,15 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
 		}
 		else
 		{
-			imgFile = File::getCurrentWorkingDirectory().getChildFile (fileBase64).getFullPathName();
+            String path = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile);
+            if (path.isEmpty())
+            {
+                imgFile = File::getCurrentWorkingDirectory().getChildFile(fileBase64).getFullPathName();
+            }
+            else
+            {
+                imgFile = File(path).getParentDirectory().getChildFile(fileBase64).getFullPathName();
+            }
 			if (File(imgFile).existsAsFile())
 				img = ImageFileFormat::loadFrom(imgFile);
 		}
@@ -182,22 +190,33 @@ void CabbageImage::resizeAllChildren(ValueTree& valueTree)
 }
 void CabbageImage::updateImage(ValueTree& valueTree)
 {
-	String fileBase64 = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
 
-	if (fileBase64.isNotEmpty()) {
-		MemoryOutputStream out;
-		bool result = Base64::convertFromBase64(out, fileBase64);
-		if (result)
-		{
-			img = ImageFileFormat::loadFrom(out.getData(), out.getDataSize());
-		}
-		else
-		{
-			imgFile = File::getCurrentWorkingDirectory().getChildFile (fileBase64).getFullPathName();
-			if (File(imgFile).existsAsFile())
-				img = ImageFileFormat::loadFrom(imgFile);
-		}
-	}
+
+    //int isParent = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::isparent);
+    String fileBase64 = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
+
+    if (fileBase64.isNotEmpty()) {
+        MemoryOutputStream out;
+        bool result = Base64::convertFromBase64(out, fileBase64);
+        if (result)
+        {
+            img = ImageFileFormat::loadFrom(out.getData(), out.getDataSize());
+        }
+        else
+        {
+            String path = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::csdfile);
+            if (path.isEmpty())
+            {
+                imgFile = File::getCurrentWorkingDirectory().getChildFile(fileBase64).getFullPathName();
+            }
+            else
+            {
+                imgFile = File(path).getParentDirectory().getChildFile(fileBase64).getFullPathName();
+            }
+            if (File(imgFile).existsAsFile())
+                img = ImageFileFormat::loadFrom(imgFile);
+        }
+    }
 
 }
 
