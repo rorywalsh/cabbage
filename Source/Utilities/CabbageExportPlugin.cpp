@@ -83,13 +83,13 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         else  if (type == "FMOD")
         {
             fileExtension = ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("dylib") : String("dll");
-            pluginFilename = currentApplicationDirectory + (((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("/fmod_csound.dylib") : String("/fmod_csound64.dll")); 
+            pluginFilename = currentApplicationDirectory + (((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("/fmod_csound.dylib") : String("/fmod_csound64.dll"));
         }
         else  if (type == "FMODFx")
         {
             fileExtension = ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("dylib") : String("dll");
             pluginFilename = currentApplicationDirectory + (((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("/fmod_csound_fx.dylib") : String("/fmod_csound64_fx.dll"));
-
+            
         }
         else  if (type == "Standalone")
         {
@@ -268,14 +268,9 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             const String toReplace2 = "<string>CabbageAudio: CabbageEffectNam<string>";
             newPList = newPList.replace (toReplace2, pluginName);
             if(fileExtension.containsIgnoreCase("component"))
-            {
                 newPList = newPList.replace ("<string>CabbagePlugin</string>", "<string>" + pluginDesc + "</string>");
-                newPList = newPList.replace ("CabbageAudio", manu, true);
-            }
             else
                 newPList = newPList.replace ("<string>CabbagePlugin</string>", "<string>" + fc.getFileNameWithoutExtension() + "</string>");
-            
-            
             
 #endif
             newPList = newPList.replace (toReplace, pluginName);
@@ -402,21 +397,21 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
                 }
             }
             
-           if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
+            if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
             {
                 String manufacturer(JucePlugin_Manufacturer);
-//                mFile.seekg (0, ios::end);
-//                String manuName;
-//                if (manu.length() < 16)
-//                    for (int y = manu.length(); y < manu.length(); y++)
-//                        manu.append (String (" "), 1);
+                //                mFile.seekg (0, ios::end);
+                //                String manuName;
+                //                if (manu.length() < 16)
+                //                    for (int y = manu.length(); y < manu.length(); y++)
+                //                        manu.append (String (" "), 1);
                 //set manufacturer do this a few times in case the plugin ID appear in more than one place.
                 for (int r = 0; r < 10; r++)
                 {
                     mFile.seekg (0, ios::beg);
                     mFile.read ((char*)&buffer[0], file_size);
                     loc = cabbageFindPluginId (buffer, file_size, manufacturer.toUTF8());
-
+                    
                     if (loc < 0)
                     {
                         break;
@@ -428,7 +423,7 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
                     }
                 }
             }
-
+            
             
             
             
