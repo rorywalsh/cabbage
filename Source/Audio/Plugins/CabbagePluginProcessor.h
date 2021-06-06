@@ -101,10 +101,12 @@ public:
     CabbagePluginParameter* getParameterForXYPad (String name);
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
+    void releaseResources() override;
     bool hasEditor() const override;
     //===== XYPad methods =========
     void addXYAutomator (CabbageXYPad* xyPad, ValueTree wData);
     void enableXYAutomator (String name, bool enable, Line<float> dragLine);
+    void disableXYAutomators();
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;

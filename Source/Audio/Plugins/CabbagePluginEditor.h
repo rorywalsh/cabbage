@@ -148,6 +148,7 @@ public:
     const Array<float, CriticalSection> getTableFloats (int tableNum);
     CabbagePluginProcessor& getProcessor();
     void enableXYAutomator (String name, bool enable, Line<float> dragLine = Line<float> (0, 0, 1, 1));
+    void disableXYAutomators();
 
     int getPluginEditorScale()
     {

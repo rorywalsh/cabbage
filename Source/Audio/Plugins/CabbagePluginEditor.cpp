@@ -1117,6 +1117,11 @@ void CabbagePluginEditor::enableXYAutomator (String name, bool enable, Line<floa
     cabbageProcessor.enableXYAutomator (name, enable, dragLine);
 }
 
+void CabbagePluginEditor::disableXYAutomators()
+{
+    cabbageProcessor.disableXYAutomators();
+}
+
 bool CabbagePluginEditor::csdCompiledWithoutError()
 {
     return cabbageProcessor.csdCompiledWithoutError();

@@ -716,6 +716,13 @@ void CabbagePluginProcessor::addCabbageParameter(std::unique_ptr<CabbagePluginPa
 	parameters.add(parameter.release());
 }
 
+
+void CabbagePluginProcessor::releaseResources()
+{
+	// When playback stops, you can use this as an opportunity to free up any
+	// spare memory, etc.
+}
+
 //==============================================================================
 // create parameters for sliders, buttons, comboboxes, checkboxes, encoders and xypads.
 // Other widgets can communicate with Csound, but they cannot be automated
@@ -1703,6 +1710,14 @@ void CabbagePluginProcessor::enableXYAutomator(String name, bool enable, Line<fl
 			else
 				xyAuto->stopTimer();
 		}
+	}
+}
+
+void CabbagePluginProcessor::disableXYAutomators() 
+{
+	for (XYPadAutomator* xyAuto : xyAutomators) 
+	{
+		xyAuto->stopTimer();
 	}
 }
 

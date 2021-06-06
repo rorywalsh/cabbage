@@ -91,8 +91,11 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
 
 CabbageXYPad::~CabbageXYPad()
 {
+    owner->disableXYAutomators();
     widgetData.removeListener(this);
     CabbageUtilities::debug ("Existing xypad");
+    isAutomating = false;    
+
 }
 //==================================================================
 void CabbageXYPad::mouseDown (const MouseEvent& e)
@@ -347,8 +350,10 @@ void XYPadAutomator::timerCallback()
         yValueIncrement *= -1;
     }
 
-    if (isPluginEditorOpen && xParam!=nullptr && yParam!=nullptr) //only update GUI is editor is open
+    if (isPluginEditorOpen && xParam != nullptr && yParam != nullptr) //only update GUI is editor is open
+    {
         sendSynchronousChangeMessage();
+    }
     else
     {
         xParam->setValue (xValue);
