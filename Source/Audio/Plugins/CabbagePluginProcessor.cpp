@@ -1717,7 +1717,7 @@ void CabbagePluginProcessor::disableXYAutomators()
 {
 	for (XYPadAutomator* xyAuto : xyAutomators) 
 	{
-		xyAuto->stopTimer();
+		xyAuto->setIsPluginEditorOpen(false);
 	}
 }
 

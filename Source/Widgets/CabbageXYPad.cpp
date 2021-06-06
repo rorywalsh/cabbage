@@ -93,8 +93,7 @@ CabbageXYPad::~CabbageXYPad()
 {
     owner->disableXYAutomators();
     widgetData.removeListener(this);
-    CabbageUtilities::debug ("Existing xypad");
-    isAutomating = false;    
+    CabbageUtilities::debug ("Existing xypad");  
 
 }
 //==================================================================
