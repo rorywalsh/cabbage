@@ -160,6 +160,14 @@ struct GetCabbageStringIdentifierArray : csnd::Plugin<1, 2>
     int getAttribute();
 };
 
+struct CabbageGetWidgetChannels : csnd::Plugin<1, 1>
+{
+    CabbageWidgetsValueTree** vt = nullptr;
+    int init() { return getChannels(); };
+    int kperf() { return getChannels(); };
+    int getChannels();
+};
+
 //================================================================================================================
 // Opcodes to get reserved channel data with optional trigger signal output
 struct GetCabbageReservedChannelStringWithTrigger : csnd::Plugin<2, 1>
@@ -252,3 +260,5 @@ struct CabbageCopyFile : csnd::InPlug<64>
     int deinit(){ return OK;  }
     int copyFiles();
 };
+
+

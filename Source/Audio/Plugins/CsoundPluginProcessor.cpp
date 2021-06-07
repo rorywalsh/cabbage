@@ -258,11 +258,13 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
     csnd::plugin<CabbageCopyFile>((csnd::Csound*) csound->GetCsound(), "cabbageCopyFile", "", "SW", csnd::thread::i);
     csnd::plugin<CabbageFindFilesI>((csnd::Csound*) csound->GetCsound(), "cabbageFindFiles", "S[]", "SW", csnd::thread::i);
-     csnd::plugin<CabbageFindFilesK>((csnd::Csound*) csound->GetCsound(), "cabbageFindFiles", "S[]", "kSW", csnd::thread::ik);
+    csnd::plugin<CabbageFindFilesK>((csnd::Csound*) csound->GetCsound(), "cabbageFindFiles", "S[]", "kSW", csnd::thread::ik);
     csnd::plugin<CabbageGetFilename>((csnd::Csound*) csound->GetCsound(), "cabbageGetFilename", "S", "S", csnd::thread::ik);
     csnd::plugin<CabbageGetFilePath>((csnd::Csound*) csound->GetCsound(), "cabbageGetFilePath", "S", "S", csnd::thread::ik);
     csnd::plugin<CabbageGetFileExtension>((csnd::Csound*) csound->GetCsound(), "cabbageGetFileExtension", "S", "S", csnd::thread::ik);
     csnd::plugin<CabbageGetFileNoExtension>((csnd::Csound*) csound->GetCsound(), "cabbageGetFileNoExtension", "S", "S", csnd::thread::ik);
+
+    csnd::plugin<CabbageGetWidgetChannels>((csnd::Csound*)csound->GetCsound(), "cabbageGetWidgetChannels", "S[]", "W", csnd::thread::i);
 
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);

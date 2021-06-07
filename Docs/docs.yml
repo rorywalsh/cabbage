@@ -76,6 +76,7 @@
     - cabbage_channel_state_save
     - cabbage_copy_file
     - cabbage_get_file
+    - cabbage_get_widget_channels
     - cabbage_find_files
     
   # href:

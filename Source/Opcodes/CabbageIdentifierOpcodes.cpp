@@ -253,12 +253,111 @@ int GetCabbageStringIdentifierArray::getAttribute()
         out.init(csound, size);
         for ( int i = 0 ; i < size ; i++)
         {
+            out[i].size = strlen(args[i].toString().toUTF8().getAddress());
             out[i].data = csound->strdup(args[i].toString().toUTF8().getAddress());
         }
         
     }
     
     
+    return OK;
+}
+
+int CabbageGetWidgetChannels::getChannels()
+{
+    csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
+        
+
+    vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+    CabbageWidgetsValueTree* varData;
+
+    if (vt != nullptr)
+    {
+        varData = *vt;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
+        vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+        *vt = new CabbageWidgetsValueTree();
+        varData = *vt;
+    }
+
+    StringArray channels;
+    
+    if (in_count() == 1)
+    {
+        String identifiers(inargs.str_data(0).data);
+        CabbageWidgetData::IdentifiersAndParameters idents = CabbageWidgetData::getSetofIdentifiersAndParameters(identifiers);
+
+        for (int i = 0; i < idents.identifier.size(); i++)
+        {
+
+            for (int x = 0; x < varData->data.getNumChildren(); x++)
+            {
+                const String widgetTreeIdentifier = "TempWidget";
+                ValueTree tempWidget(widgetTreeIdentifier);
+                CabbageWidgetData::setCustomWidgetState(tempWidget, identifiers);
+                if (idents.identifier[i].isNotEmpty())
+                {
+                    DBG(CabbageWidgetData::getStringProp(varData->data.getChild(x), CabbageIdentifierIds::channel));
+                    DBG(CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i])).toString());
+                    DBG(CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i])).toString());
+
+                    if (CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i])).toString() ==
+                        CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i])).toString())
+                    {
+                        var chans = CabbageWidgetData::getStringProp(varData->data.getChild(x), CabbageIdentifierIds::channel);
+                        if (chans.size() > 1)
+                        {
+                            for (int n = 0; n < chans.size(); n++)
+                            {
+                                DBG(chans[n].toString());
+                                channels.add(chans[n].toString());
+                            }
+                        }
+                        else
+                            channels.add(chans.toString());
+                    }
+                }
+            }
+        }
+
+        const int size = channels.size();
+        out.init(csound, size);
+        for (int i = 0; i < size; i++)
+        {
+            out[i].size = strlen(channels[i].toUTF8().getAddress());
+            out[i].data = csound->strdup(channels[i].toUTF8().getAddress());
+        }
+    }
+    else
+    {
+        for (int x = 0; x < varData->data.getNumChildren(); x++)
+        {
+            var chans = CabbageWidgetData::getStringProp(varData->data.getChild(x), CabbageIdentifierIds::channel);
+            if (chans.size() > 1)
+            {
+                for (int n = 0; n < chans.size(); n++)
+                {
+                    channels.add(chans[n].toString());
+                }
+            }
+            else
+                channels.add(chans.toString());
+        }
+
+        const int size = channels.size();
+        out.init(csound, size);
+        for (int i = 0; i < size; i++)
+        {
+            out[i].size = strlen(channels[i].toUTF8().getAddress());
+            out[i].data = csound->strdup(channels[i].toUTF8().getAddress());
+        }
+    }
+
+
+
     return OK;
 }
 //====================================================================================================
