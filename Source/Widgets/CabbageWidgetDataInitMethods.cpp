@@ -710,6 +710,7 @@ void CabbageWidgetData::setTextEditorProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::readonly, 0);
+    setProperty(widgetData, CabbageIdentifierIds::fontsize, 16);
     setProperty (widgetData, CabbageIdentifierIds::doubleclicktogglesedit, 0);
     setProperty(widgetData, CabbageIdentifierIds::channel, getProperty(widgetData, CabbageIdentifierIds::type).toString() + String(ID));
     setProperty(widgetData, CabbageIdentifierIds::automatable, 0.0f);
