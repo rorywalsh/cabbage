@@ -24,6 +24,8 @@ texteditor WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/file.md !} 
 
+{! ./markdown/Widgets/Properties/fontSize.md !} 
+
 {! ./markdown/Widgets/Properties/mode.md !} 
 
 ### Common Identifiers
