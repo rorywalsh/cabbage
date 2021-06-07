@@ -383,7 +383,6 @@ int GetCabbageStringValue::getAttribute()
 
 int GetCabbageValue::getAttribute()
 {
-    CabbageWidgetIdentifiers::IdentifierData data;
     if(in_count() == 0)
         return NOTOK;
     

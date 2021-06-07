@@ -75,6 +75,12 @@ public:
     void getIdentifierDataFromCsound() override;
     void triggerCsoundEvents() override;
     void setWidthHeight();
+    int chnsetGestureMode = 0;
+    CabbageWidgetIdentifiers** pd;
+    CabbageWidgetIdentifiers* identData;
+    int autoUpdateCount = 0;
+    bool autoUpdateIsOn = false;
+    int chnsetGestureMode = 0;
     
     //save and restore user plugin presets
     void addPluginPreset(String presetName, String fileName, bool remove);

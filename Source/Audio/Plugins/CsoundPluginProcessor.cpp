@@ -903,7 +903,7 @@ void CsoundPluginProcessor::handleAsyncUpdate()
     }
     else if(polling == 0)
     {
-        getIdentifierDataFromCsound();
+        //getIdentifierDataFromCsound();
     }
     else{
         getChannelDataFromCsound();
@@ -953,7 +953,7 @@ void CsoundPluginProcessor::performCsoundKsmps()
             ++guiCycles;
         }
         else{
-            triggerAsyncUpdate();
+            //triggerAsyncUpdate();
         }
 		//trigger any Csound score event on each k-boundary
 		//triggerCsoundEvents();

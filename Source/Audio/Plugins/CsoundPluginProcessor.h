@@ -157,6 +157,7 @@ public:
     {
        return csound->GetChannel("CHNSET_GESTURES");
     }
+    
     StringArray getTableStatement (int tableNum);
     const Array<float, CriticalSection> getTableFloats (int tableNum);
     int checkTable (int tableNum);

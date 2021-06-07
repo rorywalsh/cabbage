@@ -79,6 +79,8 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, BusesProperties i
 	CabbageUtilities::debug("Cabbage Processor Constructor - Requested input channels:", getTotalNumInputChannels());
 	CabbageUtilities::debug("Cabbage Processor Constructor - Requested output channels:", getTotalNumOutputChannels());
 	createCsound(inputFile);
+    chnsetGestureMode = getChnsetGestureMode();
+    startTimer(20);
 }
 
 void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParameters)
@@ -141,16 +143,34 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 	cabbageWidgets.removeAllChildren(nullptr);
 }
 
+void test()
+{
+    
+}
+
 void CabbagePluginProcessor::timerCallback()
 {
-	int64 modTime = csdFile.getLastModificationTime().toMilliseconds();
+    if(autoUpdateCount == 0 && autoUpdateIsOn)
+    {
+        int64 modTime = csdFile.getLastModificationTime().toMilliseconds();
 
-	if (modTime != csdLastModifiedAt && csdFile.existsAsFile())
-	{
-		csdLastModifiedAt = csdFile.getLastModificationTime().toMilliseconds();
-		CabbageUtilities::debug("resetting file due to update of file on disk");
-		createCsound(csdFile, false);
-	}
+        if (modTime != csdLastModifiedAt && csdFile.existsAsFile())
+        {
+            csdLastModifiedAt = csdFile.getLastModificationTime().toMilliseconds();
+            CabbageUtilities::debug("resetting file due to update of file on disk");
+            createCsound(csdFile, false);
+        }
+    }
+    
+    if(pollingChannels() == 0)
+    {
+        juce::MessageManager::callAsync([this]() {
+            getIdentifierDataFromCsound();
+        });
+    }
+    
+    
+    autoUpdateCount = autoUpdateCount < 1000/20 ? autoUpdateCount+1 : 0;
 }
 
 //==============================================================================
@@ -181,8 +201,10 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 
 		if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
 		{
-			if (line.contains("autoupdate()"))
-				startTimer(1000);
+            if (line.contains("autoUpdate()") || line.contains("autoupdate()"))
+            {
+                autoUpdateIsOn = true;
+            }
             const String font = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::typeface);
             if(font.isNotEmpty()){
                 const String fontPath = File(getCsdFile()).getParentDirectory().getChildFile(font).getFullPathName();
@@ -1408,15 +1430,14 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
     
     if(!getCsound())
         return;
-    
-    const int chnsetGestureMode = getChnsetGestureMode();
-    CabbageWidgetIdentifiers** pd = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* identData;
+
+    pd = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
     
     if (pd == nullptr)
         return;
     
     identData = *pd;
+    
     for( int i = 0 ; i < identData->data.size() ; i++)
     {
         const auto identifier = identData->data[i].identifier;
@@ -1734,9 +1755,8 @@ CabbagePluginParameter* CabbagePluginProcessor::getParameterForXYPad(String name
 }
 
 //==============================================================================
-void CabbagePluginProcessor::setCabbageParameter(String channel, float value, ValueTree& wData) {
-    
-    //attention required here. This only works for widgets with a single channel - xypad and range sliders don't fall into this category
+void CabbagePluginProcessor::setCabbageParameter(String channel, float value, ValueTree& wData)
+{
     if(pollingChannels() == 0){
         MessageManager::callAsync ([this, wData, channel, value](){
             const String widgetType = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::type);
