@@ -38,7 +38,7 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     
     
     int fontSize =CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontsize);
-    textEditor.setFont(Font(16));
+    textEditor.setFont(Font(fontSize));
                        
     textEditor.toggleEditOnDoubleClick = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::doubleclicktogglesedit);
     

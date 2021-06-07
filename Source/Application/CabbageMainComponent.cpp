@@ -2165,7 +2165,8 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
             }
         }
         
-        channels.add(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel));
+        if(string.indexOf(";") == -1)
+            channels.add(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel));
         
         if (CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel).contains(" "))
         {
