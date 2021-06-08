@@ -256,7 +256,17 @@ void CabbageSlider::paintOverChildren(Graphics& g)
 void CabbageSlider::initFilmStrip(ValueTree wData)
 {
     numFrames = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::filmstripframes);
-    const File imageFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filmstripimage));
+    String path = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile);
+    File imageFile;
+    if (path.isEmpty())
+    {
+        imageFile = File::getCurrentWorkingDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filmstripimage)).getFullPathName();
+    }
+    else
+    {
+        imageFile = File(path).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::filmstripimage)).getFullPathName();
+    }
+    
     if (imageFile.existsAsFile())
     {
         isFilmStripSlider = true;
