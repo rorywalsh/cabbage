@@ -2130,30 +2130,27 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
     fileContentStrArray.addLines(fileContents);
     StringArray channels;
     int lineIndex = 0;
+    String guiMode = "polling";
+    int guiModeWarning = 0;
+    
     for (auto string : fileContentStrArray)
     {
         const String widgetTreeIdentifier = "tempWidget";
         ValueTree tempWidget(widgetTreeIdentifier);
         CabbageWidgetData::setWidgetState(tempWidget, string.trimCharactersAtStart(" \t"), -9);
         
+        
+        
         if(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::type) == "form")
         {
+            guiMode = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::guimode);
             const String pluginId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::pluginid);
+            
             if (pluginId.length() != 4)
             {
                 const CodeDocument::Position startPos (getCurrentCodeEditor()->getDocument(), fileContents.indexOf(pluginId));
                 int lineNum = startPos.getLineNumber() + 1;
                 warnings.add("\nWarning: The current pluginId(\""+pluginId+"\") (Line:"+String(lineNum)+") is not valid. A form pluginId() must be an alphanumeric string of 4 characters. ");
-            }
-
-            const String guiMode = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::guimode);
-            if (guiMode != "queue" && fileContents.contains("cabbageSet"))
-            {
-                warnings.add("\nWarning: It looks like you are trying to use cabbageSet opcodes without guiMode(\"queue\") enabled. Please enable guiMode(\"queue\"), otherwise cabbageSet will not work");
-            }
-            else if (guiMode == "queue" && fileContents.contains("identChannel"))
-            {
-                warnings.add("\nWarning: It looks like you are trying to use identChannels() with guiMode(\"queue\"). These are not compatible.");
             }
         }
         else if(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::type) == "gentable")
@@ -2180,6 +2177,17 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
 
             getCurrentEditorContainer()->csoundTokeniser.udoKeywords.add(newKeyword);
 
+        }
+        
+        if (guiMode == "polling" && fileContents.contains("cabbageSet") && string.indexOf(";") == -1 && guiModeWarning == 0)
+        {
+            warnings.add("\nWarning: It looks like you are trying to use cabbageSet opcodes without guiMode(\"queue\") enabled. Please enable guiMode(\"queue\"), otherwise cabbageSet will not work");
+            guiModeWarning = 1;
+        }
+        else if (guiMode == "queue" && string.contains("identChannel") && string.indexOf(";") == -1 && guiModeWarning == 0)
+        {
+            guiModeWarning = 1;
+            warnings.add("\nWarning: It looks like you are trying to use identChannels() with guiMode(\"queue\"). These are not compatible.");
         }
         
         lineIndex++;
@@ -2225,11 +2233,21 @@ void CabbageMainComponent::stopCsoundForNode (String file, int fileTabIndex)
     if (fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex] && File (file).existsAsFile())
     {
         AudioProcessorGraph::NodeID nodeId(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
-            if (getFilterGraph()->graph.getNodeForId(nodeId) != nullptr)
-                getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
-
-            fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "off");
-            fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
+        
+        if (getFilterGraph()->graph.getNodeForId(nodeId) != nullptr)
+        {
+            if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()))
+            {
+                cabbagePlugin->stopTimer();
+                cabbagePlugin->suspendProcessing(true);
+            }
+            else
+            {
+                    getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
+            }
+        }
+        fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "off");
+        fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().setToggleState(false, dontSendNotification);
     }
 }
 //==================================================================================
