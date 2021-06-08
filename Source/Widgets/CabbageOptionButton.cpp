@@ -48,9 +48,15 @@ widgetData(wData)
     }
     
     //if users are passing custom images, use old style look and feel
+    //if users are passing custom images, use old style look and feel
     if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat" &&
         imgOff.isEmpty() && imgOn.isEmpty() && imgOver.isEmpty())
     {
+        int fontstyle = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontstyle);
+        owner->customFont.setStyleFlags(fontstyle);
+        flatLookAndFeel.customFont = owner->customFont;
+        setLookAndFeel(&flatLookAndFeel);
+        lookAndFeelChanged();
         setLookAndFeel(&flatLookAndFeel);
     }
     
