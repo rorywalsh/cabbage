@@ -2130,7 +2130,7 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
     fileContentStrArray.addLines(fileContents);
     StringArray channels;
     int lineIndex = 0;
-    String guiMode = "polling";
+    String guiMode = "";
     int guiModeWarning = 0;
     
     for (auto string : fileContentStrArray)
@@ -2179,15 +2179,18 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
 
         }
         
-        if (guiMode == "polling" && fileContents.contains("cabbageSet") && string.indexOf(";") == -1 && guiModeWarning == 0)
+        if(guiMode.isNotEmpty())
         {
-            warnings.add("\nWarning: It looks like you are trying to use cabbageSet opcodes without guiMode(\"queue\") enabled. Please enable guiMode(\"queue\"), otherwise cabbageSet will not work");
-            guiModeWarning = 1;
-        }
-        else if (guiMode == "queue" && string.contains("identChannel") && string.indexOf(";") == -1 && guiModeWarning == 0)
-        {
-            guiModeWarning = 1;
-            warnings.add("\nWarning: It looks like you are trying to use identChannels() with guiMode(\"queue\"). These are not compatible.");
+            if (guiMode != "queue" && fileContents.contains("cabbageSet") && string.indexOf(";") == -1 && guiModeWarning == 0)
+            {
+                warnings.add("\nWarning: It looks like you are trying to use cabbageSet opcodes without guiMode(\"queue\") enabled. Please enable guiMode(\"queue\"), otherwise cabbageSet will not work");
+                guiModeWarning = 1;
+            }
+            else if (guiMode == "queue" && string.contains("identChannel") && string.indexOf(";") == -1 && guiModeWarning == 0)
+            {
+                guiModeWarning = 1;
+                warnings.add("\nWarning: It looks like you are trying to use identChannels() with guiMode(\"queue\"). These are not compatible.");
+            }
         }
         
         lineIndex++;

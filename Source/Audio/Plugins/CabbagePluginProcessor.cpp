@@ -164,9 +164,11 @@ void CabbagePluginProcessor::timerCallback()
     
     if(pollingChannels() == 0)
     {
-        juce::MessageManager::callAsync([this]() {
+        //not sure we need to call this async...
+        //not doing so improves costs..
+        //juce::MessageManager::callAsync([this]() {
             getIdentifierDataFromCsound();
-        });
+        //});
     }
     
     

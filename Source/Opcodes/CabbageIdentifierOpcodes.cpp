@@ -95,15 +95,13 @@ int CreateCabbageWidget::createWidget()
 //====================================================================================================
 int GetCabbageStringIdentifierSingle::getAttribute()
 {
-    String identifier(inargs.str_data(1).data);
-    String name(inargs.str_data(0).data);
+    identifier = inargs.str_data(1).data;
+    name = inargs.str_data(0).data;
+    
     if(name.isEmpty() || identifier.isEmpty())
     {
         return OK;
     }
-    
-    
-
     
     vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
     CabbageWidgetsValueTree* varData;
@@ -140,8 +138,8 @@ int GetCabbageStringIdentifierSingle::getAttribute()
 int GetCabbageIdentifierArray::getAttribute()
 {
     csnd::Vector<MYFLT>& out = outargs.myfltvec_data(0);
-    String name(inargs.str_data(0).data);
-    String identifier(inargs.str_data(1).data);
+    name = inargs.str_data(0).data;
+    identifier = inargs.str_data(1).data;
     
     if(name.isEmpty() || identifier.isEmpty())
         return OK;
@@ -191,8 +189,8 @@ int GetCabbageIdentifierArray::getAttribute()
 int GetCabbageIdentifierSingle::getAttribute()
 {
 
-    String name(inargs.str_data(0).data);
-    String identifier(inargs.str_data(1).data);
+    name  = inargs.str_data(0).data;
+    identifier = inargs.str_data(1).data;
     
     if(name.isEmpty() || identifier.isEmpty())
         return OK;
@@ -225,8 +223,8 @@ int GetCabbageIdentifierSingle::getAttribute()
 int GetCabbageStringIdentifierArray::getAttribute()
 {
     csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
-    String name(inargs.str_data(0).data);
-    String identifier(inargs.str_data(1).data);
+    name = inargs.str_data(0).data;
+    identifier = inargs.str_data(1).data;
     
     vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
     CabbageWidgetsValueTree* varData;
@@ -367,10 +365,9 @@ int GetCabbageStringValue::getAttribute()
 
     if(in_count() == 0)
         return NOTOK;
+
     
-    String channelName(inargs.str_data(0).data);
-    
-   if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.getCharPointer(),
+   if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                                 CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
         {
             outargs.str_data(0).size = ((STRINGDAT*)value)->size;
@@ -385,10 +382,9 @@ int GetCabbageValue::getAttribute()
 {
     if(in_count() == 0)
         return NOTOK;
+
     
-    String channelName(inargs.str_data(0).data);
-    
-    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.getCharPointer(),
+    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
         outargs[0] = *value;
@@ -403,9 +399,8 @@ int GetCabbageStringValueWithTrigger::getAttribute()
     if(in_count() == 0)
         return NOTOK;
     
-    String channelName(inargs.str_data(0).data);
     
-    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.getCharPointer(),
+    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
         if(!currentString){
@@ -433,9 +428,7 @@ int GetCabbageValueWithTrigger::getAttribute()
     if(in_count() == 0)
         return NOTOK;
     
-    String channelName(inargs.str_data(0).data);
-    
-    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.getCharPointer(),
+    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
 
@@ -463,11 +456,10 @@ int SetCabbageValueIdentifier::setAttribute()
         return OK;
     
     CabbageWidgetIdentifiers::IdentifierData data;
-    
-    String name(outargs.str_data(0).data);
+
     
     data.identifier = "value";
-    data.name = name;
+    data.name = outargs.str_data(0).data;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -507,10 +499,10 @@ int SetCabbageIdentifier::setAttribute()
         return OK;
     
     CabbageWidgetIdentifiers::IdentifierData data;
-    String name(args.str_data(1).data);
-    String identifier(args.str_data(2).data);
+    name = args.str_data(1).data;
+
     data.identifier = identifier;
-    data.name = name;
+    data.name = args.str_data(2).data;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -584,8 +576,8 @@ int SetCabbageIdentifierSArgs::setAttribute()
         return NOTOK;
     }
     
-    String name(args.str_data(1).data);
-    String identifier(args.str_data(2).data);
+    name = args.str_data(1).data;
+    identifier = args.str_data(2).data;
     data.identifier = identifier;
     data.name = name;
     
@@ -645,8 +637,8 @@ int SetCabbageIdentifierSArgs::setAttribute()
 int SetCabbageIdentifierITime::setAttribute()
 {
     CabbageWidgetIdentifiers::IdentifierData data;
-    String name(outargs.str_data(0).data);
-    String identifier(outargs.str_data(1).data);
+    name = outargs.str_data(0).data;
+    identifier = outargs.str_data(1).data;
     data.identifier = identifier;
     data.name = name;
     
@@ -704,8 +696,8 @@ int SetCabbageIdentifierITime::setAttribute()
 int SetCabbageIdentifierITimeSArgs::setAttribute()
 {
     CabbageWidgetIdentifiers::IdentifierData data;
-    String name(outargs.str_data(0).data);
-    String identifier(outargs.str_data(1).data);
+    name = outargs.str_data(0).data;
+    identifier = outargs.str_data(1).data;
     data.identifier = identifier;
     data.name = name;
     

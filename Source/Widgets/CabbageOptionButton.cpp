@@ -38,16 +38,12 @@ widgetData(wData)
     getProperties().set("outlinecolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour));
     getProperties().set("outlinethickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness));
     getProperties().set("corners", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
-    
-    //const var textArray = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::text);
-    //CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::comborange, textArray.size());
-    
+
     if (owner->globalStyle == "legacy")
     {
         return;
     }
     
-    //if users are passing custom images, use old style look and feel
     //if users are passing custom images, use old style look and feel
     if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat" &&
         imgOff.isEmpty() && imgOn.isEmpty() && imgOver.isEmpty())
