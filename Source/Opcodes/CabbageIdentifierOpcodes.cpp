@@ -1,12 +1,12 @@
 /*
-  ==============================================================================
-
-    cabbageIdentifierOpcodes.cpp
-    Created: 12 Mar 2021 12:47:32pm
-    Author:  walshr
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ cabbageIdentifierOpcodes.cpp
+ Created: 12 Mar 2021 12:47:32pm
+ Author:  walshr
+ 
+ ==============================================================================
+ */
 
 #include "../Audio/Plugins/CsoundPluginProcessor.h"
 #include "CabbageIdentifierOpcodes.h"
@@ -51,7 +51,7 @@ int CreateCabbageWidget::createWidget()
     
     CabbageWidgetData::setWidgetState(tempWidget, cabbageCode.trimCharactersAtStart(" \t"),
                                       varData->data.getNumChildren()+1);
-
+    
     //don't duplicate widgets - based on channels..
     bool foundDuplicate = false;
     for ( auto child : varData->data)
@@ -71,7 +71,7 @@ int CreateCabbageWidget::createWidget()
         widgetNameId = widgetTreeIdentifier;
     
     ValueTree newWidget(widgetNameId);
-
+    
     newWidget.copyPropertiesFrom(tempWidget, nullptr);
     
     const String typeOfWidget = CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::type);
@@ -103,7 +103,7 @@ int GetCabbageStringIdentifierSingle::getAttribute()
     }
     
     
-
+    
     
     vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
     CabbageWidgetsValueTree* varData;
@@ -190,7 +190,7 @@ int GetCabbageIdentifierArray::getAttribute()
 //=================================================================================================
 int GetCabbageIdentifierSingle::getAttribute()
 {
-
+    
     String name(inargs.str_data(0).data);
     String identifier(inargs.str_data(1).data);
     
@@ -217,7 +217,7 @@ int GetCabbageIdentifierSingle::getAttribute()
         outargs[0] = (double)child.getProperty(identifier)[0];
     else
         outargs[0] = child.getProperty(identifier);
-
+    
     
     return OK;
 }
@@ -266,11 +266,11 @@ int GetCabbageStringIdentifierArray::getAttribute()
 int CabbageGetWidgetChannels::getChannels()
 {
     csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
-        
-
+    
+    
     vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
     CabbageWidgetsValueTree* varData;
-
+    
     if (vt != nullptr)
     {
         varData = *vt;
@@ -282,17 +282,17 @@ int CabbageGetWidgetChannels::getChannels()
         *vt = new CabbageWidgetsValueTree();
         varData = *vt;
     }
-
+    
     StringArray channels;
     
     if (in_count() == 1)
     {
         String identifiers(inargs.str_data(0).data);
         CabbageWidgetData::IdentifiersAndParameters idents = CabbageWidgetData::getSetofIdentifiersAndParameters(identifiers);
-
+        
         for (int i = 0; i < idents.identifier.size(); i++)
         {
-
+            
             for (int x = 0; x < varData->data.getNumChildren(); x++)
             {
                 const String widgetTreeIdentifier = "TempWidget";
@@ -303,7 +303,7 @@ int CabbageGetWidgetChannels::getChannels()
                     DBG(CabbageWidgetData::getStringProp(varData->data.getChild(x), CabbageIdentifierIds::channel));
                     DBG(CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i])).toString());
                     DBG(CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i])).toString());
-
+                    
                     if (CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i])).toString() ==
                         CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i])).toString())
                     {
@@ -322,7 +322,7 @@ int CabbageGetWidgetChannels::getChannels()
                 }
             }
         }
-
+        
         const int size = channels.size();
         out.init(csound, size);
         for (int i = 0; i < size; i++)
@@ -346,7 +346,7 @@ int CabbageGetWidgetChannels::getChannels()
             else
                 channels.add(chans.toString());
         }
-
+        
         const int size = channels.size();
         out.init(csound, size);
         for (int i = 0; i < size; i++)
@@ -355,27 +355,27 @@ int CabbageGetWidgetChannels::getChannels()
             out[i].data = csound->strdup(channels[i].toUTF8().getAddress());
         }
     }
-
-
-
+    
+    
+    
     return OK;
 }
 //====================================================================================================
 
 int GetCabbageStringValue::getAttribute()
 {
-
+    
     if(in_count() == 0)
         return NOTOK;
-
     
-   if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
-                                                CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-        {
-            outargs.str_data(0).size = ((STRINGDAT*)value)->size;
-            outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
-        }
-
+    
+    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
+                                            CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+    {
+        outargs.str_data(0).size = ((STRINGDAT*)value)->size;
+        outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
+    }
+    
     
     return OK;
 }
@@ -384,7 +384,7 @@ int GetCabbageValue::getAttribute()
 {
     if(in_count() == 0)
         return NOTOK;
-
+    
     
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
@@ -433,7 +433,7 @@ int GetCabbageValueWithTrigger::getAttribute()
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
-
+        
         if(*value != currentValue)
         {
             currentValue = *value;
@@ -522,7 +522,7 @@ int SetCabbageIdentifier::setAttribute()
         varData = *vt;
     }
     
-
+    
     
     if(trigger == 1)
     {
@@ -547,7 +547,7 @@ int SetCabbageIdentifier::setAttribute()
             for ( int i = 3 ; i < in_count(); i++)
             {
                 //DBG(outargs[i]);
-                 data.args.append(args[i]);
+                data.args.append(args[i]);
             }
         }
         varData->data.add(data);
@@ -573,7 +573,7 @@ int SetCabbageIdentifierSArgs::setAttribute()
     int trigger = args[0];
     if(trigger == 0)
         return OK;
-
+    
     if(in_count()<3){
         csound->perf_error("Not enough arguments\n", this);
         return NOTOK;
@@ -632,7 +632,7 @@ int SetCabbageIdentifierSArgs::setAttribute()
         updateData0.args = 0;
         varData->data.add(updateData0);
     }
-
+    
     return OK;
 }
 
@@ -683,7 +683,7 @@ int SetCabbageIdentifierITime::setAttribute()
         }
     }
     varData->data.add(data);
-
+    
     if(identifier == "tableNumber")
     {
         CabbageWidgetIdentifiers::IdentifierData updateData0;
@@ -757,11 +757,11 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
 //====================================================================================================
 int GetCabbageReservedChannelStringWithTrigger::getAttribute()
 {
-       
+    
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
-      
+        
         if(!channelString){
             channelString = csound->strdup(((STRINGDAT*)value)->data);
         }
@@ -832,13 +832,13 @@ int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type)
         result = file.getFileExtension();
     if(type == "noExtension")
         result = file.getFileNameWithoutExtension();
-   
+    
 #ifdef JUCE_WINDOWS
-	opcodeData->outargs.str_data(0).size = strlen(result.replace("\\", "\\\\").toRawUTF8());
-	opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.replace("\\", "\\\\").toUTF8().getAddress());
-	return OK;
+    opcodeData->outargs.str_data(0).size = strlen(result.replace("\\", "\\\\").toRawUTF8());
+    opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.replace("\\", "\\\\").toUTF8().getAddress());
+    return OK;
 #endif
-
+    
     opcodeData->outargs.str_data(0).size = strlen(result.toRawUTF8());
     opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.toUTF8().getAddress());
     return OK;
@@ -891,46 +891,49 @@ int CabbageFindFilesI::findFiles()
 
 int CabbageFindFilesK::findFiles()
 {
-    if (in_count() < 2)
-    {
-        csound->message("Not enough parameters passed to cabbageFindFiles.\n");
-        return NOTOK;
-    }
-    
-    String fileExt = "*";
-    File::TypesOfFileToFind typeOfFiles = File::TypesOfFileToFind::findFiles;
-    csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
-    
-    if (in_count() == 4)
-        fileExt = String(inargs.str_data(2).data);
-    
-    if (in_count() == 3)
-    {
-        const String types = String(inargs.str_data(2).data);
-        if(types == "filesAndDirectories")
-        {
-            typeOfFiles = File::TypesOfFileToFind::findFilesAndDirectories;
-        }
-        else if(types == "directories")
-        {
-            typeOfFiles = File::TypesOfFileToFind::findDirectories;
-        }
-    }
-    
-    File dirToSearch = File::getCurrentWorkingDirectory().getChildFile(String(inargs.str_data(1).data));
+    csnd::Vector<STRINGDAT>& outs = outargs.vector_data<STRINGDAT>(0);
     
     if( inargs[0] == 1 )
     {
+        if (in_count() < 2)
+        {
+            csound->message("Not enough parameters passed to cabbageFindFiles.\n");
+            return NOTOK;
+        }
+        
+        juce::String fileExt = "*";
+        juce::File::TypesOfFileToFind typeOfFiles = juce::File::TypesOfFileToFind::findFiles;
+        
+        
+        if (in_count() == 4)
+            fileExt = juce::String(inargs.str_data(2).data);
+        
+        if (in_count() == 3)
+        {
+            const juce::String types = juce::String(inargs.str_data(2).data);
+            if(types == "filesAndDirectories")
+            {
+                typeOfFiles = juce::File::TypesOfFileToFind::findFilesAndDirectories;
+            }
+            else if(types == "directories")
+            {
+                typeOfFiles = juce::File::TypesOfFileToFind::findDirectories;
+            }
+        }
+        
+        dirFiles.clear();
+        juce::File dirToSearch = juce::File::getCurrentWorkingDirectory().getChildFile(juce::String(inargs.str_data(1).data));
         dirToSearch.findChildFiles (dirFiles, typeOfFiles, false, fileExt);
+        
+        outs.init(csound, (int)dirFiles.size());
+        
+        for ( int i = 0 ; i < dirFiles.size() ; i++)
+        {
+            outs[i].size = strlen(dirFiles[i].getFullPathName().toUTF8().getAddress());
+            outs[i].data = csound->strdup(dirFiles[i].getFullPathName().toUTF8().getAddress());
+        }
     }
     
-    out.init(csound, (int)dirFiles.size());
-    
-    for ( int i = 0 ; i < dirFiles.size() ; i++)
-    {
-        out[i].size = strlen(dirFiles[i].getFullPathName().toUTF8().getAddress());
-        out[i].data = csound->strdup(dirFiles[i].getFullPathName().toUTF8().getAddress());
-    }
     return OK;
 }
 //-----------------------------------------------------------------------------------------------------
@@ -946,7 +949,7 @@ int CabbageCopyFile::copyFiles()
     String newLocation = File::getCurrentWorkingDirectory().getChildFile(String(args.str_data(0).data)).getFullPathName();
     const String extension = File(newLocation).getFileExtension();
     String newFolder = File(newLocation).getParentDirectory().getFullPathName()+"/"+File(newLocation).getFileNameWithoutExtension();
-
+    
     if(File(newLocation).exists() == false)
     {
         ghc::filesystem::create_directory(newFolder.toStdString());
