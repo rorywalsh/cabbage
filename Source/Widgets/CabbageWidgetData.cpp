@@ -580,7 +580,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
             case HashStringToInt ("blackNoteColour"):
             case HashStringToInt ("keyDownColour"):
             case HashStringToInt ("whiteNoteColour"):
-            case HashStringToInt ("mouseOverkeyColour"):
+            case HashStringToInt ("mouseOverKeyColour"):
             case HashStringToInt ("arrowBackgroundColour"):
             case HashStringToInt ("arrowColour"):
             case HashStringToInt ("ballColour"):
