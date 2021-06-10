@@ -42,10 +42,14 @@ public:
 };
 
 //Some of these classes use a reversed input/output system to get around the issue of 0 outputs..
-struct SetCabbageValueIdentifier : csnd::Plugin<3, 0>
+struct SetCabbageValueIdentifier : csnd::InPlug<3>
 {
     MYFLT* value;
+    MYFLT lastValue = 0;
     String name, identifier;
+    
+    
+    CabbageWidgetIdentifiers::IdentifierData data;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(); };
     int kperf(){ return setAttribute(); }
@@ -221,26 +225,27 @@ struct GetCabbageReservedChannelData : csnd::Plugin<1, 1>
     int getAttribute();
 };
 
-int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type);
+int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type, std::string& currentPath);
 struct CabbageGetFilename : csnd::Plugin<1, 1>
 {
-    int init(){ return getFileInfo(this, "name"); };
-    int kperf(){ return getFileInfo(this, "name"); };
+    std::string currentPath = "";
+    int init(){ return getFileInfo(this, "name", currentPath); };
+    int kperf(){ return getFileInfo(this, "name", currentPath); };
 };
 struct CabbageGetFileExtension : csnd::Plugin<1, 1>
 {
-    int init(){ return getFileInfo(this, "extension"); };
-    int kperf(){ return getFileInfo(this, "extension"); };
+    //int init(){ return getFileInfo(this, "extension"); };
+   // int kperf(){ return getFileInfo(this, "extension"); };
 };
 struct CabbageGetFileNoExtension : csnd::Plugin<1, 1>
 {
-    int init(){ return getFileInfo(this, "noExtension"); };
-    int kperf(){ return getFileInfo(this, "noExtension"); };
+    //int init(){ return getFileInfo(this, "noExtension"); };
+//int kperf(){ return getFileInfo(this, "noExtension"); };
 };
 struct CabbageGetFilePath : csnd::Plugin<1, 1>
 {
-    int init(){ return getFileInfo(this, "path"); };
-    int kperf(){ return getFileInfo(this, "path"); };
+   // int init(){ return getFileInfo(this, "path"); };
+   // int kperf(){ return getFileInfo(this, "path"); };
 };
 
 struct CabbageFindFilesI : csnd::Plugin<1, 4>

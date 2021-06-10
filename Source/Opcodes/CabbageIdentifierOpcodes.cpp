@@ -449,20 +449,18 @@ int GetCabbageValueWithTrigger::getAttribute()
 }
 
 //====================================================================================================
-
+// from cabbageSetValue
 int SetCabbageValueIdentifier::setAttribute()
 {
-    int trigger = outargs[2];
+    int trigger = args[2];
     
-    if(trigger == 0)
+    if(trigger == 0 || lastValue == args[1] || args.str_data(0).size == 0)
         return OK;
     
     CabbageWidgetIdentifiers::IdentifierData data;
     
-    String name(outargs.str_data(0).data);
-    
     data.identifier = "value";
-    data.name = name;
+    data.name = args.str_data(0).data;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -479,15 +477,31 @@ int SetCabbageValueIdentifier::setAttribute()
         varData = *vt;
     }
     
+    //now update underlying Csound channel
     if(trigger == 1)
     {
-        if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, outargs.str_data(0).data,
+        if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(0).data,
                                                CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
         {
-            *value = outargs[1];
+            *value = args[1];
         }
-        data.args = outargs[1];
-        varData->data.add(data);
+        data.args = args[1];
+
+        bool entryExists = false;
+
+        for( auto& el : varData->data)
+        {
+            if(el.identifier == data.identifier && el.name == data.name)
+            {
+                el.args = data.args;
+                entryExists = true;
+            }
+        }
+
+        if(entryExists == false)
+            varData->data.add(data);
+        
+        lastValue = args[1];
     }
     
     return OK;
@@ -802,45 +816,46 @@ int GetCabbageReservedChannelDataWithTrigger::getAttribute()
 }
 
 //-----------------------------------------------------------------------------------------------------
-int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type)
+int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type, std::string& currentPath)
 {
-    
-    
-    if(String(opcodeData->inargs.str_data(0).data).isEmpty())
+
+    if(opcodeData->in_count() == 0)
     {
-        opcodeData->outargs.str_data(0).size = 0;
-        opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup("");
-        return OK;
+        return NOTOK;
     }
-    
-    String inputFile = String(opcodeData->inargs.str_data(0).data);
-    if(File::isAbsolutePath(inputFile) == false)
+
+    if(currentPath != opcodeData->inargs.str_data(0).data)
     {
-        //opcodeData->csound->message(String(inputFile + " is not a valid path").toUTF8().getAddress());
+        currentPath = opcodeData->inargs.str_data(0).data;
+        //String inputFile = String(opcodeData->inargs.str_data(0).data);
+        if(File::isAbsolutePath(opcodeData->inargs.str_data(0).data) == false)
+        {
+            //opcodeData->csound->message(String(inputFile + " is not a valid path").toUTF8().getAddress());
+            return OK;
+        }
+        
+        File file(String(opcodeData->inargs.str_data(0).data));
+        
+        String result;
+        
+        if(type == "name")
+            result = file.getFileName();
+        if(type == "path")
+            result = file.getParentDirectory().getFullPathName();
+        if(type == "extension")
+            result = file.getFileExtension();
+        if(type == "noExtension")
+            result = file.getFileNameWithoutExtension();
+        
+    #ifdef JUCE_WINDOWS
+        opcodeData->outargs.str_data(0).size = strlen(result.replace("\\", "\\\\").toRawUTF8());
+        opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.replace("\\", "\\\\").toUTF8().getAddress());
         return OK;
+    #endif
+        
+        opcodeData->outargs.str_data(0).size = strlen(result.toRawUTF8());
+        opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.toUTF8().getAddress());
     }
-    
-    File file(String(opcodeData->inargs.str_data(0).data));
-    
-    String result = "";
-    
-    if(type == "name")
-        result = file.getFileName();
-    if(type == "path")
-        result = file.getParentDirectory().getFullPathName();
-    if(type == "extension")
-        result = file.getFileExtension();
-    if(type == "noExtension")
-        result = file.getFileNameWithoutExtension();
-    
-#ifdef JUCE_WINDOWS
-    opcodeData->outargs.str_data(0).size = strlen(result.replace("\\", "\\\\").toRawUTF8());
-    opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.replace("\\", "\\\\").toUTF8().getAddress());
-    return OK;
-#endif
-    
-    opcodeData->outargs.str_data(0).size = strlen(result.toRawUTF8());
-    opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.toUTF8().getAddress());
     return OK;
     
 }
@@ -926,7 +941,7 @@ int CabbageFindFilesK::findFiles()
         dirToSearch.findChildFiles (dirFiles, typeOfFiles, false, fileExt);
         
         outs.init(csound, (int)dirFiles.size());
-        
+        dirFiles.sort();
         for ( int i = 0 ; i < dirFiles.size() ; i++)
         {
             outs[i].size = strlen(dirFiles[i].getFullPathName().toUTF8().getAddress());
