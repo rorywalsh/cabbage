@@ -943,14 +943,15 @@ void CsoundPluginProcessor::performCsoundKsmps()
 	if (result == 0)
 	{
         //slow down calls to these functions, no need for them to be firing at k-rate
-        if(polling == true){
-        if (guiCycles > guiRefreshRate)
+        if(polling != 0)
         {
-            guiCycles = 0;
-            triggerAsyncUpdate();
-        }
-        else
-            ++guiCycles;
+            if (guiCycles > guiRefreshRate)
+            {
+                guiCycles = 0;
+                triggerAsyncUpdate();
+            }
+            else
+                ++guiCycles;
         }
         else{
             //triggerAsyncUpdate();
