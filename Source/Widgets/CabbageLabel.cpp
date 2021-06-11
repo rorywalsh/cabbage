@@ -84,7 +84,8 @@ void CabbageLabel::mouseDown (const MouseEvent& event)
 void CabbageLabel::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
     textAlign = CabbageUtilities::getJustification (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::align));
-    setText (this->getCurrentText (valueTree));
+    const String labelText = this->getCurrentText(valueTree);
+    setText (labelText);
 
     if (fontstyle != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::fontstyle))
     {

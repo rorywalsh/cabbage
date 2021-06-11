@@ -93,7 +93,7 @@ void CsoundPluginProcessor::destroyCsoundGlobalVars()
 void CsoundPluginProcessor::createCsoundGlobalVars(ValueTree cabbageData)
 {
     CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-    if (pd == nullptr) {
+    if (pd == NULL) {
         getCsound()->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
         pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
         *pd = new CabbagePersistentData();
@@ -101,9 +101,15 @@ void CsoundPluginProcessor::createCsoundGlobalVars(ValueTree cabbageData)
         pdClass->data = getInternalState().toStdString();
     }
 
+    //getCsound()->CreateGlobalVariable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
+    //    wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
+    //if (wi == NULL) {
+    //    getCsound()->CreateGlobalVariable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
+    //    wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
+    //}
 
     CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
-    if (vt == nullptr) {
+    if (vt == NULL) {
         getCsound()->CreateGlobalVariable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
         vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
         *vt = new CabbageWidgetsValueTree();
@@ -229,7 +235,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
     
     //csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSW", csnd::thread::ik);
-    csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSS", csnd::thread::k);
+    csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSS", csnd::thread::ik);
     csnd::plugin<SetCabbageIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSM", csnd::thread::k);
     csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSW", csnd::thread::k);
     
@@ -903,7 +909,7 @@ void CsoundPluginProcessor::handleAsyncUpdate()
     }
     else if(polling == 0)
     {
-        //getIdentifierDataFromCsound();
+        getIdentifierDataFromCsound();
     }
     else{
         getChannelDataFromCsound();
@@ -954,7 +960,7 @@ void CsoundPluginProcessor::performCsoundKsmps()
                 ++guiCycles;
         }
         else{
-            //triggerAsyncUpdate();
+            triggerAsyncUpdate();
         }
 		//trigger any Csound score event on each k-boundary
 		//triggerCsoundEvents();
