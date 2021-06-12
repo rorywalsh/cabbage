@@ -80,7 +80,8 @@ CabbagePluginProcessor::CabbagePluginProcessor(File inputFile, BusesProperties i
 	CabbageUtilities::debug("Cabbage Processor Constructor - Requested output channels:", getTotalNumOutputChannels());
 	createCsound(inputFile);
     chnsetGestureMode = getChnsetGestureMode();
-    //startTimer(20);
+
+    startTimer(20);
 }
 
 void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParameters)

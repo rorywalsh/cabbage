@@ -101,12 +101,10 @@ void CsoundPluginProcessor::createCsoundGlobalVars(ValueTree cabbageData)
         pdClass->data = getInternalState().toStdString();
     }
 
-    //getCsound()->CreateGlobalVariable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-    //    wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
-    //if (wi == NULL) {
-    //    getCsound()->CreateGlobalVariable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-    //    wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
-    //}
+    CabbageWidgetIdentifiers** wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageData");
+    if (pd == NULL) {
+        getCsound()->CreateGlobalVariable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
+    }
 
     CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
     if (vt == NULL) {
@@ -235,7 +233,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
     
     //csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSW", csnd::thread::ik);
-    csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSS", csnd::thread::k);
+    csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSS", csnd::thread::ik);
     csnd::plugin<SetCabbageIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSM", csnd::thread::k);
     csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSW", csnd::thread::k);
     
@@ -623,7 +621,6 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     //csound->Message("Running single k-cycle...\n");
     csound->PerformKsmps();
-    //csound->RewindScore();
     //csound->Message("Rewinding...\n");
 
     Logger::writeToLog("initAllCsoundChannels (ValueTree cabbageData) - done");
@@ -909,7 +906,7 @@ void CsoundPluginProcessor::handleAsyncUpdate()
     }
     else if(polling == 0)
     {
-        getIdentifierDataFromCsound();
+        //getIdentifierDataFromCsound();
     }
     else{
         getChannelDataFromCsound();
@@ -960,7 +957,7 @@ void CsoundPluginProcessor::performCsoundKsmps()
                 ++guiCycles;
         }
         else{
-            triggerAsyncUpdate();
+            //triggerAsyncUpdate();
         }
 		//trigger any Csound score event on each k-boundary
 		//triggerCsoundEvents();
