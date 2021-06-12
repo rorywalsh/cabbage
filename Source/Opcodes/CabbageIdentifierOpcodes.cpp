@@ -450,10 +450,13 @@ int GetCabbageValueWithTrigger::getAttribute()
 
 //====================================================================================================
 // from cabbageSetValue
-int SetCabbageValueIdentifier::setAttribute()
+int SetCabbageValueIdentifier::setAttribute(int rate)
 {
     int trigger = args[2];
     
+    if (rate == I_RATE)
+        trigger = 1;
+
     if(trigger == 0 || lastValue == args[1] || args.str_data(0).size == 0)
         return OK;
     
@@ -579,12 +582,16 @@ int SetCabbageIdentifier::setAttribute()
     return OK;
 }
 
-int SetCabbageIdentifierSArgs::setAttribute()
+int SetCabbageIdentifierSArgs::setAttribute(int rate)
 {
     //csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSS", csnd::thread::k);
     
     CabbageWidgetIdentifiers::IdentifierData data;
     int trigger = args[0];
+
+    if (rate == I_RATE)
+        trigger = 1;
+
     if(trigger == 0)
         return OK;
     

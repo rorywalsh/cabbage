@@ -29,6 +29,8 @@ button WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour_1.md !} 
 
+{! ./markdown/Widgets/Properties/corners.md !} 
+
 {! ./markdown/Widgets/Properties/fontColour_0.md !} 
 
 {! ./markdown/Widgets/Properties/fontColour_1.md !} 

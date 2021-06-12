@@ -15,6 +15,8 @@
 
 #pragma once
 
+#define I_RATE 1
+#define K_RATE 2
 
 class CabbageWidgetsValueTree
 {
@@ -51,18 +53,18 @@ struct SetCabbageValueIdentifier : csnd::InPlug<3>
     
     CabbageWidgetIdentifiers::IdentifierData data;
     CabbageWidgetIdentifiers** vt = nullptr;
-    int init(){ return setAttribute(); };
-    int kperf(){ return setAttribute(); }
-    int setAttribute();
+    int init(){ return setAttribute(I_RATE); };
+    int kperf(){ return setAttribute(K_RATE); }
+    int setAttribute(int rate);
 };
 
 struct SetCabbageIdentifierSArgs : csnd::InPlug<64>
 {
     String name, identifier;
     CabbageWidgetIdentifiers** vt = nullptr;
-    int init(){ return setAttribute(); };
-    int kperf(){ return setAttribute(); };
-    int setAttribute();
+    int init(){ return setAttribute(I_RATE); };
+    int kperf(){ return setAttribute(K_RATE); };
+    int setAttribute(int rate);
 };
 
 struct SetCabbageIdentifier : csnd::InPlug<64>

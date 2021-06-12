@@ -27,6 +27,8 @@ button WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/channel.md !} 
 
+{! ./markdown/Widgets/Properties/corners.md !} 
+
 {! ./markdown/Widgets/Properties/colour_0.md !} 
 
 {! ./markdown/Widgets/Properties/colour_1.md !} 
