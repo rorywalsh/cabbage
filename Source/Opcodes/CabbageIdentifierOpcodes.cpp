@@ -456,8 +456,8 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
     
     if (rate == I_RATE)
         trigger = 1;
-
-    if(trigger == 0 || lastValue == args[1] || args.str_data(0).size == 0)
+    
+    if(trigger == 0 || args.str_data(0).size == 0)
         return OK;
     
     CabbageWidgetIdentifiers::IdentifierData data;
@@ -488,6 +488,10 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
         {
             *value = args[1];
         }
+        
+        if(lastValue == args[1])
+            return OK;
+            
         data.args = args[1];
 
         bool entryExists = false;
