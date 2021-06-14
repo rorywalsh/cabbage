@@ -489,9 +489,6 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
             *value = args[1];
         }
         
-        if(lastValue == args[1])
-            return OK;
-            
         data.args = args[1];
 
         bool entryExists = false;
@@ -507,8 +504,7 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
 
         if(entryExists == false)
             varData->data.add(data);
-        
-        lastValue = args[1];
+
     }
     
     return OK;
