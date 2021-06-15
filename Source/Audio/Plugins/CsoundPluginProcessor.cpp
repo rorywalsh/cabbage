@@ -102,7 +102,7 @@ void CsoundPluginProcessor::createCsoundGlobalVars(ValueTree cabbageData)
     }
 
     CabbageWidgetIdentifiers** wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageData");
-    if (pd == NULL) {
+    if (wi == NULL) {
         getCsound()->CreateGlobalVariable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
     }
 
@@ -233,14 +233,14 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
     
     //csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSW", csnd::thread::ik);
-    csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSS", csnd::thread::ik);
+    csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSS", csnd::thread::k);
     csnd::plugin<SetCabbageIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSM", csnd::thread::k);
     csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSW", csnd::thread::k);
     
     csnd::plugin<SetCabbageValueIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSetValue", "", "SkP", csnd::thread::ik);
     
     csnd::plugin<GetCabbageValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "k", "S", csnd::thread::ik);
-    csnd::plugin<GetCabbageValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "i", "S", csnd::thread::ik);
+    csnd::plugin<GetCabbageValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "i", "S", csnd::thread::i);
     csnd::plugin<GetCabbageValueWithTrigger>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "kk", "S", csnd::thread::ik);
     
     csnd::plugin<GetCabbageStringValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "S", "S", csnd::thread::ik);

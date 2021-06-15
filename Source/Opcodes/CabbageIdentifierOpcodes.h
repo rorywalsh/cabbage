@@ -112,7 +112,11 @@ struct GetCabbageValueWithTrigger : csnd::Plugin<2, 1>
 {
     MYFLT* value;
     MYFLT currentValue;
-    int init(){ return getAttribute(); };
+    bool firstRun;
+    int init(){
+        firstRun = true;
+        return getAttribute();        
+    };
     int kperf(){ return getAttribute(); };
     int getAttribute();
 };

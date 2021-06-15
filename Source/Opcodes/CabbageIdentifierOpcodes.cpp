@@ -437,7 +437,13 @@ int GetCabbageValueWithTrigger::getAttribute()
         if(*value != currentValue)
         {
             currentValue = *value;
-            outargs[1] = 1;
+            if(firstRun == true)
+            {
+                firstRun = false;
+                outargs[1] = 0;
+            }
+            else
+                outargs[1] = 1;
         }
         else
             outargs[1] = 0;
@@ -454,8 +460,8 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
 {
     int trigger = args[2];
     
-    if (rate == I_RATE)
-        trigger = 1;
+   // if (rate == I_RATE)
+   //     trigger = 1;
     
     if(trigger == 0 || args.str_data(0).size == 0)
         return OK;
