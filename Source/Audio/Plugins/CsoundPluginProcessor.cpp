@@ -182,6 +182,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     
     Logger::writeToLog(String::formatted("Resetting csound ...\ncsound = 0x%p", csound.get()));
 
+    //reset Csound in case it is hanging around from a previous run
+    resetCsound();
 	csound.reset (new Csound());
     
 	csdFilePath = filePath;
