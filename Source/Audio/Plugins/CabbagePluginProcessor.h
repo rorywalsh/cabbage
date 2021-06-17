@@ -107,6 +107,7 @@ public:
     CabbagePluginParameter* getParameterForXYPad (String name);
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
+    bool editorIsOpen = false;
     void releaseResources() override;
     bool hasEditor() const override;
     //===== XYPad methods =========

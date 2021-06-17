@@ -35,7 +35,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 #endif
 {
     setName ("PluginEditor");
-
+    cabbageProcessor.editorIsOpen = true;
     setLookAndFeel (&lookAndFeel);
     customFont = cabbageProcessor.getCustomFont();
     viewportContainer.reset (new ViewportContainer());
@@ -77,7 +77,7 @@ CabbagePluginEditor::~CabbagePluginEditor()
     components.clear();
     radioGroups.clear();
     radioComponents.clear();
-
+    cabbageProcessor.editorIsOpen = false;
     
 
     

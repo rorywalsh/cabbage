@@ -29,7 +29,7 @@
 
 class CabbagePluginEditor;
 class CabbagePluginParameter;
-class AudioProccessor;
+class CabbagePluginProcessor;
 
 // Add any new custom widgets here to avoid having to edit makefiles and projects
 // Each Cabbage widget should inherit from ValueTree listener, and CabbageWidgetBase
@@ -136,10 +136,10 @@ class XYPadAutomator : public ChangeBroadcaster, public Timer
     bool repaintBackground = false;
     juce::Point<double> position;
     float xMin, xMax, yMin, yMax, velocity;
-    AudioProcessor* owner;
+    CabbagePluginProcessor* owner;
 
 public:
-    XYPadAutomator (String name, CabbagePluginParameter* xParam, CabbagePluginParameter* yParam, AudioProcessor* _owner);
+    XYPadAutomator (String name, CabbagePluginParameter* xParam, CabbagePluginParameter* yParam, CabbagePluginProcessor* _owner);
 
     ~XYPadAutomator()
     {

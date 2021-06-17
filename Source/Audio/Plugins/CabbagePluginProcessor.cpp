@@ -1722,7 +1722,8 @@ void CabbagePluginProcessor::enableXYAutomator(String name, bool enable, Line<fl
 				xyAuto->setXValueIncrement((dragLine.getEndX() - dragLine.getStartX()) * .05);
 				xyAuto->setYValueIncrement((dragLine.getEndY() - dragLine.getStartY()) * .05);
 				xyAuto->setRepaintBackground(true);
-				xyAuto->setIsPluginEditorOpen(getActiveEditor() != nullptr ? true : false);
+                if(editorIsOpen)
+                    xyAuto->setIsPluginEditorOpen(true);
 				xyAuto->startTimer(20);
 			}
 			else

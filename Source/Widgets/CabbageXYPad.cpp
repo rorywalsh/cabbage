@@ -21,6 +21,7 @@
 
 #include "CabbageXYPad.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
+#include "../Audio/Plugins/CabbagePluginProcessor.h"
   
 CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
     : owner (editor),
@@ -313,7 +314,7 @@ void CabbageXYPad::setValues (float x, float y, bool notify)
     yValueLabel.setText (createValueText(minY + (maxY - y), 3, yPrefix, yPostfix), dontSendNotification);
 }
 //========================================================================
-XYPadAutomator::XYPadAutomator (String name, CabbagePluginParameter* xParam, CabbagePluginParameter* yParam, AudioProcessor* _owner)
+XYPadAutomator::XYPadAutomator (String name, CabbagePluginParameter* xParam, CabbagePluginParameter* yParam, CabbagePluginProcessor* _owner)
     : name (name), xParam (xParam), yParam (yParam), owner (_owner)
 {}
 
@@ -349,13 +350,13 @@ void XYPadAutomator::timerCallback()
         yValueIncrement *= -1;
     }
 
-    if (isPluginEditorOpen && xParam != nullptr && yParam != nullptr) //only update GUI is editor is open
+    if (owner->editorIsOpen && xParam != nullptr && yParam != nullptr) //only update GUI is editor is open
     {
         sendSynchronousChangeMessage();
     }
     else
     {
-        xParam->setValue (xValue);
-        yParam->setValue (yValue);
+        xParam->setValue (xValue / xMax);
+        yParam->setValue (yValue / yMax);
     }
 }
