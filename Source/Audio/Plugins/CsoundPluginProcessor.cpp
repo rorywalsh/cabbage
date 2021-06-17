@@ -127,7 +127,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 #ifdef CabbagePro
     csdLines.addLines(Encrypt::decode(csdFile));
     csdFileText = Encrypt::decode(csdFile);
-    DBG(csdFileText);
+    //DBG(csdFileText);
 #else
     csdLines.addLines(csdFile.loadFileAsString());
     csdFileText = csdFile.loadFileAsString();
@@ -339,7 +339,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     
 #ifdef CabbagePro
     compileCsdString(csdFileText);
-    DBG(csdFileText);
+    //DBG(csdFileText);
     csound->Start();
 #else
     if (csdFileText.contains("<Csound") || csdFileText.contains("</Csound"))

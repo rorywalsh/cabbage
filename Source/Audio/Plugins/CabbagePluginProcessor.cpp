@@ -105,7 +105,7 @@ void CabbagePluginProcessor::createCsound(File inputFile, bool shouldCreateParam
 				.replace("$gt;", ">"));
 
 
-			CabbageUtilities::debug(tempFile.loadFileAsString());
+			//CabbageUtilities::debug(tempFile.loadFileAsString());
 
 			if (setupAndCompileCsound(tempFile, inputFile.getParentDirectory(), samplingRate) == false)
 				this->suspendProcessing(true);
@@ -339,7 +339,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 
         if (isWidgetPlantParent(linesFromCsd, lineNumber) &&
             currentLineOfCabbageCode.removeCharacters(" ").removeCharacters("\t").substring(0, 1) != "{") {
-            CabbageUtilities::debug (CabbageWidgetData::getProperty (newWidget, CabbageIdentifierIds::name).toString());
+            //CabbageUtilities::debug (CabbageWidgetData::getProperty (newWidget, CabbageIdentifierIds::name).toString());
             parents.add(CabbageWidgetData::getProperty(newWidget, CabbageIdentifierIds::name).toString());
             auto currentChild = cabbageWidgets.getChild(cabbageWidgets.getNumChildren()-1);
             CabbageWidgetData::setNumProp(currentChild, CabbageIdentifierIds::isparent, 1);
@@ -566,12 +566,6 @@ void CabbagePluginProcessor::insertPlantCode(StringArray& linesFromCsd) {
 
 								var items = CabbageWidgetData::getProperty(temp1, "channel");
 
-								for (int i = 0; i < items.size(); i++) {
-									CabbageUtilities::debug(items[i].toString());
-								}
-
-								CabbageUtilities::debug(items.toString());
-
 
 								String replacementText = (plantCode.indexOf("{") != -1 ?
 									CabbageWidgetData::getCabbageCodeFromIdentifiers(temp1,
@@ -705,7 +699,6 @@ void CabbagePluginProcessor::expandMacroText(String& line, ValueTree wData) {
 			commentedMacros.add(token);
 			for (auto macro : macroText) {
 				const String stringToReplace = token.removeCharacters(",() ");
-				CabbageUtilities::debug(macro.name.toString());
 				if (macro.name.toString() == stringToReplace) {
 					commentedMacros.removeString(macro.name);
 					line = line.replace(stringToReplace, macro.value.toString());
@@ -1095,6 +1088,7 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
     nlohmann::ordered_json j;
     File presetFile(fileName);
     String presetFileContents = presetFile.loadFileAsString();
+//    DBG(presetFileContents);
     j = nlohmann::ordered_json::parse(presetFileContents.toRawUTF8());
 
     

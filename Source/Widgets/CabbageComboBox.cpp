@@ -254,7 +254,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 #else
             String path = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(JucePlugin_Manufacturer) + "/" + File(getCsdFile()).getFileNameWithoutExtension() + "/" + fileName.getFileName();
 #endif
-            fileName = File(path);
+            if(File(path).existsAsFile())
+                fileName = File(path);
         }
 
         presetFile = fileName;

@@ -94,7 +94,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     const String presetFileName = CabbageWidgetData::getStringProp (widgetData, "fileType");
     File fileName;
     
-    if(presetFileName!="*.snaps" && presetFileName!=".snaps")
+    if(presetFileName!="*.snaps" && presetFileName!=".snaps" && presetFileName!="*")
         fileName = File (getCsdFile()).getParentDirectory().getChildFile(presetFileName);
     else
         fileName = File (getCsdFile()).withFileExtension (".snaps");
@@ -178,8 +178,9 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     else if (mode == "snapshot" || mode == "preset")
     {
-        owner->savePluginStateToFile ("", fileName.getFullPathName());
-        owner->refreshComboListBoxContents();
+        //owner->sendChannelStringDataToCsound(getChannel(), "");
+        owner->savePluginStateToFile("", fileName.getFullPathName(), false);
+        owner->refreshComboListBoxContents("");
     }
     
     else if (mode == "remove preset")
