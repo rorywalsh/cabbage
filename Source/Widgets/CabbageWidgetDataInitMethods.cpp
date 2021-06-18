@@ -319,6 +319,7 @@ void CabbageWidgetData::setSignalDisplayProperties (ValueTree widgetData, int ID
     setProperty (widgetData, CabbageIdentifierIds::width, 260);
     setProperty (widgetData, CabbageIdentifierIds::height, 100);
     setProperty (widgetData, CabbageIdentifierIds::tablecolour, Colours::lime.toString());
+    setProperty (widgetData, CabbageIdentifierIds::colour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::tablebackgroundcolour, Colour (30, 30, 38).toString());
     setProperty (widgetData, CabbageIdentifierIds::type, "signaldisplay");
