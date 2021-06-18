@@ -85,4 +85,4 @@ sed "s@CURRENTDIR@$(pwd)@" Cabbage.desktop > ./install/desktop/cabbageLite.deskt
 # sed "s@CURRENTDIR@$(pwd)@" dummy.desktop > CabbageBuild/cabbagelite.desktop
 
 VERSION="CabbageProLinux"-$($PROJUCER --get-version ../../CabbageIDE.jucer)".zip"
-zip -r ./build/Release/$VERSION ./install
+zip -r $VERSION ./install
