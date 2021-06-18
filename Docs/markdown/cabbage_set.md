@@ -20,7 +20,7 @@ Sets a widget's attribute identifier. Identifiers can be updated by a single str
 
 * `kTrig` -- an optional trigger. Updates will only be sent when this is equal to 1
 
->The versions of <b>cabbageSet</b> that only take two input strings is used to set identifiers at i-rate.
+>The versions of <b>cabbageSet</b> that only take two input strings are used to set identifiers at i-rate. 
 
 ### Example
 
