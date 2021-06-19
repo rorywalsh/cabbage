@@ -151,6 +151,14 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
                         CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir)).getFullPathName();
                 csoundSetOpcodedir(opcodeDir.toUTF8().getAddress());
             }
+            if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcode6dir64).isNotEmpty()) {
+                const String opcodeDir = csdFile.getParentDirectory().getChildFile(
+                    CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcode6dir64)).getFullPathName();
+                //csound->SetGlobalEnv("OPCODE6DIR64", opcodeDir.toUTF8().getAddress());
+                String env = "OPCODE6DIR64=" + opcodeDir;
+                _putenv(env.toUTF8().getAddress());
+            }
+            
             if (CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::latency) == -1) {
                 preferredLatency = -1;
             }
