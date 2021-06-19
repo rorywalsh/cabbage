@@ -2059,7 +2059,7 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
 
             getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
             //this will create or update plugin...
-
+            this->getCurrentOutputConsole()->setText("\n/*============================================================*/\n");
             graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pluginNodePos);
 
 
@@ -2162,9 +2162,11 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
             }
         }
         
-        if(string.indexOf(";") == -1)
-            channels.add(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel));
-        
+        if (string.indexOf(";") == -1)
+        {
+            if(CabbageWidgetData::getNumProp(tempWidget, CabbageIdentifierIds::presetignore) == 0)
+                channels.add(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel));
+        }
         if (CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel).contains(" "))
         {
             problemChannels.add("\""+CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel)+"\" (Line:"+String(lineIndex)+")");

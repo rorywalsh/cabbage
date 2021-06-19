@@ -778,7 +778,9 @@ const String CsoundPluginProcessor::getCsoundOutput()
 
         while (csound->GetMessageCnt() > 0)
         {
-            csoundOutput += csound->GetFirstMessage();
+            String message = csound->GetFirstMessage();
+            if(!message.contains("midi channel") && !message.contains("is muted"))
+                csoundOutput += message;
             csound->PopFirstMessage();
         }
 
