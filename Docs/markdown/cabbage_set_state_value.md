@@ -1,6 +1,6 @@
 # cabbageSetStateValue
 
-Sets a value in the plugin's internal state object. Can set scalars or arrays. Each time a DAW session is saved, the plugins internal state will also be saved. This mean you can can quickly and easily save data across sessions. Note these opcodes only work when using Cabbage plugins with a host DAW. 
+Sets a value in the plugin's internal state object. Can set scalars or arrays. Each time a DAW session is saved, the plugins internal state will also be saved. This mean you can can quickly and easily save data across sessions. Note these opcodes only work when using Cabbage plugins with a host DAW. Try to avoid calling these opcodes on each k-cycle. You can see in the code below that a `changed()` opcode is used to prevent the underlying state object from being continuously updating. 
 
 <blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.5.44</blockquote>
 

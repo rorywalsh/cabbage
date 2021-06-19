@@ -157,7 +157,7 @@ struct SetStateFloatData : csnd::InPlug<2>
     
     bool writeJsonDataToGlobalVar(int mode)
     {
-        
+
         if (in_count() != 2)
         {
             if(mode == K_RATE)
@@ -182,8 +182,6 @@ struct SetStateFloatData : csnd::InPlug<2>
         std::string jsonData;
         MYFLT value = args[1];
 
-        json j;
-
         CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
         CabbagePersistentData* perData;
         if (pd != nullptr)
@@ -203,6 +201,8 @@ struct SetStateFloatData : csnd::InPlug<2>
 
         std::string newData = "{ \"" + jsonKeyName + "\" : " + std::to_string(value) + "}";
 
+
+        
         if (json::accept(newData) == false)
         {
             if(mode == K_RATE)
@@ -214,12 +214,15 @@ struct SetStateFloatData : csnd::InPlug<2>
             return false;
         }
 
+        
         j = json::parse(jsonData.empty() ? "{}" : jsonData);
-        auto j2 = json::parse(newData);
+        j2 = json::parse(newData);
         j.update(j2);
         perData->data = j.dump();
         return true;
     }
+    
+    json j, j2;
 };
 
 struct SetStateFloatArrayData : csnd::InPlug<2>
