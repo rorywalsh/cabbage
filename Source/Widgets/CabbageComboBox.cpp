@@ -341,7 +341,6 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
         || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype) == ("preset"))
     {
         const String channelName = getChannel();
-        DBG(presets[combo->getSelectedItemIndex()]);
         owner->sendChannelStringDataToCsound (getChannel(), presets[combo->getSelectedItemIndex()]);
         owner->setCurrentPreset(presets[combo->getSelectedItemIndex()]);
         CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, presets[combo->getSelectedItemIndex()]);
@@ -460,7 +459,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
         setTooltip (getCurrentPopupText (valueTree));
 
-        if (workingDir != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir) || prop == CabbageIdentifierIds::populate)
+        if(prop == CabbageIdentifierIds::workingdir || prop == CabbageIdentifierIds::populate || prop == CabbageIdentifierIds::update)
         {
             addItemsToCombobox (valueTree);
             workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);

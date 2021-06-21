@@ -31,6 +31,8 @@ signaldisplay WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !}  
 
+{! ./markdown/Widgets/Properties/channel.md !} 
+
 {! ./markdown/Widgets/Properties/identChannel.md !}  
 
 {! ./markdown/Widgets/Properties/toFront.md !} 

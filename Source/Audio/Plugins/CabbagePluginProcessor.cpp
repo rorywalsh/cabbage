@@ -1490,6 +1490,8 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                 else
                 {
                     CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), " " + identData->data[i].args.toString());
+                    if(identData->data[i].args.toString().contains("populate"))
+                        CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::update, Random::getSystemRandom().nextInt());
                 }
             }
         }

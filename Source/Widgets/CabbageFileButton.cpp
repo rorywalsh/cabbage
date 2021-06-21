@@ -286,7 +286,7 @@ bool CabbageFileButton::allowPresetChanges(String presetName)
 //===============================================================================
 void CabbageFileButton::timerCallback()
 {
-    owner->refreshComboListBoxContents();
+    //owner->refreshComboListBoxContents();
 }
 
 //===============================================================================

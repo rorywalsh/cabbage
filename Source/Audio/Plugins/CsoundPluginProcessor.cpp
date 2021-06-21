@@ -155,8 +155,10 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
                 const String opcodeDir = csdFile.getParentDirectory().getChildFile(
                     CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcode6dir64)).getFullPathName();
                 //csound->SetGlobalEnv("OPCODE6DIR64", opcodeDir.toUTF8().getAddress());
+#ifdef JUCE_WINDOWS
                 String env = "OPCODE6DIR64=" + opcodeDir;
                 _putenv(env.toUTF8().getAddress());
+#endif
             }
             
             if (CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::latency) == -1) {

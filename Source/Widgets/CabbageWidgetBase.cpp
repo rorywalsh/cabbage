@@ -135,6 +135,7 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
         file = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::file);
     }
 
+    
     populateTextArrays (data);
 }
 
