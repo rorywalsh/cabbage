@@ -75,7 +75,11 @@ public:
         }
 
 #endif
+#ifdef JUCE_LINUX
+        return false;
+#else
         return true;
+#endif
     };
 
 	void performCsoundKsmps();
@@ -155,7 +159,8 @@ public:
 
     int getChnsetGestureMode()
     {
-       return csound->GetChannel("CHNSET_GESTURES");
+        if(csound)
+            return csound->GetChannel("CHNSET_GESTURES");
     }
     
     StringArray getTableStatement (int tableNum);
