@@ -126,7 +126,7 @@ void CabbageFileButton::buttonClicked (Button* button)
         {
             owner->sendChannelStringDataToCsound (getChannel(), returnValidPath (fc.getResult()));
             CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, returnValidPath (fc.getResult()));
-            //owner->refreshComboBoxContents();
+            //owner->refreshComboListBoxContents();
         }
 
         owner->setLastOpenedDirectory (fc.getResult().getParentDirectory().getFullPathName());

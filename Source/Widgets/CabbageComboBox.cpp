@@ -265,7 +265,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         var presetNames;
         if (fileName.existsAsFile() && fileName.loadFileAsString().isNotEmpty())
         {
-            if(json::accept(fileName.loadFileAsString().toRawUTF8()) == false)
+            if(json::accept(fileName.loadFileAsString().toStdString()) == false)
                return;
                
             auto j = nlohmann::ordered_json::parse(fileName.loadFileAsString().toRawUTF8());

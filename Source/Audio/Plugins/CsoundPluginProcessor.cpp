@@ -793,7 +793,7 @@ const String CsoundPluginProcessor::getCsoundOutput()
         while (csound->GetMessageCnt() > 0)
         {
             String message = csound->GetFirstMessage();
-            if(!message.contains("midi channel") && !message.contains("is muted"))
+            if(!message.contains("midi channel") && !message.contains("is muted") && !message.contains("Score finished in csoundPerformKsmps()"))
                 csoundOutput += message;
             csound->PopFirstMessage();
         }
