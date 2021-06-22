@@ -93,8 +93,8 @@ instr 1
  klook         chnget      "look"                          ; look-ahead time (this will have to be cast as an i-time variable)
  klook         init        0.01                            
  aL,aR         ins                                         ; read in live audio
- aL diskin2 "/Users/imccurdy/Documents/iainmccurdy.org/CsoundRealtimeExamples/SourceMaterials/Benjamin.wav",1,0,1
- aR=aL
+ ;aL diskin2 "/Users/imccurdy/Documents/iainmccurdy.org/CsoundRealtimeExamples/SourceMaterials/Benjamin.wav",1,0,1
+ ;aR=aL
  aL *= ampdbfs(kInGain)
  aR *= ampdbfs(kInGain)
  
