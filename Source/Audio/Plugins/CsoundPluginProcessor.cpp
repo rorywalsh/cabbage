@@ -154,8 +154,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
             if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcode6dir64).isNotEmpty()) {
                 const String opcodeDir = csdFile.getParentDirectory().getChildFile(
                     CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcode6dir64)).getFullPathName();
-                //csound->SetGlobalEnv("OPCODE6DIR64", opcodeDir.toUTF8().getAddress());
+                //
 #ifdef JUCE_WINDOWS
+                csound->SetGlobalEnv("OPCODE6DIR64", opcodeDir.toUTF8().getAddress());
                 String env = "OPCODE6DIR64=" + opcodeDir;
                 _putenv(env.toUTF8().getAddress());
 #endif
@@ -249,7 +250,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<SetCabbageIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSSM", csnd::thread::k);
     csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSW", csnd::thread::k);
     
-    csnd::plugin<SetCabbageValueIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSetValue", "", "SkP", csnd::thread::ik);
+    csnd::plugin<SetCabbageValueIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSetValue", "", "SkP", csnd::thread::k);
     
     csnd::plugin<GetCabbageValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "k", "S", csnd::thread::k);
     csnd::plugin<GetCabbageValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "i", "S", csnd::thread::i);

@@ -356,6 +356,7 @@ public:
         add ("manufacturer");
         add ("valuePostfix");
         add ("presetIgnore");
+        add ("opcode6Dir64");
         add ("showSrubber");
         add ("markerStart");
 		add ("keyReleased");
