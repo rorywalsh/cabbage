@@ -32,7 +32,10 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         
         if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
         {
-            fileExtension = "so";
+            if(type == "Standalone")
+                fileExtension = "";
+            else
+                fileExtension = "so";
         }
         else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
         {
@@ -93,7 +96,10 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         }
         else  if (type == "Standalone")
         {
-            pluginFilename = currentApplicationDirectory + "/CabbagePlugin." + fileExtension;
+            if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
+                pluginFilename = currentApplicationDirectory + "/CabbagePlugin";
+            else
+                pluginFilename = currentApplicationDirectory + "/CabbagePlugin." + fileExtension;
         }
         
         File VSTData (pluginFilename);

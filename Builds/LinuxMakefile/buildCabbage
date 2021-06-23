@@ -60,6 +60,14 @@ else
   make -f MakePluginSynth -j6 CONFIG=Release
   cp ./build/CabbagePlugin.so ./install/bin/CabbagePluginSynth.so
 
+  $PROJUCER --resave ../../CabbagePluginStandalone.jucer
+  mv Makefile MakePluginStandalone
+  echo "$(tput bold)Building PluginEffect…$(tput sgr0)"
+
+  make -f MakePluginStandalone clean CONFIG=Release
+  make -f MakePluginStandalone -j6 CONFIG=Release
+  cp ./build/CabbagePlugin ./install/bin/CabbagePlugin
+
   $PROJUCER --resave ../../CabbageLite.jucer
   mv Makefile MakeCabbageLite
   echo "$(tput bold)Building CabbageLite…$(tput sgr0)"
