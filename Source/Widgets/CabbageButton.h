@@ -45,7 +45,7 @@ public:
 	void valueTreeParentChanged(ValueTree&) override {};
 
 	void setLookAndFeelColours(ValueTree wData);
-
+    CabbageLookAndFeel2 lookAndFeel;
 	FlatButtonLookAndFeel flatLookAndFeel;
 	
 	ValueTree widgetData;

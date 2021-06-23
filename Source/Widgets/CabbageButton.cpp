@@ -73,6 +73,8 @@ CabbageButton::CabbageButton(ValueTree wData, CabbagePluginEditor* _owner)
 		return;
 	}
 
+
+    
 	//if users are passing custom images, use old style look and feel
 	if (CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::style) == "flat" &&
 		imgOff.isEmpty() && imgOn.isEmpty() && imgOver.isEmpty())
@@ -83,6 +85,11 @@ CabbageButton::CabbageButton(ValueTree wData, CabbagePluginEditor* _owner)
 		setLookAndFeel(&flatLookAndFeel);
         lookAndFeelChanged();
 	}
+    else{
+        lookAndFeel.customFont = owner->customFont;
+        setLookAndFeel(&lookAndFeel);
+        lookAndFeelChanged();
+    }
 
 
 }
