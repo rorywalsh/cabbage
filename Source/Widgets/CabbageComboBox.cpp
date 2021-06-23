@@ -459,7 +459,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
         setTooltip (getCurrentPopupText (valueTree));
 
-        if(prop == CabbageIdentifierIds::workingdir || prop == CabbageIdentifierIds::populate || prop == CabbageIdentifierIds::update)
+        if((prop == CabbageIdentifierIds::workingdir || prop == CabbageIdentifierIds::populate || prop == CabbageIdentifierIds::update) && isPresetCombo == false)
         {
             addItemsToCombobox (valueTree);
             workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
