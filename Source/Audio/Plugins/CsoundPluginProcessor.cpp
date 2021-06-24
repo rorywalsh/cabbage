@@ -540,7 +540,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
 
     csdFilePath.setAsCurrentWorkingDirectory();
-
+    csound->SetChannel("HOST_BUFFER_SIZE", csdKsmps);
 
     csound->SetChannel("HOME_FOLDER_UID", File::getSpecialLocation (File::userHomeDirectory).getFileIdentifier());
 
@@ -866,6 +866,8 @@ void CsoundPluginProcessor::changeProgramName (int index, const String& newName)
 //==============================================================================
 void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    if(getCsound() != nullptr)
+        csound->SetChannel("HOST_BUFFER_SIZE", samplesPerBlock);
 #if !defined(Cabbage_IDE_Build)
     PluginHostType pluginType;
     if (pluginType.isCubase())
