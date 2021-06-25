@@ -252,7 +252,7 @@ int GetCabbageStringIdentifierArray::getAttribute()
     
     var args = child.getProperty(identifier);
     
-    if(Identifier(identifier) == CabbageIdentifierIds::text)
+    if(Identifier(identifier) == CabbageIdentifierIds::text || Identifier(identifier) == CabbageIdentifierIds::items)
     {
         const int size = args.size();
         out.init(csound, size);
