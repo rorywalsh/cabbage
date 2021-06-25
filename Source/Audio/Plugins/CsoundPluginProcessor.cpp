@@ -149,19 +149,25 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
             if(CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir).isNotEmpty()) {
                 const String opcodeDir = csdFile.getParentDirectory().getChildFile(
                         CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcodedir)).getFullPathName();
+#if JUCE_MAC
+                csoundSetGlobalEnv("OPCODE6DIR64", opcodeDir.toUTF8().getAddress());
+#else
                 csoundSetOpcodedir(opcodeDir.toUTF8().getAddress());
+#endif
             }
-            if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcode6dir64).isNotEmpty()) {
+#if !defined(Cabbage_IDE_Build)
+            if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcode6dir64).isNotEmpty())
+            {
                 const String opcodeDir = csdFile.getParentDirectory().getChildFile(
                     CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcode6dir64)).getFullPathName();
                 //
 #ifdef JUCE_WINDOWS
-                csound->SetGlobalEnv("OPCODE6DIR64", opcodeDir.toUTF8().getAddress());
+                //csound->SetGlobalEnv("OPCODE6DIR64", opcodeDir.toUTF8().getAddress());
                 String env = "OPCODE6DIR64=" + opcodeDir;
                 _putenv(env.toUTF8().getAddress());
 #endif
-            }
-            
+#endif
+             }
             if (CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::latency) == -1) {
                 preferredLatency = -1;
             }
