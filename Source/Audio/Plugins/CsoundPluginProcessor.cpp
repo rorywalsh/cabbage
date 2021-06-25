@@ -166,8 +166,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
                 String env = "OPCODE6DIR64=" + opcodeDir;
                 _putenv(env.toUTF8().getAddress());
 #endif
-#endif
              }
+#endif
             if (CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::latency) == -1) {
                 preferredLatency = -1;
             }
