@@ -60,9 +60,6 @@ createPluginFilter() {
 		Logger::writeToLog("Could not find .csd file " + csdFile.getFullPathName() + ", please make sure it's in the correct folder");
 
 	String csdString = csdFile.loadFileAsString();
-#ifdef CabbagePro
-	csdString = Encrypt::decode(csdFile);
-#endif
 
     return new CabbagePluginProcessor(csdFile, CabbagePluginProcessor::readBusesPropertiesFromXml(csdFile));
 

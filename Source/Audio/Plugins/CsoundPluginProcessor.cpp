@@ -123,16 +123,10 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csdFile = currentCsdFile;
     String csdFileText;
     StringArray csdLines;
-    
-#ifdef CabbagePro
-    csdLines.addLines(Encrypt::decode(csdFile));
-    csdFileText = Encrypt::decode(csdFile);
-    //DBG(csdFileText);
-#else
+
     csdLines.addLines(csdFile.loadFileAsString());
     csdFileText = csdFile.loadFileAsString();
-#endif
-    
+   
     for (auto line : csdLines)
     {
         ValueTree temp("temp");
@@ -356,16 +350,16 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
 	csound->SetParams(csoundParams.get());
     
-#ifdef CabbagePro
-    compileCsdString(csdFileText);
-    //DBG(csdFileText);
-    csound->Start();
-#else
+//#ifdef CabbagePro
+//    compileCsdString(csdFileText);
+//    //DBG(csdFileText);
+//    csound->Start();
+//#else
     if (csdFileText.contains("<Csound") || csdFileText.contains("</Csound"))
     {
         compileCsdFile(csdFile);
     }
-#endif
+
 
 
 	if (csdCompiledWithoutError())
@@ -377,7 +371,15 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 		csndIndex = csound->GetKsmps();
         const String version = String("Cabbage version:")+ProjectInfo::versionString+String("\n");
         csound->Message(version.toRawUTF8());
-
+        
+#ifdef CabbagePro
+        const String encryptedOrcCode = Encrypt::decode(csdFile, "orc");
+        const String encryptedScoCode = Encrypt::decode(csdFile, "sco");
+        csound->CompileOrc(encryptedOrcCode.toUTF8().getAddress());
+        csound->ReadScore(encryptedScoCode.toUTF8().getAddress());
+        
+        //compileCsdString(encryptedCsdCode);
+#endif
     }
 	else
 		CabbageUtilities::debug("Csound could not compile your file?");

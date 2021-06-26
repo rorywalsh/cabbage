@@ -42,38 +42,83 @@ public:
     String encodeString (File csdFile)
     {
 #ifdef CabbagePro
-
-        StringArray csdLines;
-        csdLines.addLines(csdFile.loadFileAsString());
-        int startOfCsoundCode = 0;
-
-        for ( int i = 0 ; i < csdLines.size(); i++)
+        NamedValueSet tagPositions;
+        String csdText = csdFile.loadFileAsString();
+        StringArray originalCsdText;
+        originalCsdText.addLines(csdText);
+        
+        for( int i = 0 ; i < originalCsdText.size() ; i++)
         {
-            if(csdLines[i].contains("</Cabbage>"))
-                startOfCsoundCode = i+1;
-
+            if(originalCsdText[i].contains("<CsInstruments>"))
+                tagPositions.set("<CsInstruments>", i);
+            if(originalCsdText[i].contains("</CsInstruments>"))
+                tagPositions.set("</CsInstruments>", i+1);
+            if(originalCsdText[i].contains("<Cabbage>"))
+                tagPositions.set("<Cabbage>", i);
+            if(originalCsdText[i].contains("</Cabbage>"))
+                tagPositions.set("</Cabbage>", i+1);
+            if(originalCsdText[i].contains("</CsScore>"))
+                tagPositions.set("</CsScore>", i+1);
+            if(originalCsdText[i].contains("<CsScore>"))
+                tagPositions.set("<CsScore>", i);
         }
+        
+        const int numberOfOrcLines = int(tagPositions.getWithDefault("</CsInstruments>", 0)) - int(tagPositions.getWithDefault("<CsInstruments>", -1));
+        
+        const int numberOfScoreLines = int(tagPositions.getWithDefault("</CsScore>", 0)) - int(tagPositions.getWithDefault("<CsScore>", -1));
+        
+        String orc = originalCsdText.joinIntoString("\n", tagPositions.getWithDefault("<CsInstruments>", -1), numberOfOrcLines);
+        String sco = originalCsdText.joinIntoString("\n", tagPositions.getWithDefault("<CsScore>", -1), numberOfScoreLines);
 
-        const int numberOfLines = csdLines.size();
-        StringArray cabbageSection = csdLines;
-        cabbageSection.removeRange(startOfCsoundCode, csdLines.size()-startOfCsoundCode);
-        csdLines.removeRange(0, startOfCsoundCode);
-        const String encodedText = Encrypt::encode(csdLines.joinIntoString("\n"));
-        csdLines = cabbageSection;
-        csdLines.add("\n");
-        csdLines.add("<EncryptedSection>\n"+encodedText+"\n</EncryptedSection>");
-        return csdLines.joinIntoString("\n");
+        StringArray orcLines, scoLines;
+        orcLines.addLines(orc);
+        scoLines.addLines(sco);
+        
+        //leave header section in place
+        std::vector<int> headerDefs;
+        for ( int i = 0 ; i < orcLines.size(); i++)
+        {
+            if(orcLines[i].contains("0dbfs"))
+                headerDefs.push_back(i+1);
+            else if(orcLines[i].contains("ksmps"))
+                headerDefs.push_back(i+1);
+            else if(orcLines[i].contains("nchnls"))
+                headerDefs.push_back(i+1);
+            else if(orcLines[i].contains("nchnls_i"))
+                headerDefs.push_back(i+1);
+            if(headerDefs.size() == (orc.indexOf("nchnls_i")==-1 ? 3 : 4))
+                break;
+        }
+        
+        if(headerDefs.size() != 3)
+        {
+            CabbageUtilities::showMessage(
+                                          "Please make sure that your orc header section contains assignments for ksmps, nchnls and 0dbfs.", &lookAndFeel);
+            return "";
+        }
+        //grab orc / and sco and encrypt..
+        auto start = max_element(std::begin(headerDefs), std::end(headerDefs));
+        const int lineToStartEncodingFrom = std::distance( headerDefs.begin(), start );
+        const String orcToEncode = orcLines.joinIntoString("\n", headerDefs[lineToStartEncodingFrom], orcLines.size()-headerDefs[lineToStartEncodingFrom]-1);
+        const String headerSection = orcLines.joinIntoString("\n", 0, headerDefs[lineToStartEncodingFrom])+"\n";
+        const String encodedOrc = headerSection + "\ninstr 1\nendin\n\n/* Encrypted orc\n" + Encrypt::encode(orcToEncode) + "\nEnd of encrypted orc */\n</CsInstruments>\n";
+        
+        const String scoreToEncode = scoLines.joinIntoString("\n", 1, scoLines.size()-2);
+        
+        const String encodedSco = "<CsScore>\nf0 z\n/* Encrypted sco\n" + Encrypt::encode(scoreToEncode) + "\nEnd of encrypted sco */\n</CsScore>\n";
+
+        //replace sco
+        originalCsdText.removeRange(tagPositions.getWithDefault("<CsScore>", -1), numberOfScoreLines);
+        originalCsdText.insert(tagPositions.getWithDefault("<CsScore>", -1), encodedSco);
+        //replace orc
+        originalCsdText.removeRange(tagPositions.getWithDefault("<CsInstruments>", -1), numberOfOrcLines);
+        originalCsdText.insert(tagPositions.getWithDefault("<CsInstruments>", -1), encodedOrc);
+        
+        return originalCsdText.joinIntoString("\n");
+
 #endif
         return "";
     }
-    static String decodeString (File csdFile)
-    {
-#ifdef CabbagePro
-        return Encrypt::decode(csdFile);
-#endif
-        return "";
-    }
-
 
 };
 

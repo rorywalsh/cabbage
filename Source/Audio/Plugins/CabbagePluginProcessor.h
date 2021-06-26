@@ -139,9 +139,6 @@ public:
         BusesProperties buses;
 
         String csdString = csdFile.loadFileAsString();
-#ifdef CabbagePro
-        csdString = Encrypt::decode(csdFile);
-#endif
 
         const int numOutChannels = CabbageUtilities::getHeaderInfo(csdString, "nchnls");
         int numInChannels = numOutChannels;
