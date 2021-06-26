@@ -375,8 +375,10 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 #ifdef CabbagePro
         const String encryptedOrcCode = Encrypt::decode(csdFile, "orc");
         const String encryptedScoCode = Encrypt::decode(csdFile, "sco");
-        csound->CompileOrc(encryptedOrcCode.toUTF8().getAddress());
-        csound->ReadScore(encryptedScoCode.toUTF8().getAddress());
+        if(encryptedOrcCode.isNotEmpty())
+            csound->CompileOrc(encryptedOrcCode.toUTF8().getAddress());
+        if(encryptedScoCode.isNotEmpty())
+            csound->ReadScore(encryptedScoCode.toUTF8().getAddress());
         
         //compileCsdString(encryptedCsdCode);
 #endif
