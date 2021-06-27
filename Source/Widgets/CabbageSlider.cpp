@@ -301,7 +301,6 @@ void CabbageSlider::initialiseSlider(ValueTree wData, Slider& currentSlider)
     currentSlider.setRange(min, max, sliderIncrement);
     currentSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 0);
 
-
     const String popup = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::popuptext);
     if (popup == "0" || (popup == "" && popupPrefix == "" && popupPostfix == "" && shouldShowTextBox == 1))
         shouldDisplayPopup = false;

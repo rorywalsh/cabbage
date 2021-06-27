@@ -129,7 +129,7 @@ int GetCabbageStringIdentifierSingle::getAttribute()
     if(child.getProperty(identifier).size()>0)
     {
         const String data = child.getProperty(identifier)[0].toString();
-        outargs.str_data(0).size = strlen(data.toUTF8().getAddress());
+        outargs.str_data(0).size = data.length()+1;
         outargs.str_data(0).data = csound->strdup(data.toUTF8().getAddress());
     }
     else
@@ -177,6 +177,15 @@ int GetCabbageIdentifierArray::getAttribute()
         out[1] = child.getProperty(CabbageIdentifierIds::top);
         out[2] = child.getProperty(CabbageIdentifierIds::width);
         out[3] = child.getProperty(CabbageIdentifierIds::height);
+    }
+    if(Identifier(identifier) == CabbageIdentifierIds::range)
+    {
+        out.init(csound, 5);
+        out[0] = child.getProperty(CabbageIdentifierIds::min);
+        out[1] = child.getProperty(CabbageIdentifierIds::max);
+        out[2] = child.getProperty(CabbageIdentifierIds::value);
+        out[3] = child.getProperty(CabbageIdentifierIds::sliderskew);
+        out[4] = child.getProperty(CabbageIdentifierIds::increment);
     }
     else if(identifier.containsIgnoreCase("colour"))
     {
@@ -258,7 +267,7 @@ int GetCabbageStringIdentifierArray::getAttribute()
         out.init(csound, size);
         for ( int i = 0 ; i < size ; i++)
         {
-            out[i].size = strlen(args[i].toString().toUTF8().getAddress());
+            out[i].size = args[i].toString().length()+1;
             out[i].data = csound->strdup(args[i].toString().toUTF8().getAddress());
         }
         
@@ -332,7 +341,7 @@ int CabbageGetWidgetChannels::getChannels()
         out.init(csound, size);
         for (int i = 0; i < size; i++)
         {
-            out[i].size = strlen(channels[i].toUTF8().getAddress());
+            out[i].size = channels[i].length();
             out[i].data = csound->strdup(channels[i].toUTF8().getAddress());
         }
     }
@@ -345,18 +354,22 @@ int CabbageGetWidgetChannels::getChannels()
             {
                 for (int n = 0; n < chans.size(); n++)
                 {
+                    DBG(chans[n].toString());
                     channels.add(chans[n].toString());
                 }
             }
-            else
+            else{
+                DBG(chans.toString());
                 channels.add(chans.toString());
+            }
+            
         }
         
         const int size = channels.size();
         out.init(csound, size);
         for (int i = 0; i < size; i++)
         {
-            out[i].size = strlen(channels[i].toUTF8().getAddress());
+            out[i].size = channels[i].length()+1;
             out[i].data = csound->strdup(channels[i].toUTF8().getAddress());
         }
     }
@@ -871,7 +884,7 @@ int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type, std::string& current
         return OK;
     #endif
         
-        opcodeData->outargs.str_data(0).size = strlen(result.toRawUTF8());
+        opcodeData->outargs.str_data(0).size = result.length()+1;
         opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.toUTF8().getAddress());
     }
     return OK;
@@ -916,7 +929,7 @@ int CabbageFindFilesI::findFiles()
     
     for ( int i = 0 ; i < dirFiles.size() ; i++)
     {
-        out[i].size = strlen(dirFiles[i].getFullPathName().toUTF8().getAddress());
+        out[i].size = dirFiles[i].getFullPathName().length()+1;
         out[i].data = csound->strdup(dirFiles[i].getFullPathName().toUTF8().getAddress());
     }
     return OK;
@@ -962,7 +975,7 @@ int CabbageFindFilesK::findFiles()
         dirFiles.sort();
         for ( int i = 0 ; i < dirFiles.size() ; i++)
         {
-            outs[i].size = strlen(dirFiles[i].getFullPathName().toUTF8().getAddress());
+            outs[i].size = dirFiles[i].getFullPathName().length()+1;
             outs[i].data = csound->strdup(dirFiles[i].getFullPathName().toUTF8().getAddress());
         }
     }
