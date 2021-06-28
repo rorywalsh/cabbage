@@ -1,6 +1,6 @@
 # cabbageSet
 
-Sets a widget's attribute identifier. Identifiers can be updated by a single string argument, or by passing multiple arguments that comprise the identifiers. If used at perf-time you must pass a trigger signal as the first argument. The i-rate version of this opcode does not need a trigger argument. Multiple identifers can also be updated by passing entire identifier strings   
+Sets a widget's attribute identifier. Identifiers can be updated by a single string argument, or by passing multiple arguments that comprise the identifiers. If used at perf-time you must pass a trigger signal as the first argument. The i-rate version of this opcode does not need a trigger argument. Multiple identifiers can also be updated by passing entire identifier strings. While you can set a widget's value using `cabbageSet`, it is better to use `cabbageSetValue` as it is more efficient.     
 
 <blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.5.44</blockquote>
 

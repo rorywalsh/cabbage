@@ -602,6 +602,15 @@ int SetCabbageIdentifier::setAttribute()
             updateData0.args = 0;
             varData->data.add(updateData0);
         }
+        
+        if(identifier == "value")
+        {
+            if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(1).data,
+                                                   CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+            {
+                *value = args[3];
+            }
+        }
     }
     return OK;
 }
