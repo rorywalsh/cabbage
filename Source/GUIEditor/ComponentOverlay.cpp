@@ -14,7 +14,7 @@ ComponentOverlay::ComponentOverlay (Component* targetChild, ComponentLayoutEdito
     :   target (targetChild), lookAndFeel(), layoutEditor (owner)
 {
     resizeContainer.reset (new ComponentBoundsConstrainer());
-    resizeContainer->setMinimumSize (10, 10); //set minimum size so objects cant be resized too small
+    resizeContainer->setMinimumSize (4, 2); //set minimum size so objects cant be resized too small
     resizer = new ResizableBorderComponent (this, resizeContainer.get());
     addAndMakeVisible (resizer);
     resizer->addMouseListener (this, false);
