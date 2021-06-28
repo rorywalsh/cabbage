@@ -241,18 +241,21 @@ struct CabbageGetFilename : csnd::Plugin<1, 1>
 };
 struct CabbageGetFileExtension : csnd::Plugin<1, 1>
 {
-    //int init(){ return getFileInfo(this, "extension"); };
-   // int kperf(){ return getFileInfo(this, "extension"); };
+    std::string currentPath = "";
+    int init(){ return getFileInfo(this, "extension", currentPath); };
+    int kperf(){ return getFileInfo(this, "extension", currentPath); };
 };
 struct CabbageGetFileNoExtension : csnd::Plugin<1, 1>
 {
-    //int init(){ return getFileInfo(this, "noExtension"); };
-//int kperf(){ return getFileInfo(this, "noExtension"); };
+    std::string currentPath = "";
+    int init(){ return getFileInfo(this, "noExtension", currentPath); };
+    int kperf(){ return getFileInfo(this, "noExtension", currentPath); };
 };
 struct CabbageGetFilePath : csnd::Plugin<1, 1>
 {
-   // int init(){ return getFileInfo(this, "path"); };
-   // int kperf(){ return getFileInfo(this, "path"); };
+    std::string currentPath = "";
+    int init(){ return getFileInfo(this, "path", currentPath); };
+    int kperf(){ return getFileInfo(this, "path", currentPath); };
 };
 
 struct CabbageFindFilesI : csnd::Plugin<1, 4>
