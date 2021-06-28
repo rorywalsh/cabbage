@@ -409,7 +409,9 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             }
             else
             {
-                currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString();
+                currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
+                
+             
                 workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
                 int index = 0;
                 if (workingDir.isNotEmpty())
@@ -424,6 +426,8 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 }
                 else
                     index = stringItems.indexOf (currentValueAsText);
+                
+
                 //this index if different for strings and files?
                 if (index >= 0)
                     setSelectedItemIndex (index, dontSendNotification);

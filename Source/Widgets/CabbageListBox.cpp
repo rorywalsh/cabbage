@@ -189,13 +189,28 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
             }
             else
             {
-                currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString();
-                const int index = stringItems.indexOf (currentValueAsText);
+                currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
+                
+                File pluginDir;
+                String workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
+                int index = 0;
+                if (workingDir.isNotEmpty())
+                    pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
+                else
+                    pluginDir = File::getCurrentWorkingDirectory();
+                
+                if(pluginDir.getChildFile(currentValueAsText).existsAsFile())
+                {
+                    currentValueAsText = File(currentValueAsText).getFileNameWithoutExtension();
+                    index = stringItems.indexOf (currentValueAsText)+1;
+                }
+                else
+                    index = stringItems.indexOf (currentValueAsText);
 
                 if (index != -1)
-                    listBox.selectRow(index);
+                    listBox.selectRow(index - 1);
 
-                CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
+                //CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }
 
