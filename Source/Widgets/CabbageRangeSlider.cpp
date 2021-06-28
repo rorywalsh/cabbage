@@ -293,10 +293,11 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
 
         if (mouseDragBetweenThumbs)
         {
-            double ratioMin = (yMinAtThumbDown + distanceFromStart) / getHeight();
-            double ratioMax = (yMaxAtThumbDown + distanceFromStart) / getHeight();
+            double ratioMin = (yMinAtThumbDown - distanceFromStart) / getHeight();
+            double ratioMax = (yMaxAtThumbDown - distanceFromStart) / getHeight();
             float newMin = proportionOfLengthToValue ( min( max(ratioMin, 0.0), 1.0 ));
             float newMax = proportionOfLengthToValue ( min( max(ratioMax, 0.0), 1.0 ));
+            
             if (newMin > getMinimum())
                 setMinValue (newMin);
             if (newMax < getMaximum())
