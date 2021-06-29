@@ -230,7 +230,7 @@ void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int 
 
         //backgrounds
         g.setColour (trackerBgColour);
-        g.fillRoundedRectangle (sliderRadius, height * 0.425, width + sliderRadius*1.95, height * 0.15, height * 0.05); //main rectangle
+        g.fillRoundedRectangle (sliderRadius*1.5, height * 0.425, width + sliderRadius*1.1, height * 0.15, height * 0.05); //main rectangle
         
         const float scale = trackerThickness;
         const float ih = (height * scale);
@@ -242,7 +242,8 @@ void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int 
             g.setColour (trackColour);
             const double minPos = slider.valueToProportionOfLength (slider.getMinValue()) * width;
             const double maxPos = slider.valueToProportionOfLength (slider.getMaxValue()) * width;
-            g.fillRoundedRectangle (minPos, height * 0.425, (maxPos - minPos) + (sliderRadius * .5), height * 0.15, height * 0.05);
+//            g.fillRoundedRectangle (minPos + sliderRadius * 1.5, height * 0.425, (maxPos - minPos) + (sliderRadius * .5), height * 0.15, height * 0.05);
+            g.fillRoundedRectangle (pow(minPos, 1.01) + sliderRadius * 1.5, height * 0.425, (maxPos - minPos), height * 0.15, height * 0.05);
         }
         else
         {

@@ -68,8 +68,8 @@ class CabbageRangeSlider  : public Component, public ValueTree::Listener, public
     void createPopupBubble();
     void setLookAndFeelColours (ValueTree wData);
     void setSliderValues (ValueTree wData);
-    FlatButtonLookAndFeel flatLookAndFeel;
-
+//    FlatButtonLookAndFeel flatLookAndFeel;
+    LookAndFeel_V4 flatLookAndFeel;
 public:
     CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _owner);
     ~CabbageRangeSlider() {

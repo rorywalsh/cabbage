@@ -62,7 +62,7 @@ void CabbageLabel::paint (Graphics& g)
 	}
 	else
 	{
-		//g.setFont(fontsize);
+		g.setFont(fontsize);
 		g.drawText(text, 0, 0, jmax(1, getWidth()), jmax(1, getHeight()), textAlign, false);
 	}
 }
