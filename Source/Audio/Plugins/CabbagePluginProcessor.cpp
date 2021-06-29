@@ -1050,7 +1050,7 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  String fileName
                 {
                         //don't want to grab values for combobox that are used for presets....
                 }
-                else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+                else if ((type == CabbageWidgetTypes::combobox || type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
                                                                                                 CabbageIdentifierIds::channeltype) == "string")
                 {
                     char tmp_str[4096] = { 0 };
@@ -1116,7 +1116,9 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
                     const String stringComboItem = csdFile.getParentDirectory().getChildFile(presetData.value().dump()).existsAsFile() ?
                     csdFile.getParentDirectory().getChildFile(presetData.value().dump()).getFileNameWithoutExtension() : presetData.value().dump();
                     
-                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
+                    if(type == CabbageWidgetTypes::combobox)
+                        CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
+                    
                     CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
                     
                     

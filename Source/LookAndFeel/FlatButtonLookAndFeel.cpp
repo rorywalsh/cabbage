@@ -242,7 +242,7 @@ void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int 
             g.setColour (trackColour);
             const double minPos = slider.valueToProportionOfLength (slider.getMinValue()) * width;
             const double maxPos = slider.valueToProportionOfLength (slider.getMaxValue()) * width;
-            g.fillRoundedRectangle (minPos + sliderRadius * 1.5, height * 0.425, (maxPos - minPos) + (sliderRadius * .5), height * 0.15, height * 0.05);
+            g.fillRoundedRectangle (minPos, height * 0.425, (maxPos - minPos) + (sliderRadius * .5), height * 0.15, height * 0.05);
         }
         else
         {

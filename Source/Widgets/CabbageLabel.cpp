@@ -56,12 +56,13 @@ void CabbageLabel::paint (Graphics& g)
 
 	if (fontsize == 0)
 	{
-		g.setFont(getHeight());
+        //DBG(getHeight());
+		//g.setFont(getHeight());
 		g.drawFittedText(text, 0, 0, jmax(1, getWidth()), jmax(1, getHeight()), textAlign, 1, 1);
 	}
 	else
 	{
-		g.setFont(fontsize);
+		//g.setFont(fontsize);
 		g.drawText(text, 0, 0, jmax(1, getWidth()), jmax(1, getHeight()), textAlign, false);
 	}
 }
