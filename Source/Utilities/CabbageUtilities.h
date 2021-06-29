@@ -122,10 +122,10 @@ public:
     static StringArray getInstruments()
     {
         StringArray directories;
-        directories.add ("Drum Machines");
+        directories.add ("DrumMachines");
         directories.add ("Miscellaneous");
         directories.add ("Noise");
-        directories.add ("Physical Modelling");
+        directories.add ("PhysicalModelling");
         directories.add ("Synths");
         return directories;
     }
