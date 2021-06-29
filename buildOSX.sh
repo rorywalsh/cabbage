@@ -14,13 +14,13 @@ ls -1 $BUILD_ARTIFACTSTAGINGDIRECTORY
 
   
 pwd
-curl -L -o csound6.16.0-MacOS_x86_64.dmg 'https://github.com/csound/csound/releases/download/6.16.0/csound-MacOS_x86_64-6.16.0.dmg'
+curl -L -o csound6.16.0-MacOS_x86_64.dmg 'https://github.com/csound/csound/releases/download/6.16.0/csound-MacOS_x86_64-6.16.1.dmg'
 ls
-hdiutil attach csound6.16.0-MacOS_x86_64.dmg
-cp -R /Volumes/Csound6.16.0/ Csound
-hdiutil detach /Volumes/Csound6.16.0/
+hdiutil attach csound6.16.1-MacOS_x86_64.dmg
+cp -R /Volumes/Csound6.16.1/ Csound
+hdiutil detach /Volumes/Csound6.16.1/
 cd Csound
-sudo installer -pkg csound-MacOS_x86_64-6.16.0.pkg -target /
+sudo installer -pkg csound-MacOS_x86_64-6.16.1.pkg -target /
 sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64
 
 cd $AGENT_BUILDDIRECTORY
