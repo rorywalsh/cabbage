@@ -915,7 +915,7 @@ int CabbageFindFilesI::findFiles()
     if (in_count() == 3)
         fileExt = String(inargs.str_data(2).data);
     
-    if (in_count() == 2)
+    if (in_count() > 1)
     {
         const String types = String(inargs.str_data(1).data);
         if(types == "filesAndDirectories" || types == "directoriesAndFiles")
@@ -929,11 +929,8 @@ int CabbageFindFilesI::findFiles()
     }
     
     Array<File> dirFiles;
-    
     File dirToSearch = File::getCurrentWorkingDirectory().getChildFile(String(inargs.str_data(0).data));
-    
-    
-    dirToSearch.findChildFiles (dirFiles, typeOfFiles, false, fileExt);
+    dirFiles = dirToSearch.findChildFiles (typeOfFiles, false, fileExt);
     out.init(csound, (int)dirFiles.size());
     
     for ( int i = 0 ; i < dirFiles.size() ; i++)
@@ -946,46 +943,44 @@ int CabbageFindFilesI::findFiles()
 
 int CabbageFindFilesK::findFiles()
 {
-    csnd::Vector<STRINGDAT>& outs = outargs.vector_data<STRINGDAT>(0);
-    
     if( inargs[0] == 1 )
     {
-        if (in_count() < 2)
+        if (in_count() < 1)
         {
             csound->message("Not enough parameters passed to cabbageFindFiles.\n");
             return NOTOK;
         }
         
-        juce::String fileExt = "*";
-        juce::File::TypesOfFileToFind typeOfFiles = juce::File::TypesOfFileToFind::findFiles;
-        
+        String fileExt = "*";
+        File::TypesOfFileToFind typeOfFiles = File::TypesOfFileToFind::findFiles;
+        csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
         
         if (in_count() == 4)
-            fileExt = juce::String(inargs.str_data(2).data);
+            fileExt = String(inargs.str_data(3).data);
         
-        if (in_count() == 3)
+        if (in_count() > 2)
         {
-            const juce::String types = juce::String(inargs.str_data(2).data);
-            if(types == "filesAndDirectories")
+            const String types = String(inargs.str_data(2).data);
+            if(types == "filesAndDirectories" || types == "directoriesAndFiles")
             {
-                typeOfFiles = juce::File::TypesOfFileToFind::findFilesAndDirectories;
+                typeOfFiles = File::TypesOfFileToFind::findFilesAndDirectories;
             }
             else if(types == "directories")
             {
-                typeOfFiles = juce::File::TypesOfFileToFind::findDirectories;
+                typeOfFiles = File::TypesOfFileToFind::findDirectories;
             }
         }
         
-        dirFiles.clear();
-        juce::File dirToSearch = juce::File::getCurrentWorkingDirectory().getChildFile(juce::String(inargs.str_data(1).data));
-        dirToSearch.findChildFiles (dirFiles, typeOfFiles, false, fileExt);
+        Array<File> dirFiles;
+        File dirToSearch = File::getCurrentWorkingDirectory().getChildFile(String(inargs.str_data(1).data));
+        dirFiles = dirToSearch.findChildFiles (typeOfFiles, false, fileExt);
+
+        out.init(csound, (int)dirFiles.size());
         
-        outs.init(csound, (int)dirFiles.size());
-        dirFiles.sort();
         for ( int i = 0 ; i < dirFiles.size() ; i++)
         {
-            outs[i].size = dirFiles[i].getFullPathName().length()+1;
-            outs[i].data = csound->strdup(dirFiles[i].getFullPathName().toUTF8().getAddress());
+            out[i].size = dirFiles[i].getFullPathName().length()+1;
+            out[i].data = csound->strdup(dirFiles[i].getFullPathName().toUTF8().getAddress());
         }
     }
     
