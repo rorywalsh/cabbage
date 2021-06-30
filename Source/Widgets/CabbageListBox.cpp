@@ -298,7 +298,7 @@ void CabbageListBox::clicked(int row, const MouseEvent &e)
         if (fileType.isNotEmpty())
             owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index - 1].getFullPathName());
         else
-            owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
+            owner->sendChannelStringDataToCsound (getChannel(), stringItems[index - 1]);
         
     }
     else
