@@ -178,6 +178,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 #if ! JucePlugin_IsSynth
     const int inputs = getTotalNumInputChannels() - numSideChainChannels;
     numCsoundInputChannels = inputs + numSideChainChannels;
+    numCsoundOutputChannels = getTotalNumOutputChannels();
     CabbageUtilities::debug("SetupAndCompile - Requested input channels:", numCsoundInputChannels);
 #else
     //numCsoundOutputChannels = getBus(false, 0)->getNumberOfChannels();
@@ -890,6 +891,9 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 #if ! JucePlugin_IsSynth
     if(getBusesLayout().getMainOutputChannelSet() == AudioChannelSet::mono())
         hostRequestedMono = true;
+    else
+        hostRequestedMono = false;
+    
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - inputBuses:", getBusCount(true));
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - inputs:", inputs);
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested input channels:", numCsoundInputChannels);
