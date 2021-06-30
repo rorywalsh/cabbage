@@ -181,10 +181,6 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
             if (isStringCombo == false)
             {
                 int listBoxValue = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
-
-//                if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
-//                    listBox.selectRow(value - 1, sendNotification);
-//                else
                 listBox.selectRow(listBoxValue - 1);//, dontSendNotification);
             }
             else
@@ -193,13 +189,22 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                 
                 File pluginDir;
                 String workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
+                
+                if(File(currentValueAsText).exists())
+                {
+                    CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::workingdir, File(currentValueAsText).getParentDirectory().getFullPathName());
+                    addItemsToListbox(valueTree);
+                    DBG(stringItems.joinIntoString("\n"));
+                }
+                
+                
                 int index = 0;
                 if (workingDir.isNotEmpty())
                     pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
                 else
                     pluginDir = File::getCurrentWorkingDirectory();
                 
-                if(pluginDir.getChildFile(currentValueAsText).existsAsFile())
+                if(pluginDir.getChildFile(currentValueAsText).exists())
                 {
                     currentValueAsText = File(currentValueAsText).getFileNameWithoutExtension();
                     index = stringItems.indexOf (currentValueAsText)+1;

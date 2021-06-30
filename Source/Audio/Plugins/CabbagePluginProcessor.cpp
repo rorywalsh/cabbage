@@ -1087,7 +1087,6 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
     String presetFileContents = presetFile.loadFileAsString();
 //    DBG(presetFileContents);
     j = nlohmann::ordered_json::parse(presetFileContents.toRawUTF8());
-
     
     for (nlohmann::ordered_json::iterator itA = j.begin(); itA != j.end(); ++itA) {
         if(String(itA.key()) == presetName)
@@ -1120,7 +1119,6 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
                         CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
                     
                     CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
-                    
                     
                 }
                 else if (type == CabbageWidgetTypes::filebutton)
