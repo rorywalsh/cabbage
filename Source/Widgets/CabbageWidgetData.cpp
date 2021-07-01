@@ -80,114 +80,114 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
 
     setProperty (widgetData, CabbageIdentifierIds::widgetarray, "");
 
-    if (strTokens[0].trim() == String(CabbageWidgetTypes::hslider))
+    if (strTokens[0].trim() == CabbageWidgetTypes::hslider)
         setHSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::vslider))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::vslider)
         setVSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::rslider))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::rslider)
         setRSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::groupbox))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::groupbox)
         setGroupBoxProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::csoundoutput))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::csoundoutput)
         setCsoundOutputProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::keyboard) || 
-		strTokens[0].trim() == String(CabbageWidgetTypes::keyboarddisplay))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::keyboard ||
+		strTokens[0].trim() == CabbageWidgetTypes::keyboarddisplay)
         setKeyboardProperties (widgetData, ID, (strTokens[0].trim() == "keyboard" ? false : true));
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::form))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::form)
         setFormProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::textbox))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::textbox)
         setTextBoxProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::checkbox))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::checkbox)
         setCheckBoxProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::nslider))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::nslider)
         setNumberSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::combobox))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::combobox)
         setComboBoxProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::label))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::label)
         setLabelProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::listbox))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::listbox)
         setListBoxProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::texteditor))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::texteditor)
         setTextEditorProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::image))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::image)
         setImageProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::encoder))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::encoder)
         setEncoderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::hmeter))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::hmeter)
         setMeterProperties (widgetData, ID, false);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::path))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::path)
         setPathProperties (widgetData, ID);
     
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::vmeter))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::vmeter)
         setMeterProperties (widgetData, ID, true);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::button))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::button)
         setButtonProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::optionbutton))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::optionbutton)
         setOptionButtonProperties (widgetData, ID);
     
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::soundfiler))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::soundfiler)
         setSoundfilerProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::filebutton))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::filebutton)
         setFileButtonProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::infobutton))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::infobutton)
         setInfoButtonProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::line))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::line)
         setLineProperties (widgetData, ID);
     
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::cvoutput) || strTokens[0].trim() == String(CabbageWidgetTypes::cvinput))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::cvoutput || strTokens[0].trim() == CabbageWidgetTypes::cvinput)
         setPortProperties (widgetData, ID, strTokens[0].trim());
     
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::screw))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::screw)
         setScrewProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::light))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::light)
         setLightProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::sourcebutton) || strTokens[0].trim() == String(CabbageWidgetTypes::loadbutton))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::sourcebutton || strTokens[0].trim() == CabbageWidgetTypes::loadbutton)
         setLoadButtonProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::signaldisplay) || strTokens[0].trim() == String(CabbageWidgetTypes::fftdisplay))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::signaldisplay || strTokens[0].trim() == CabbageWidgetTypes::fftdisplay)
         setSignalDisplayProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::xypad))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::xypad)
         setXYPadProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::gentable))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::gentable)
         setGenTableProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::hrange))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::hrange)
         setHRangeSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::vrange))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::vrange)
         setVRangeSliderProperties (widgetData, ID);
 
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::eventsequencer))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::eventsequencer)
         setEventSequencerProperties (widgetData, ID);
 
     //===============table==================//
-    else if (strTokens[0].trim() == String(CabbageWidgetTypes::table))
+    else if (strTokens[0].trim() == CabbageWidgetTypes::table)
     {
         var tableColours;
         tableColours.append ("white");
@@ -290,12 +290,12 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
     //reduce line ot code to identifiers...
     if(lineOfText.indexOf (typeOfWidget) != -1)
     {
-        lineOfText = lineOfText.substring (lineOfText.indexOf (typeOfWidget) + typeOfWidget.length()).trim();
+        lineOfText = lineOfText.replaceFirstOccurrenceOf(typeOfWidget, "").trim();
     }
 
     IdentifiersAndParameters identifierValueSet = getSetofIdentifiersAndParameters (lineOfText);
 
-    CabbageIdentifierStrings identifierArray;
+    
 
 
     for ( int indx = 0 ; indx < identifierValueSet.identifier.size() ; indx++)
@@ -667,9 +667,7 @@ CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifie
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
     {
-        String parameter = identifiersInLine[i];
-        parameter = parameter.substring (parameter.indexOf ("(") + 1, parameter.lastIndexOf (")")).trimCharactersAtStart ("\"").trimCharactersAtEnd ("\"");
-        parameters.add (parameter);
+        parameters.add (identifiersInLine[i].substring (identifiersInLine[i].indexOf ("(") + 1, identifiersInLine[i].lastIndexOf (")")).trimCharactersAtStart ("\"").trimCharactersAtEnd ("\""));
     }
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)

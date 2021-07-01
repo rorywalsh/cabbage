@@ -215,6 +215,8 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                 if (index != -1)
                     listBox.selectRow(index - 1);
 
+                const String test = getChannel();
+                owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index-1].getFullPathName());
                 //CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }

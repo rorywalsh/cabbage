@@ -446,37 +446,37 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
             else
             {
-				if (typeOfWidget == CabbageWidgetTypes::combobox)
-				{
-					//if we are dealing with a combobox that reads files from a directory, we need to load them before the GUI opens...
-					if (CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype") != "preset"
-						&& CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype") != "*.snaps"
-						&& CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype") != ".snaps"
-						&& CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype") != "snaps")
-					{
-						const String workingDir = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::workingdir);
-						const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype");
-						int numOfFiles;
-						Array<File> folderFiles;
-						StringArray comboItems;
-						CabbageUtilities::searchDirectoryForFiles(cabbageData.getChild(i), workingDir, fileType, folderFiles, comboItems, numOfFiles);
-						const String currentValue = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::value);
+                if (typeOfWidget == CabbageWidgetTypes::combobox)
+                {
+                    //if we are dealing with a combobox that reads files from a directory, we need to load them before the GUI opens...
+                    if (CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype") != "preset"
+                        && CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype") != "*.snaps"
+                        && CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype") != ".snaps"
+                        && CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype") != "snaps")
+                    {
+                        const String workingDir = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::workingdir);
+                        const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype");
+                        int numOfFiles;
+                        Array<File> folderFiles;
+                        StringArray comboItems;
+                        CabbageUtilities::searchDirectoryForFiles(cabbageData.getChild(i), workingDir, fileType, folderFiles, comboItems, numOfFiles);
+                        const String currentValue = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::value);
 
-						const int index = comboItems.indexOf(currentValue) + 1;
-						const String test = folderFiles[index].getFullPathName();
-						const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
+                        const int index = comboItems.indexOf(currentValue) + 1;
+                        const String test = folderFiles[index].getFullPathName();
+                        const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
 
-						csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
-							folderFiles[index].getFullPathName().replaceCharacters("\\", "/").toUTF8().getAddress());
-						
-					}
+                        csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
+                            folderFiles[index].getFullPathName().replaceCharacters("\\", "/").toUTF8().getAddress());
+                        
+                    }
                     else{
 //                        const String test = CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::value);
 //                        const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
                         csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
                                                  CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::value).toString().toUTF8().getAddress());
                     }
-				}
+                }
                 else if (typeOfWidget == CabbageWidgetTypes::texteditor)
                 {
                     csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
