@@ -190,7 +190,7 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                 File pluginDir;
                 String workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
                 
-                if(File(currentValueAsText).exists())
+                if(workingDir.isNotEmpty() && File(currentValueAsText).exists())
                 {
                     CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::workingdir, File(currentValueAsText).getParentDirectory().getFullPathName());
                     addItemsToListbox(valueTree);
@@ -204,7 +204,7 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                 else
                     pluginDir = File::getCurrentWorkingDirectory();
                 
-                if(pluginDir.getChildFile(currentValueAsText).exists())
+                if(workingDir.isNotEmpty() && pluginDir.getChildFile(currentValueAsText).exists())
                 {
                     currentValueAsText = File(currentValueAsText).getFileNameWithoutExtension();
                     index = stringItems.indexOf (currentValueAsText)+1;
@@ -216,7 +216,10 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                     listBox.selectRow(index - 1);
 
                 const String test = getChannel();
-                owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index-1].getFullPathName());
+                if(File(workingDir).exists())
+                    owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index-1].getFullPathName());
+                else
+                    owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
                 //CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }
