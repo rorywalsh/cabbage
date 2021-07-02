@@ -766,9 +766,9 @@ void CabbageCodeEditorComponent::parseTextForInstrumentsAndRegions()    //this i
             instrumentsAndRegions.set ("<CsoundSynthesizer>", i);
         }
 
-        else if ( csdArray[i].indexOf (";- Region:") != -1)
-        {
-            const String region = csdArray[i].replace (";- Region:", "");
+        else if ( csdArray[i].indexOf (";- Region:") != -1 || csdArray[i].indexOf ("//#") != -1)
+        {            
+            const String region = csdArray[i].replace (";- Region:", "").replace("//#", "");
             instrumentsAndRegions.set (region, i);
         }
 
