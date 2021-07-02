@@ -290,7 +290,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
 
     String typeOfWidget = getStringProp(widgetData, CabbageIdentifierIds::type);
     //reduce line ot code to identifiers...
-    if(lineOfText.indexOf (typeOfWidget) != -1)
+    if(lineOfText.indexOf (typeOfWidget) != -1 && lineOfText.indexOf (typeOfWidget) < 2)
     {
         lineOfText = lineOfText.replaceFirstOccurrenceOf(typeOfWidget, "").trim();
     }
