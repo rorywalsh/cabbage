@@ -60,7 +60,6 @@ struct SetCabbageValueIdentifier : csnd::InPlug<3>
 
 struct SetCabbageIdentifierSArgs : csnd::InPlug<64>
 {
-    String name, identifier;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(I_RATE); };
     int kperf(){ return setAttribute(K_RATE); };
@@ -70,7 +69,6 @@ struct SetCabbageIdentifierSArgs : csnd::InPlug<64>
 struct SetCabbageIdentifier : csnd::InPlug<64>
 {
     MYFLT* value;
-    String name, identifier;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(); };
     int kperf(){ return setAttribute(); };
@@ -79,7 +77,7 @@ struct SetCabbageIdentifier : csnd::InPlug<64>
 
 struct SetCabbageIdentifierITime : csnd::Plugin<64, 0>
 {
-    String name, identifier;
+    //String name, identifier;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(); };
     int setAttribute();
@@ -87,7 +85,7 @@ struct SetCabbageIdentifierITime : csnd::Plugin<64, 0>
 
 struct SetCabbageIdentifierITimeSArgs : csnd::Plugin<64, 0>
 {
-    String name, identifier;
+    //String name, identifier;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(); };
     int setAttribute();

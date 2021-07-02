@@ -571,7 +571,7 @@ int SetCabbageIdentifier::setAttribute()
         {
             CabbageWidgetIdentifiers::IdentifierData updateData1;
             updateData1.identifier = CabbageIdentifierIds::update;
-            updateData1.name = name;
+            updateData1.name = data.name;
             updateData1.args = 1;
             varData->data.add(updateData1);
         }
@@ -597,7 +597,7 @@ int SetCabbageIdentifier::setAttribute()
         {
             CabbageWidgetIdentifiers::IdentifierData updateData0;
             updateData0.identifier = CabbageIdentifierIds::update;
-            updateData0.name = name;
+            updateData0.name = data.name;
             updateData0.args = 0;
             varData->data.add(updateData0);
         }
@@ -656,12 +656,12 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     {
         CabbageWidgetIdentifiers::IdentifierData updateData1;
         updateData1.identifier = CabbageIdentifierIds::update;
-        updateData1.name = name;
+        updateData1.name = data.name;
         updateData1.args = 1;
         varData->data.add(updateData1);
     }
     
-    if(identifier.isEmpty() || in_count() == 3)
+    if(String(args.str_data(2).data).isEmpty() || in_count() == 3)
     {
         data.isSingleIdent = false;
         data.args = String(args.str_data(2).data);
@@ -680,7 +680,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     {
         CabbageWidgetIdentifiers::IdentifierData updateData0;
         updateData0.identifier = CabbageIdentifierIds::update;
-        updateData0.name = name;
+        updateData0.name = data.name;
         updateData0.args = 0;
         varData->data.add(updateData0);
     }
@@ -716,7 +716,7 @@ int SetCabbageIdentifierITime::setAttribute()
     {
         CabbageWidgetIdentifiers::IdentifierData updateData1;
         updateData1.identifier = CabbageIdentifierIds::update;
-        updateData1.name = name;
+        updateData1.name = data.name;
         updateData1.args = 1;
         varData->data.add(updateData1);
     }
@@ -739,7 +739,7 @@ int SetCabbageIdentifierITime::setAttribute()
     {
         CabbageWidgetIdentifiers::IdentifierData updateData0;
         updateData0.identifier = CabbageIdentifierIds::update;
-        updateData0.name = name;
+        updateData0.name = data.name;
         updateData0.args = 0;
         varData->data.add(updateData0);
     }
@@ -775,7 +775,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
     {
         CabbageWidgetIdentifiers::IdentifierData updateData1;
         updateData1.identifier = CabbageIdentifierIds::update;
-        updateData1.name = name;
+        updateData1.name = data.name;
         updateData1.args = 1;
         varData->data.add(updateData1);
     }
@@ -798,7 +798,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
     {
         CabbageWidgetIdentifiers::IdentifierData updateData0;
         updateData0.identifier = CabbageIdentifierIds::update;
-        updateData0.name = name;
+        updateData0.name = data.name;
         updateData0.args = 0;
         varData->data.add(updateData0);
     }
