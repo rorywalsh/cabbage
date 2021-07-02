@@ -31,11 +31,11 @@ constexpr unsigned long long int HashStringToInt (const char* str, unsigned long
     return (*str == 0) ? hash : 101 * HashStringToInt (str + 1) + *str;
 }
 //===============================================================================
-void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd, int ID)
+void CabbageWidgetData::setWidgetState (ValueTree widgetData, const String lineFromCsd, int ID)
 {
-    setProperty (widgetData, "scalex", 1);
-    setProperty (widgetData, "scaley", 1);
-    setProperty (widgetData, "resize", 0);
+    setProperty (widgetData, CabbageIdentifierIds::scalex, 1);
+    setProperty (widgetData, CabbageIdentifierIds::scaley, 1);
+    setProperty (widgetData, CabbageIdentifierIds::resize, 0);
     setProperty (widgetData, CabbageIdentifierIds::presetignore, 0);
     setProperty (widgetData, CabbageIdentifierIds::guimode, CabbageIdentifierIds::polling.toString());
     setProperty (widgetData, CabbageIdentifierIds::automation, 0);
@@ -263,21 +263,21 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, String lineFromCsd
     }
     else
     {
-        setProperty (widgetData, CabbageIdentifierIds::type, strTokens[0]);
+        setProperty (widgetData, CabbageIdentifierIds::type, widgetType);
     }
 
     //parse the text now that all default values ahve been assigned
-    setCustomWidgetState (widgetData, lineFromCsd, "");
+    setCustomWidgetState (widgetData, lineFromCsd);
 }
 
 //===========================================================================================
 // this method parses the Cabbage text and set each of the Cabbage indentifers
 //===========================================================================================
-void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineOfText, String currentIdentifier)
+void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String intputLineOfText)
 {
 
     //remove any text after a semicolon and take out tabs..
-    lineOfText = lineOfText.replace ("\t", " ");
+    String lineOfText = intputLineOfText.replace ("\t", " ");
 
     if (lineOfText.indexOf (";") > -1)
         lineOfText = lineOfText.substring (0, lineOfText.indexOf (0, ";"));
@@ -309,8 +309,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, String lineO
         if (identifier.indexOf (":") != -1)
             identifier = identifier.substring (0, identifier.indexOf (":") + 1);
 
-        strTokens = CabbageUtilities::getTokens (identifierValueSet.parameter[indx], ',');
-        //strTokens.addTokens(identifierValueSet.parameter[indx], ",", "\"");
+        //strTokens = CabbageUtilities::getTokens (identifierValueSet.parameter[indx], ',');
+        strTokens.addTokens(identifierValueSet.parameter[indx], ",", "\"");
 
 
         bool isCabbageWidget = (identifier.indexOf("_") != -1 ? false : true);
@@ -662,8 +662,11 @@ var CabbageWidgetData::getVarArrayFromTokens (StringArray strTokens)
 
 CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOfText)
 {
-    StringArray identifiersInLine = CabbageUtilities::getTokens (lineOfText.substring (0, lineOfText.lastIndexOf (")")+1).trimCharactersAtStart ("), "), ')');
-//    CabbageUtilities::debug(identifiersInLine.joinIntoString(" - "));
+//    StringArray identifiersInLine = CabbageUtilities::getTokens (lineOfText.substring (0, lineOfText.lastIndexOf (")")+1).trimCharactersAtStart ("), "), ')');
+    StringArray identifiersInLine;
+    identifiersInLine.addTokens(lineOfText.substring (0, lineOfText.lastIndexOf (")")+1).trimCharactersAtStart ("), "), ")", "\"");
+ 
+    //    CabbageUtilities::debug(identifiersInLine.joinIntoString(" - "));
     StringArray parameters;
 
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)

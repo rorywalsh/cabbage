@@ -654,7 +654,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     Logger::writeToLog("initAllCsoundChannels (ValueTree cabbageData) - done");
 }
 //==============================================================================
-void CsoundPluginProcessor::addMacros (String csdText)
+void CsoundPluginProcessor::addMacros (String& csdText)
 {
     StringArray csdArray;
     String macroName, macroText;

@@ -895,7 +895,7 @@ void CabbagePluginEditor::resetCurrentlySelectedComponents()
     currentlySelectedComponentNames.clear();
 }
 
-Component* CabbagePluginEditor::getComponentFromName (String name)
+Component* CabbagePluginEditor::getComponentFromName (String& name)
 {
     for (auto comp : components)
     {
@@ -943,7 +943,7 @@ void CabbagePluginEditor::updateLayoutEditorFrames()
 //======================================================================================================
 void CabbagePluginEditor::addToEditorAndMakeVisible (Component* comp, ValueTree widgetData)
 {
-    const String parent = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::parentcomponent);
+    String parent = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::parentcomponent);
 
 
     if (auto parentComp = getComponentFromName (parent))
@@ -1167,7 +1167,7 @@ void CabbagePluginEditor::refreshComboListBoxContents(String presetName)
 
         if ( type == "combobox" || type == "listbox")
         {
-            const String name = CabbageWidgetData::getStringProp (cabbageProcessor.cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
+            String name = CabbageWidgetData::getStringProp (cabbageProcessor.cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
             const String fileType = CabbageWidgetData::getProperty (cabbageProcessor.cabbageWidgets.getChild (i), CabbageIdentifierIds::filetype);
 
 

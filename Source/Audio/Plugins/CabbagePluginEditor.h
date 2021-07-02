@@ -206,7 +206,7 @@ public:
     void resetCurrentlySelectedComponents();
     Array<ValueTree> getValueTreesForCurrentlySelectedComponents();
     ValueTree getValueTreeForComponent (String compName);
-    Component* getComponentFromName (String name);
+    Component* getComponentFromName (String& name);
     void addToEditorAndMakeVisible (Component* comp, ValueTree widgetData);
     void updateLayoutEditorFrames();
     void addPlantToPopupPlantsArray (ValueTree wData, Component* plant);

@@ -43,8 +43,8 @@ public:
     CabbageWidgetData() {};
     ~CabbageWidgetData() {};
     //============================================================================
-    static void setWidgetState (ValueTree widgetData, String lineFromCsd, int ID);
-    static void setCustomWidgetState (ValueTree widgetData, String lineFromCsd, String identifier = String());
+    static void setWidgetState (ValueTree widgetData, const String lineFromCsd, int ID);
+    static void setCustomWidgetState (ValueTree widgetData, const String lineFromCsd);
     //============================================================================
     // these methods are implemented in CabbageWidgetDataInitMethods.h
     static void setCheckBoxProperties (ValueTree widgetData, int ID);
@@ -85,7 +85,7 @@ public:
     //============================================================================
     static float getNumProp (ValueTree widgetData, Identifier prop);
     static void setNumProp (ValueTree widgetData, Identifier prop, float val);
-    static void setStringProp (ValueTree widgetData, Identifier prop, String val);
+    static void setStringProp (ValueTree widgetData, Identifier prop, const String val);
     static String getStringProp (ValueTree widgetData, Identifier prop);
     static Rectangle<int> getBounds (ValueTree widgetData);
     static void setBounds (ValueTree widgetData, Rectangle<int> rect);

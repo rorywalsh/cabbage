@@ -200,7 +200,7 @@ public:
     virtual void getChannelDataFromCsound() {};
     virtual void initAllCsoundChannels (ValueTree cabbageData);
     //=============================================================================
-    void addMacros (String csdText);
+    void addMacros (String& csdText);
     const String getCsoundOutput();
 
     void compileCsdFile (File csoundFile)

@@ -97,14 +97,14 @@ public:
     void generateCabbageCodeFromJS (PlantImportStruct& importData, String text);
     void insertUDOCode (PlantImportStruct importData, StringArray& linesFromCsd);
     void insertPlantCode (StringArray& linesFromCsd);
-    bool isWidgetPlantParent (StringArray linesFromCsd, int lineNumber);
-    bool shouldClosePlant (StringArray linesFromCsd, int lineNumber);
+    bool isWidgetPlantParent (StringArray& linesFromCsd, int lineNumber);
+    bool shouldClosePlant (StringArray& linesFromCsd, int lineNumber);
     void setPluginName (String name) {    pluginName = name;  }
     String getPluginName() { return pluginName;  }
     void expandMacroText (String &line, ValueTree wData);
 	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
-	void setCabbageParameter(String channel, float value, ValueTree& wData);
-    CabbagePluginParameter* getParameterForXYPad (String name);
+	void setCabbageParameter(String& channel, float value, ValueTree& wData);
+    CabbagePluginParameter* getParameterForXYPad (StringRef name);
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool editorIsOpen = false;
@@ -370,7 +370,7 @@ private:
             
         }
         
-        const String channel;
+        String channel;
         const String prefix { };
         const String postfix { };
         float currentValue;

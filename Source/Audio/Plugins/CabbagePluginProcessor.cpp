@@ -224,15 +224,15 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 	String parentComponent, previousComponent;
 	StringArray parents;
 
-
+    const String csdFilePath = csdFile.getFullPathName();
 	getMacros(linesFromCsd);
 
-	for (int lineNumber = 0; lineNumber < linesFromCsd.size(); lineNumber++) {
+	for (int lineNumber = 0; lineNumber < linesFromCsd.size(); lineNumber++)
+    {
 		if (linesFromCsd[lineNumber].equalsIgnoreCase("</Cabbage>"))
 			return;
 
-		const String widgetTreeIdentifier = "WidgetFromLine_" + String(lineNumber);
-		ValueTree tempWidget(widgetTreeIdentifier);
+        ValueTree tempWidget(Identifier("WidgetFromLine_" + std::to_string(lineNumber)));
 
 		String currentLineOfCabbageCode = linesFromCsd[lineNumber].replace("\t", " ");
 
@@ -252,10 +252,10 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 		expandMacroText(currentLineOfCabbageCode, tempWidget);
 		//note whether lines contains opening and closing bracket so GUI editor can add them back in
 		if (currentLineOfCabbageCode.contains("{"))
-			CabbageWidgetData::setNumProp(tempWidget, "containsOpeningCurlyBracket", 1);
+            CabbageWidgetData::setNumProp(tempWidget, CabbageIdentifierIds::containsOpeningCurlyBracket, 1);
 
 		if (currentLineOfCabbageCode.contains("}"))
-			CabbageWidgetData::setNumProp(tempWidget, "containsClosingCurlyBracket", 1);
+            CabbageWidgetData::setNumProp(tempWidget, CabbageIdentifierIds::containsClosingCurlyBracket, 1);
 
 		if (currentLineOfCabbageCode.indexOf(";") > -1)
 			currentLineOfCabbageCode = currentLineOfCabbageCode.substring(0, currentLineOfCabbageCode.indexOf(";"));
@@ -272,7 +272,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
         String widgetNameId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel);
         //if no name is specified use generic name
         if(widgetNameId.isEmpty())
-            widgetNameId = widgetTreeIdentifier;
+            widgetNameId = tempWidget.getType().toString();
         
         ValueTree newWidget(widgetNameId);
         newWidget.copyPropertiesFrom(tempWidget, nullptr);
@@ -287,7 +287,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 				parents[parents.size() - 1]);
 
 		CabbageWidgetData::setNumProp(newWidget, CabbageIdentifierIds::linenumber, lineNumber - linesToSkip);
-		CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::csdfile, csdFile.getFullPathName());
+		CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::csdfile, csdFilePath);
 
 
 		CabbageWidgetData::setProperty(newWidget, CabbageIdentifierIds::macronames, macroNames);
@@ -370,7 +370,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 	}
 }
 
-bool CabbagePluginProcessor::isWidgetPlantParent(StringArray linesFromCsd, int lineNumber) {
+bool CabbagePluginProcessor::isWidgetPlantParent(StringArray& linesFromCsd, int lineNumber) {
 	if (linesFromCsd[lineNumber].contains("{"))
 		return true;
 
@@ -380,7 +380,7 @@ bool CabbagePluginProcessor::isWidgetPlantParent(StringArray linesFromCsd, int l
 	return false;
 }
 
-bool CabbagePluginProcessor::shouldClosePlant(StringArray linesFromCsd, int lineNumber) {
+bool CabbagePluginProcessor::shouldClosePlant(StringArray& linesFromCsd, int lineNumber) {
 	if (linesFromCsd[lineNumber].contains("}"))
 		return true;
 
@@ -1486,7 +1486,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                 }
                 else
                 {
-                    CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), " " + identData->data[i].args.toString());
+                    CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), identData->data[i].args.toString().paddedLeft(' ',1));
                     if(identData->data[i].args.toString().contains("populate"))
                         CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::update, Random::getSystemRandom().nextInt());
                 }
@@ -1610,7 +1610,8 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 			//CabbageUtilities::debug(identifierText);
 			if (identifierText.isNotEmpty() && identifierText != identChannelMessage)
             {
-                CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChild(i), " " + identifierText);
+                String padded = identifierText.paddedLeft(' ', 1);
+                CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChild(i), padded);
 
 				if (identifierText.contains("tableNumber")) //update even if table number has not changed
 					CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, 1);
@@ -1740,7 +1741,7 @@ void CabbagePluginProcessor::disableXYAutomators()
 }
 
 //======================================================================================================
-CabbagePluginParameter* CabbagePluginProcessor::getParameterForXYPad(String name) {
+CabbagePluginParameter* CabbagePluginProcessor::getParameterForXYPad(StringRef name) {
 	for (auto param : getCabbageParameters()) {
 		if (CabbagePluginParameter * cabbageParam = dynamic_cast<CabbagePluginParameter*> (param)) {
 			if (name == cabbageParam->getWidgetName())
@@ -1752,7 +1753,7 @@ CabbagePluginParameter* CabbagePluginProcessor::getParameterForXYPad(String name
 }
 
 //==============================================================================
-void CabbagePluginProcessor::setCabbageParameter(String channel, float value, ValueTree& wData)
+void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, ValueTree& wData)
 {
     if(pollingChannels() == 0){
         MessageManager::callAsync ([this, wData, channel, value](){

@@ -587,6 +587,8 @@ namespace CabbageIdentifierIds
     static const Identifier currenttext = "currentText";
     static const Identifier currentWidgetChannel = "CURRENT_WIDGET";
     static const Identifier currentPresetName = "currentpresetname";
+    static const Identifier containsOpeningCurlyBracket = "containsOpeningCurlyBracket";
+    static const Identifier containsClosingCurlyBracket = "containsClosingCurlyBracket";
     static const Identifier decimalplaces = "decimalplaces";
     static const Identifier displaytype = "displayType";
     static const Identifier doubleclicktogglesedit = "doubleClickTogglesEdit";
