@@ -75,7 +75,7 @@ void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, co
 	const int outlineThickness = button.getProperties().getWithDefault("outlinethickness", 0);
 	const int offset = outlineThickness == 0 ? 0 : outlineThickness * .5;
 	g.setColour(outlineColour);
-	g.drawRoundedRectangle(0, 0, width, height, corners, outlineThickness);
+	g.fillRoundedRectangle(0, 0, width, height, corners);
 	g.setColour(bg);
 	g.fillRoundedRectangle(offset, offset, width - outlineThickness, height - outlineThickness, corners);
 	
