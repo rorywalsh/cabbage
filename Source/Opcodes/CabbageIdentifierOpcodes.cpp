@@ -486,7 +486,7 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
     
     CabbageWidgetIdentifiers::IdentifierData data;
     
-    data.identifier = "value";
+    data.identifier = CabbageIdentifierIds::value;
     data.name = args.str_data(0).data;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
@@ -543,10 +543,9 @@ int SetCabbageIdentifier::setAttribute()
         return OK;
     
     CabbageWidgetIdentifiers::IdentifierData data;
-    String name(args.str_data(1).data);
-    String identifier(args.str_data(2).data);
-    data.identifier = identifier;
-    data.name = name;
+
+    data.identifier = args.str_data(2).data;
+    data.name = args.str_data(1).data;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -568,7 +567,7 @@ int SetCabbageIdentifier::setAttribute()
     if(trigger == 1)
     {
         //hack to trigger table update even if table number hasn't changed
-        if(identifier == "tableNumber")
+        if(data.identifier == CabbageIdentifierIds::tablenumber)
         {
             CabbageWidgetIdentifiers::IdentifierData updateData1;
             updateData1.identifier = CabbageIdentifierIds::update;
@@ -594,7 +593,7 @@ int SetCabbageIdentifier::setAttribute()
         varData->data.add(data);
         
         //hack to trigger table update even if table number hasn't changed
-        if(identifier == "tableNumber")
+        if(data.identifier == CabbageIdentifierIds::tablenumber)
         {
             CabbageWidgetIdentifiers::IdentifierData updateData0;
             updateData0.identifier = CabbageIdentifierIds::update;
@@ -603,7 +602,7 @@ int SetCabbageIdentifier::setAttribute()
             varData->data.add(updateData0);
         }
         
-        if(identifier == "value")
+        if(data.identifier == CabbageIdentifierIds::value)
         {
             if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(1).data,
                                                    CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
@@ -633,10 +632,9 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
         return NOTOK;
     }
     
-    String name(args.str_data(1).data);
-    String identifier(args.str_data(2).data);
-    data.identifier = identifier;
-    data.name = name;
+
+    data.identifier = args.str_data(2).data;
+    data.name = args.str_data(1).data;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -654,7 +652,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     }
     
     //hack to trigger table update even if table number hasn't changed
-    if(identifier == "tableNumber")
+    if(data.identifier == CabbageIdentifierIds::tablenumber)
     {
         CabbageWidgetIdentifiers::IdentifierData updateData1;
         updateData1.identifier = CabbageIdentifierIds::update;
@@ -678,7 +676,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     varData->data.add(data);
     
     //hack to trigger table update even if table number hasn't changed
-    if(identifier == "tableNumber")
+    if(data.identifier == CabbageIdentifierIds::tablenumber)
     {
         CabbageWidgetIdentifiers::IdentifierData updateData0;
         updateData0.identifier = CabbageIdentifierIds::update;
@@ -694,10 +692,9 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
 int SetCabbageIdentifierITime::setAttribute()
 {
     CabbageWidgetIdentifiers::IdentifierData data;
-    String name(outargs.str_data(0).data);
-    String identifier(outargs.str_data(1).data);
-    data.identifier = identifier;
-    data.name = name;
+
+    data.identifier = outargs.str_data(1).data;
+    data.name = outargs.str_data(0).data;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -715,7 +712,7 @@ int SetCabbageIdentifierITime::setAttribute()
     }
     
     //hack to trigger table update even if table number hasn't changed
-    if(identifier == "tableNumber")
+    if(data.identifier == CabbageIdentifierIds::tablenumber)
     {
         CabbageWidgetIdentifiers::IdentifierData updateData1;
         updateData1.identifier = CabbageIdentifierIds::update;
@@ -738,7 +735,7 @@ int SetCabbageIdentifierITime::setAttribute()
     }
     varData->data.add(data);
     
-    if(identifier == "tableNumber")
+    if(data.identifier == CabbageIdentifierIds::tablenumber)
     {
         CabbageWidgetIdentifiers::IdentifierData updateData0;
         updateData0.identifier = CabbageIdentifierIds::update;
@@ -753,10 +750,10 @@ int SetCabbageIdentifierITime::setAttribute()
 int SetCabbageIdentifierITimeSArgs::setAttribute()
 {
     CabbageWidgetIdentifiers::IdentifierData data;
-    String name(outargs.str_data(0).data);
-    String identifier(outargs.str_data(1).data);
-    data.identifier = identifier;
-    data.name = name;
+
+
+    data.identifier = outargs.str_data(1).data;
+    data.name = outargs.str_data(0).data;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -774,7 +771,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
     }
     
     //hack to trigger table update even if table number hasn't changed
-    if(identifier.contains("tableNumber"))
+    if(data.identifier == CabbageIdentifierIds::tablenumber)
     {
         CabbageWidgetIdentifiers::IdentifierData updateData1;
         updateData1.identifier = CabbageIdentifierIds::update;
@@ -797,7 +794,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
     }
     varData->data.add(data);
     
-    if(identifier.contains("tableNumber"))
+    if(data.identifier == CabbageIdentifierIds::tablenumber)
     {
         CabbageWidgetIdentifiers::IdentifierData updateData0;
         updateData0.identifier = CabbageIdentifierIds::update;

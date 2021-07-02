@@ -188,10 +188,10 @@ void CabbageImage::resizeAllChildren(ValueTree& valueTree)
     prevWidth = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::width);
     prevHeight = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::height);
 }
+
+
 void CabbageImage::updateImage(ValueTree& valueTree)
 {
-
-
     //int isParent = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::isparent);
     String fileBase64 = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
 
