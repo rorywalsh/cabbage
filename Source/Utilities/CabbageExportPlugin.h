@@ -90,7 +90,7 @@ public:
                 break;
         }
         
-        if(headerDefs.size() != 3)
+        if(headerDefs.size() < 3)
         {
             CabbageUtilities::showMessage(
                                           "Please make sure that your orc header section contains assignments for ksmps, nchnls and 0dbfs.", &lookAndFeel);
