@@ -207,17 +207,17 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                 if(workingDir.isNotEmpty() && pluginDir.getChildFile(currentValueAsText).exists())
                 {
                     currentValueAsText = File(currentValueAsText).getFileNameWithoutExtension();
-                    index = stringItems.indexOf (currentValueAsText)+1;
+                    index = stringItems.indexOf (currentValueAsText);
                 }
                 else
                     index = stringItems.indexOf (currentValueAsText);
 
                 if (index != -1)
-                    listBox.selectRow(index - 1);
+                    listBox.selectRow(index);
 
                 const String test = getChannel();
                 if(File(workingDir).exists())
-                    owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index-1].getFullPathName());
+                    owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index].getFullPathName());
                 else
                     owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
                 //CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
@@ -234,7 +234,7 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
         fontColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour);
         //setTooltip (getCurrentPopupText (valueTree));
 
-        if (workingDir != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir) || prop == CabbageIdentifierIds::populate)
+        if (workingDir != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir) || (prop == CabbageIdentifierIds::populate || prop == CabbageIdentifierIds::text))
         {
             addItemsToListbox (valueTree);
             workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
