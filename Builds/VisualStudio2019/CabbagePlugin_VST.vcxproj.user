@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LocalDebuggerCommand>C:\Program Files\REAPER %28x64%29\reaper.exe</LocalDebuggerCommand>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <RemoteDebuggerServerName>DESKTOP-UTB7148:1024</RemoteDebuggerServerName>
+    <RemoteDebuggerCommand>C:\ProgramData\Ableton\Live 10 Lite\Program\Ableton Live 10 Lite.exe</RemoteDebuggerCommand>
+    <RemoteDebuggerConnection>RemoteWithoutAuthentication</RemoteDebuggerConnection>
+    <RemoteDebuggerAttach>true</RemoteDebuggerAttach>
+    <RemoteDebuggerWorkingDirectory>C:\Users\roryw\Documents</RemoteDebuggerWorkingDirectory>
+    <AdditionalFiles>CabbagePlugin.dll</AdditionalFiles>
+    <DeploymentDirectory>C:\Users\roryw\Documents</DeploymentDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LocalDebuggerCommand>C:\Program Files\REAPER %28x64%29\reaper.exe</LocalDebuggerCommand>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+  </PropertyGroup>
+</Project>
