@@ -492,9 +492,9 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
                 break;
                 
             case HashStringToInt ("rotate"):
-                setProperty (widgetData, CabbageIdentifierIds::rotate, strTokens[0].trim().getFloatValue());
                 setProperty (widgetData, CabbageIdentifierIds::pivotx, strTokens[1].trim().getFloatValue());
                 setProperty (widgetData, CabbageIdentifierIds::pivoty, strTokens[2].trim().getFloatValue());
+                setProperty (widgetData, CabbageIdentifierIds::rotate, strTokens[0].trim().getFloatValue());
                 break;
                 
             case HashStringToInt ("ampRange"):
