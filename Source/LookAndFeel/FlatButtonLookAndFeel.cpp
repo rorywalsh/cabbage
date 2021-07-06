@@ -508,7 +508,9 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
         Colour thumbColour = slider.findColour(Slider::thumbColourId).withAlpha(isMouseOver ? slider.findColour(Slider::thumbColourId).getFloatAlpha() : slider.findColour(Slider::thumbColourId).getFloatAlpha() * 0.9f);
 
         g.setColour(thumbColour);
-        g.fillPath(newPolygon);
+        
+        if(diameter >= 25)
+            g.fillPath(newPolygon);
 
         // Draw the thumb segment:
         Path p;

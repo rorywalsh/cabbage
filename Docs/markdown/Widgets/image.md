@@ -20,6 +20,8 @@ image WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/file.md !}
 
+{! ./markdown/Widgets/Properties/mouseInteraction.md !}
+
 {! ./markdown/Widgets/Properties/outlineColour.md !}
 
 {! ./markdown/Widgets/Properties/outlineThickness.md !}
