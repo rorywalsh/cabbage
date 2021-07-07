@@ -1221,8 +1221,11 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
 
 XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 {
-	std::unique_ptr<XmlElement> xml;
+    std::unique_ptr<XmlElement> xml;
     xml = std::unique_ptr<XmlElement>(new XmlElement("CABBAGE_PRESETS"));
+    
+    try {    // very bad code
+
     
     
     if (getCsound())
@@ -1267,13 +1270,15 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 			{
 				var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
 					CabbageIdentifierIds::channel);
+                
 
 				const float minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 					CabbageIdentifierIds::minvalue);
 				const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 					CabbageIdentifierIds::maxvalue);
 				xml->setAttribute(channels[0].toString(), minValue);
-				xml->setAttribute(channels[1].toString(), maxValue);
+                if(channels.size() == 2)
+                   xml->setAttribute(channels[1].toString(), maxValue);
 			}
 			else if (type == CabbageWidgetTypes::xypad) //double channel xypad widget
 			{
@@ -1311,6 +1316,10 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 			}
 		}
 	}
+    } catch (std::runtime_error&) {
+        Logger::writeToLog("Problem with savePluginState");
+    }
+    
 	return *xml;
 }
 
