@@ -138,6 +138,7 @@ void CabbageImage::changeListenerCallback (ChangeBroadcaster* source)
 //==============================================================================
 void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
+
     if (CabbagePluginEditor::PopupDocumentWindow* parentComp = dynamic_cast<CabbagePluginEditor::PopupDocumentWindow*> (getParentComponent()))
     {
         const int isParentvisible = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::visible);

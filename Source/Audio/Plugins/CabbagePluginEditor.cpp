@@ -135,6 +135,14 @@ void CabbagePluginEditor::resized()
     }
 }
 
+void CabbagePluginEditor::moveBehind(String thisComp, String otherComp)
+{
+    DBG(components.size());
+    auto thisWidget = getComponentFromName(thisComp);
+    auto otherWidget = getComponentFromName(otherComp);
+    DBG(thisComp);
+    DBG(otherComp);
+}
 ////======================================================================================================
 //void CabbagePluginEditor::filesDropped(const StringArray &files, int x, int y)
 //{
@@ -449,7 +457,7 @@ void CabbagePluginEditor::insertMeter (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertPath (ValueTree cabbageWidgetData)
 {
     CabbagePath* path;
-    components.add (path = new CabbagePath (cabbageWidgetData));
+    components.add (path = new CabbagePath (cabbageWidgetData, this));
     addToEditorAndMakeVisible (path, cabbageWidgetData);
     addMouseListenerAndSetVisibility (path, cabbageWidgetData);
 }
@@ -517,7 +525,7 @@ void CabbagePluginEditor::insertSignalDisplay (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertInfoButton (ValueTree cabbageWidgetData)
 {
     CabbageInfoButton* infoButton;
-    components.add (infoButton = new CabbageInfoButton (cabbageWidgetData, globalStyle));
+    components.add (infoButton = new CabbageInfoButton (cabbageWidgetData, this, globalStyle));
     addToEditorAndMakeVisible (infoButton, cabbageWidgetData);
     addMouseListenerAndSetVisibility (infoButton, cabbageWidgetData);
 }
@@ -543,7 +551,7 @@ void CabbagePluginEditor::insertButton (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertNumberSlider (ValueTree cabbageWidgetData)
 {
     CabbageNumberSlider* numberBox;
-    components.add (numberBox = new CabbageNumberSlider (cabbageWidgetData));
+    components.add (numberBox = new CabbageNumberSlider (cabbageWidgetData, this));
     numberBox->getSlider().addListener (this);
     addToEditorAndMakeVisible (numberBox, cabbageWidgetData);
     addMouseListenerAndSetVisibility (numberBox, cabbageWidgetData);
@@ -560,7 +568,7 @@ void CabbagePluginEditor::insertGenTable (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertTextBox (ValueTree cabbageWidgetData)
 {
     CabbageTextBox* textBox;
-    components.add (textBox = new CabbageTextBox (cabbageWidgetData));
+    components.add (textBox = new CabbageTextBox (cabbageWidgetData, this));
     addToEditorAndMakeVisible (textBox, cabbageWidgetData);
     addMouseListenerAndSetVisibility (textBox, cabbageWidgetData);
 }
@@ -582,7 +590,7 @@ void CabbagePluginEditor::insertKeyboard (ValueTree cabbageWidgetData)
     if (keyboardCount < 1)
     {
         CabbageKeyboard* midiKeyboard;
-        components.add (midiKeyboard = new CabbageKeyboard (cabbageWidgetData, cabbageProcessor.keyboardState));
+        components.add (midiKeyboard = new CabbageKeyboard (cabbageWidgetData, this, cabbageProcessor.keyboardState));
         //midiKeyboard->setKeyPressBaseOctave (3); // <-- now you can set this with 'keypressbaseoctave' identifier
         
 #ifndef Cabbage_IDE_Build
@@ -601,7 +609,7 @@ void CabbagePluginEditor::insertKeyboardDisplay(ValueTree cabbageWidgetData)
 {
 	CabbageKeyboardDisplay* midiKeyboard;
 	MidiKeyboardState dummy;
-	components.add(midiKeyboard = new CabbageKeyboardDisplay(cabbageWidgetData));
+	components.add(midiKeyboard = new CabbageKeyboardDisplay(cabbageWidgetData, this));
 	//midiKeyboard->setKeyPressBaseOctave (3); // <-- now you can set this with 'keypressbaseoctave' identifier
 	addToEditorAndMakeVisible(midiKeyboard, cabbageWidgetData);
 	addMouseListenerAndSetVisibility(midiKeyboard, cabbageWidgetData);
@@ -636,7 +644,7 @@ void CabbagePluginEditor::insertLine (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertPort (ValueTree cabbageWidgetData)
 {
     CabbagePort* port;
-    components.add (port = new CabbagePort (cabbageWidgetData));
+    components.add (port = new CabbagePort (cabbageWidgetData, this));
     addToEditorAndMakeVisible (port, cabbageWidgetData);
     addMouseListenerAndSetVisibility (port, cabbageWidgetData);
 }
@@ -644,7 +652,7 @@ void CabbagePluginEditor::insertPort (ValueTree cabbageWidgetData)
 void CabbagePluginEditor::insertScrew (ValueTree cabbageWidgetData)
 {
     CabbageScrew* screw;
-    components.add (screw = new CabbageScrew (cabbageWidgetData));
+    components.add (screw = new CabbageScrew (cabbageWidgetData, this));
     addToEditorAndMakeVisible (screw, cabbageWidgetData);
     addMouseListenerAndSetVisibility (screw, cabbageWidgetData);
 }

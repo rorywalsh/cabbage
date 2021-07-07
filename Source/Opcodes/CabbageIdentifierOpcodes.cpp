@@ -314,9 +314,9 @@ int CabbageGetWidgetChannels::getChannels()
                 CabbageWidgetData::setCustomWidgetState(tempWidget, identifiers);
                 if (idents.identifier[i].isNotEmpty())
                 {
-                    DBG(CabbageWidgetData::getStringProp(varData->data.getChild(x), CabbageIdentifierIds::channel));
-                    DBG(CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i])).toString());
-                    DBG(CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i])).toString());
+//                    DBG(CabbageWidgetData::getStringProp(varData->data.getChild(x), CabbageIdentifierIds::channel));
+//                    DBG(CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i])).toString());
+//                    DBG(CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i])).toString());
                     
                     if (CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i])).toString() ==
                         CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i])).toString())
@@ -331,7 +331,10 @@ int CabbageGetWidgetChannels::getChannels()
                             }
                         }
                         else
+                        {
                             channels.add(chans.toString());
+                            DBG(chans.toString());
+                        }
                     }
                 }
             }
@@ -341,7 +344,7 @@ int CabbageGetWidgetChannels::getChannels()
         out.init(csound, size);
         for (int i = 0; i < size; i++)
         {
-            out[i].size = channels[i].length();
+            out[i].size = channels[i].length()+1;
             out[i].data = csound->strdup(channels[i].toUTF8().getAddress());
         }
     }
@@ -519,7 +522,7 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
 
         for( auto& el : varData->data)
         {
-            if(el.identifier == data.identifier && el.name == data.name)
+            if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
             {
                 el.args = data.args;
                 entryExists = true;

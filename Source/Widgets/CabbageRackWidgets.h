@@ -21,6 +21,7 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
+
 #pragma once
 
 class CabbagePluginEditor;
@@ -30,7 +31,7 @@ class CabbageLight : public Component, public ValueTree::Listener, public Cabbag
 {
     String name, tooltipText, shape;
     File imgFile;
-    CabbagePluginEditor* owner;
+    CabbagePluginEditor* owner ={};
     float corners, cropx, cropy, cropwidth, cropheight;
     int lineThickness;
     ValueTree widgetData;
@@ -65,10 +66,11 @@ class CabbageScrew : public Component, public ValueTree::Listener, public Cabbag
     ValueTree widgetData;
     Image img;
     String svgText;
+    CabbagePluginEditor* owner = {};
 
 public:
 
-    explicit CabbageScrew (ValueTree cAttr);
+    explicit CabbageScrew (ValueTree cAttr, CabbagePluginEditor* _owner);
     ~CabbageScrew() {
         widgetData.removeListener(this);
     };
@@ -96,10 +98,11 @@ class CabbagePort : public Component, public ValueTree::Listener, public Cabbage
     Colour outlineColour, mainColour;
     Image img;
     String svgText;
+    CabbagePluginEditor* owner = {};
 
 public:
 
-    explicit CabbagePort (ValueTree cAttr);
+    explicit CabbagePort (ValueTree cAttr, CabbagePluginEditor* _owner);
     ~CabbagePort() {};
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;

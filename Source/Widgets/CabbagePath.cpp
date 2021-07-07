@@ -21,7 +21,7 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 
-CabbagePath::CabbagePath (ValueTree wData)
+CabbagePath::CabbagePath (ValueTree wData, CabbagePluginEditor* _owner)
 : corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
 fontstyle (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontstyle)),
 counter (0),

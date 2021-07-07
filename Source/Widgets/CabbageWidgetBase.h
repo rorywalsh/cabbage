@@ -30,7 +30,7 @@ class CabbageWidgetBase
 {
     int pivotx = 0, pivoty = 0, visible = 0, active = 0, value = 0, valuex = 0, valuey = 0, lineNumber = 0, toFront = 0;
     float rotate = 0.f, alpha = 0.f, currentValue = 0.f;
-    String tooltipText = {}, text = {}, channel = {}, csdFile = {}, file = {};
+    String tooltipText = {}, text = {}, channel = {}, csdFile = {}, file = {}, behind ={};
     StringArray channelArray = {};   //can be used if widget supports multiple channels
     StringArray textArray = {};      //can be used used if widget supports multiple text items
 

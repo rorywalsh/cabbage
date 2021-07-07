@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
-
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 /* A component that displays a piano keyboard, whose notes can be clicked on.*/
 class MidiKeyboardDisplay : public Component,
@@ -335,10 +335,11 @@ class CabbageKeyboardDisplay : public MidiKeyboardDisplay, public ValueTree::Lis
 	int scrollbars;
 	float keyWidth;
 	String kind;
+    CabbagePluginEditor* owner = {};
 
 public:
 
-	explicit CabbageKeyboardDisplay(ValueTree wData);
+	explicit CabbageKeyboardDisplay(ValueTree wData, CabbagePluginEditor* _owner);
 	~CabbageKeyboardDisplay() {
 		widgetData.removeListener(this);
 	};

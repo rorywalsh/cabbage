@@ -19,7 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include "CabbageKeyboardDisplay.h"
 
-CabbageKeyboardDisplay::CabbageKeyboardDisplay(ValueTree wData)
+CabbageKeyboardDisplay::CabbageKeyboardDisplay(ValueTree wData, CabbagePluginEditor* _owner)
 	:
 	MidiKeyboardDisplay(MidiKeyboardDisplay::horizontalKeyboard),
     scrollbars(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrollbars)),

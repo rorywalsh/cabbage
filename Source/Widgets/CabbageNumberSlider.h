@@ -22,6 +22,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 
 class SliderLookAndFeel : public LookAndFeel_V2
@@ -80,13 +81,14 @@ public:
 
 class CabbageNumberSlider : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
+    CabbagePluginEditor* owner;
     Slider slider;
     Label label;
     String text="", align="", postfix="";
 
 public:
 	SliderLookAndFeel sliderLookAndFeel;
-	explicit CabbageNumberSlider (ValueTree wData);
+	explicit CabbageNumberSlider (ValueTree wData, CabbagePluginEditor* owner);
 	~CabbageNumberSlider() {
 		widgetData.removeListener(this);
 		slider.setLookAndFeel(nullptr);

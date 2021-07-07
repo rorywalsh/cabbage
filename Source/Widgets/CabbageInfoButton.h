@@ -23,16 +23,17 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 #include "../LookAndFeel/FlatButtonLookAndFeel.h"
-
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 class CabbageInfoButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase, public Button::Listener
 {
 
     String filename;
-
+    CabbagePluginEditor* owner;
+    
 public:
 
-    CabbageInfoButton (ValueTree wData, String style);
+    CabbageInfoButton (ValueTree wData, CabbagePluginEditor* _owner, String style);
     ~CabbageInfoButton() {
         widgetData.removeListener(this);
         setLookAndFeel(nullptr);

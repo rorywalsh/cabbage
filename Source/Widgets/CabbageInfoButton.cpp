@@ -20,7 +20,8 @@
 #include "CabbageInfoButton.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbageInfoButton::CabbageInfoButton (ValueTree wData, String style)
+
+CabbageInfoButton::CabbageInfoButton (ValueTree wData, CabbagePluginEditor* _owner, String style)
     : widgetData (wData),
       TextButton()
 {

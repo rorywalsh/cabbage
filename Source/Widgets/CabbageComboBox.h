@@ -25,6 +25,7 @@
 
 
 class CabbagePluginEditor;
+
 class CabbageComboBox
     : public ComboBox,
       public ValueTree::Listener,

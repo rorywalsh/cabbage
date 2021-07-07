@@ -22,6 +22,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 class CabbagePath : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
@@ -31,10 +32,11 @@ class CabbagePath : public Component, public ValueTree::Listener, public Cabbage
     String text, colour;
     int fontsize = 0;
     var points;
+    CabbagePluginEditor* owner;
     
 public:
     
-    CabbagePath (ValueTree wData);
+    CabbagePath (ValueTree wData, CabbagePluginEditor* _owner);
     CabbagePath() {
         widgetData.removeListener(this);
     };

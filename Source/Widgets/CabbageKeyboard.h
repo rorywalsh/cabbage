@@ -23,7 +23,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
-
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 // Add any new custom widgets here to avoid having to edit makefiles and projects
 // Each Cabbage widget should inherit from ValueTree listener, and CabbageWidgetBase
@@ -32,10 +32,11 @@ class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener
     int scrollbars;
     float keyWidth;
     String kind;
+    CabbagePluginEditor* owner;
 
 public:
 
-    CabbageKeyboard (ValueTree wData, MidiKeyboardState& state);
+    CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, MidiKeyboardState& state);
     ~CabbageKeyboard() {
         widgetData.removeListener(this);
     };

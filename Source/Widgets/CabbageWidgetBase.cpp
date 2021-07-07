@@ -60,8 +60,7 @@ void CabbageWidgetBase::initialiseCommonAttributes (Component* child, ValueTree 
 void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, bool calledFromConstructor, const Identifier& prop)
 {
     if (calledFromConstructor == false)
-    {       
-
+    {
         if (getPluginEditor (child) != nullptr && getPluginEditor (child)->isEditModeEnabled() == false)
         {
             if(prop == CabbageIdentifierIds::bounds){
@@ -135,6 +134,14 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
         file = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::file);
     }
 
+    if( behind != CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::sendbehind))
+    {
+        behind = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::sendbehind);
+        if(child->getParentComponent() != nullptr)
+            DBG(child->getParentComponent()->getName());
+//        if(getPluginEditor (child) != nullptr)
+//            getPluginEditor(child)->moveBehind(CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::channel), "");
+    }
     
     populateTextArrays (data);
 }

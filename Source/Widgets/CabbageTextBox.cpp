@@ -20,10 +20,11 @@
 #include "CabbageTextBox.h"
 
 
-CabbageTextBox::CabbageTextBox (ValueTree wData)
+CabbageTextBox::CabbageTextBox (ValueTree wData, CabbagePluginEditor* _owner)
     :  TextEditor (""),
     filename (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file)),
-    widgetData (wData)
+    widgetData (wData),
+    owner(_owner)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

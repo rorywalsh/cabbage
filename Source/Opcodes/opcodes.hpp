@@ -916,6 +916,7 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
                     {
                         DBG(channelName);
                         std::string string = it.value();
+                        ((STRINGDAT*)value)->size = strlen(string.c_str());
                         ((STRINGDAT*)value)->data = csound->strdup((char*)string.c_str());
                     }
                 }

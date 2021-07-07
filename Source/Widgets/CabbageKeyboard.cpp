@@ -19,7 +19,7 @@
 
 #include "CabbageKeyboard.h"
 
-CabbageKeyboard::CabbageKeyboard (ValueTree wData, MidiKeyboardState& state)
+CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, MidiKeyboardState& state)
     : MidiKeyboardComponent (state, MidiKeyboardComponent::horizontalKeyboard),
     scrollbars (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrollbars)),
     keyWidth (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keywidth)),

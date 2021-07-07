@@ -18,6 +18,7 @@
 */
 
 #include "CabbageRackWidgets.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 static void drawFromSVG(Graphics& g, String svgText, int x, int y, int newWidth, int newHeight, AffineTransform affine)
 {
@@ -36,7 +37,7 @@ static void drawFromSVG(Graphics& g, String svgText, int x, int y, int newWidth,
 }
 
 
-CabbageScrew::CabbageScrew (ValueTree wData) : CabbageWidgetBase(),
+CabbageScrew::CabbageScrew (ValueTree wData, CabbagePluginEditor* _owner) : CabbageWidgetBase(),
 widgetData (wData)
 {
     widgetData.addListener (this);
@@ -140,7 +141,7 @@ void CabbageScrew::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 }
 
 
-CabbagePort::CabbagePort (ValueTree wData) : CabbageWidgetBase(),
+CabbagePort::CabbagePort (ValueTree wData, CabbagePluginEditor* _owner) : CabbageWidgetBase(),
 widgetData (wData)
 {
     widgetData.addListener (this);

@@ -52,6 +52,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, const String lineF
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::rotate, 0.f);
     setProperty (widgetData, CabbageIdentifierIds::pivotx, 0.f);
+    setProperty (widgetData, CabbageIdentifierIds::sendbehind, "");
     setProperty (widgetData, CabbageIdentifierIds::pivoty, 0.f);
     setProperty (widgetData, CabbageIdentifierIds::linenumber, ID);
     setProperty (widgetData, CabbageIdentifierIds::decimalplaces, 0);
@@ -346,6 +347,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("logger"):
             case HashStringToInt ("parent"):
             case HashStringToInt ("namespace"):
+            case HashStringToInt ("sendBehind"):
                 setProperty (widgetData, identifier, (identifier.contains("fix") ? strTokens[0] : strTokens[0].trim()));
                 break;
                 

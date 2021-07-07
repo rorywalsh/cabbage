@@ -120,6 +120,7 @@ public:
     void insertScrew (ValueTree cabbageWidgetData);
     void insertLight (ValueTree cabbageWidgetData);
     
+    void moveBehind(String thisComp, String otherComp);
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
     //=============================================================================
 	void refreshValueTreeListeners();
@@ -348,7 +349,7 @@ private:
 
     std::unique_ptr<Viewport> viewport;
     std::unique_ptr<ViewportContainer> viewportContainer;
-    OwnedArray<Component> components;
+    OwnedArray<Component> components = {};
     Array<Component*> radioComponents;
     OwnedArray<PopupDocumentWindow> popupPlants;
     String lastOpenedDirectory;

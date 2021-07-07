@@ -23,15 +23,17 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
 
 
 class CabbageTextBox : public TextEditor, public ValueTree::Listener, public CabbageWidgetBase
 {
+    CabbagePluginEditor* owner;
     String filename;	
 public:
 
-    explicit CabbageTextBox (ValueTree wData);
+    explicit CabbageTextBox (ValueTree wData, CabbagePluginEditor* owner);
     ~CabbageTextBox() {
         widgetData.removeListener(this);
     };

@@ -19,14 +19,15 @@
 
 #include "CabbageNumberSlider.h"
 
-CabbageNumberSlider::CabbageNumberSlider (ValueTree wData)
+CabbageNumberSlider::CabbageNumberSlider (ValueTree wData, CabbagePluginEditor* _owner)
     :
     slider (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
     label(),
     text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
     align (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align)),
     sliderLookAndFeel(),
-    widgetData (wData)
+    widgetData (wData),
+    owner(_owner)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
