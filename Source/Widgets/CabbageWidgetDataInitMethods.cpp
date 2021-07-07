@@ -184,6 +184,9 @@ void CabbageWidgetData::setRSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::trackerthickness, 1.f);
     setProperty (widgetData, CabbageIdentifierIds::trackerinsideradius, .7f);
     setProperty (widgetData, CabbageIdentifierIds::trackeroutsideradius, 1.f);
+    setProperty (widgetData, CabbageIdentifierIds::trackerstart, 0.1f);
+    setProperty (widgetData, CabbageIdentifierIds::trackerend, 0.9f);
+    setProperty (widgetData, CabbageIdentifierIds::trackercentre, 0.1f);
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::imgslider, "");
     setProperty (widgetData, CabbageIdentifierIds::imgsliderbg, "");
@@ -902,6 +905,9 @@ void CabbageWidgetData::setHSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
     setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
     setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
+    setProperty (widgetData, CabbageIdentifierIds::trackerstart, 0.1f);
+    setProperty (widgetData, CabbageIdentifierIds::trackerend, 0.9f);
+    setProperty (widgetData, CabbageIdentifierIds::trackercentre, 0.1f);
 }
 
 void CabbageWidgetData::setVSliderProperties (ValueTree widgetData, int ID)
@@ -947,6 +953,9 @@ void CabbageWidgetData::setVSliderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
     setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
     setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
+    setProperty (widgetData, CabbageIdentifierIds::trackerstart, 0.1f);
+    setProperty (widgetData, CabbageIdentifierIds::trackerend, 0.9f);
+    setProperty (widgetData, CabbageIdentifierIds::trackercentre, 0.1f);
 }
 
 void CabbageWidgetData::setImageProperties (ValueTree widgetData, int ID)

@@ -48,8 +48,6 @@ nchnls = 2
 
 gkFileNumber init 10
 
-;if you want chnset calls to work with host automation, enable this channel
-chnset 1, "CHNSET_GESTURES"
 
 instr 1
    kEnv madsr cabbageGetValue:i("att"), cabbageGetValue:i("dec"), cabbageGetValue:i("sus"), cabbageGetValue:i("rel")

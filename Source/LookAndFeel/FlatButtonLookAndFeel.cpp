@@ -459,6 +459,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
         const float thumbThickness = abs(outerRadiusProportion - innerRadiusProportion) / 4.0f / 2.0f;
         const float markerThickness = (float)(slider.getProperties().getWithDefault("markerthickness", 1.0f)) * rw * thumbThickness;
         const float markerStart = slider.getProperties().getWithDefault("markerstart", 0.5);
+        const float trackerCentre = MathConstants<float>::pi * (1+(float(slider.getProperties().getWithDefault("trackerCentre", 0.1f))*2.f));
         const float markerEnd = slider.getProperties().getWithDefault("markerend", 0.9);
         const Colour trackerBgColour = Colour::fromString(slider.getProperties().getWithDefault("trackerbgcolour", Colours::black.toString()).toString());
         const Colour markerColour = Colour::fromString(slider.getProperties().getWithDefault("markercolour", Colours::white.toString()).toString());
@@ -466,27 +467,29 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
         slider.setSliderStyle(Slider::RotaryVerticalDrag);
 
         //tracker
-        g.setColour(slider.findColour(Slider::trackColourId).contrasting(isMouseOver ? 0.1f : 0.0f));
-
-
-        {
-            Path filledArc;
-            filledArc.addPieSegment(rx, ry, rw, rw, rotaryStartAngle, angle, innerRadiusProportion);
-            filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, bounds.getWidth() / 2.f, bounds.getHeight() / 2.f));
-            g.fillPath(filledArc);
-        }
 
         // Draw the slider arc background:
         g.setColour(trackerBgColour);
         Path bgArc;
-        bgArc.addPieSegment(rx, ry, rw, rw, angle, rotaryEndAngle, innerRadiusProportion);
+        bgArc.addPieSegment(rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, innerRadiusProportion);
         bgArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, bounds.getWidth() / 2.f, bounds.getHeight() / 2.f));
         g.fillPath(bgArc);
 
+
+        g.setColour(slider.findColour(Slider::trackColourId).contrasting(isMouseOver ? 0.1f : 0.0f));
+        {
+            Path filledArc;
+            filledArc.addPieSegment(rx, ry, rw, rw, trackerCentre, angle, innerRadiusProportion);
+            filledArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, bounds.getWidth() / 2.f, bounds.getHeight() / 2.f));
+            g.fillPath(filledArc);
+        }
+
+        
         //outlinecolour
         Colour outlineColour = slider.findColour(Slider::rotarySliderOutlineColourId);
         g.setColour(outlineColour);
 
+        
         Path outlineArc;
         outlineArc.addPieSegment(rx, ry, rw, rw, rotaryStartAngle, rotaryEndAngle, innerRadiusProportion);
         outlineArc.applyTransform(AffineTransform().scaled(outerRadiusProportion, outerRadiusProportion, bounds.getWidth() / 2.f, bounds.getHeight() / 2.f));

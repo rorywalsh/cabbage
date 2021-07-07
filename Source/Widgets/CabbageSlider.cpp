@@ -147,6 +147,8 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     setImgProperties(this->slider, wData, "slider");
     setImgProperties(this->slider, wData, "sliderbg");
     
+    slider.getProperties().set("trackerCentre", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackercentre));
+    
     
     filmStripValueBox.setEditable(true);
     filmStripValueBox.setJustificationType(Justification::centred);
@@ -296,6 +298,7 @@ void CabbageSlider::initialiseSlider(ValueTree wData, Slider& currentSlider)
     currentSlider.getProperties().set("trackerthickness", trackerThickness);
     currentSlider.getProperties().set("trackerinnerradius", trackerInnerRadius);
     currentSlider.getProperties().set("trackerouterradius", trackerOuterRadius);
+    currentSlider.getProperties().set("trackerCentre", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackercentre));
 
     currentSlider.setSkewFactor(sliderSkew);
     currentSlider.setRange(min, max, sliderIncrement);
@@ -315,12 +318,23 @@ void CabbageSlider::initialiseSlider(ValueTree wData, Slider& currentSlider)
     currentSlider.setDoubleClickReturnValue(true, value);
     setSliderVelocity(wData);
     currentSlider.addMouseListener(this, false);
-    currentSlider.setRotaryParameters(float_Pi * 1.2f, float_Pi * 2.8f, false);
+
+//    PI * 1 - start
+//    PI * 3 - end
+    
+    
+    const float trackerStart = MathConstants<float>::pi * (1+(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackerstart)*2.f));
+    const float trackerEnd = MathConstants<float>::pi * (1+(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackerend)*2.f));
+    
+    //const float trackerEnd(MathConstants<float>::pi * CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackerend));
+    
+    currentSlider.setRotaryParameters(trackerStart, trackerEnd, false);
 
     if (sliderType.contains("rotary"))
     {
+        
         currentSlider.setSliderStyle(Slider::RotaryVerticalDrag);
-        currentSlider.setRotaryParameters(MathConstants<float>::pi * 1.2f, MathConstants<float>::pi * 2.8f, true);
+        currentSlider.setRotaryParameters(trackerStart, trackerEnd, true);
     }
     else if (sliderType.contains("vertical"))
         currentSlider.setSliderStyle(Slider::LinearVertical);

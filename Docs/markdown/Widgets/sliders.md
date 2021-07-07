@@ -55,6 +55,12 @@ slider WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/trackerColour.md !} 
 
+{! ./markdown/Widgets/Properties/trackerStart.md !}
+
+{! ./markdown/Widgets/Properties/trackerEnd.md !} 
+
+{! ./markdown/Widgets/Properties/trackerCentre.md !} 
+
 {! ./markdown/Widgets/Properties/valueTextBox.md !} 
 
 {! ./markdown/Widgets/Properties/valueTextBoxBounds.md !} 

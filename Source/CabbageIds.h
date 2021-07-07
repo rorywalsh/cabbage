@@ -338,6 +338,7 @@ public:
         add ("textBoxColour");
         add ("trackerColour");
         add ("trackerRadius");
+        add ("trackerCentre");
         add ("sliderBounds");
         add ("markerColour");
         add ("valueTextBox");
@@ -357,6 +358,7 @@ public:
         add ("valuePostfix");
         add ("presetIgnore");
         add ("opcode6Dir64");
+        add ("trackerStart");
         add ("showSrubber");
         add ("markerStart");
 		add ("keyReleased");
@@ -393,6 +395,7 @@ public:
         add ("scrollBars");
         add ("cellHeight");
         add ("sendBehind");
+        add ("trackerEnd");
         add ("opcodeDir");
         add ("markerEnd");
         add ("menuColor");
@@ -753,6 +756,9 @@ namespace CabbageIdentifierIds
     static const Identifier tofront = "toFront";
     static const Identifier top = "top";
     static const Identifier trackercolour = "trackerColour";
+    static const Identifier trackerstart = "trackerStart";
+    static const Identifier trackerend = "trackerEnd";
+    static const Identifier trackercentre = "trackerCentre";
     static const Identifier trackerbgcolour = "trackerBgColour";
     static const Identifier trackerthickness = "trackerThickness";
     static const Identifier trackeroutsideradius = "trackerOutsideRadius";
@@ -934,6 +940,9 @@ public:
         set ("Text Align", CabbageIdentifierIds::align.toString());
         set ("Text Colour", CabbageIdentifierIds::textcolour.toString());
         set ("Text", CabbageIdentifierIds::text.toString());
+        set ("Tracker Start", CabbageIdentifierIds::trackerstart.toString());
+        set ("Tracker End", CabbageIdentifierIds::trackerend.toString());
+        set ("Tracker Centre", CabbageIdentifierIds::trackercentre.toString());
         set ("Tracker Thickness", CabbageIdentifierIds::trackerthickness.toString());
         set ("Tracker", CabbageIdentifierIds::trackercolour.toString());
         set ("Value Box Colour", CabbageIdentifierIds::textboxcolour.toString());
@@ -983,7 +992,7 @@ static const char* const CsoundKeywords[] =
     "listbox", "hrange", "vrange", "active", "align", "alpha", "ampRange", "bounds", "caption", "channel", "channelArray", "channelType", "child", "colour", "colour:0", "colour:1", "corners", "displayType", "file",
     "fontColour", "fontStyle", "fontStyle", "guiRefresh", "highlightColour", "identChannel", "items", "latched", "line", "middleC", "max", "min", "mode", "outlineColour", "outlineThickness", "plant", "pluginId", "populate",
     "popup", "popupText", "popupPostfix", "popupPrefix", "range", "rangeX", "rangeY", "rotate", "sampleRange", "scrubberpos", "scrubberPosition", "shape", "show", "size", "sliderincr", "svgfile", "svgpath", "tableBackgroundColour", "tableColour",
-    "tableGridColour", "tableNumber", "text", "textColour", "textBox", "trackerColour", "trackerThickness", "trackerOuterRadius", "trackerInnerRadius", "typeface", "widgetArray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
+    "tableGridColour", "tableNumber", "text", "textColour", "textBox", "trackerColour", "trackerEnd", "trackerStart", "trackerCentre", "trackerThickness", "trackerOuterRadius", "trackerInnerRadius", "typeface", "widgetArray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
     "od", "gentable", "texteditor", "textBox", "sprintfk", "strcpyk", "sprintf", "strcmpk", "strcmp", "a", "abetarand", "abexprnd", "infobutton", "groupbox", "do", "popupmenu", "filebutton", "until",
     "enduntil", "soundfiler", "combobox", "vslider", "vslider2", "vslider3", "hslider2", "define", "hslider3", "hslider", "rslider", "groupbox", "combobox", "xypad", "image", "plant", "csoundoutput", "button", "optionbutton", "form", "checkbox",
     "tab", "abs", "acauchy", "active", "adsr", "adsyn", "adsynt", "adsynt2", "aexprand", "aftouch", "agauss", "agogobel", "alinrand", "alpass", "ampdb", "ampdbfs", "ampmidi", "apcauchy", "apoisson", "apow", "areson",
