@@ -34,6 +34,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     , layoutEditor (cabbageProcessor.cabbageWidgets)
 #endif
 {
+    
     setName ("PluginEditor");
     cabbageProcessor.editorIsOpen = true;
     setLookAndFeel (&lookAndFeel);
@@ -68,6 +69,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 
     if(cabbageProcessor.currentPluginScale != -1)
         resizePlugin(cabbageProcessor.currentPluginScale);
+
 }
 
 CabbagePluginEditor::~CabbagePluginEditor()
@@ -78,7 +80,8 @@ CabbagePluginEditor::~CabbagePluginEditor()
     radioGroups.clear();
     radioComponents.clear();
     cabbageProcessor.editorIsOpen = false;
-    
+
+    openGLContext.detach();
 
     
     if(cabbageProcessor.getCsound())
@@ -247,7 +250,8 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     instrumentBounds.setXY(width, height);
     setSize (width, height);
 
-    
+    if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::openGL) == 1)
+        openGLContext.attachTo(*getTopLevelComponent());
     
     repaint();
 }

@@ -444,6 +444,7 @@ public:
         add ("reScale");
         add ("toFront");
         add ("guiMode");
+        add ("openGL");
         add ("points");
         add ("bundle");
         add ("import");
@@ -679,6 +680,7 @@ namespace CabbageIdentifierIds
     static const Identifier keypressed = "keyPressed";
     static const Identifier keyreleased = "keyReleased";
     static const Identifier oncolour = "onColour";
+    static const Identifier openGL = "openGL";
     static const Identifier onfontcolour = "onFontColour";
     static const Identifier opcodedir = "opcodeDir";
     static const Identifier opcode6dir64 = "opcode6Dir64";
