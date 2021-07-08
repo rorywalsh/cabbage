@@ -71,6 +71,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, const String lineF
     setProperty(widgetData, CabbageIdentifierIds::filmStripRemoveFrom2, 0);
     setProperty(widgetData, CabbageIdentifierIds::opcodedir, "");
     setProperty(widgetData, CabbageIdentifierIds::opcode6dir64, "");
+    setProperty(widgetData, CabbageIdentifierIds::openGL, 0);
 
 
     StringArray strTokens;
@@ -461,6 +462,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("visible"):
             case HashStringToInt ("wrap"):
             case HashStringToInt ("zoom"):
+            case HashStringToInt ("openGL"):
             case HashStringToInt ("showScrubber"):
                 if (getProperty (widgetData, CabbageIdentifierIds::channeltype).toString() == "string")
                     setProperty (widgetData, identifier, strTokens[0].trim());

@@ -283,7 +283,8 @@ public:
     juce::Point<int> customPlantPosition;
     Font customFont;
 private:
-	  
+	   
+    OpenGLContext openGLContext;
     //---- main component that holds widgets -----
     class MainComponent : public Component, public FileDragAndDropTarget, public TextDragAndDropTarget
     {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.7.6"
+<JUCERPROJECT id="CxJYjd" name="Cabbage" projectType="guiapp" version="2.7.7"
               bundleIdentifier="com.cabbageaudio.cabbage" includeBinaryInAppConfig="0"
               jucerVersion="5.4.7" displaySplashScreen="0" reportAppUsage="1"
               splashScreenColour="Dark" cppLanguageStandard="14" companyCopyright="">
@@ -350,6 +350,7 @@
         <MODULEPATH id="juce_audio_formats" path="../JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="../JUCE/modules"/>
         <MODULEPATH id="juce_audio_utils" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
     <XCODE_MAC targetFolder="Builds/MacOSX" extraFrameworks="/Library/Frameworks/CsoundLib64"
@@ -379,6 +380,7 @@
         <MODULEPATH id="juce_audio_formats" path="../JUCE/"/>
         <MODULEPATH id="juce_audio_devices" path="../JUCE/"/>
         <MODULEPATH id="juce_audio_basics" path="../JUCE/"/>
+        <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <VS2017 targetFolder="Builds/VisualStudio2017" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;"
@@ -407,6 +409,7 @@
         <MODULEPATH id="juce_audio_formats" path="../JUCE/"/>
         <MODULEPATH id="juce_audio_devices" path="../JUCE/"/>
         <MODULEPATH id="juce_audio_basics" path="../JUCE/"/>
+        <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
       </MODULEPATHS>
     </VS2017>
     <CLION targetFolder="Builds/CLion" clionMakefileEnabled="1" clionXcodeEnabled="0">
@@ -423,6 +426,7 @@
         <MODULEPATH id="juce_audio_formats" path="../../juce"/>
         <MODULEPATH id="juce_audio_devices" path="../../juce"/>
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
+        <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
       </MODULEPATHS>
     </CLION>
     <VS2019 targetFolder="Builds/VisualStudio2019" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;"
@@ -447,6 +451,7 @@
         <MODULEPATH id="juce_audio_formats"/>
         <MODULEPATH id="juce_audio_devices"/>
         <MODULEPATH id="juce_audio_basics"/>
+        <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
       </MODULEPATHS>
     </VS2019>
   </EXPORTFORMATS>
@@ -463,6 +468,7 @@
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1" useGlobalPath="0"/>
   </MODULES>
   <JUCEOPTIONS JUCE_ALSA="1" JUCE_JACK="1" JUCE_WEB_BROWSER="0" JUCE_ASIO="1"
                JUCE_PLUGINHOST_VST="1" JUCE_PLUGINHOST_VST3="1" JUCE_WASAPI_EXCLUSIVE="1"
