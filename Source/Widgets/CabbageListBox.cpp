@@ -186,7 +186,9 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
             else
             {
                 currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
-                
+                if (currentValueAsText.isEmpty())
+                    return;
+
                 File pluginDir;
                 String workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
                 
@@ -216,7 +218,7 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                     listBox.selectRow(index);
 
                 const String test = getChannel();
-                if(File(workingDir).exists())
+                if(pluginDir.exists())
                     owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index].getFullPathName());
                 else
                     owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
