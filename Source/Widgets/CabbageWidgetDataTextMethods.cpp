@@ -45,6 +45,9 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("trackerOutsideRadius"):
         case HashStringToInt ("trackerInsideRadius"):
         case HashStringToInt ("sampleRange"):
+        case HashStringToInt ("trackerStart"):
+        case HashStringToInt ("trackerEnd"):
+        case HashStringToInt ("trackerCentre"):
         case HashStringToInt ("scrubberPosition"):
         case HashStringToInt ("surrogatelinenumber"):
         case HashStringToInt ("value"):
