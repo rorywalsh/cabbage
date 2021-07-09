@@ -52,6 +52,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("surrogatelinenumber"):
         case HashStringToInt ("value"):
         case HashStringToInt ("numberOfClicks"):
+        case HashStringToInt ("markerStart"):
         case HashStringToInt ("valueTextBox"):
         case HashStringToInt ("velocity"):
         case HashStringToInt ("visible"):
