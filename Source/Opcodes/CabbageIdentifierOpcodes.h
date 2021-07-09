@@ -77,6 +77,7 @@ struct SetCabbageIdentifier : csnd::InPlug<64>
 
 struct SetCabbageIdentifierITime : csnd::Plugin<64, 0>
 {
+    MYFLT* value;
     //String name, identifier;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(); };

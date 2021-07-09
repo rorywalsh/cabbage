@@ -738,6 +738,15 @@ int SetCabbageIdentifierITime::setAttribute()
     }
     varData->data.add(data);
     
+//    if(data.identifier == CabbageIdentifierIds::value)
+//    {
+//        if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, outargs.str_data(1).data,
+//                                               CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+//        {
+//            *value = outargs[2];
+//        }
+//    }
+    
     if(data.identifier == CabbageIdentifierIds::tablenumber)
     {
         CabbageWidgetIdentifiers::IdentifierData updateData0;
