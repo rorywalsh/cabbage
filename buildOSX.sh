@@ -17,7 +17,7 @@ pwd
 curl -L -o csound6.16.0-MacOS_x86_64.dmg 'https://github.com/csound/csound/releases/download/6.16.1/csound-MacOS_x86_64-6.16.1.dmg'
 ls
 hdiutil attach csound6.16.0-MacOS_x86_64.dmg 
-cp -R /Volumes/Csound6.16.0/ Csound
+cp -R /Volumes/Csound6.16.1/ Csound
 hdiutil detach /Volumes/Csound6.16.1/
 cd Csound
 sudo installer -pkg csound-MacOS_x86_64-6.16.1.pkg -target /
