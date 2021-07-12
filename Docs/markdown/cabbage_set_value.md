@@ -8,15 +8,19 @@ Sets the current numeric value of a widget, for example the current value of a `
 
 <pre><b>cabbageSetValue</b> SChannel, kValue [, kTrig]</pre>
 <pre><b>cabbageSetValue</b> SChannel, iValue</pre>
+<pre><b>cabbageSetValue</b> SChannel, SValue [, kTrig]</pre>
+<pre><b>cabbageSetValue</b> SChannel, SValue</pre>
+
+> Note that you must be explicit with string types as to the rate of the opcode. If you want to update strings at k-rate, you must include a trigger variable and you must wrap your string value in a `sprintfk` opcode, i.e, `cabbageSetValue "combo", sprintfk("%s", "3c"), 1`. Failure to do so will result in the i-time version of cabbageSetValue for strings being called.  
 
 #### Initialization
 
-* `iValue` -- widget value
+* `i/S/Value` -- widget value
 * `SChannel` -- widget's channel name
 
 #### Performance
 
-* `kValue` -- widget value
+* `k/S/Value` -- widget value
 * `kTrig` -- an optional trigger. Updates will only be sent when this is equal to 1
 
 
@@ -40,6 +44,7 @@ nchnls = 2
 instr 1
     cabbageSetValue "gain", random:k(0, 1)
 endin
+
 
 </CsInstruments>
 <CsScore>
