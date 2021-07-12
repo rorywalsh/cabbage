@@ -424,7 +424,7 @@ int GetCabbageStringValueWithTrigger::getAttribute()
     
     
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
-                                            CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+                                            CSOUND_STRING_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
     {
         if(!currentString){
             currentString = csound->strdup(((STRINGDAT*)value)->data);
@@ -511,7 +511,7 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
     if(trigger == 1)
     {
         if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(0).data,
-                                               CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+                                               CSOUND_CONTROL_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
         {
             *value = args[1];
         }
@@ -532,6 +532,121 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
         if(entryExists == false)
             varData->data.add(data);
 
+    }
+    
+    return OK;
+}
+
+int SetCabbageValueIdentifierITime::setAttribute(int rate)
+{
+
+    if(args.str_data(0).size == 0)
+        return OK;
+    
+    CabbageWidgetIdentifiers::IdentifierData data;
+    
+    data.identifier = CabbageIdentifierIds::value;
+    data.name = args.str_data(0).data;
+    
+    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* varData;
+    
+    if (vt != nullptr)
+    {
+        varData = *vt;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
+        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+        *vt = new CabbageWidgetIdentifiers();
+        varData = *vt;
+    }
+    
+    //now update underlying Csound channel
+    if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(0).data,
+                                           CSOUND_CONTROL_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
+    {
+        *value = args[1];
+    }
+    
+    data.args = args[1];
+    
+    bool entryExists = false;
+    
+    for( auto& el : varData->data)
+    {
+        if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+        {
+            el.args = data.args;
+            entryExists = true;
+        }
+    }
+    
+    if(entryExists == false)
+        varData->data.add(data);
+        
+
+    
+    return OK;
+}
+
+
+int SetCabbageValueIdentifierSArgs::setAttribute(int rate)
+{
+    int trigger = args[2];
+    
+    // if (rate == I_RATE)
+    //     trigger = 1;
+    
+    if(trigger == 0 || args.str_data(0).size == 0)
+        return OK;
+    
+    CabbageWidgetIdentifiers::IdentifierData data;
+    
+    data.identifier = CabbageIdentifierIds::value;
+    data.name = args.str_data(0).data;
+    
+    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* varData;
+    
+    if (vt != nullptr)
+    {
+        varData = *vt;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
+        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+        *vt = new CabbageWidgetIdentifiers();
+        varData = *vt;
+    }
+    
+    //now update underlying Csound channel
+    if(trigger == 1)
+    {
+        if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(0).data,
+                                               CSOUND_STRING_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
+        {
+            *value = args[1];
+        }
+        
+        data.args = args[1];
+        
+        bool entryExists = false;
+        
+        for( auto& el : varData->data)
+        {
+            if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+            {
+                el.args = data.args;
+                entryExists = true;
+            }
+        }
+        
+        if(entryExists == false)
+            varData->data.add(data);
+        
     }
     
     return OK;
@@ -608,7 +723,7 @@ int SetCabbageIdentifier::setAttribute()
         if(data.identifier == CabbageIdentifierIds::value)
         {
             if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(1).data,
-                                                   CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+                                                   CSOUND_CONTROL_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
             {
                 *value = args[3];
             }
@@ -738,14 +853,14 @@ int SetCabbageIdentifierITime::setAttribute()
     }
     varData->data.add(data);
     
-//    if(data.identifier == CabbageIdentifierIds::value)
-//    {
-//        if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, outargs.str_data(1).data,
-//                                               CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-//        {
-//            *value = outargs[2];
-//        }
-//    }
+    if(data.identifier == CabbageIdentifierIds::value)
+    {
+        if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, outargs.str_data(1).data,
+                                               CSOUND_CONTROL_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
+        {
+            *value = outargs[2];
+        }
+    }
     
     if(data.identifier == CabbageIdentifierIds::tablenumber)
     {
@@ -805,6 +920,15 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
         }
     }
     varData->data.add(data);
+    
+    if(data.identifier == CabbageIdentifierIds::value)
+    {
+        if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, outargs.str_data(1).data,
+                                               CSOUND_CONTROL_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
+        {
+            *value = outargs[2];
+        }
+    }
     
     if(data.identifier == CabbageIdentifierIds::tablenumber)
     {

@@ -49,6 +49,30 @@ struct SetCabbageValueIdentifier : csnd::InPlug<3>
     MYFLT* value;
     MYFLT lastValue = 0;
     String name, identifier;
+    CabbageWidgetIdentifiers::IdentifierData data;
+    CabbageWidgetIdentifiers** vt = nullptr;
+    int init(){ return setAttribute(I_RATE); };
+    int kperf(){ return setAttribute(K_RATE); }
+    int setAttribute(int rate);
+};
+
+struct SetCabbageValueIdentifierITime : csnd::InPlug<3>
+{
+    MYFLT* value;
+    MYFLT lastValue = 0;
+    String name, identifier;
+    CabbageWidgetIdentifiers::IdentifierData data;
+    CabbageWidgetIdentifiers** vt = nullptr;
+    int init(){ return setAttribute(I_RATE); };
+    int kperf(){ return setAttribute(K_RATE); }
+    int setAttribute(int rate);
+};
+
+struct SetCabbageValueIdentifierSArgs : csnd::InPlug<3>
+{
+    MYFLT* value;
+    MYFLT lastValue = 0;
+    String name, identifier;
     
     
     CabbageWidgetIdentifiers::IdentifierData data;
@@ -60,6 +84,7 @@ struct SetCabbageValueIdentifier : csnd::InPlug<3>
 
 struct SetCabbageIdentifierSArgs : csnd::InPlug<64>
 {
+    MYFLT* value;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(I_RATE); };
     int kperf(){ return setAttribute(K_RATE); };
@@ -87,6 +112,7 @@ struct SetCabbageIdentifierITime : csnd::Plugin<64, 0>
 struct SetCabbageIdentifierITimeSArgs : csnd::Plugin<64, 0>
 {
     //String name, identifier;
+    MYFLT* value;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(); };
     int setAttribute();
