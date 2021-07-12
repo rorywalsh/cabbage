@@ -508,7 +508,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                     const var minValue = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::minvalue);
                     csound->SetChannel (channels[0].toString().getCharPointer(), float (minValue));
 
-                    const var maxValue = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::maxvalue);
+                    const var maxValue = CabbageWidgetData::getProperty (cabbageData.getChild (i+1), CabbageIdentifierIds::maxvalue);
                     csound->SetChannel (channels[0].toString().getCharPointer(), float (maxValue));
                 }
 
