@@ -1477,6 +1477,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                     }
                     else
                     {
+                        //DBG(identData->data[i].args.toString());
                         cabbageWidgets.getChildWithName(name).setProperty(identifier,identData->data[i].args, nullptr);
                     }
                     if(identifier == CabbageIdentifierIds::value && chnsetGestureMode == 1)
@@ -1785,11 +1786,7 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
                 else
                     CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::valuey, value);
             }
-            else
-               CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, value);
-
-            
-            
+            CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, value);
         });
     }
     

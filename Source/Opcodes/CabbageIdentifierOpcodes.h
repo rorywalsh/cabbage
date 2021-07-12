@@ -70,11 +70,21 @@ struct SetCabbageValueIdentifierITime : csnd::InPlug<3>
 
 struct SetCabbageValueIdentifierSArgs : csnd::InPlug<3>
 {
-    MYFLT* value;
+    MYFLT* str;
     MYFLT lastValue = 0;
     String name, identifier;
-    
-    
+    CabbageWidgetIdentifiers::IdentifierData data;
+    CabbageWidgetIdentifiers** vt = nullptr;
+    int init(){ return setAttribute(I_RATE); };
+    int kperf(){ return setAttribute(K_RATE); }
+    int setAttribute(int rate);
+};
+
+struct SetCabbageValueIdentifierSArgsITime : csnd::InPlug<3>
+{
+    MYFLT* str;
+    MYFLT lastValue = 0;
+    String name, identifier;
     CabbageWidgetIdentifiers::IdentifierData data;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(I_RATE); };
