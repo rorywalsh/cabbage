@@ -491,6 +491,7 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
     
     data.identifier = CabbageIdentifierIds::value;
     data.name = args.str_data(0).data;
+    data.isValid = true;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -522,10 +523,13 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
 
         for( auto& el : varData->data)
         {
-            if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+            if(el.isValid == true)
             {
-                el.args = data.args;
-                entryExists = true;
+                if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+                {
+                    el.args = data.args;
+                    entryExists = true;
+                }
             }
         }
 
@@ -547,6 +551,7 @@ int SetCabbageValueIdentifierITime::setAttribute(int rate)
     
     data.identifier = CabbageIdentifierIds::value;
     data.name = args.str_data(0).data;
+    data.isValid = true;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -576,10 +581,13 @@ int SetCabbageValueIdentifierITime::setAttribute(int rate)
     
     for( auto& el : varData->data)
     {
-        if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+        if(el.isValid == true)
         {
-            el.args = data.args;
-            entryExists = true;
+            if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+            {
+                el.args = data.args;
+                entryExists = true;
+            }
         }
     }
     
@@ -606,9 +614,10 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int rate)
     
     data.identifier = CabbageIdentifierIds::value;
     data.name = args.str_data(0).data;
+    data.isValid = true;
     
     const String strValue = String(args.str_data(1).data);
-    DBG(strValue);
+
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -643,10 +652,13 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int rate)
         
         for( auto& el : varData->data)
         {
-            if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+            if(el.isValid == true)
             {
-                el.args = data.args;
-                entryExists = true;
+                if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+                {
+                    el.args = data.args;
+                    entryExists = true;
+                }
             }
         }
         
@@ -668,6 +680,7 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int rate)
     
     data.identifier = CabbageIdentifierIds::value;
     data.name = args.str_data(0).data;
+    data.isValid = true;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -699,10 +712,13 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int rate)
     
     for( auto& el : varData->data)
     {
-        if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+        if(el.isValid == true)
         {
-            el.args = data.args;
-            entryExists = true;
+            if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+            {
+                el.args = data.args;
+                entryExists = true;
+            }
         }
     }
     

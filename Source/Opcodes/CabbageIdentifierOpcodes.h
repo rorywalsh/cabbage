@@ -35,6 +35,7 @@ public:
         Identifier identifier, name;
         bool isSingleIdent = true;
         var args;
+        bool isValid = false;
     };
     
     CabbageWidgetIdentifiers(){
