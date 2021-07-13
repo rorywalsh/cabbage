@@ -1,6 +1,6 @@
 # Form
 
-Form creates the main application window. pluginId() is the only required identifier. The default values for size are 600x300. 
+Form creates the main application window. pluginId() is the only required identifier. The default values for size are 600x300. Form identifiers are mostly static apart from `latency()` which can be updated dynamically. 
 
 <big></pre>
 form WIDGET_SYNTAX

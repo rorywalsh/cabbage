@@ -33,8 +33,8 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::name, "form");
     setProperty (widgetData, CabbageIdentifierIds::type, "form");
     setProperty (widgetData, CabbageIdentifierIds::guirefresh, 128);
+    setProperty (widgetData, CabbageIdentifierIds::channel, "form");
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
-    setProperty(widgetData, CabbageIdentifierIds::channel, getProperty(widgetData, CabbageIdentifierIds::type).toString() + String(ID));
     setProperty(widgetData, CabbageIdentifierIds::automatable, 0.0f);
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::scrollbars, 0);

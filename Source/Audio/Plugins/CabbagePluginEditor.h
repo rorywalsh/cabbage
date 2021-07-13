@@ -32,6 +32,7 @@
 #include "../../Widgets/CabbageImage.h"
 #include "../../Widgets/CabbageButton.h"
 #include "../../Widgets/CabbageFileButton.h"
+#include "../../Widgets/CabbageForm.h"
 #include "../../Widgets/CabbageListBox.h"
 #include "../../Widgets/CabbageInfoButton.h"
 #include "../../Widgets/CabbageGroupBox.h"
@@ -79,7 +80,7 @@ public:
     //==============================================================================
     void setupWindow (ValueTree cabbageWidgetData);
 
-    Component* getMainComponent(){  return &mainComponent;   }
+    Component* getCabbageForm(){  return &cabbageForm;   }
     void resizePlugin(int sizeIndex);
     void insertWidget (ValueTree cabbageWidgetData);
     // the following methods instantiate controls that CAN
@@ -155,6 +156,12 @@ public:
     {
         return cabbageProcessor.currentPluginScale;
     }
+    
+    void setLatency(int latency)
+    {
+        cabbageProcessor.setPreferredLatency(latency);
+    }
+    
    /* void filesDropped(const StringArray &files, int x, int y) override;
     bool isInterestedInFileDrag(const StringArray &files) override;*/
     //=============================================================================
@@ -285,49 +292,7 @@ public:
 private:
 	   
     OpenGLContext openGLContext;
-    //---- main component that holds widgets -----
-    class MainComponent : public Component, public FileDragAndDropTarget, public TextDragAndDropTarget
-    {
-        Colour colour;
-        CabbagePluginEditor* owner;
-    public:
-        explicit MainComponent(CabbagePluginEditor* _owner) : Component(), owner(_owner)
-        {
-            setOpaque (false);
-        }
-        void setColour (Colour col)
-        {
-            colour = col;
-        }
-        void paint (Graphics& g)  override
-        {
-            //g.setOpacity (0);
-            g.fillAll (colour);
-        }
-        
-        bool isInterestedInFileDrag (const StringArray& /*files*/) override{ return true; }
-        void fileDragEnter (const StringArray& /*files*/, int /*x*/, int /*y*/) override{}
-        void fileDragMove (const StringArray& /*files*/, int /*x*/, int /*y*/) override {}
-        void fileDragExit (const StringArray& /*files*/) override {}
-        void filesDropped (const StringArray& files, int x, int y) override
-        {
-			owner->sendChannelDataToCsound(CabbageIdentifierIds::mousex, x);
-			owner->sendChannelDataToCsound(CabbageIdentifierIds::mousey, y); 
-            owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastFileDropped, files[0]);
-        }
-        
-        bool isInterestedInTextDrag (const String& /*files*/) override{ return true; }
-        void textDragEnter (const String& /*files*/, int /*x*/, int /*y*/) override {}
-        void textDragMove (const String& /*files*/, int /*x*/, int /*y*/) override {}
-        void textDragExit (const String& /*files*/) override {}
-        void textDropped (const String& text, int x, int y) override
-        {
-            owner->sendChannelDataToCsound(CabbageIdentifierIds::mousex, x);
-            owner->sendChannelDataToCsound(CabbageIdentifierIds::mousey, y);
-            owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastTextDropped, text);
-        }       
-    };
-
+    
     class ViewportContainer : public Component
     {
 
@@ -354,7 +319,7 @@ private:
     Array<Component*> radioComponents;
     OwnedArray<PopupDocumentWindow> popupPlants;
     String lastOpenedDirectory;
-    MainComponent mainComponent;
+    CabbageForm cabbageForm;
     float pluginSizes[7] = {.5, .75, 1, 1.25, 1.50, 1.75, 2};
     
     int keyboardCount = 0;

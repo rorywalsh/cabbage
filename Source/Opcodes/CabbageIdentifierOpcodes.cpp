@@ -771,7 +771,7 @@ int SetCabbageIdentifier::setAttribute()
         
         if(in_count() == 3)
         {
-            data.isSingleIdent = false;
+            data.identWithArgument = true;
             data.args = String(args.str_data(2).data);
             //DBG(String(outargs.str_data(3).data));
         }
@@ -856,7 +856,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     
     if(String(args.str_data(2).data).isEmpty() || in_count() == 3)
     {
-        data.isSingleIdent = false;
+        data.identWithArgument = true;
         data.args = String(args.str_data(2).data);
     }
     else
@@ -916,7 +916,7 @@ int SetCabbageIdentifierITime::setAttribute()
     
     if(in_count() == 2)
     {
-        data.isSingleIdent = false;
+        data.identWithArgument = true;
         data.args = String(outargs.str_data(1).data);
     }
     else
@@ -984,7 +984,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
     
     if(in_count() == 2)
     {
-        data.isSingleIdent = false; // contains more than one identifier....
+        data.identWithArgument = true;
         data.args = String(outargs.str_data(1).data);
     }
     else

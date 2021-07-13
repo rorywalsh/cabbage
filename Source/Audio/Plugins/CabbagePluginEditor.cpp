@@ -27,7 +27,7 @@ class CabbageCheckbox;
 //==============================================================================
 CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     : AudioProcessorEditor (&p),
-      mainComponent(this),
+      cabbageForm(this),
       lookAndFeel(),
     cabbageProcessor(p)
 #ifdef Cabbage_IDE_Build
@@ -41,21 +41,21 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     customFont = cabbageProcessor.getCustomFont();
     viewportContainer.reset (new ViewportContainer());
     addAndMakeVisible(viewportContainer.get());
-    viewportContainer->addAndMakeVisible(mainComponent);
+    viewportContainer->addAndMakeVisible(cabbageForm);
     viewport.reset (new Viewport());
     addAndMakeVisible (viewport.get());
     viewport->setViewedComponent(viewportContainer.get(), false);
     viewport->setScrollBarsShown(false, false);
-    mainComponent.setInterceptsMouseClicks (true, true);
-	mainComponent.addMouseListener(this, false);
+    cabbageForm.setInterceptsMouseClicks (true, true);
+	cabbageForm.addMouseListener(this, false);
     setSize (50, 50);
-	mainComponent.addKeyListener(this);
-	mainComponent.setWantsKeyboardFocus(true);
+	cabbageForm.addKeyListener(this);
+	cabbageForm.setWantsKeyboardFocus(true);
     createEditorInterface (cabbageProcessor.cabbageWidgets);
 
 #ifdef Cabbage_IDE_Build
     viewportContainer->addAndMakeVisible (layoutEditor);
-    layoutEditor.setTargetComponent (&mainComponent);
+    layoutEditor.setTargetComponent (&cabbageForm);
     layoutEditor.updateFrames();
     layoutEditor.setEnabled (false);
     layoutEditor.toFront (false);
@@ -118,7 +118,7 @@ void CabbagePluginEditor::resized()
 #endif
     if(viewportContainer)
         viewportContainer->setBounds ( 0, 0, instrumentBounds.getX(), instrumentBounds.getY() );
-    mainComponent.setBounds ( 0, 0, instrumentBounds.getX(), instrumentBounds.getY() );
+    cabbageForm.setBounds ( 0, 0, instrumentBounds.getX(), instrumentBounds.getY() );
 
     
     if(viewport)
@@ -234,8 +234,8 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     const String titlebarColourString = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::titlebarcolour);
     titlebarGradientAmount = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::titlebargradient);
     const String fontColourString = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::fontcolour);
-    //lookAndFeel.setDefaultFont(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::typeface));
-
+    const String channelName = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::channel);
+    cabbageForm.setValueTree(widgetData);
     globalStyle = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::style);
     
     backgroundColour = Colour::fromString (backgroundColourString);
@@ -246,7 +246,7 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
         defaultFontColour = false;
 
     lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);
-    mainComponent.setColour (backgroundColour);
+    cabbageForm.setColour (backgroundColour);
     instrumentBounds.setXY(width, height);
     setSize (width, height);
 
@@ -892,7 +892,7 @@ void CabbagePluginEditor::enableEditMode (bool enable)
 //    if(enable)
 //        viewport->setViewedComponent(&layoutEditor, false);
 //    else
-//        viewport->setViewedComponent(&mainComponent, false);
+//        viewport->setViewedComponent(&cabbageForm, false);
 
 #endif
 }
@@ -963,12 +963,12 @@ void CabbagePluginEditor::addToEditorAndMakeVisible (Component* comp, ValueTree 
         parentComp->addAndMakeVisible (comp);
     }
     else
-        mainComponent.addAndMakeVisible (comp);
+        cabbageForm.addAndMakeVisible (comp);
 
-    if(comp->getWidth()+comp->getX() > mainComponent.getWidth())
+    if(comp->getWidth()+comp->getX() > cabbageForm.getWidth())
         instrumentBounds.setX(comp->getWidth()+comp->getX());
 
-    if(comp->getHeight()+comp->getY() > mainComponent.getHeight())
+    if(comp->getHeight()+comp->getY() > cabbageForm.getHeight())
         instrumentBounds.setY(comp->getHeight()+comp->getY());
 
 

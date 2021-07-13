@@ -193,6 +193,8 @@
               file="Source/Utilities/CabbageUtilities.h"/>
       </GROUP>
       <GROUP id="{75DB6341-3F9B-0D75-CA59-C9FD48A46CD2}" name="Widgets">
+        <FILE id="iuw6Ej" name="CabbageForm.h" compile="0" resource="0" file="Source/Widgets/CabbageForm.h"/>
+        <FILE id="rCddM0" name="CabbageForm.cpp" compile="1" resource="0" file="Source/Widgets/CabbageForm.cpp"/>
         <FILE id="rvK7cm" name="CabbagePath.cpp" compile="1" resource="0" file="Source/Widgets/CabbagePath.cpp"/>
         <FILE id="mOgqJj" name="CabbagePath.h" compile="0" resource="0" file="Source/Widgets/CabbagePath.h"/>
         <GROUP id="{39718DAA-6F71-5044-A75A-E63898BD3051}" name="Legacy">

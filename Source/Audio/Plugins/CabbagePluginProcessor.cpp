@@ -1450,7 +1450,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
         {
             if(!identData->data[i].args.isUndefined())
             {
-                if(identData->data[i].isSingleIdent)
+                if(identData->data[i].identWithArgument == false)
                 {
                     //any widgets taht break identifiers into unique entities must be parsed....
                     if(identifier.toString().containsIgnoreCase("colour"))

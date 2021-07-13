@@ -296,6 +296,12 @@ public:
         polling = shouldPoll;
     }
     
+    void setPreferredLatency(int latency)
+    {
+        preferredLatency = latency;
+        setLatencySamples(preferredLatency);
+    }
+    
     int pollingChannels()
     {
         return polling;

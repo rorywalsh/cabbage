@@ -33,7 +33,7 @@ public:
     struct IdentifierData
     {
         Identifier identifier, name;
-        bool isSingleIdent = true;
+        bool identWithArgument = false;
         var args;
         bool isValid = false;
     };

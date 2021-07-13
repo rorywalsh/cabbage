@@ -98,6 +98,8 @@
         <FILE id="GGg8Tq" name="TableManager.h" compile="0" resource="0" file="Source/Widgets/Legacy/TableManager.h"/>
       </GROUP>
       <GROUP id="{06A9B370-E21A-01CA-7B69-FE3EB35876DF}" name="Widgets">
+        <FILE id="iuw6Ej" name="CabbageForm.h" compile="0" resource="0" file="Source/Widgets/CabbageForm.h"/>
+        <FILE id="rCddM0" name="CabbageForm.cpp" compile="1" resource="0" file="Source/Widgets/CabbageForm.cpp"/>
         <FILE id="rvK7cm" name="CabbagePath.cpp" compile="1" resource="0" file="Source/Widgets/CabbagePath.cpp"/>
         <FILE id="mOgqJj" name="CabbagePath.h" compile="0" resource="0" file="Source/Widgets/CabbagePath.h"/>
         <FILE id="hQnvSX" name="CabbageOptionButton.cpp" compile="1" resource="0"
