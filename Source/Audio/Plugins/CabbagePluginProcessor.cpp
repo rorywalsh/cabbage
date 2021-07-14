@@ -1767,7 +1767,6 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
     if(pollingChannels() == 0){
         MessageManager::callAsync ([this, wData, channel, value](){
             const String widgetType = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::type);
-            
             if(widgetType == CabbageWidgetTypes::hrange || widgetType == CabbageWidgetTypes::vrange)
             {
                 var channels = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::channel);
