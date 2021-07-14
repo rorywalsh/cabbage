@@ -186,6 +186,15 @@ struct GetCabbageIdentifierSingle : csnd::Plugin<1, 2>
     int getAttribute();
 };
 
+struct GetCabbageIdentifierSingleITime : csnd::Plugin<1, 2>
+{
+    String name, identifier;
+    MYFLT* value;
+    CabbageWidgetsValueTree** vt = nullptr;
+    int init(){ return getAttribute();  };
+    int getAttribute();
+};
+
 struct GetCabbageIdentifierArray : csnd::Plugin<1, 2>
 {
     String name, identifier;

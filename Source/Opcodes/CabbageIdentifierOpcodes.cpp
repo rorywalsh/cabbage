@@ -204,7 +204,39 @@ int GetCabbageIdentifierArray::getAttribute()
 //=================================================================================================
 int GetCabbageIdentifierSingle::getAttribute()
 {
+    String name(inargs.str_data(0).data);
+    String identifier(inargs.str_data(1).data);
     
+    if(name.isEmpty() || identifier.isEmpty())
+        return OK;
+    
+    vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+    CabbageWidgetsValueTree* varData;
+    
+    if (vt != nullptr)
+    {
+        varData = *vt;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
+        vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+        *vt = new CabbageWidgetsValueTree();
+        varData = *vt;
+    }
+    
+    const auto child = varData->data.getChildWithName(name);
+    if(child.getProperty(identifier).size()>0)
+        outargs[0] = (double)child.getProperty(identifier)[0];
+    else
+        outargs[0] = child.getProperty(identifier);
+    
+    
+    return OK;
+}
+
+int GetCabbageIdentifierSingleITime::getAttribute()
+{
     String name(inargs.str_data(0).data);
     String identifier(inargs.str_data(1).data);
     

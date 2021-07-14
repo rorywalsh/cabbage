@@ -266,8 +266,10 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
     csnd::plugin<GetCabbageIdentifierArray>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "k[]", "SS", csnd::thread::k);
     csnd::plugin<GetCabbageIdentifierArray>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "i[]", "SS", csnd::thread::i);
+
     csnd::plugin<GetCabbageStringIdentifierArray>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "S[]", "SS", csnd::thread::ik);
     csnd::plugin<GetCabbageIdentifierSingle>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "k", "SS", csnd::thread::ik);
+    csnd::plugin<GetCabbageIdentifierSingleITime>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "i", "SS", csnd::thread::i);
     csnd::plugin<GetCabbageStringIdentifierSingle>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "S", "SS", csnd::thread::ik);
 
     csnd::plugin<GetCabbageReservedChannelStringWithTrigger>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "Sk", "S", csnd::thread::ik);
