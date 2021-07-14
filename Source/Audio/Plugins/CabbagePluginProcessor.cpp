@@ -1610,7 +1610,8 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 			}
 		}
 
-		if (identChannel.isNotEmpty()) {
+		if (identChannel.isNotEmpty())
+        {
 			const String identChannelMessage = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 				CabbageIdentifierIds::identchannelmessage);
 			memset(&tmp_string[0], 0, sizeof(tmp_string));
@@ -1644,12 +1645,10 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 						0);
 			}
 		}
-
 		// reset value for widgets without identchannel
 		else
 		{
-			CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update,
-				0);
+			//CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, 0);
 		}
 	}
 }

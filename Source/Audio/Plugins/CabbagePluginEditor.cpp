@@ -143,7 +143,7 @@ void CabbagePluginEditor::moveBehind(String thisComp, String otherComp)
     auto thisWidget = getComponentFromName(thisComp);
     auto otherWidget = getComponentFromName(otherComp);
     if(thisWidget != nullptr && otherWidget != nullptr)
-        thisWidget->toBehind(otherWidget);
+         thisWidget->toBehind(otherWidget);
 }
 ////======================================================================================================
 //void CabbagePluginEditor::filesDropped(const StringArray &files, int x, int y)
