@@ -127,7 +127,8 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     sliderType(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::kind)),
     channel(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::channel)),
     popupBubble(250),
-    thumb(this)
+    thumb(this),
+    CabbageWidgetBase(_owner)
 {
 
     setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));

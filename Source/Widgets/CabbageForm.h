@@ -38,7 +38,7 @@ public:
     
     CabbageForm (CabbagePluginEditor* _owner);
     
-    CabbageForm() {
+    ~CabbageForm() {
         widgetData.removeListener(this);
     };
     

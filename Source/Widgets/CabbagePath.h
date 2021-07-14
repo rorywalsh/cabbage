@@ -37,7 +37,7 @@ class CabbagePath : public Component, public ValueTree::Listener, public Cabbage
 public:
     
     CabbagePath (ValueTree wData, CabbagePluginEditor* _owner);
-    CabbagePath() {
+    ~CabbagePath() {
         widgetData.removeListener(this);
     };
     

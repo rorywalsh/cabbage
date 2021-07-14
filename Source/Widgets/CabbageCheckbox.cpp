@@ -26,7 +26,7 @@
 //==============================================================================
 CabbageCheckbox::CabbageCheckbox (ValueTree wData, CabbagePluginEditor* _owner)
     : ToggleButton (""),
-    CabbageWidgetBase(),
+    CabbageWidgetBase(_owner),
     corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
     owner(_owner),
     isRect (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::shape).equalsIgnoreCase ("square")),

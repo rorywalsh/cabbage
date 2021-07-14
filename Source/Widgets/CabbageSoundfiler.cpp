@@ -27,7 +27,8 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
     zoom (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom)),
     scrubberPos (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrubberposition)),
     owner (_owner),
-    widgetData (wData)
+    widgetData (wData),
+    CabbageWidgetBase(_owner)
 {
     addAndMakeVisible (soundfiler);
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));

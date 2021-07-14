@@ -33,7 +33,8 @@ CabbageLabel::CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner)
     align (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align)),
     textAlign (Justification::centred),
     widgetData (wData),
-    lookAndFeel()
+    lookAndFeel(),
+    CabbageWidgetBase(_owner)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
 

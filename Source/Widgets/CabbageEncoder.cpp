@@ -21,7 +21,8 @@ CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     textcolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)),
     popupBubble (250),
     owner (_owner),
-    widgetData (wData)
+    widgetData (wData),
+    CabbageWidgetBase(_owner)
 {
     
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));

@@ -39,7 +39,8 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
     valueX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuex)),
     valueY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuey)),
     ball(),
-    widgetData (wData)
+    widgetData (wData),
+    CabbageWidgetBase(editor)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

@@ -33,7 +33,8 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     rotate (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::rotate)),
     owner (_owner),
     widgetData (wData),
-    lookAndFeel()
+    lookAndFeel(),
+    CabbageWidgetBase(_owner)
 {
     widgetData.addListener (this);
     setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));

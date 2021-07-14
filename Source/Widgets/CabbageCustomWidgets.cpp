@@ -22,7 +22,8 @@
 
 
 DemoCabbageWidget::DemoCabbageWidget (ValueTree wData):
-    widgetData (wData)
+    widgetData (wData),
+    CabbageWidgetBase(nullptr)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
@@ -50,7 +51,8 @@ CabbageMeter::CabbageMeter (ValueTree wData, CabbagePluginEditor* _owner)
     corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
     isVertical (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::orientation).toString() == "vertical" ? true : false),
     overlayRect (Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::overlaycolour).toString())),
-    widgetData (wData)
+    widgetData (wData),
+    CabbageWidgetBase(_owner)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

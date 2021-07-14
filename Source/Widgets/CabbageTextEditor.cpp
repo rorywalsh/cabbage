@@ -26,7 +26,8 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     : owner (_owner),
     widgetData (wData),
     textEditor (this),
-    isMultiline (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::wrap))
+    isMultiline (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::wrap)),
+    CabbageWidgetBase(_owner)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

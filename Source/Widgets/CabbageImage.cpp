@@ -21,7 +21,7 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool isLineWidget)
-    : CabbageWidgetBase(),
+    : CabbageWidgetBase(owner),
     shape (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::shape)),
     owner (owner),
     corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),

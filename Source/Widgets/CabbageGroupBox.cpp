@@ -32,7 +32,8 @@ CabbageGroupBox::CabbageGroupBox (ValueTree wData, CabbagePluginEditor* _owner)
     outlineColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)),
     owner (_owner),
     widgetData (wData),
-    lookAndFeel()
+    lookAndFeel(),
+    CabbageWidgetBase(_owner)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

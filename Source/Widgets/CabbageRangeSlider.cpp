@@ -25,7 +25,8 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
     textColour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)),
     slider (this),
     popupBubble (250),
-    widgetData (wData)
+    widgetData (wData),
+    CabbageWidgetBase(_owner)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

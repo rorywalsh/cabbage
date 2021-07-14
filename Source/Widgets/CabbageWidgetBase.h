@@ -22,6 +22,8 @@
 
 #include "../CabbageCommonHeaders.h"
 
+class CabbagePluginEditor;
+
 // Simple base class for taking care of some widget housekeeping. This class looks after
 // common member variables such as alpha values, tooltiptext, bounds, etc
 // Each cabbage widget should inherit from this class and call initialiseCommonAttributes()
@@ -33,9 +35,10 @@ class CabbageWidgetBase
     String tooltipText = {}, text = {}, channel = {}, csdFile = {}, file = {}, behind ={};
     StringArray channelArray = {};   //can be used if widget supports multiple channels
     StringArray textArray = {};      //can be used used if widget supports multiple text items
-
+    CabbagePluginEditor* editor;
+    
 public:
-    CabbageWidgetBase() {}
+    CabbageWidgetBase(CabbagePluginEditor* _owner);
     ~CabbageWidgetBase() {}
 
     int getActive() const

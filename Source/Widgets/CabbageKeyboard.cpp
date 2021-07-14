@@ -23,7 +23,8 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, 
     : MidiKeyboardComponent (state, MidiKeyboardComponent::horizontalKeyboard),
     scrollbars (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrollbars)),
     keyWidth (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keywidth)),
-    widgetData (wData)
+    widgetData (wData),
+    CabbageWidgetBase(_owner)
 {
     setOrientation (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::kind) == "horizontal" ? MidiKeyboardComponent::horizontalKeyboard : MidiKeyboardComponent::verticalKeyboardFacingRight);
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));

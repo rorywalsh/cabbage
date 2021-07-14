@@ -27,7 +27,8 @@ CabbageNumberSlider::CabbageNumberSlider (ValueTree wData, CabbagePluginEditor* 
     align (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::align)),
     sliderLookAndFeel(),
     widgetData (wData),
-    owner(_owner)
+    owner(_owner),
+    CabbageWidgetBase(_owner)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

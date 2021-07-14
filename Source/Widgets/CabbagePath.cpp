@@ -23,6 +23,7 @@
 
 CabbagePath::CabbagePath (ValueTree wData, CabbagePluginEditor* _owner)
 : corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
+CabbageWidgetBase(_owner),
 fontstyle (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontstyle)),
 counter (0),
 text (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::text)),
@@ -34,8 +35,11 @@ widgetData (wData)
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
     points = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::points);
-
     
+    for ( int i = 0; i < points.size() ; i++)
+    {
+        DBG(points[i].toString());
+    }
 }
 
 void CabbagePath::paint (Graphics& g)

@@ -140,11 +140,10 @@ void CabbagePluginEditor::resized()
 
 void CabbagePluginEditor::moveBehind(String thisComp, String otherComp)
 {
-    DBG(components.size());
     auto thisWidget = getComponentFromName(thisComp);
     auto otherWidget = getComponentFromName(otherComp);
-    DBG(thisComp);
-    DBG(otherComp);
+    if(thisWidget != nullptr && otherWidget != nullptr)
+        thisWidget->toBehind(otherWidget);
 }
 ////======================================================================================================
 //void CabbagePluginEditor::filesDropped(const StringArray &files, int x, int y)

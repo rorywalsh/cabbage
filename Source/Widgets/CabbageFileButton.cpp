@@ -24,7 +24,8 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
     : TextButton(),
     owner (owner),
     widgetData (wData),
-lAndF()
+    CabbageWidgetBase(owner),
+    lAndF()
 {
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..

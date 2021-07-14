@@ -22,7 +22,8 @@
 
 
 CabbageForm::CabbageForm (CabbagePluginEditor* _owner)
-: owner(_owner)
+: owner(_owner),
+CabbageWidgetBase(_owner)
 {   
     setOpaque (false);
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

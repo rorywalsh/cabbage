@@ -66,6 +66,8 @@ hrange WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/toFront.md !} 
 
+{! ./markdown/Widgets/Properties/moveBehind.md !} 
+
 {! ./markdown/Widgets/Properties/widgetArray.md !}
  
 <!--(End of identifiers)/-->

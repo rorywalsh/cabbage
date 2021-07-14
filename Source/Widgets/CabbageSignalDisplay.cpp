@@ -44,7 +44,8 @@ CabbageSignalDisplay::CabbageSignalDisplay (ValueTree wData, CabbagePluginEditor
     freqRangeDisplay (fontColour, backgroundColour),
     freqRange (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min), CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max)),
     owner (owner),
-    widgetData (wData)
+    widgetData (wData),
+    CabbageWidgetBase(owner)
 {
     
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));

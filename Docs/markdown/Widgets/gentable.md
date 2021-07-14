@@ -54,6 +54,8 @@ gentable WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/toFront.md !} 
 
+{! ./markdown/Widgets/Properties/moveBehind.md !} 
+
 {! ./markdown/Widgets/Properties/active.md !} 
 <!--(End of identifiers)/-->
 

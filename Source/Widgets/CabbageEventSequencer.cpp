@@ -24,7 +24,8 @@ CabbageEventSequencer::CabbageEventSequencer (ValueTree wData, CabbagePluginEdit
     : widgetData (wData),
     vp ("SequencerContainer"),
     seqContainer(),
-    owner (_owner)
+    owner (_owner),
+    CabbageWidgetBase(_owner)
 
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));

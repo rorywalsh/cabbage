@@ -30,6 +30,10 @@ __attribute__((unused)) static CabbagePluginEditor* getPluginEditor(Component* c
         return nullptr;
 }
 
+CabbageWidgetBase::CabbageWidgetBase(CabbagePluginEditor* _owner): editor(_owner)
+{
+    
+}
 
 void CabbageWidgetBase::initialiseCommonAttributes (Component* child, ValueTree data)
 {
@@ -61,7 +65,7 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
 {
     if (calledFromConstructor == false)
     {
-        if (getPluginEditor (child) != nullptr && getPluginEditor (child)->isEditModeEnabled() == false)
+        if (editor != nullptr && editor->isEditModeEnabled() == false)
         {
             if(prop == CabbageIdentifierIds::bounds){
                 var bounds = CabbageWidgetData::getProperty(data, CabbageIdentifierIds::bounds);
@@ -84,7 +88,7 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
         else if (CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::allowboundsupdate) == 1)
         {
             child->setBounds (CabbageWidgetData::getBounds (data));
-            getPluginEditor (child)->updateLayoutEditorFrames();
+            editor->updateLayoutEditorFrames();
         }
     }
 
@@ -134,13 +138,11 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
         file = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::file);
     }
 
-    if( behind != CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::sendbehind))
+    if( behind != CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::movebehind))
     {
-        behind = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::sendbehind);
-        if(child->getParentComponent() != nullptr)
-            DBG(child->getParentComponent()->getName());
-//        if(getPluginEditor (child) != nullptr)
-//            getPluginEditor(child)->moveBehind(CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::channel), "");
+        behind = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::movebehind);
+        if(editor != nullptr)
+            editor->moveBehind(CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::channel), behind);
     }
     
     populateTextArrays (data);

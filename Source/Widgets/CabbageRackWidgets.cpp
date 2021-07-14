@@ -37,7 +37,7 @@ static void drawFromSVG(Graphics& g, String svgText, int x, int y, int newWidth,
 }
 
 
-CabbageScrew::CabbageScrew (ValueTree wData, CabbagePluginEditor* _owner) : CabbageWidgetBase(),
+CabbageScrew::CabbageScrew (ValueTree wData, CabbagePluginEditor* _owner) : CabbageWidgetBase(_owner),
 widgetData (wData)
 {
     widgetData.addListener (this);
@@ -141,7 +141,7 @@ void CabbageScrew::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 }
 
 
-CabbagePort::CabbagePort (ValueTree wData, CabbagePluginEditor* _owner) : CabbageWidgetBase(),
+CabbagePort::CabbagePort (ValueTree wData, CabbagePluginEditor* _owner) : CabbageWidgetBase(_owner),
 widgetData (wData)
 {
     widgetData.addListener (this);
@@ -365,7 +365,7 @@ void CabbagePort::valueTreePropertyChanged (ValueTree& valueTree, const Identifi
 }
 
 
-CabbageLight::CabbageLight(ValueTree wData, CabbagePluginEditor* owner) : CabbageWidgetBase(),
+CabbageLight::CabbageLight(ValueTree wData, CabbagePluginEditor* owner) : CabbageWidgetBase(owner),
 owner (owner),
 widgetData (wData),
 mainColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)))

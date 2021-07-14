@@ -394,7 +394,7 @@ public:
 		add ("keyPressed");
         add ("scrollBars");
         add ("cellHeight");
-        add ("sendBehind");
+        add ("moveBehind");
         add ("trackerEnd");
         add ("opcodeDir");
         add ("markerEnd");
@@ -736,7 +736,7 @@ namespace CabbageIdentifierIds
     static const Identifier socketaddress = "socketAddress";
     static const Identifier socketport = "socketPort";
     static const Identifier stack = "stack";
-    static const Identifier sendbehind = "sendBehind";
+    static const Identifier movebehind = "moveBehind";
     static const Identifier startpoint = "startPoint";
     static const Identifier startpos = "startPos";
     static const Identifier style = "style";

@@ -23,7 +23,8 @@
 CabbageCsoundConsole::CabbageCsoundConsole (ValueTree wData, CabbagePluginEditor* _owner)
     :  TextEditor (""),
     owner (_owner),
-    widgetData (wData)
+    widgetData (wData),
+    CabbageWidgetBase(_owner)
 {
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes

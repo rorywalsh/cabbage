@@ -24,7 +24,8 @@ CabbageKeyboardDisplay::CabbageKeyboardDisplay(ValueTree wData, CabbagePluginEdi
 	MidiKeyboardDisplay(MidiKeyboardDisplay::horizontalKeyboard),
     scrollbars(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrollbars)),
     keyWidth(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::keywidth)),
-    widgetData(wData)
+    widgetData(wData),
+    CabbageWidgetBase(_owner)
 {
 	setOrientation(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::kind) == "horizontal" ? MidiKeyboardDisplay::horizontalKeyboard : MidiKeyboardDisplay::verticalKeyboardFacingRight);
 	setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
