@@ -94,6 +94,7 @@ public:
     //============================================================================
     static IdentifiersAndParameters getSetofIdentifiersAndParameters (String lineOfText);
     static var getVarArrayFromTokens (StringArray strTokens);
+    static void setPointsFromTokens (ValueTree widgetData, StringArray strTokens);
     static void addFiles (StringArray strToken, ValueTree widgetData, String identifier);
     static void setChannelArrays (StringArray strTokens, ValueTree widgetData, String identifier);
     static void setTextItemArrays (StringArray strTokens, ValueTree widgetData, String typeOfWidget);

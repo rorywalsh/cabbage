@@ -157,6 +157,16 @@ public:
         return cabbageProcessor.currentPluginScale;
     }
     
+    void attachOpenGL()
+    {
+        openGLContext.attachTo(*getTopLevelComponent());
+    }
+    
+    void detachOpenGL()
+    {
+        openGLContext.detach();
+    }
+    
     void setLatency(int latency)
     {
         cabbageProcessor.setPreferredLatency(latency);

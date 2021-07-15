@@ -34,8 +34,9 @@ widgetData (wData)
     
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
-    points = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::points);
-    
+    points = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::points);
+    DBG(points.size());
+    DBG(CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::channel));
     for ( int i = 0; i < points.size() ; i++)
     {
         DBG(points[i].toString());
@@ -67,7 +68,8 @@ void CabbagePath::valueTreePropertyChanged (ValueTree& valueTree, const Identifi
    
     //points = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::points);
     handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
-    
+    //points = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::points);
+    //DBG(points.size());
     repaint();
     
 }

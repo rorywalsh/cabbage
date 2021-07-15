@@ -472,7 +472,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
                 break;
                 
             case HashStringToInt("points"):
-                setProperty(widgetData, CabbageIdentifierIds::points, getVarArrayFromTokens(strTokens));
+                setPointsFromTokens(widgetData, strTokens);
             case HashStringToInt ("refreshFiles"):
                 setProperty (widgetData, identifier, 1);
             case HashStringToInt ("crop"):
@@ -665,6 +665,26 @@ var CabbageWidgetData::getVarArrayFromTokens (StringArray strTokens)
     }
 
     return array;
+}
+
+void CabbageWidgetData::setPointsFromTokens (ValueTree widgetData, StringArray strTokens)
+{
+    var newArray;
+    newArray.append (strTokens[0].trim());
+    DBG(getProperty(widgetData, CabbageIdentifierIds::channel)[0].toString());
+    
+    for (int i = 1; i < strTokens.size(); i++)
+    {
+        DBG(strTokens[i].trim());
+        newArray.append (strTokens[i].trim());
+    }
+    
+    setProperty(widgetData, CabbageIdentifierIds::points, newArray);
+    
+    for (int i = 0; i < newArray.size(); i++)
+    {
+        DBG(int(newArray[i]));
+    }
 }
 
 CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOfText)

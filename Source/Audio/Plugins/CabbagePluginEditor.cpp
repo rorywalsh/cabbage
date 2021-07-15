@@ -81,7 +81,7 @@ CabbagePluginEditor::~CabbagePluginEditor()
     radioComponents.clear();
     cabbageProcessor.editorIsOpen = false;
 
-    openGLContext.detach();
+    detachOpenGL();
 
     
     if(cabbageProcessor.getCsound())
@@ -250,7 +250,7 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     setSize (width, height);
 
     if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::openGL) == 1)
-        openGLContext.attachTo(*getTopLevelComponent());
+        attachOpenGL();
     
     repaint();
 }

@@ -33,6 +33,7 @@ public ValueTree::Listener
     Colour colour;
     CabbagePluginEditor* owner;
     int latency = 32;
+    int openGL = 0;
     
 public:
     

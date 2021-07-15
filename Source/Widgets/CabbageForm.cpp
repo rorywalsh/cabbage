@@ -51,4 +51,15 @@ void CabbageForm::valueTreePropertyChanged (ValueTree& valueTree, const Identifi
         owner->setLatency(newLatency);
         latency = newLatency;
     }
+    
+    const int useOpenGL = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::openGL);
+    if(useOpenGL != openGL)
+    {
+        if(useOpenGL == 1)
+            owner->attachOpenGL();
+        else
+            owner->detachOpenGL();
+        
+        openGL = useOpenGL;
+    }
 }
