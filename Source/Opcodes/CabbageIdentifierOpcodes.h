@@ -111,6 +111,15 @@ struct SetCabbageIdentifier : csnd::InPlug<64>
     int setAttribute();
 };
 
+struct SetCabbageIdentifierArray : csnd::InPlug<64>
+{
+    MYFLT* value;
+    CabbageWidgetIdentifiers** vt = nullptr;
+    int init(){ return setAttribute(); };
+    int kperf(){ return setAttribute(); };
+    int setAttribute();
+};
+
 struct SetCabbageIdentifierITime : csnd::Plugin<64, 0>
 {
     MYFLT* value;

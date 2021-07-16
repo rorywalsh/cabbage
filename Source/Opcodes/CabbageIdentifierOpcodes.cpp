@@ -787,8 +787,6 @@ int SetCabbageIdentifier::setAttribute()
         varData = *vt;
     }
     
-    
-    
     if(trigger == 1)
     {
         //hack to trigger table update even if table number hasn't changed
@@ -815,6 +813,75 @@ int SetCabbageIdentifier::setAttribute()
                 data.args.append(args[i]);
             }
         }
+        varData->data.add(data);
+        
+        //hack to trigger table update even if table number hasn't changed
+        if(data.identifier == CabbageIdentifierIds::tablenumber)
+        {
+            CabbageWidgetIdentifiers::IdentifierData updateData0;
+            updateData0.identifier = CabbageIdentifierIds::update;
+            updateData0.name = data.name;
+            updateData0.args = 0;
+            varData->data.add(updateData0);
+        }
+        
+        if(data.identifier == CabbageIdentifierIds::value)
+        {
+            if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(1).data,
+                                                   CSOUND_CONTROL_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
+            {
+                *value = args[3];
+            }
+        }
+    }
+    return OK;
+}
+
+int SetCabbageIdentifierArray::setAttribute()
+{
+    int trigger = args[0];
+    
+    if(trigger == 0)
+        return OK;
+    
+    CabbageWidgetIdentifiers::IdentifierData data;
+    
+    data.identifier = args.str_data(2).data;
+    data.name = args.str_data(1).data;
+    csnd::Vector<MYFLT>& inputArgs = args.myfltvec_data(3);
+    
+    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* varData;
+    
+    if (vt != nullptr)
+    {
+        varData = *vt;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
+        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+        *vt = new CabbageWidgetIdentifiers();
+        varData = *vt;
+    }
+    
+    if(trigger == 1)
+    {
+        //hack to trigger table update even if table number hasn't changed
+        if(data.identifier == CabbageIdentifierIds::tablenumber)
+        {
+            CabbageWidgetIdentifiers::IdentifierData updateData1;
+            updateData1.identifier = CabbageIdentifierIds::update;
+            updateData1.name = data.name;
+            updateData1.args = 1;
+            varData->data.add(updateData1);
+        }
+        
+        for (int i = 0; i < inputArgs.len(); i++)
+        {
+            data.args.append(inputArgs[i]);
+        }
+ 
         varData->data.add(data);
         
         //hack to trigger table update even if table number hasn't changed

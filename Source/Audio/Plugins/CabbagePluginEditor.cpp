@@ -34,7 +34,6 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     , layoutEditor (cabbageProcessor.cabbageWidgets)
 #endif
 {
-    setBufferedToImage(true);
     setName ("PluginEditor");
     cabbageProcessor.editorIsOpen = true;
     setLookAndFeel (&lookAndFeel);

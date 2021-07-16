@@ -58,6 +58,7 @@
 
 class CabbagePluginEditor;
 
+
 //==============================================================================
 class CabbagePluginEditor
     : public AudioProcessorEditor,
@@ -159,11 +160,17 @@ public:
     
     void attachOpenGL()
     {
+        setBufferedToImage(true);
+        openGLContext.setContinuousRepainting (true);
+        openGLContext.setMultisamplingEnabled (true);
+        openGLContext.setTextureMagnificationFilter (OpenGLContext::linear);
+        //openGLContext.setComponentPaintingEnabled(false);
         openGLContext.attachTo(*getTopLevelComponent());
     }
     
     void detachOpenGL()
     {
+        setBufferedToImage(false);
         openGLContext.detach();
     }
     
