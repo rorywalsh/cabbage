@@ -163,9 +163,10 @@ public:
         setBufferedToImage(true);
         openGLContext.setContinuousRepainting (true);
         openGLContext.setMultisamplingEnabled (true);
-        openGLContext.setTextureMagnificationFilter (OpenGLContext::linear);
-        //openGLContext.setComponentPaintingEnabled(false);
+        //openGLContext.setTextureMagnificationFilter (OpenGLContext::linear);
         openGLContext.attachTo(*getTopLevelComponent());
+        openGLContext.setImageCacheSize(32);
+        repaint();
     }
     
     void detachOpenGL()
