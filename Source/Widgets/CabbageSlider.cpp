@@ -615,25 +615,25 @@ void CabbageSlider::showPopupBubble(int time)
         popupPostfix);
 
     popupBubble.showAt(&getSlider(), AttributedString(popupText), time);
-
+    DBG(Random::getSystemRandom().nextInt(124));
 }
 
 void CabbageSlider::mouseDrag(const MouseEvent& event)
 {
-    if (shouldDisplayPopup)
-        showPopupBubble(150);
+//    if (shouldDisplayPopup)
+//        showPopupBubble(150);
 }
 
 void CabbageSlider::mouseMove(const MouseEvent& event)
 {
-    if (shouldDisplayPopup)
-        showPopupBubble(150);
+//    if (shouldDisplayPopup)
+//        showPopupBubble(150);
 }
 
 void CabbageSlider::mouseEnter(const MouseEvent& event)
 {
     if (shouldDisplayPopup)
-        showPopupBubble(1000);
+        showPopupBubble(10000);
 }
 
 void CabbageSlider::mouseExit(const MouseEvent& event)
