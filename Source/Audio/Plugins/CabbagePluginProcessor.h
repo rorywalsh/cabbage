@@ -217,8 +217,9 @@ public:
                           float skew,
                           bool automatable = true,
                           const String& prefix  = String(),
-                          const String& postfix = String())
-    : parameter(new CabbageHostParameter(*this, owner, wData, csound, channelToUse, name, prefix, postfix, minValue, maxValue, def, incr, skew, isCombo(name))),
+                          const String& postfix = String(),
+                          bool isCombo = false)
+    : parameter(new CabbageHostParameter(*this, owner, wData, csound, channelToUse, name, prefix, postfix, minValue, maxValue, def, incr, skew, isCombo)),
     widgetName(name),
     isAutomatable(automatable),
     owner(owner)
@@ -393,12 +394,12 @@ private:
     
     CabbagePluginProcessor* owner;
     
-    bool isCombo(const String name)
-    {
-        if(name.contains("combobox") || name.contains("optionbutton"))
-            return true;
-        return false;
-    }
+//    bool isCombo(const String name)
+//    {
+//        if(name.contains("combobox") || name.contains("optionbutton"))
+//            return true;
+//        return false;
+//    }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbagePluginParameter)
 };

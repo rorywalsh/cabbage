@@ -866,7 +866,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 						const float max = numOfFiles == 0 ? 1 : numOfFiles;
 
 						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
-							min, max, value, 1, 1, automatable, "", "");
+							min, max, value, 1, 1, automatable, "", "", true);
 						addCabbageParameter(std::move(param));
 					}
 					else //comboboxes and options button are both set up with the same type of host parameter mapping...
@@ -877,7 +877,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 							CabbageIdentifierIds::comborange);
 
 						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
-							min, max, value, 1, 1, automatable, "", "");
+							min, max, value, 1, 1, automatable, "", "", true);
 						addCabbageParameter(std::move(param));
 					}
 				}

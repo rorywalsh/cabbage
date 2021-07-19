@@ -698,6 +698,7 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
 {
     const String mode = CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::mode);
     const String channel = CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::channel);
+    int range = CabbageWidgetData::getNumProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::comborange);
     if (CabbagePluginParameter* param = getParameterForComponent (combo->getName()))
     {
         if(mode == "resize")
@@ -716,7 +717,7 @@ void CabbagePluginEditor::comboBoxChanged (ComboBox* combo)
             if (CabbageWidgetData::getStringProp (getValueTreeForComponent (combo->getName()), CabbageIdentifierIds::filetype).contains ("snaps"))
                 param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()));
             else
-                param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (combo->getSelectedItemIndex()+1));
+                param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (juce::jmin(combo->getSelectedItemIndex()+1, range)));
             param->endChangeGesture();
         }
         
