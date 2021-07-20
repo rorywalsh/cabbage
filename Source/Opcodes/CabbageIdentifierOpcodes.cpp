@@ -557,6 +557,7 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
         {
             if(el.isValid == true)
             {
+                //crash here intermittently...
                 if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
                 {
                     el.args = data.args;

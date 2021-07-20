@@ -1506,7 +1506,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
 
 
     
-    identData->data.clear();
+    identData->data.clearQuick();
 
 
     
