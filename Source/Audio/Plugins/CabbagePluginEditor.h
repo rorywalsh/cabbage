@@ -165,7 +165,7 @@ public:
         openGLContext.setMultisamplingEnabled (true);
         //openGLContext.setTextureMagnificationFilter (OpenGLContext::linear);
         openGLContext.attachTo(*getTopLevelComponent());
-        openGLContext.setImageCacheSize(32);
+        openGLContext.setImageCacheSize(64);
         repaint();
     }
     
