@@ -436,6 +436,8 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 if (index >= 0)
                     setSelectedItemIndex (index, sendNotification);
     
+                //can't update the channel value from here as it might update on the same cycle as a cabbageSetValue
+                //this in turn will update the string channel pointer and mess up further called to cabbageSetValue...
                 //owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
                 CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
