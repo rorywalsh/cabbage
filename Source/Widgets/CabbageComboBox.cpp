@@ -87,6 +87,8 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         //this index if different for strings and files?
         if (index >= 0)
             setSelectedItemIndex (index, dontSendNotification);
+        else
+            setSelectedItemIndex (0, dontSendNotification);
         
         owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().getCharPointer());
 
@@ -190,6 +192,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isEmpty())
     {
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
+        DBG(items.size());
         PopupMenu subMenu;
             stringItems.clear();
         clear (dontSendNotification);
@@ -431,9 +434,9 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
                 //this index if different for strings and files?
                 if (index >= 0)
-                    setSelectedItemIndex (index, dontSendNotification);
+                    setSelectedItemIndex (index, sendNotification);
     
-                
+                //owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
                 CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }

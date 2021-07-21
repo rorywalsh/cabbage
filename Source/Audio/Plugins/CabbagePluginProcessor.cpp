@@ -866,7 +866,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 						const float max = numOfFiles == 0 ? 1 : numOfFiles;
 
 						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
-							min, max, value, 1, 1, automatable, "", "", true);
+							min, max, value, 1, 1, automatable, "", "");
 						addCabbageParameter(std::move(param));
 					}
 					else //comboboxes and options button are both set up with the same type of host parameter mapping...
@@ -1112,11 +1112,12 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
                 }
                 else if ((type == CabbageWidgetTypes::combobox || type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
                 {
+                    const String test = presetData.value().dump();
                     const String stringComboItem = csdFile.getParentDirectory().getChildFile(presetData.value().dump()).existsAsFile() ?
                     csdFile.getParentDirectory().getChildFile(presetData.value().dump()).getFileNameWithoutExtension() : presetData.value().dump();
                     
                     if(type == CabbageWidgetTypes::combobox)
-                        CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
+                        CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem); //IMPORTANT: - updates the combobox text..
                     
                     CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
                     

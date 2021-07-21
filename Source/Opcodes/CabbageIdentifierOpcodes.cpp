@@ -672,7 +672,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int rate)
     {
         
         if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &str, args.str_data(0).data,
-                                               CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+                                               CSOUND_STRING_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
         {
             STRINGDAT* stringdat = (STRINGDAT*) str;
             stringdat->data = args.str_data(1).data;
@@ -730,15 +730,6 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int rate)
         varData = *vt;
     }
     
-    //now update underlying Csound channel
-    if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &str, args.str_data(0).data,
-                                           CSOUND_STRING_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
-    {
-        STRINGDAT* stringdat = (STRINGDAT*) str;
-        stringdat->data = args.str_data(1).data;
-        stringdat->size = strlen(args.str_data(1).data) + 1;
-    }
-    
     data.args = args.str_data(1).data;
     
     bool entryExists = false;
@@ -753,6 +744,18 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int rate)
                 entryExists = true;
             }
         }
+    }
+    
+    csound->message(args.str_data(0).data);
+    csound->message(args.str_data(1).data);
+    
+    //now update underlying Csound channel
+    if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &strInput, args.str_data(0).data,
+                                           CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+    {
+//        STRINGDAT* stringdat = (STRINGDAT*) strInput;
+//        stringdat->data = args.str_data(1).data;
+//        stringdat->size = strlen(args.str_data(1).data) + 1;
     }
     
     if(entryExists == false)

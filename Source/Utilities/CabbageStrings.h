@@ -156,7 +156,7 @@ public:
             "\n"
             "\n"
             "instr 1\n"
-            "kGain chnget \"gain\"\n"
+            "kGain cabbageGetValue \"gain\"\n"
             "\n"
             "a1 inch 1\n"
             "a2 inch 2\n"
