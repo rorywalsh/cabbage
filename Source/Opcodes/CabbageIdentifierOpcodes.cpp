@@ -336,36 +336,59 @@ int CabbageGetWidgetChannels::getChannels()
         String identifiers(inargs.str_data(0).data);
         CabbageWidgetData::IdentifiersAndParameters idents = CabbageWidgetData::getSetofIdentifiersAndParameters(identifiers);
         
-        for (int i = 0; i < idents.identifier.size(); i++)
+        DBG(idents.identifier.size());
+        
+
+        for (int x = 0; x < varData->data.getNumChildren(); x++)
         {
-            
-            for (int x = 0; x < varData->data.getNumChildren(); x++)
-            {
-                const String widgetTreeIdentifier = "TempWidget";
-                ValueTree tempWidget(widgetTreeIdentifier);
-                CabbageWidgetData::setCustomWidgetState(tempWidget, identifiers);
-                if (idents.identifier[i].isNotEmpty())
-                {
+            const String widgetTreeIdentifier = "TempWidget";
+            ValueTree tempWidget(widgetTreeIdentifier);
+            CabbageWidgetData::setCustomWidgetState(tempWidget, identifiers);
+           
 //                    DBG(CabbageWidgetData::getStringProp(varData->data.getChild(x), CabbageIdentifierIds::channel));
 //                    DBG(CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i])).toString());
 //                    DBG(CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i])).toString());
+            
+            int identMatches[2048] = {0};
+            
+            
+            for (int i = 0; i < idents.identifier.size(); i++)
+            {
+                if (idents.identifier[i].isNotEmpty())
+                {
+                    String tempData, childData;
+                    if(CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i])).isArray())
+                        tempData = CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i]))[0].toString();
+                    else
+                        tempData = CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i])).toString();
+
+                    if(CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i])).isArray())
+                        childData = CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i]))[0].toString();
+                    else
+                        childData = CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i])).toString();
                     
-                    if (CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i])).toString() ==
-                        CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i])).toString())
+
+                    if (tempData == childData)
                     {
+                        identMatches[x]++;
                         var chans = CabbageWidgetData::getStringProp(varData->data.getChild(x), CabbageIdentifierIds::channel);
                         if (chans.size() > 1)
                         {
                             for (int n = 0; n < chans.size(); n++)
                             {
-                                DBG(chans[n].toString());
-                                channels.add(chans[n].toString());
+                                if(identMatches[x] == idents.identifier.size())
+                                {
+                                    DBG(chans[n].toString());
+                                    channels.add(chans[n].toString());
+                                }
                             }
                         }
                         else
                         {
-                            channels.add(chans.toString());
-                            DBG(chans.toString());
+                            if(identMatches[x] == idents.identifier.size()){
+                                channels.add(chans.toString());
+                                DBG(chans.toString());
+                            }
                         }
                     }
                 }
