@@ -4,11 +4,13 @@ Gets the widget identifier value, for example the current colour, size, position
 
 ### Syntax
 
+<pre>iIdent <b>cabbageGet</b> SChannel, SIdentifier</pre>
 <pre>kIdent <b>cabbageGet</b> SChannel, SIdentifier</pre>
 <pre>SIdent <b>cabbageGet</b> SChannel, SIdentifier</pre>
 <pre>kIdent [, kTrig] <b>cabbageGet</b> SChannel, SIdentifier</pre>
 <pre>SIdent [, kTrig] <b>cabbageGet</b> SChannel, SIdentifier</pre>
 
+<pre>iIdent[] <b>cabbageGet</b> SChannel, SIdentifier</pre>
 <pre>kIdent[] <b>cabbageGet</b> SChannel, SIdentifier</pre>
 <pre>SIdent[] <b>cabbageGet</b> SChannel, SIdentifier</pre>
 <pre>kIdent[] [, kTrig] <b>cabbageGet</b> SChannel, SIdentifier</pre>
@@ -28,8 +30,8 @@ Gets the widget identifier value, for example the current colour, size, position
 
 #### Performance
 
-* `kIdent` -- the value of a widget's numeric identifier, i.e, `visible()`, `velocity()`, `corners()` etc. 
-* `kIdent[]` -- an array that holds the value of a widget's numeric identifier in case where more that one parameter is passed, , i.e, `bounds()`, `range()`, `colour()` etc. 
+* `kIdent/iIdent` -- the value of a widget's numeric identifier, i.e, `visible()`, `velocity()`, `corners()` etc. 
+* `kIdent[]/iIdent[]` -- an array that holds the value of a widget's numeric identifier in case where more that one parameter is passed, , i.e, `bounds()`, `range()`, `colour()` etc. 
 * `SIdent` -- the value of a widget's string identifier, i.e, `shape()`, `text()`, `channel()` etc. 
 * `SIdent[]` -- an array that holds the value of a widget's string identifier in case where more that one parameter is passed, , i.e, `text()` in buttons, `channel()` for xypads, range sliders, etc. 
 * `kTrig` -- an optional trigger output. Will be 1 for a single k-cycle whenever the widget value has changed. Otherwise it will remain 0.  

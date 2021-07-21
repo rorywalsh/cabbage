@@ -8,5 +8,5 @@ _____________________________
 
 <b>soundfiler</b> : `channel("start", "length")` - start time and length of user selection, in samples
 
-> Note that all widgets should have a unique channel name. 
+> Channels named should start with a letter and cannot have any white spaces. Note that all widgets should have a unique channel name. 
 

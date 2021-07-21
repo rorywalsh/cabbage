@@ -9,6 +9,7 @@ Sets a widget's attribute identifier. Identifiers can be updated by a single str
 <pre><b>cabbageSet</b> kTrig, SChannel, SIdentifier, XArgs</pre>
 <pre><b>cabbageSet</b> kTrig, SChannel, SIdentifierString</pre>
 <pre><b>cabbageSet</b> SChannel, SIdentifierString</pre>
+<pre><b>cabbageSet</b> SChannel, SIdentifier, iArg</pre>
 
 #### Initialization
 
