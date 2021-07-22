@@ -53,22 +53,22 @@ int CreateCabbageWidget::createWidget()
                                       varData->data.getNumChildren()+1);
     
     //don't duplicate widgets - based on channels..
-//    bool foundDuplicate = false;
-//    String childChannel = "";
-//    for ( auto child : varData->data)
-//    {
-//        childChannel = CabbageWidgetData::getStringProp(child, CabbageIdentifierIds::channel);
-//        String channel = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel);
-//        if (childChannel.isNotEmpty() && (childChannel == channel))
-//            foundDuplicate = true;
-//    }
-//    
-//    if(foundDuplicate)
-//    {
-//        String warning = "The channel name '"+childChannel + "' is already in use. Please use a unique name for each channel.";
-//        csound->message(warning.toStdString());
-//        return OK;
-//    }
+    bool foundDuplicate = false;
+    String childChannel = "";
+    for ( auto child : varData->data)
+    {
+        childChannel = CabbageWidgetData::getStringProp(child, CabbageIdentifierIds::channel);
+        String channel = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel);
+        if (childChannel.isNotEmpty() && (childChannel == channel))
+            foundDuplicate = true;
+    }
+    
+    if(foundDuplicate)
+    {
+        //String warning = "The channel name '"+childChannel + "' is already in use. Please use a unique name for each channel.";
+        //csound->message(warning.toStdString());
+        return OK;
+    }
     
     String widgetNameId = CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::channel);
     //if no name is specified use generic name
