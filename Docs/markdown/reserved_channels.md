@@ -103,6 +103,12 @@ Cabbage also set the host type, which can be retrieved using the following chann
 
 **Wavelab** Returns 1 if Cabbage is host is WaveLab
 
+**USER_HOME_DIRECTORY** - retrieves the full path of the user’s home directory. “USER_DESKTOP_DIRECTORY” - retrieves the full path of the user’s Desktop directory. 
 
+**USER_MUSIC_DIRECTORY** - retrieves the full path of the user’s Desktop directory.
+
+**USER_APPLICATION_DIRECTORY** - retrieves the full path of the user’s application directory. C:/Users/username/AppData on Windows, ~/Library on MacOS
+
+**USER_DOCUMENTS_DIRECTORY**, - retrieves the full path of the user’s application directory
 
 
