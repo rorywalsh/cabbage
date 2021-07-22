@@ -97,9 +97,9 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         else  if (type == "Standalone")
         {
             if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
-                pluginFilename = currentApplicationDirectory + "/CabbagePlugin";
+                pluginFilename = currentApplicationDirectory + "/" + pluginDesc;
             else
-                pluginFilename = currentApplicationDirectory + "/CabbagePlugin." + fileExtension;
+                pluginFilename = currentApplicationDirectory + "/" + pluginDesc + "." + fileExtension;
         }
         
         File VSTData (pluginFilename);

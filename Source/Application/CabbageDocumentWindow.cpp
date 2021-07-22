@@ -378,6 +378,10 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::exportAsVCVRackModule);
     menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneApp);
+
+#ifdef CabbagePro
+    menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneEncrypted);
+#endif
     
     if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
     {
@@ -546,6 +550,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::exportAsVST3Synth,
         CommandIDs::exportAsAUMIDIFx,
         CommandIDs::exportAsStandaloneApp,
+        CommandIDs::exportAsStandaloneEncrypted,
         CommandIDs::selectAll,
         CommandIDs::exportAsVSTEffect,
         CommandIDs::exportAsVST3Effect,
@@ -800,6 +805,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
         
         case CommandIDs::exportAsStandaloneApp:
             result.setInfo ("Export as Standalone application", "Standalone export", CommandCategories::general, 0);
+            break;
+           
+        case CommandIDs::exportAsStandaloneEncrypted:
+            result.setInfo ("Export as Standalone application (Encrypted)", "Standalone export", CommandCategories::general, 0);
             break;
             
         case CommandIDs::batchConvertExamplesVST:
@@ -1186,6 +1195,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
  
         case CommandIDs::exportAsStandaloneApp:
             pluginExporter.exportPlugin ("Standalone", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"));
+            return true;
+            
+        case CommandIDs::exportAsStandaloneEncrypted:
+            pluginExporter.exportPlugin ("Standalone", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
             return true;
             
         case CommandIDs::batchConvertExamplesAU:

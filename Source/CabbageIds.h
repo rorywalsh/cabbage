@@ -69,6 +69,7 @@ namespace CommandIDs
         exportAsVST3SynthEncrypted   = 0x2010032,
         exportAsAUEffectEncrypted   = 0x201004,
         exportAsAUSynthEncrypted    = 0x201005,
+        exportAsStandaloneEncrypted    = 0x201006,
         showFindPanel           = 0x2010a0,
         findSelection           = 0x2010a1,
         findNext                = 0x2010a2,
