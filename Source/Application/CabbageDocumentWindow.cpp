@@ -1392,25 +1392,26 @@ void CabbageDocumentWindow::exportExamplesToPlugins(String type)
             searchDir.findChildFiles (filePlayerFiles, File::findFiles, false, "*.csd");
             filePlayerFiles.sort();
         }
-    }
+
     
-    FileChooser fc ("Select file name and location", File("~"), "", CabbageUtilities::shouldUseNativeBrowser());
-    
-    if (fc.browseForDirectory())
-    {
-        const int result = CabbageUtilities::showYesNoMessage ("This will overwrite any existing files, and may take a few moments to process. Do you wish to continue?", &tempLookAndFeel);
+        FileChooser fc ("Select file name and location", File("~"), "", CabbageUtilities::shouldUseNativeBrowser());
         
-        if (result == 1)
+        if (fc.browseForDirectory())
         {
-            for( auto filename : instrumentFiles)
-                pluginExporter.exportPlugin (type=="AU" ? "AUi" : "VSTi", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
-            for( auto filename : effectsFiles)
-                pluginExporter.exportPlugin (type=="AU" ? "AU" : "VST", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
-            for( auto filename : samplingFiles)
-                pluginExporter.exportPlugin (type=="AU" ? "AU" : "VST", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
-            for( auto filename : filePlayerFiles)
-                pluginExporter.exportPlugin (type=="AU" ? "AU" : "VST", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
+            const int result = CabbageUtilities::showYesNoMessage ("This will overwrite any existing files, and may take a few moments to process. Do you wish to continue?", &tempLookAndFeel);
             
+            if (result == 1)
+            {
+                for( auto filename : instrumentFiles)
+                    pluginExporter.exportPlugin (type=="AU" ? "AUi" : "VSTi", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
+                for( auto filename : effectsFiles)
+                    pluginExporter.exportPlugin (type=="AU" ? "AU" : "VST", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
+                for( auto filename : samplingFiles)
+                    pluginExporter.exportPlugin (type=="AU" ? "AU" : "VST", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
+                for( auto filename : filePlayerFiles)
+                    pluginExporter.exportPlugin (type=="AU" ? "AU" : "VST", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
+                
+            }
         }
     }
     
