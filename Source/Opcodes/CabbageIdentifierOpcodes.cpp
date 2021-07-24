@@ -130,12 +130,12 @@ int GetCabbageStringIdentifierSingle::getAttribute()
     {
         const String data = child.getProperty(identifier)[0].toString();
         outargs.str_data(0).size = data.length()+1;
-        outargs.str_data(0).data = data.toUTF8().getAddress();
+        outargs.str_data(0).data = csound->strdup(data.toUTF8().getAddress());
     }
     else
     {
         outargs.str_data(0).size = 0;
-        outargs.str_data(0).data = "";
+        outargs.str_data(0).data = csound->strdup("");
     }
     
     
@@ -300,7 +300,7 @@ int GetCabbageStringIdentifierArray::getAttribute()
         for ( int i = 0 ; i < size ; i++)
         {
             out[i].size = args[i].toString().length()+1;
-            out[i].data = args[i].toString().toUTF8().getAddress();
+            out[i].data = csound->strdup(args[i].toString().toUTF8().getAddress());
         }
         
     }
@@ -400,7 +400,7 @@ int CabbageGetWidgetChannels::getChannels()
         for (int i = 0; i < size; i++)
         {
             out[i].size = channels[i].length()+1;
-            out[i].data = channels[i].toUTF8().getAddress();
+            out[i].data = csound->strdup(channels[i].toUTF8().getAddress());
         }
     }
     else
@@ -428,7 +428,7 @@ int CabbageGetWidgetChannels::getChannels()
         for (int i = 0; i < size; i++)
         {
             out[i].size = channels[i].length()+1;
-            out[i].data = channels[i].toUTF8().getAddress();
+            out[i].data = csound->strdup(channels[i].toUTF8().getAddress());
         }
     }
     
@@ -449,7 +449,7 @@ int GetCabbageStringValue::getAttribute()
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
         outargs.str_data(0).size = ((STRINGDAT*)value)->size;
-        outargs.str_data(0).data = ((STRINGDAT*)value)->data;
+        outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
     }
     
     
@@ -1151,19 +1151,19 @@ int GetCabbageReservedChannelStringWithTrigger::getAttribute()
     {
         
         if(!channelString){
-            channelString = ((STRINGDAT*)value)->data;
+            channelString = csound->strdup(((STRINGDAT*)value)->data);
         }
         
         if(strcmp(channelString, ((STRINGDAT*)value)->data) != 0)
         {
-            channelString = ((STRINGDAT*)value)->data;
+            channelString = csound->strdup(((STRINGDAT*)value)->data);
             outargs[1] = 1;
         }
         else
             outargs[1] = 0;
         
         outargs.str_data(0).size = strlen(channelString);
-        outargs.str_data(0).data = channelString;
+        outargs.str_data(0).data = csound->strdup(channelString);
     }
     return OK;
 }
@@ -1223,12 +1223,12 @@ int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type, std::string& current
         
     #ifdef JUCE_WINDOWS
         opcodeData->outargs.str_data(0).size = strlen(result.replace("\\", "\\\\").toRawUTF8());
-        opcodeData->outargs.str_data(0).data = result.replace("\\", "\\\\").toUTF8().getAddress();
+        opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.replace("\\", "\\\\").toUTF8().getAddress());
         return OK;
     #endif
         
         opcodeData->outargs.str_data(0).size = result.length()+1;
-        opcodeData->outargs.str_data(0).data = result.toUTF8().getAddress();
+        opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.toUTF8().getAddress());
     }
     return OK;
     
@@ -1270,7 +1270,7 @@ int CabbageFindFilesI::findFiles()
     for ( int i = 0 ; i < dirFiles.size() ; i++)
     {
         out[i].size = dirFiles[i].getFullPathName().length()+1;
-        out[i].data = dirFiles[i].getFullPathName().toUTF8().getAddress();
+        out[i].data = csound->strdup(dirFiles[i].getFullPathName().toUTF8().getAddress());
     }
     return OK;
 }
@@ -1314,7 +1314,7 @@ int CabbageFindFilesK::findFiles()
         for ( int i = 0 ; i < dirFiles.size() ; i++)
         {
             out[i].size = dirFiles[i].getFullPathName().length()+1;
-            out[i].data = dirFiles[i].getFullPathName().toUTF8().getAddress();
+            out[i].data = csound->strdup(dirFiles[i].getFullPathName().toUTF8().getAddress());
         }
     }
     
@@ -1376,7 +1376,7 @@ int GetCabbageReservedChannelString::getAttribute()
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
         
-        outargs.str_data(0).data = ((STRINGDAT*)value)->data;
+        outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
     }
     return OK;
 }
