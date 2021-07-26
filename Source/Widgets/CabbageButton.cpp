@@ -39,7 +39,7 @@ CabbageButton::CabbageButton(ValueTree wData, CabbagePluginEditor* _owner)
 	setToggleState((bool)getValue(), dontSendNotification);
 
 	const String radioId = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::radiogroup);
-
+    setRadioGroupId(0);
 	if (radioId.isNotEmpty())
 	{
 		const int id = owner->radioGroups.getWithDefault(radioId, -1);
@@ -53,7 +53,7 @@ CabbageButton::CabbageButton(ValueTree wData, CabbagePluginEditor* _owner)
 		}
 	}
 
-
+    DBG(getRadioGroupId());
 
 	setImgProperties(*this, wData, "buttonon");
 	setImgProperties(*this, wData, "buttonoff");
@@ -114,7 +114,32 @@ void CabbageButton::valueTreePropertyChanged(ValueTree& valueTree, const Identif
         const int newValue = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)  > 0.9 ? 1 : 0;
         setValue(newValue);
 		//bool shouldEnable = (newValue == 0 ? false : true);
-        setToggleState(newValue == 0 ? false : true, dontSendNotification);
+        setToggleState(newValue == 0 ? false : true, sendNotification);
+        
+        if (auto* p = getParentComponent())
+        {
+            if (getRadioGroupId() != 0)
+            {
+                WeakReference<Component> deletionWatcher (this);
+
+                for (auto* c : p->getChildren())
+                {
+                    if (c != this)
+                    {
+                        if (auto b = dynamic_cast<Button*> (c))
+                        {
+                            if (b->getRadioGroupId() == getRadioGroupId())
+                            {
+                                owner->sendChannelDataToCsound(b->getName().toUTF8().getAddress(), 0);
+                                if (deletionWatcher == nullptr)
+                                    return;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
 		setButtonText(getTextArray()[getValue()]);
 	}
 	else
