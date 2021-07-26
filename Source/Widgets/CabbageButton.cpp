@@ -112,9 +112,9 @@ void CabbageButton::valueTreePropertyChanged(ValueTree& valueTree, const Identif
 		//CabbageUtilities::debug(CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name));
 		//CabbageUtilities::debug(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value));
         const int newValue = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)  > 0.9 ? 1 : 0;
-        setValue(newValue);
+        //setValue(newValue);
 		//bool shouldEnable = (newValue == 0 ? false : true);
-        setToggleState(newValue == 0 ? false : true, dontSendNotification);
+        setToggleState(newValue == 0 ? false : true, sendNotification);
 		setButtonText(getTextArray()[getValue()]);
 	}
 	else
