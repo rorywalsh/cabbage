@@ -1371,12 +1371,12 @@ int CabbageCopyFile::copyFiles()
 //====================================================================================================
 int GetCabbageReservedChannelString::getAttribute()
 {
-    String channel(inargs.str_data(0).data);
+
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
-        
-        outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
+        outargs.str_data(0).size = ((STRINGDAT*)value)->size;
+        outargs.str_data(0).data = ((STRINGDAT*)value)->data;
     }
     return OK;
 }
