@@ -23,42 +23,35 @@ This opcode takes an array of channels names and listens for a change. It report
 
 ```csharp
 <Cabbage>
-form caption("File Opcodes") size(470, 280), guiMode("queue") colour(58, 110, 182), pluginId("MPre")
-filebutton bounds(180, 12, 142, 39), channel("openFile"), corners(5) text("Open", "Open"), populate("*"), 
-label bounds(5, 80, 460, 16) channel("label1"), text("File name:"), colour("white") fontColour(147, 210, 0)
-label bounds(5, 100, 460, 16) channel("label2"), text("File extension:"), colour("white") fontColour(147, 210, 0)
-label bounds(5, 120, 460, 16) channel("label3"), text("File without extension:"), colour("white") fontColour(147, 210, 0)
-label bounds(5, 140, 460, 16) channel("label4"), text("File path:"), colour("white") fontColour(147, 210, 0)
+form caption("Cabbage Changed") size(430, 290) pluginId("tl01") guiMode("queue")
+rslider bounds(10, 10, 100, 100), channel("slider1")
+rslider bounds(110, 10, 100, 100), channel("slider2")
+rslider bounds(210, 10, 100, 100), channel("slider3")
+rslider bounds(310, 10, 100, 100), channel("slider4")
+combobox bounds(20, 118, 80, 20) channel("combo1"), channelType("string")
+combobox bounds(120, 118, 80, 20) channel("combo2"), channelType("string")
+combobox bounds(220, 118, 80, 20) channel("combo3"), channelType("string")
+combobox bounds(320, 118, 80, 20) channel("combo4"), channelType("string")
+label bounds(8, 158, 412, 21) channel("label1"), align("left"), fontColour(0, 0, 0, 255) text("Most recently changed widget:")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
--n -d -+rtmidi=NULL -M0 --midi-key-cps=4 --midi-velocity-amp=5
+-n -d -m0d -+rtmidi=NULL 
 </CsOptions>
 <CsInstruments>
-; Initialize the global variables. 
-sr = 44100
-ksmps = 32
-nchnls = 2
-0dbfs = 1
+ksmps   = 32  
 
-instr 1000
+instr 1
 
-    SFileToOpen, kTrigger cabbageGetValue "openFile"
-    SFile1 cabbageGetFilename SFileToOpen
-    cabbageSet kTrigger, "label1", sprintfk("text(\"File name: %s\")", SFile1) 
-    SFile2 cabbageGetFileExtension SFileToOpen
-    cabbageSet kTrigger, "label2", sprintfk("text(\"File extension: %s\")", SFile2) 
-    SFile3 cabbageGetFileNoExtension SFileToOpen
-    cabbageSet kTrigger, "label3", sprintfk("text(\"File without extension: %s\")", SFile3) 
-    SFile4 cabbageGetFilePath SFileToOpen
-    cabbageSet kTrigger, "label4", sprintfk("text(\"File path: %s\")", SFile4) 
+    SWidgetChannels[] cabbageGetWidgetChannels
+    SUpdatedChannel, kTrig cabbageChanged SWidgetChannels
+    cabbageSet kTrig, "label1", sprintfk("text(\"Last updated widget: %s\n\")", SUpdatedChannel)
 
 endin
 
 </CsInstruments>
 <CsScore>
-;causes Csound to run for about 7000 years...
-i1000 0 z
+i1 0 z
 </CsScore>
 </CsoundSynthesizer>
 ```
