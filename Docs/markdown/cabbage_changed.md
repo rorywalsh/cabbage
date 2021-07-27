@@ -1,6 +1,6 @@
 # cabbageChanged Opcodes
 
-This opcode takes an array of channels names and listens for a change. It reports a trigger value alongside the name of the channel that changed. The channels can hold strings or numbers. 
+This opcode takes an array of channel names and listens for a change. It reports a trigger value alongside the name of the channel that changed. The channels can hold strings or numbers. 
 
 
 <blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.7.12</blockquote>
