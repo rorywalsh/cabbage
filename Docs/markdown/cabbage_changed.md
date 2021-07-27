@@ -12,11 +12,11 @@ This opcode takes an array of channel names and listens for a change. It reports
 
 #### Initialization
 
-* `SChannels[]` -- an array of all channel you wish to monitor for changes
+* `SChannels[]` -- an array of all the channels you wish to monitor for changes.
 
 #### Performance
 
-* `SChannel` -- The channel was most recently changed
+* `SChannel` -- The channel that was most recently changed
 * `kTrig` -- will output a trigger value of 1 whenever a channel changes. 
 
 ### Example
