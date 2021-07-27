@@ -8,9 +8,13 @@ Gets the current value of a widget, for example the current value of a `slider`,
 
 <pre>kValue <b>cabbageGetValue</b> SChannel</pre>
 <pre>SValue <b>cabbageGetValue</b> SChannel</pre>
+<pre>kValue[] <b>cabbageGetValue</b> SChannel[]</pre>
+<pre>SValue[] <b>cabbageGetValue</b> SChannel[]</pre>
 <pre>iValue <b>cabbageGetValue</b> SChannel</pre>
 <pre>kValue [, kTrig] <b>cabbageGetValue</b> SChannel</pre>
 <pre>SValue [, kTrig] <b>cabbageGetValue</b> SChannel</pre>
+<pre>kValue[] [, kTrig[]] <b>cabbageGetValue</b> SChannel</pre>
+<pre>SValue[] [, kTrig[]] <b>cabbageGetValue</b> SChannel</pre>
 
 #### Initialization
 

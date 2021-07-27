@@ -44,7 +44,7 @@ instr Synth
 
     prints "Starting Synth"
     kMute cabbageGetValue "mute"
-    a1 oscili .5*kMute, 300*(cabbageGet:k("toggleFreq")+1)
+    a1 oscili .5*kMute, 300*(cabbageGetValue:k("toggleFreq")+1)
     outs a1, a1
     
 endin

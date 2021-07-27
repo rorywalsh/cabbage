@@ -76,7 +76,7 @@ instr 1
         kWidget = 0
         while kWidget < 128 do
             SBoxChannel sprintfk "check%d", kWidget
-            cabbageSetValue SBoxChannel, 0
+            cabbageSetValue SBoxChannel, k(0)
             kWidget += 1
         od
     endif

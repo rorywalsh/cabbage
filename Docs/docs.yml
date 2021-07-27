@@ -64,6 +64,7 @@
   docs:
     - cabbage_opcodes
     - cabbage_create
+    - cabbage_changed
     - cabbage_get_value
     - cabbage_set_value
     - cabbage_get
