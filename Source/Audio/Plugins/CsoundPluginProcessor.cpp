@@ -267,7 +267,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<GetCabbageStringValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "S", "S", csnd::thread::ik);
     csnd::plugin<GetCabbageStringValueArray>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "S[]", "S[]", csnd::thread::ik);
     csnd::plugin<GetCabbageStringValueWithTrigger>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "Sk", "S", csnd::thread::ik);
-
+    csnd::plugin<GetCabbageStringValueArrayWithTrigger>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "S[]k[]", "S[]", csnd::thread::ik);
     csnd::plugin<GetCabbageIdentifierArray>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "k[]", "SS", csnd::thread::k);
     csnd::plugin<GetCabbageIdentifierArray>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "i[]", "SS", csnd::thread::i);
 
@@ -485,7 +485,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                         {
                             String currentValue = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::value);
                             var items = CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::text);
-                            DBG(items.size());
+                            //DBG(items.size());
                             const int index = items.indexOf(currentValue);
                             if(index == -1)
                                 currentValue = items[0].toString();

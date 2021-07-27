@@ -519,7 +519,7 @@ int GetCabbageValueArray::getAttribute()
 //-------------------------------------------------------------------------------------------
 int GetCabbageStringValueWithTrigger::getAttribute()
 {
-    
+
     if(in_count() == 0)
         return NOTOK;
     
@@ -546,6 +546,47 @@ int GetCabbageStringValueWithTrigger::getAttribute()
     
     return OK;
 }
+
+int GetCabbageStringValueArrayWithTrigger::getAttribute()
+{
+    
+    if(in_count() == 0)
+        return NOTOK;
+    
+    csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
+    csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
+    csnd::Vector<MYFLT>& outTriggers = outargs.myfltvec_data(1);
+    out.init(csound, (int)inputArgs.len());
+    outTriggers.init(csound, (int)inputArgs.len());
+    
+    for ( int i = 0 ; i < inputArgs.len() ; i++)
+    {
+    if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                                            CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+    {
+            if(currentStrings[i].size == 0){
+                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                currentStrings[i].size = ((STRINGDAT*)value)->size;
+            }
+        
+            if(strcmp(currentStrings[i].data, ((STRINGDAT*)value)->data) != 0)
+            {
+                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                currentStrings[i].size = ((STRINGDAT*)value)->size;
+                outTriggers[i] = 1;
+            }
+            else
+                outTriggers[i] = 0;
+        
+            out[i].size = currentStrings[i].size+1;
+            out[i].data = currentStrings[i].data;
+        }
+    }
+    
+    
+    return OK;
+}
+
 
 int GetCabbageValueWithTrigger::getAttribute()
 {
