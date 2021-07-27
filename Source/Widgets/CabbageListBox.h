@@ -21,6 +21,8 @@ class CabbagePluginEditor;
 // Each Cabbage widget should inherit from ValueTree listener, and CabbageWidgetBase
 class CabbageListBox : public Component, public ListBoxModel, public ValueTree::Listener, public CabbageWidgetBase
 {
+    
+    Font userFont;
 public:
 
     CabbageListBox (ValueTree wData, CabbagePluginEditor* _owner);

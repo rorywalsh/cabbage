@@ -72,6 +72,12 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
 	listBox.setColour(ListBox::backgroundColourId, backgroundColour);
 	listBox.lookAndFeelChanged();
 	resized();
+    
+    if(owner->getCustomFontFile().existsAsFile())
+    {
+        userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
+    }
+    
 
 }
 
@@ -319,9 +325,7 @@ void CabbageListBox::clicked(int row, const MouseEvent &e)
 void CabbageListBox::paintListBoxItem (int rowNumber, Graphics& g,
                                        int width, int height, bool rowIsSelected)
 {
-    if(owner->customFont.getHeight()<900)
-        g.setFont(owner->customFont);
-    
+    g.setFont(userFont);
     if (rowIsSelected)
         g.fillAll (Colour::fromString(highlightColour));
     else

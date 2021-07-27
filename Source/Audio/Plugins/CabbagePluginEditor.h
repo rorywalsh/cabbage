@@ -299,6 +299,8 @@ public:
         void setWidgetData(ValueTree wData){    plantWidgetData = wData;    }
     };
 
+    File getCustomFontFile(){   return customFontFile;  }
+    
     void addToRadioComponents(Component* button)
     {
         radioComponents.add(button);
@@ -307,8 +309,10 @@ public:
     String changeMessage = "";
     juce::Point<int> customPlantPosition;
     Font customFont;
+    
 private:
-	   
+    
+    File customFontFile;
     OpenGLContext openGLContext;
     
     class ViewportContainer : public Component

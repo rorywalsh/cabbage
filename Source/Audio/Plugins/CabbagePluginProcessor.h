@@ -162,9 +162,8 @@ public:
 		return csdArray;
 	}
     
-    Font getCustomFont(){
-        return customFont;
-    }
+    Font getCustomFont(){        return customFont;    }
+    File getCustomFontFile(){        return customFontFile;    }
     
     // use this instead of AudioProcessor::getParameters
     const OwnedArray<CabbagePluginParameter>& getCabbageParameters() const { return parameters; }
@@ -190,6 +189,7 @@ private:
     int automationMode = 0;
     OwnedArray<CabbagePluginParameter> parameters;
     Font customFont;
+    File customFontFile;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbagePluginProcessor)
 

@@ -38,6 +38,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     cabbageProcessor.editorIsOpen = true;
     setLookAndFeel (&lookAndFeel);
     customFont = cabbageProcessor.getCustomFont();
+    customFontFile = cabbageProcessor.getCustomFontFile();
     viewportContainer.reset (new ViewportContainer());
     addAndMakeVisible(viewportContainer.get());
     viewportContainer->addAndMakeVisible(cabbageForm);

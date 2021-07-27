@@ -1007,7 +1007,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     return OK;
 }
 
-//--------------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------
 int SetCabbageIdentifierITime::setAttribute()
 {
     CabbageWidgetIdentifiers::IdentifierData data;
@@ -1376,7 +1376,7 @@ int GetCabbageReservedChannelString::getAttribute()
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
         outargs.str_data(0).size = ((STRINGDAT*)value)->size;
-        outargs.str_data(0).data = ((STRINGDAT*)value)->data;
+        outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
     }
     return OK;
 }
