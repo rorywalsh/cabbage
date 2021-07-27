@@ -145,7 +145,23 @@ struct GetCabbageValue : csnd::Plugin<1, 1>
     int getAttribute();
 };
 
+struct GetCabbageValueArray : csnd::Plugin<1, 1>
+{
+    MYFLT* value;
+    int init(){ return getAttribute(); };
+    int kperf(){ return getAttribute(); };
+    int getAttribute();
+};
+
 struct GetCabbageStringValue : csnd::Plugin<1, 1>
+{
+    MYFLT* value;
+    int init(){ return getAttribute(); };
+    int kperf(){ return getAttribute(); };
+    int getAttribute();
+};
+
+struct GetCabbageStringValueArray : csnd::Plugin<1, 1>
 {
     MYFLT* value;
     int init(){ return getAttribute(); };
@@ -161,6 +177,19 @@ struct GetCabbageValueWithTrigger : csnd::Plugin<2, 1>
     int init(){
         firstRun = true;
         return getAttribute();        
+    };
+    int kperf(){ return getAttribute(); };
+    int getAttribute();
+};
+
+struct GetCabbageValueArrayWithTrigger : csnd::Plugin<2, 1>
+{
+    MYFLT* value;
+    MYFLT currentValue[1024] ={0};
+    bool firstRun;
+    int init(){
+        firstRun = true;
+        return getAttribute();
     };
     int kperf(){ return getAttribute(); };
     int getAttribute();

@@ -259,10 +259,13 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<SetCabbageValueIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSetValue", "", "SSP", csnd::thread::k);
     
     csnd::plugin<GetCabbageValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "k", "S", csnd::thread::k);
+    csnd::plugin<GetCabbageValueArray>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "k[]", "S[]", csnd::thread::k);
     csnd::plugin<GetCabbageValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "i", "S", csnd::thread::i);
     csnd::plugin<GetCabbageValueWithTrigger>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "kk", "S", csnd::thread::k);
+    csnd::plugin<GetCabbageValueArrayWithTrigger>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "k[]k[]", "S[]", csnd::thread::k);
     
     csnd::plugin<GetCabbageStringValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "S", "S", csnd::thread::ik);
+    csnd::plugin<GetCabbageStringValueArray>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "S[]", "S[]", csnd::thread::ik);
     csnd::plugin<GetCabbageStringValueWithTrigger>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "Sk", "S", csnd::thread::ik);
 
     csnd::plugin<GetCabbageIdentifierArray>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "k[]", "SS", csnd::thread::k);
@@ -463,23 +466,40 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                     {
                         const String workingDir = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::workingdir);
                         const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype");
-                        int numOfFiles;
-                        Array<File> folderFiles;
-                        StringArray comboItems;
-                        CabbageUtilities::searchDirectoryForFiles(cabbageData.getChild(i), workingDir, fileType, folderFiles, comboItems, numOfFiles);
-                        const String currentValue = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::value);
+                        if(workingDir.isNotEmpty())
+                        {
+                            int numOfFiles;
+                            Array<File> folderFiles;
+                            StringArray comboItems;
+                            CabbageUtilities::searchDirectoryForFiles(cabbageData.getChild(i), workingDir, fileType, folderFiles, comboItems, numOfFiles);
+                            const String currentValue = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::value);
 
-                        const int index = comboItems.indexOf(currentValue) + 1;
-                        const String test = folderFiles[index].getFullPathName();
-                        const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
+                            const int index = comboItems.indexOf(currentValue) + 1;
+                            const String test = folderFiles[index].getFullPathName();
+                            const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
 
-                        csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
-                            folderFiles[index].getFullPathName().replaceCharacters("\\", "/").toUTF8().getAddress());
+                            csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
+                                folderFiles[index].getFullPathName().replaceCharacters("\\", "/").toUTF8().getAddress());
+                        }
+                        else
+                        {
+                            String currentValue = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::value);
+                            var items = CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::text);
+                            DBG(items.size());
+                            const int index = items.indexOf(currentValue);
+                            if(index == -1)
+                                currentValue = items[0].toString();
+                            
+                            const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
+                            
+                            csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
+                                                     currentValue.toUTF8().getAddress());
+                        }
                         
                     }
                     else{
-//                        const String test = CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::value);
-//                        const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
+                        const String test = CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::value);
+                        const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
                         csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
                                                  CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::value).toString().toUTF8().getAddress());
                     }
