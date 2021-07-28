@@ -490,13 +490,14 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                             var items = CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::text);
                             //DBG(items.size());
                             const int index = items.indexOf(currentValue);
-                            if(index == -1)
+                            if(index == -1 && items.isArray())
+                            {
                                 currentValue = items[0].toString();
                             
-                            const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
+                                const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
                             
-                            csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
-                                                     currentValue.toUTF8().getAddress());
+                                csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(), currentValue.toUTF8().getAddress());
+                            }
                         }
                         
                     }
