@@ -36,11 +36,20 @@ class CabbageWidgetBase
     StringArray channelArray = {};   //can be used if widget supports multiple channels
     StringArray textArray = {};      //can be used used if widget supports multiple text items
     CabbagePluginEditor* editor;
+    int customRadioGroupId = 0;
     
 public:
     CabbageWidgetBase(CabbagePluginEditor* _owner);
     ~CabbageWidgetBase() {}
 
+    void setCustomRadioGroupId(int radioId)
+    {
+        customRadioGroupId = radioId;
+    }
+    int getCustomRadioGroupId()
+    {
+        return customRadioGroupId;
+    }
     int getActive() const
     {
         return active;
