@@ -264,7 +264,7 @@ void CabbagePluginEditor::addNewWidget (String widgetType, juce::Point<int> posi
         const String widgetTreeIdentifier = "newlyAddedWidget";
         ValueTree newWidget(widgetTreeIdentifier);
 
-        CabbageWidgetData::setWidgetState(newWidget, widgetType, newlyAddedWidgetIndex);
+        CabbageWidgetData::setWidgetState(newWidget, widgetType, components.size()+10000);
         CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::csdfile,
             cabbageProcessor.getCsdFile().getFullPathName());
         newWidget.setProperty(CabbageIdentifierIds::top, position.getY(), 0);
@@ -272,8 +272,9 @@ void CabbagePluginEditor::addNewWidget (String widgetType, juce::Point<int> posi
 
         cabbageProcessor.cabbageWidgets.addChild(newWidget, -1, 0);
 
-        setCurrentlySelectedComponents(
-                StringArray(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name)));
+        DBG(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::channel));
+        
+        setCurrentlySelectedComponents(StringArray(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name)));
 
         insertWidget(newWidget);
         updateLayoutEditorFrames();
