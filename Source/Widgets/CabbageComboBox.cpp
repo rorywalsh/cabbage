@@ -425,7 +425,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 
                 if(pluginDir.getChildFile(currentValueAsText).existsAsFile())
                 {
-                    currentValueAsText = File(currentValueAsText).getFileNameWithoutExtension();
+                    currentValueAsText = pluginDir.getChildFile(currentValueAsText).getFileNameWithoutExtension();
                     index = stringItems.indexOf (currentValueAsText)+1;
                 }
                 else

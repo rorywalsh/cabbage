@@ -930,7 +930,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int rate)
                                                CSOUND_STRING_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
         {
             STRINGDAT* stringdat = (STRINGDAT*) str;
-            stringdat->data = args.str_data(1).data;
+            stringdat->data = csound->strdup(args.str_data(1).data);
             stringdat->size = strlen(args.str_data(1).data) + 1;
         }
         

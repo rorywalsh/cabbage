@@ -924,6 +924,7 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
         }
         outargs[0] = 1;
         file.close();
+        ignoreStrings.clear();
         //csound->message(j.dump());
     }
 
