@@ -656,7 +656,6 @@ int GetCabbageValueArrayWithTrigger::getAttribute()
 //====================================================================================================
 int CabbageValueChanged::getAttribute()
 {
-    
     if(in_count() == 0)
         return NOTOK;
     
@@ -708,22 +707,37 @@ int CabbageValueChanged::getAttribute()
     
     return OK;
 }
-int CabbageStringValueChanged::getAttribute()
+
+int CabbageValueChangedIndex::getAttribute()
 {
-    
     if(in_count() == 0)
         return NOTOK;
     
     csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
-    csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
-    csnd::Vector<MYFLT>& outTriggers = outargs.myfltvec_data(1);
-    out.init(csound, (int)inputArgs.len());
-    outTriggers.init(csound, (int)inputArgs.len());
+    bool foundAChange = false;
     
     for ( int i = 0 ; i < inputArgs.len() ; i++)
     {
         if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
-                                                CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+                                                CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+        {
+            
+            if(*value != currentValue[i])
+            {
+                currentValue[i] = *value;
+                outargs.str_data(0).size = inputArgs[i].size;
+                outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                foundAChange = true;
+                outargs[0] = i;
+            }
+            else
+            {
+                //outargs.str_data(0).size = inputArgs[i].size;
+                //outargs.str_data(0).data = csound->strdup("");
+            }
+        }
+        else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                                                     CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
         {
             if(currentStrings[i].size == 0){
                 currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
@@ -734,15 +748,16 @@ int CabbageStringValueChanged::getAttribute()
             {
                 currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
                 currentStrings[i].size = ((STRINGDAT*)value)->size;
-                outTriggers[i] = 1;
+                foundAChange = true;
+                outargs[0] = i;
             }
-            else
-                outTriggers[i] = 0;
-            
-            out[i].size = currentStrings[i].size+1;
-            out[i].data = currentStrings[i].data;
         }
     }
+    
+    if(foundAChange == true)
+        outargs[1] = 1;
+    else
+        outargs[1] = 0;
     
     return OK;
 }
