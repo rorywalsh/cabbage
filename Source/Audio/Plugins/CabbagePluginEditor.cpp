@@ -782,7 +782,7 @@ void CabbagePluginEditor::buttonStateChanged(Button* button)
 	{
 		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageProcessor.cabbageWidgets, cabbageButton->getName());
 		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
-        DBG("ValueTreeListener:"+cabbageButton->getName());
+        //DBG("ValueTreeListener:"+cabbageButton->getName());
         
 		if (latched == 0)
 		{
