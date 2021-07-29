@@ -264,7 +264,7 @@ void CabbagePluginEditor::addNewWidget (String widgetType, juce::Point<int> posi
         const String widgetTreeIdentifier = "newlyAddedWidget";
         ValueTree newWidget(widgetTreeIdentifier);
 
-        CabbageWidgetData::setWidgetState(newWidget, widgetType, newlyAddedWidgetIndex);
+        CabbageWidgetData::setWidgetState(newWidget, widgetType, components.size()+10000);
         CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::csdfile,
             cabbageProcessor.getCsdFile().getFullPathName());
         newWidget.setProperty(CabbageIdentifierIds::top, position.getY(), 0);
@@ -272,15 +272,15 @@ void CabbagePluginEditor::addNewWidget (String widgetType, juce::Point<int> posi
 
         cabbageProcessor.cabbageWidgets.addChild(newWidget, -1, 0);
 
-        setCurrentlySelectedComponents(
-                StringArray(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name)));
+        DBG(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::channel));
+        
+        setCurrentlySelectedComponents(StringArray(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name)));
 
         insertWidget(newWidget);
         updateLayoutEditorFrames();
 
         sendChangeMessage();    //update code in editor
 
-        newlyAddedWidgetIndex++;
     }
     else
     {
@@ -782,7 +782,8 @@ void CabbagePluginEditor::buttonStateChanged(Button* button)
 	{
 		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageProcessor.cabbageWidgets, cabbageButton->getName());
 		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
-
+        DBG("ValueTreeListener:"+cabbageButton->getName());
+        
 		if (latched == 0)
 		{
 			if (button->isMouseButtonDown())
@@ -790,13 +791,13 @@ void CabbagePluginEditor::buttonStateChanged(Button* button)
 			else
 				toggleButtonState(button, false);
 		}
-		else if (latched == 2)
+		else if (latched == 1)
 		{
-			int value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
-			if (button->isMouseButtonDown() && value == 1)
-				toggleButtonState(button, false);
-			else if (button->isMouseButtonDown() && value == 0)
-				toggleButtonState(button, true);
+//            int value = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value);
+//            if (button->isMouseButtonDown() && value == 1)
+//                toggleButtonState(button, false);
+//            else if (button->isMouseButtonDown() && value == 0)
+//				toggleButtonState(button, false);
 		}
 	}
 

@@ -80,30 +80,7 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         const int newValue = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)  > 0.9 ? 1 : 0;
         bool state = newValue == 1 ? true : false;
         setToggleState (state, sendNotification);
-        
-        if (auto* p = getParentComponent())
-        {
-            if (getRadioGroupId() != 0)
-            {
-                WeakReference<Component> deletionWatcher (this);
-                
-                for (auto* c : p->getChildren())
-                {
-                    if (c != this)
-                    {
-                        if (auto b = dynamic_cast<Button*> (c))
-                        {
-                            if (b->getRadioGroupId() == getRadioGroupId())
-                            {
-                                owner->sendChannelDataToCsound(b->getName().toUTF8().getAddress(), 0);
-                                if (deletionWatcher == nullptr)
-                                    return;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+     
     }
 
     else

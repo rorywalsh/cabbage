@@ -115,32 +115,8 @@ void CabbageButton::valueTreePropertyChanged(ValueTree& valueTree, const Identif
         setValue(newValue);
 		//bool shouldEnable = (newValue == 0 ? false : true);
         setToggleState(newValue == 0 ? false : true, sendNotification);
+        setButtonText(getTextArray()[getValue()]);
         
-        if (auto* p = getParentComponent())
-        {
-            if (getRadioGroupId() != 0)
-            {
-                WeakReference<Component> deletionWatcher (this);
-
-                for (auto* c : p->getChildren())
-                {
-                    if (c != this)
-                    {
-                        if (auto b = dynamic_cast<Button*> (c))
-                        {
-                            if (b->getRadioGroupId() == getRadioGroupId())
-                            {
-                                owner->sendChannelDataToCsound(b->getName().toUTF8().getAddress(), 0);
-                                if (deletionWatcher == nullptr)
-                                    return;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-		setButtonText(getTextArray()[getValue()]);
 	}
 	else
 	{

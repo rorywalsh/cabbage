@@ -460,11 +460,12 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
             {
                 if (typeOfWidget == CabbageWidgetTypes::combobox)
                 {
+                    const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype");
                     //if we are dealing with a combobox that reads files from a directory, we need to load them before the GUI opens...
-                    if (CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype") != "preset"
-                        && CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype") != "*.snaps"
-                        && CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype") != ".snaps"
-                        && CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype") != "snaps")
+                    if (!CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype).contains("preset")
+                        && !CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype).contains("*.snaps")
+                        && !CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype).contains(".snaps")
+                        && !CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype).contains("snaps"))
                     {
                         const String workingDir = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::workingdir);
                         const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype");
@@ -489,19 +490,18 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                             var items = CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::text);
                             //DBG(items.size());
                             const int index = items.indexOf(currentValue);
-                            if(index == -1)
+                            if(index == -1 && items.isArray())
+                            {
                                 currentValue = items[0].toString();
                             
-                            const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
+                                const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
                             
-                            csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
-                                                     currentValue.toUTF8().getAddress());
+                                csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(), currentValue.toUTF8().getAddress());
+                            }
                         }
                         
                     }
                     else{
-                        const String test = CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::value);
-                        const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
                         csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
                                                  CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::value).toString().toUTF8().getAddress());
                     }
