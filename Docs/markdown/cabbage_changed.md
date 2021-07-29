@@ -8,7 +8,7 @@ This opcode takes an array of channel names and listens for a change. It reports
 ### Syntax
 
 <pre>SChannel, kTrig <b>cabbageChanged</b> SChannels[]</pre>
-
+<pre>kIndex, kTrig <b>cabbageChanged</b> SChannels[]</pre>
 
 #### Initialization
 
@@ -17,6 +17,7 @@ This opcode takes an array of channel names and listens for a change. It reports
 #### Performance
 
 * `SChannel` -- The channel that was most recently changed
+* `kIndex` -- The index of the channel that was changed in relation to the input array
 * `kTrig` -- will output a trigger value of 1 whenever a channel changes. 
 
 ### Example
