@@ -459,7 +459,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
             else
             {
-                if (typeOfWidget == CabbageWidgetTypes::combobox)
+                if (typeOfWidget == CabbageWidgetTypes::combobox || typeOfWidget == CabbageWidgetTypes::listbox)
                 {
                     const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype");
                     //if we are dealing with a combobox that reads files from a directory, we need to load them before the GUI opens...
@@ -676,7 +676,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     //csound->Message("Running single k-cycle...\n");
     csound->PerformKsmps();
     //csound->Message("Rewinding...\n");
-    csound->SetChannel ("IS_EDITOR_OPEN", 0.0);
+    //csound->SetChannel ("IS_EDITOR_OPEN", 0.0);
     csound->SetChannel ("MOUSE_DOWN_LEFT", 0.0);
     csound->SetChannel ("MOUSE_DOWN_RIGHT", 0.0);
     csound->SetChannel ("MOUSE_DOWN_MIDDLE", 0.0);

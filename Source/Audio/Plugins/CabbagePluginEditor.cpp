@@ -65,7 +65,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 
     tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
     if(cabbageProcessor.getCsound())
-        cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 1.0);
+        cabbageProcessor.getCsound()->SetControlChannel ("IS_EDITOR_OPEN", 1.0);
 
     if(cabbageProcessor.currentPluginScale != -1)
         resizePlugin(cabbageProcessor.currentPluginScale);
