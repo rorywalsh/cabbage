@@ -64,15 +64,18 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
             
         if (stringIndex != -1)
         {
-            listBox.selectRow(stringIndex, dontSendNotification);
+            clicked(stringIndex);
+            //listBox.selectRow(stringIndex, dontSendNotification);
         }
         else if (fileIndex != -1)
         {
-            listBox.selectRow(fileIndex, dontSendNotification);
+            clicked(fileIndex);
+            //listBox.selectRow(fileIndex, dontSendNotification);
         }
         else
         {
-            listBox.selectRow(0, dontSendNotification);
+            clicked(0);
+            //listBox.selectRow(0, dontSendNotification);
         }
     }
     else
@@ -138,7 +141,8 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
         for (int i = 0; i < items.size(); i++)
         {
             const String item  = items[i].toString();
-            stringItems.add (item);
+            if(item.isNotEmpty())
+                stringItems.add (item);
         }
     }
         //if dealing with preset files...
@@ -293,16 +297,16 @@ int CabbageListBox::getNumRows()
 void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
 {
     if(numberOfClicks == 2)
-        clicked(row, e);
+        clicked(row);
 }
 
 void CabbageListBox::listBoxItemClicked(int row, const MouseEvent &e)
 {
     if(numberOfClicks == 1)
-        clicked(row, e);
+        clicked(row);
 }
 
-void CabbageListBox::clicked(int row, const MouseEvent &e)
+void CabbageListBox::clicked(int row)
 {
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps")
         || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("preset"))
