@@ -412,6 +412,7 @@ public:
         add ("rowPrefix");
         add ("colPrefix");
 		add ("sidechain");
+        add ("initValue");
         add ("populate");		
         add ("keyWidth");
         add ("pluginId");
@@ -637,6 +638,7 @@ namespace CabbageIdentifierIds
     static const Identifier imgslider = "imgslider";
     static const Identifier imgsliderbg = "imgsliderbg";
     static const Identifier import = "import";
+    static const Identifier initValue = "initValue";
     static const Identifier importfiles = "importfiles";
     static const Identifier increment = "increment";
     static const Identifier isparent = "isparent";

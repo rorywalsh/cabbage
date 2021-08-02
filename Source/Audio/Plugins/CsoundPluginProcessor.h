@@ -85,7 +85,7 @@ public:
 	void performCsoundKsmps();
 	int result = -1;
     bool isLMMS = false;
-
+    bool firstInit = true;
 	virtual void processBlock(AudioBuffer< float >&, MidiBuffer&) override;
 	virtual void processBlock(AudioBuffer< double >&, MidiBuffer&) override;
 	template< typename Type >

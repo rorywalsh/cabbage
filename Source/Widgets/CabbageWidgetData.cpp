@@ -415,6 +415,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("corners"):
             case HashStringToInt ("doubleClickTogglesEdit"):
             case HashStringToInt ("drawMode"):
+            case HashStringToInt ("initValue"):
             case HashStringToInt ("ffttableNumber"):
             case HashStringToInt ("fill"):
             case HashStringToInt ("guiRefresh"):

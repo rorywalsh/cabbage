@@ -549,6 +549,16 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                 const float value = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::value);
                 const String channel = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel);
                 csound->SetChannel (channel.getCharPointer(), value);
+                
+                if(firstInit)
+                {
+                    if(typeOfWidget == CabbageWidgetTypes::rslider || typeOfWidget == CabbageWidgetTypes::vslider || typeOfWidget == CabbageWidgetTypes::hslider)
+                    {
+                        //set doubleclick return value..
+                        CabbageWidgetData::setNumProp(cabbageData.getChild(i), CabbageIdentifierIds::initValue, value);
+                        
+                    }
+                }
             }
 
         }
@@ -682,6 +692,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     csound->SetChannel ("MOUSE_DOWN_MIDDLE", 0.0);
     
     Logger::writeToLog("initAllCsoundChannels (ValueTree cabbageData) - done");
+    firstInit = false;
 }
 //==============================================================================
 void CsoundPluginProcessor::addMacros (String& csdText)

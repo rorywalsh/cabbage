@@ -316,7 +316,8 @@ void CabbageSlider::initialiseSlider(ValueTree wData, Slider& currentSlider)
     else
         textLabel.setVisible(false);
 
-    currentSlider.setDoubleClickReturnValue(true, value);
+    //currentSlider.setDoubleClickReturnValue(true, value);
+    getSlider().setDoubleClickReturnValue(true, CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::initValue));
     setSliderVelocity(wData);
     currentSlider.addMouseListener(this, false);
 
@@ -697,6 +698,10 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
             thumb.move(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), slider.getRange());
 
         repaint();
+    }
+    else if(prop == CabbageIdentifierIds::initValue)
+    {
+        getSlider().setDoubleClickReturnValue(true, CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::initValue));
     }
     else
     {
