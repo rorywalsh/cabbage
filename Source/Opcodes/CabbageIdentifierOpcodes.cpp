@@ -1001,9 +1001,6 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int rate)
         }
     }
     
-    csound->message(args.str_data(0).data);
-    csound->message(args.str_data(1).data);
-    
     //now update underlying Csound channel
     if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &strInput, args.str_data(0).data,
                                            CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
