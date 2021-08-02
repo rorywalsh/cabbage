@@ -616,25 +616,36 @@ void CabbageSlider::showPopupBubble(int time)
         popupPostfix);
 
     popupBubble.showAt(&getSlider(), AttributedString(popupText), time);
-    DBG(Random::getSystemRandom().nextInt(124));
 }
 
 void CabbageSlider::mouseDrag(const MouseEvent& event)
 {
-//    if (shouldDisplayPopup)
-//        showPopupBubble(150);
+    if (shouldDisplayPopup)
+        showPopupBubble(10);
+}
+
+void CabbageSlider::mouseDown(const MouseEvent& event)
+{
+    if (shouldDisplayPopup)
+        showPopupBubble(1000);
 }
 
 void CabbageSlider::mouseMove(const MouseEvent& event)
 {
-//    if (shouldDisplayPopup)
-//        showPopupBubble(150);
+    if (shouldDisplayPopup)
+        showPopupBubble(100);
+}
+
+void CabbageSlider::mouseUp(const MouseEvent& event)
+{
+    if (shouldDisplayPopup)
+        popupBubble.setVisible(false);
 }
 
 void CabbageSlider::mouseEnter(const MouseEvent& event)
 {
     if (shouldDisplayPopup)
-        showPopupBubble(10000);
+        showPopupBubble(100);
 }
 
 void CabbageSlider::mouseExit(const MouseEvent& event)
@@ -693,6 +704,7 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
     if (prop == CabbageIdentifierIds::value)
     {
         //const MessageManagerLock lock;
+        //this is causing some weird jumpy issue in Live
         getSlider().setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), dontSendNotification);
         if (sliderThumbImage.isValid())
             thumb.move(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), slider.getRange());

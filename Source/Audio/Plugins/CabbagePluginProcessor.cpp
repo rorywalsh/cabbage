@@ -1378,7 +1378,6 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 			{
                 String testItem = e->getAttributeValue(i);
-                
 				const String stringComboItem = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).existsAsFile() ?
 					csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).getFileNameWithoutExtension() : e->getAttributeValue(i);
 
@@ -1791,6 +1790,7 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
                 else
                     CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::valuey, value);
             }
+
             CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, value);
         });
     }

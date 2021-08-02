@@ -91,10 +91,11 @@ public:
 
     void setThumbImage(Image img) { image = img; };
     void mouseDrag(const MouseEvent& e) override;
+    void mouseUp(const MouseEvent& e) override;
     void mouseDown(const MouseEvent& e) override;
     void mouseMove(const MouseEvent& e) override;
     void mouseEnter(const MouseEvent& e) override;
-    void mouseUp (const MouseEvent& event) override;
+    
     void move(double value, Range<double> range);
     int yOffset = 0, xOffset = 0;
     CabbageSlider* owner;
@@ -122,7 +123,9 @@ class CabbageSlider
     void mouseMove (const MouseEvent& event) override;
     void mouseEnter (const MouseEvent& event) override;
     void mouseExit (const MouseEvent& event) override;
- 
+    void mouseUp (const MouseEvent& event) override;
+    void mouseDown (const MouseEvent& event) override;
+    
     void createPopupBubble();
    
     void setLookAndFeelColours (ValueTree wData);
