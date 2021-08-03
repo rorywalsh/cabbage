@@ -1,8 +1,8 @@
 # cabbageChanged Opcodes
 
-This opcode takes an array of channel names and listens for a change. It reports a trigger value along with the name or index of the channel that changed. An Additional input parameters can cause this to act like a threshold trigger where it will only fire a trigger signal when a threshold is crossed. The mode of the trigger can set 
+This opcode takes an array of channel names and listens for a change. It reports a trigger value along with the name or index of the channel that changed. An Additional input parameters can cause this to act like a threshold trigger where it will only fire a trigger signal when a threshold is crossed. 
 
-The channels can hold strings or numbers. 
+The channels can hold strings or numbers, but only numeric channels work with the optional threshold arguments. 
 
 
 <blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.7.12</blockquote>
@@ -20,9 +20,9 @@ The channels can hold strings or numbers.
 
 * `SChannel` -- The channel that was most recently changed
 * `kIndex` -- The index of the channel that was changed in relation to the input array
-* `kTrig` -- will output a trigger value of 1 whenever a channel changes. 
-* `kThreshold` -- if added, will output a trigger value of 1 whenever a channel changes to this value. 
-* `kMode` There are three modes:
+* `kTrig` -- will output a trigger value of 1 whenever a channel changes, or a threshold has been crossed. 
+* `kThreshold` -- [optional] if added, will output a trigger value of 1 whenever a channel changes to this value. 
+* `kMode` == [optional] Defaults to 2. There are three modes:
 
 kMode = 0 - (down-up) kTrig outputs a 1 when current channel value is higher than kThreshold, while old channel value was equal to or lower than kThreshold.
 
