@@ -1,14 +1,16 @@
 # cabbageChanged Opcodes
 
-This opcode takes an array of channel names and listens for a change. It reports a trigger value alongside the name of the channel that changed. The channels can hold strings or numbers. 
+This opcode takes an array of channel names and listens for a change. It reports a trigger value along with the name or index of the channel that changed. An Additional input parameters can cause this to act like a threshold trigger where it will only fire a trigger signal when a threshold is crossed. The mode of the trigger can set 
+
+The channels can hold strings or numbers. 
 
 
 <blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.7.12</blockquote>
 
 ### Syntax
 
-<pre>SChannel, kTrig <b>cabbageChanged</b> SChannels[], [kTargetValue]</pre>
-<pre>kIndex, kTrig <b>cabbageChanged</b> SChannels[], [kTargetValue]</pre>
+<pre>SChannel, kTrig <b>cabbageChanged</b> SChannels[], [kThreshold, [kMode]]</pre>
+<pre>kIndex, kTrig <b>cabbageChanged</b> SChannels[], [kThreshold, [kMode]]</pre>
 
 #### Initialization
 
@@ -19,7 +21,16 @@ This opcode takes an array of channel names and listens for a change. It reports
 * `SChannel` -- The channel that was most recently changed
 * `kIndex` -- The index of the channel that was changed in relation to the input array
 * `kTrig` -- will output a trigger value of 1 whenever a channel changes. 
-* `kTargetValue` -- if added, will output a trigger value of 1 whenever a channel changes to this value. 
+* `kThreshold` -- if added, will output a trigger value of 1 whenever a channel changes to this value. 
+* `kMode` There are three modes:
+
+kMode = 0 - (down-up) kTrig outputs a 1 when current channel value is higher than kThreshold, while old channel value was equal to or lower than kThreshold.
+
+kMode = 1 - (up-down) kTrig outputs a 1 when current channel value is lower than kThreshold while old channel value was equal or higher than kThreshold.
+
+kMode = 2 - (both) kTrig outputs a 1 in both the two previous cases.
+
+
 
 ### Example
 

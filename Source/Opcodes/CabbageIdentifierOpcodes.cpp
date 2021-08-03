@@ -658,6 +658,11 @@ int CabbageValueChanged::getAttribute()
 {
     if(in_count() == 0)
         return NOTOK;
+
+    if(in_count() == 3)
+        mode = inargs[2];
+    else
+        mode = 2;
     
     csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
     bool foundAChange = false;
@@ -667,21 +672,46 @@ int CabbageValueChanged::getAttribute()
         if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                 CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
         {
-            if(in_count() == 3)
+            if(in_count() > 1)
             {
-                if(*value != currentValue[i] && *value == inargs[2])
+                if(mode == 2)
                 {
-                    currentValue[i] = *value;
-                    outargs.str_data(0).size = inputArgs[i].size;
-                    outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                    foundAChange = true;
+                    if ((oldValue[i] <= inargs[1] && *value > inargs[1]) ||
+                        (oldValue[i] >= inargs[1] && *value < inargs[1] ) )
+                    {
+                        outargs.str_data(0).size = inputArgs[i].size;
+                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        foundAChange = true;
+                    }
                 }
+                else if(mode == 0)
+                {
+                    if (oldValue[i] <= inargs[1] && *value > inargs[1])
+                    {
+                        outargs.str_data(0).size = inputArgs[i].size;
+                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        foundAChange = true;
+                    }
+                }
+                else if(mode == 1)
+                {
+                    DBG("OldValue:"+String(oldValue[i]));
+                    DBG("CurrentValue:"+String(*value));
+                    if (oldValue[i] >= inargs[1] && *value < inargs[1])
+                    {
+                        outargs.str_data(0).size = inputArgs[i].size;
+                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        foundAChange = true;
+                    }
+                }
+                
+                oldValue[i] = *value;
             }
             else
             {
-                if(*value != currentValue[i])
+                if(*value != oldValue[i])
                 {
-                    currentValue[i] = *value;
+                    oldValue[i] = *value;
                     outargs.str_data(0).size = inputArgs[i].size;
                     outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
                     foundAChange = true;
