@@ -667,18 +667,25 @@ int CabbageValueChanged::getAttribute()
         if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                 CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
         {
-            
-            if(*value != currentValue[i])
+            if(in_count() == 3)
             {
-                currentValue[i] = *value;
-                outargs.str_data(0).size = inputArgs[i].size;
-                outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                foundAChange = true;
+                if(*value != currentValue[i] && *value == inargs[2])
+                {
+                    currentValue[i] = *value;
+                    outargs.str_data(0).size = inputArgs[i].size;
+                    outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                    foundAChange = true;
+                }
             }
             else
             {
-                //outargs.str_data(0).size = inputArgs[i].size;
-                //outargs.str_data(0).data = csound->strdup("");
+                if(*value != currentValue[i])
+                {
+                    currentValue[i] = *value;
+                    outargs.str_data(0).size = inputArgs[i].size;
+                    outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                    foundAChange = true;
+                }
             }
         }
         else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,

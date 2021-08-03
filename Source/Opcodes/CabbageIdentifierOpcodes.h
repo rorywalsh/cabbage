@@ -178,7 +178,7 @@ struct GetCabbageStringValueWithTrigger : csnd::Plugin<2, 1>
     int getAttribute();
 };
 
-struct CabbageValueChanged : csnd::Plugin<2, 1>
+struct CabbageValueChanged : csnd::Plugin<2, 2>
 {
     MYFLT* value;
     MYFLT currentValue[1024] ={0};
@@ -193,7 +193,7 @@ struct CabbageValueChanged : csnd::Plugin<2, 1>
     int getAttribute();
 };
 
-struct CabbageValueChangedIndex : csnd::Plugin<2, 1>
+struct CabbageValueChangedIndex : csnd::Plugin<2, 2>
 {
     MYFLT* value;
     MYFLT currentValue[1024] ={0};
