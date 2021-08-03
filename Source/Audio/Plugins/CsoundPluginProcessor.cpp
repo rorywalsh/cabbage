@@ -555,7 +555,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                     if(typeOfWidget == CabbageWidgetTypes::rslider || typeOfWidget == CabbageWidgetTypes::vslider || typeOfWidget == CabbageWidgetTypes::hslider)
                     {
                         //set doubleclick return value..
-                        CabbageWidgetData::setNumProp(cabbageData.getChild(i), CabbageIdentifierIds::initValue, value);
+                        CabbageWidgetData::setNumProp(cabbageData.getChild(i), CabbageIdentifierIds::defaultValue, value);
                         
                     }
                 }
