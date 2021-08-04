@@ -770,8 +770,9 @@ int CabbageValueChangedIndex::getAttribute()
                     if ((oldValue[i] <= inargs[1] && *value > inargs[1]) ||
                         (oldValue[i] >= inargs[1] && *value < inargs[1] ) )
                     {
-                        outargs.str_data(0).size = inputArgs[i].size;
-                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+//                        outargs.str_data(0).size = inputArgs[i].size;
+//                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        outargs[0] = i;
                         foundAChange = true;
                     }
                 }
@@ -779,8 +780,9 @@ int CabbageValueChangedIndex::getAttribute()
                 {
                     if (oldValue[i] <= inargs[1] && *value > inargs[1])
                     {
-                        outargs.str_data(0).size = inputArgs[i].size;
-                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+//                        outargs.str_data(0).size = inputArgs[i].size;
+//                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        outargs[0] = i;
                         foundAChange = true;
                     }
                 }
@@ -788,8 +790,9 @@ int CabbageValueChangedIndex::getAttribute()
                 {
                     if (oldValue[i] >= inargs[1] && *value < inargs[1])
                     {
-                        outargs.str_data(0).size = inputArgs[i].size;
-                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+//                        outargs.str_data(0).size = inputArgs[i].size;
+//                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        outargs[0] = i;
                         foundAChange = true;
                     }
                 }
@@ -801,8 +804,8 @@ int CabbageValueChangedIndex::getAttribute()
                 if(*value != oldValue[i])
                 {
                     oldValue[i] = *value;
-                    outargs.str_data(0).size = inputArgs[i].size;
-                    outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+//                    outargs.str_data(0).size = inputArgs[i].size;
+//                    outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
                     foundAChange = true;
                     outargs[0] = i;
                 }
