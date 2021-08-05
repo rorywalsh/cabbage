@@ -357,7 +357,7 @@ private:
     String instrumentName;
     juce::Point<int> instrumentBounds;
     SharedResourcePointer<TooltipWindow> tooltipWindow;
-
+    bool isSliderDragging = false;
 
 #ifdef Cabbage_IDE_Build
     ComponentLayoutEditor layoutEditor;
