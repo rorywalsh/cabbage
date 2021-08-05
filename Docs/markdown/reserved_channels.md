@@ -24,6 +24,8 @@ Cabbage reserves several channels which are used to send information to Csound f
 
 **AUTOMATION** Set the automation mode, 0/1. 0, the default mode instructs Cabbage to listen to automation from a host DAW. Use this mode is you wish to automate parameters using automation envelopes and curves in your DAW. The second mode, 1, will allow the host to track channel updates if they happen in Csound. If you wish to send automation changes from your instrument, you will need to enable this mode using a `chnset`. 
 
+**CSOUND_GESTURES** Set this to 1 if you want hosts to respond to channel changes when recording automation. 
+
 **MOUSE_X** Returns the X coordinate of the current mouse position.
 
 **MOUSE_Y** Returns the Y coordinate of the current mouse position

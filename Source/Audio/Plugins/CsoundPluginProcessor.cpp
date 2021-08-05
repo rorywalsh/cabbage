@@ -595,7 +595,6 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     csdFilePath.setAsCurrentWorkingDirectory();
     csound->SetChannel("HOST_BUFFER_SIZE", csdKsmps);
-
     csound->SetChannel("HOME_FOLDER_UID", File::getSpecialLocation (File::userHomeDirectory).getFileIdentifier());
 
     time_t seconds_past_epoch = time(0);

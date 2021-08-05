@@ -75,7 +75,7 @@ public:
     void getIdentifierDataFromCsound() override;
     void triggerCsoundEvents() override;
     void setWidthHeight();
-    int chnsetGestureMode = 0;
+    int chnsetGestureMode = 1;
     CabbageWidgetIdentifiers** pd;
     CabbageWidgetIdentifiers* identData;
     int autoUpdateCount = 0;

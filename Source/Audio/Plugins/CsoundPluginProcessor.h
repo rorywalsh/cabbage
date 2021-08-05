@@ -160,7 +160,7 @@ public:
     int getChnsetGestureMode()
     {
         if(csound)
-            return csound->GetChannel("CHNSET_GESTURES");
+            return csound->GetChannel("CSOUND_GESTURES");
     }
     
     StringArray getTableStatement (int tableNum);
