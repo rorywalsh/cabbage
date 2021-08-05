@@ -819,19 +819,7 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
     {
         if (CabbagePluginParameter* param = getParameterForComponent (slider->getName()))
         {
-#ifndef Cabbage_IDE_Build
-            if(pluginType.isAbletonLive())
-            {
-                param->beginChangeGesture();
-                param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getValue()));
-                param->endChangeGesture();
-            }
-            else
-#endif
-            {
-                param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getValue()));
-            }
-                
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getValue()));  
         }
     }
     else
@@ -853,9 +841,6 @@ void CabbagePluginEditor::sliderDragStarted(Slider* slider)
     {
         if (CabbagePluginParameter* param = getParameterForComponent(slider->getName()))
         {
-#ifndef Cabbage_IDE_Build
-            if(!pluginType.isAbletonLive())
-#endif
                 param->beginChangeGesture();
         }
     }
@@ -882,9 +867,7 @@ void CabbagePluginEditor::sliderDragEnded(Slider* slider)
     {
         if (CabbagePluginParameter* param = getParameterForComponent(slider->getName()))
         {
-#ifndef Cabbage_IDE_Build
-            if(!pluginType.isAbletonLive())
-#endif
+            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (slider->getValue()));
             param->endChangeGesture();
         }
     }
