@@ -1486,7 +1486,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                         //DBG(identData->data[i].args.toString());
                         cabbageWidgets.getChildWithName(name).setProperty(identifier,identData->data[i].args, nullptr);
                     }
-                    if(identifier == CabbageIdentifierIds::value && chnsetGestureMode == 1)
+                    if(identifier == CabbageIdentifierIds::value && getChnsetGestureMode() == 1)
                     {
                         var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
                         for (auto cabbageParam : getCabbageParameters())
