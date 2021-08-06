@@ -27,7 +27,7 @@ class CabbagePluginEditor;
 
 class CabbageImage : public Component, public ValueTree::Listener, public CabbageWidgetBase, public ChangeListener
 {
-    String name, tooltipText, shape;
+    String name, tooltipText, shape, svgElement, svgViewBox;
     File imgFile;
     CabbagePluginEditor* owner;
     float corners, cropx, cropy, cropwidth, cropheight;
@@ -37,7 +37,10 @@ class CabbageImage : public Component, public ValueTree::Listener, public Cabbag
     bool isLineWidget = false, isParent = false;
     bool currentToggleValue = 0;
     Image img;
+    bool usesSVGElement = false;
     double prevWidth = 0, prevHeight = 0;
+    std::unique_ptr<Drawable> drawable;
+    std::unique_ptr<XmlElement> svg;
 
 public:
 
@@ -48,6 +51,7 @@ public:
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
     void paint (Graphics& g) override;
+    String createSVG(ValueTree wData);
     void mouseDown (const MouseEvent& e) override;
 	void updateImage(ValueTree& valueTree);
     void resizeAllChildren(ValueTree& valueTree);

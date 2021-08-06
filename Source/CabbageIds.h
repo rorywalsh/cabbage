@@ -380,6 +380,7 @@ public:
         add ("automatable");
         add ("valuePrefix");
         add ("caretColour");
+        add ("svgElement");
         add ("scrollbars");
         add ("automation");
         add ("autoUpdate");
@@ -791,6 +792,7 @@ namespace CabbageIdentifierIds
     static const Identifier xychannel = "xyChannel";
     static const Identifier ychannel = "yChannel";
     static const Identifier zoom = "zoom";
+    static const Identifier svgElement = "svgElement";
     static const String cellheight = "cellHeight";
     static const String cellwidth = "cellWidth";
     static const String csdfile = "csdfile";
@@ -996,7 +998,7 @@ static const char* const CsoundKeywords[] =
     "vexp_i", "vexpv_i", "vmult_i", "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "writescratch", "encoder", "fftdisplay", "keyboard", "label",
     "listbox", "hrange", "vrange", "active", "align", "alpha", "ampRange", "bounds", "caption", "channel", "channelArray", "channelType", "child", "colour", "colour:0", "colour:1", "corners", "displayType", "file",
     "fontColour", "fontStyle", "fontStyle", "guiRefresh", "highlightColour", "identChannel", "items", "latched", "line", "middleC", "max", "min", "mode", "outlineColour", "outlineThickness", "plant", "pluginId", "populate",
-    "popup", "popupText", "popupPostfix", "popupPrefix", "range", "rangeX", "rangeY", "rotate", "sampleRange", "scrubberpos", "scrubberPosition", "shape", "show", "size", "sliderincr", "svgfile", "svgpath", "tableBackgroundColour", "tableColour",
+    "popup", "popupText", "popupPostfix", "popupPrefix", "range", "rangeX", "rangeY", "rotate", "sampleRange", "scrubberpos", "scrubberPosition", "shape", "show", "size", "sliderincr", "svgfile", "svgElement", "tableBackgroundColour", "tableColour",
     "tableGridColour", "tableNumber", "text", "textColour", "textBox", "trackerColour", "trackerEnd", "trackerStart", "trackerCentre", "trackerThickness", "trackerOuterRadius", "trackerInnerRadius", "typeface", "widgetArray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
     "od", "gentable", "texteditor", "textBox", "sprintfk", "strcpyk", "sprintf", "strcmpk", "strcmp", "a", "abetarand", "abexprnd", "infobutton", "groupbox", "do", "popupmenu", "filebutton", "until",
     "enduntil", "soundfiler", "combobox", "vslider", "vslider2", "vslider3", "hslider2", "define", "hslider3", "hslider", "rslider", "groupbox", "combobox", "xypad", "image", "plant", "csoundoutput", "button", "optionbutton", "form", "checkbox",

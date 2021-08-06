@@ -281,7 +281,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
     //remove any text after a semicolon and take out tabs..
     String lineOfText = intputLineOfText.replace ("\t", " ");
 
-    if (lineOfText.indexOf (";") > -1)
+    if (lineOfText.indexOf (";") > -1 && !lineOfText.contains("svgElement"))
         lineOfText = lineOfText.substring (0, lineOfText.indexOf (0, ";"));
 
     if (lineOfText.trim() == "<Cabbage>" || lineOfText.trim() == "</Cabbage>" || lineOfText.trim().isEmpty())
@@ -308,9 +308,11 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
         StringArray strTokens;
         String identifier = identifierValueSet.identifier[indx].trimCharactersAtStart (" ");
 
-        if (identifier.indexOf (":") != -1)
+        
+        if (identifier.indexOf (":") != -1 && !lineOfText.contains("svgElement"))
             identifier = identifier.substring (0, identifier.indexOf (":") + 1);
 
+        
         //strTokens = CabbageUtilities::getTokens (identifierValueSet.parameter[indx], ',');
         strTokens.addTokens(identifierValueSet.parameter[indx], ",", "\"");
 
@@ -319,7 +321,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
 
         switch (HashStringToInt (identifier.toStdString().c_str()))
         {
-                //======== strings ===============================
+            //======== strings ===============================
             case HashStringToInt ("kind"):
             case HashStringToInt ("file"):
             case HashStringToInt ("imgPath"):
@@ -351,6 +353,9 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("moveBehind"):
                 setProperty (widgetData, identifier, (identifier.contains("fix") ? strTokens[0] : strTokens[0].trim()));
                 break;
+                
+            case HashStringToInt ("svgElement"):
+                setSVGText(widgetData, strTokens);
                 
             case HashStringToInt ("valuePrefix"):
             case HashStringToInt ("valuePostfix"):
@@ -687,6 +692,13 @@ void CabbageWidgetData::setPointsFromTokens (ValueTree widgetData, StringArray s
     {
         DBG(int(newArray[i]));
     }
+}
+
+void CabbageWidgetData::setSVGText(ValueTree widgetData, StringArray tokens)
+{
+    DBG(tokens.joinIntoString(""));
+    setProperty(widgetData, CabbageIdentifierIds::svgElement, tokens.joinIntoString(""));
+
 }
 
 CabbageWidgetData::IdentifiersAndParameters CabbageWidgetData::getSetofIdentifiersAndParameters (String lineOfText)
