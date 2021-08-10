@@ -153,6 +153,7 @@ public:
     void enableXYAutomator (String name, bool enable, Line<float> dragLine = Line<float> (0, 0, 1, 1));
     void disableXYAutomators();
 
+    
     int getPluginEditorScale()
     {
         return cabbageProcessor.currentPluginScale;
@@ -356,10 +357,12 @@ private:
     String instrumentName;
     juce::Point<int> instrumentBounds;
     SharedResourcePointer<TooltipWindow> tooltipWindow;
-
+    bool isSliderDragging = false;
 
 #ifdef Cabbage_IDE_Build
     ComponentLayoutEditor layoutEditor;
+#else
+    PluginHostType pluginType;
 #endif
 
     StringArray currentlySelectedComponentNames;

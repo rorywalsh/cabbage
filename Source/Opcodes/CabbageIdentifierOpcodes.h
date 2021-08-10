@@ -178,10 +178,11 @@ struct GetCabbageStringValueWithTrigger : csnd::Plugin<2, 1>
     int getAttribute();
 };
 
-struct CabbageValueChanged : csnd::Plugin<2, 1>
+struct CabbageValueChanged : csnd::Plugin<2, 3>
 {
     MYFLT* value;
-    MYFLT currentValue[1024] ={0};
+    int mode = 2;
+    MYFLT oldValue[1024] ={0};
     std::vector<STRINGDAT> currentStrings;
     int init(){
         csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
@@ -193,9 +194,11 @@ struct CabbageValueChanged : csnd::Plugin<2, 1>
     int getAttribute();
 };
 
-struct CabbageStringValueChanged : csnd::Plugin<2, 1>
+struct CabbageValueChangedIndex : csnd::Plugin<2, 3>
 {
     MYFLT* value;
+    int mode = 2;
+    MYFLT oldValue[1024] ={0};
     std::vector<STRINGDAT> currentStrings;
     int init(){
         csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);

@@ -85,7 +85,7 @@ public:
 	void performCsoundKsmps();
 	int result = -1;
     bool isLMMS = false;
-
+    bool firstInit = true;
 	virtual void processBlock(AudioBuffer< float >&, MidiBuffer&) override;
 	virtual void processBlock(AudioBuffer< double >&, MidiBuffer&) override;
 	template< typename Type >
@@ -160,7 +160,12 @@ public:
     int getChnsetGestureMode()
     {
         if(csound)
-            return csound->GetChannel("CHNSET_GESTURES");
+        {
+            DBG(csound->GetChannel("CSOUND_GESTURES"));
+            return csound->GetChannel("CSOUND_GESTURES");
+        }
+        
+        return 0;
     }
     
     StringArray getTableStatement (int tableNum);

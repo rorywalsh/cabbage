@@ -79,14 +79,15 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     {
         const int newValue = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value)  > 0.9 ? 1 : 0;
         bool state = newValue == 1 ? true : false;
-        setToggleState (state, sendNotification);
-     
+        if(getRadioGroupId() != 0)
+            setToggleState(state, sendNotification);
+        else
+            setToggleState(state, dontSendNotification);
     }
 
     else
     {
         handleCommonUpdates (this, valueTree, false, prop);
-
         setColour (TextButton::ColourIds::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
         setColour (TextButton::ColourIds::textColourOnId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::onfontcolour)));
         setColour (TextButton::buttonColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));

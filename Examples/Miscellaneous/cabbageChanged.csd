@@ -18,11 +18,17 @@ label bounds(8, 158, 412, 21) channel("label1"), align("left"), fontColour(0, 0,
 ksmps   = 32  
 
 instr 1
-
+    ;grab all widget channels
     SWidgetChannels[] cabbageGetWidgetChannels
+    
+    ;this version will return the name of the channel
     SUpdatedChannel, kTrig cabbageChanged SWidgetChannels
-    cabbageSet kTrig, "label1", sprintfk("text(\"Last updated widget: %s\n\")", SUpdatedChannel)
 
+    ;this version will return the indoex of the channel
+    kIndex, kTrig cabbageChanged SWidgetChannels
+    
+    ;update label with info
+    cabbageSet kTrig, "label1", sprintfk("text(\"Last updated widget: %s - Index:%d\")", SUpdatedChannel, kIndex)
 endin
 
 </CsInstruments>

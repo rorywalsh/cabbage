@@ -43,12 +43,40 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
         if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isNotEmpty())
             CabbageWidgetData::setProperty (wData, CabbageIdentifierIds::text, "");
 
+        filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype);
         currentValueAsText = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::value).toString();
         owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
-        const int index = stringItems.indexOf (currentValueAsText);
+        const int stringIndex = stringItems.indexOf (currentValueAsText);
 
-        if (index != -1)
-            listBox.selectRow(index, dontSendNotification);
+        
+        StringArray files;
+        for ( auto file : folderFiles)
+        {
+            DBG(file.getFileNameWithoutExtension());
+            files.add(file.getFileNameWithoutExtension());
+        }
+        
+        int fileIndex = -1;
+        if(File::getCurrentWorkingDirectory().getChildFile(currentValueAsText).exists())
+            fileIndex = files.indexOf (File(currentValueAsText).getFileNameWithoutExtension());
+        else
+            fileIndex = files.indexOf (currentValueAsText);
+            
+        if (stringIndex != -1)
+        {
+            clicked(stringIndex);
+            //listBox.selectRow(stringIndex, dontSendNotification);
+        }
+        else if (fileIndex != -1)
+        {
+            clicked(fileIndex);
+            //listBox.selectRow(fileIndex, dontSendNotification);
+        }
+        else
+        {
+            clicked(0);
+            //listBox.selectRow(0, dontSendNotification);
+        }
     }
     else
     {
@@ -113,7 +141,8 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
         for (int i = 0; i < items.size(); i++)
         {
             const String item  = items[i].toString();
-            stringItems.add (item);
+            if(item.isNotEmpty())
+                stringItems.add (item);
         }
     }
         //if dealing with preset files...
@@ -225,7 +254,7 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                     listBox.selectRow(index);
 
                 const String test = getChannel();
-                if(pluginDir.exists())
+                if(workingDir.isNotEmpty())
                     owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index].getFullPathName());
                 else
                     owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
@@ -268,16 +297,16 @@ int CabbageListBox::getNumRows()
 void CabbageListBox::listBoxItemDoubleClicked(int row, const MouseEvent &e)
 {
     if(numberOfClicks == 2)
-        clicked(row, e);
+        clicked(row);
 }
 
 void CabbageListBox::listBoxItemClicked(int row, const MouseEvent &e)
 {
     if(numberOfClicks == 1)
-        clicked(row, e);
+        clicked(row);
 }
 
-void CabbageListBox::clicked(int row, const MouseEvent &e)
+void CabbageListBox::clicked(int row)
 {
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps")
         || CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("preset"))
@@ -309,10 +338,11 @@ void CabbageListBox::clicked(int row, const MouseEvent &e)
         const String fileType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype);
         const int index = row+1;
         
+
         if (fileType.isNotEmpty())
-            owner->sendChannelStringDataToCsound (getChannel(), folderFiles[index - 1].getFullPathName());
+            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, folderFiles[index - 1].getFullPathName());
         else
-            owner->sendChannelStringDataToCsound (getChannel(), stringItems[index - 1]);
+            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, stringItems[index - 1]);
         
     }
     else

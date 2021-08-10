@@ -33,6 +33,8 @@ slider WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/range.md !}   
 
+{! ./markdown/Widgets/Properties/defaultValue.md !}   
+
 {! ./markdown/Widgets/Properties/filmStrip.md !}   
 
 {! ./markdown/Widgets/Properties/imgFile.md !} 

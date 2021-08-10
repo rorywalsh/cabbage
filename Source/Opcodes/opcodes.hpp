@@ -864,7 +864,7 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
 
         std::ifstream file(filename);
         
-        if (file.fail())
+        if (file.fail() && !filename.empty())
         {
             if(mode == K_RATE)
                 csound->perf_error("Unable to open file\n", this);
@@ -924,6 +924,7 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
         }
         outargs[0] = 1;
         file.close();
+        ignoreStrings.clear();
         //csound->message(j.dump());
     }
 

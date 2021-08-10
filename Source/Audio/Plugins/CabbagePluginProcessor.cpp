@@ -1295,7 +1295,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 				xml->setAttribute(channels[0].toString(), xValue);
 				xml->setAttribute(channels[1].toString(), yValue);
 			}
-            else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+            else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                                               CabbageIdentifierIds::filetype).contains("snaps"))
             {
                 const String presetName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::value);
@@ -1304,7 +1304,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
                 else
                     xml->setAttribute(channelName, presetName);
             }
-			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+			else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
 				CabbageIdentifierIds::channeltype) == "string")
 			{
 				char tmp_str[4096] = { 0 };
@@ -1375,12 +1375,14 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
                 CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
                 
             }
-			else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
+			else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 			{
+                String testItem = e->getAttributeValue(i);
 				const String stringComboItem = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).existsAsFile() ?
 					csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).getFileNameWithoutExtension() : e->getAttributeValue(i);
 
-				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
+                if(type != CabbageWidgetTypes::listbox)
+                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
                 
 
@@ -1484,7 +1486,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                         //DBG(identData->data[i].args.toString());
                         cabbageWidgets.getChildWithName(name).setProperty(identifier,identData->data[i].args, nullptr);
                     }
-                    if(identifier == CabbageIdentifierIds::value && chnsetGestureMode == 1)
+                    if(identifier == CabbageIdentifierIds::value && getChnsetGestureMode() == 1)
                     {
                         var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
                         for (auto cabbageParam : getCabbageParameters())
@@ -1788,6 +1790,7 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
                 else
                     CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::valuey, value);
             }
+
             CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, value);
         });
     }

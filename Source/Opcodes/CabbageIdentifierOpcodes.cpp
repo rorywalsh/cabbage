@@ -449,7 +449,7 @@ int GetCabbageStringValue::getAttribute()
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
         outargs.str_data(0).size = ((STRINGDAT*)value)->size;
-        outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
+        outargs.str_data(0).data = (((STRINGDAT*)value)->data);
     }
     
     
@@ -656,9 +656,13 @@ int GetCabbageValueArrayWithTrigger::getAttribute()
 //====================================================================================================
 int CabbageValueChanged::getAttribute()
 {
-    
     if(in_count() == 0)
         return NOTOK;
+
+    if(in_count() == 3)
+        mode = inargs[2];
+    else
+        mode = 2;
     
     csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
     bool foundAChange = false;
@@ -668,18 +672,50 @@ int CabbageValueChanged::getAttribute()
         if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                 CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
         {
-            
-            if(*value != currentValue[i])
+            if(in_count() > 1)
             {
-                currentValue[i] = *value;
-                outargs.str_data(0).size = inputArgs[i].size;
-                outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                foundAChange = true;
+                if(mode == 2)
+                {
+                    if ((oldValue[i] <= inargs[1] && *value > inargs[1]) ||
+                        (oldValue[i] >= inargs[1] && *value < inargs[1] ) )
+                    {
+                        outargs.str_data(0).size = inputArgs[i].size;
+                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        foundAChange = true;
+                    }
+                }
+                else if(mode == 0)
+                {
+                    if (oldValue[i] <= inargs[1] && *value > inargs[1])
+                    {
+                        outargs.str_data(0).size = inputArgs[i].size;
+                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        foundAChange = true;
+                    }
+                }
+                else if(mode == 1)
+                {
+                    DBG("OldValue:"+String(oldValue[i]));
+                    DBG("CurrentValue:"+String(*value));
+                    if (oldValue[i] >= inargs[1] && *value < inargs[1])
+                    {
+                        outargs.str_data(0).size = inputArgs[i].size;
+                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        foundAChange = true;
+                    }
+                }
+                
+                oldValue[i] = *value;
             }
             else
             {
-                //outargs.str_data(0).size = inputArgs[i].size;
-                //outargs.str_data(0).data = csound->strdup("");
+                if(*value != oldValue[i])
+                {
+                    oldValue[i] = *value;
+                    outargs.str_data(0).size = inputArgs[i].size;
+                    outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                    foundAChange = true;
+                }
             }
         }
         else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
@@ -708,22 +744,75 @@ int CabbageValueChanged::getAttribute()
     
     return OK;
 }
-int CabbageStringValueChanged::getAttribute()
+
+int CabbageValueChangedIndex::getAttribute()
 {
-    
     if(in_count() == 0)
         return NOTOK;
     
+    if(in_count() == 3)
+        mode = inargs[2];
+    else
+        mode = 2;
+    
     csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
-    csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
-    csnd::Vector<MYFLT>& outTriggers = outargs.myfltvec_data(1);
-    out.init(csound, (int)inputArgs.len());
-    outTriggers.init(csound, (int)inputArgs.len());
+    bool foundAChange = false;
     
     for ( int i = 0 ; i < inputArgs.len() ; i++)
     {
         if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
-                                                CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+                                                CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+        {
+            if(in_count() > 1)
+            {
+                if(mode == 2)
+                {
+                    if ((oldValue[i] <= inargs[1] && *value > inargs[1]) ||
+                        (oldValue[i] >= inargs[1] && *value < inargs[1] ) )
+                    {
+//                        outargs.str_data(0).size = inputArgs[i].size;
+//                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        outargs[0] = i;
+                        foundAChange = true;
+                    }
+                }
+                else if(mode == 0)
+                {
+                    if (oldValue[i] <= inargs[1] && *value > inargs[1])
+                    {
+//                        outargs.str_data(0).size = inputArgs[i].size;
+//                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        outargs[0] = i;
+                        foundAChange = true;
+                    }
+                }
+                else if(mode == 1)
+                {
+                    if (oldValue[i] >= inargs[1] && *value < inargs[1])
+                    {
+//                        outargs.str_data(0).size = inputArgs[i].size;
+//                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        outargs[0] = i;
+                        foundAChange = true;
+                    }
+                }
+                
+                oldValue[i] = *value;
+            }
+            else
+            {
+                if(*value != oldValue[i])
+                {
+                    oldValue[i] = *value;
+//                    outargs.str_data(0).size = inputArgs[i].size;
+//                    outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                    foundAChange = true;
+                    outargs[0] = i;
+                }
+            }
+        }
+        else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                                                     CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
         {
             if(currentStrings[i].size == 0){
                 currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
@@ -734,15 +823,16 @@ int CabbageStringValueChanged::getAttribute()
             {
                 currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
                 currentStrings[i].size = ((STRINGDAT*)value)->size;
-                outTriggers[i] = 1;
+                foundAChange = true;
+                outargs[0] = i;
             }
-            else
-                outTriggers[i] = 0;
-            
-            out[i].size = currentStrings[i].size+1;
-            out[i].data = currentStrings[i].data;
         }
     }
+    
+    if(foundAChange == true)
+        outargs[1] = 1;
+    else
+        outargs[1] = 0;
     
     return OK;
 }
@@ -915,7 +1005,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int rate)
                                                CSOUND_STRING_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
         {
             STRINGDAT* stringdat = (STRINGDAT*) str;
-            stringdat->data = args.str_data(1).data;
+            stringdat->data = csound->strdup(args.str_data(1).data);
             stringdat->size = strlen(args.str_data(1).data) + 1;
         }
         
@@ -985,9 +1075,6 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int rate)
             }
         }
     }
-    
-    csound->message(args.str_data(0).data);
-    csound->message(args.str_data(1).data);
     
     //now update underlying Csound channel
     if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &strInput, args.str_data(0).data,

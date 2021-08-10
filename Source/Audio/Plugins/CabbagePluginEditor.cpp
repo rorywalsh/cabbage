@@ -65,7 +65,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 
     tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
     if(cabbageProcessor.getCsound())
-        cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 1.0);
+        cabbageProcessor.getCsound()->SetControlChannel ("IS_EDITOR_OPEN", 1.0);
 
     if(cabbageProcessor.currentPluginScale != -1)
         resizePlugin(cabbageProcessor.currentPluginScale);
@@ -782,7 +782,7 @@ void CabbagePluginEditor::buttonStateChanged(Button* button)
 	{
 		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageProcessor.cabbageWidgets, cabbageButton->getName());
 		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
-        DBG("ValueTreeListener:"+cabbageButton->getName());
+        //DBG("ValueTreeListener:"+cabbageButton->getName());
         
 		if (latched == 0)
 		{
@@ -837,10 +837,14 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
 }
 void CabbagePluginEditor::sliderDragStarted(Slider* slider)
 {
+    isSliderDragging = true;
     if (slider->getSliderStyle() != Slider::TwoValueHorizontal && slider->getSliderStyle() != Slider::TwoValueVertical)
     {
         if (CabbagePluginParameter* param = getParameterForComponent(slider->getName()))
         {
+#ifndef Cabbage_IDE_Build
+            if(!pluginType.isAbletonLive())
+#endif
             param->beginChangeGesture();
         }
     }
@@ -867,6 +871,9 @@ void CabbagePluginEditor::sliderDragEnded(Slider* slider)
     {
         if (CabbagePluginParameter* param = getParameterForComponent(slider->getName()))
         {
+#ifndef Cabbage_IDE_Build
+            if(!pluginType.isAbletonLive())
+#endif
             param->endChangeGesture();
         }
     }

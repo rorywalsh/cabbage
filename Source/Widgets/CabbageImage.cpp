@@ -41,6 +41,7 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
     prevHeight = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::height);
     widgetData.addListener (this);
 	
+    svgElement = createSVG(wData);
     //int isParent = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::isparent);
     String fileBase64 = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
 
@@ -122,6 +123,24 @@ void CabbageImage::paint (Graphics& g)
             else
                 g.drawEllipse (lineThickness/2.f, lineThickness/2.f, jmax (1, getWidth()-lineThickness), jmax (1, getHeight()-lineThickness), lineThickness);
         }
+        
+        if(usesSVGElement)
+        {
+            g.fillAll (Colours::transparentBlack);
+            
+            svg = (XmlDocument::parse(svgElement));
+            
+            if (svg == nullptr)
+                return;
+            
+            
+            
+            if (svg != nullptr)
+            {
+                drawable = Drawable::createFromSVG(*svg);
+                drawable->draw(g, 1.f, AffineTransform());
+            }
+        }
     }
 }
 //==============================================================================
@@ -166,7 +185,27 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     cropwidth = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropwidth);
     cropheight = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropheight);
     handleCommonUpdates (this, valueTree, false, prop);
+    
+    if(prop == CabbageIdentifierIds::svgElement)
+        svgElement = createSVG(valueTree);
+    
     repaint();
+}
+
+String CabbageImage::createSVG(ValueTree valueTree)
+{
+    if(CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::svgElement).toString().isNotEmpty())
+    {
+        svgViewBox = "<svg viewBox=\"0 0 " + CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::width).toString() + " " + CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::height).toString() + "\">";
+        usesSVGElement = true;
+        return svgViewBox + CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::svgElement) + "\n</svg>";
+
+    }
+    else
+    {
+        usesSVGElement = false;
+        return "";
+    }
 }
 
 void CabbageImage::resizeAllChildren(ValueTree& valueTree)

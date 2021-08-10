@@ -256,7 +256,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<SetCabbageValueIdentifier>((csnd::Csound*) csound->GetCsound(), "cabbageSetValue", "", "SkP", csnd::thread::k);
     
     csnd::plugin<SetCabbageValueIdentifierSArgsITime>((csnd::Csound*) csound->GetCsound(), "cabbageSetValue", "", "SS", csnd::thread::i);
-    csnd::plugin<SetCabbageValueIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSetValue", "", "SSP", csnd::thread::k);
+    csnd::plugin<SetCabbageValueIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSetValue", "", "SSk", csnd::thread::k);
     
     csnd::plugin<GetCabbageValue>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "k", "S", csnd::thread::k);
     csnd::plugin<GetCabbageValueArray>((csnd::Csound*) csound->GetCsound(), "cabbageGetValue", "k[]", "S[]", csnd::thread::k);
@@ -272,6 +272,10 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<GetCabbageIdentifierArray>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "i[]", "SS", csnd::thread::i);
 
     csnd::plugin<CabbageValueChanged>((csnd::Csound*) csound->GetCsound(), "cabbageChanged", "Sk", "S[]", csnd::thread::ik);
+    csnd::plugin<CabbageValueChangedIndex>((csnd::Csound*) csound->GetCsound(), "cabbageChanged", "kk", "S[]", csnd::thread::ik);
+    
+    csnd::plugin<CabbageValueChangedIndex>((csnd::Csound*) csound->GetCsound(), "cabbageChanged", "kk", "S[]kM", csnd::thread::ik);
+    csnd::plugin<CabbageValueChanged>((csnd::Csound*) csound->GetCsound(), "cabbageChanged", "Sk", "S[]kM", csnd::thread::ik);
     
     csnd::plugin<GetCabbageStringIdentifierArray>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "S[]", "SS", csnd::thread::ik);
     csnd::plugin<GetCabbageIdentifierSingle>((csnd::Csound*) csound->GetCsound(), "cabbageGet", "k", "SS", csnd::thread::ik);
@@ -458,7 +462,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
             else
             {
-                if (typeOfWidget == CabbageWidgetTypes::combobox)
+                if (typeOfWidget == CabbageWidgetTypes::combobox || typeOfWidget == CabbageWidgetTypes::listbox)
                 {
                     const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype");
                     //if we are dealing with a combobox that reads files from a directory, we need to load them before the GUI opens...
@@ -548,6 +552,16 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                 const float value = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::value);
                 const String channel = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel);
                 csound->SetChannel (channel.getCharPointer(), value);
+                
+                if(firstInit)
+                {
+                    if(typeOfWidget == CabbageWidgetTypes::rslider || typeOfWidget == CabbageWidgetTypes::vslider || typeOfWidget == CabbageWidgetTypes::hslider)
+                    {
+                        //set doubleclick return value..
+                        CabbageWidgetData::setNumProp(cabbageData.getChild(i), CabbageIdentifierIds::defaultValue, value);
+                        
+                    }
+                }
             }
 
         }
@@ -581,7 +595,6 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     csdFilePath.setAsCurrentWorkingDirectory();
     csound->SetChannel("HOST_BUFFER_SIZE", csdKsmps);
-
     csound->SetChannel("HOME_FOLDER_UID", File::getSpecialLocation (File::userHomeDirectory).getFileIdentifier());
 
     time_t seconds_past_epoch = time(0);
@@ -675,12 +688,13 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     //csound->Message("Running single k-cycle...\n");
     csound->PerformKsmps();
     //csound->Message("Rewinding...\n");
-    csound->SetChannel ("IS_EDITOR_OPEN", 0.0);
+    //csound->SetChannel ("IS_EDITOR_OPEN", 0.0);
     csound->SetChannel ("MOUSE_DOWN_LEFT", 0.0);
     csound->SetChannel ("MOUSE_DOWN_RIGHT", 0.0);
     csound->SetChannel ("MOUSE_DOWN_MIDDLE", 0.0);
     
     Logger::writeToLog("initAllCsoundChannels (ValueTree cabbageData) - done");
+    firstInit = false;
 }
 //==============================================================================
 void CsoundPluginProcessor::addMacros (String& csdText)

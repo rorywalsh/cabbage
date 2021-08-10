@@ -1,14 +1,16 @@
 # cabbageChanged Opcodes
 
-This opcode takes an array of channel names and listens for a change. It reports a trigger value alongside the name of the channel that changed. The channels can hold strings or numbers. 
+This opcode takes an array of channel names and listens for a change. It reports a trigger value along with the name or index of the channel that changed. An Additional input parameters can cause this to act like a threshold trigger where it will only fire a trigger signal when a threshold is crossed. 
+
+The channels can hold strings or numbers, but only numeric channels work with the optional threshold arguments. 
 
 
 <blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> Added in Cabbage v2.7.12</blockquote>
 
 ### Syntax
 
-<pre>SChannel, kTrig <b>cabbageChanged</b> SChannels[]</pre>
-
+<pre>SChannel, kTrig <b>cabbageChanged</b> SChannels[], [kThreshold, [kMode]]</pre>
+<pre>kIndex, kTrig <b>cabbageChanged</b> SChannels[], [kThreshold, [kMode]]</pre>
 
 #### Initialization
 
@@ -17,7 +19,18 @@ This opcode takes an array of channel names and listens for a change. It reports
 #### Performance
 
 * `SChannel` -- The channel that was most recently changed
-* `kTrig` -- will output a trigger value of 1 whenever a channel changes. 
+* `kIndex` -- The index of the channel that was changed in relation to the input array
+* `kTrig` -- will output a trigger value of 1 whenever a channel changes, or a threshold has been crossed. 
+* `kThreshold` -- [optional] if added, will output a trigger value of 1 whenever a channel changes to this value. 
+* `kMode` == [optional] Defaults to 2. There are three modes:
+
+kMode = 0 - (down-up) kTrig outputs a 1 when current channel value is higher than kThreshold, while old channel value was equal to or lower than kThreshold.
+
+kMode = 1 - (up-down) kTrig outputs a 1 when current channel value is lower than kThreshold while old channel value was equal or higher than kThreshold.
+
+kMode = 2 - (both) kTrig outputs a 1 in both the two previous cases.
+
+
 
 ### Example
 
@@ -42,11 +55,17 @@ label bounds(8, 158, 412, 21) channel("label1"), align("left"), fontColour(0, 0,
 ksmps   = 32  
 
 instr 1
-
+    ;grab all widget channels
     SWidgetChannels[] cabbageGetWidgetChannels
+    
+    ;this version will return the name of the channel
     SUpdatedChannel, kTrig cabbageChanged SWidgetChannels
-    cabbageSet kTrig, "label1", sprintfk("text(\"Last updated widget: %s\n\")", SUpdatedChannel)
 
+    ;this version will return the indoex of the channel
+    kIndex, kTrig cabbageChanged SWidgetChannels
+    
+    ;update label with info
+    cabbageSet kTrig, "label1", sprintfk("text(\"Last updated widget: %s - Index:%d\")", SUpdatedChannel, kIndex)
 endin
 
 </CsInstruments>

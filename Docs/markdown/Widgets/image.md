@@ -56,7 +56,9 @@ image WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/moveBehind.md !} 
 
-{! ./markdown/Widgets/Properties/widgetArray.md !}  
+{! ./markdown/Widgets/Properties/widgetArray.md !} 
+
+{! ./markdown/Widgets/Properties/svgElement.md !} 
 
 <!--(End of identifiers)/-->
 

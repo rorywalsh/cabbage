@@ -2019,7 +2019,10 @@ static const StringArray getOpcodeHints(){
         "\"cabbageGet\";\"Get a Cabbage widget identifier\";\"Get a Cabbage widget identifier.\";\"kVal/kIdent[] [, kTrig] cabbageGet SChannel, SIdentifier   |   SVal/SIdent[] [, kTrig] cabbageGet SChannel, SIdentifier   |   kChannelValue [, kTrig] cabbageGet SChannel   |   SChannelValue [, kTrig] cabbageGet SChannel",
         "\"cabbageGetValue\";\"Gets the value of Cabbage widget\";\"Gets the value of Cabbage widget.\";\"kValue [, kTrig] cabbageGetValue SChannel   |   SValue [, kTrig] cabbageGetValue SChannel   |   cabbageSetValue SChannel, kValue [, kTrig]",
         "\"cabbageSetValue\";\"Sets the value of Cabbage widget\";\"Sets the value of Cabbage widget.\";\"cabbageSetValue SChannel, kValue [, kTrig]",
-        "\"cabbageCreate\";\"Creates a new Cabbage widget.\";\"Creates a new Cabbage widget. i-rate only\";\"cabbageCreate SCabbageCodeString"};
+        "\"cabbageGetWidgetChannels\";\"Gets an array of Cabbage widget channels\";\"Gets an array of Cabbage widget channels\";\"SChannels[] cabbageGetWidgetChannels [SIdentifierFilter]",
+        "\"cabbageGetWidgetChannels\";\"Gets an array of Cabbage widget channels\";\"Gets an array of Cabbage widget channels\";\"SChannels[] cabbageGetWidgetChannels [SIdentifierFilter]",
+        
+        "\"cabbageFindFiles\";\"Gets an array of files from a directory.\";\"Gets an array of files from a directory\";\"SFiles[] cabbageFindFiles SLocation [, SType, SExtension] - SFiles[] cabbageFindFiles kTriggerFind, SLocation [, SType, SExtension]"};
     return opcodes;
 };
 
