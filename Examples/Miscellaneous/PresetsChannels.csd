@@ -21,8 +21,6 @@ nchnls = 2
 
 gkFileNumber init 10
 
-;if you want chnset calls to work with host automation, enable this channel
-chnset 1, "CHNSET_GESTURES"
 
 instr 1
    kEnv madsr cabbageGetValue:i("att"), cabbageGetValue:i("dec"), cabbageGetValue:i("sus"), cabbageGetValue:i("rel")
@@ -32,11 +30,13 @@ endin
 
 instr 10
    SFilename, kTrig cabbageGetValue "recallCombo"
+   printf SFilename, kTrig
+   printk2 kTrig
    if kTrig == 1 then
       SIgnoreChannels[] init 2
       SIgnoreChannels[0] = "triggerSave"
       SIgnoreChannels[1] = "recallCombo"
-      kOk = cabbageChannelStateRecall:k(SFilename, SIgnoreChannels)
+      kOk = cabbageChannelStateRecall:k(sprintfk("%s.pre", SFilename), SIgnoreChannels)
       cabbageSetValue "att", cabbageGetValue:k("att")
       cabbageSetValue "dec", cabbageGetValue:k("dec")
       cabbageSetValue "sus", cabbageGetValue:k("sus")
@@ -50,9 +50,9 @@ instr 10
       kOk = cabbageChannelStateSave:k(SFilename)
       gkFileNumber+=1
       cabbageSet 1, "recallCombo", "refreshFiles(1)" 
+      
     endif
 endin
-
 
 </CsInstruments>
 <CsScore>

@@ -3,7 +3,7 @@ form caption("Slider Example") size(360, 460), guiMode("queue"), colour(2, 145, 
 
 texteditor bounds(16, 254, 332, 191) channel("infoText"), readOnly(1), wrap(1), scrollbars(1)
 
-vslider bounds(20, 20, 40, 180) channel("harmonic1") range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
+vslider bounds(20, 20, 40, 180) channel("harmonic1") markerColour(0, 0, 0, 255), trackerColour(2, 145, 209), range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
 vslider bounds(60, 20, 40, 180) channel("harmonic2") range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
 vslider bounds(100, 20, 40, 180) channel("harmonic3") range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
 vslider bounds(140, 20, 40, 180) channel("harmonic4") range(0, 1, 0, 1, 0.001), imgFile("slider", "Fader.png")
