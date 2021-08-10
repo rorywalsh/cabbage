@@ -384,12 +384,12 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
 		if (fileType.isNotEmpty())
 		{
 			String test = folderFiles[index].getFullPathName();
-			owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().replaceCharacters("\\", "/"));
+			//owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index-1].getFullPathName().replaceCharacters("\\", "/"));
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, folderFiles[index].getFullPathName().replaceCharacters("\\", "/"));
 		}
         else
         {
-            owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
+            //owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, stringItems[index]);
         }
         
@@ -426,7 +426,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 if(pluginDir.getChildFile(currentValueAsText).existsAsFile())
                 {
                     currentValueAsText = pluginDir.getChildFile(currentValueAsText).getFileNameWithoutExtension();
-                    index = stringItems.indexOf (currentValueAsText)+1;
+                    index = stringItems.indexOf (currentValueAsText);
                 }
                 else
                     index = stringItems.indexOf (currentValueAsText);
@@ -434,12 +434,12 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
                 //this index if different for strings and files?
                 if (index >= 0)
-                    setSelectedItemIndex (index, sendNotification);
+                    setSelectedItemIndex (index, dontSendNotification);
     
                 //can't update the channel value from here as it might update on the same cycle as a cabbageSetValue
                 //this in turn will update the string channel pointer and mess up further called to cabbageSetValue...
-                //owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
-                CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
+                owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
+                //CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }
 		else

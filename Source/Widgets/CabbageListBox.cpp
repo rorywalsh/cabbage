@@ -52,7 +52,6 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
         StringArray files;
         for ( auto file : folderFiles)
         {
-            DBG(file.getFileNameWithoutExtension());
             files.add(file.getFileNameWithoutExtension());
         }
         
@@ -228,11 +227,11 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                 File pluginDir;
                 String workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
                 
-                if(workingDir.isNotEmpty() && File(currentValueAsText).exists())
+                if(workingDir.isNotEmpty() && File::getCurrentWorkingDirectory().getChildFile (currentValueAsText).exists())
                 {
+                    currentValueAsText = File::getCurrentWorkingDirectory().getChildFile (currentValueAsText).getFullPathName();
                     CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::workingdir, File(currentValueAsText).getParentDirectory().getFullPathName());
                     addItemsToListbox(valueTree);
-                    DBG(stringItems.joinIntoString("\n"));
                 }
                 
                 
@@ -336,13 +335,10 @@ void CabbageListBox::clicked(int row)
     else if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))
     {
         const String fileType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype);
-        const int index = row+1;
-        
-
         if (fileType.isNotEmpty())
-            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, folderFiles[index - 1].getFullPathName());
+            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, folderFiles[row].getFullPathName());
         else
-            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, stringItems[index - 1]);
+            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, stringItems[row]);
         
     }
     else

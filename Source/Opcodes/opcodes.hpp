@@ -849,7 +849,10 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
     void readDataFromDisk(int mode)
     {
         json j;
-        std::string filename(inargs.str_data(0).data);
+        char resolved_path[1024];
+        realpath(inargs.str_data(0).data, resolved_path);
+
+        std::string filename(resolved_path);
         std::vector<std::string> ignoreStrings;
 
         if (in_count() == 2)
@@ -862,14 +865,14 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
             }
         }
 
+
         std::ifstream file(filename);
-        
         if (file.fail() && !filename.empty())
         {
-            if(mode == K_RATE)
-                csound->perf_error("Unable to open file\n", this);
-            else
-                csound->init_error("Unable to open file\n");
+//            if(mode == K_RATE)
+//                csound->perf_error("Unable to open file\n", this);
+//            else
+//                csound->init_error("Unable to open file\n");
             outargs[0] = 0;
             return;
         }

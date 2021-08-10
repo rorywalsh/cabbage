@@ -528,7 +528,7 @@ int GetCabbageStringValueWithTrigger::getAttribute()
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
         if(!currentString){
-            currentString = csound->strdup(((STRINGDAT*)value)->data);
+            currentString = csound->strdup((((STRINGDAT*)value)->data));
         }
         
         if(strcmp(currentString, ((STRINGDAT*)value)->data) != 0)
