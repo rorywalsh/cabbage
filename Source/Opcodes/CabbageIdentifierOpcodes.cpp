@@ -888,7 +888,7 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
             if(el.isValid == true)
             {
                 //crash here intermittently...
-                if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+                if(el.identifier == data.identifier && el.name == data.name)
                 {
                     el.args = data.args;
                     entryExists = true;
@@ -946,7 +946,7 @@ int SetCabbageValueIdentifierITime::setAttribute(int rate)
     {
         if(el.isValid == true)
         {
-            if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+            if(el.identifier == data.identifier && el.name == data.name)
             {
                 el.args = data.args;
                 entryExists = true;
@@ -1017,7 +1017,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int rate)
         {
             if(el.isValid == true)
             {
-                if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+                if(el.identifier == data.identifier && el.name == data.name)
                 {
                     el.args = data.args;
                     entryExists = true;
@@ -1068,7 +1068,7 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int rate)
     {
         if(el.isValid == true)
         {
-            if((el.args.size() != 0) && el.identifier == data.identifier && el.name == data.name)
+            if(el.identifier == data.identifier && el.name == data.name)
             {
                 el.args = data.args;
                 entryExists = true;

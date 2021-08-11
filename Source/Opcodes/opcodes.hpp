@@ -869,10 +869,11 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
         std::ifstream file(filename);
         if (file.fail() && !filename.empty())
         {
-//            if(mode == K_RATE)
-//                csound->perf_error("Unable to open file\n", this);
-//            else
-//                csound->init_error("Unable to open file\n");
+            std::string message = "Unable to open file:\n" + filename + "\nPlease make sure you have the correct filenanme and extension\n";
+            if(mode == K_RATE)
+                csound->perf_error(message, this);
+            else
+                csound->init_error(message);
             outargs[0] = 0;
             return;
         }
