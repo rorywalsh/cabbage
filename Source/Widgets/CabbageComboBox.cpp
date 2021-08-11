@@ -68,6 +68,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
 
         currentValueAsText = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::value).toString();
         workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::currentdir);
+        
         int index = 0;
         if (workingDir.isNotEmpty())
             pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);

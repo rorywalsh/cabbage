@@ -126,6 +126,7 @@ int GetCabbageStringIdentifierSingle::getAttribute()
     }
     
     const auto child = varData->data.getChildWithName(name);
+
     if(child.getProperty(identifier).size()>0)
     {
         const String data = child.getProperty(identifier)[0].toString();
@@ -135,7 +136,7 @@ int GetCabbageStringIdentifierSingle::getAttribute()
     else
     {
         outargs.str_data(0).size = 0;
-        outargs.str_data(0).data = csound->strdup("");
+        outargs.str_data(0).data = csound->strdup(child.getProperty(identifier).toString().toUTF8().getAddress());
     }
     
     

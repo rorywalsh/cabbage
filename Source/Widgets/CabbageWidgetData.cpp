@@ -350,6 +350,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("logger"):
             case HashStringToInt ("parent"):
             case HashStringToInt ("namespace"):
+            case HashStringToInt ("fileType"):
+            case HashStringToInt ("currentDir"):
             case HashStringToInt ("moveBehind"):
                 setProperty (widgetData, identifier, (identifier.contains("fix") ? strTokens[0] : strTokens[0].trim()));
                 break;
