@@ -90,8 +90,10 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         else
             setSelectedItemIndex (0, dontSendNotification);
         
-        owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().getCharPointer());
-
+        if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
+            owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().getCharPointer());
+        else
+            owner->sendChannelStringDataToCsound(getChannel(), stringItems[index]);
     }
     else
     {
