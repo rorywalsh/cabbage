@@ -835,6 +835,7 @@ void CabbagePluginEditor::sliderValueChanged (Slider* slider)
         }
     }
 }
+
 void CabbagePluginEditor::sliderDragStarted(Slider* slider)
 {
     isSliderDragging = true;

@@ -1790,8 +1790,9 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
                 else
                     CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::valuey, value);
             }
-
-            CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, value);
+            
+            else
+                CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::value, value);
         });
     }
     

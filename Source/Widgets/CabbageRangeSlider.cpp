@@ -92,7 +92,7 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
 void CabbageRangeSlider::setSliderValues (ValueTree wData)
 {
     minValue = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::minvalue);
-    maxValue = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxvalue);
+    maxValue  = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxvalue);
 
     min = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
     max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
@@ -104,7 +104,10 @@ void CabbageRangeSlider::setSliderValues (ValueTree wData)
     slider.setRange (min, max, sliderIncrement);
     slider.setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     slider.setSkewFactor (sliderSkew);
-    slider.setMinAndMaxValues (minValue, maxValue);
+
+    slider.setMinAndMaxValues (minValue, maxValue, dontSendNotification);
+    owner->sendChannelDataToCsound(getChannelArray()[0], minValue);
+    owner->sendChannelDataToCsound(getChannelArray()[1], maxValue);
 }
 
 void CabbageRangeSlider::setCurrentValues (float newMin, float newMax)
