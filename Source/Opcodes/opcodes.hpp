@@ -849,10 +849,10 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
     void readDataFromDisk(int mode)
     {
         json j;
-        char resolved_path[1024];
-        realpath(inargs.str_data(0).data, resolved_path);
+        //char resolved_path[1024];
+        //realpath(inargs.str_data(0).data, resolved_path);
 
-        std::string filename(resolved_path);
+        std::string filename(inargs.str_data(0).data);
         std::vector<std::string> ignoreStrings;
 
         if (in_count() == 2)
