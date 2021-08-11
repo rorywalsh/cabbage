@@ -785,7 +785,7 @@ namespace CabbageIdentifierIds
     static const Identifier whitenotecolour = "whiteNoteColour";
     static const Identifier widgetarray = "widgetArray";
     static const Identifier width = "width";
-    static const Identifier workingdir = "workingDir";
+    static const Identifier currentdir = "currentDir";
     static const Identifier wrap = "wrap";
     static const Identifier xchannel = "xChannel";
     static const Identifier xyautoindex = "xyautoindex";

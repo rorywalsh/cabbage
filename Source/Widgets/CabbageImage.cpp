@@ -127,13 +127,10 @@ void CabbageImage::paint (Graphics& g)
         if(usesSVGElement)
         {
             g.fillAll (Colours::transparentBlack);
-            
             svg = (XmlDocument::parse(svgElement));
             
             if (svg == nullptr)
                 return;
-            
-            
             
             if (svg != nullptr)
             {

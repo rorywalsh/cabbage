@@ -471,7 +471,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                         && !CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype).contains(".snaps")
                         && !CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype).contains("snaps"))
                     {
-                        const String workingDir = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::workingdir);
+                        const String workingDir = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::currentdir);
                         const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype");
                         if(workingDir.isNotEmpty())
                         {

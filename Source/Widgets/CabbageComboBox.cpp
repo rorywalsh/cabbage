@@ -29,7 +29,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     refresh (0),
     name (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name)),
     tooltipText (String()),
-    workingDir (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir)),
+    workingDir (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::currentdir)),
     rotate (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::rotate)),
     owner (_owner),
     widgetData (wData),
@@ -67,7 +67,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
 
         currentValueAsText = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::value).toString();
-        workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::workingdir);
+        workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::currentdir);
         int index = 0;
         if (workingDir.isNotEmpty())
             pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
@@ -296,7 +296,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     else
     {
         
-        workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
+        workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::currentdir);
        
         
         if (workingDir.isNotEmpty())
@@ -418,7 +418,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
                 
              
-                workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
+                workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
                 int index = 0;
                 if (workingDir.isNotEmpty())
                     pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
@@ -471,10 +471,10 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
         setTooltip (getCurrentPopupText (valueTree));
 
-        if((prop == CabbageIdentifierIds::workingdir || prop == CabbageIdentifierIds::populate || prop == CabbageIdentifierIds::update) && isPresetCombo == false)
+        if((prop == CabbageIdentifierIds::currentdir || prop == CabbageIdentifierIds::populate || prop == CabbageIdentifierIds::update) && isPresetCombo == false)
         {
             addItemsToCombobox (valueTree);
-            workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
+            workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
         }
 
         if(prop == CabbageIdentifierIds::text && isStringCombo == true)

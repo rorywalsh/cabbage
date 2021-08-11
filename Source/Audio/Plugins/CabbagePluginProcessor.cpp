@@ -857,7 +857,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 					//string combobox need to have their range known when creating the plugin parameter... 
 					if (CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channeltype) == "string")
 					{
-						const String workingDir = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::workingdir);
+						const String workingDir = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::currentdir);
 						const String fileType = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), "filetype");
 						int numOfFiles;
 						Array<File> folderFiles;

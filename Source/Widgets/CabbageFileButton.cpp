@@ -85,7 +85,7 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
 void CabbageFileButton::buttonClicked (Button* button)
 {
    
-    String workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::workingdir);
+    String workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::currentdir);
     File currentDir;
     if (workingDir.isNotEmpty())
         currentDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);

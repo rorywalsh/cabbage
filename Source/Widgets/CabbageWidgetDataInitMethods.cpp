@@ -640,7 +640,7 @@ void CabbageWidgetData::setListBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
-    setProperty (widgetData, CabbageIdentifierIds::workingdir, "");
+    setProperty (widgetData, CabbageIdentifierIds::currentdir, "");
 }
 
 void CabbageWidgetData::setMeterProperties (ValueTree widgetData, int ID, bool isVertical)
@@ -1030,7 +1030,7 @@ void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
-    setProperty (widgetData, CabbageIdentifierIds::workingdir, "");
+    setProperty (widgetData, CabbageIdentifierIds::currentdir, "");
     setProperty (widgetData, CabbageIdentifierIds::refreshfiles, 0);
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
 }

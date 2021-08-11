@@ -171,7 +171,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
     }
     else
     {
-        workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::workingdir);
+        workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::currentdir);
 
 		if (File::getCurrentWorkingDirectory().getChildFile(workingDir).exists())
 			listboxDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
@@ -225,12 +225,12 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                     return;
 
                 File pluginDir;
-                String workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
+                String workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
                 
                 if(workingDir.isNotEmpty() && File::getCurrentWorkingDirectory().getChildFile (currentValueAsText).exists())
                 {
                     currentValueAsText = File::getCurrentWorkingDirectory().getChildFile (currentValueAsText).getFullPathName();
-                    CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::workingdir, File(currentValueAsText).getParentDirectory().getFullPathName());
+                    CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::currentdir, File(currentValueAsText).getParentDirectory().getFullPathName());
                     addItemsToListbox(valueTree);
                 }
                 
@@ -271,10 +271,10 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
         fontColour = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour);
         //setTooltip (getCurrentPopupText (valueTree));
 
-        if (workingDir != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir) || (prop == CabbageIdentifierIds::populate || prop == CabbageIdentifierIds::text))
+        if (workingDir != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir) || (prop == CabbageIdentifierIds::populate || prop == CabbageIdentifierIds::text))
         {
             addItemsToListbox (valueTree);
-            workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::workingdir);
+            workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
         }
 
         if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles)==1)

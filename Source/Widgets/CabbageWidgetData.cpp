@@ -1205,7 +1205,7 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
     setProperty (widgetData, CabbageIdentifierIds::filetype, strTokens[0].trim());
 
     if (strTokens.size() > 1)
-        setProperty (widgetData, CabbageIdentifierIds::workingdir, strTokens[1].trim());
+        setProperty (widgetData, CabbageIdentifierIds::currentdir, strTokens[1].trim());
 
     if(strTokens.size() > 2)
         setProperty (widgetData, CabbageIdentifierIds::ignorelastdir, strTokens[1].trim().getIntValue());
