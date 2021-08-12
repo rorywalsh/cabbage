@@ -784,7 +784,68 @@ struct ChannelStateSave : csnd::Plugin<1, 1>
         }
         
         json j;
-
+        std::vector<std::string> ignoreStrings;
+        
+        ignoreStrings.push_back("CSOUND_GESTURES");
+        ignoreStrings.push_back("HOME_FOLDER_UID");
+        ignoreStrings.push_back("CURRENT_DATE_TIME");
+        ignoreStrings.push_back("SECONDS_SINCE_EPOCH");
+        ignoreStrings.push_back("HOST_BUFFER_SIZE");
+        ignoreStrings.push_back("LAST_FILE_DROPPED");
+        ignoreStrings.push_back("SECONDS_SINCE_EPOCH");
+        ignoreStrings.push_back("SECONDS_SINCE_EPOCH");
+        ignoreStrings.push_back("SECONDS_SINCE_EPOCH");
+        ignoreStrings.push_back("USER_APPLICATION_DIRECTORY");
+        ignoreStrings.push_back("USER_DESKTOP_DIRECTORY");
+        ignoreStrings.push_back("USER_DOCUMENTS_DIRECTORY");
+        ignoreStrings.push_back("USER_HOME_DIRECTORY");
+        ignoreStrings.push_back("USER_MUSIC_DIRECTORY");
+        ignoreStrings.push_back("MACOS");
+        ignoreStrings.push_back("WINDOWS");
+        ignoreStrings.push_back("Windows");
+        ignoreStrings.push_back("WINDOWSWindws");
+        ignoreStrings.push_back("Mac");
+        ignoreStrings.push_back("Macos");
+        ignoreStrings.push_back("FLStudio");
+        ignoreStrings.push_back("AbletonLive");
+        ignoreStrings.push_back("Logic");
+        ignoreStrings.push_back("LMMS");
+        ignoreStrings.push_back("Ardour");
+        ignoreStrings.push_back("Cubase");
+        ignoreStrings.push_back("Sonar");
+        ignoreStrings.push_back("Nuendo");
+        ignoreStrings.push_back("Reaper");
+        ignoreStrings.push_back("Wavelab");
+        ignoreStrings.push_back("Mainstage");
+        ignoreStrings.push_back("Garageband");
+        ignoreStrings.push_back("Samplitude");
+        ignoreStrings.push_back("Renoise");
+        ignoreStrings.push_back("StudioOne");
+        ignoreStrings.push_back("Bitwig");
+        ignoreStrings.push_back("Tracktion");
+        ignoreStrings.push_back("AdobeAudition");
+        ignoreStrings.push_back("IS_A_PLUGIN");
+        ignoreStrings.push_back("CSD_PATH");
+        ignoreStrings.push_back("CURRENT_WIDGET");
+        ignoreStrings.push_back("HOST_BPM");
+        ignoreStrings.push_back("HOST_PPQ_POS");
+        ignoreStrings.push_back("IS_EDITOR_OPEN");
+        ignoreStrings.push_back("IS_PLAYING");
+        ignoreStrings.push_back("IS_RECORDING");
+        ignoreStrings.push_back("MAC");
+        ignoreStrings.push_back("MOUSE_DOWN_LEFT");
+        ignoreStrings.push_back("MOUSE_DOWN_MIDDLE");
+        ignoreStrings.push_back("MOUSE_DOWN_RIGHT");
+        ignoreStrings.push_back("MOUSE_X");
+        ignoreStrings.push_back("MOUSE_Y");
+        ignoreStrings.push_back("SCREEN_HEIGHT");
+        ignoreStrings.push_back("SCREEN_WIDTH");
+        ignoreStrings.push_back("TIME_IN_SAMPLES");
+        ignoreStrings.push_back("TIME_IN_SECONDS");
+        ignoreStrings.push_back("TIME_SIG_DENOM");
+        ignoreStrings.push_back("TIME_SIG_NUM");
+        
+        
         controlChannelInfo_s* csoundChanList;
         int numberOfChannels = csound->get_csound()->ListChannels(csound->get_csound(), &csoundChanList);
 
@@ -797,19 +858,32 @@ struct ChannelStateSave : csnd::Plugin<1, 1>
 
             MYFLT* value;
             char* chString;
-
-            if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, csoundChanList[i].name,
-                CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+            bool ignore = false;
+            
+            for (int n = 0; n < ignoreStrings.size(); n++)
             {
-                j[csoundChanList[i].name] = *value;
+                if (strcmp(csoundChanList[i].name, ignoreStrings[n].c_str()) == 0)
+                {
+                    //DBG(ignoreStrings[n]);
+                    ignore = true;
+                }
             }
-
-            if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, csoundChanList[i].name,
-                CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+            
+            if(ignore == false)
             {
-                chString = ((STRINGDAT*)value)->data;
-                String s(chString);
-                j[csoundChanList[i].name] = s.replace("\\\\", "/").toStdString();
+                if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, csoundChanList[i].name,
+                    CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+                {
+                    j[csoundChanList[i].name] = *value;
+                }
+
+                if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, csoundChanList[i].name,
+                    CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+                {
+                    chString = ((STRINGDAT*)value)->data;
+                    String s(chString);
+                    j[csoundChanList[i].name] = s.replace("\\\\", "/").toStdString();
+                }
             }
         }
 
