@@ -172,6 +172,7 @@ public:
     
 
 private:
+    PluginHostType pluginType;
     controlChannelInfo_s* csoundChanList;
     int numberOfLinesInPlantCode = 0;
     String pluginName;
@@ -259,6 +260,7 @@ public:
     
     void beginChangeGesture()
     {
+        isPerformingGesture = true;
         if (isAutomatable)
         {
             parameter->beginChangeGesture();
@@ -267,6 +269,7 @@ public:
     
     void endChangeGesture()
     {
+        isPerformingGesture = false;
         if (isAutomatable)
         {
             parameter->endChangeGesture();
@@ -284,6 +287,7 @@ public:
     const String getChannel() const { return parameter->getChannel(); }
     const String getWidgetName() { return widgetName; }
     bool getIsAutomatable() const { return isAutomatable; }
+    bool isPerformingGesture = false;
     
 private:
     class CabbageHostParameter : public AudioParameterFloat
@@ -294,6 +298,8 @@ private:
         
         void setValue(float newValue) override
         {
+//            DBG(channel);
+            DBG(newValue);
             currentValue = isCombo ? juce::roundToInt(range.convertFrom0to1 (newValue)) : range.convertFrom0to1 (newValue);
             processor->setCabbageParameter(channel, currentValue, valueTree);
         }
@@ -391,7 +397,7 @@ private:
     
     const String widgetName;
     const bool isAutomatable = true;
-    
+
     CabbagePluginProcessor* owner;
     
 //    bool isCombo(const String name)

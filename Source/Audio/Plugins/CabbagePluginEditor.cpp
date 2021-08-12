@@ -815,6 +815,7 @@ void CabbagePluginEditor::toggleButtonState(Button* button, bool state)
 //======================================================================================================
 void CabbagePluginEditor::sliderValueChanged (Slider* slider)
 {
+    
     if (slider->getSliderStyle() != Slider::TwoValueHorizontal && slider->getSliderStyle() != Slider::TwoValueVertical)
     {
         if (CabbagePluginParameter* param = getParameterForComponent (slider->getName()))
@@ -844,7 +845,9 @@ void CabbagePluginEditor::sliderDragStarted(Slider* slider)
         if (CabbagePluginParameter* param = getParameterForComponent(slider->getName()))
         {
 #ifndef Cabbage_IDE_Build
-            if(!pluginType.isAbletonLive())
+            if(pluginType.isAbletonLive())
+                if(param->isPerformingGesture==true)
+                    param->endChangeGesture();
 #endif
             param->beginChangeGesture();
         }
