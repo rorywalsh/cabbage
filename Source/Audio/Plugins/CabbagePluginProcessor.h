@@ -172,7 +172,9 @@ public:
     
 
 private:
+#ifndef Cabbage_IDE_Build
     PluginHostType pluginType;
+#endif
     controlChannelInfo_s* csoundChanList;
     int numberOfLinesInPlantCode = 0;
     String pluginName;
