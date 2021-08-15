@@ -161,8 +161,6 @@ public:
     {
         if(csound)
         {
-            DBG("Current value of gestures channel");
-            DBG(csound->GetChannel("CSOUND_GESTURES"));
             return csound->GetChannel("CSOUND_GESTURES");
         }
         
