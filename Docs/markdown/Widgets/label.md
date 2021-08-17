@@ -52,6 +52,8 @@ label WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/widgetArray.md !}  
 
+{! ./markdown/Widgets/Properties/mouseInteraction.md !} 
+
 <!--(End of identifiers)/-->
 
 

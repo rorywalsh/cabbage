@@ -60,6 +60,8 @@ image WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/svgElement.md !} 
 
+{! ./markdown/Widgets/Properties/mouseInteraction.md !} 
+
 <!--(End of identifiers)/-->
 
 
