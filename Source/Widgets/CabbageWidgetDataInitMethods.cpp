@@ -602,6 +602,7 @@ void CabbageWidgetData::setLabelProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::corners, 3);
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty (widgetData, CabbageIdentifierIds::mouseinteraction, 1);
     setProperty (widgetData, CabbageIdentifierIds::channel, getProperty(widgetData, CabbageIdentifierIds::type).toString() + String(ID));
     setProperty (widgetData, CabbageIdentifierIds::automatable, 0.0f);
 }

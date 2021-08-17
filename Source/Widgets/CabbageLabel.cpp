@@ -44,6 +44,13 @@ CabbageLabel::CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner)
     textAlign = CabbageUtilities::getJustification (align);
 
     lookAndFeel.customFont = owner->customFont;
+    
+    const int allowInteraction = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::mouseinteraction);
+    if(allowInteraction)
+        setInterceptsMouseClicks(true, true);
+    else
+        setInterceptsMouseClicks(false, true);
+    
 
 }
 

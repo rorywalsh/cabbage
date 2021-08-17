@@ -31,6 +31,7 @@ class CabbageIDELookAndFeel;
 
 #ifdef JUCE_MAC
  #include <pwd.h>
+ #include <unistd.h>
 #endif
 
 #ifdef _MSC_VER
