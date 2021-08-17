@@ -47,9 +47,8 @@ opcode svgSlider, k,Siii
         <circle style="fill:%s;stroke:#000000;stroke-width:3;stroke-dashoffset:0" cx="%d" cy="%d" r="%d" />
         <rect style="fill:%s;stroke:#000000;stroke-width:3;stroke-dashoffset:0" width="%d" height="%d" x="%d" y="%d" />
         </>
-        }}, kPos, iHalfSizePos, iHalfSizePos, rgbString(iR*.65, iG*.65, iB*.65), iHalfSizePos, iHalfSizePos, iHalfSizePos*.9, rgbString(iR*.45, iG*.45, iB*.45), iHalfSizePos, iHalfSizePos, iHalfSizePos*.5, rgbString(iR, iG, iB), iHalfSizePos*.65, iHalfSizePos*.3, 0, iHalfSizePos*.85)
-        kInit = 0
-    
+    }}, kPos, iHalfSizePos, iHalfSizePos, rgbString(iR*.65, iG*.65, iB*.65), iHalfSizePos, iHalfSizePos, iHalfSizePos*.9, rgbString(iR*.45, iG*.45, iB*.45), iHalfSizePos, iHalfSizePos, iHalfSizePos*.5, rgbString(iR, iG, iB), iHalfSizePos*.65, iHalfSizePos*.3, 0, iHalfSizePos*.85)
+    kInit = 0    
     xout kSliderValue
 endop
 
@@ -60,18 +59,14 @@ opcode svgButton, k, Siii
     SLabelChannel sprintf "%s_label", SButtonChannel  
     SText[] cabbageGet SButtonChannel, "text"
     kValue, kTrig cabbageGetValue SButtonChannel
-    printk2 kValue
     kInit init 1
-    iBounds[] cabbageGet SButtonChannel, "bounds"
-    
+    iBounds[] cabbageGet SButtonChannel, "bounds"    
     cabbageCreate "image", sprintf({{bounds(%d, %d, %d, %d) colour(0, 0, 0, 0), mouseInteraction(0) channel("%s")}}, iBounds[0], iBounds[1], iBounds[2], iBounds[3], SImageChannel)
     cabbageCreate "label", sprintf({{bounds(%d, %d, %d, %d) mouseInteraction(0) fontColour(250, 250, 250) channel("%s"), fontSize(20), text("%s")}}, iBounds[0], iBounds[1], iBounds[2], iBounds[3], SLabelChannel, SText[chnget:i(SButtonChannel)])
     cabbageSet kTrig + kInit, SImageChannel, "svgElement", sprintfk({{
-    <rect x="1" y="1" width="%d" height="%d" rx="%d" style="fill:%s;stroke:%s;stroke-width:3;stroke-dashoffset:0"/>
+        <rect x="1" y="1" width="%d" height="%d" rx="%d" style="fill:%s;stroke:%s;stroke-width:3;stroke-dashoffset:0"/>
     }}, iBounds[2]-2, iBounds[3]-2, iBounds[3]*.2, rgbString(iR*.5, iG*.5, iB*.5), rgbString(0, 0, 0))
-    
-    cabbageSet kTrig, SLabelChannel, "text", SText[kValue]
-    
+    cabbageSet kTrig, SLabelChannel, "text", SText[kValue]    
     xout kValue
 endop
 
