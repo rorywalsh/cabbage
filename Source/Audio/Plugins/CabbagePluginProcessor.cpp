@@ -31,11 +31,11 @@ createPluginFilter() {
 #ifdef JUCE_WINDOWS
 	CabbageUtilities::debug(CharPointer_UTF8(JucePlugin_Manufacturer));
 	csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
-
+	const String homeDrive = File::getSpecialLocation(File::windowsSystemDirectory).getParentDirectory().getParentDirectory().getFullPathName();
+	
 	if (csdFile.existsAsFile() == false)
-	{
-		String filename = "C:/ProgramData/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
-
+	{		
+		String filename = homeDrive+"/ProgramData/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
 		csdFile = File(filename);
 	}
 #elif JUCE_MAC
