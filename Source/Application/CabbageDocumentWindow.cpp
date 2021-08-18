@@ -72,24 +72,38 @@ commandLineArgs (commandLineParams)
         const auto commandLineParams = JUCEApplication::getCommandLineParameterArray();
 
         String outputFileName = "";
-        if (commandLineParams.contains ("--destination"))
+        int outputFileNameIndex = -1;
+        DBG(commandLineParams.joinIntoString("\n"));
+        for ( int x = 0; x < commandLineParams.size() ; x++)
         {
-            const auto outputFileNameIndex = commandLineParams.indexOf ("--destination") + 1;
-            if (0 < outputFileNameIndex && outputFileNameIndex < commandLineParams.size())
-            {
-                outputFileName = commandLineParams[outputFileNameIndex].trim().removeCharacters ("\"");
-            }
+            if(commandLineParams[x].contains("--destination"))
+                outputFileNameIndex = x;
         }
 
-        const auto exportTypes = StringArray ("AU", "AUi", "VST", "VSTi", "VST3", "VST3i");
+        if (outputFileNameIndex > -1 && outputFileNameIndex < commandLineParams.size())
+        {
+            outputFileName = commandLineParams[outputFileNameIndex].replace("--destination=", "");
+        }
+
+
+        const auto exportTypes = StringArray ("AUi", "AU", "VSTi", "VST3i", "VST3", "VST");
         for (const auto &type : exportTypes)
         {
             const auto param = "--export-" + type;
-            if (commandLineParams.contains (param))
+            const auto paramPro = "--export-pro-" + type;
+
+            if (commandLineParams.joinIntoString(" ").contains (param))
             {
                 String inputFileName = "";
-                const auto inputFileNameIndex = commandLineParams.indexOf (param) + 1;
-                if (0 < inputFileNameIndex && inputFileNameIndex < commandLineParams.size())
+                int inputFileNameIndex = -1;
+                
+                for ( int x = 0; x < commandLineParams.size() ; x++)
+                {
+                    if(commandLineParams[x].contains(paramPro))
+                        inputFileNameIndex = x;
+                }
+                
+                if (inputFileNameIndex > -1 && inputFileNameIndex < commandLineParams.size())
                 {
                     inputFileName = commandLineParams[inputFileNameIndex].trim().removeCharacters ("\"");
                     if (File (inputFileName).existsAsFile())
@@ -99,6 +113,33 @@ commandLineArgs (commandLineParams)
                         auto id = getPluginInfo (inputFile, "id");
                         auto promptForFilename = false;
                         pluginExporter.exportPlugin (type, inputFile, id, outputFileName, promptForFilename);
+                        JUCEApplicationBase::quit();
+                        exportedPlugin = true;
+                        break;
+                    }
+                }
+            }
+            else if (commandLineParams.joinIntoString(" ").contains (paramPro))
+            {
+                String inputFileName = "";
+                int inputFileNameIndex = -1;
+                
+                for ( int x = 0; x < commandLineParams.size() ; x++)
+                {
+                    if(commandLineParams[x].contains(paramPro))
+                        inputFileNameIndex = x;
+                }
+
+                if (inputFileNameIndex > -1 && inputFileNameIndex < commandLineParams.size())
+                {
+                    inputFileName = commandLineParams[inputFileNameIndex].replace(paramPro+"=", "");
+                    if (File (inputFileName).existsAsFile())
+                    {
+                        content->openFile (inputFileName, false, true);
+                        auto inputFile = File (inputFileName);
+                        auto id = getPluginInfo (inputFile, "id");
+                        auto promptForFilename = false;
+                        pluginExporter.exportPlugin (type, inputFile, id, outputFileName, promptForFilename, true);
                         JUCEApplicationBase::quit();
                         exportedPlugin = true;
                         break;
