@@ -155,6 +155,7 @@ void CabbageRangeSlider::setLookAndFeelColours (ValueTree wData)
     slider.setColour (Slider::textBoxHighlightColourId, Colours::lime.withAlpha (.2f));
 
     slider.setColour (Slider::thumbColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
+    slider.setColour (Slider::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::trackerbgcolour)));
     slider.setColour (Slider::trackColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::trackercolour)));
     slider.setColour (Slider::rotarySliderOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
 
