@@ -126,6 +126,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("textColour"):
         case HashStringToInt ("titleBarColour"):
         case HashStringToInt ("trackerColour"):
+        case HashStringToInt ("trackerBackgroundColour"):
         case HashStringToInt ("markerColour"):
         case HashStringToInt ("whiteNoteColour"):
         case HashStringToInt ("colour"):
