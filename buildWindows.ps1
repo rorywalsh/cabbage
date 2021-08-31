@@ -30,7 +30,7 @@ Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 # Invoke-WebRequest -UseBasicParsing "http://cabbageaudio.com/beta/heads.zip" -OutFile "C:\heads.zip" 
  
 7z.exe x vstsdk3611_22_10_2018_build_34.zip
-7z.exe x asiosdk2.3.2.zip
+7z.exe x asiosdk_2.3.3_2019-06-14.zip
 7z.exe x heads.zip
 mkdir SDKs  
 dir SDKs
