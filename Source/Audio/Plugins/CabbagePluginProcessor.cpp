@@ -1015,15 +1015,20 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  String fileName
                 }
                 else if (type == CabbageWidgetTypes::filebutton &&
                          !CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                           CabbageIdentifierIds::filetype).contains("snaps")) {
-                             const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                                                  CabbageIdentifierIds::file);
-                             
-                             if (file.length() > 2) {
-                                 const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
-                                 j[presetName.toStdString()][channelName.toStdString()] = relativePath.replaceCharacters("\\", "/").toStdString();
-                             }
+                                                           CabbageIdentifierIds::filetype).contains("snaps"))
+                {
+                    const int ignorelastdir = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                              CabbageIdentifierIds::ignorelastdir);
+                     const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                                                                          CabbageIdentifierIds::file);
+                     if(ignorelastdir == 0)
+                     {
+                         if (file.length() > 2) {
+                             const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
+                             j[presetName.toStdString()][channelName.toStdString()] = relativePath.replaceCharacters("\\", "/").toStdString();
                          }
+                     }
+                }
                 else if (type.contains("range")) //double channel range widgets
                 {
                     var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
@@ -1127,9 +1132,14 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
                 }
                 else if (type == CabbageWidgetTypes::filebutton)
                 {
-                    const String absolutePath =
-                    csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();
-                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
+                    const int ignoreLastDir = CabbageWidgetData::getNumProp(valueTree,
+                                                                               CabbageIdentifierIds::ignorelastdir);
+                    if(ignoreLastDir == 0)
+                    {
+                        const String absolutePath =
+                        csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();
+                        CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
+                    }
                 }
                 
                 //unique widgets taht take two channels...
@@ -1260,15 +1270,21 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 			}
 			else if (type == CabbageWidgetTypes::filebutton &&
 				!CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-					CabbageIdentifierIds::filetype).contains("snaps")) {
+					CabbageIdentifierIds::filetype).contains("snaps"))
+            {
 				const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 					CabbageIdentifierIds::file);
 
-				if (file.length() > 2) {
-					const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
-					xml->setAttribute(channelName,
-						relativePath.replaceCharacters("\\", "/"));
-				}
+                const int ignorelastdir = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                        CabbageIdentifierIds::ignorelastdir);
+                if(ignorelastdir == 0)
+                {
+                    if (file.length() > 2)
+                    {
+                        const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
+                        xml->setAttribute(channelName, relativePath.replaceCharacters("\\", "/"));
+                    }
+                }
 			}
 			else if (type.contains("range")) //double channel range widgets
 			{
@@ -1389,9 +1405,13 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			}
 			else if (type == CabbageWidgetTypes::filebutton)
 			{
-				const String absolutePath =
-					csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i).replaceCharacters("\\", "/")).getFullPathName();
-				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
+                const int ignorelastdir = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                        CabbageIdentifierIds::ignorelastdir);
+                if(ignorelastdir == 0)
+                {
+                    const String absolutePath = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i).replaceCharacters("\\", "/")).getFullPathName();
+                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
+                }
 			}
 			else if (type == CabbageWidgetTypes::hrange ||
 				type == CabbageWidgetTypes::vrange) //double channel range widgets
