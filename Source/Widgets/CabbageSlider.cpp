@@ -715,6 +715,12 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
     {
         getSlider().setDoubleClickReturnValue(true, CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::defaultValue));
     }
+    else if(prop == CabbageIdentifierIds::imgslider)
+    {
+        setImgProperties(this->slider, valueTree, "slider");
+        setImgProperties(this->slider, valueTree, "sliderbg");
+        repaint();
+    }
     else
     {
         textLabel.setText(getCurrentText(valueTree), dontSendNotification);
@@ -741,8 +747,8 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
             shouldDisplayPopup = true;
             getSlider().setTooltip(getCurrentPopupText(valueTree));
         }
-           
-
+        
+        
     }
 
 }
