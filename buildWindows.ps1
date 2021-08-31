@@ -18,7 +18,7 @@ $start_time = Get-Date
 Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 
 $start_time = Get-Date
-(New-Object System.Net.WebClient).DownloadFile("http://www.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip", "C:\asiosdk_2.3.3_2019-06-14.zip")
+(New-Object System.Net.WebClient).DownloadFile("https://download.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip", "C:\asiosdk_2.3.3_2019-06-14.zip")
 Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 
 $start_time = Get-Date
