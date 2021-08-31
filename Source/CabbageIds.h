@@ -765,7 +765,7 @@ namespace CabbageIdentifierIds
     static const Identifier trackerstart = "trackerStart";
     static const Identifier trackerend = "trackerEnd";
     static const Identifier trackercentre = "trackerCentre";
-    static const Identifier trackerbgcolour = "trackerBgColour";
+    static const Identifier trackerbgcolour = "trackerBackgroundColour";
     static const Identifier trackerthickness = "trackerThickness";
     static const Identifier trackeroutsideradius = "trackerOutsideRadius";
     static const Identifier trackerinsideradius = "trackerInsideRadius";

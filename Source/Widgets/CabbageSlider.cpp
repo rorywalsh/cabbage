@@ -671,6 +671,7 @@ void CabbageSlider::setLookAndFeelColours(ValueTree wData)
 {
 
     getSlider().setColour(Slider::thumbColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
+    getSlider().setColour(Slider::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::backgroundcolour)));
     getSlider().setColour(Slider::trackColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackercolour)));
     getSlider().setColour(Slider::rotarySliderOutlineColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour)));
 

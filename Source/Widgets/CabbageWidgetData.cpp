@@ -612,7 +612,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("fillColour"):
             case HashStringToInt ("tableGridColour"):
             case HashStringToInt ("trackerColour"):
-            case HashStringToInt ("trackerBgColour"):
+            case HashStringToInt ("trackerBackgroundColour"):
             case HashStringToInt ("highlightColour"):
             case HashStringToInt ("activeCellColour"):
             case HashStringToInt ("titleBarColour"):
