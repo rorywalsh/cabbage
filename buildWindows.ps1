@@ -18,7 +18,7 @@ $start_time = Get-Date
 Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 
 $start_time = Get-Date
-(New-Object System.Net.WebClient).DownloadFile("http://www.steinberg.net/sdk_downloads/ASIOSDK2.3.2.zip", "C:\ASIOSDK2.3.2.zip")
+(New-Object System.Net.WebClient).DownloadFile("http://www.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip", "C:\asiosdk_2.3.3_2019-06-14.zip")
 Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 
 $start_time = Get-Date
@@ -35,7 +35,7 @@ Write-Output "Time taken: $((Get-Date).Subtract($start_time).Seconds) second(s)"
 mkdir SDKs  
 dir SDKs
 Get-ChildItem -Path "C:/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container
-Get-ChildItem -Path "C:/ASIOSDK2.3.2" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3.2" -Recurse -Container
+Get-ChildItem -Path "C:/asiosdk_2.3.3_2019-06-14" | Copy-Item -Destination "C:/SDKs/ASIOSDK2.3.2" -Recurse -Container
 Copy-Item "C:/vst2.x" -Destination "C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/" -Recurse
 cd c:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/
 dir
