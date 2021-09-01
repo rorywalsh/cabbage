@@ -134,7 +134,7 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
     widgetData.addListener(this);
     addAndMakeVisible(textLabel);
-    
+
     addAndMakeVisible(&slider);
     addAndMakeVisible(thumb);
     slider.setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
@@ -233,13 +233,11 @@ void CabbageSlider::paint(Graphics& g)
 
         if(!sliderBounds.isArray())
         {
-        g.drawImage(filmStrip, filmStripBounds.getX(), filmStripBounds.getY(), filmStripBounds.getWidth(), filmStripBounds.getHeight(),
-            0, sliderValue * frameHeight, frameWidth, frameHeight);
+        g.drawImage(filmStrip, filmStripBounds.getX(), filmStripBounds.getY(), filmStripBounds.getWidth(), filmStripBounds.getHeight(), 0, sliderValue * frameHeight, frameWidth, frameHeight);
         }
         else
         {
-            g.drawImage(filmStrip, (int)sliderBounds[0], (int)sliderBounds[1], (int)sliderBounds[2], (int)sliderBounds[3],
-                        0, sliderValue * frameHeight, frameWidth, frameHeight);
+            g.drawImage(filmStrip, (int)sliderBounds[0], (int)sliderBounds[1], (int)sliderBounds[2], (int)sliderBounds[3], 0, sliderValue * frameHeight, frameWidth, frameHeight);
         }
     }
     else if (sliderBgImage.isValid())

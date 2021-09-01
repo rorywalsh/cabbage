@@ -25,7 +25,7 @@ public:
     }
 
     const String getApplicationName() override              { return "Cabbage Lite"; }
-    const String getApplicationVersion() override           { return "2.0"; }
+    const String getApplicationVersion() override           { return String(ProjectInfo::versionString); }
     bool moreThanOneInstanceAllowed() override              { return true; }
     void anotherInstanceStarted (const String&) override    {}
 

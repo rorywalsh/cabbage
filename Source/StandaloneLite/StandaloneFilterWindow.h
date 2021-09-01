@@ -436,7 +436,7 @@ public:
                 break;
 
             case 5:
-                CabbageUtilities::showMessage (String (CABBAGE_VERSION), &lAndF);
+                CabbageUtilities::showMessage ("Cabbage Lite\n"+String(ProjectInfo::versionString), &lAndF);
                 break;
 
             default:
