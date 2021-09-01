@@ -168,12 +168,12 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     if (!isFilmStripSlider) {
         if (sliderImageFile.existsAsFile())
         {
-            sliderThumbImage = ImageFileFormat::loadFrom(sliderImageFile);
+            sliderThumbImage = ImageCache::getFromFile(sliderImageFile);
             thumb.setThumbImage(sliderThumbImage);
         }
         if (sliderBackgroundFile.existsAsFile())
         {
-            sliderBgImage = ImageFileFormat::loadFrom(sliderBackgroundFile);
+            sliderBgImage = ImageCache::getFromFile(sliderBackgroundFile);
         }
         
     }
@@ -271,7 +271,8 @@ void CabbageSlider::initFilmStrip(ValueTree wData)
     if (imageFile.existsAsFile())
     {
         isFilmStripSlider = true;
-        filmStrip = ImageFileFormat::loadFrom(imageFile);
+        //ImageCache::addImageToCache(ImageFileFormat::loadFrom(imageFile), imageFile.hashCode64());
+        filmStrip = ImageCache::getFromFile(imageFile);
         if (!filmStrip.isNull())
         {
             slider.getProperties().set("filmstrip", 1);

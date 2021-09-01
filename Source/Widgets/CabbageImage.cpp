@@ -50,7 +50,7 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
 		bool result = Base64::convertFromBase64(out, fileBase64);
 		if (result) 
 		{
-			img = ImageFileFormat::loadFrom(out.getData(), out.getDataSize());
+			img = ImageCache::getFromMemory(out.getData(), out.getDataSize());
 		}
 		else
 		{
@@ -64,7 +64,7 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
                 imgFile = File(path).getParentDirectory().getChildFile(fileBase64).getFullPathName();
             }
 			if (File(imgFile).existsAsFile())
-				img = ImageFileFormat::loadFrom(imgFile);
+				img = ImageCache::getFromFile(imgFile);
 		}
 	}
 
@@ -237,7 +237,7 @@ void CabbageImage::updateImage(ValueTree& valueTree)
         bool result = Base64::convertFromBase64(out, fileBase64);
         if (result)
         {
-            img = ImageFileFormat::loadFrom(out.getData(), out.getDataSize());
+            img = ImageCache::getFromMemory(out.getData(), out.getDataSize());
         }
         else
         {
@@ -251,7 +251,7 @@ void CabbageImage::updateImage(ValueTree& valueTree)
                 imgFile = File(path).getParentDirectory().getChildFile(fileBase64).getFullPathName();
             }
             if (File(imgFile).existsAsFile())
-                img = ImageFileFormat::loadFrom(imgFile);
+                img = ImageCache::getFromFile(imgFile);
         }
     }
 

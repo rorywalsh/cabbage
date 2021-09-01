@@ -140,6 +140,7 @@ class CabbageSlider
     int numFrames = 31;
     bool imageIsNull = true;
     Image filmStrip;
+    File imageFile;
     int frameWidth = 32, frameHeight = 32;
     Rectangle<float> filmStripBounds = {0, 0, 80, 80};
     Label filmStripValueBox;
