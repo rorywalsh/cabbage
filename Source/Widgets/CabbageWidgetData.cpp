@@ -1210,7 +1210,7 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
         setProperty (widgetData, CabbageIdentifierIds::currentdir, strTokens[1].trim());
 
     if(strTokens.size() > 2)
-        setProperty (widgetData, CabbageIdentifierIds::ignorelastdir, strTokens[1].trim().getIntValue());
+        setProperty (widgetData, CabbageIdentifierIds::ignorelastdir, strTokens[2].trim().getIntValue());
     
     //remove default items for text array if filetype is known ...
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type) == CabbageWidgetTypes::combobox

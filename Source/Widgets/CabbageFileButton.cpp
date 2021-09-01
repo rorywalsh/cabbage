@@ -83,14 +83,15 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
 
 //===============================================================================
 void CabbageFileButton::buttonClicked (Button* button)
-{
-   
+{   
     String workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::currentdir);
+
+    const String csdFile = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::csdfile);
     File currentDir;
     if (workingDir.isNotEmpty())
-        currentDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
+        currentDir = File(csdFile).getChildFile (workingDir).getParentDirectory();
     else
-        currentDir = File::getCurrentWorkingDirectory();
+        currentDir = File(csdFile).getParentDirectory();
     
     const String presetFileName = CabbageWidgetData::getStringProp (widgetData, "fileType");
     File fileName;
@@ -115,7 +116,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     
     if (mode == "file")
     {
-        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::ignorelastdir))
+        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::ignorelastdir) == 0)
         {
             const String lastKnownDirectory = owner->getLastOpenedDirectory();
             if(lastKnownDirectory.isNotEmpty())
@@ -135,7 +136,7 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     else if (mode == "save")
     {
-        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::ignorelastdir))
+        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::ignorelastdir) == 0)
         {
             const String lastKnownDirectory = owner->getLastOpenedDirectory();
             if(lastKnownDirectory.isNotEmpty())
@@ -158,7 +159,7 @@ void CabbageFileButton::buttonClicked (Button* button)
 
     else if (mode == "directory")
     {
-        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::ignorelastdir))
+        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::ignorelastdir) == 0)
         {
             const String lastKnownDirectory = owner->getLastOpenedDirectory();
             if(lastKnownDirectory.isNotEmpty())
