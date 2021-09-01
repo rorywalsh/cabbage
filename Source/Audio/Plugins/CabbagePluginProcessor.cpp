@@ -268,7 +268,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
         
         //force channel type to string if preset combobox
         if(currentLineOfCabbageCode.contains("populate") && currentLineOfCabbageCode.contains("snaps") && currentLineOfCabbageCode.contains("combobox"))
-                currentLineOfCabbageCode = currentLineOfCabbageCode.replace("combobox", "combobox channelType(\"string\")");
+                currentLineOfCabbageCode = currentLineOfCabbageCode.replace("combobox", "combobox channelType(\"string\") automatable(0)");
            
 		CabbageWidgetData::setWidgetState(tempWidget, currentLineOfCabbageCode.trimCharactersAtStart(" \t") + comments,
 			lineNumber);

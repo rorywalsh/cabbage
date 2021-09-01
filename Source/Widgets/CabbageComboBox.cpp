@@ -101,7 +101,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         const String cType = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::channeltype);
         if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).contains ("snaps"))
         {
-            isPresetCombo = true;  
+            isPresetCombo = true;
             getProperties().set("isPresetCombo", true);
             String presetName = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::value).toString();
             
