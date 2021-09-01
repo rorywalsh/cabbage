@@ -84,15 +84,13 @@ instr 1
     kButton2 svgButton "button2", 160, 155, 40
     kButton3 svgButton "button3", 30, 155, 180
     kButton4 svgButton "button4", 200, 255, 140
-    kButton5 svgButton "button5", 100, 55, 240
-    
+    kButton5 svgButton "button5", 100, 55, 240    
         
     cabbageSetValue "slider1", abs(jspline:k(100, 1, 3)), kButton1
     cabbageSetValue "slider2", abs(jspline:k(100, 1, 3)), kButton2
     cabbageSetValue "slider3", abs(jspline:k(100, 1, 3)), kButton3
     cabbageSetValue "slider4", abs(jspline:k(100, 1, 3)), kButton4
-    cabbageSetValue "slider5", abs(jspline:k(100, 1, 3)), kButton5
-    
+    cabbageSetValue "slider5", abs(jspline:k(100, 1, 3)), kButton5    
 
 endin
 
