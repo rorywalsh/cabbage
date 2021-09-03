@@ -32,6 +32,12 @@ kTimeSigDenom chnget "TIME_SIG_DENOM"
 ```
 Csound will update these values on each k-cycle. In most case this is every 32 samples. If you need a more immediate update lower ksmps, but note this may cause knock on affects on other parts of your instrument. 
 
+Note that you need to be careful when querying these values. Some host will not broadcast this information until it starts playing. This can lead to a division by 0 errors. If you wish to use the host BPM to set say a delay time, you should wrap it in a `divz` opcode, i.e, 
+
+`kDelay = divz(60, kBPM, 1)`
+
+
+
 The [HostInfo.csd](https://github.com/rorywalsh/cabbage/blob/master/Examples/Instructional/HostInfo.csd) file in the Cabbage examples shows all the current information that can be retrieved in Csound. 
 
 ![Host info](images/host_info.gif)
