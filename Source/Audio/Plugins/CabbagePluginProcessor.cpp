@@ -330,6 +330,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
         if(mode == "resize" && typeOfWidget == CabbageWidgetTypes::combobox)
         {
             CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, "PluginResizerCombBox");
+            CabbageWidgetData::setNumProp(newWidget, CabbageIdentifierIds::automatable, 0);
         }
 
 		const String widgetName = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name);
@@ -1347,6 +1348,7 @@ void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
 	if (xmlState != nullptr) {
 		//if dealing with session saved by host
         setParametersFromXml(xmlState);
+        xmlState->writeTo(juce::File("~/Desktop/test.txt"), XmlElement::TextFormat());
 		initAllCsoundChannels(cabbageWidgets);
 	}
 }
