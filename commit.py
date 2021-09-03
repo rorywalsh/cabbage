@@ -35,4 +35,5 @@ for filename in files:
 os.system('git add Source')
 os.system('git add Examples')
 os.system('git add Docs')
+os.system('git add *.jucer')
 os.system('git commit -m "'+sys.argv[1]+' - Version number:'+newVersionNum+'"')
