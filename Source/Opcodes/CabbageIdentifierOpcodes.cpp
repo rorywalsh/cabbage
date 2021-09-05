@@ -372,7 +372,7 @@ int CabbageGetWidgetChannels::getChannels()
                     if (tempData == childData)
                     {
                         identMatches[x]++;
-                        var chans = CabbageWidgetData::getStringProp(varData->data.getChild(x), CabbageIdentifierIds::channel);
+                        var chans = CabbageWidgetData::getProperty(varData->data.getChild(x), CabbageIdentifierIds::channel);
                         if (chans.size() > 1)
                         {
                             for (int n = 0; n < chans.size(); n++)
@@ -408,7 +408,9 @@ int CabbageGetWidgetChannels::getChannels()
     {
         for (int x = 0; x < varData->data.getNumChildren(); x++)
         {
-            var chans = CabbageWidgetData::getStringProp(varData->data.getChild(x), CabbageIdentifierIds::channel);
+            var chans = CabbageWidgetData::getProperty(varData->data.getChild(x), CabbageIdentifierIds::channel);
+            //const Array<var>* channelArrayVar =chans.getArray();
+            //DBG(channelArrayVar->size());
             if (chans.size() > 1)
             {
                 for (int n = 0; n < chans.size(); n++)
