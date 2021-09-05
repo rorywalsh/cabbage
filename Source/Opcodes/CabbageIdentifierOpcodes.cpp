@@ -387,8 +387,15 @@ int CabbageGetWidgetChannels::getChannels()
                         else
                         {
                             if(identMatches[x] == idents.identifier.size()){
-                                channels.add(chans.toString());
-                                DBG(chans.toString());
+                                if(chans.isArray())
+                                {
+                                    DBG(chans[0].toString());
+                                    channels.add(chans[0].toString());
+                                }
+                                else{
+                                    DBG(chans.toString());
+                                    channels.add(chans.toString());
+                                }
                             }
                         }
                     }
@@ -420,8 +427,15 @@ int CabbageGetWidgetChannels::getChannels()
                 }
             }
             else{
-                DBG(chans.toString());
-                channels.add(chans.toString());
+                if(chans.isArray())
+                {
+                    DBG(chans[0].toString());
+                    channels.add(chans[0].toString());
+                }
+                else{
+                    DBG(chans.toString());
+                    channels.add(chans.toString());
+                }
             }
             
         }

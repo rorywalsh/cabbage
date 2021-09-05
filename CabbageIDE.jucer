@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf8'?>
-<JUCERPROJECT bundleIdentifier="com.cabbageaudio.cabbage" companyCopyright="" cppLanguageStandard="14" displaySplashScreen="0" id="CxJYjd" includeBinaryInAppConfig="0" jucerVersion="5.4.7" name="Cabbage" projectType="guiapp" reportAppUsage="1" splashScreenColour="Dark" version="2.8.1">
+<JUCERPROJECT bundleIdentifier="com.cabbageaudio.cabbage" companyCopyright="" cppLanguageStandard="14" displaySplashScreen="0" id="CxJYjd" includeBinaryInAppConfig="0" jucerVersion="5.4.7" name="Cabbage" projectType="guiapp" reportAppUsage="1" splashScreenColour="Dark" version="2.8.2">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{79BAF709-725B-0011-2B8F-19764599A5F1}" name="Opcodes">
