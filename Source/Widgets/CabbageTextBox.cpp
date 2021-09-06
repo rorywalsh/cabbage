@@ -45,6 +45,8 @@ CabbageTextBox::CabbageTextBox (ValueTree wData, CabbagePluginEditor* _owner)
         setText (textFile.loadFileAsString(), false);
     else
         setText ("Could not open file: " + String (filename));
+    
+
 
 }
 

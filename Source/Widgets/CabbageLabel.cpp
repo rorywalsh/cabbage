@@ -51,7 +51,10 @@ CabbageLabel::CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner)
     else
         setInterceptsMouseClicks(false, true);
     
-
+    if(owner->getCustomFontFile().existsAsFile())
+    {
+        userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
+    }
 }
 
 void CabbageLabel::paint (Graphics& g)
@@ -60,22 +63,18 @@ void CabbageLabel::paint (Graphics& g)
     g.fillRoundedRectangle (getLocalBounds().toFloat(), corners);
     g.setColour (Colour::fromString (fontcolour));
     
-    owner->customFont.setStyleFlags(fontstyle);
+    userFont.setStyleFlags(fontstyle);
     
 
 	if (fontsize == 0)
 	{
-        if(owner->customFont.getHeight()>900)
-            g.setFont (owner->customFont);
-        
+        g.setFont (userFont);
 		g.setFont(getHeight());
 		g.drawFittedText(text, 0, 0, jmax(1, getWidth()), jmax(1, getHeight()), textAlign, 1, 1);
 	}
 	else
 	{
-        if(owner->customFont.getHeight()>900)
-            g.setFont (owner->customFont);
-        
+        g.setFont (userFont);
         g.setFont(fontsize);
 		g.drawText(text, 0, 0, jmax(1, getWidth()), jmax(1, getHeight()), textAlign, false);
 	}

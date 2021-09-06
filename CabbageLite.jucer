@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf8'?>
-<JUCERPROJECT bundleIdentifier="com.yourcompany.CabbageLite" companyCopyright="" cppLanguageStandard="11" displaySplashScreen="0" id="id6VOA" includeBinaryInAppConfig="1" jucerVersion="5.4.7" name="CabbageLite" projectType="guiapp" reportAppUsage="1" splashScreenColour="Dark" version="2.8.2">
+<JUCERPROJECT bundleIdentifier="com.yourcompany.CabbageLite" companyCopyright="" cppLanguageStandard="11" displaySplashScreen="0" id="id6VOA" includeBinaryInAppConfig="1" jucerVersion="5.4.7" name="CabbageLite" projectType="guiapp" reportAppUsage="1" splashScreenColour="Dark" version="2.8.3">
   <MAINGROUP id="CfT7TE" name="CabbageLite">
     <GROUP id="{E4950169-7245-8252-D27F-2344F45CAF99}" name="Source">
       <GROUP id="{5C46BA91-ABD7-FFC2-4F16-FF6452893BE7}" name="Opcodes">

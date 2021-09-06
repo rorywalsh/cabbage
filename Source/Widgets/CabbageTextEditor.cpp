@@ -39,8 +39,23 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     
     
     int fontSize =CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontsize);
+    if(owner->getCustomFontFile().existsAsFile())
+    {
+        userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
+        textEditor.setFont(userFont);
+        textEditor.applyFontToAllText(userFont);
+    }
+    
     textEditor.setFont(Font(fontSize));
-                       
+
+    if(owner->getCustomFontFile().existsAsFile())
+    {
+        userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
+        userFont.setHeight(fontSize);
+        textEditor.setFont(userFont);
+        textEditor.applyFontToAllText(userFont);
+    }
+    
     textEditor.toggleEditOnDoubleClick = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::doubleclicktogglesedit);
     
     addAndMakeVisible (textEditor);
@@ -79,6 +94,7 @@ void CabbageTextEditor::resized()
 {
     textEditor.setBounds (getLocalBounds());
 }
+
 void CabbageTextEditor::sendTextToCsound()
 {
     strings.add (textEditor.getText());
@@ -87,10 +103,12 @@ void CabbageTextEditor::sendTextToCsound()
     setWidgetText (textEditor.getText());
     CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::text, getText());
     owner->sendChannelStringDataToCsound (getChannel(), textEditor.getText());
+//    textEditor.applyFontToAllText(userFont);
 }
 
 bool CabbageTextEditor::keyPressed (const juce::KeyPress& key, Component*)
 {
+//    textEditor.applyFontToAllText(userFont);
     if (!isMultiline)
     {
         if (key.getTextDescription().contains ("cursor up"))

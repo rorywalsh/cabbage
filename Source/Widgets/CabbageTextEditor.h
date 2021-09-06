@@ -96,6 +96,12 @@ public:
     void sendTextToCsound();
     bool keyPressed (const juce::KeyPress& key, Component*) override;
     void textEditorReturnKeyPressed (TextEditor&) override;
+    
+    void textEditorTextChanged (TextEditor &) override
+    {
+       // textEditor.applyFontToAllText(userFont);
+    }
+    
     void resized() override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageTextEditor);
@@ -105,6 +111,7 @@ private:
     bool isMultiline = false;
     int stringIndex = 0;
     StringArray strings;
+    Font userFont;
 };
 
 

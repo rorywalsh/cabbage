@@ -27,6 +27,7 @@ class CabbagePluginEditor;
 
 class CabbageLabel : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
+    Font userFont;
     CabbageLookAndFeel2 lookAndFeel;
     float rotate, corners;
     int pivotx, pivoty, fontstyle;

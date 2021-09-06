@@ -146,7 +146,7 @@ public:
             "</Cabbage>\n"
             "<CsoundSynthesizer>\n"
             "<CsOptions>\n"
-            "-n -d -+rtmidi=NULL -M0 -m0d \n"
+            "-n -d\n"
             "</CsOptions>\n"
             "<CsInstruments>\n"
             "; Initialize the global variables. \n"

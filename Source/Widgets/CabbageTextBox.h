@@ -30,7 +30,8 @@
 class CabbageTextBox : public TextEditor, public ValueTree::Listener, public CabbageWidgetBase
 {
     CabbagePluginEditor* owner;
-    String filename;	
+    String filename;
+    Font userFont;
 public:
 
     explicit CabbageTextBox (ValueTree wData, CabbagePluginEditor* owner);
