@@ -62,5 +62,6 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
   - task: PublishBuildArtifacts@1
     inputs:
+    artifactName: 'Installers'
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
 #       artifactName: '${SYSTEM_DEFAULTWORKINGDIRECTORY}/Cabbage.pkg'
