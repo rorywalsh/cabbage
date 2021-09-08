@@ -1124,7 +1124,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 		numSideChainChannels = getBusBuffer(buffer, true, getBusCount(true) - 1).getNumChannels();
 	}
 
-    //Type** ioBuffer = buffer.getArrayOfWritePointers();
+    Type** ioBuffer = buffer.getArrayOfWritePointers();
 #if !JucePlugin_IsSynth
 	Type** inputBuffer = mainInput.getArrayOfWritePointers();
 #endif
