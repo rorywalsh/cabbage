@@ -330,6 +330,9 @@ void FlatButtonLookAndFeel::drawLinearSliderThumb (Graphics& g, int x, int y, in
         slider.isMouseOverOrDragging() && slider.isEnabled(),
         slider.isMouseButtonDown() && slider.isEnabled()));
 
+    if(slider.findColour(Slider::trackColourId).getAlpha() == 0)
+        knobColour = Colours::transparentBlack;
+    
     const float outlineThickness = slider.isEnabled() ? 0.8f : 0.3f;
 
     if (style == Slider::LinearHorizontal || style == Slider::LinearVertical)

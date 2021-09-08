@@ -108,7 +108,7 @@ void CabbageTextEditor::sendTextToCsound()
 
 bool CabbageTextEditor::keyPressed (const juce::KeyPress& key, Component*)
 {
-//    textEditor.applyFontToAllText(userFont);
+//    textEditor.applyFontToAllText(userFont);  
     if (!isMultiline)
     {
         if (key.getTextDescription().contains ("cursor up"))
