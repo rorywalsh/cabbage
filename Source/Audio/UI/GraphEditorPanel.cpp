@@ -1332,9 +1332,7 @@ GraphDocumentComponent::~GraphDocumentComponent()
 void GraphDocumentComponent::resized()
 {
     auto r = getLocalBounds();
-    const int titleBarHeight = 40;
     const int keysHeight = 60;
-    const int statusHeight = 20;
     
     //if (isOnTouchDevice())
     //    titleBarComponent->setBounds (r.removeFromTop(titleBarHeight));

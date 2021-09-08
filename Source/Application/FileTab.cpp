@@ -102,8 +102,6 @@ void FileTab::drawButtonText (Graphics& g)
     g.setColour(fontColour.darker(getToggleState() ? 0.f : 0.5f));
 
     const int yIndent = jmin(4, proportionOfHeight(0.3f));
-    const int cornerSize = jmin(getHeight(), getWidth()) / 2;
-    const int fontHeight = roundToInt(font.getHeight() * 0.6f);
     const int leftIndent = 140;
 
     const int textWidth = getWidth() - 165;

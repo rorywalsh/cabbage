@@ -203,7 +203,7 @@ public:
 		return false;
 	}
     
-    virtual void modifierKeysChanged(const ModifierKeys &modifiers)
+    virtual void modifierKeysChanged(const ModifierKeys &modifiers) override
     {
         StringArray mods;
         if(modifiers.isAnyModifierKeyDown())

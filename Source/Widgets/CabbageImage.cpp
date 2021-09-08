@@ -50,7 +50,7 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
 		bool result = Base64::convertFromBase64(out, fileBase64);
 		if (result) 
 		{
-			img = ImageCache::getFromMemory(out.getData(), out.getDataSize());
+			img = ImageCache::getFromMemory(out.getData(), int(out.getDataSize()));
 		}
 		else
 		{

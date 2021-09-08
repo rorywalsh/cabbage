@@ -480,7 +480,6 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
 void PluginExporter::addFilesToPluginBundle (File csdFile, File exportDir)
 {
     StringArray invalidFiles;
-    bool invalidFilename = false;
     StringArray csdArray;
     csdArray.addLines (csdFile.loadFileAsString());
     

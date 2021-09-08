@@ -157,7 +157,6 @@ void CabbageEditorContainer::StatusBar::paint (Graphics& g)
     const Colour background = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::statusBar, Colours::black);
     const Colour text = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::statusBarText, Colours::black);
     const Colour outline = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::consoleOutline, Colours::black);
-    const Colour opcodeColour = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::keyword, Colours::black);
     const Colour syntaxColour = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::numbers, Colours::black);
     const Colour commmentColour = CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::comment, Colours::black);
 

@@ -1197,8 +1197,6 @@ void CabbagePluginEditor::refreshComboListBoxContents(String presetName)
 
             if (CabbageComboBox* combo = dynamic_cast<CabbageComboBox*> (getComponentFromName (name)))
             {
-                const int numPresets = combo->getNumItems();
-                const int currentIndex = combo->getSelectedItemIndex();
                 if (fileType.isNotEmpty())
                 {
                     combo->addItemsToCombobox (cabbageProcessor.cabbageWidgets.getChild (i));

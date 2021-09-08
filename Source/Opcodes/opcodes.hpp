@@ -90,11 +90,16 @@ struct WriteStateData : csnd::InPlug<2>
 
         std::string jsonString(args.str_data(1).data);
         if(jsonString.empty())
+        {
             if(mode == K_RATE)
+            {
                 csound->perf_error("JSON string is empty\n", this);
+            }
             else
+            {
                 csound->init_error("JSON string is empty:\n");
-        
+            }
+        }
         std::string jsonData = "";
         int writeMode = args[0];
         json j;
@@ -173,11 +178,16 @@ struct SetStateFloatData : csnd::InPlug<2>
         std::string jsonKeyName(args.str_data(0).data);
         
         if(jsonKeyName.empty())
+        {
             if(mode == K_RATE)
+            {
                 csound->perf_error("JSON key is empty\n", this);
+            }
             else
+            {
                 csound->init_error("JSON key is empty:\n");
-        
+            }
+        }
         
         std::string jsonData;
         MYFLT value = args[1];
@@ -498,7 +508,7 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
         if (json::accept(jsonData) == false)
         {
             outargs.str_data(0).size = 0;
-            outargs.str_data(0).data = "";
+            outargs.str_data(0).data = (char *)("");
             return;
         }
 
@@ -508,7 +518,7 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
         {
             if (it.key() == channelKey && it.value().is_string())
             {
-                outargs.str_data(0).size = strlen((char*)it.value().dump().c_str());
+                outargs.str_data(0).size = int(strlen((char*)it.value().dump().c_str()));
                 outargs.str_data(0).data = csound->strdup((char*)it.value().dump().c_str());
                 firstTimeSuccess = true;
             }
@@ -518,8 +528,7 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
         {
             //csound->message("Could not find value for " + channelKey + "?\nCheck JSON channel data.\n");
             outargs.str_data(0).size = 0;
-            outargs.str_data(0).data = csound->strdup("");
-            firstTimeSuccess = true;
+            outargs.str_data(0).data = csound->strdup((char *)(""));
         }
     }
 };
@@ -542,17 +551,22 @@ struct GetStateStringValueArray : csnd::Plugin<1, 1>
     {
         std::string chString;
         json j;
-        MYFLT* value;
+
         bool firstTimeSuccess = false;
         std::string channelKey(inargs.str_data(0).data);
         std::string jsonData;
 
         if(channelKey.empty())
+        {
             if(mode == K_RATE)
+            {
                 csound->perf_error("Key is empty\n", this);
+            }
             else
+            {
                 csound->init_error("Key is empty\n");
-        
+            }
+        }
         csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
 
 
@@ -573,7 +587,7 @@ struct GetStateStringValueArray : csnd::Plugin<1, 1>
         {
             csound->message("Invalid JSON data:" + jsonData + "\n");
             out.init(csound, 1);
-            out[0].data = "";
+            out[0].data = (char *)("");
             return;
         }
 
@@ -594,11 +608,6 @@ struct GetStateStringValueArray : csnd::Plugin<1, 1>
             }
         }
 
-        if (firstTimeSuccess == false)
-        {
-            //csound->message("Could not find value for " + channelKey + ". Check JSON channel data.\n");
-            firstTimeSuccess = true;
-        }
     }
 };
 
@@ -628,11 +637,17 @@ struct GetStateFloatValue : csnd::Plugin<1, 1>
         std::string channelKey(inargs.str_data(0).data);
         
         if(channelKey.empty())
+        {
             if(mode == I_RATE)
+            {
                 csound->init_error("Key is empty\n");
+            }
             else
+            {
                 csound->perf_error("Key is empty\n", this);
-        
+            }
+        }
+            
         std::string jsonData;
 
         CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
@@ -664,12 +679,6 @@ struct GetStateFloatValue : csnd::Plugin<1, 1>
                 outargs[0] = it.value();
                 firstTimeSuccess = true;
             }
-        }
-
-        if (firstTimeSuccess == false)
-        {
-            //csound->message("Could not find value for "+ channelKey + "?\nCheck JSON channel data.\n");
-            firstTimeSuccess = true;
         }
     }
 };
@@ -745,11 +754,6 @@ struct GetStateFloatValueArray : csnd::Plugin<1, 1>
             }
         }
 
-        if (firstTimeSuccess == false)
-        {
-            //csound->message("Could not find value for " + channelKey + "?\nCheck JSON channel data.\n");
-            firstTimeSuccess = true;
-        }
     }
 };
 
@@ -994,7 +998,7 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
                     {
                         DBG(channelName);
                         std::string string = it.value();
-                        ((STRINGDAT*)value)->size = strlen(string.c_str());
+                        ((STRINGDAT*)value)->size = int(strlen(string.c_str()));
                         ((STRINGDAT*)value)->data = csound->strdup((char*)string.c_str());
                     }
                 }
@@ -1035,7 +1039,7 @@ struct FileToStr : csnd::Plugin<1, 1>
         }
 
         fileStream.close();
-        outargs.str_data(0).size = strlen((char*)lines.c_str());
+        outargs.str_data(0).size = int(strlen((char*)lines.c_str()));
         outargs.str_data(0).data = csound->strdup((char*)lines.c_str());
         return OK;
     }
@@ -1075,7 +1079,7 @@ struct StrRemove : csnd::Plugin<1, 3>
                 break;
         }
 
-        opcodeData->outargs.str_data(0).size = strlen((char*)input.c_str());
+        opcodeData->outargs.str_data(0).size = int(strlen((char*)input.c_str()));
         opcodeData->outargs.str_data(0).data = csound->strdup((char*)input.c_str());
 
         return OK;

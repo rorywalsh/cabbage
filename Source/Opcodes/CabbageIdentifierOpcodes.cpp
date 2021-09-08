@@ -556,7 +556,7 @@ int GetCabbageStringValueWithTrigger::getAttribute()
         else
             outargs[1] = 0;
         
-        outargs.str_data(0).size = strlen(currentString)+1;
+        outargs.str_data(0).size = int(strlen(currentString))+1;
         outargs.str_data(0).data = currentString;
     }
     
@@ -1483,7 +1483,7 @@ int GetCabbageReservedChannelStringWithTrigger::getAttribute()
         else
             outargs[1] = 0;
         
-        outargs.str_data(0).size = strlen(channelString);
+        outargs.str_data(0).size = int(strlen(channelString));
         outargs.str_data(0).data = csound->strdup(channelString);
     }
     return OK;

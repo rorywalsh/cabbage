@@ -180,15 +180,12 @@ void CabbageIDELookAndFeel::drawAlertBox (Graphics& g,
 
         if (alert.getAlertType() == AlertWindow::WarningIcon)
         {
-            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed).toFloat());
-
             const Image warningImage = ImageCache::getFromMemory (CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
             //g.drawImage(warningImage, rect.reduced(20));
         }
 
         if (alert.getAlertType() == AlertWindow::QuestionIcon)
         {
-            Rectangle<float> rect (alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).toFloat());
             const Image warningImage = ImageCache::getFromMemory (CabbageBinaryData::WarningIcon_png, CabbageBinaryData::WarningIcon_pngSize);
             //g.drawImage(warningImage, rect.reduced(25));
         }
