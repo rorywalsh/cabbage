@@ -1,0 +1,19 @@
+diff --git a/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp b/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
+index 28c48424..57e0d1ce 100644
+--- a/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
++++ b/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
+@@ -3954,11 +3954,12 @@ extern "C" SMTG_EXPORT_SYMBOL IPluginFactory* PLUGIN_API GetPluginFactory()
+     if (globalFactory == nullptr)
+     {
+         globalFactory = new JucePluginFactory();
+-
++        juce::String pluginString =  File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension();
++        char8* pluginName(pluginString.toUTF8().getAddress());
+         static const PClassInfo2 componentClass (JuceVST3Component::iid,
+                                                  PClassInfo::kManyInstances,
+                                                  kVstAudioEffectClass,
+-                                                 JucePlugin_Name,
++                                                 pluginName,
+                                                  JucePlugin_Vst3ComponentFlags,
+                                                  JucePlugin_Vst3Category,
+                                                  JucePlugin_Manufacturer,
