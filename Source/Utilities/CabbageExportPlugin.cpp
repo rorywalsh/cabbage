@@ -260,7 +260,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
                 if (bin.moveFileTo (pluginBinary) == false)
                     CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
                 
-                setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
+//                setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
                 
                 newPList = newPList.replace (pluginDesc, fc.getFileNameWithoutExtension());
             }
@@ -306,7 +306,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         else
             exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
         
-        setUniquePluginId (exportedPlugin, exportedCsdFile, pluginId);
+//        setUniquePluginId (exportedPlugin, exportedCsdFile, pluginId);
         
         //bundle all auxiliary files
         addFilesToPluginBundle(csdFile, exportedPlugin);
@@ -315,7 +315,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     if(type.containsIgnoreCase("AU"))
     {
         File pluginBinary (exportedPlugin.getFullPathName() + String ("/Contents/Resources/CabbagePlugin.rsrc"));
-        setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
+//        setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
     }
     
 #ifdef CabbagePro //bundle and relink Csound
@@ -433,35 +433,35 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
             
             
             
-            //set plugin name based on .csd file
-            const char* pluginName = "CabbageEffectNam";
-            String plugLibName = csdFile.getFileNameWithoutExtension();
-            
-            if (plugLibName.length() < 16)
-                for (int y = plugLibName.length(); y < 16; y++)
-                    plugLibName.append (String (" "), 1);
-            
-            mFile.seekg (0, ios::end);
-            //buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
-            
-            for (int i = 0; i < 5; i++)
-            {
-                
-                mFile.seekg (0, ios::beg);
-                mFile.read ((char*)&buffer[0], file_size);
-                
-                
-                loc = cabbageFindPluginId (buffer, file_size, pluginName);
-                
-                if (loc < 0)
-                    break;
-                else
-                {
-                    mFile.seekg (loc, ios::beg);
-                    mFile.write (plugLibName.toUTF8(), 16);
-                }
-            }
-            
+//            //set plugin name based on .csd file
+//            const char* pluginName = "CabbageEffectNam";
+//            String plugLibName = csdFile.getFileNameWithoutExtension();
+//            
+//            if (plugLibName.length() < 16)
+//                for (int y = plugLibName.length(); y < 16; y++)
+//                    plugLibName.append (String (" "), 1);
+//            
+//            mFile.seekg (0, ios::end);
+//            //buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
+//            
+//            for (int i = 0; i < 5; i++)
+//            {
+//                
+//                mFile.seekg (0, ios::beg);
+//                mFile.read ((char*)&buffer[0], file_size);
+//                
+//                
+//                loc = cabbageFindPluginId (buffer, file_size, pluginName);
+//                
+//                if (loc < 0)
+//                    break;
+//                else
+//                {
+//                    mFile.seekg (loc, ios::beg);
+//                    mFile.write (plugLibName.toUTF8(), 16);
+//                }
+//            }
+//            
             loc = cabbageFindPluginId (buffer, file_size, pluginIDToReplace[i]);
             
             free (buffer);
