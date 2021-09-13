@@ -18,7 +18,7 @@
 */
 
 #pragma once
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "../Utilities/CabbageUtilities.h"
 
 

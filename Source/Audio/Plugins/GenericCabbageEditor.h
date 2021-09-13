@@ -23,7 +23,7 @@
  ==============================================================================
  */
 
-#include "../../../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "../../LookAndFeel/CabbageGenericPluginLookAndFeel.h"
 
 class GenericCabbagePluginProcessor;

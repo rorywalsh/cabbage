@@ -30,6 +30,8 @@
 #include "../../CabbageCommonHeaders.h"
 
 class CabbageTransportComponent;
+class CabbageMainComponent;
+
 //==============================================================================
 /**
  A panel that displays and edits a FilterGraph.

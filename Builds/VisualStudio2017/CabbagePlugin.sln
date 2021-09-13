@@ -1,6 +1,11 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2017
 
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CabbagePlugin - Standalone Plugin", "CabbagePlugin_StandalonePlugin.vcxproj", "{B6414D6E-EDB0-CAB5-66AE-E680E45388D9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{02372C67-70DF-22AA-662D-9E49D2128FB2} = {02372C67-70DF-22AA-662D-9E49D2128FB2}
+	EndProjectSection
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CabbagePlugin - VST", "CabbagePlugin_VST.vcxproj", "{C2BDBEDD-7191-1DC6-79D4-C1FEB9314F41}"
 	ProjectSection(ProjectDependencies) = postProject
 		{02372C67-70DF-22AA-662D-9E49D2128FB2} = {02372C67-70DF-22AA-662D-9E49D2128FB2}
@@ -27,6 +32,10 @@ Global
 		{BA578C35-117B-0A4E-91CC-A310755F5C23}.Debug|x64.Build.0 = Debug|x64
 		{BA578C35-117B-0A4E-91CC-A310755F5C23}.Release|x64.ActiveCfg = Release|x64
 		{BA578C35-117B-0A4E-91CC-A310755F5C23}.Release|x64.Build.0 = Release|x64
+		{B6414D6E-EDB0-CAB5-66AE-E680E45388D9}.Debug|x64.ActiveCfg = Debug|x64
+		{B6414D6E-EDB0-CAB5-66AE-E680E45388D9}.Debug|x64.Build.0 = Debug|x64
+		{B6414D6E-EDB0-CAB5-66AE-E680E45388D9}.Release|x64.ActiveCfg = Release|x64
+		{B6414D6E-EDB0-CAB5-66AE-E680E45388D9}.Release|x64.Build.0 = Release|x64
 		{02372C67-70DF-22AA-662D-9E49D2128FB2}.Debug|x64.ActiveCfg = Debug|x64
 		{02372C67-70DF-22AA-662D-9E49D2128FB2}.Debug|x64.Build.0 = Debug|x64
 		{02372C67-70DF-22AA-662D-9E49D2128FB2}.Release|x64.ActiveCfg = Release|x64

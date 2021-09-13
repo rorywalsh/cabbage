@@ -1567,7 +1567,7 @@ HandleComponent* HandleViewer::getPreviousHandle (HandleComponent* thisHandle)
     int thisHandleIndex = handles.indexOf (thisHandle);
 
     if (thisHandleIndex <= 0)
-        return 0;
+        return nullptr;
     else
         return handles.getUnchecked (thisHandleIndex - 1);
 }
@@ -1577,7 +1577,7 @@ HandleComponent* HandleViewer::getNextHandle (HandleComponent* thisHandle)
     int thisHandleIndex = handles.indexOf (thisHandle);
 
     if (thisHandleIndex == -1 || thisHandleIndex >= handles.size() - 1)
-        return 0;
+        return nullptr;
     else
         return handles.getUnchecked (thisHandleIndex + 1);
 }

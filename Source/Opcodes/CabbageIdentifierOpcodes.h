@@ -11,7 +11,7 @@
 #include <plugin.h>
 #include "../CabbageCommonHeaders.h"
 #include "../Widgets/CabbageWidgetData.h"
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 #pragma once
 

@@ -224,13 +224,14 @@ void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
         PopupMenu subMenu;
         CabbageUtilities::addCustomPlantsToMenu(subMenu, customPlants, plantDir);
         menu.addSubMenu("Custom Plants", subMenu);
-        const int result = menu.show();
-
-        if (result > 0 && result < 100)
-            getPluginEditor()->addNewWidget (widgets.getAllValues()[result - 1], e.getPosition());
-        else
-            getPluginEditor()->addNewWidget (customPlants[result-100].getFullPathName(), e.getPosition(), true);
-        currentMouseCoors = e.getPosition();
+        
+        menu.showMenuAsync(juce::PopupMenu::Options(), [this, e, customPlants, widgets](int result) {
+            if (result > 0 && result < 100)
+                this->getPluginEditor()->addNewWidget (widgets.getAllValues()[result - 1], e.getPosition());
+            else
+                this->getPluginEditor()->addNewWidget (customPlants[result-100].getFullPathName(), e.getPosition(), true);
+            currentMouseCoors = e.getPosition();
+        });
     }
     else
     {

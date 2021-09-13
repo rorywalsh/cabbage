@@ -20,7 +20,7 @@
 #ifndef __CSOUND_TOKER__
 #define __CSOUND_TOKER__
 
-#include "../../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 class CsoundTokeniser : public CodeTokeniser
 {

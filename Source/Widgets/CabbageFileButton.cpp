@@ -198,7 +198,7 @@ void CabbageFileButton::buttonClicked (Button* button)
             w.setSize(200, 100);
             w.addButton("Yes", 1, KeyPress(KeyPress::returnKey, 0, 0));
             w.addButton("No", 0, KeyPress(KeyPress::escapeKey, 0, 0));
-            
+
             if (w.runModalLoop() != 0) // if they picked 'ok'
             {
                 owner->savePluginStateToFile(owner->getCurrentPreset(), fileName.getFullPathName(), true);
@@ -213,6 +213,7 @@ void CabbageFileButton::buttonClicked (Button* button)
             w.setLookAndFeel(tempLAF);
             w.setSize(200, 100);
             w.addButton("Ok", 1, KeyPress(KeyPress::returnKey, 0, 0));
+
             w.runModalLoop();
         }
     }

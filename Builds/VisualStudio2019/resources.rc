@@ -1,3 +1,5 @@
+#pragma code_page(65001)
+
 #ifdef JUCE_USER_DEFINED_RC_FILE
  #include JUCE_USER_DEFINED_RC_FILE
 #else
@@ -7,16 +9,16 @@
 #include <windows.h>
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION  2,7,1,0
+FILEVERSION  2,8,4,0
 BEGIN
   BLOCK "StringFileInfo"
   BEGIN
     BLOCK "040904E4"
     BEGIN
       VALUE "FileDescription",  "CabbagePlugin\0"
-      VALUE "FileVersion",  "2.7.1\0"
+      VALUE "FileVersion",  "2.8.4\0"
       VALUE "ProductName",  "CabbagePlugin\0"
-      VALUE "ProductVersion",  "2.7.1\0"
+      VALUE "ProductVersion",  "2.8.4\0"
     END
   END
 

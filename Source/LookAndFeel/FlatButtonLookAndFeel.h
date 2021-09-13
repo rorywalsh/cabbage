@@ -18,7 +18,7 @@
  */
 
 #pragma once
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "../CabbageCommonHeaders.h"
 
 class FlatButtonLookAndFeel : public LookAndFeel_V3

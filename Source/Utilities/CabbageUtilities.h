@@ -22,7 +22,7 @@
 
 
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "../BinaryData/CabbageBinaryData.h"
 
 #include <fstream>
@@ -785,7 +785,8 @@ public:
     {
         if(!feel)
         {
-            NativeMessageBox::showMessageBox(AlertWindow::AlertIconType::WarningIcon, title, message);
+//            NativeMessageBox::showMessageBox(AlertWindow::AlertIconType::WarningIcon, title, message);
+            jassertfalse;
             return;
         }
         AlertWindow alert (title, message, AlertWindow::WarningIcon);
@@ -829,7 +830,7 @@ public:
         return messageBoxResult;
 #endif
 
-        AlertWindow alert ("Cabbage Message", message, AlertWindow::WarningIcon, 0);
+        AlertWindow alert ("Cabbage Message", message, AlertWindow::WarningIcon, nullptr);
         alert.setLookAndFeel (feel);
         alert.addButton ("Yes", 1);
         alert.addButton ("No", 2);

@@ -156,17 +156,18 @@ void ComponentOverlay::mouseDown (const MouseEvent& e)
         menu.setLookAndFeel (&this->getLookAndFeel());
         menu.addItem (100, "Delete");
 
-        const int r = menu.show();
+        menu.showMenuAsync(juce::PopupMenu::Options(), [this](int r) {
 
         if (r == 100)
         {
-            if (layoutEditor->getLassoSelection().getNumSelected() > 1)
+            if (this->layoutEditor->getLassoSelection().getNumSelected() > 1)
             {
                 CabbageUtilities::showMessage ("Multiple widgets cannot be deleted. Either deselect and delete one by one, or delete the widgets from the Cabbage code section of your .csd file", &this->getPluginEditor()->getLookAndFeel());;
             }
             else
-                layoutEditor->getPluginEditor()->sendActionMessage ("delete:" + target->getProperties().getWithDefault ("linenumber", -1).toString());
+                this->layoutEditor->getPluginEditor()->sendActionMessage ("delete:" + target->getProperties().getWithDefault ("linenumber", -1).toString());
         }
+        });
     }
 
 }

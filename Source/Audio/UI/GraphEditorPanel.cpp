@@ -24,7 +24,7 @@
  ==============================================================================
  */
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "GraphEditorPanel.h"
 #include "../Filters/InternalFilters.h"
 #include "CabbageTransportComponent.h"
@@ -949,39 +949,40 @@ void GraphEditorPanel::showPopupMenu(juce::Point<int> mousePos)
         m.addSubMenu("User files", subMenu2);
         m.addSubMenu("3rd Party Plugin", subMenu3);
         
-        const int r = m.show();
+        m.showMenuAsync(juce::PopupMenu::Options(), [graphWindow, userFiles, mousePos, exampleFiles, this](int r) {
         
-        if (r == 1)
-        {
-            File newlyOpenedFile = graphWindow->getOwner()->openFile();
-            
-            if (newlyOpenedFile.existsAsFile())
+            if (r == 1)
             {
-                graphWindow->getOwner()->runCsoundForNode(newlyOpenedFile.getFullPathName());
+                File newlyOpenedFile = graphWindow->getOwner()->openFile();
+                
+                if (newlyOpenedFile.existsAsFile())
+                {
+                    graphWindow->getOwner()->runCsoundForNode(newlyOpenedFile.getFullPathName());
+                }
             }
-        }
-        
-        else if (r > 1 && r < 10000)
-        {
-            graphWindow->getOwner()->openFile(exampleFiles[r - 3000].getFullPathName());
-            graphWindow->getOwner()->runCsoundForNode(exampleFiles[r - 3000].getFullPathName());
-        }
-        
-        else if (r >= 10000 && r <= 20000)
-        {
-            graphWindow->getOwner()->openFile(userFiles[r - 10000].getFullPathName());
-            graphWindow->getOwner()->runCsoundForNode(userFiles[r - 10000].getFullPathName());
-        }
-        
-        else if(r >= 20000)
-        {
-            auto* desc = graphWindow->getOwner()->knownPluginList.getType (graphWindow->getOwner()->knownPluginList.getIndexChosenByMenu (r));
-			const juce::Point<double>newPos(double(mousePos.getX()) / getWidth(), double(mousePos.getY()) / getHeight());
-            createNewPlugin (*desc, newPos);
-        }
-        
-        
+            
+            else if (r > 1 && r < 10000)
+            {
+                graphWindow->getOwner()->openFile(exampleFiles[r - 3000].getFullPathName());
+                graphWindow->getOwner()->runCsoundForNode(exampleFiles[r - 3000].getFullPathName());
+            }
+            
+            else if (r >= 10000 && r <= 20000)
+            {
+                graphWindow->getOwner()->openFile(userFiles[r - 10000].getFullPathName());
+                graphWindow->getOwner()->runCsoundForNode(userFiles[r - 10000].getFullPathName());
+            }
+            
+            else if(r >= 20000)
+            {
+                auto* desc = graphWindow->getOwner()->knownPluginList.getType (graphWindow->getOwner()->knownPluginList.getIndexChosenByMenu (r));
+                const juce::Point<double>newPos(double(mousePos.getX()) / getWidth(), double(mousePos.getY()) / getHeight());
+                this->createNewPlugin (*desc, newPos);
+            }
+        });
+            
         m.setLookAndFeel(nullptr);
+
     }
 }
 

@@ -21,7 +21,7 @@
 #ifndef CABBMESS_H
 #define CABBMESS_H
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 #include "../../CabbageCommonHeaders.h"
 
 //simple channel message classe

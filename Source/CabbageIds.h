@@ -20,7 +20,7 @@
 #ifndef CABBAGECOMMANDIDS_H_INCLUDED
 #define CABBAGECOMMANDIDS_H_INCLUDED
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 namespace CommandIDs
 {
@@ -131,7 +131,7 @@ namespace CabbageInterfaceModes
     static const Identifier csound ("csound");
     static const Identifier generic ("generic");
     static const Identifier cabbage ("cabbage");
-};
+}
 
 // Handy list of static Identifiers..
 namespace CabbageColourIds
@@ -543,7 +543,7 @@ namespace CabbageWidgetTypes
 	static const String vslider2 = "vslider2";
 	static const String vslider3 = "vslider3";
 	static const String xypad = "xypad";
-};
+}
 
 namespace CabbageIdentifierIds
 {
@@ -818,7 +818,7 @@ namespace CabbageIdentifierIds
     static const String timeSigNum = "TIME_SIG_NUM";
     static const String updaterate = "updaterate";
     
-};
+}
 
 // this array holds the names of all widgets that can inserted when in GUI edit mode
 class CabbagePopupWidgets : public StringPairArray
@@ -1084,6 +1084,6 @@ static const char* const CsoundKeywords[] =
     "tb1", "tb10", "tb11", "tb12", "tb13", "tb14", "tb15", "tb1_init", "tb2", "tb2_init", "tb3", "tb4", "tb5", "tb6", "tb7", "tb8", "tb9", "temposcal", "trandom", "transegb", "transegr", "trcross", "trfilter", "trhighest",
     "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "valuePostfix", "valuePrefix", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i", "blackNoteColour",
     "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", "then", "while", "od", "do", "endwhile", "trigexpseg", "triglinseg", "cabbageSetStateValue", "cabbageGetStateValue",  "cabbageWriteStateValue", "cabbageWriteStateData", "cabbageReadStateData", "cabbageChannelStateRecall", "cabbageGetWidgetChannels", "cabbageChannelStateSave", "cabbageSetValue", "cabbageGetFile", "cabbageCopyFile", "cabbageFindFiles", "cabbageGetValue", "cabbageGet", "cabbageSet", "cabbageGetCurrentWidget", "guiMode", "cabbageCreate", "showsSrubber", "titleBarColour", "FLslidBnkGetHandle", "K35_hpf", "K35_lpf", "OSCbundle", "OSCcount", "OSCinitM", "OSCraw", "OSCsend_lo", "S", "a", "allpole", "ampmidicurve", "apoleparams", "arduinoRead", "arduinoStart", "arduinoStop", "balance2", "beadsynt", "beosc", "bob", "bpf", "bpfcos", "cbrt", "chngeta", "chngeti", "chngetk", "chngetks", "chngets", "chnseta", "chnseti", "chnsetk", "chnsetks", "chnsets", "cmp", "cntCreate", "cntCycles", "cntRead", "cntReset", "cntState", "count", "count_i", "dct", "dctinv", "deinterleave", "diode_ladder", "dot", "faustdsp", "faustplay", "fmanal", "fmax", "fmin", "fmod", "ftaudio", "ftexists", "ftom", "ftprint", "ftset", "ftslice", "ftslicei", "getftargs", "getrowlin", "gtf", "hilbert2", "hypot", "i", "interleave", "k", "lag", "lagud", "lastcycle", "limit1", "lincos", "linlin", "loscil3phs", "loscilphs", "lpcanal", "lpcfilter", "lufs", "metro2", "mfb", "midiarp", "midichannelaftertouch", "midicontrolchange", "midiout_i", "midipolyaftertouch", "midiprogramchange", "moogvcf", "mtof", "mton", "nstrstr", "ntof", "ntom", "nxtpow2", "p", "pchtom", "pows", "printarray", "println", "printsk", "pvsbandwidth", "pvscfs", "pvslpc", "pvstrace", "randc", "reshapearray", "resonbnk", "rndseed", "sc_lag", "sc_lagud", "sc_phasor", "sc_trig", "schedulek", "select", "slicearray_i", "sorta", "sortd", "squinewave", "sterrain", "string2array", "strstrip", "tab2array", "tabrowlin", "trighold", "trigphasor", "trim", "trim_i", "tvconv", "vps", "websocket", "xyscale", "zdf_1pole", "zdf_1pole_mode", "zdf_2pole", "zdf_2pole_mode", "zdf_ladder", "readOnly", "doubleClickTogglesEdit", "caretColour", "valueTextBox","showScrubber", "scrollbars", "sort", "textBoxOutlineColour", "filmstrip", "valueTextBoxBounds", "sliderBounds", "keySeparatorColour", "protectedItems" "blackNoteColour","whiteNoteColour", "markerColour", "mouseInteraction", "backgroundColour","presetIgnore", "increment", "keypressBaseOctave", "radioGroup", "imgFile", "nslider","cabbageGetFileExtension", "cabbageGetFileNoExtension", "cabbageGetFilePath", "cabbageGetFilename", "cabbageChanged", "vmeter", "hmeter", "defaultValue",
-    0
+    nullptr
 };
 #endif  // CABBAGECOMMANDIDS_H_INCLUDED

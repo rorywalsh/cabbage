@@ -882,59 +882,60 @@ void CabbageCodeEditorComponent::mouseDown (const MouseEvent& e)
         StringArray codeSnippets = addItemsToPopupMenu (subM);
         m.addSubMenu ("Insert from code repository", subM);
 
-        const int menuItemID = m.show();
+        m.showMenuAsync(juce::PopupMenu::Options(), [this, codeSnippets](int menuItemID) {
 
-        if (menuItemID == 4099)
-            this->cutToClipboard();
-        else if (menuItemID == 4100)
-            this->copyToClipboard();
-        else if (menuItemID == 4101)
-            this->pasteFromClipboard();
-        else if (menuItemID == 4098)
-            this->deleteForwards (true);
-        else if (menuItemID == 4102)
-            this->selectAll();
-        else if (menuItemID == 4104)
-            this->undo();
-        else if (menuItemID == 4105)
-            this->redo();
-        else if (menuItemID == 21)
-        {
-            CabbageIDELookAndFeel cabbageLoookAndFeel;
-            String XMLFile = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-                    "<plant>\n"
-                    "<namespace>\n"
-                    "\n"
-                    "</namespace>\n"
-                    "<name>\n"
-                    "\n"
-                    "</name>\n"
-                    "<cabbagecode>\n";
-            StringArray lines = getSelectedTextArray();
-            lines.removeEmptyStrings();
-            if(lines[0].contains("{") == false && lines[1].startsWith("{") == false)
-                CabbageUtilities::showMessage ("Code seems to be missing open brackets and does not appear to be a valid plant? ", &cabbageLoookAndFeel);
-            XMLFile += getSelectedText();
-            XMLFile += "\n</cabbagecode>\n"
-                    "<cabbagecodescript>\n"
-                    "\n"
-                    "</cabbagecodescript>\n"
-                    "<csoundcode>\n"
-                    "\n"
-                    "</csoundcode>\n"
-                    "<info>\n"
-                    "\n"
-                    "</info>\n"
-                    "</plant>";
-            owner->getContentComponent()->createNewTextFile(XMLFile);
+            if (menuItemID == 4099)
+                this->cutToClipboard();
+            else if (menuItemID == 4100)
+                this->copyToClipboard();
+            else if (menuItemID == 4101)
+                this->pasteFromClipboard();
+            else if (menuItemID == 4098)
+                this->deleteForwards (true);
+            else if (menuItemID == 4102)
+                this->selectAll();
+            else if (menuItemID == 4104)
+                this->undo();
+            else if (menuItemID == 4105)
+                this->redo();
+            else if (menuItemID == 21)
+            {
+                CabbageIDELookAndFeel cabbageLoookAndFeel;
+                String XMLFile = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                        "<plant>\n"
+                        "<namespace>\n"
+                        "\n"
+                        "</namespace>\n"
+                        "<name>\n"
+                        "\n"
+                        "</name>\n"
+                        "<cabbagecode>\n";
+                StringArray lines = getSelectedTextArray();
+                lines.removeEmptyStrings();
+                if(lines[0].contains("{") == false && lines[1].startsWith("{") == false)
+                    CabbageUtilities::showMessage ("Code seems to be missing open brackets and does not appear to be a valid plant? ", &cabbageLoookAndFeel);
+                XMLFile += getSelectedText();
+                XMLFile += "\n</cabbagecode>\n"
+                        "<cabbagecodescript>\n"
+                        "\n"
+                        "</cabbagecodescript>\n"
+                        "<csoundcode>\n"
+                        "\n"
+                        "</csoundcode>\n"
+                        "<info>\n"
+                        "\n"
+                        "</info>\n"
+                        "</plant>";
+                owner->getContentComponent()->createNewTextFile(XMLFile);
 
-        }
-        else if (menuItemID == 10)
-            addToGUIEditorContextMenu();
-        else if (menuItemID >= 100)
-        {
-            this->insertText (codeSnippets[menuItemID - 100]);
-        }
+            }
+            else if (menuItemID == 10)
+                addToGUIEditorContextMenu();
+            else if (menuItemID >= 100)
+            {
+                this->insertText (codeSnippets[menuItemID - 100]);
+            }
+        });
     }
     else
     {

@@ -3,10 +3,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist>
   <dict>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app requires audio input. If you do not have an audio interface connected it will use the built-in microphone.</string>
     <key>CFBundleExecutable</key>
     <string>CabbagePlugin</string>
     <key>CFBundleIconFile</key>
-    <string/>
+    <string>Icon.icns</string>
     <key>CFBundleIdentifier</key>
     <string>com.cabbageaudio.CabbagePlugin</string>
     <key>CFBundleName</key>
@@ -18,9 +20,9 @@
     <key>CFBundleSignature</key>
     <string>????</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0.0</string>
+    <string>2.8.4</string>
     <key>CFBundleVersion</key>
-    <string>1.0.0</string>
+    <string>2.8.4</string>
     <key>NSHumanReadableCopyright</key>
     <string/>
     <key>NSHighResolutionCapable</key>

@@ -24,7 +24,7 @@
   ==============================================================================
 */
 
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 //#include "../UI/MainHostWindow.h"
 #include "FilterGraph.h"
 #include "InternalFilters.h"
@@ -418,8 +418,8 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 
 		if (auto * layoutEntity = xml.getChildByName("LAYOUT"))
 		{
-			auto layout = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid))->getProcessor()->getBusesLayout();
-            auto pluginProcessor = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid))->getProcessor();
+			auto layout = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uniqueId))->getProcessor()->getBusesLayout();
+            auto pluginProcessor = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uniqueId))->getProcessor();
             
             readBusLayoutFromXml(layout, pluginProcessor, *layoutEntity, false);
             readBusLayoutFromXml(layout, pluginProcessor, *layoutEntity, true);
@@ -432,10 +432,10 @@ void FilterGraph::createNodeFromXml(const XmlElement& xml)
 		{
 			MemoryBlock m;
 			m.fromBase64Encoding(state->getAllSubText());
-			graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid))->getProcessor()->setStateInformation(m.getData(), (int)m.getSize());
+			graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uniqueId))->getProcessor()->setStateInformation(m.getData(), (int)m.getSize());
 		}
 
-		if (auto* node = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uid)))
+		if (auto* node = graph.getNodeForId(AudioProcessorGraph::NodeID(pd.uniqueId)))
 			if (auto w = getOrCreateWindowFor(node, PluginWindow::Type::normal))
 				w->toFront(true);
 	}

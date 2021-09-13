@@ -200,6 +200,7 @@ void CabbageMainComponent::exportTheme()
 {
 	FileChooser fc("Export theme XML", cabbageSettings->getMostRecentFile(0).getParentDirectory(), "*.xml", CabbageUtilities::shouldUseNativeBrowser());
 
+
 	if (fc.browseForFileToSave(true))
 	{
 		//doing this manually as the settings file fails some XML tests...
@@ -214,7 +215,7 @@ void CabbageMainComponent::exportTheme()
 			const auto colourValue = cabbageSettings->getValueTree().getChildWithName("Colours").getProperty(colourIDStrings[i]);
 			theme.add("<VALUE name=\"Colours_" + colourIDStrings[i] + "\" val=\"" + colourValue.toString() + "\"/>");
 		}
-		
+
 		theme.add("</PROPERTIES>");
 		themeFile.replaceWithText(theme.joinIntoString("\n"));
 	}
@@ -232,9 +233,9 @@ void CabbageMainComponent::importTheme()
 
 		forEachXmlChildElement(*myElement, e)
 		{
-			cabbageSettings->setProperty(e->getStringAttribute("name"), e->getStringAttribute("val"));	
+			cabbageSettings->setProperty(e->getStringAttribute("name"), e->getStringAttribute("val"));
 		}
-		
+
 		cabbageSettings->setProperty("CustomThemeDir", fc.getResult().getParentDirectory().getFullPathName());
 	}
 }
@@ -285,16 +286,17 @@ void CabbageMainComponent::buttonClicked (Button* button)
             if (fileTabs[i]->isVisible() == false)
                 menu.addItem (i + 1, fileTabs[i]->getName());
 
-        const int result = menu.show();
+        menu.showMenuAsync(juce::PopupMenu::Options(), [this](int result) {
 
-        if ( result > 0 )
-        {
-            fileTabs.move (result - 1, fileTabs.size() - 1);
-            editorAndConsole.move (result - 1, fileTabs.size() - 1);
-            arrangeFileTabs();
-            fileTabs[fileTabs.size() - 1]->setToggleState (true, sendNotification);
-            setCurrentCsdFile (fileTabs[fileTabs.size() - 1]->getFile());
-        }
+            if ( result > 0 )
+            {
+                this->fileTabs.move (result - 1, this->fileTabs.size() - 1);
+                this->editorAndConsole.move (result - 1, this->fileTabs.size() - 1);
+                this->arrangeFileTabs();
+                this->fileTabs[this->fileTabs.size() - 1]->setToggleState (true, sendNotification);
+                this->setCurrentCsdFile (this->fileTabs[this->fileTabs.size() - 1]->getFile());
+            }
+        });
     }
     
     if(fileTree.isVisible())
@@ -1331,6 +1333,7 @@ void CabbageMainComponent::createNewTextFile(String contents)
 {
     FileChooser fc ("Select file name and location", File::getSpecialLocation (File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
 
+
     if (fc.browseForFileToSave (false))
     {
         if (fc.getResult().existsAsFile())
@@ -1390,6 +1393,7 @@ void CabbageMainComponent::openGraph (File fileToOpen)
     if (fileToOpen.existsAsFile() == false)
     {
         FileChooser fc ("Open File", cabbageSettings->getMostRecentFile (0).getParentDirectory(), "*.cabbage", CabbageUtilities::shouldUseNativeBrowser());
+        
 
         if (fc.browseForFileToOpen())
         {
@@ -1480,6 +1484,7 @@ void CabbageMainComponent::saveGraph (bool saveAs)
 
         //getFilterGraph()->saveGraph(saveAs);
         FileChooser fc("Save file as", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory), "", CabbageUtilities::shouldUseNativeBrowser());
+
         if(fc.browseForFileToSave(true))
             getFilterGraph()->saveDocument(fc.getResult().withFileExtension(".cabbage"));
 
@@ -1490,10 +1495,10 @@ void CabbageMainComponent::openFolder ()
 {
     
     FileChooser fc ("Open File", cabbageSettings->getMostRecentFile (0).getParentDirectory(), "*.csd;*", CabbageUtilities::shouldUseNativeBrowser());
-    
+        
+
     if (fc.browseForDirectory())
     {
-//        fileList.setDirectory(fc.getResult(), true, true);
         fileTree.refresh();
     }
     
@@ -1530,6 +1535,7 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
     {
         FileChooser fc ("Open File", cabbageSettings->getMostRecentFile (0).getParentDirectory(), "*.csd;*", CabbageUtilities::shouldUseNativeBrowser());
 
+
         if (fc.browseForFileToOpen())
         {
 			if (fc.getResult().getFileExtension() == ".cabbage")
@@ -1537,7 +1543,7 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
 				openGraph(fc.getResult());
 				return File();
 			}
-				
+
             if (getTabFileIndex (File (filename)) >= 0 && currentFileIndex > -1)
             {
                 CabbageUtilities::showMessage ("File is already open", lookAndFeel.get());
@@ -1672,6 +1678,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 				getCabbagePluginEditor()->enableEditMode(false);
 
             FileChooser fc("Select file name and location", getCurrentCsdFile().getParentDirectory(), "*.csd;*.txt;*.js;*.html;*.snaps;*.plant;*.xml", CabbageUtilities::shouldUseNativeBrowser());
+
 
 			if (fc.browseForFileToSave(false))
 			{
@@ -1958,6 +1965,7 @@ void CabbageMainComponent::updatePresetFile()
 {
     FileChooser fc("Select prest file to convert", getCurrentCsdFile().getParentDirectory(), "*.snaps", CabbageUtilities::shouldUseNativeBrowser());
     
+
     if (fc.browseForFileToSave(false))
     {
         if (fc.getResult().existsAsFile())
@@ -1970,7 +1978,7 @@ void CabbageMainComponent::updatePresetFile()
             std::unique_ptr<XmlElement> myElement;
             myElement = XmlDocument::parse(getCurrentCsdFile());
             nlohmann::ordered_json j;
-            
+
             if (myElement)
             {
                 for (int i = 0; i < myElement->getNumChildElements(); i++)
@@ -1990,7 +1998,7 @@ void CabbageMainComponent::updatePresetFile()
                     }
                 }
             }
-            
+
             fc.getResult().replaceWithText(j.dump(4));
         }
     }

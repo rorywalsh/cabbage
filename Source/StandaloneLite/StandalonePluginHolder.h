@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../CodeEditor/CabbageOutputConsole.h"
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 CabbagePluginProcessor* JUCE_CALLTYPE createCabbagePluginFilter (File inputFile, int channels)
 {

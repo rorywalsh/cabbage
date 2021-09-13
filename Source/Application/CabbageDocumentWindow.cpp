@@ -1436,11 +1436,11 @@ void CabbageDocumentWindow::exportExamplesToPlugins(String type)
 
     
         FileChooser fc ("Select file name and location", File("~"), "", CabbageUtilities::shouldUseNativeBrowser());
-        
+
         if (fc.browseForDirectory())
         {
             const int result = CabbageUtilities::showYesNoMessage ("This will overwrite any existing files, and may take a few moments to process. Do you wish to continue?", &tempLookAndFeel);
-            
+
             if (result == 1)
             {
                 for( auto filename : instrumentFiles)
@@ -1451,7 +1451,7 @@ void CabbageDocumentWindow::exportExamplesToPlugins(String type)
                     pluginExporter.exportPlugin (type=="AU" ? "AU" : "VST", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
                 for( auto filename : filePlayerFiles)
                     pluginExporter.exportPlugin (type=="AU" ? "AU" : "VST", filename,  getPluginInfo (filename, "id"), fc.getResult().getFullPathName());
-                
+
             }
         }
     }

@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 
 #include "CsoundPluginEditor.h"
@@ -51,7 +51,7 @@ public:
 		descript.numInputChannels = 2;
 		descript.numOutputChannels = 2;
 		descript.isInstrument = true;
-		descript.uid = nodeId.uid;
+		descript.uniqueId = nodeId.uid;
 
 		descript.manufacturerName = "CabbageAudio";
 		descript.pluginFormatName = "Cabbage";

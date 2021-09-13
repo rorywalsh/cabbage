@@ -140,7 +140,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
                 {
                     const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?",
                                                                           &lookAndFeel);
-                    
+
                     if (result == 1)
                     {
                         File oldFile(fc.getResult().getFullPathName());
@@ -152,7 +152,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
                 else
                     writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type,
                                           encrypt);
-                
+
             }
         }
     }

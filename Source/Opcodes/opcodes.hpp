@@ -18,7 +18,7 @@
 using json = nlohmann::json;
 
 #include "../Widgets/CabbageWidgetData.h"
-#include "../JuceLibraryCode/JuceHeader.h"
+#include "JuceHeader.h"
 
 //====================================================================================================
 // Set Widget Attribute
