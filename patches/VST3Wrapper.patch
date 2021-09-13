@@ -1,8 +1,72 @@
 diff --git a/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp b/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
-index 28c48424..57e0d1ce 100644
+index 28c48424..b3c9d88f 100644
 --- a/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
 +++ b/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
-@@ -3954,11 +3954,12 @@ extern "C" SMTG_EXPORT_SYMBOL IPluginFactory* PLUGIN_API GetPluginFactory()
+@@ -3557,11 +3557,49 @@ private:
+ 
+ const char* JuceVST3Component::kJucePrivateDataIdentifier = "JUCEPrivateData";
+ 
++const int32 getPluginId()
++{
++    File csdFile;
++    const String pluginName =  File::getSpecialLocation(File::currentExecutableFile).getFileName();
++    csdFile = File(File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName()+"/"+pluginName+".csd");
++
++    StringArray lines;
++    lines.addLines(csdFile.loadFileAsString());
++    String id;
++    
++    for ( auto line : lines )
++    {
++        if(line.contains("pluginId"))
++        {
++            String p1 = line.substring(line.indexOf("pluginId")+8);
++            String p2 = p1.substring(p1.indexOf("\"")+1);
++            id = p2.substring(0, p2.indexOf("\""));
++            break;
++        }
++    }
++    
++    const char* tempBuf = id.toUTF8().getAddress();
++    std::stringstream ss;
++    std::stringstream hexId;
++    const char* it = tempBuf;
++    const char* end = tempBuf + std::strlen(tempBuf);
++
++    for (; it != end; ++it)
++        ss << std::hex << unsigned(*it);
++
++    unsigned result;
++    ss >> result;
++
++    hexId << std::hex << result << std::endl;
++    int x = String(hexId.str()).getHexValue32();
++    return x;
++}
++
+ //==============================================================================
+ JUCE_BEGIN_IGNORE_WARNINGS_MSVC (4310)
+ JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wall")
+ 
+-DECLARE_CLASS_IID (JuceAudioProcessor, 0x0101ABAB, 0xABCDEF01, JucePlugin_ManufacturerCode, JucePlugin_PluginCode)
++DECLARE_CLASS_IID (JuceAudioProcessor, 0x0101ABAB, 0xABCDEF01, JucePlugin_ManufacturerCode, getPluginId())
+ DEF_CLASS_IID (JuceAudioProcessor)
+ 
+ #if JUCE_VST3_CAN_REPLACE_VST2
+@@ -3575,10 +3613,10 @@ DEF_CLASS_IID (JuceAudioProcessor)
+  const Steinberg::FUID JuceVST3Component     ::iid (getFUIDForVST2ID (false));
+  const Steinberg::FUID JuceVST3EditController::iid (getFUIDForVST2ID (true));
+ #else
+- DECLARE_CLASS_IID (JuceVST3EditController, 0xABCDEF01, 0x1234ABCD, JucePlugin_ManufacturerCode, JucePlugin_PluginCode)
++ DECLARE_CLASS_IID (JuceVST3EditController, 0xABCDEF01, 0x1234ABCD, JucePlugin_ManufacturerCode, getPluginId())
+  DEF_CLASS_IID (JuceVST3EditController)
+ 
+- DECLARE_CLASS_IID (JuceVST3Component, 0xABCDEF01, 0x9182FAEB, JucePlugin_ManufacturerCode, JucePlugin_PluginCode)
++ DECLARE_CLASS_IID (JuceVST3Component, 0xABCDEF01, 0x9182FAEB, JucePlugin_ManufacturerCode, getPluginId())
+  DEF_CLASS_IID (JuceVST3Component)
+ #endif
+ 
+@@ -3954,11 +3992,12 @@ extern "C" SMTG_EXPORT_SYMBOL IPluginFactory* PLUGIN_API GetPluginFactory()
      if (globalFactory == nullptr)
      {
          globalFactory = new JucePluginFactory();
