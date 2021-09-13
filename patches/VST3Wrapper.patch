@@ -1,7 +1,25 @@
 diff --git a/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp b/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
-index 28c48424..b3c9d88f 100644
+index 28c48424..3d75a594 100644
 --- a/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
 +++ b/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
+@@ -2467,7 +2467,7 @@ public:
+         jassert (ByteOrder::bigEndianInt ("CcnK") == htonl ((uint32) bank->chunkMagic));
+         jassert (ByteOrder::bigEndianInt ("FBCh") == htonl ((uint32) bank->fxMagic));
+         jassert (htonl ((uint32) bank->version) == 1 || htonl ((uint32) bank->version) == 2);
+-        jassert (JucePlugin_VSTUniqueID == htonl ((uint32) bank->fxID));
++        jassert (getPluginId() == htonl ((uint32) bank->fxID));
+ 
+         setStateInformation (bank->content.data.chunk,
+                              jmin ((int) (size - (bank->content.data.chunk - data)),
+@@ -2674,7 +2674,7 @@ public:
+         bank.byteSize           = (int32) htonl (bankBlockSize - 8 + (unsigned int) mem.getSize());
+         bank.fxMagic            = (int32) htonl (ByteOrder::bigEndianInt ("FBCh"));
+         bank.version            = (int32) htonl (2);
+-        bank.fxID               = (int32) htonl (JucePlugin_VSTUniqueID);
++        bank.fxID               = (int32) htonl (getPluginId());
+         bank.fxVersion          = (int32) htonl (JucePlugin_VersionCode);
+         bank.content.data.size  = (int32) htonl ((unsigned int) mem.getSize());
+ 
 @@ -3557,11 +3557,49 @@ private:
  
  const char* JuceVST3Component::kJucePrivateDataIdentifier = "JUCEPrivateData";
@@ -81,3 +99,12 @@ index 28c48424..b3c9d88f 100644
                                                   JucePlugin_Vst3ComponentFlags,
                                                   JucePlugin_Vst3Category,
                                                   JucePlugin_Manufacturer,
+@@ -3970,7 +4009,7 @@ extern "C" SMTG_EXPORT_SYMBOL IPluginFactory* PLUGIN_API GetPluginFactory()
+         static const PClassInfo2 controllerClass (JuceVST3EditController::iid,
+                                                   PClassInfo::kManyInstances,
+                                                   kVstComponentControllerClass,
+-                                                  JucePlugin_Name,
++                                                  pluginName,
+                                                   JucePlugin_Vst3ComponentFlags,
+                                                   JucePlugin_Vst3Category,
+                                                   JucePlugin_Manufacturer,

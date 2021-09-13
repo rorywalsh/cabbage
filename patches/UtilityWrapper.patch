@@ -1,0 +1,28 @@
+diff --git a/JuceLibraryCode/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp b/JuceLibraryCode/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp
+index 2c60956b..8cdd33b7 100644
+--- a/JuceLibraryCode/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp
++++ b/JuceLibraryCode/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp
+@@ -57,15 +57,20 @@ namespace juce
+      strcpy (uidString, vstfxidStr);
+ 
+      char uidStr[9] = { 0 };
+-     sprintf (uidStr, "%08X", JucePlugin_VSTUniqueID);
++     sprintf (uidStr, "%08X", getPluginId());
+      strcat (uidString, uidStr);
+ 
++     
+      char nameidStr[3] = { 0 };
+-     const size_t len = strlen (JucePlugin_Name);
++     
++     String pluginString =  File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension();
++     
++     const size_t len = strlen (pluginString);
+ 
+      for (size_t i = 0; i <= 8; ++i)
+      {
+-         juce::uint8 c = i < len ? static_cast<juce::uint8> (JucePlugin_Name[i]) : 0;
++         String pluginString =  File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension();
++         juce::uint8 c = i < len ? static_cast<juce::uint8> (pluginString[i]) : 0;
+ 
+          if (c >= 'A' && c <= 'Z')
+              c += 'a' - 'A';

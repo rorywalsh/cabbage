@@ -1,8 +1,61 @@
 diff --git a/JuceLibraryCode/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp b/JuceLibraryCode/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp
-index 84df483a..72f49694 100644
+index 84df483a..24294df9 100644
 --- a/JuceLibraryCode/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp
 +++ b/JuceLibraryCode/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp
-@@ -1815,7 +1815,9 @@ private:
+@@ -206,6 +206,43 @@ struct AbletonLiveHostSpecific
+     int flags;           // KCantBeSuspended = (1 << 2)
+ };
+ 
++const int32 getPluginId()
++{
++    File csdFile;
++    const String pluginName =  File::getSpecialLocation(File::currentExecutableFile).getFileName();
++    csdFile = File(File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName()+"/"+pluginName+".csd");
++
++    StringArray lines;
++    lines.addLines(csdFile.loadFileAsString());
++    String id;
++    
++    for ( auto line : lines )
++    {
++        if(line.contains("pluginId"))
++        {
++            String p1 = line.substring(line.indexOf("pluginId")+8);
++            String p2 = p1.substring(p1.indexOf("\"")+1);
++            id = p2.substring(0, p2.indexOf("\""));
++            break;
++        }
++    }
++    
++    const char* tempBuf = id.toUTF8().getAddress();
++    std::stringstream ss;
++    std::stringstream hexId;
++    const char* it = tempBuf;
++    const char* end = tempBuf + std::strlen(tempBuf);
++
++    for (; it != end; ++it)
++        ss << std::hex << unsigned(*it);
++
++    unsigned result;
++    ss >> result;
++
++    hexId << std::hex << result << std::endl;
++    int x = String(hexId.str()).getHexValue32();
++    return x;
++}
+ //==============================================================================
+ /**
+     This is an AudioEffectX object that holds and wraps our AudioProcessor...
+@@ -289,7 +326,7 @@ public:
+         vstEffect.numOutputs = maxNumOutChannels;
+         vstEffect.initialDelay = processor->getLatencySamples();
+         vstEffect.object = this;
+-        vstEffect.uniqueID = JucePlugin_VSTUniqueID;
++        vstEffect.uniqueID = getPluginId();
+ 
+        #ifdef JucePlugin_VSTChunkStructureVersion
+         vstEffect.version = JucePlugin_VSTChunkStructureVersion;
+@@ -1815,7 +1852,9 @@ private:
  
      pointer_sized_int handleGetPlugInName (VstOpCodeArguments args)
      {

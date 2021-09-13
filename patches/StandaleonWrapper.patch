@@ -1,0 +1,15 @@
+diff --git a/JuceLibraryCode/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp b/JuceLibraryCode/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp
+index cb099283..c97a93f9 100644
+--- a/JuceLibraryCode/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp
++++ b/JuceLibraryCode/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp
+@@ -67,7 +67,9 @@ public:
+         appProperties.setStorageParameters (options);
+     }
+ 
+-    const String getApplicationName() override              { return JucePlugin_Name; }
++    const String getApplicationName() override              { return
++        String pluginString =  File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension();
++        return pluginString; }
+     const String getApplicationVersion() override           { return JucePlugin_VersionString; }
+     bool moreThanOneInstanceAllowed() override              { return true; }
+     void anotherInstanceStarted (const String&) override    {}
