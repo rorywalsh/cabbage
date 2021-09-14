@@ -51,7 +51,7 @@ public:
 		descript.numInputChannels = 2;
 		descript.numOutputChannels = 2;
 		descript.isInstrument = true;
-		descript.uniqueId = nodeId.uid;
+		descript.uid = nodeId.uid;
 
 		descript.manufacturerName = "CabbageAudio";
 		descript.pluginFormatName = "Cabbage";

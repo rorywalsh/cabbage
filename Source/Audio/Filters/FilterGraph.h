@@ -95,7 +95,7 @@ public:
 		descript.numInputChannels = 2;
 		descript.numOutputChannels = 2;
 		descript.isInstrument = true;
-		descript.uniqueId = nodeId.uid;
+		descript.uid = nodeId.uid;
 		descript.manufacturerName = "CabbageAudio";
 		descript.pluginFormatName = "Cabbage";
 
@@ -406,7 +406,7 @@ public:
 
 	void addCabbagePlugin(const PluginDescription& desc, juce::Point<double> pos)
 	{
-		AudioProcessorGraph::NodeID nodeId(desc.uniqueId);
+		AudioProcessorGraph::NodeID nodeId(desc.uid);
 		std::unique_ptr <AudioProcessor> processor = createCabbageProcessor(desc.fileOrIdentifier);
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(desc.fileOrIdentifier));
 
@@ -544,7 +544,7 @@ public:
 
     //==============================================================================
     void audioProcessorParameterChanged (AudioProcessor*, int, float) override {}
-    void audioProcessorChanged (AudioProcessor*, const ChangeDetails &details) override { changed(); }
+    void audioProcessorChanged (AudioProcessor*) override { changed(); }
 
     //==============================================================================
     XmlElement* createXml() const;

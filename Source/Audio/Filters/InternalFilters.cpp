@@ -99,7 +99,7 @@ public:
 		descr.manufacturerName = "JUCE";
 		descr.version = ProjectInfo::versionString;
 		descr.fileOrIdentifier = pluginName + ":" + pluginState;
-		descr.uniqueId = pluginName.hashCode();
+		descr.uid = pluginName.hashCode();
 		descr.isInstrument = (acceptsMidi && registerAsGenerator);
 		descr.numInputChannels = (registerAsGenerator ? 0 : channelSetToUse.size());
 		descr.numOutputChannels = channelSetToUse.size();
