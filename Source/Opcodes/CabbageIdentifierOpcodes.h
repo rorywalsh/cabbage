@@ -156,7 +156,12 @@ struct GetCabbageValueArray : csnd::Plugin<1, 1>
 struct GetCabbageStringValue : csnd::Plugin<1, 1>
 {
     MYFLT* value;
-    int init(){ return getAttribute(); };
+    char* lastString;
+    int init(){
+        lastString = "";
+        return getAttribute();
+        
+    };
     int kperf(){ return getAttribute(); };
     int getAttribute();
 };
