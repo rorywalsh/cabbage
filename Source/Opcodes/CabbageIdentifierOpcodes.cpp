@@ -466,7 +466,7 @@ int GetCabbageStringValue::getAttribute()
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
         outargs.str_data(0).size = ((STRINGDAT*)value)->size;
-        outargs.str_data(0).data = (((STRINGDAT*)value)->data);
+        *outargs.str_data(0).data = *(((STRINGDAT*)value)->data);
     }
     
     
@@ -582,13 +582,13 @@ int GetCabbageStringValueArrayWithTrigger::getAttribute()
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
             if(currentStrings[i].size == 0){
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                *currentStrings[i].data = *(((STRINGDAT*)value)->data);
                 currentStrings[i].size = ((STRINGDAT*)value)->size;
             }
         
             if(strcmp(currentStrings[i].data, ((STRINGDAT*)value)->data) != 0)
             {
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                *currentStrings[i].data = *(((STRINGDAT*)value)->data);
                 currentStrings[i].size = ((STRINGDAT*)value)->size;
                 outTriggers[i] = 1;
             }
@@ -739,13 +739,13 @@ int CabbageValueChanged::getAttribute()
                                                      CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
         {
             if(currentStrings[i].size == 0){
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                *currentStrings[i].data = *(((STRINGDAT*)value)->data);
                 currentStrings[i].size = ((STRINGDAT*)value)->size;
             }
             
             if(strcmp(currentStrings[i].data, ((STRINGDAT*)value)->data) != 0)
             {
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                *currentStrings[i].data = *(((STRINGDAT*)value)->data);
                 currentStrings[i].size = ((STRINGDAT*)value)->size;
                 foundAChange = true;
                 outargs.str_data(0).size = inputArgs[i].size;
@@ -832,13 +832,13 @@ int CabbageValueChangedIndex::getAttribute()
                                                      CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
         {
             if(currentStrings[i].size == 0){
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                *currentStrings[i].data = *(((STRINGDAT*)value)->data);
                 currentStrings[i].size = ((STRINGDAT*)value)->size;
             }
             
             if(strcmp(currentStrings[i].data, ((STRINGDAT*)value)->data) != 0)
             {
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                *currentStrings[i].data = *(((STRINGDAT*)value)->data);
                 currentStrings[i].size = ((STRINGDAT*)value)->size;
                 foundAChange = true;
                 outargs[0] = i;
@@ -1697,7 +1697,7 @@ int GetCabbageReservedChannelString::getAttribute()
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
         outargs.str_data(0).size = ((STRINGDAT*)value)->size;
-        outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
+        *outargs.str_data(0).data = *(((STRINGDAT*)value)->data);
     }
     return OK;
 }
