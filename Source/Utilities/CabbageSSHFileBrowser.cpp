@@ -156,7 +156,7 @@ const String CabbageSSHFileBrowser::getFileOrFolderName (String text)
         while (*str != ' ' && *str)
             str++;
 
-        const String toke (string (begin, str + 1));
+        const String toke (std::string (begin, str + 1));
 
         if (toke.trim().isNotEmpty())
         {

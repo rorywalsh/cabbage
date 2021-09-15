@@ -602,7 +602,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     // convert now to string form
     char* dt = ctime(&seconds_past_epoch);
     std::stringstream strStream;
-    strStream << dt << endl;
+    strStream << dt << std::endl;
     csound->SetStringChannel("CURRENT_DATE_TIME", String(strStream.str()).toUTF8().getAddress());
 
 

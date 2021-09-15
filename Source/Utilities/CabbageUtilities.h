@@ -39,7 +39,6 @@ class CabbageIDELookAndFeel;
 #pragma warning(disable: 4100) // possible loss of data
 #endif
 
-using namespace std;
 
 #define QUADBEZIER 999
 

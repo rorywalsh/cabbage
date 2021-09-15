@@ -1242,7 +1242,7 @@ StringArray CabbageCodeEditorComponent::getIdentifiersFromString (String code)
         while (*str != ')' && *str)
             str++;
 
-        tokens.add (string (begin + 1, str + 1));
+        tokens.add (std::string (begin + 1, str + 1));
     }
     while (0 != *str++);
 

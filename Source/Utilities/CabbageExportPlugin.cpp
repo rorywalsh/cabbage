@@ -375,20 +375,20 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
     const char* pluginIDToReplace[] = { "RORY", "YROR" };
     
     long loc;
-    std::fstream mFile (binFile.getFullPathName().toUTF8(), ios_base::in | ios_base::out | ios_base::binary);
+    std::fstream mFile (binFile.getFullPathName().toUTF8(), std::ios_base::in | std::ios_base::out | std::ios_base::binary);
     
     for(int i = 0 ; i < 2 ; i++)
     {
         if (mFile.is_open())
         {
-            mFile.seekg (0, ios::end);
+            mFile.seekg (0, std::ios::end);
             file_size = mFile.tellg();
             unsigned char* buffer = (unsigned char*)malloc (sizeof (unsigned char) * file_size);
             
             //set plugin ID, do this a few times in case the plugin ID appear in more than one place.
             for (int r = 0; r < 10; r++)
             {
-                mFile.seekg (0, ios::beg);
+                mFile.seekg (0, std::ios::beg);
                 mFile.read ((char*)&buffer[0], file_size);
                 loc = cabbageFindPluginId (buffer, file_size, pluginIDToReplace[i]);
                 
@@ -398,7 +398,7 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
                 }
                 else
                 {
-                    mFile.seekg (loc, ios::beg);
+                    mFile.seekg (loc, std::ios::beg);
                     mFile.write (pluginId.toUTF8(), 4);
                 }
             }
@@ -414,7 +414,7 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
                 //set manufacturer do this a few times in case the plugin ID appear in more than one place.
                 for (int r = 0; r < 10; r++)
                 {
-                    mFile.seekg (0, ios::beg);
+                    mFile.seekg (0, std::ios::beg);
                     mFile.read ((char*)&buffer[0], file_size);
                     loc = cabbageFindPluginId (buffer, file_size, manufacturer.toUTF8());
                     
@@ -424,7 +424,7 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
                     }
                     else
                     {
-                        mFile.seekg (loc, ios::beg);
+                        mFile.seekg (loc, std::ios::beg);
                         mFile.write (manufacturer.toUTF8(), manufacturer.length());
                     }
                 }

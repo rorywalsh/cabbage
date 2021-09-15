@@ -199,7 +199,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         PopupMenu subMenu;
             stringItems.clear();
         clear (dontSendNotification);
-        vector<StringArray> menus;
+        std::vector<StringArray> menus;
         int menuIndex = -1;
         for( int i = 0 ; i < items.size(); i++)
         {

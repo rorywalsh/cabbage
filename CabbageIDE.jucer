@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf8'?>
-<JUCERPROJECT bundleIdentifier="com.cabbageaudio.cabbage" companyCopyright="" cppLanguageStandard="14" displaySplashScreen="0" id="CxJYjd" includeBinaryInAppConfig="0" jucerFormatVersion="1" jucerVersion="5.4.7" name="Cabbage" projectType="guiapp" reportAppUsage="1" splashScreenColour="Dark" version="2.8.7">
+<JUCERPROJECT bundleIdentifier="com.cabbageaudio.cabbage" companyCopyright="" cppLanguageStandard="17" displaySplashScreen="0" id="CxJYjd" includeBinaryInAppConfig="0" jucerFormatVersion="1" jucerVersion="5.4.7" name="Cabbage" projectType="guiapp" reportAppUsage="1" splashScreenColour="Dark" version="2.8.8">
   <MAINGROUP id="dGbsnQ" name="Cabbage">
     <GROUP id="{7F1FF87C-35D1-1F6A-B2F8-02E1B37663D3}" name="Source">
       <GROUP id="{79BAF709-725B-0011-2B8F-19764599A5F1}" name="Opcodes">
@@ -189,7 +189,7 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <LINUX_MAKE cppLanguageStandard="-std=c++11" externalLibraries="csound64&#10;sndfile" extraCompilerFlags="" extraDefs="Cabbage_IDE_Build=1&#10;" targetFolder="Builds/LinuxMakefile">
+    <LINUX_MAKE cppLanguageStandard="17" externalLibraries="csound64&#10;sndfile" extraCompilerFlags="" extraDefs="Cabbage_IDE_Build=1&#10;" targetFolder="Builds/LinuxMakefile">
       <CONFIGURATIONS>
         <CONFIGURATION headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;" isDebug="1" libraryPath="&quot;/usr/local/lib&quot;" name="Debug" optimisation="1" targetName="Cabbage" />
         <CONFIGURATION headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;" isDebug="0" libraryPath="&quot;/usr/local/lib&quot;" name="Release" optimisation="3" targetName="Cabbage" />
