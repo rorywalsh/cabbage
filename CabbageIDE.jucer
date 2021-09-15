@@ -374,7 +374,6 @@
         <MODULEPATH id="juce_audio_processors" path="../JUCE/modules"/>
         <MODULEPATH id="juce_audio_utils" path="../JUCE/modules"/>
         <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
     <XCODE_MAC bigIcon="QPQoQ0" extraDefs="MACOSX=1&#10;Cabbage_IDE_Build=1"
@@ -407,7 +406,6 @@
         <MODULEPATH id="juce_audio_devices" path="../JUCE/"/>
         <MODULEPATH id="juce_audio_basics" path="../JUCE/"/>
         <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <VS2017 bigIcon="vNeY7N" externalLibraries="csound64.lib" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;"
@@ -438,7 +436,6 @@
         <MODULEPATH id="juce_audio_devices" path="../JUCE/"/>
         <MODULEPATH id="juce_audio_basics" path="../JUCE/"/>
         <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
       </MODULEPATHS>
     </VS2017>
     <CLION clionMakefileEnabled="1" clionXcodeEnabled="0" targetFolder="Builds/CLion">
@@ -456,7 +453,6 @@
         <MODULEPATH id="juce_audio_devices" path="../../juce"/>
         <MODULEPATH id="juce_audio_basics" path="../../juce"/>
         <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
       </MODULEPATHS>
     </CLION>
     <VS2019 bigIcon="vNeY7N" externalLibraries="csound64.lib" extraDefs="Cabbage_IDE_Build=1&#10;MSVC=1&#10;"
@@ -481,7 +477,6 @@
         <MODULEPATH id="juce_audio_devices"/>
         <MODULEPATH id="juce_audio_basics"/>
         <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="../JUCE/modules"/>
       </MODULEPATHS>
     </VS2019>
   </EXPORTFORMATS>
@@ -489,8 +484,6 @@
     <MODULE id="juce_audio_basics" showAllCode="1" useGlobalPath="0" useLocalCopy="1"/>
     <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="1"/>
-    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="1"
-            useGlobalPath="0"/>
     <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="1"/>
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="1"/>
