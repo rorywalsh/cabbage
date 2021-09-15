@@ -469,7 +469,7 @@ int GetCabbageStringValue::getAttribute()
         {
             outargs.str_data(0).size = ((STRINGDAT*)value)->size;
             outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
-            *lastString = *((STRINGDAT*)value)->data;
+            lastString = outargs.str_data(0).data;
         }
     }
     
