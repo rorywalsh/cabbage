@@ -280,8 +280,8 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
         {
             double ratioMin = (xMinAtThumbDown + distanceFromStart) / getWidth();
             double ratioMax = (xMaxAtThumbDown + distanceFromStart) / getWidth();
-            float newMin = proportionOfLengthToValue ( min( max(ratioMin, 0.0), 1.0 ));
-            float newMax = proportionOfLengthToValue ( min( max(ratioMax, 0.0), 1.0 ));
+            float newMin = proportionOfLengthToValue (std::min(std::max(ratioMin, 0.0), 1.0 ));
+            float newMax = proportionOfLengthToValue (std::min(std::max(ratioMax, 0.0), 1.0 ));
             if (newMin > getMinimum())
                 setMinValue (newMin);
             if (newMax < getMaximum())
@@ -300,8 +300,8 @@ void RangeSlider::mouseDrag (const MouseEvent& event)
         {
             double ratioMin = (yMinAtThumbDown - distanceFromStart) / getHeight();
             double ratioMax = (yMaxAtThumbDown - distanceFromStart) / getHeight();
-            float newMin = proportionOfLengthToValue ( min( max(ratioMin, 0.0), 1.0 ));
-            float newMax = proportionOfLengthToValue ( min( max(ratioMax, 0.0), 1.0 ));
+            float newMin = proportionOfLengthToValue (std::min(std::max(ratioMin, 0.0), 1.0 ));
+            float newMax = proportionOfLengthToValue (std::min(std::max(ratioMax, 0.0), 1.0 ));
             
             if (newMin > getMinimum())
                 setMinValue (newMin);
