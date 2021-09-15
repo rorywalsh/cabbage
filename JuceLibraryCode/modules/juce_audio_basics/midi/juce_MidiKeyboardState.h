@@ -23,6 +23,51 @@
 namespace juce
 {
 
+class MidiKeyboardState;
+
+
+//==============================================================================
+/**
+    Receives events from a MidiKeyboardState object.
+
+    @see MidiKeyboardState
+
+    @tags{Audio}
+*/
+class JUCE_API  MidiKeyboardStateListener
+{
+public:
+    //==============================================================================
+    MidiKeyboardStateListener() = default;
+    virtual ~MidiKeyboardStateListener() = default;
+
+    //==============================================================================
+    /** Called when one of the MidiKeyboardState's keys is pressed.
+
+        This will be called synchronously when the state is either processing a
+        buffer in its MidiKeyboardState::processNextMidiBuffer() method, or
+        when a note is being played with its MidiKeyboardState::noteOn() method.
+
+        Note that this callback could happen from an audio callback thread, so be
+        careful not to block, and avoid any UI activity in the callback.
+    */
+    virtual void handleNoteOn (MidiKeyboardState* source,
+                               int midiChannel, int midiNoteNumber, float velocity) = 0;
+
+    /** Called when one of the MidiKeyboardState's keys is released.
+
+        This will be called synchronously when the state is either processing a
+        buffer in its MidiKeyboardState::processNextMidiBuffer() method, or
+        when a note is being played with its MidiKeyboardState::noteOff() method.
+
+        Note that this callback could happen from an audio callback thread, so be
+        careful not to block, and avoid any UI activity in the callback.
+    */
+    virtual void handleNoteOff (MidiKeyboardState* source,
+                                int midiChannel, int midiNoteNumber, float velocity) = 0;
+};
+
+
 //==============================================================================
 /**
     Represents a piano keyboard, keeping track of which keys are currently pressed.
@@ -135,62 +180,27 @@ public:
                                 bool injectIndirectEvents);
 
     //==============================================================================
-    /** Receives events from a MidiKeyboardState object. */
-    class JUCE_API Listener
-    {
-    public:
-        //==============================================================================
-        virtual ~Listener() = default;
-
-        //==============================================================================
-        /** Called when one of the MidiKeyboardState's keys is pressed.
-
-            This will be called synchronously when the state is either processing a
-            buffer in its MidiKeyboardState::processNextMidiBuffer() method, or
-            when a note is being played with its MidiKeyboardState::noteOn() method.
-
-            Note that this callback could happen from an audio callback thread, so be
-            careful not to block, and avoid any UI activity in the callback.
-        */
-        virtual void handleNoteOn (MidiKeyboardState* source,
-                                   int midiChannel, int midiNoteNumber, float velocity) = 0;
-
-        /** Called when one of the MidiKeyboardState's keys is released.
-
-            This will be called synchronously when the state is either processing a
-            buffer in its MidiKeyboardState::processNextMidiBuffer() method, or
-            when a note is being played with its MidiKeyboardState::noteOff() method.
-
-            Note that this callback could happen from an audio callback thread, so be
-            careful not to block, and avoid any UI activity in the callback.
-        */
-        virtual void handleNoteOff (MidiKeyboardState* source,
-                                    int midiChannel, int midiNoteNumber, float velocity) = 0;
-    };
-
     /** Registers a listener for callbacks when keys go up or down.
         @see removeListener
     */
-    void addListener (Listener* listener);
+    void addListener (MidiKeyboardStateListener* listener);
 
     /** Deregisters a listener.
         @see addListener
     */
-    void removeListener (Listener* listener);
+    void removeListener (MidiKeyboardStateListener* listener);
 
 private:
     //==============================================================================
     CriticalSection lock;
-    std::atomic<uint16> noteStates[128];
+    uint16 noteStates[128];
     MidiBuffer eventsToAdd;
-    ListenerList<Listener> listeners;
+    Array <MidiKeyboardStateListener*> listeners;
 
-    void noteOnInternal  (int midiChannel, int midiNoteNumber, float velocity);
+    void noteOnInternal (int midiChannel, int midiNoteNumber, float velocity);
     void noteOffInternal (int midiChannel, int midiNoteNumber, float velocity);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MidiKeyboardState)
 };
-
-using MidiKeyboardStateListener = MidiKeyboardState::Listener;
 
 } // namespace juce

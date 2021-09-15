@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -36,10 +37,10 @@ void Displays::init (Desktop& desktop)
     findDisplays (desktop.getGlobalScaleFactor());
 }
 
-const Displays::Display* Displays::getDisplayForRect (Rectangle<int> rect, bool isPhysical) const noexcept
+const Displays::Display& Displays::findDisplayForRect (Rectangle<int> rect, bool isPhysical) const noexcept
 {
     int maxArea = -1;
-    const Display* foundDisplay = nullptr;
+    const Display* retVal = nullptr;
 
     for (auto& display : displays)
     {
@@ -54,17 +55,17 @@ const Displays::Display* Displays::getDisplayForRect (Rectangle<int> rect, bool 
         if (area >= maxArea)
         {
             maxArea = area;
-            foundDisplay = &display;
+            retVal = &display;
         }
     }
 
-    return foundDisplay;
+    return *retVal;
 }
 
-const Displays::Display* Displays::getDisplayForPoint (Point<int> point, bool isPhysical) const noexcept
+const Displays::Display& Displays::findDisplayForPoint (Point<int> point, bool isPhysical) const noexcept
 {
     auto minDistance = std::numeric_limits<int>::max();
-    const Display* foundDisplay = nullptr;
+    const Display* retVal = nullptr;
 
     for (auto& display : displays)
     {
@@ -74,101 +75,78 @@ const Displays::Display* Displays::getDisplayForPoint (Point<int> point, bool is
             displayArea = (displayArea.withZeroOrigin() * display.scale) + display.topLeftPhysical;
 
         if (displayArea.contains (point))
-            return &display;
+            return display;
 
         auto distance = displayArea.getCentre().getDistanceFrom (point);
-
         if (distance <= minDistance)
         {
             minDistance = distance;
-            foundDisplay = &display;
+            retVal = &display;
         }
     }
 
-    return foundDisplay;
+    return *retVal;
 }
 
 Rectangle<int> Displays::physicalToLogical (Rectangle<int> rect, const Display* useScaleFactorOfDisplay) const noexcept
 {
-    return physicalToLogical (rect.toFloat(), useScaleFactorOfDisplay).toNearestInt();
-}
-
-Rectangle<float> Displays::physicalToLogical (Rectangle<float> rect, const Display* useScaleFactorOfDisplay) const noexcept
-{
-    const auto* display = useScaleFactorOfDisplay != nullptr ? useScaleFactorOfDisplay
-                                                             : getDisplayForRect (rect.toNearestInt(), true);
-
-    if (display == nullptr)
-        return rect;
+    auto& display = useScaleFactorOfDisplay != nullptr ? *useScaleFactorOfDisplay
+                                                       : findDisplayForRect (rect, true);
 
     auto globalScale = Desktop::getInstance().getGlobalScaleFactor();
 
-    return ((rect - display->topLeftPhysical.toFloat()) / (display->scale / globalScale))
-            + (display->totalArea.getTopLeft().toFloat() * globalScale);
+    return ((rect.toFloat() - display.topLeftPhysical.toFloat()) / (display.scale / globalScale)).toNearestInt() + (display.totalArea.getTopLeft() * globalScale);
 }
 
 Rectangle<int> Displays::logicalToPhysical (Rectangle<int> rect, const Display* useScaleFactorOfDisplay) const noexcept
 {
-    return logicalToPhysical (rect.toFloat(), useScaleFactorOfDisplay).toNearestInt();
-}
-
-Rectangle<float> Displays::logicalToPhysical (Rectangle<float> rect, const Display* useScaleFactorOfDisplay) const noexcept
-{
-    const auto* display = useScaleFactorOfDisplay != nullptr ? useScaleFactorOfDisplay
-                                                             : getDisplayForRect (rect.toNearestInt(), false);
-
-    if (display == nullptr)
-        return rect;
+    auto& display = useScaleFactorOfDisplay != nullptr ? *useScaleFactorOfDisplay
+                                                       : findDisplayForRect (rect, false);
 
     auto globalScale = Desktop::getInstance().getGlobalScaleFactor();
 
-    return ((rect.toFloat() - (display->totalArea.getTopLeft().toFloat() * globalScale)) * (display->scale / globalScale))
-             + display->topLeftPhysical.toFloat();
+    return ((rect.toFloat() - (display.totalArea.getTopLeft().toFloat() * globalScale)) * (display.scale / globalScale)).toNearestInt() + display.topLeftPhysical;
 }
 
 template <typename ValueType>
 Point<ValueType> Displays::physicalToLogical (Point<ValueType> point, const Display* useScaleFactorOfDisplay) const noexcept
 {
-    const auto* display = useScaleFactorOfDisplay != nullptr ? useScaleFactorOfDisplay
-                                                             : getDisplayForPoint (point.roundToInt(), true);
-
-    if (display == nullptr)
-        return point;
+    auto& display = useScaleFactorOfDisplay != nullptr ? *useScaleFactorOfDisplay
+                                                       : findDisplayForPoint (point.roundToInt(), true);
 
     auto globalScale = Desktop::getInstance().getGlobalScaleFactor();
 
-    Point<ValueType> logicalTopLeft  (static_cast<ValueType> (display->totalArea.getX()),       static_cast<ValueType> (display->totalArea.getY()));
-    Point<ValueType> physicalTopLeft (static_cast<ValueType> (display->topLeftPhysical.getX()), static_cast<ValueType> (display->topLeftPhysical.getY()));
+    Point<ValueType> logicalTopLeft  (static_cast<ValueType> (display.totalArea.getX()),       static_cast<ValueType> (display.totalArea.getY()));
+    Point<ValueType> physicalTopLeft (static_cast<ValueType> (display.topLeftPhysical.getX()), static_cast<ValueType> (display.topLeftPhysical.getY()));
 
-    return ((point - physicalTopLeft) / (display->scale / globalScale)) + (logicalTopLeft * globalScale);
+    return ((point - physicalTopLeft) / (display.scale / globalScale)) + (logicalTopLeft * globalScale);
 }
 
 template <typename ValueType>
 Point<ValueType> Displays::logicalToPhysical (Point<ValueType> point, const Display* useScaleFactorOfDisplay)  const noexcept
 {
-    const auto* display = useScaleFactorOfDisplay != nullptr ? useScaleFactorOfDisplay
-                                                             : getDisplayForPoint (point.roundToInt(), false);
-
-    if (display == nullptr)
-        return point;
+    auto& display = useScaleFactorOfDisplay != nullptr ? *useScaleFactorOfDisplay
+                                                       : findDisplayForPoint (point.roundToInt(), false);
 
     auto globalScale = Desktop::getInstance().getGlobalScaleFactor();
 
-    Point<ValueType> logicalTopLeft  (static_cast<ValueType> (display->totalArea.getX()),       static_cast<ValueType> (display->totalArea.getY()));
-    Point<ValueType> physicalTopLeft (static_cast<ValueType> (display->topLeftPhysical.getX()), static_cast<ValueType> (display->topLeftPhysical.getY()));
+    Point<ValueType> logicalTopLeft  (static_cast<ValueType> (display.totalArea.getX()),       static_cast<ValueType> (display.totalArea.getY()));
+    Point<ValueType> physicalTopLeft (static_cast<ValueType> (display.topLeftPhysical.getX()), static_cast<ValueType> (display.topLeftPhysical.getY()));
 
-    return ((point - (logicalTopLeft * globalScale)) * (display->scale / globalScale)) + physicalTopLeft;
+    return ((point - (logicalTopLeft * globalScale)) * (display.scale / globalScale)) + physicalTopLeft;
 }
 
-const Displays::Display* Displays::getPrimaryDisplay() const noexcept
+const Displays::Display& Displays::getMainDisplay() const noexcept
 {
     JUCE_ASSERT_MESSAGE_MANAGER_IS_LOCKED
 
     for (auto& d : displays)
         if (d.isMain)
-            return &d;
+            return d;
 
-    return nullptr;
+    // no main display!
+    jassertfalse;
+    return displays.getReference (0);
 }
 
 RectangleList<int> Displays::getRectangleList (bool userAreasOnly) const
@@ -215,6 +193,33 @@ bool operator== (const Displays::Display& d1, const Displays::Display& d2) noexc
 
 bool operator!= (const Displays::Display& d1, const Displays::Display& d2) noexcept;
 bool operator!= (const Displays::Display& d1, const Displays::Display& d2) noexcept    { return ! (d1 == d2); }
+
+// Deprecated method
+const Displays::Display& Displays::getDisplayContaining (Point<int> position) const noexcept
+{
+    JUCE_ASSERT_MESSAGE_MANAGER_IS_LOCKED
+    const auto* best = &displays.getReference (0);
+    auto bestDistance = std::numeric_limits<int>::max();
+
+    for (auto& d : displays)
+    {
+        if (d.totalArea.contains (position))
+        {
+            best = &d;
+            break;
+        }
+
+        auto distance = d.totalArea.getCentre().getDistanceFrom (position);
+
+        if (distance < bestDistance)
+        {
+            bestDistance = distance;
+            best = &d;
+        }
+    }
+
+    return *best;
+}
 
 //==============================================================================
 // These methods are used for converting the totalArea and userArea Rectangles in Display from physical to logical
@@ -348,9 +353,7 @@ void Displays::updateToLogical()
             }
         }
 
-        if (retVal != nullptr)
-            retVal->isRoot = true;
-
+        retVal->isRoot = true;
         return retVal;
     }();
 
@@ -382,57 +385,5 @@ void Displays::updateToLogical()
  template Point<int>   Displays::logicalToPhysical (Point<int>,   const Display*) const noexcept;
  template Point<float> Displays::logicalToPhysical (Point<float>, const Display*) const noexcept;
 #endif
-
-//==============================================================================
-// Deprecated methods
-const Displays::Display& Displays::getDisplayContaining (Point<int> position) const noexcept
-{
-    JUCE_ASSERT_MESSAGE_MANAGER_IS_LOCKED
-    const auto* best = &displays.getReference (0);
-    auto bestDistance = std::numeric_limits<int>::max();
-
-    for (auto& d : displays)
-    {
-        if (d.totalArea.contains (position))
-        {
-            best = &d;
-            break;
-        }
-
-        auto distance = d.totalArea.getCentre().getDistanceFrom (position);
-
-        if (distance < bestDistance)
-        {
-            bestDistance = distance;
-            best = &d;
-        }
-    }
-
-    return *best;
-}
-
-const Displays::Display& Displays::findDisplayForRect (Rectangle<int> rect, bool isPhysical) const noexcept
-{
-    if (auto* display = getDisplayForRect (rect, isPhysical))
-        return *display;
-
-    return emptyDisplay;
-}
-
-const Displays::Display& Displays::findDisplayForPoint (Point<int> point, bool isPhysical) const noexcept
-{
-    if (auto* display = getDisplayForPoint (point, isPhysical))
-        return *display;
-
-    return emptyDisplay;
-}
-
-const Displays::Display& Displays::getMainDisplay() const noexcept
-{
-    if (auto* display = getPrimaryDisplay())
-        return *display;
-
-    return emptyDisplay;
-}
 
 } // namespace juce

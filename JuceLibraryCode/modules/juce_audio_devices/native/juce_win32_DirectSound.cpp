@@ -194,9 +194,7 @@ namespace
         static type##functionName ds##functionName = nullptr;
 
     #define DSOUND_FUNCTION_LOAD(functionName) \
-        JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wcast-function-type") \
-        ds##functionName = (type##functionName) GetProcAddress (h, #functionName); \
-        JUCE_END_IGNORE_WARNINGS_GCC_LIKE \
+        ds##functionName = (type##functionName) GetProcAddress (h, #functionName);  \
         jassert (ds##functionName != nullptr);
 
     typedef BOOL (CALLBACK *LPDSENUMCALLBACKW) (LPGUID, LPCWSTR, LPCWSTR, LPVOID);
@@ -211,17 +209,12 @@ namespace
     {
         if (dsDirectSoundCreate == nullptr)
         {
-            if (auto* h = LoadLibraryA ("dsound.dll"))
-            {
-                DSOUND_FUNCTION_LOAD (DirectSoundCreate)
-                DSOUND_FUNCTION_LOAD (DirectSoundCaptureCreate)
-                DSOUND_FUNCTION_LOAD (DirectSoundEnumerateW)
-                DSOUND_FUNCTION_LOAD (DirectSoundCaptureEnumerateW)
+            HMODULE h = LoadLibraryA ("dsound.dll");
 
-                return;
-            }
-
-            jassertfalse;
+            DSOUND_FUNCTION_LOAD (DirectSoundCreate)
+            DSOUND_FUNCTION_LOAD (DirectSoundCaptureCreate)
+            DSOUND_FUNCTION_LOAD (DirectSoundEnumerateW)
+            DSOUND_FUNCTION_LOAD (DirectSoundCaptureEnumerateW)
         }
     }
 
@@ -298,14 +291,14 @@ public:
             {
                 IDirectSoundBuffer* pPrimaryBuffer;
 
-                DSBUFFERDESC primaryDesc = {};
+                DSBUFFERDESC primaryDesc = { 0 };
                 primaryDesc.dwSize = sizeof (DSBUFFERDESC);
                 primaryDesc.dwFlags = 1 /* DSBCAPS_PRIMARYBUFFER */;
                 primaryDesc.dwBufferBytes = 0;
-                primaryDesc.lpwfxFormat = nullptr;
+                primaryDesc.lpwfxFormat = 0;
 
                 JUCE_DS_LOG ("co-op level set");
-                hr = pDirectSound->CreateSoundBuffer (&primaryDesc, &pPrimaryBuffer, nullptr);
+                hr = pDirectSound->CreateSoundBuffer (&primaryDesc, &pPrimaryBuffer, 0);
                 JUCE_DS_LOG_ERROR (hr);
 
                 if (SUCCEEDED (hr))
@@ -324,14 +317,14 @@ public:
 
                     if (SUCCEEDED (hr))
                     {
-                        DSBUFFERDESC secondaryDesc = {};
+                        DSBUFFERDESC secondaryDesc = { 0 };
                         secondaryDesc.dwSize = sizeof (DSBUFFERDESC);
                         secondaryDesc.dwFlags =  0x8000 /* DSBCAPS_GLOBALFOCUS */
                                                   | 0x10000 /* DSBCAPS_GETCURRENTPOSITION2 */;
                         secondaryDesc.dwBufferBytes = (DWORD) totalBytesPerBuffer;
                         secondaryDesc.lpwfxFormat = &wfFormat;
 
-                        hr = pDirectSound->CreateSoundBuffer (&secondaryDesc, &pOutputBuffer, nullptr);
+                        hr = pDirectSound->CreateSoundBuffer (&secondaryDesc, &pOutputBuffer, 0);
                         JUCE_DS_LOG_ERROR (hr);
 
                         if (SUCCEEDED (hr))
@@ -342,14 +335,14 @@ public:
                             unsigned char* pDSBuffData;
 
                             hr = pOutputBuffer->Lock (0, (DWORD) totalBytesPerBuffer,
-                                                      (LPVOID*) &pDSBuffData, &dwDataLen, nullptr, nullptr, 0);
+                                                      (LPVOID*) &pDSBuffData, &dwDataLen, 0, 0, 0);
                             JUCE_DS_LOG_ERROR (hr);
 
                             if (SUCCEEDED (hr))
                             {
                                 zeromem (pDSBuffData, dwDataLen);
 
-                                hr = pOutputBuffer->Unlock (pDSBuffData, dwDataLen, nullptr, 0);
+                                hr = pOutputBuffer->Unlock (pDSBuffData, dwDataLen, 0, 0);
 
                                 if (SUCCEEDED (hr))
                                 {
@@ -386,7 +379,7 @@ public:
 
     bool service()
     {
-        if (pOutputBuffer == nullptr)
+        if (pOutputBuffer == 0)
             return true;
 
         DWORD playCursor, writeCursor;
@@ -488,7 +481,7 @@ public:
                     jassertfalse;
                 }
 
-                writeOffset = (writeOffset + dwSize1 + dwSize2) % (DWORD) totalBytesPerBuffer;
+                writeOffset = (writeOffset + dwSize1 + dwSize2) % totalBytesPerBuffer;
 
                 pOutputBuffer->Unlock (buf1, dwSize1, buf2, dwSize2);
             }
@@ -525,7 +518,7 @@ private:
     bool firstPlayTime;
     int64 lastPlayTime, ticksPerBuffer;
 
-    static int convertInputValues (const float l, const float r) noexcept
+    static inline int convertInputValues (const float l, const float r) noexcept
     {
         return jlimit (-32768, 32767, roundToInt (32767.0f * r)) << 16
                 | (0xffff & jlimit (-32768, 32767, roundToInt (32767.0f * l)));
@@ -605,14 +598,14 @@ public:
             wfFormat.nAvgBytesPerSec  = wfFormat.nSamplesPerSec * wfFormat.nBlockAlign;
             wfFormat.cbSize = 0;
 
-            DSCBUFFERDESC captureDesc = {};
+            DSCBUFFERDESC captureDesc = { 0 };
             captureDesc.dwSize = sizeof (DSCBUFFERDESC);
             captureDesc.dwFlags = 0;
             captureDesc.dwBufferBytes = (DWORD) totalBytesPerBuffer;
             captureDesc.lpwfxFormat = &wfFormat;
 
             JUCE_DS_LOG ("object created");
-            hr = pDirectSoundCapture->CreateCaptureBuffer (&captureDesc, &pInputBuffer, nullptr);
+            hr = pDirectSoundCapture->CreateCaptureBuffer (&captureDesc, &pInputBuffer, 0);
 
             if (SUCCEEDED (hr))
             {
@@ -641,7 +634,7 @@ public:
 
     bool service()
     {
-        if (pInputBuffer == nullptr)
+        if (pInputBuffer == 0)
             return true;
 
         DWORD capturePos, readPos;
@@ -699,7 +692,7 @@ public:
                     jassertfalse;
                 }
 
-                readOffset = (readOffset + dwsize1 + dwsize2) % (DWORD) totalBytesPerBuffer;
+                readOffset = (readOffset + dwsize1 + dwsize2) % totalBytesPerBuffer;
 
                 pInputBuffer->Unlock (buf1, dwsize1, buf2, dwsize2);
             }
@@ -764,7 +757,7 @@ public:
         }
     }
 
-    ~DSoundAudioIODevice() override
+    ~DSoundAudioIODevice()
     {
         close();
     }
@@ -939,8 +932,8 @@ public:
                 break;
         }
 
-        const auto latencyMs = (uint32) (bufferSizeSamples * 1000.0 / sampleRate);
-        const auto maxTimeMS = jmax ((uint32) 5, 3 * latencyMs);
+        const int latencyMs = (int) (bufferSizeSamples * 1000.0 / sampleRate);
+        const int maxTimeMS = jmax (5, 3 * latencyMs);
 
         while (! threadShouldExit())
         {
@@ -1044,7 +1037,7 @@ struct DSoundDeviceList
         outputGuids.clear();
         inputGuids.clear();
 
-        if (dsDirectSoundEnumerateW != nullptr)
+        if (dsDirectSoundEnumerateW != 0)
         {
             dsDirectSoundEnumerateW (outputEnumProcW, this);
             dsDirectSoundCaptureEnumerateW (inputEnumProcW, this);
@@ -1288,5 +1281,11 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DSoundAudioIODeviceType)
 };
+
+//==============================================================================
+AudioIODeviceType* AudioIODeviceType::createAudioIODeviceType_DirectSound()
+{
+    return new DSoundAudioIODeviceType();
+}
 
 } // namespace juce

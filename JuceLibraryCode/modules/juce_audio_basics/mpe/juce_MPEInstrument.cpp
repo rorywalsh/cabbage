@@ -27,55 +27,35 @@ namespace
 {
     const uint8 noLSBValueReceived = 0xff;
     const Range<int> allChannels { 1, 17 };
-
-    template <typename Range, typename Value>
-    void mpeInstrumentFill (Range& range, const Value& value)
-    {
-        std::fill (std::begin (range), std::end (range), value);
-    }
 }
 
 //==============================================================================
 MPEInstrument::MPEInstrument() noexcept
 {
-    mpeInstrumentFill (lastPressureLowerBitReceivedOnChannel, noLSBValueReceived);
-    mpeInstrumentFill (lastTimbreLowerBitReceivedOnChannel, noLSBValueReceived);
-    mpeInstrumentFill (isMemberChannelSustained, false);
+    std::fill_n (lastPressureLowerBitReceivedOnChannel, 16, noLSBValueReceived);
+    std::fill_n (lastTimbreLowerBitReceivedOnChannel, 16, noLSBValueReceived);
+    std::fill_n (isMemberChannelSustained, 16, false);
 
     pitchbendDimension.value = &MPENote::pitchbend;
     pressureDimension.value = &MPENote::pressure;
     timbreDimension.value = &MPENote::timbre;
 
-    resetLastReceivedValues();
+    // the default value for pressure is 0, for all other dimension it is centre (= default MPEValue)
+    std::fill_n (pressureDimension.lastValueReceivedOnChannel, 16, MPEValue::minValue());
 
     legacyMode.isEnabled = false;
     legacyMode.pitchbendRange = 2;
     legacyMode.channelRange = allChannels;
 }
 
-MPEInstrument::~MPEInstrument() = default;
+MPEInstrument::~MPEInstrument()
+{
+}
 
 //==============================================================================
 MPEZoneLayout MPEInstrument::getZoneLayout() const noexcept
 {
     return zoneLayout;
-}
-
-void MPEInstrument::resetLastReceivedValues()
-{
-    struct Defaults
-    {
-        MPEDimension& dimension;
-        MPEValue defaultValue;
-    };
-
-    // The default value for pressure is 0, for all other dimensions it is centre
-    for (const auto& pair : { Defaults { pressureDimension,  MPEValue::minValue() },
-                              Defaults { pitchbendDimension, MPEValue::centreValue() },
-                              Defaults { timbreDimension,    MPEValue::centreValue() } })
-    {
-        mpeInstrumentFill (pair.dimension.lastValueReceivedOnChannel, pair.defaultValue);
-    }
 }
 
 void MPEInstrument::setZoneLayout (MPEZoneLayout newLayout)
@@ -85,8 +65,6 @@ void MPEInstrument::setZoneLayout (MPEZoneLayout newLayout)
     const ScopedLock sl (lock);
     legacyMode.isEnabled = false;
     zoneLayout = newLayout;
-
-    resetLastReceivedValues();
 }
 
 //==============================================================================
@@ -513,7 +491,7 @@ void MPEInstrument::updateNoteTotalPitchbend (MPENote& note)
 {
     if (legacyMode.isEnabled)
     {
-        note.totalPitchbendInSemitones = note.pitchbend.asSignedFloat() * (float) legacyMode.pitchbendRange;
+        note.totalPitchbendInSemitones = note.pitchbend.asSignedFloat() * legacyMode.pitchbendRange;
     }
     else
     {
@@ -538,11 +516,11 @@ void MPEInstrument::updateNoteTotalPitchbend (MPENote& note)
         auto notePitchbendInSemitones = 0.0f;
 
         if (zone.isUsingChannelAsMemberChannel (note.midiChannel))
-            notePitchbendInSemitones = note.pitchbend.asSignedFloat() * (float) zone.perNotePitchbendRange;
+            notePitchbendInSemitones = note.pitchbend.asSignedFloat() * zone.perNotePitchbendRange;
 
         auto masterPitchbendInSemitones = pitchbendDimension.lastValueReceivedOnChannel[zone.getMasterChannel() - 1]
                                                             .asSignedFloat()
-                                          * (float) zone.masterPitchbendRange;
+                                          * zone.masterPitchbendRange;
 
         note.totalPitchbendInSemitones = notePitchbendInSemitones + masterPitchbendInSemitones;
     }
@@ -833,7 +811,6 @@ public:
         testLayout.setUpperZone (6);
     }
 
-    JUCE_BEGIN_IGNORE_WARNINGS_MSVC (6262)
     void runTest() override
     {
         beginTest ("initial zone layout");
@@ -1857,8 +1834,12 @@ public:
             buffer.addEvents (MPEMessages::setLowerZone (5), 0, -1, 0);
             buffer.addEvents (MPEMessages::setUpperZone (6), 0, -1, 0);
 
-            for (const auto metadata : buffer)
-                test.processNextMidiEvent (metadata.getMessage());
+            MidiBuffer::Iterator iter (buffer);
+            MidiMessage message;
+            int samplePosition; // not actually used, so no need to initialise.
+
+            while (iter.getNextEvent (message, samplePosition))
+                test.processNextMidiEvent (message);
 
             expect (test.getZoneLayout().getLowerZone().isActive());
             expect (test.getZoneLayout().getUpperZone().isActive());
@@ -2146,7 +2127,6 @@ public:
             }
         }
     }
-    JUCE_END_IGNORE_WARNINGS_MSVC
 
 private:
     //==============================================================================

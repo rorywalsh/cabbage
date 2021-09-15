@@ -32,64 +32,19 @@ struct InterprocessConnection::ConnectionThread  : public Thread
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ConnectionThread)
 };
 
-class SafeActionImpl
-{
-public:
-    explicit SafeActionImpl (InterprocessConnection& p)
-        : ref (p) {}
-
-    template <typename Fn>
-    void ifSafe (Fn&& fn)
-    {
-        const ScopedLock lock (mutex);
-
-        if (safe)
-            fn (ref);
-    }
-
-    void setSafe (bool s)
-    {
-        const ScopedLock lock (mutex);
-        safe = s;
-    }
-
-    bool isSafe()
-    {
-        const ScopedLock lock (mutex);
-        return safe;
-    }
-
-private:
-    CriticalSection mutex;
-    InterprocessConnection& ref;
-    bool safe = false;
-};
-
-class InterprocessConnection::SafeAction : public SafeActionImpl
-{
-    using SafeActionImpl::SafeActionImpl;
-};
-
 //==============================================================================
 InterprocessConnection::InterprocessConnection (bool callbacksOnMessageThread, uint32 magicMessageHeaderNumber)
     : useMessageThread (callbacksOnMessageThread),
-      magicMessageHeader (magicMessageHeaderNumber),
-      safeAction (std::make_shared<SafeAction> (*this))
+      magicMessageHeader (magicMessageHeaderNumber)
 {
     thread.reset (new ConnectionThread (*this));
 }
 
 InterprocessConnection::~InterprocessConnection()
 {
-    // You *must* call `disconnect` in the destructor of your derived class to ensure
-    // that any pending messages are not delivered. If the messages were delivered after
-    // destroying the derived class, we'd end up calling the pure virtual implementations
-    // of `messageReceived`, `connectionMade` and `connectionLost` which is definitely
-    // not a good idea!
-    jassert (! safeAction->isSafe());
-
     callbackConnectionState = false;
-    disconnect (4000, Notify::no);
+    disconnect();
+    masterReference.clear();
     thread.reset();
 }
 
@@ -99,15 +54,18 @@ bool InterprocessConnection::connectToSocket (const String& hostName,
 {
     disconnect();
 
-    auto s = std::make_unique<StreamingSocket>();
+    const ScopedLock sl (pipeAndSocketLock);
+    socket.reset (new StreamingSocket());
 
-    if (s->connect (hostName, portNumber, timeOutMillisecs))
+    if (socket->connect (hostName, portNumber, timeOutMillisecs))
     {
-        const ScopedWriteLock sl (pipeAndSocketLock);
-        initialiseWithSocket (std::move (s));
+        threadIsRunning = true;
+        connectionMadeInt();
+        thread->startThread();
         return true;
     }
 
+    socket.reset();
     return false;
 }
 
@@ -115,13 +73,13 @@ bool InterprocessConnection::connectToPipe (const String& pipeName, int timeoutM
 {
     disconnect();
 
-    auto newPipe = std::make_unique<NamedPipe>();
+    std::unique_ptr<NamedPipe> newPipe (new NamedPipe());
 
     if (newPipe->openExisting (pipeName))
     {
-        const ScopedWriteLock sl (pipeAndSocketLock);
+        const ScopedLock sl (pipeAndSocketLock);
         pipeReceiveMessageTimeout = timeoutMs;
-        initialiseWithPipe (std::move (newPipe));
+        initialiseWithPipe (newPipe.release());
         return true;
     }
 
@@ -132,49 +90,44 @@ bool InterprocessConnection::createPipe (const String& pipeName, int timeoutMs, 
 {
     disconnect();
 
-    auto newPipe = std::make_unique<NamedPipe>();
+    std::unique_ptr<NamedPipe> newPipe (new NamedPipe());
 
     if (newPipe->createNewPipe (pipeName, mustNotExist))
     {
-        const ScopedWriteLock sl (pipeAndSocketLock);
+        const ScopedLock sl (pipeAndSocketLock);
         pipeReceiveMessageTimeout = timeoutMs;
-        initialiseWithPipe (std::move (newPipe));
+        initialiseWithPipe (newPipe.release());
         return true;
     }
 
     return false;
 }
 
-void InterprocessConnection::disconnect (int timeoutMs, Notify notify)
+void InterprocessConnection::disconnect()
 {
     thread->signalThreadShouldExit();
 
     {
-        const ScopedReadLock sl (pipeAndSocketLock);
+        const ScopedLock sl (pipeAndSocketLock);
         if (socket != nullptr)  socket->close();
         if (pipe != nullptr)    pipe->close();
     }
 
-    thread->stopThread (timeoutMs);
+    thread->stopThread (4000);
     deletePipeAndSocket();
-
-    if (notify == Notify::yes)
-        connectionLostInt();
-
-    callbackConnectionState = false;
-    safeAction->setSafe (false);
+    connectionLostInt();
 }
 
 void InterprocessConnection::deletePipeAndSocket()
 {
-    const ScopedWriteLock sl (pipeAndSocketLock);
+    const ScopedLock sl (pipeAndSocketLock);
     socket.reset();
     pipe.reset();
 }
 
 bool InterprocessConnection::isConnected() const
 {
-    const ScopedReadLock sl (pipeAndSocketLock);
+    const ScopedLock sl (pipeAndSocketLock);
 
     return ((socket != nullptr && socket->isConnected())
               || (pipe != nullptr && pipe->isOpen()))
@@ -184,7 +137,7 @@ bool InterprocessConnection::isConnected() const
 String InterprocessConnection::getConnectedHostName() const
 {
     {
-        const ScopedReadLock sl (pipeAndSocketLock);
+        const ScopedLock sl (pipeAndSocketLock);
 
         if (pipe == nullptr && socket == nullptr)
             return {};
@@ -211,7 +164,7 @@ bool InterprocessConnection::sendMessage (const MemoryBlock& message)
 
 int InterprocessConnection::writeData (void* data, int dataSize)
 {
-    const ScopedReadLock sl (pipeAndSocketLock);
+    const ScopedLock sl (pipeAndSocketLock);
 
     if (socket != nullptr)
         return socket->write (data, dataSize);
@@ -223,47 +176,45 @@ int InterprocessConnection::writeData (void* data, int dataSize)
 }
 
 //==============================================================================
-void InterprocessConnection::initialise()
+void InterprocessConnection::initialiseWithSocket (StreamingSocket* newSocket)
 {
-    safeAction->setSafe (true);
+    jassert (socket == nullptr && pipe == nullptr);
+    socket.reset (newSocket);
+
     threadIsRunning = true;
     connectionMadeInt();
     thread->startThread();
 }
 
-void InterprocessConnection::initialiseWithSocket (std::unique_ptr<StreamingSocket> newSocket)
+void InterprocessConnection::initialiseWithPipe (NamedPipe* newPipe)
 {
     jassert (socket == nullptr && pipe == nullptr);
-    socket = std::move (newSocket);
-    initialise();
-}
+    pipe.reset (newPipe);
 
-void InterprocessConnection::initialiseWithPipe (std::unique_ptr<NamedPipe> newPipe)
-{
-    jassert (socket == nullptr && pipe == nullptr);
-    pipe = std::move (newPipe);
-    initialise();
+    threadIsRunning = true;
+    connectionMadeInt();
+    thread->startThread();
 }
 
 //==============================================================================
 struct ConnectionStateMessage  : public MessageManager::MessageBase
 {
-    ConnectionStateMessage (std::shared_ptr<SafeActionImpl> ipc, bool connected) noexcept
-        : safeAction (ipc), connectionMade (connected)
+    ConnectionStateMessage (InterprocessConnection* ipc, bool connected) noexcept
+        : owner (ipc), connectionMade (connected)
     {}
 
     void messageCallback() override
     {
-        safeAction->ifSafe ([this] (InterprocessConnection& owner)
+        if (auto* ipc = owner.get())
         {
             if (connectionMade)
-                owner.connectionMade();
+                ipc->connectionMade();
             else
-                owner.connectionLost();
-        });
+                ipc->connectionLost();
+        }
     }
 
-    std::shared_ptr<SafeActionImpl> safeAction;
+    WeakReference<InterprocessConnection> owner;
     bool connectionMade;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ConnectionStateMessage)
@@ -276,7 +227,7 @@ void InterprocessConnection::connectionMadeInt()
         callbackConnectionState = true;
 
         if (useMessageThread)
-            (new ConnectionStateMessage (safeAction, true))->post();
+            (new ConnectionStateMessage (this, true))->post();
         else
             connectionMade();
     }
@@ -289,7 +240,7 @@ void InterprocessConnection::connectionLostInt()
         callbackConnectionState = false;
 
         if (useMessageThread)
-            (new ConnectionStateMessage (safeAction, false))->post();
+            (new ConnectionStateMessage (this, false))->post();
         else
             connectionLost();
     }
@@ -297,19 +248,17 @@ void InterprocessConnection::connectionLostInt()
 
 struct DataDeliveryMessage  : public Message
 {
-    DataDeliveryMessage (std::shared_ptr<SafeActionImpl> ipc, const MemoryBlock& d)
-        : safeAction (ipc), data (d)
+    DataDeliveryMessage (InterprocessConnection* ipc, const MemoryBlock& d)
+        : owner (ipc), data (d)
     {}
 
     void messageCallback() override
     {
-        safeAction->ifSafe ([this] (InterprocessConnection& owner)
-        {
-            owner.messageReceived (data);
-        });
+        if (auto* ipc = owner.get())
+            ipc->messageReceived (data);
     }
 
-    std::shared_ptr<SafeActionImpl> safeAction;
+    WeakReference<InterprocessConnection> owner;
     MemoryBlock data;
 };
 
@@ -318,7 +267,7 @@ void InterprocessConnection::deliverDataInt (const MemoryBlock& data)
     jassert (callbackConnectionState);
 
     if (useMessageThread)
-        (new DataDeliveryMessage (safeAction, data))->post();
+        (new DataDeliveryMessage (this, data))->post();
     else
         messageReceived (data);
 }
@@ -326,8 +275,6 @@ void InterprocessConnection::deliverDataInt (const MemoryBlock& data)
 //==============================================================================
 int InterprocessConnection::readData (void* data, int num)
 {
-    const ScopedReadLock sl (pipeAndSocketLock);
-
     if (socket != nullptr)
         return socket->read (data, num, true);
 

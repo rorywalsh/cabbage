@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -43,11 +44,12 @@ public:
         addIvar<Callbacks*> ("callbacks");
         addIvar<CABTLEMIDIWindowController*> ("controller");
 
-        JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wundeclared-selector")
+       #pragma clang diagnostic push
+       #pragma clang diagnostic ignored "-Wundeclared-selector"
         addMethod (@selector (initWithCallbacks:),       initWithCallbacks,       "@@:^v");
         addMethod (@selector (show:),                    show,                    "v@:^v");
         addMethod (@selector (receivedWindowWillClose:), receivedWindowWillClose, "v@:^v");
-        JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+       #pragma clang diagnostic pop
 
         addMethod (@selector (dealloc), dealloc, "v@:");
 
@@ -62,17 +64,18 @@ private:
 
     static id initWithCallbacks (id self, SEL, Callbacks* cbs)
     {
-        self = sendSuperclassMessage<id> (self, @selector (init));
+        self = sendSuperclassMessage (self, @selector (init));
 
         object_setInstanceVariable (self, "callbacks", cbs);
         object_setInstanceVariable (self, "controller", [CABTLEMIDIWindowController new]);
 
-        JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wundeclared-selector")
+       #pragma clang diagnostic push
+       #pragma clang diagnostic ignored "-Wundeclared-selector"
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector (receivedWindowWillClose:)
                                                      name: @"NSWindowWillCloseNotification"
                                                    object: [getController (self) window]];
-        JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+       #pragma clang diagnostic pop
 
         return self;
     }
@@ -80,7 +83,8 @@ private:
     static void dealloc (id self, SEL)
     {
         [getController (self) release];
-        sendSuperclassMessage<void> (self, @selector (dealloc));
+
+        sendSuperclassMessage (self, @selector (dealloc));
     }
 
     static void show (id self, SEL, Rectangle<int>* bounds)
@@ -130,21 +134,24 @@ public:
         static BluetoothMidiPairingWindowClass cls;
         window.reset (cls.createInstance());
 
-        auto deletionCB = [safeThis = WeakReference<BluetoothMidiSelectorWindowHelper> { this }]
+        WeakReference<BluetoothMidiSelectorWindowHelper> safeThis (this);
+
+        auto deletionCB = [=]
         {
-            if (safeThis != nullptr)
-                delete safeThis.get();
+            if (auto* t = safeThis.get())
+                delete t;
         };
 
         callbacks.reset (new BluetoothMidiPairingWindowClass::Callbacks { std::move (exitCB),
                                                                           std::move (deletionCB) });
 
-        JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wundeclared-selector")
+       #pragma clang diagnostic push
+       #pragma clang diagnostic ignored "-Wundeclared-selector"
         [window.get() performSelector: @selector (initWithCallbacks:)
                            withObject: (id) callbacks.get()];
         [window.get() performSelector: @selector (show:)
                            withObject: (id) bounds];
-        JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+       #pragma clang diagnostic pop
     }
 
 private:

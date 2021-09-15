@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -44,12 +45,9 @@ class JUCE_API  PluginDescription
 public:
     //==============================================================================
     PluginDescription() = default;
+    PluginDescription (const PluginDescription& other) = default;
 
-    PluginDescription (const PluginDescription&) = default;
-    PluginDescription (PluginDescription&&) = default;
-
-    PluginDescription& operator= (const PluginDescription&) = default;
-    PluginDescription& operator= (PluginDescription&&) = default;
+    PluginDescription& operator= (const PluginDescription& other) = default;
 
     //==============================================================================
     /** The name of the plug-in. */
@@ -91,34 +89,20 @@ public:
     */
     Time lastInfoUpdateTime;
 
-    /** Deprecated: New projects should use uniqueId instead.
-
-        A unique ID for the plug-in.
-
-        Note that this might not be unique between formats, e.g. a VST and some
-        other format might actually have the same id.
-
-        @see createIdentifierString
-    */
-    int deprecatedUid = 0;
-
     /** A unique ID for the plug-in.
 
         Note that this might not be unique between formats, e.g. a VST and some
         other format might actually have the same id.
 
-        The uniqueId field replaces the deprecatedUid field, and fixes an issue
-        where VST3 plugins with matching FUIDs would generate different uid
-        values depending on the platform. The deprecatedUid field is kept for
-        backwards compatibility, allowing existing hosts to migrate from the
-        old uid to the new uniqueId.
-
         @see createIdentifierString
     */
-    int uniqueId = 0;
+    int uid = 0;
 
     /** True if the plug-in identifies itself as a synthesiser. */
     bool isInstrument = false;
+
+    /** True if the plug-in supports ARA. */
+    bool isARAEnabled = false;
 
     /** The number of inputs. */
     int numInputChannels = 0;

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -245,7 +246,7 @@ public:
         when it's no longer needed.
         The pointer passed in may not be null.
     */
-    void setHeader (std::unique_ptr<TableHeaderComponent> newHeader);
+    void setHeader (TableHeaderComponent* newHeader);
 
     /** Changes the height of the table header component.
         @see getHeaderHeight
@@ -333,6 +334,7 @@ public:
     /** @internal */
     void resized() override;
 
+
 private:
     //==============================================================================
     class Header;
@@ -343,7 +345,6 @@ private:
     int columnIdNowBeingDragged = 0;
     bool autoSizeOptionsShown = true;
 
-    std::unique_ptr<AccessibilityHandler> createAccessibilityHandler() override;
     void updateColumnComponents() const;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TableListBox)

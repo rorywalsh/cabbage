@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -88,7 +89,7 @@ public:
             g.setColour (isBlacklisted ? Colours::red
                                        : columnId == nameCol ? defaultTextColour
                                                              : defaultTextColour.interpolatedWith (Colours::transparentBlack, 0.3f));
-            g.setFont (Font ((float) height * 0.7f, Font::bold));
+            g.setFont (Font (height * 0.7f, Font::bold));
             g.drawFittedText (text, 4, 0, width - 6, height, Justification::centredLeft, 1, 0.9f);
         }
     }
@@ -262,7 +263,7 @@ static bool canShowFolderForPlugin (KnownPluginList& list, int index)
 static void showFolderForPlugin (KnownPluginList& list, int index)
 {
     if (canShowFolderForPlugin (list, index))
-        File (list.getTypes()[index].fileOrIdentifier).revealToUser();
+        File (list.getTypes()[index].fileOrIdentifier).getParentDirectory().startAsProcess();
 }
 
 void PluginListComponent::removeMissingPlugins()
@@ -388,8 +389,8 @@ public:
              PropertiesFile* properties, bool allowPluginsWhichRequireAsynchronousInstantiation, int threads,
              const String& title, const String& text)
         : owner (plc), formatToScan (format), filesOrIdentifiersToScan (filesOrIdentifiers), propertiesToUse (properties),
-          pathChooserWindow (TRANS("Select folders to scan..."), String(), MessageBoxIconType::NoIcon),
-          progressWindow (title, text, MessageBoxIconType::NoIcon),
+          pathChooserWindow (TRANS("Select folders to scan..."), String(), AlertWindow::NoIcon),
+          progressWindow (title, text, AlertWindow::NoIcon),
           numThreads (threads), allowAsync (allowPluginsWhichRequireAsynchronousInstantiation)
     {
         FileSearchPath path (formatToScan.getDefaultLocationsToSearch());
@@ -467,7 +468,7 @@ private:
 
             if (isStupidPath (f))
             {
-                AlertWindow::showOkCancelBox (MessageBoxIconType::WarningIcon,
+                AlertWindow::showOkCancelBox (AlertWindow::WarningIcon,
                                               TRANS("Plugin Scanning"),
                                               TRANS("If you choose to scan folders that contain non-plugin files, "
                                                     "then scanning may take a long time, and can cause crashes when "
@@ -642,7 +643,7 @@ void PluginListComponent::scanFinished (const StringArray& failedFiles)
     currentScanner.reset(); // mustn't delete this before using the failed files array
 
     if (shortNames.size() > 0)
-        AlertWindow::showMessageBoxAsync (MessageBoxIconType::InfoIcon,
+        AlertWindow::showMessageBoxAsync (AlertWindow::InfoIcon,
                                           TRANS("Scan complete"),
                                           TRANS("Note that the following files appeared to be plugin files, but failed to load correctly")
                                             + ":\n\n"

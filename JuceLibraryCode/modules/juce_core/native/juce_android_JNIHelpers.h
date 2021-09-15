@@ -149,7 +149,7 @@ private:
     //==============================================================================
     jobject obj = nullptr;
 
-    static jobject retain (jobject obj, JNIEnv* env)
+    static inline jobject retain (jobject obj, JNIEnv* env)
     {
         return obj == nullptr ? nullptr : env->NewGlobalRef (obj);
     }
@@ -540,26 +540,16 @@ DECLARE_JNI_CLASS (AndroidUri, "android/net/Uri")
  METHOD (setSystemUiVisibility,     "setSystemUiVisibility",     "(I)V") \
  METHOD (findViewById,              "findViewById",              "(I)Landroid/view/View;") \
  METHOD (getRootView,               "getRootView",               "()Landroid/view/View;") \
- METHOD (addOnLayoutChangeListener, "addOnLayoutChangeListener", "(Landroid/view/View$OnLayoutChangeListener;)V") \
- METHOD (announceForAccessibility,  "announceForAccessibility",  "(Ljava/lang/CharSequence;)V") \
+ METHOD (addOnLayoutChangeListener, "addOnLayoutChangeListener", "(Landroid/view/View$OnLayoutChangeListener;)V")
 
 DECLARE_JNI_CLASS (AndroidView, "android/view/View")
 #undef JNI_CLASS_MEMBERS
 
 #define JNI_CLASS_MEMBERS(METHOD, STATICMETHOD, FIELD, STATICFIELD, CALLBACK) \
- METHOD (addView,                       "addView",                       "(Landroid/view/View;)V") \
- METHOD (removeView,                    "removeView",                    "(Landroid/view/View;)V") \
- METHOD (requestSendAccessibilityEvent, "requestSendAccessibilityEvent", "(Landroid/view/View;Landroid/view/accessibility/AccessibilityEvent;)Z") \
+ METHOD (addView,    "addView",    "(Landroid/view/View;)V") \
+ METHOD (removeView, "removeView", "(Landroid/view/View;)V")
 
 DECLARE_JNI_CLASS (AndroidViewGroup, "android/view/ViewGroup")
-#undef JNI_CLASS_MEMBERS
-
-#define JNI_CLASS_MEMBERS(METHOD, STATICMETHOD, FIELD, STATICFIELD, CALLBACK) \
- METHOD (getDecorView, "getDecorView",       "()Landroid/view/View;") \
- METHOD (setFlags,     "setFlags",           "(II)V") \
- METHOD (clearFlags,   "clearFlags",         "(I)V")
-
-DECLARE_JNI_CLASS (AndroidWindow, "android/view/Window")
 #undef JNI_CLASS_MEMBERS
 
 #define JNI_CLASS_MEMBERS(METHOD, STATICMETHOD, FIELD, STATICFIELD, CALLBACK) \
@@ -660,8 +650,7 @@ DECLARE_JNI_CLASS (JavaHashMap, "java/util/HashMap")
 #define JNI_CLASS_MEMBERS(METHOD, STATICMETHOD, FIELD, STATICFIELD, CALLBACK) \
   STATICMETHOD (parseInt, "parseInt", "(Ljava/lang/String;I)I") \
   STATICMETHOD (valueOf,  "valueOf",  "(I)Ljava/lang/Integer;") \
-  METHOD (constructor, "<init>",   "(I)V") \
-  METHOD (intValue,    "intValue", "()I")
+  METHOD (intValue, "intValue", "()I")
 
 DECLARE_JNI_CLASS (JavaInteger, "java/lang/Integer")
 #undef JNI_CLASS_MEMBERS
@@ -994,7 +983,7 @@ public:
 //==============================================================================
 // Allows you to start an activity without requiring to have an activity
 void startAndroidActivityForResult (const LocalRef<jobject>& intent, int requestCode,
-                                    std::function<void (int, int, LocalRef<jobject>)> && callback);
+                                    std::function<void(int, int, LocalRef<jobject>)> && callback);
 
 //==============================================================================
 bool androidHasSystemFeature (const String& property);

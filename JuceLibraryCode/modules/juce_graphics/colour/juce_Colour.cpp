@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -44,13 +45,13 @@ namespace ColourHelpers
 
         float hue = 0.0f;
 
-        if (hi > 0 && ! approximatelyEqual (hi, lo))
+        if (hi > 0)
         {
-            auto invDiff = 1.0f / (float) (hi - lo);
+            auto invDiff = 1.0f / (hi - lo);
 
-            auto red   = (float) (hi - r) * invDiff;
-            auto green = (float) (hi - g) * invDiff;
-            auto blue  = (float) (hi - b) * invDiff;
+            auto red   = (hi - r) * invDiff;
+            auto green = (hi - g) * invDiff;
+            auto blue  = (hi - b) * invDiff;
 
             if      (r == hi)  hue = blue - green;
             else if (g == hi)  hue = 2.0f + red - blue;
@@ -77,21 +78,15 @@ namespace ColourHelpers
             auto hi = jmax (r, g, b);
             auto lo = jmin (r, g, b);
 
-            if (hi < 0)
-                return;
+            if (hi > 0)
+            {
+                lightness = ((hi + lo) / 2.0f) / 255.0f;
 
-            lightness = ((float) (hi + lo) / 2.0f) / 255.0f;
+                if (lightness > 0.0f)
+                    hue = getHue (col);
 
-            if (lightness <= 0.0f)
-                return;
-
-            hue = getHue (col);
-
-            if (1.0f <= lightness)
-                return;
-
-            auto denominator = 1.0f - std::abs ((2.0f * lightness) - 1.0f);
-            saturation = ((float) (hi - lo) / 255.0f) / denominator;
+                saturation = (hi - lo) / (1.0f - std::abs ((2.0f * lightness) - 1.0f));
+            }
         }
 
         Colour toColour (Colour original) const noexcept
@@ -109,7 +104,7 @@ namespace ColourHelpers
             auto min = (2.0f * l) - v;
             auto sv = (v - min) / v;
 
-            h = ((h - std::floor (h)) * 360.0f) / 60.0f;
+            h = jlimit (0.0f, 360.0f, std::fmod (h, 1.0f) * 360.0f) / 60.0f;
             auto f = h - std::floor (h);
             auto vsf = v * sv * f;
             auto mid1 = min + vsf;
@@ -142,12 +137,12 @@ namespace ColourHelpers
 
             if (hi > 0)
             {
-                saturation = (float) (hi - lo) / (float) hi;
+                saturation = (hi - lo) / (float) hi;
 
                 if (saturation > 0.0f)
                     hue = getHue (col);
 
-                brightness = (float) hi / 255.0f;
+                brightness = hi / 255.0f;
             }
         }
 
@@ -165,7 +160,7 @@ namespace ColourHelpers
                 return PixelARGB (alpha, intV, intV, intV);
 
             s = jmin (1.0f, s);
-            h = ((h - std::floor (h)) * 360.0f) / 60.0f;
+            h = jlimit (0.0f, 360.0f, std::fmod (h, 1.0f) * 360.0f) / 60.0f;
             auto f = h - std::floor (h);
             auto x = (uint8) roundToInt (v * (1.0f - s));
 
@@ -460,7 +455,6 @@ Colour Colour::withMultipliedLightness (float amount) const noexcept
 //==============================================================================
 Colour Colour::brighter (float amount) const noexcept
 {
-    jassert (amount >= 0.0f);
     amount = 1.0f / (1.0f + amount);
 
     return Colour ((uint8) (255 - (amount * (255 - getRed()))),
@@ -471,7 +465,6 @@ Colour Colour::brighter (float amount) const noexcept
 
 Colour Colour::darker (float amount) const noexcept
 {
-    jassert (amount >= 0.0f);
     amount = 1.0f / (1.0f + amount);
 
     return Colour ((uint8) (amount * getRed()),
@@ -693,14 +686,10 @@ public:
             testColour (red.withLightness (1.0f), 255, 255, 255);
             testColour (red.withRotatedHue (120.0f / 360.0f), 0, 255, 0);
             testColour (red.withRotatedHue (480.0f / 360.0f), 0, 255, 0);
-            testColour (red.withRotatedHue (-240.0f / 360.0f), 0, 255, 0);
-            testColour (red.withRotatedHue (-600.0f / 360.0f), 0, 255, 0);
             testColour (red.withMultipliedSaturation (0.0f), 255, 255, 255);
             testColour (red.withMultipliedSaturationHSL (0.0f), 128, 128, 128);
             testColour (red.withMultipliedBrightness (0.5f), 128, 0, 0);
             testColour (red.withMultipliedLightness (2.0f), 255, 255, 255);
-            testColour (red.withMultipliedLightness (1.0f), 255, 0, 0);
-            testColour (red.withLightness (red.getLightness()), 255, 0, 0);
         }
     }
 };

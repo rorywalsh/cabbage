@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -351,15 +352,15 @@ public:
 
     //==============================================================================
     /** Returns a brighter version of this colour.
-        @param amountBrighter   how much brighter to make it - a value greater than or equal to 0,
-                                where 0 is unchanged, and higher values make it brighter
+        @param amountBrighter   how much brighter to make it - a value from 0 to 1.0 where 0 is
+                                unchanged, and higher values make it brighter
         @see withMultipliedBrightness
     */
     Colour brighter (float amountBrighter = 0.4f) const noexcept;
 
     /** Returns a darker version of this colour.
-        @param amountDarker     how much darker to make it - a value greater than or equal to 0,
-                                where 0 is unchanged, and higher values make it darker
+        @param amountDarker     how much darker to make it - a value from 0 to 1.0 where 0 is
+                                unchanged, and higher values make it darker
         @see withMultipliedBrightness
     */
     Colour darker (float amountDarker = 0.4f) const noexcept;

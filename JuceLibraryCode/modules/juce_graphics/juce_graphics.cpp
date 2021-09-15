@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -46,7 +47,10 @@
 
 #elif JUCE_WINDOWS
   // get rid of some warnings in Window's own headers
- JUCE_BEGIN_IGNORE_WARNINGS_MSVC (4458)
+ #ifdef JUCE_MSVC
+  #pragma warning (push)
+  #pragma warning (disable : 4458)
+ #endif
 
  #if JUCE_MINGW && JUCE_USE_DIRECTWRITE
   #warning "DirectWrite not currently implemented with mingw..."
@@ -67,13 +71,21 @@
   #include <cstdio>
  #endif
 
- JUCE_END_IGNORE_WARNINGS_MSVC
+ #include <unordered_map>
+
+ #ifdef JUCE_MSVC
+  #pragma warning (pop)
+ #endif
 
 #elif JUCE_IOS
  #import <QuartzCore/QuartzCore.h>
  #import <CoreText/CoreText.h>
 
-#elif JUCE_LINUX || JUCE_BSD
+ #if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_3_2
+  #error "JUCE no longer supports targets earlier than iOS 3.2"
+ #endif
+
+#elif JUCE_LINUX
  #ifndef JUCE_USE_FREETYPE
   #define JUCE_USE_FREETYPE 1
  #endif
@@ -145,7 +157,7 @@
   #include "native/juce_win32_Direct2DGraphicsContext.cpp"
  #endif
 
-#elif JUCE_LINUX || JUCE_BSD
+#elif JUCE_LINUX
  #include "native/juce_linux_Fonts.cpp"
  #include "native/juce_linux_IconHelpers.cpp"
 

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -28,13 +29,20 @@ namespace juce
 
 extern ComponentPeer* createNonRepaintingEmbeddedWindowsPeer (Component&, void* parent);
 
+#if JUCE_WIN_PER_MONITOR_DPI_AWARE
+ extern void setThreadDPIAwarenessForWindow (HWND);
+#endif
+
 //==============================================================================
-class OpenGLContext::NativeContext  : private ComponentPeer::ScaleFactorListener
+class OpenGLContext::NativeContext
+   #if JUCE_WIN_PER_MONITOR_DPI_AWARE
+    : private Timer
+   #endif
 {
 public:
     NativeContext (Component& component,
                    const OpenGLPixelFormat& pixelFormat,
-                   void* contextToShareWithIn,
+                   void* contextToShareWith,
                    bool /*useMultisampling*/,
                    OpenGLVersion)
     {
@@ -51,7 +59,7 @@ public:
 
         renderContext = wglCreateContext (dc);
 
-        if (renderContext != nullptr)
+        if (renderContext != 0)
         {
             makeActive();
             initialiseGLExtensions();
@@ -74,39 +82,33 @@ public:
                 }
             }
 
-            if (contextToShareWithIn != nullptr)
-                wglShareLists ((HGLRC) contextToShareWithIn, renderContext);
+            if (contextToShareWith != nullptr)
+                wglShareLists ((HGLRC) contextToShareWith, renderContext);
 
             component.getTopLevelComponent()->repaint();
             component.repaint();
         }
     }
 
-    ~NativeContext() override
+    ~NativeContext()
     {
         deleteRenderContext();
         releaseDC();
-
-        if (safeComponent != nullptr)
-            if (auto* peer = safeComponent->getTopLevelComponent()->getPeer())
-                peer->removeScaleFactorListener (this);
     }
 
     bool initialiseOnRenderThread (OpenGLContext& c)
     {
-        threadAwarenessSetter = std::make_unique<ScopedThreadDPIAwarenessSetter> (nativeWindow->getNativeHandle());
+       #if JUCE_WIN_PER_MONITOR_DPI_AWARE
+        setThreadDPIAwarenessForWindow ((HWND) nativeWindow->getNativeHandle());
+       #endif
+
         context = &c;
         return true;
     }
 
-    void shutdownOnRenderThread()
-    {
-        deactivateCurrentContext();
-        context = nullptr;
-        threadAwarenessSetter = nullptr;
-    }
+    void shutdownOnRenderThread()           { deactivateCurrentContext(); context = nullptr; }
 
-    static void deactivateCurrentContext()  { wglMakeCurrent (nullptr, nullptr); }
+    static void deactivateCurrentContext()  { wglMakeCurrent (0, 0); }
     bool makeActive() const noexcept        { return isActive() || wglMakeCurrent (dc, renderContext) != FALSE; }
     bool isActive() const noexcept          { return wglGetCurrentContext() == renderContext; }
     void swapBuffers() const noexcept       { SwapBuffers (dc); }
@@ -130,7 +132,7 @@ public:
             if (! approximatelyEqual (nativeScaleFactor, 1.0))
                 bounds = (bounds.toDouble() * nativeScaleFactor).toNearestInt();
 
-            SetWindowPos ((HWND) nativeWindow->getNativeHandle(), nullptr,
+            SetWindowPos ((HWND) nativeWindow->getNativeHandle(), 0,
                           bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(),
                           SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOOWNERZORDER);
         }
@@ -169,13 +171,15 @@ private:
 
     std::unique_ptr<DummyComponent> dummyComponent;
     std::unique_ptr<ComponentPeer> nativeWindow;
-    std::unique_ptr<ScopedThreadDPIAwarenessSetter> threadAwarenessSetter;
     HGLRC renderContext;
     HDC dc;
     OpenGLContext* context = {};
 
-    Component::SafePointer<Component> safeComponent;
     double nativeScaleFactor = 1.0;
+
+   #if JUCE_WIN_PER_MONITOR_DPI_AWARE
+    Component::SafePointer<Component> safeComponent;
+   #endif
 
     #define JUCE_DECLARE_WGL_EXTENSION_FUNCTION(name, returnType, params) \
         typedef returnType (__stdcall *type_ ## name) params; type_ ## name name;
@@ -185,18 +189,24 @@ private:
     JUCE_DECLARE_WGL_EXTENSION_FUNCTION (wglGetSwapIntervalEXT,    int, ())
     #undef JUCE_DECLARE_WGL_EXTENSION_FUNCTION
 
-    void nativeScaleFactorChanged (double newScaleFactor) override
+   #if JUCE_WIN_PER_MONITOR_DPI_AWARE
+    void timerCallback() override
     {
-        if (approximatelyEqual (newScaleFactor, nativeScaleFactor)
-            || safeComponent == nullptr)
-            return;
-
-        if (auto* peer = safeComponent->getTopLevelComponent()->getPeer())
+        if (safeComponent != nullptr)
         {
-            nativeScaleFactor = newScaleFactor;
-            updateWindowPosition (peer->getAreaCoveredBy (*safeComponent));
+            if (auto* peer = safeComponent->getTopLevelComponent()->getPeer())
+            {
+                auto newScale = peer->getPlatformScaleFactor();
+
+                if (! approximatelyEqual (newScale, nativeScaleFactor))
+                {
+                    nativeScaleFactor = newScale;
+                    updateWindowPosition (peer->getAreaCoveredBy (*safeComponent));
+                }
+            }
         }
     }
+   #endif
 
     void initialiseGLExtensions()
     {
@@ -210,21 +220,18 @@ private:
     void createNativeWindow (Component& component)
     {
         auto* topComp = component.getTopLevelComponent();
-
-        {
-            auto* parentHWND = topComp->getWindowHandle();
-
-            ScopedThreadDPIAwarenessSetter setter { parentHWND };
-            nativeWindow.reset (createNonRepaintingEmbeddedWindowsPeer (*dummyComponent, parentHWND));
-        }
+        nativeWindow.reset (createNonRepaintingEmbeddedWindowsPeer (*dummyComponent, topComp->getWindowHandle()));
 
         if (auto* peer = topComp->getPeer())
         {
+           #if JUCE_WIN_PER_MONITOR_DPI_AWARE
             safeComponent = Component::SafePointer<Component> (&component);
-
             nativeScaleFactor = peer->getPlatformScaleFactor();
+
+            startTimer (50);
+           #endif
+
             updateWindowPosition (peer->getAreaCoveredBy (component));
-            peer->addScaleFactorListener (this);
         }
 
         nativeWindow->setVisible (true);
@@ -233,10 +240,10 @@ private:
 
     void deleteRenderContext()
     {
-        if (renderContext != nullptr)
+        if (renderContext != 0)
         {
             wglDeleteContext (renderContext);
-            renderContext = nullptr;
+            renderContext = 0;
         }
     }
 
@@ -323,7 +330,7 @@ private:
 //==============================================================================
 bool OpenGLHelpers::isContextActive()
 {
-    return wglGetCurrentContext() != nullptr;
+    return wglGetCurrentContext() != 0;
 }
 
 } // namespace juce

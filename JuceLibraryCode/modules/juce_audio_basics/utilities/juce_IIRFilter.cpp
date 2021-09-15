@@ -258,42 +258,42 @@ IIRCoefficients IIRCoefficients::makePeakFilter (double sampleRate,
 }
 
 //==============================================================================
-template <typename Mutex>
-IIRFilterBase<Mutex>::IIRFilterBase() noexcept = default;
-
-template <typename Mutex>
-IIRFilterBase<Mutex>::IIRFilterBase (const IIRFilterBase& other) noexcept  : active (other.active)
+IIRFilter::IIRFilter() noexcept
 {
-    const typename Mutex::ScopedLockType sl (other.processLock);
+}
+
+IIRFilter::IIRFilter (const IIRFilter& other) noexcept  : active (other.active)
+{
+    const SpinLock::ScopedLockType sl (other.processLock);
     coefficients = other.coefficients;
 }
 
-//==============================================================================
-template <typename Mutex>
-void IIRFilterBase<Mutex>::makeInactive() noexcept
+IIRFilter::~IIRFilter() noexcept
 {
-    const typename Mutex::ScopedLockType sl (processLock);
+}
+
+//==============================================================================
+void IIRFilter::makeInactive() noexcept
+{
+    const SpinLock::ScopedLockType sl (processLock);
     active = false;
 }
 
-template <typename Mutex>
-void IIRFilterBase<Mutex>::setCoefficients (const IIRCoefficients& newCoefficients) noexcept
+void IIRFilter::setCoefficients (const IIRCoefficients& newCoefficients) noexcept
 {
-    const typename Mutex::ScopedLockType sl (processLock);
+    const SpinLock::ScopedLockType sl (processLock);
     coefficients = newCoefficients;
     active = true;
 }
 
 //==============================================================================
-template <typename Mutex>
-void IIRFilterBase<Mutex>::reset() noexcept
+void IIRFilter::reset() noexcept
 {
-    const typename Mutex::ScopedLockType sl (processLock);
+    const SpinLock::ScopedLockType sl (processLock);
     v1 = v2 = 0.0;
 }
 
-template <typename Mutex>
-float IIRFilterBase<Mutex>::processSingleSampleRaw (float in) noexcept
+float IIRFilter::processSingleSampleRaw (float in) noexcept
 {
     auto out = coefficients.coefficients[0] * in + v1;
 
@@ -305,10 +305,9 @@ float IIRFilterBase<Mutex>::processSingleSampleRaw (float in) noexcept
     return out;
 }
 
-template <typename Mutex>
-void IIRFilterBase<Mutex>::processSamples (float* const samples, const int numSamples) noexcept
+void IIRFilter::processSamples (float* const samples, const int numSamples) noexcept
 {
-    const typename Mutex::ScopedLockType sl (processLock);
+    const SpinLock::ScopedLockType sl (processLock);
 
     if (active)
     {
@@ -333,8 +332,5 @@ void IIRFilterBase<Mutex>::processSamples (float* const samples, const int numSa
         JUCE_SNAP_TO_ZERO (lv2);  v2 = lv2;
     }
 }
-
-template class IIRFilterBase<SpinLock>;
-template class IIRFilterBase<DummyCriticalSection>;
 
 } // namespace juce

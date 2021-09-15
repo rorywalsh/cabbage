@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -188,9 +189,6 @@ void Button::setToggleState (bool shouldBeOn, NotificationType clickNotification
             sendStateMessage();
         else
             buttonStateChanged();
-
-        if (auto* handler = getAccessibilityHandler())
-            handler->notifyAccessibilityEvent (AccessibilityEvent::valueChanged);
     }
 }
 
@@ -223,8 +221,6 @@ void Button::setRadioGroupId (int newGroupId, NotificationType notification)
 
         if (lastToggleState)
             turnOffOtherButtonsInGroup (notification, notification);
-
-        invalidateAccessibilityHandler();
     }
 }
 
@@ -463,8 +459,8 @@ void Button::mouseDown (const MouseEvent& e)
 
 void Button::mouseUp (const MouseEvent& e)
 {
-    const auto wasDown = isDown();
-    const auto wasOver = isOver();
+    const bool wasDown = isDown();
+    const bool wasOver = isOver();
     updateState (isMouseSourceOver (e), false);
 
     if (wasDown && wasOver && ! triggerOnMouseDown)
@@ -472,12 +468,7 @@ void Button::mouseUp (const MouseEvent& e)
         if (lastStatePainted != buttonDown)
             flashButtonState();
 
-        WeakReference<Component> deletionWatcher (this);
-
         internalClickCallback (e.mods);
-
-        if (deletionWatcher != nullptr)
-            updateState (isMouseSourceOver (e), false);
     }
 }
 
@@ -700,79 +691,6 @@ void Button::repeatTimerCallback()
     {
         callbackHelper->stopTimer();
     }
-}
-
-//==============================================================================
-class ButtonAccessibilityHandler  : public AccessibilityHandler
-{
-public:
-    explicit ButtonAccessibilityHandler (Button& buttonToWrap, AccessibilityRole role)
-        : AccessibilityHandler (buttonToWrap,
-                                isRadioButton (buttonToWrap) ? AccessibilityRole::radioButton : role,
-                                getAccessibilityActions (buttonToWrap, role)),
-          button (buttonToWrap)
-    {
-    }
-
-    AccessibleState getCurrentState() const override
-    {
-        auto state = AccessibilityHandler::getCurrentState();
-
-        if (isToggleButton (getRole()) || isRadioButton (button))
-        {
-            state = state.withCheckable();
-
-            if (button.getToggleState())
-                state = state.withChecked();
-        }
-
-        return state;
-    }
-
-    String getTitle() const override
-    {
-        auto title = AccessibilityHandler::getTitle();
-
-        if (title.isEmpty())
-            return button.getButtonText();
-
-        return title;
-    }
-
-    String getHelp() const override  { return button.getTooltip(); }
-
-private:
-    static bool isToggleButton (AccessibilityRole role) noexcept
-    {
-        return role == AccessibilityRole::toggleButton;
-    }
-
-    static bool isRadioButton (const Button& button) noexcept
-    {
-        return button.getRadioGroupId() != 0;
-    }
-
-    static AccessibilityActions getAccessibilityActions (Button& button, AccessibilityRole role)
-    {
-        auto actions = AccessibilityActions().addAction (AccessibilityActionType::press,
-                                                         [&button] { button.triggerClick(); });
-
-        if (isToggleButton (role))
-            actions = actions.addAction (AccessibilityActionType::toggle,
-                                         [&button] { button.setToggleState (! button.getToggleState(), sendNotification); });
-
-        return actions;
-    }
-
-    Button& button;
-
-    //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ButtonAccessibilityHandler)
-};
-
-std::unique_ptr<AccessibilityHandler> Button::createAccessibilityHandler()
-{
-    return std::make_unique<ButtonAccessibilityHandler> (*this, AccessibilityRole::button);
 }
 
 } // namespace juce

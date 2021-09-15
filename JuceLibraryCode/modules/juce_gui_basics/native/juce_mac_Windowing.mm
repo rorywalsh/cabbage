@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -35,29 +36,45 @@ void LookAndFeel::playAlertSound()
 class OSXMessageBox  : private AsyncUpdater
 {
 public:
-    OSXMessageBox (const MessageBoxOptions& opts,
-                   std::unique_ptr<ModalComponentManager::Callback>&& c)
-        : options (opts), callback (std::move (c))
+    OSXMessageBox (AlertWindow::AlertIconType type, const String& t, const String& m,
+                   const String& b1, const String& b2, const String& b3,
+                   ModalComponentManager::Callback* c, const bool runAsync)
+        : iconType (type), title (t), message (m), callback (c),
+          button1 (b1), button2 (b2), button3 (b3)
     {
+        if (runAsync)
+            triggerAsyncUpdate();
     }
 
     int getResult() const
     {
         switch (getRawResult())
         {
-            case NSAlertFirstButtonReturn:   return 0;
-            case NSAlertSecondButtonReturn:  return 1;
-            case NSAlertThirdButtonReturn:   return 2;
-            default:                         break;
+            case NSAlertFirstButtonReturn:  return 1;
+            case NSAlertThirdButtonReturn:  return 2;
+            default:                        return 0;
         }
+    }
 
-        jassertfalse;
+    static int show (AlertWindow::AlertIconType iconType, const String& title, const String& message,
+                     ModalComponentManager::Callback* callback, const char* b1, const char* b2, const char* b3,
+                     bool runAsync)
+    {
+        std::unique_ptr<OSXMessageBox> mb (new OSXMessageBox (iconType, title, message, b1, b2, b3,
+                                                              callback, runAsync));
+        if (! runAsync)
+            return mb->getResult();
+
+        mb.release();
         return 0;
     }
 
-    using AsyncUpdater::triggerAsyncUpdate;
-
 private:
+    AlertWindow::AlertIconType iconType;
+    String title, message;
+    std::unique_ptr<ModalComponentManager::Callback> callback;
+    String button1, button2, button3;
+
     void handleAsyncUpdate() override
     {
         auto result = getResult();
@@ -68,146 +85,75 @@ private:
         delete this;
     }
 
-    static void addButton (NSAlert* alert, const String& button)
-    {
-        if (! button.isEmpty())
-            [alert addButtonWithTitle: juceStringToNS (button)];
-    }
-
     NSInteger getRawResult() const
     {
         NSAlert* alert = [[[NSAlert alloc] init] autorelease];
 
-        [alert setMessageText:     juceStringToNS (options.getTitle())];
-        [alert setInformativeText: juceStringToNS (options.getMessage())];
+        [alert setMessageText:     juceStringToNS (title)];
+        [alert setInformativeText: juceStringToNS (message)];
 
-        [alert setAlertStyle: options.getIconType() == MessageBoxIconType::WarningIcon ? NSAlertStyleCritical
-                                                                                                : NSAlertStyleInformational];
-
-        const auto button1Text = options.getButtonText (0);
-
-        addButton (alert, button1Text.isEmpty() ? "OK" : button1Text);
-        addButton (alert, options.getButtonText (1));
-        addButton (alert, options.getButtonText (2));
+        [alert setAlertStyle: iconType == AlertWindow::WarningIcon ? NSAlertStyleCritical
+                                                                   : NSAlertStyleInformational];
+        addButton (alert, button1);
+        addButton (alert, button2);
+        addButton (alert, button3);
 
         return [alert runModal];
     }
 
-    MessageBoxOptions options;
-    std::unique_ptr<ModalComponentManager::Callback> callback;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OSXMessageBox)
+    static void addButton (NSAlert* alert, const String& button)
+    {
+        if (button.isNotEmpty())
+            [alert addButtonWithTitle: juceStringToNS (TRANS (button))];
+    }
 };
 
-static int showDialog (const MessageBoxOptions& options,
-                       ModalComponentManager::Callback* callbackIn,
-                       AlertWindowMappings::MapFn mapFn)
-{
-   #if JUCE_MODAL_LOOPS_PERMITTED
-    if (callbackIn == nullptr)
-    {
-        jassert (mapFn != nullptr);
-
-        OSXMessageBox messageBox (options, nullptr);
-        return mapFn (messageBox.getResult());
-    }
-   #endif
-
-    auto messageBox = std::make_unique<OSXMessageBox> (options,
-                                                       AlertWindowMappings::getWrappedCallback (callbackIn, mapFn));
-
-    messageBox->triggerAsyncUpdate();
-    messageBox.release();
-
-    return 0;
-}
-
 #if JUCE_MODAL_LOOPS_PERMITTED
-void JUCE_CALLTYPE NativeMessageBox::showMessageBox (MessageBoxIconType iconType,
+void JUCE_CALLTYPE NativeMessageBox::showMessageBox (AlertWindow::AlertIconType iconType,
                                                      const String& title, const String& message,
                                                      Component* /*associatedComponent*/)
 {
-    showDialog (MessageBoxOptions()
-                 .withIconType (iconType)
-                 .withTitle (title)
-                 .withMessage (message)
-                 .withButton (TRANS("OK")),
-                nullptr, AlertWindowMappings::messageBox);
-}
-
-int JUCE_CALLTYPE NativeMessageBox::show (const MessageBoxOptions& options)
-{
-    return showDialog (options, nullptr, AlertWindowMappings::noMapping);
+    OSXMessageBox::show (iconType, title, message, nullptr, "OK", nullptr, nullptr, false);
 }
 #endif
 
-void JUCE_CALLTYPE NativeMessageBox::showMessageBoxAsync (MessageBoxIconType iconType,
+void JUCE_CALLTYPE NativeMessageBox::showMessageBoxAsync (AlertWindow::AlertIconType iconType,
                                                           const String& title, const String& message,
                                                           Component* /*associatedComponent*/,
                                                           ModalComponentManager::Callback* callback)
 {
-    showDialog (MessageBoxOptions()
-                  .withIconType (iconType)
-                  .withTitle (title)
-                  .withMessage (message)
-                  .withButton (TRANS("OK")),
-                callback, AlertWindowMappings::messageBox);
+    OSXMessageBox::show (iconType, title, message, callback, "OK", nullptr, nullptr, true);
 }
 
-bool JUCE_CALLTYPE NativeMessageBox::showOkCancelBox (MessageBoxIconType iconType,
+bool JUCE_CALLTYPE NativeMessageBox::showOkCancelBox (AlertWindow::AlertIconType iconType,
                                                       const String& title, const String& message,
                                                       Component* /*associatedComponent*/,
-                                                      ModalComponentManager::Callback* callback)
+                                                      ModalComponentManager::Callback* callback,
+                                                      const String& button1Text,
+                                                      const String& button2Text)
 {
-    return showDialog (MessageBoxOptions()
-                         .withIconType (iconType)
-                         .withTitle (title)
-                         .withMessage (message)
-                         .withButton (TRANS("OK"))
-                         .withButton (TRANS("Cancel")),
-                       callback, AlertWindowMappings::okCancel) != 0;
+    return OSXMessageBox::show (iconType, title, message, callback,
+                                button1Text.toRawUTF8(), button2Text.toRawUTF8(), nullptr, callback != nullptr) == 1;
 }
 
-int JUCE_CALLTYPE NativeMessageBox::showYesNoCancelBox (MessageBoxIconType iconType,
+int JUCE_CALLTYPE NativeMessageBox::showYesNoCancelBox (AlertWindow::AlertIconType iconType,
                                                         const String& title, const String& message,
                                                         Component* /*associatedComponent*/,
                                                         ModalComponentManager::Callback* callback)
 {
-    return showDialog (MessageBoxOptions()
-                         .withIconType (iconType)
-                         .withTitle (title)
-                         .withMessage (message)
-                         .withButton (TRANS("Yes"))
-                         .withButton (TRANS("No"))
-                         .withButton (TRANS("Cancel")),
-                       callback, AlertWindowMappings::yesNoCancel);
+    return OSXMessageBox::show (iconType, title, message, callback,
+                                "Yes", "Cancel", "No", callback != nullptr);
 }
 
-int JUCE_CALLTYPE NativeMessageBox::showYesNoBox (MessageBoxIconType iconType,
+int JUCE_CALLTYPE NativeMessageBox::showYesNoBox (AlertWindow::AlertIconType iconType,
                                                   const String& title, const String& message,
                                                   Component* /*associatedComponent*/,
                                                   ModalComponentManager::Callback* callback)
 {
-    return showDialog (MessageBoxOptions()
-                         .withIconType (iconType)
-                         .withTitle (title)
-                         .withMessage (message)
-                         .withButton (TRANS("Yes"))
-                         .withButton (TRANS("No")),
-                       callback, AlertWindowMappings::okCancel);
+    return OSXMessageBox::show (iconType, title, message, callback,
+                                "Yes", "No", nullptr, callback != nullptr);
 }
 
-void JUCE_CALLTYPE NativeMessageBox::showAsync (const MessageBoxOptions& options,
-                                                ModalComponentManager::Callback* callback)
-{
-    showDialog (options, callback, AlertWindowMappings::noMapping);
-}
-
-void JUCE_CALLTYPE NativeMessageBox::showAsync (const MessageBoxOptions& options,
-                                                std::function<void (int)> callback)
-{
-    showAsync (options, ModalCallbackFunction::create (callback));
-}
 
 //==============================================================================
 static NSRect getDragRect (NSView* view, NSEvent* event)
@@ -272,7 +218,7 @@ private:
         delete getIvar<std::function<void()>*> (self, "callback");
         delete getIvar<NSDragOperation*> (self, "operation");
 
-        sendSuperclassMessage<void> (self, @selector (dealloc));
+        sendSuperclassMessage (self, @selector (dealloc));
     }
 
     static void provideDataForType (id self, SEL, NSPasteboard* sender, NSPasteboardItem*, NSString* type)
@@ -496,25 +442,22 @@ struct DisplaySettingsChangeCallback  : private DeletedAtShutdown
 {
     DisplaySettingsChangeCallback()
     {
-        CGDisplayRegisterReconfigurationCallback (displayReconfigurationCallback, this);
+        CGDisplayRegisterReconfigurationCallback (displayReconfigurationCallBack, nullptr);
     }
 
     ~DisplaySettingsChangeCallback()
     {
-        CGDisplayRemoveReconfigurationCallback (displayReconfigurationCallback, this);
+        CGDisplayRemoveReconfigurationCallback (displayReconfigurationCallBack, nullptr);
         clearSingletonInstance();
     }
 
-    static void displayReconfigurationCallback (CGDirectDisplayID, CGDisplayChangeSummaryFlags, void* userInfo)
+    static void displayReconfigurationCallBack (CGDirectDisplayID, CGDisplayChangeSummaryFlags, void*)
     {
-        if (auto* thisPtr = static_cast<DisplaySettingsChangeCallback*> (userInfo))
-            if (thisPtr->forceDisplayUpdate != nullptr)
-                thisPtr->forceDisplayUpdate();
+        const_cast<Displays&> (Desktop::getInstance().getDisplays()).refresh();
     }
 
-    std::function<void()> forceDisplayUpdate;
+    JUCE_DECLARE_SINGLETON_SINGLETHREADED_MINIMAL (DisplaySettingsChangeCallback)
 
-    JUCE_DECLARE_SINGLETON (DisplaySettingsChangeCallback, false)
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DisplaySettingsChangeCallback)
 };
 
@@ -552,8 +495,7 @@ void Displays::findDisplays (const float masterScale)
 {
     JUCE_AUTORELEASEPOOL
     {
-        if (DisplaySettingsChangeCallback::getInstanceWithoutCreating() == nullptr)
-            DisplaySettingsChangeCallback::getInstance()->forceDisplayUpdate = [this] { refresh(); };
+        DisplaySettingsChangeCallback::getInstance();
 
         CGFloat mainScreenBottom = 0;
 

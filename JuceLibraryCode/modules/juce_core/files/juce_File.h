@@ -20,7 +20,7 @@
   ==============================================================================
 */
 
-#if ! DOXYGEN && (JUCE_MAC || JUCE_IOS)
+#if JUCE_MAC || JUCE_IOS
  #if __LP64__
   using OSType = unsigned int;
  #else
@@ -574,7 +574,7 @@ public:
         @param wildCardPattern          the filename pattern to search for, e.g. "*.txt"
         @returns                        the set of files that were found
 
-        @see getNumberOfChildFiles, RangedDirectoryIterator
+        @see getNumberOfChildFiles, DirectoryIterator
     */
     Array<File> findChildFiles (int whatToLookFor,
                                 bool searchRecursively,
@@ -602,8 +602,7 @@ public:
                                 is also added to this value, hidden files won't be counted
         @param wildCardPattern  the filename pattern to search for, e.g. "*.txt"
         @returns                the number of matches found
-
-        @see findChildFiles, RangedDirectoryIterator
+        @see findChildFiles, DirectoryIterator
     */
     int getNumberOfChildFiles (int whatToLookFor,
                                const String& wildCardPattern = "*") const;

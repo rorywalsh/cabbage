@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -90,7 +91,6 @@ public:
                     // I'd prefer to put this stuff in the initialiseOnRenderThread() call, but doing
                     // so causes mysterious timing-related failures.
                     [EAGLContext setCurrentContext: context];
-                    gl::loadFunctions();
                     createGLBuffers();
                     deactivateCurrentContext();
                 }
@@ -155,17 +155,13 @@ public:
 
             if (openGLversion >= openGL3_2)
             {
-                auto w = roundToInt (lastBounds.getWidth()  * glLayer.contentsScale);
-                auto h = roundToInt (lastBounds.getHeight() * glLayer.contentsScale);
-
-                glBlitFramebuffer (0, 0, w, h,
-                                   0, 0, w, h,
-                                   GL_COLOR_BUFFER_BIT,
-                                   GL_NEAREST);
+                glBlitFramebuffer (0, 0, lastBounds.getWidth(), lastBounds.getHeight(),
+                                   0, 0, lastBounds.getWidth(), lastBounds.getHeight(),
+                                   GL_COLOR_BUFFER_BIT, GL_NEAREST);
             }
             else
             {
-                ::glResolveMultisampleFramebufferAPPLE();
+                glResolveMultisampleFramebufferAPPLE();
             }
         }
 
@@ -185,7 +181,7 @@ public:
     void updateWindowPosition (Rectangle<int> bounds)
     {
         view.frame = convertToCGRect (bounds);
-        glLayer.contentsScale = (CGFloat) (Desktop::getInstance().getDisplays().getPrimaryDisplay()->scale
+        glLayer.contentsScale = (CGFloat) (Desktop::getInstance().getDisplays().getMainDisplay().scale
                                             / component.getDesktopScaleFactor());
 
         if (lastBounds != bounds)

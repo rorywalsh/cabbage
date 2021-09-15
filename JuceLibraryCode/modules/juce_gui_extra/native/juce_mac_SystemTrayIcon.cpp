@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -26,7 +27,11 @@
 namespace juce
 {
 
-JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wunguarded-availability", "-Wdeprecated-declarations")
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunguarded-availability"
+#if JUCE_CLANG && defined (MAC_OS_X_VERSION_10_14) && MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_14
+ #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 extern NSMenu* createNSMenu (const PopupMenu&, const String& name, int topLevelMenuId,
                              int topLevelIndex, bool addDelegate);
@@ -80,8 +85,8 @@ struct StatusItemContainer   : public Timer
     //==============================================================================
     SystemTrayIconComponent& owner;
 
-    NSUniquePtr<NSStatusItem> statusItem;
-    NSUniquePtr<NSImage> statusIcon;
+    std::unique_ptr<NSStatusItem, NSObjectDeleter> statusItem;
+    std::unique_ptr<NSImage, NSObjectDeleter> statusIcon;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StatusItemContainer)
 };
@@ -201,7 +206,7 @@ struct ButtonBasedStatusItem   : public StatusItemContainer
     };
 
     //==============================================================================
-    NSUniquePtr<NSObject> eventForwarder;
+    std::unique_ptr<NSObject, NSObjectDeleter> eventForwarder;
 };
 
 //==============================================================================
@@ -223,12 +228,10 @@ struct ViewBasedStatusItem   : public StatusItemContainer
 
         SystemTrayViewClass::frameChanged (view.get(), SEL(), nullptr);
 
-        JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wundeclared-selector")
         [[NSNotificationCenter defaultCenter]  addObserver: view.get()
                                                   selector: @selector (frameChanged:)
                                                       name: NSWindowDidMoveNotification
                                                     object: nil];
-        JUCE_END_IGNORE_WARNINGS_GCC_LIKE
     }
 
     ~ViewBasedStatusItem() override
@@ -314,10 +317,7 @@ struct ViewBasedStatusItem   : public StatusItemContainer
             addMethod (@selector (mouseDown:),      handleEventDown, "v@:@");
             addMethod (@selector (rightMouseDown:), handleEventDown, "v@:@");
             addMethod (@selector (drawRect:),       drawRect,        "v@:@");
-
-            JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wundeclared-selector")
             addMethod (@selector (frameChanged:),   frameChanged,    "v@:@");
-            JUCE_END_IGNORE_WARNINGS_GCC_LIKE
 
             registerClass();
         }
@@ -368,7 +368,7 @@ struct ViewBasedStatusItem   : public StatusItemContainer
     };
 
     //==============================================================================
-    NSUniquePtr<NSControl> view;
+    std::unique_ptr<NSControl, NSObjectDeleter> view;
     bool isHighlighted = false;
 };
 
@@ -439,6 +439,6 @@ void SystemTrayIconComponent::showDropdownMenu (const PopupMenu& menu)
         pimpl->statusItemHolder->showMenu (menu);
 }
 
-JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+#pragma clang diagnostic pop
 
 } // namespace juce

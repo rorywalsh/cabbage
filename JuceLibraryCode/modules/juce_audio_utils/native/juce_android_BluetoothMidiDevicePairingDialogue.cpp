@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -228,24 +229,24 @@ private:
 
             const float xmargin = 3.0f;
             const float ymargin = 3.0f;
-            const float fontHeight = 0.4f * (float) height;
-            const float deviceNameWidth = 0.6f * (float) width;
+            const float fontHeight = 0.4f * height;
+            const float deviceNameWidth = 0.6f * width;
 
             g.setFont (fontHeight);
 
             g.setColour (getDeviceNameFontColour (device.connectionStatus));
             g.drawText (device.name,
-                        Rectangle<float> (xmargin, ymargin, deviceNameWidth - (2.0f * xmargin), (float) height - (2.0f * ymargin)),
+                        Rectangle<float> (xmargin, ymargin, deviceNameWidth - (2.0f * xmargin), height - (2.0f * ymargin)),
                         Justification::topLeft, true);
 
             g.setColour (getDeviceStatusFontColour (device.connectionStatus));
             g.drawText (statusString,
                         Rectangle<float> (deviceNameWidth + xmargin, ymargin,
-                                          (float) width - deviceNameWidth - (2.0f * xmargin), (float) height - (2.0f * ymargin)),
+                                          width - deviceNameWidth - (2.0f * xmargin), height - (2.0f * ymargin)),
                         Justification::topRight, true);
 
             g.setColour (Colours::grey);
-            g.drawHorizontalLine (height - 1, xmargin, (float) width);
+            g.drawHorizontalLine (height - 1, xmargin, width);
         }
     }
 

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -949,16 +950,19 @@ void ValueTree::moveChild (int currentIndex, int newIndex, UndoManager* undoMana
 //==============================================================================
 void ValueTree::createListOfChildren (OwnedArray<ValueTree>& list) const
 {
-    if (object != nullptr)
-        for (auto* o : object->children)
-            if (o != nullptr)
-                list.add (new ValueTree (*o));
+    jassert (object != nullptr);
+
+    for (auto* o : object->children)
+    {
+        jassert (o != nullptr);
+        list.add (new ValueTree (*o));
+    }
 }
 
 void ValueTree::reorderChildren (const OwnedArray<ValueTree>& newOrder, UndoManager* undoManager)
 {
-    if (object != nullptr)
-        object->reorderChildren (newOrder, undoManager);
+    jassert (object != nullptr);
+    object->reorderChildren (newOrder, undoManager);
 }
 
 //==============================================================================
@@ -1000,7 +1004,7 @@ ValueTree ValueTree::fromXml (const XmlElement& xml)
         ValueTree v (xml.getTagName());
         v.object->properties.setFromXmlAttributes (xml);
 
-        for (auto* e : xml.getChildIterator())
+        forEachXmlChildElement (xml, e)
             v.appendChild (fromXml (*e), nullptr);
 
         return v;

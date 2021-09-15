@@ -163,15 +163,18 @@ void Synthesiser::processNextBlock (AudioBuffer<floatType>& outputAudio,
     jassert (sampleRate != 0);
     const int targetChannels = outputAudio.getNumChannels();
 
-    auto midiIterator = midiData.findNextSamplePosition (startSample);
+    MidiBuffer::Iterator midiIterator (midiData);
+    midiIterator.setNextSamplePosition (startSample);
 
     bool firstEvent = true;
+    int midiEventPos;
+    MidiMessage m;
 
     const ScopedLock sl (lock);
 
-    for (; numSamples > 0; ++midiIterator)
+    while (numSamples > 0)
     {
-        if (midiIterator == midiData.cend())
+        if (! midiIterator.getNextEvent (m, midiEventPos))
         {
             if (targetChannels > 0)
                 renderVoices (outputAudio, startSample, numSamples);
@@ -179,21 +182,20 @@ void Synthesiser::processNextBlock (AudioBuffer<floatType>& outputAudio,
             return;
         }
 
-        const auto metadata = *midiIterator;
-        const int samplesToNextMidiMessage = metadata.samplePosition - startSample;
+        const int samplesToNextMidiMessage = midiEventPos - startSample;
 
         if (samplesToNextMidiMessage >= numSamples)
         {
             if (targetChannels > 0)
                 renderVoices (outputAudio, startSample, numSamples);
 
-            handleMidiEvent (metadata.getMessage());
+            handleMidiEvent (m);
             break;
         }
 
         if (samplesToNextMidiMessage < ((firstEvent && ! subBlockSubdivisionIsStrict) ? 1 : minimumSubBlockSize))
         {
-            handleMidiEvent (metadata.getMessage());
+            handleMidiEvent (m);
             continue;
         }
 
@@ -202,14 +204,13 @@ void Synthesiser::processNextBlock (AudioBuffer<floatType>& outputAudio,
         if (targetChannels > 0)
             renderVoices (outputAudio, startSample, samplesToNextMidiMessage);
 
-        handleMidiEvent (metadata.getMessage());
+        handleMidiEvent (m);
         startSample += samplesToNextMidiMessage;
         numSamples  -= samplesToNextMidiMessage;
     }
 
-    std::for_each (midiIterator,
-                   midiData.cend(),
-                   [&] (const MidiMessageMetadata& meta) { handleMidiEvent (meta.getMessage()); });
+    while (midiIterator.getNextEvent (m, midiEventPos))
+        handleMidiEvent (m);
 }
 
 // explicit template instantiation

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -33,34 +34,29 @@ namespace juce
     This is a Juce-based file dialog box; to use a native file chooser, see the
     FileChooser class.
 
+    To use one of these, create it and call its show() method. e.g.
+
     @code
     {
-        wildcardFilter = std::make_unique<WildcardFileFilter> ("*.foo", String(), "Foo files");
+        WildcardFileFilter wildcardFilter ("*.foo", String(), "Foo files");
 
-        browser = std::make_unique<FileBrowserComponent> (FileBrowserComponent::canSelectFiles,
-                                                          File(),
-                                                          wildcardFilter.get(),
-                                                          nullptr);
+        FileBrowserComponent browser (FileBrowserComponent::canSelectFiles,
+                                      File(),
+                                      &wildcardFilter,
+                                      nullptr);
 
-        dialogBox = std::make_unique<FileChooserDialogBox> ("Open some kind of file",
-                                                            "Please choose some kind of file that you want to open...",
-                                                            *browser,
-                                                            false,
-                                                            Colours::lightgrey);
+        FileChooserDialogBox dialogBox ("Open some kind of file",
+                                        "Please choose some kind of file that you want to open...",
+                                        browser,
+                                        false,
+                                        Colours::lightgrey);
 
-        auto onFileSelected = [this] (int r)
+        if (dialogBox.show())
         {
-            modalStateFinished (r);
+            File selectedFile = browser.getSelectedFile (0);
 
-            auto selectedFile = browser->getSelectedFile (0);
-
-            ...etc...
-        };
-
-        dialogBox->centreWithDefaultSize (nullptr);
-        dialogBox->enterModalState (true,
-                                    ModalCallbackFunction::create (onFileSelected),
-                                    true);
+            ...etc..
+        }
     }
     @endcode
 

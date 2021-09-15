@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -42,7 +43,7 @@ public:
     }
 };
 
-static void updateButtonTickColour (ToggleButton* button, bool usingDefault)
+void updateButtonTickColour (ToggleButton* button, bool usingDefault)
 {
     button->setColour (ToggleButton::tickColourId, button->getLookAndFeel().findColour (ToggleButton::tickColourId)
                                                                               .withAlpha (usingDefault ? 0.4f : 1.0f));
@@ -207,42 +208,32 @@ private:
 };
 
 //==============================================================================
-int MultiChoicePropertyComponent::getTotalButtonsHeight (int numButtons)
-{
-    return numButtons * buttonHeight + 1;
-}
-
 MultiChoicePropertyComponent::MultiChoicePropertyComponent (const String& propertyName,
                                                             const StringArray& choices,
                                                             const Array<var>& correspondingValues)
-: PropertyComponent (propertyName, jmin (getTotalButtonsHeight (choices.size()), collapsedHeight))
+    : PropertyComponent (propertyName, 70)
 {
     // The array of corresponding values must contain one value for each of the items in
     // the choices array!
-    jassertquiet (choices.size() == correspondingValues.size());
+    jassert (choices.size() == correspondingValues.size());
+
+    ignoreUnused (correspondingValues);
 
     for (auto choice : choices)
         addAndMakeVisible (choiceButtons.add (new ToggleButton (choice)));
 
-    if (preferredHeight >= collapsedHeight)
+    maxHeight = (choiceButtons.size() * 25) + 20;
+
     {
-        expandable = true;
-        maxHeight = getTotalButtonsHeight (choiceButtons.size()) + expandAreaHeight;
+        Path expandShape;
+        expandShape.addTriangle ({ 0, 0 }, { 5, 10 }, { 10, 0});
+        expandButton.setShape (expandShape, true, true, false);
     }
 
-    if (isExpandable())
-    {
-        {
-            Path expandShape;
-            expandShape.addTriangle ({ 0, 0 }, { 5, 10 }, { 10, 0});
-            expandButton.setShape (expandShape, true, true, false);
-        }
+    expandButton.onClick = [this] { setExpanded (! expanded); };
+    addAndMakeVisible (expandButton);
 
-        expandButton.onClick = [this] { setExpanded (! expanded); };
-        addAndMakeVisible (expandButton);
-
-        lookAndFeelChanged();
-    }
+    lookAndFeelChanged();
 }
 
 MultiChoicePropertyComponent::MultiChoicePropertyComponent (const Value& valueToControl,
@@ -293,11 +284,11 @@ void MultiChoicePropertyComponent::paint (Graphics& g)
     g.setColour (findColour (TextEditor::backgroundColourId));
     g.fillRect (getLookAndFeel().getPropertyComponentContentPosition (*this));
 
-    if (isExpandable() && ! isExpanded())
+    if (! expanded)
     {
         g.setColour (findColour (TextEditor::backgroundColourId).contrasting().withAlpha (0.4f));
         g.drawFittedText ("+ " + String (numHidden) + " more", getLookAndFeel().getPropertyComponentContentPosition (*this)
-                                                                               .removeFromBottom (expandAreaHeight).withTrimmedLeft (10),
+                                                                               .removeFromBottom (20).withTrimmedLeft (10),
                           Justification::centredLeft, 1);
     }
 
@@ -308,23 +299,20 @@ void MultiChoicePropertyComponent::resized()
 {
     auto bounds = getLookAndFeel().getPropertyComponentContentPosition (*this);
 
-    if (isExpandable())
-    {
-        bounds.removeFromBottom (5);
+    bounds.removeFromBottom (5);
 
-        auto buttonSlice = bounds.removeFromBottom (10);
-        expandButton.setSize (10, 10);
-        expandButton.setCentrePosition (buttonSlice.getCentre());
-    }
+    auto buttonSlice = bounds.removeFromBottom (10);
+    expandButton.setSize (10, 10);
+    expandButton.setCentrePosition (buttonSlice.getCentre());
 
     numHidden = 0;
 
     for (auto* b : choiceButtons)
     {
-        if (bounds.getHeight() >= buttonHeight)
+        if (bounds.getHeight() >= 25)
         {
             b->setVisible (true);
-            b->setBounds (bounds.removeFromTop (buttonHeight).reduced (5, 2));
+            b->setBounds (bounds.removeFromTop (25).reduced (5, 2));
         }
         else
         {
@@ -334,13 +322,13 @@ void MultiChoicePropertyComponent::resized()
     }
 }
 
-void MultiChoicePropertyComponent::setExpanded (bool shouldBeExpanded) noexcept
+void MultiChoicePropertyComponent::setExpanded (bool isExpanded) noexcept
 {
-    if (! isExpandable() || (isExpanded() == shouldBeExpanded))
+    if (expanded == isExpanded)
         return;
 
-    expanded = shouldBeExpanded;
-    preferredHeight = expanded ? maxHeight : collapsedHeight;
+    expanded = isExpanded;
+    preferredHeight = expanded ? maxHeight : 70;
 
     if (auto* propertyPanel = findParentComponentOfClass<PropertyPanel>())
         propertyPanel->resized();

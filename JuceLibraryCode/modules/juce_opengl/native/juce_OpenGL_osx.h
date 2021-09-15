@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -26,7 +27,11 @@
 namespace juce
 {
 
-JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wdeprecated-declarations")
+#if JUCE_CLANG && ! (defined (MAC_OS_X_VERSION_10_16) && MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_16)
+ #pragma clang diagnostic push
+ #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+ #define JUCE_DEPRECATION_IGNORED 1
+#endif
 
 class OpenGLContext::NativeContext
 {
@@ -49,12 +54,10 @@ public:
         if ([view respondsToSelector: @selector (setWantsBestResolutionOpenGLSurface:)])
             [view setWantsBestResolutionOpenGLSurface: YES];
 
-        JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wundeclared-selector")
         [[NSNotificationCenter defaultCenter] addObserver: view
                                                  selector: @selector (_surfaceNeedsUpdate:)
                                                      name: NSViewGlobalFrameDidChangeNotification
                                                    object: view];
-        JUCE_END_IGNORE_WARNINGS_GCC_LIKE
 
         renderContext = [[[NSOpenGLContext alloc] initWithFormat: format
                                                     shareContext: (NSOpenGLContext*) contextToShare] autorelease];
@@ -80,9 +83,11 @@ public:
         ignoreUnused (version);
         int numAttribs = 0;
 
+       #if JUCE_OPENGL3
         attribs[numAttribs++] = NSOpenGLPFAOpenGLProfile;
         attribs[numAttribs++] = version >= openGL3_2 ? NSOpenGLProfileVersion3_2Core
                                                      : NSOpenGLProfileVersionLegacy;
+       #endif
 
         attribs[numAttribs++] = NSOpenGLPFADoubleBuffer;
         attribs[numAttribs++] = NSOpenGLPFAClosestPolicy;
@@ -261,6 +266,9 @@ bool OpenGLHelpers::isContextActive()
     return CGLGetCurrentContext() != CGLContextObj();
 }
 
-JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+#if JUCE_DEPRECATION_IGNORED
+ #pragma clang diagnostic pop
+ #undef JUCE_DEPRECATION_IGNORED
+#endif
 
 } // namespace juce

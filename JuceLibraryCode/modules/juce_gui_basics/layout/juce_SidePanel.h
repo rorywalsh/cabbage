@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -39,8 +40,7 @@ namespace juce
     @tags{GUI}
 */
 class SidePanel    : public Component,
-                     private ComponentListener,
-                     private ChangeListener
+                     private ComponentListener
 {
 public:
     //==============================================================================
@@ -146,6 +146,16 @@ public:
     String getTitleText() const noexcept               { return titleLabel.getText(); }
 
     //==============================================================================
+    void moved() override;
+    void resized() override;
+    void paint (Graphics& g) override;
+
+    void parentHierarchyChanged() override;
+
+    void mouseDrag (const MouseEvent&) override;
+    void mouseUp (const MouseEvent&) override;
+
+    //==============================================================================
     /** This abstract base class is implemented by LookAndFeel classes to provide
         SidePanel drawing functionality.
      */
@@ -180,21 +190,7 @@ public:
     std::function<void()> onPanelMove;
 
     /** You can assign a lambda to this callback object and it will be called when the panel is shown or hidden. */
-    std::function<void (bool)> onPanelShowHide;
-
-    //==============================================================================
-    /** @internal */
-    void moved() override;
-    /** @internal */
-    void resized() override;
-    /** @internal */
-    void paint (Graphics& g) override;
-    /** @internal */
-    void parentHierarchyChanged() override;
-    /** @internal */
-    void mouseDrag (const MouseEvent&) override;
-    /** @internal */
-    void mouseUp (const MouseEvent&) override;
+    std::function<void(bool)> onPanelShowHide;
 
 private:
     //==============================================================================
@@ -221,10 +217,8 @@ private:
     bool shouldShowDismissButton = true;
 
     //==============================================================================
-    std::unique_ptr<AccessibilityHandler> createAccessibilityHandler() override;
     void lookAndFeelChanged() override;
     void componentMovedOrResized (Component&, bool wasMoved, bool wasResized) override;
-    void changeListenerCallback (ChangeBroadcaster*) override;
 
     Rectangle<int> calculateBoundsInParent (Component&) const;
     void calculateAndRemoveShadowBounds (Rectangle<int>& bounds);

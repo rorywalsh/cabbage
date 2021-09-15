@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -26,7 +27,10 @@
 namespace juce
 {
 
-JUCE_BEGIN_IGNORE_WARNINGS_MSVC (4127)
+#if JUCE_MSVC
+ #pragma warning (push)
+ #pragma warning (disable: 4127) // "expression is constant" warning
+#endif
 
 namespace RenderingHelpers
 {
@@ -430,19 +434,19 @@ namespace GradientPixelIterators
 
             if (vertical)
             {
-                scale = roundToInt ((double) ((int64_t) numEntries << (int) numScaleBits) / (double) (p2.y - p1.y));
+                scale = roundToInt ((numEntries << (int) numScaleBits) / (double) (p2.y - p1.y));
                 start = roundToInt (p1.y * (float) scale);
             }
             else if (horizontal)
             {
-                scale = roundToInt ((double) ((int64_t) numEntries << (int) numScaleBits) / (double) (p2.x - p1.x));
+                scale = roundToInt ((numEntries << (int) numScaleBits) / (double) (p2.x - p1.x));
                 start = roundToInt (p1.x * (float) scale);
             }
             else
             {
                 grad = (p2.getY() - p1.y) / (double) (p1.x - p2.x);
                 yTerm = p1.getY() - p1.x / grad;
-                scale = roundToInt ((double) ((int64_t) numEntries << (int) numScaleBits) / (yTerm * grad - (p2.y * grad - p2.x)));
+                scale = roundToInt ((numEntries << (int) numScaleBits) / (yTerm * grad - (p2.y * grad - p2.x)));
                 grad *= scale;
             }
         }
@@ -2736,6 +2740,8 @@ protected:
 
 }
 
-JUCE_END_IGNORE_WARNINGS_MSVC
+#if JUCE_MSVC
+ #pragma warning (pop)
+#endif
 
 } // namespace juce

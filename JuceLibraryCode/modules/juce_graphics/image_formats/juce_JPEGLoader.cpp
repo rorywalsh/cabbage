@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -26,7 +27,10 @@
 namespace juce
 {
 
-JUCE_BEGIN_IGNORE_WARNINGS_MSVC (4365 6240 6326 6386 6385 28182 28183 6387 6011 6001)
+#if JUCE_MSVC
+ #pragma warning (push)
+ #pragma warning (disable: 4365)
+#endif
 
 namespace jpeglibNamespace
 {
@@ -35,17 +39,37 @@ namespace jpeglibNamespace
      typedef unsigned char boolean;
     #endif
 
-     JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wconversion",
-                                          "-Wdeprecated-register",
-                                          "-Wdeprecated-declarations",
-                                          "-Wsign-conversion",
-                                          "-Wcast-align",
-                                          "-Wswitch-enum",
-                                          "-Wswitch-default",
-                                          "-Wimplicit-fallthrough",
-                                          "-Wzero-as-null-pointer-constant",
-                                          "-Wshift-negative-value",
-                                          "-Wcomma")
+    #if JUCE_CLANG
+     #pragma clang diagnostic push
+     #pragma clang diagnostic ignored "-Wconversion"
+     #pragma clang diagnostic ignored "-Wdeprecated-register"
+     #pragma clang diagnostic ignored "-Wcast-align"
+     #pragma clang diagnostic ignored "-Wswitch-enum"
+     #if __has_warning ("-Wimplicit-fallthrough")
+      #pragma clang diagnostic ignored "-Wimplicit-fallthrough"
+     #endif
+     #if __has_warning("-Wzero-as-null-pointer-constant")
+      #pragma clang diagnostic ignored "-Wzero-as-null-pointer-constant"
+     #endif
+     #if __has_warning("-Wcomma")
+      #pragma clang diagnostic ignored "-Wcomma"
+     #endif
+    #endif
+
+    #if JUCE_GCC
+     #pragma GCC diagnostic push
+     #pragma GCC diagnostic ignored "-Wconversion"
+     #pragma GCC diagnostic ignored "-Wsign-conversion"
+     #pragma GCC diagnostic ignored "-Wzero-as-null-pointer-constant"
+     #pragma GCC diagnostic ignored "-Wswitch-enum"
+     #pragma GCC diagnostic ignored "-Wswitch-default"
+     #if __GNUC__ > 5
+      #pragma GCC diagnostic ignored "-Wshift-negative-value"
+      #if __GNUC__ >= 7
+       #pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+      #endif
+     #endif
+    #endif
 
     #define JPEG_INTERNALS
     #undef FAR
@@ -120,7 +144,13 @@ namespace jpeglibNamespace
     #include "jpglib/jutils.c"
     #include "jpglib/transupp.c"
 
-    JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+    #if JUCE_CLANG
+     #pragma clang diagnostic pop
+    #endif
+
+    #if JUCE_GCC
+     #pragma GCC diagnostic pop
+    #endif
 #else
     #define JPEG_INTERNALS
     #undef FAR
@@ -131,7 +161,9 @@ namespace jpeglibNamespace
 #undef max
 #undef min
 
-JUCE_END_IGNORE_WARNINGS_MSVC
+#if JUCE_MSVC
+ #pragma warning (pop)
+#endif
 
 //==============================================================================
 namespace JPEGHelpers
@@ -251,9 +283,9 @@ bool JPEGImageFormat::canUnderstand (InputStream& in)
 
 Image JPEGImageFormat::decodeImage (InputStream& in)
 {
-   #if JUCE_USING_COREIMAGE_LOADER
+#if JUCE_USING_COREIMAGE_LOADER
     return juce_loadWithCoreImage (in);
-   #else
+#else
     using namespace jpeglibNamespace;
     using namespace JPEGHelpers;
 
@@ -356,7 +388,7 @@ Image JPEGImageFormat::decodeImage (InputStream& in)
     }
 
     return image;
-   #endif
+#endif
 }
 
 bool JPEGImageFormat::writeImageToStream (const Image& image, OutputStream& out)

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -39,25 +40,17 @@ SidePanel::SidePanel (StringRef title, int width, bool positionOnLeft,
     dismissButton.onClick = [this] { showOrHide (false); };
     addAndMakeVisible (dismissButton);
 
-    auto& desktop = Desktop::getInstance();
-
-    desktop.addGlobalMouseListener (this);
-    desktop.getAnimator().addChangeListener (this);
+    Desktop::getInstance().addGlobalMouseListener (this);
 
     if (contentToDisplay != nullptr)
         setContent (contentToDisplay, deleteComponentWhenNoLongerNeeded);
 
     setOpaque (false);
-    setVisible (false);
-    setAlwaysOnTop (true);
 }
 
 SidePanel::~SidePanel()
 {
-    auto& desktop = Desktop::getInstance();
-
-    desktop.removeGlobalMouseListener (this);
-    desktop.getAnimator().removeChangeListener (this);
+    Desktop::getInstance().removeGlobalMouseListener (this);
 
     if (parent != nullptr)
         parent->removeComponentListener (this);
@@ -106,8 +99,8 @@ void SidePanel::showOrHide (bool show)
         Desktop::getInstance().getAnimator().animateComponent (this, calculateBoundsInParent (*parent),
                                                                1.0f, 250, true, 1.0, 0.0);
 
-        if (isShowing && ! isVisible())
-            setVisible (true);
+        if (onPanelShowHide != nullptr)
+            onPanelShowHide (isShowing);
     }
 }
 
@@ -250,18 +243,6 @@ void SidePanel::componentMovedOrResized (Component& component, bool wasMoved, bo
         setBounds (calculateBoundsInParent (component));
 }
 
-void SidePanel::changeListenerCallback (ChangeBroadcaster*)
-{
-    if (! Desktop::getInstance().getAnimator().isAnimating (this))
-    {
-        if (onPanelShowHide != nullptr)
-            onPanelShowHide (isShowing);
-
-        if (isVisible() && ! isShowing)
-            setVisible (false);
-    }
-}
-
 Rectangle<int> SidePanel::calculateBoundsInParent (Component& parentComp) const
 {
     auto parentBounds = parentComp.getLocalBounds();
@@ -292,12 +273,6 @@ bool SidePanel::isMouseEventInThisOrChildren (Component* eventComponent)
             return true;
 
     return false;
-}
-
-//==============================================================================
-std::unique_ptr<AccessibilityHandler> SidePanel::createAccessibilityHandler()
-{
-    return std::make_unique<AccessibilityHandler> (*this, AccessibilityRole::group);
 }
 
 } // namespace juce

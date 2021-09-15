@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -73,7 +74,7 @@ private:
             parameterValueHasChanged = 1;
     }
 
-    void audioProcessorChanged (AudioProcessor*, const ChangeDetails&) override {}
+    void audioProcessorChanged (AudioProcessor*) override {}
 
     //==============================================================================
     void timerCallback() override
@@ -284,7 +285,7 @@ private:
         {
             // The parameter is producing some unexpected text, so we'll do
             // some linear interpolation.
-            index = roundToInt (getParameter().getValue() * (float) (parameterValues.size() - 1));
+            index = roundToInt (getParameter().getValue() * (parameterValues.size() - 1));
         }
 
         box.setSelectedItemIndex (index);
@@ -323,8 +324,6 @@ public:
             slider.setRange (0.0, 1.0, 1.0 / (getParameter().getNumSteps() - 1.0));
         else
             slider.setRange (0.0, 1.0);
-
-        slider.setDoubleClickReturnValue (true, param.getDefaultValue());
 
         slider.setScrollWheelEnabled (false);
         addAndMakeVisible (slider);
@@ -518,7 +517,6 @@ struct GenericAudioProcessorEditor::Pimpl
 {
     Pimpl (GenericAudioProcessorEditor& parent)  : owner (parent)
     {
-        JUCE_BEGIN_IGNORE_WARNINGS_MSVC (6011)
         auto* p = parent.getAudioProcessor();
         jassert (p != nullptr);
 
@@ -530,7 +528,6 @@ struct GenericAudioProcessorEditor::Pimpl
         owner.addAndMakeVisible (view);
 
         view.setScrollBarsShown (true, false);
-        JUCE_END_IGNORE_WARNINGS_MSVC
     }
 
     ~Pimpl()

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -30,14 +31,11 @@ struct PropertyPanel::SectionComponent  : public Component
 {
     SectionComponent (const String& sectionTitle,
                       const Array<PropertyComponent*>& newProperties,
-                      bool sectionIsOpen,
-                      int extraPadding)
+                      bool sectionIsOpen)
         : Component (sectionTitle),
-          isOpen (sectionIsOpen),
-          padding (extraPadding)
+          titleHeight (getLookAndFeel().getPropertyPanelSectionHeaderHeight (sectionTitle)),
+          isOpen (sectionIsOpen)
     {
-        lookAndFeelChanged();
-
         propertyComps.addArray (newProperties);
 
         for (auto* propertyComponent : propertyComps)
@@ -65,30 +63,17 @@ struct PropertyPanel::SectionComponent  : public Component
         for (auto* propertyComponent : propertyComps)
         {
             propertyComponent->setBounds (1, y, getWidth() - 2, propertyComponent->getPreferredHeight());
-            y = propertyComponent->getBottom() + padding;
+            y = propertyComponent->getBottom();
         }
-    }
-
-    void lookAndFeelChanged() override
-    {
-        titleHeight = getLookAndFeel().getPropertyPanelSectionHeaderHeight (getName());
-        resized();
-        repaint();
     }
 
     int getPreferredHeight() const
     {
         auto y = titleHeight;
 
-        auto numComponents = propertyComps.size();
-
-        if (numComponents > 0 && isOpen)
-        {
+        if (isOpen)
             for (auto* propertyComponent : propertyComps)
                 y += propertyComponent->getPreferredHeight();
-
-            y += (numComponents - 1) * padding;
-        }
 
         return y;
     }
@@ -130,7 +115,6 @@ struct PropertyPanel::SectionComponent  : public Component
     OwnedArray<PropertyComponent> propertyComps;
     int titleHeight;
     bool isOpen;
-    int padding;
 
     JUCE_DECLARE_NON_COPYABLE (SectionComponent)
 };
@@ -204,7 +188,7 @@ void PropertyPanel::init()
 
     addAndMakeVisible (viewport);
     viewport.setViewedComponent (propertyHolderComponent = new PropertyHolderComponent());
-    viewport.setFocusContainerType (FocusContainerType::keyboardFocusContainer);
+    viewport.setFocusContainer (true);
 }
 
 PropertyPanel::~PropertyPanel()
@@ -250,32 +234,26 @@ int PropertyPanel::getTotalContentHeight() const
     return propertyHolderComponent->getHeight();
 }
 
-void PropertyPanel::addProperties (const Array<PropertyComponent*>& newProperties,
-                                   int extraPaddingBetweenComponents)
+void PropertyPanel::addProperties (const Array<PropertyComponent*>& newProperties)
 {
     if (isEmpty())
         repaint();
 
-    propertyHolderComponent->insertSection (-1, new SectionComponent ({}, newProperties, true, extraPaddingBetweenComponents));
+    propertyHolderComponent->insertSection (-1, new SectionComponent (String(), newProperties, true));
     updatePropHolderLayout();
 }
 
 void PropertyPanel::addSection (const String& sectionTitle,
                                 const Array<PropertyComponent*>& newProperties,
                                 bool shouldBeOpen,
-                                int indexToInsertAt,
-                                int extraPaddingBetweenComponents)
+                                int indexToInsertAt)
 {
     jassert (sectionTitle.isNotEmpty());
 
     if (isEmpty())
         repaint();
 
-    propertyHolderComponent->insertSection (indexToInsertAt, new SectionComponent (sectionTitle,
-                                                                                   newProperties,
-                                                                                   shouldBeOpen,
-                                                                                   extraPaddingBetweenComponents));
-
+    propertyHolderComponent->insertSection (indexToInsertAt, new SectionComponent (sectionTitle, newProperties, shouldBeOpen));
     updatePropHolderLayout();
 }
 
@@ -367,7 +345,7 @@ void PropertyPanel::restoreOpennessState (const XmlElement& xml)
     {
         auto sections = getSectionNames();
 
-        for (auto* e : xml.getChildWithTagNameIterator ("SECTION"))
+        forEachXmlChildElementWithTagName (xml, e, "SECTION")
         {
             setSectionOpen (sections.indexOf (e->getStringAttribute ("name")),
                             e->getBoolAttribute ("open"));

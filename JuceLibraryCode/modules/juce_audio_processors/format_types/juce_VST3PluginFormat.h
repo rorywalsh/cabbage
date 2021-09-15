@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -26,7 +27,7 @@
 namespace juce
 {
 
-#if (JUCE_PLUGINHOST_VST3 && (JUCE_MAC || JUCE_WINDOWS || JUCE_LINUX || JUCE_BSD)) || DOXYGEN
+#if (JUCE_PLUGINHOST_VST3 && (JUCE_MAC || JUCE_WINDOWS)) || DOXYGEN
 
 /**
     Implements a plugin format for VST3s.
@@ -43,16 +44,11 @@ public:
     ~VST3PluginFormat() override;
 
     //==============================================================================
-    /** Instead of using this function, use AudioPluginInstance::getExtensions()
-        to visit the ExtensionsVisitor::VST3 struct for the instance, if it exists.
-        Then, call ExtensionsVisitor::VST3::setPreset() to set the state using the
-        contents of a vstpreset file.
-
-        Attempts to reload a VST3 plugin's state from some preset file data.
+    /** Attempts to reload a VST3 plugin's state from some preset file data.
 
         @see VSTPluginFormat::loadFromFXBFile
     */
-    JUCE_DEPRECATED (static bool setStateFromVSTPresetFile (AudioPluginInstance*, const MemoryBlock&));
+    static bool setStateFromVSTPresetFile (AudioPluginInstance*, const MemoryBlock&);
 
     //==============================================================================
     static String getFormatName()                   { return "VST3"; }

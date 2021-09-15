@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -77,8 +78,6 @@ public:
         singlePrecision,
         doublePrecision
     };
-
-    using ChangeDetails = AudioProcessorListener::ChangeDetails;
 
     //==============================================================================
     /** Destructor. */
@@ -296,6 +295,56 @@ public:
     virtual void processBlockBypassed (AudioBuffer<double>& buffer,
                                        MidiBuffer& midiMessages);
 
+    /** Analyses the next block before actual process.
+
+        For offline processing (currently Pro Tools AudioSuite) this basically pass input buffers.
+        You can use those buffers to do analysis before doing the actual process.
+     */
+    virtual void analyseBlock (const AudioBuffer<float>& buffer);
+
+    /** Analyses the next block before actual process.
+
+        For offline processing (currently Pro Tools AudioSuite) this basically pass input buffers.
+        You can use those buffers to do analysis before doing the actual process.
+     */
+    virtual void analyseBlock (const AudioBuffer<double>& buffer);
+
+    /** Notifies AudioProcessor that analysis is about to start.
+
+        For offline processing (currently Pro Tools AudioSuite), being called before analysis.
+        Note: when side-chain is connected this would be the maximum number of supported tracks.
+     */
+    virtual void prepareToAnalyse (double sampleRate, int samplesPerBlock, int numOfExpectedInputs);
+
+    /** Notifies AudioProcessor that analysis has finished.
+
+        For offline processing (currently Pro Tools AudioSuite), being called after analyse stage finished.
+     */
+    virtual void analysisFinished ();
+
+#if JucePlugin_EnhancedAudioSuite
+    /** Allows aborting plug-in load due to license failure instead of crashing. */
+    virtual bool isAuthorized() = 0;
+
+    /** Called by AudioSuite to add offsets to processed clip.
+
+        For example, if your process adds tail explicitly or start before actual position.
+        This method is also called in a few different scenarios:
+            - Before an analyze, process or preview of data begins.
+            - At the end of every preview loop.
+            - After the user makes a new data selection on the timeline.
+     */
+    virtual void getOfflineRenderOffset (int& startOffset, int& endOffset);
+
+    struct EnhancedAudioSuiteInterface
+    {
+        virtual ~EnhancedAudioSuiteInterface() {}
+        virtual void requestAnalysis() = 0;
+        virtual void requestRender() = 0;
+    };
+
+    EnhancedAudioSuiteInterface* enhancedAudioSuiteInterface {nullptr};
+#endif
 
     //==============================================================================
     /**
@@ -712,6 +761,22 @@ public:
     AudioPlayHead* getPlayHead() const noexcept                 { return playHead; }
 
     //==============================================================================
+    /** Returns the current AudioFormatReader object that should allow random access
+        to processed audio (if supported).
+
+     You can ONLY call this from your analyseBlock() / processBlock() method!
+     Calling it at other times will produce undefined behaviour.
+
+     The AudioFormatReader object that is returned can be used to get current
+     audio in a random access manner.
+
+     If the host can't or won't provide any time info, this will return nullptr.
+     */
+#if RANDOM_AUDIO_ACCESS_SUPPORTED
+    AudioFormatReader* getRandomAudioReader() const noexcept { return randomAudioReader; }
+#endif
+
+    //==============================================================================
     /** Returns the total number of input channels.
 
         This method will return the total number of input channels by accumulating
@@ -897,8 +962,6 @@ public:
 
     //==============================================================================
     /** Returns the parameter that controls the AudioProcessor's bypass state.
-
-        If this method returns a nullptr then you can still control the bypass by
         calling processBlockBypassed instead of processBlock. On the other hand,
         if this method returns a non-null value, you should never call
         processBlockBypassed but use the returned parameter to control the bypass
@@ -979,6 +1042,17 @@ public:
     AudioProcessorEditor* createEditorIfNeeded();
 
     //==============================================================================
+    /** Returns if AU should use high resolution (continious) instead of steps for better precision.
+
+     Use to replace JucePlugin_AUHighResolutionParameters, however that macro was already removed by JUCE which now always uses high resolution parameters, unless JUCE_FORCE_LEGACY_PARAMETER_AUTOMATION_TYPE is turned on.
+     So in order for this method to take effect, JUCE_FORCE_LEGACY_PARAMETER_AUTOMATION_TYPE must be on.
+
+     This must return the correct value immediately after the object has been
+     created, and mustn't change the value later.
+     */
+    virtual bool isHighResolutionParameters(bool initialValue = false);
+
+    //==============================================================================
     /** Returns the default number of steps for a parameter.
 
         NOTE! This method is deprecated! It's recommended that you use
@@ -993,7 +1067,7 @@ public:
         It sends a hint to the host that something like the program, number of parameters,
         etc, has changed, and that it should update itself.
     */
-    void updateHostDisplay (const ChangeDetails& details = ChangeDetails::getAllChanged());
+    void updateHostDisplay();
 
     //==============================================================================
     /** Adds a parameter to the AudioProcessor.
@@ -1133,6 +1207,15 @@ public:
     virtual void setPlayHead (AudioPlayHead* newPlayHead);
 
     //==============================================================================
+    /** Tells the processor to use this AudioFormatReader object.
+     The processor will not take ownership of the object, so the caller must delete it when
+     it is no longer being used.
+     */
+#if RANDOM_AUDIO_ACCESS_SUPPORTED
+    virtual void setRandomAudioReader (AudioFormatReader* newRandomAudioMapper);
+#endif
+
+    //==============================================================================
     /** This is called by the processor to specify its details before being played. Use this
         version of the function if you are not interested in any sidechain and/or aux buses
         and do not care about the layout of channels. Otherwise use setRateAndBufferSizeDetails.*/
@@ -1176,7 +1259,7 @@ public:
             Unknown = -1
         };
 
-        std::function<float (float)> curve;   // a function which represents your curve (such as an eq)
+        std::function<float(float)> curve;    // a function which represents your curve (such as an eq)
         Range<float> xRange, yRange;          // the data range of your curve
 
         // For some curve types, your plug-in may already measure the current input and output values.
@@ -1202,6 +1285,7 @@ public:
         wrapperType_AudioUnitv3,
         wrapperType_RTAS,
         wrapperType_AAX,
+        wrapperType_AudioSuite,
         wrapperType_Standalone,
         wrapperType_Unity
     };
@@ -1209,7 +1293,7 @@ public:
     /** When loaded by a plugin wrapper, this flag will be set to indicate the type
         of plugin within which the processor is running.
     */
-    const WrapperType wrapperType;
+    WrapperType wrapperType;
 
     /** Returns a textual description of a WrapperType value */
     static const char* getWrapperTypeDescription (AudioProcessor::WrapperType) noexcept;
@@ -1375,6 +1459,11 @@ protected:
     /** @internal */
     std::atomic<AudioPlayHead*> playHead { nullptr };
 
+#if RANDOM_AUDIO_ACCESS_SUPPORTED
+    /** @internal */
+    AudioFormatReader* randomAudioReader = nullptr;
+#endif
+
     /** @internal */
     void sendParamChangeMessageToListeners (int parameterIndex, float newValue);
 
@@ -1457,7 +1546,7 @@ private:
     static BusesProperties busesPropertiesFromLayoutArray (const Array<InOutChannelPair>&);
 
     BusesLayout getNextBestLayoutInList (const BusesLayout&, const Array<InOutChannelPair>&) const;
-    static bool containsLayout (const BusesLayout&, const Array<InOutChannelPair>&);
+    static bool JUCE_CALLTYPE containsLayout (const BusesLayout&, const Array<InOutChannelPair>&);
 
     //==============================================================================
     void createBus (bool isInput, const BusProperties&);
@@ -1483,22 +1572,16 @@ private:
 
     AudioProcessorParameter* getParamChecked (int) const;
 
-  #if JUCE_DEBUG
-   #if ! JUCE_DISABLE_AUDIOPROCESSOR_BEGIN_END_GESTURE_CHECKING
-    BigInteger changingParams;
-   #endif
+   #if JUCE_DEBUG
+    #if ! JUCE_DISABLE_AUDIOPROCESSOR_BEGIN_END_GESTURE_CHECKING
+     BigInteger changingParams;
+    #endif
 
     bool textRecursionCheck = false;
-    std::unordered_set<String> paramIDs, groupIDs;
-   #if ! JUCE_DISABLE_CAUTIOUS_PARAMETER_ID_CHECKING
-    std::unordered_set<String> trimmedParamIDs;
+    std::unordered_set<String> paramIDs;
    #endif
-  #endif
 
-    void checkForDuplicateTrimmedParamID (AudioProcessorParameter*);
-    void checkForUnsafeParamID (AudioProcessorParameter*);
     void checkForDuplicateParamID (AudioProcessorParameter*);
-    void checkForDuplicateGroupIDs (const AudioProcessorParameterGroup&);
 
     AudioProcessorListener* getListenerLocked (int) const noexcept;
     void updateSpeakerFormatStrings();

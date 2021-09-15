@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -76,7 +77,7 @@ private:
 
     void finish()
     {
-        MessageManager::callAsync ([this]() { owner.filesToSharePrepared(); });
+        MessageManager::callAsync ([this] () { owner.filesToSharePrepared(); });
     }
 
     ContentSharer& owner;
@@ -136,7 +137,7 @@ private:
 
     void finish()
     {
-        MessageManager::callAsync ([this]() { owner.filesToSharePrepared(); });
+        MessageManager::callAsync ([this] () { owner.filesToSharePrepared(); });
     }
 
     ContentSharer& owner;
@@ -151,7 +152,7 @@ ContentSharer::ContentSharer() {}
 ContentSharer::~ContentSharer() { clearSingletonInstance(); }
 
 void ContentSharer::shareFiles (const Array<URL>& files,
-                                std::function<void (bool, const String&)> callbackToUse)
+                                std::function<void(bool, const String&)> callbackToUse)
 {
   #if JUCE_CONTENT_SHARING
     startNewShare (callbackToUse);
@@ -168,7 +169,7 @@ void ContentSharer::shareFiles (const Array<URL>& files,
 }
 
 #if JUCE_CONTENT_SHARING
-void ContentSharer::startNewShare (std::function<void (bool, const String&)> callbackToUse)
+void ContentSharer::startNewShare (std::function<void(bool, const String&)> callbackToUse)
 {
     // You should not start another sharing operation before the previous one is finished.
     // Forcibly stopping a previous sharing operation is rarely a good idea!
@@ -189,7 +190,7 @@ void ContentSharer::startNewShare (std::function<void (bool, const String&)> cal
 #endif
 
 void ContentSharer::shareText (const String& text,
-                               std::function<void (bool, const String&)> callbackToUse)
+                               std::function<void(bool, const String&)> callbackToUse)
 {
   #if JUCE_CONTENT_SHARING
     startNewShare (callbackToUse);
@@ -206,7 +207,7 @@ void ContentSharer::shareText (const String& text,
 }
 
 void ContentSharer::shareImages (const Array<Image>& images,
-                                 std::function<void (bool, const String&)> callbackToUse,
+                                 std::function<void(bool, const String&)> callbackToUse,
                                  ImageFileFormat* imageFileFormatToUse)
 {
   #if JUCE_CONTENT_SHARING
@@ -239,7 +240,7 @@ void ContentSharer::filesToSharePrepared()
 #endif
 
 void ContentSharer::shareData (const MemoryBlock& mb,
-                               std::function<void (bool, const String&)> callbackToUse)
+                               std::function<void(bool, const String&)> callbackToUse)
 {
   #if JUCE_CONTENT_SHARING
     startNewShare (callbackToUse);
@@ -256,7 +257,7 @@ void ContentSharer::sharingFinished (bool succeeded, const String& errorDescript
 {
     deleteTemporaryFiles();
 
-    std::function<void (bool, String)> cb;
+    std::function<void(bool, String)> cb;
     std::swap (cb, callback);
 
     String error (errorDescription);

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -26,9 +27,13 @@
 namespace juce
 {
 
-// MSVC does not like it if you override a deprecated method even if you
-// keep the deprecation attribute. Other compilers are more forgiving.
-JUCE_BEGIN_IGNORE_WARNINGS_MSVC (4996)
+#if JUCE_MSVC
+ #pragma warning (push, 0)
+
+ // MSVC does not like it if you override a deprecated method even if you
+ // keep the deprecation attribute. Other compilers are more forgiving.
+ #pragma warning (disable: 4996)
+#endif
 
 //==============================================================================
 /**
@@ -65,24 +70,11 @@ public:
     */
     PluginDescription getPluginDescription() const;
 
-    /** Allows retrieval of information related to the inner workings of a particular plugin format,
-        such as the AEffect* of a VST, or the handle of an AudioUnit.
-
-        To use this, create a new class derived from ExtensionsVisitor, and override
-        each of the visit member functions. If this AudioPluginInstance wraps a VST3 plugin
-        the visitVST3() member will be called, while if the AudioPluginInstance wraps an
-        unknown format the visitUnknown() member will be called. The argument of the visit function
-        can be queried to extract information related to the AudioPluginInstance's implementation.
-    */
-    virtual void getExtensions (ExtensionsVisitor&) const;
-
-    /** Use the new typesafe visitor-based interface rather than this function.
-
-        Returns a pointer to some kind of platform-specific data about the plugin.
+    /** Returns a pointer to some kind of platform-specific data about the plugin.
         E.g. For a VST, this value can be cast to an AEffect*. For an AudioUnit, it can be
         cast to an AudioUnit handle.
     */
-    JUCE_DEPRECATED (virtual void* getPlatformSpecificData());
+    virtual void* getPlatformSpecificData();
 
     // Rather than using these methods you should call the corresponding methods
     // on the AudioProcessorParameter objects returned from getParameters().
@@ -134,6 +126,8 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginInstance)
 };
 
-JUCE_END_IGNORE_WARNINGS_MSVC
+#if JUCE_MSVC
+ #pragma warning (pop)
+#endif
 
 } // namespace juce

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -163,26 +164,13 @@ class JUCE_API ModalCallbackFunction
 {
 public:
     /** This is a utility function to create a ModalComponentManager::Callback that will
-        call a callable object.
-
-        The function that you supply must take an integer parameter, which is the result code that
+        call a lambda function.
+        The lambda that you supply must take an integer parameter, which is the result code that
         was returned when the modal component was dismissed.
 
         @see ModalComponentManager::Callback
     */
-    template <typename CallbackFn>
-    static ModalComponentManager::Callback* create (CallbackFn&& fn)
-    {
-        struct Callable  : public ModalComponentManager::Callback
-        {
-            explicit Callable (CallbackFn&& f)  : fn (std::forward<CallbackFn> (f)) {}
-            void modalStateFinished (int result) override  { NullCheckedInvocation::invoke (std::move (fn), result); }
-
-            std::remove_reference_t<CallbackFn> fn;
-        };
-
-        return new Callable (std::forward<CallbackFn> (fn));
-    }
+    static ModalComponentManager::Callback* create (std::function<void(int)>);
 
     //==============================================================================
     /** This is a utility function to create a ModalComponentManager::Callback that will
@@ -210,10 +198,7 @@ public:
     static ModalComponentManager::Callback* create (void (*functionToCall) (int, ParamType),
                                                     ParamType parameterValue)
     {
-        return create ([functionToCall, parameterValue] (int r)
-        {
-            functionToCall (r, parameterValue);
-        });
+        return create ([=] (int r) { functionToCall (r, parameterValue); });
     }
 
     //==============================================================================
@@ -243,10 +228,7 @@ public:
                                                        ParamType1 parameterValue1,
                                                        ParamType2 parameterValue2)
     {
-        return create ([functionToCall, parameterValue1, parameterValue2] (int r)
-        {
-            functionToCall (r, parameterValue1, parameterValue2);
-        });
+        return create ([=] (int r) { functionToCall (r, parameterValue1, parameterValue2); });
     }
 
     //==============================================================================
@@ -276,10 +258,8 @@ public:
     static ModalComponentManager::Callback* forComponent (void (*functionToCall) (int, ComponentType*),
                                                           ComponentType* component)
     {
-        return create ([functionToCall, comp = WeakReference<Component> { component }] (int r)
-        {
-            functionToCall (r, static_cast<ComponentType*> (comp.get()));
-        });
+        WeakReference<Component> comp (component);
+        return create ([=] (int r) { functionToCall (r, static_cast<ComponentType*> (comp.get())); });
     }
 
     //==============================================================================
@@ -310,10 +290,8 @@ public:
                                                           ComponentType* component,
                                                           ParamType param)
     {
-        return create ([functionToCall, param, comp = WeakReference<Component> { component }] (int r)
-        {
-            functionToCall (r, static_cast<ComponentType*> (comp.get()), param);
-        });
+        WeakReference<Component> comp (component);
+        return create ([=] (int r) { functionToCall (r, static_cast<ComponentType*> (comp.get()), param); });
     }
 
 private:

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -47,14 +48,7 @@ namespace
         io_iterator_t iter = 0;
         io_object_t iod = 0;
 
-        const auto defaultPort =
-               #if defined (MAC_OS_VERSION_12_0) && MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_VERSION_12_0
-                kIOMainPortDefault;
-               #else
-                kIOMasterPortDefault;
-               #endif
-
-        if (IOServiceGetMatchingServices (defaultPort, dict, &iter) == kIOReturnSuccess
+        if (IOServiceGetMatchingServices (kIOMasterPortDefault, dict, &iter) == kIOReturnSuccess
              && iter != 0)
         {
             iod = IOIteratorNext (iter);
@@ -150,15 +144,15 @@ bool AppleRemoteDevice::open (const bool openInExclusiveMode)
 {
     Array<int> cookies;
 
-    CFObjectHolder<CFArrayRef> elements;
+    CFArrayRef elements;
     auto device122 = (IOHIDDeviceInterface122**) device;
 
-    if ((*device122)->copyMatchingElements (device122, nullptr, &elements.object) != kIOReturnSuccess)
+    if ((*device122)->copyMatchingElements (device122, nullptr, &elements) != kIOReturnSuccess)
         return false;
 
-    for (int i = 0; i < CFArrayGetCount (elements.object); ++i)
+    for (int i = 0; i < CFArrayGetCount (elements); ++i)
     {
-        auto element = (CFDictionaryRef) CFArrayGetValueAtIndex (elements.object, i);
+        auto element = (CFDictionaryRef) CFArrayGetValueAtIndex (elements, i);
 
         // get the cookie
         CFTypeRef object = CFDictionaryGetValue (element, CFSTR (kIOHIDElementCookieKey));
@@ -172,6 +166,8 @@ bool AppleRemoteDevice::open (const bool openInExclusiveMode)
 
         cookies.add ((int) number);
     }
+
+    CFRelease (elements);
 
     if ((*(IOHIDDeviceInterface**) device)
             ->open ((IOHIDDeviceInterface**) device,

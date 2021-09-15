@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -1644,5 +1645,26 @@ bool juce_handleNotificationIntent (void* intent)
 
     return false;
 }
+
+//==============================================================================
+struct JuceActivityNewIntentListener
+{
+    #define JNI_CLASS_MEMBERS(METHOD, STATICMETHOD, FIELD, STATICFIELD, CALLBACK) \
+     CALLBACK (appNewIntent, "appNewIntent", "(Landroid/content/Intent;)V")
+
+     DECLARE_JNI_CLASS (JavaActivity, JUCE_PUSH_NOTIFICATIONS_ACTIVITY)
+    #undef JNI_CLASS_MEMBERS
+
+    static void JNICALL appNewIntent (JNIEnv*, jobject /*activity*/, jobject intentData)
+    {
+       #if JUCE_PUSH_NOTIFICATIONS && JUCE_MODULE_AVAILABLE_juce_gui_extra
+        juce_handleNotificationIntent(static_cast<void*>(intentData));
+       #else
+        juce::ignoreUnused(intentData);
+       #endif
+    }
+};
+
+JuceActivityNewIntentListener::JavaActivity_Class JuceActivityNewIntentListener::JavaActivity;
 
 } // namespace juce

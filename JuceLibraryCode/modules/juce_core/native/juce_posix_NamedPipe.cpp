@@ -23,8 +23,6 @@
 namespace juce
 {
 
-#if ! JUCE_WASM
-
 class NamedPipe::Pimpl
 {
 public:
@@ -156,7 +154,7 @@ private:
     bool openPipe (bool isInput, uint32 timeoutEnd)
     {
         auto& pipe = isInput ? pipeIn : pipeOut;
-        int flags = (isInput ? O_RDWR : O_WRONLY) | O_NONBLOCK;
+        int flags = isInput ? O_RDWR | O_NONBLOCK : O_WRONLY;
 
         const String& pipeName = isInput ? (createdPipe ? pipeInName : pipeOutName)
                                          : (createdPipe ? pipeOutName : pipeInName);
@@ -183,20 +181,14 @@ private:
 
 void NamedPipe::close()
 {
+    if (pimpl != nullptr)
     {
-        ScopedReadLock sl (lock);
+        pimpl->stopReadOperation = true;
 
-        if (pimpl != nullptr)
-        {
-            pimpl->stopReadOperation = true;
+        char buffer[1] = { 0 };
+        ssize_t done = ::write (pimpl->pipeIn, buffer, 1);
+        ignoreUnused (done);
 
-            char buffer[1] = { 0 };
-            ssize_t done = ::write (pimpl->pipeIn, buffer, 1);
-            ignoreUnused (done);
-        }
-    }
-
-    {
         ScopedWriteLock sl (lock);
         pimpl.reset();
     }
@@ -242,7 +234,5 @@ int NamedPipe::write (const void* sourceBuffer, int numBytesToWrite, int timeOut
     ScopedReadLock sl (lock);
     return pimpl != nullptr ? pimpl->write (static_cast<const char*> (sourceBuffer), numBytesToWrite, timeOutMilliseconds) : -1;
 }
-
-#endif
 
 } // namespace juce

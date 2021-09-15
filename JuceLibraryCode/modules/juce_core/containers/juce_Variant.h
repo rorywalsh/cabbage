@@ -54,7 +54,7 @@ public:
         int numArguments;
     };
 
-    using NativeFunction = std::function<var (const NativeFunctionArgs&)>;
+    using NativeFunction = std::function<var(const NativeFunctionArgs&)>;
 
     //==============================================================================
     /** Creates a void variant. */
@@ -283,8 +283,18 @@ public:
 
 private:
     //==============================================================================
-    struct VariantType;
-    struct Instance;
+    class VariantType;
+    class VariantType_Void;
+    class VariantType_Undefined;
+    class VariantType_Int;
+    class VariantType_Int64;
+    class VariantType_Double;
+    class VariantType_Bool;
+    class VariantType_String;
+    class VariantType_Object;
+    class VariantType_Array;
+    class VariantType_Binary;
+    class VariantType_Method;
 
     union ValueUnion
     {

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -79,26 +80,24 @@ public:
 
     Typeface::Ptr findTypefaceFor (const Font& font)
     {
-        const auto faceName = font.getTypefaceName();
-        const auto faceStyle = font.getTypefaceStyle();
+        const ScopedReadLock slr (lock);
+
+        auto faceName = font.getTypefaceName();
+        auto faceStyle = font.getTypefaceStyle();
 
         jassert (faceName.isNotEmpty());
 
+        for (int i = faces.size(); --i >= 0;)
         {
-            const ScopedReadLock slr (lock);
+            CachedFace& face = faces.getReference(i);
 
-            for (int i = faces.size(); --i >= 0;)
+            if (face.typefaceName == faceName
+                 && face.typefaceStyle == faceStyle
+                 && face.typeface != nullptr
+                 && face.typeface->isSuitableForFont (font))
             {
-                CachedFace& face = faces.getReference(i);
-
-                if (face.typefaceName == faceName
-                     && face.typefaceStyle == faceStyle
-                     && face.typeface != nullptr
-                     && face.typeface->isSuitableForFont (font))
-                {
-                    face.lastUsageCount = ++counter;
-                    return face.typeface;
-                }
+                face.lastUsageCount = ++counter;
+                return face.typeface;
             }
         }
 
@@ -636,7 +635,7 @@ float Font::getStringWidthFloat (const String& text) const
     auto w = getTypeface()->getStringWidth (text);
 
     if (font->kerning != 0.0f)
-        w += font->kerning * (float) text.length();
+        w += font->kerning * text.length();
 
     return w * font->height * font->horizontalScale;
 }
@@ -657,7 +656,7 @@ void Font::getGlyphPositions (const String& text, Array<int>& glyphs, Array<floa
         if (font->kerning != 0.0f)
         {
             for (int i = 0; i < num; ++i)
-                x[i] = (x[i] + (float) i * font->kerning) * scale;
+                x[i] = (x[i] + i * font->kerning) * scale;
         }
         else
         {

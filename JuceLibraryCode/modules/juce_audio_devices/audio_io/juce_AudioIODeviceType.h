@@ -80,8 +80,9 @@ public:
 
         The scanForDevices() method must have been called to create this list.
 
-        @param wantInputNames    for devices which have separate inputs and outputs
-                                 this determines which list of names is returned
+        @param wantInputNames     only really used by DirectSound where devices are split up
+                                  into inputs and outputs, this indicates whether to use
+                                  the input or output name to refer to a pair of devices.
     */
     virtual StringArray getDeviceNames (bool wantInputNames = false) const = 0;
 
@@ -148,8 +149,8 @@ public:
     static AudioIODeviceType* createAudioIODeviceType_CoreAudio();
     /** Creates an iOS device type if it's available on this platform, or returns null. */
     static AudioIODeviceType* createAudioIODeviceType_iOSAudio();
-    /** Creates a WASAPI device type in the specified mode if it's available on this platform, or returns null. */
-    static AudioIODeviceType* createAudioIODeviceType_WASAPI (WASAPIDeviceMode deviceMode);
+    /** Creates a WASAPI device type if it's available on this platform, or returns null. */
+    static AudioIODeviceType* createAudioIODeviceType_WASAPI (bool exclusiveMode);
     /** Creates a DirectSound device type if it's available on this platform, or returns null. */
     static AudioIODeviceType* createAudioIODeviceType_DirectSound();
     /** Creates an ASIO device type if it's available on this platform, or returns null. */
@@ -166,9 +167,6 @@ public:
     static AudioIODeviceType* createAudioIODeviceType_Oboe();
     /** Creates a Bela device type if it's available on this platform, or returns null. */
     static AudioIODeviceType* createAudioIODeviceType_Bela();
-
-    /** This method has been deprecated. You should call the method which takes a WASAPIDeviceMode instead. */
-    JUCE_DEPRECATED (static AudioIODeviceType* createAudioIODeviceType_WASAPI (bool exclusiveMode));
 
 protected:
     explicit AudioIODeviceType (const String& typeName);

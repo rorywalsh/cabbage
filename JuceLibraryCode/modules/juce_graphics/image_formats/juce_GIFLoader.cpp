@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -29,8 +30,6 @@ namespace juce
 #if (JUCE_MAC || JUCE_IOS) && USE_COREGRAPHICS_RENDERING && JUCE_USE_COREIMAGE_LOADER
  Image juce_loadWithCoreImage (InputStream& input);
 #else
-
-JUCE_BEGIN_IGNORE_WARNINGS_MSVC (6385)
 
 //==============================================================================
 class GIFLoader
@@ -115,8 +114,7 @@ private:
 
     bool getSizeFromHeader (int& w, int& h)
     {
-        // Add an extra byte for the zero terminator
-        char b[7]{};
+        char b[6];
 
         if (input.read (b, 6) == 6
              && (strncmp ("GIF87a", b, 6) == 0
@@ -414,8 +412,6 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE (GIFLoader)
 };
-
-JUCE_END_IGNORE_WARNINGS_MSVC
 
 #endif
 

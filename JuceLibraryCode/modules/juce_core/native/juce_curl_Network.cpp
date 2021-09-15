@@ -110,12 +110,9 @@ private:
 class WebInputStream::Pimpl
 {
 public:
-    Pimpl (WebInputStream& ownerStream, const URL& urlToCopy, bool addParametersToBody)
-        : owner (ownerStream),
-          url (urlToCopy),
-          addParametersToRequestBody (addParametersToBody),
-          hasBodyDataToSend (url.hasBodyDataToSend() || addParametersToRequestBody),
-          httpRequest (hasBodyDataToSend ? "POST" : "GET")
+    Pimpl (WebInputStream& ownerStream, const URL& urlToCopy, bool shouldUsePost)
+        : owner (ownerStream), url (urlToCopy), isPost (shouldUsePost),
+          httpRequest (isPost ? "POST" : "GET")
     {
         jassert (symbols); // Unable to load libcurl!
 
@@ -144,7 +141,7 @@ public:
     //==============================================================================
     // Input Stream overrides
     bool isError() const                 { return curl == nullptr || lastError != CURLE_OK; }
-    bool isExhausted()                   { return (isError() || finished) && curlBuffer.isEmpty(); }
+    bool isExhausted()                   { return (isError() || finished) && curlBuffer.getSize() == 0; }
     int64 getPosition()                  { return streamPos; }
     int64 getTotalLength()               { return contentLength; }
 
@@ -223,7 +220,7 @@ public:
     //==============================================================================
     bool setOptions()
     {
-        auto address = url.toString (! addParametersToRequestBody);
+        auto address = url.toString (! isPost);
 
         curl_version_info_data* data = symbols->curl_version_info (CURLVERSION_NOW);
         jassert (data != nullptr);
@@ -231,11 +228,8 @@ public:
         if (! requestHeaders.endsWithChar ('\n'))
             requestHeaders << "\r\n";
 
-        if (hasBodyDataToSend)
-            WebInputStream::createHeadersAndPostData (url,
-                                                      requestHeaders,
-                                                      headersAndPostData,
-                                                      addParametersToRequestBody);
+        if (isPost)
+            WebInputStream::createHeadersAndPostData (url, requestHeaders, headersAndPostData);
 
         if (! requestHeaders.endsWithChar ('\n'))
             requestHeaders << "\r\n";
@@ -250,7 +244,7 @@ public:
             && symbols->curl_easy_setopt (curl, CURLOPT_USERAGENT, userAgent.toRawUTF8()) == CURLE_OK
             && symbols->curl_easy_setopt (curl, CURLOPT_FOLLOWLOCATION, (maxRedirects > 0 ? 1 : 0)) == CURLE_OK)
         {
-            if (hasBodyDataToSend)
+            if (isPost)
             {
                 if (symbols->curl_easy_setopt (curl, CURLOPT_READDATA, this) != CURLE_OK
                     || symbols->curl_easy_setopt (curl, CURLOPT_READFUNCTION, StaticCurlRead) != CURLE_OK)
@@ -262,7 +256,7 @@ public:
             }
 
             // handle special http request commands
-            const auto hasSpecialRequestCmd = hasBodyDataToSend ? (httpRequest != "POST") : (httpRequest != "GET");
+            bool hasSpecialRequestCmd = isPost ? (httpRequest != "POST") : (httpRequest != "GET");
 
             if (hasSpecialRequestCmd)
                 if (symbols->curl_easy_setopt (curl, CURLOPT_CUSTOMREQUEST, httpRequest.toRawUTF8()) != CURLE_OK)
@@ -329,14 +323,14 @@ public:
 
         listener = webInputListener;
 
-        if (hasBodyDataToSend)
+        if (isPost)
             postBuffer = &headersAndPostData;
 
         size_t lastPos = static_cast<size_t> (-1);
 
         // step until either: 1) there is an error 2) the transaction is complete
         // or 3) data is in the in buffer
-        while ((! finished) && curlBuffer.isEmpty())
+        while ((! finished) && curlBuffer.getSize() == 0)
         {
             {
                 const ScopedLock lock (cleanupLock);
@@ -348,7 +342,7 @@ public:
             singleStep();
 
             // call callbacks if this is a post request
-            if (hasBodyDataToSend && listener != nullptr && lastPos != postPosition)
+            if (isPost && listener != nullptr && lastPos != postPosition)
             {
                 lastPos = postPosition;
 
@@ -619,7 +613,7 @@ public:
     // Options
     int timeOutMs = 0;
     int maxRedirects = 5;
-    const bool addParametersToRequestBody, hasBodyDataToSend;
+    const bool isPost;
     String httpRequest;
 
     //==============================================================================

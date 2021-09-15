@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -23,7 +24,7 @@
   ==============================================================================
 */
 
-#if JUCE_PLUGINHOST_LADSPA && (JUCE_LINUX || JUCE_BSD)
+#if JUCE_PLUGINHOST_LADSPA && JUCE_LINUX
 
 #include <ladspa.h>
 
@@ -220,7 +221,7 @@ public:
     {
         desc.name = getName();
         desc.fileOrIdentifier = module->file.getFullPathName();
-        desc.uniqueId = desc.deprecatedUid = getUID();
+        desc.uid = getUID();
         desc.lastFileModTime = module->file.getLastModificationTime();
         desc.lastInfoUpdateTime = Time::getCurrentTime();
         desc.pluginFormatName = "LADSPA";
@@ -374,7 +375,7 @@ public:
         destData.setSize ((size_t) numParameters * sizeof (float));
         destData.fillWith (0);
 
-        auto* p = unalignedPointerCast<float*> (destData.getData());
+        auto* p = (float*) ((char*) destData.getData());
 
         for (int i = 0; i < numParameters; ++i)
             if (auto* param = getParameters()[i])
@@ -583,7 +584,7 @@ void LADSPAPluginFormat::findAllTypesForFile (OwnedArray<PluginDescription>& res
 
     PluginDescription desc;
     desc.fileOrIdentifier = fileOrIdentifier;
-    desc.uniqueId = desc.deprecatedUid = 0;
+    desc.uid = 0;
 
     auto createdInstance = createInstanceFromDescription (desc, 44100.0, 512);
     auto instance = dynamic_cast<LADSPAPluginInstance*> (createdInstance.get());
@@ -600,7 +601,7 @@ void LADSPAPluginFormat::findAllTypesForFile (OwnedArray<PluginDescription>& res
         {
             if (auto* plugin = instance->module->moduleMain ((size_t) uid))
             {
-                desc.uniqueId = desc.deprecatedUid = uid;
+                desc.uid = uid;
                 desc.name = plugin->Name != nullptr ? plugin->Name : "Unknown";
 
                 if (! arrayContainsPlugin (results, desc))
@@ -631,7 +632,7 @@ void LADSPAPluginFormat::createPluginInstance (const PluginDescription& desc,
 
         if (module != nullptr)
         {
-            shellLADSPAUIDToCreate = desc.uniqueId != 0 ? desc.uniqueId : desc.deprecatedUid;
+            shellLADSPAUIDToCreate = desc.uid;
 
             result.reset (new LADSPAPluginInstance (module));
 
@@ -690,8 +691,9 @@ StringArray LADSPAPluginFormat::searchPathsForPlugins (const FileSearchPath& dir
 
 void LADSPAPluginFormat::recursiveFileSearch (StringArray& results, const File& dir, const bool recursive)
 {
+    DirectoryIterator iter (dir, false, "*", File::findFilesAndDirectories);
 
-    for (const auto& iter : RangedDirectoryIterator (dir, false, "*", File::findFilesAndDirectories))
+    while (iter.next())
     {
         auto f = iter.getFile();
         bool isPlugin = false;

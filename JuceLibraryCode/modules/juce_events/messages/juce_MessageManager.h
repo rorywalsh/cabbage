@@ -29,6 +29,11 @@ class ActionListener;
 class ActionBroadcaster;
 
 //==============================================================================
+#if JUCE_MODULE_AVAILABLE_juce_opengl
+class OpenGLContext;
+#endif
+
+//==============================================================================
 /** See MessageManager::callFunctionOnMessageThread() for use of this function type. */
 using MessageCallbackFunction = void* (void* userData);
 
@@ -79,7 +84,7 @@ public:
     */
     bool hasStopMessageBeenSent() const noexcept        { return quitMessagePosted.get() != 0; }
 
-   #if JUCE_MODAL_LOOPS_PERMITTED
+   #if JUCE_MODAL_LOOPS_PERMITTED || DOXYGEN
     /** Synchronously dispatches messages until a given time has elapsed.
 
         Returns false if a quit message has been posted by a call to stopDispatchLoop(),
@@ -333,6 +338,7 @@ private:
     static void* exitModalLoopCallback (void*);
     static void doPlatformSpecificInitialisation();
     static void doPlatformSpecificShutdown();
+    static bool dispatchNextMessageOnSystemQueue (bool returnIfNoPendingMessages);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MessageManager)
 };

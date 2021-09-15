@@ -319,8 +319,9 @@ private:
                 return {};
 
             auto rootFsDevice = info.st_dev;
+            DirectoryIterator iter (mountFolder, false, "*", File::findDirectories);
 
-            for (const auto& iter : RangedDirectoryIterator (mountFolder, false, "*", File::findDirectories))
+            while (iter.next())
             {
                 auto candidate = iter.getFile();
 

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -323,7 +324,7 @@ protected:
     /** @internal */
     void enablementChanged() override;
     /** @internal */
-    std::unique_ptr<ComponentTraverser> createKeyboardFocusTraverser() override;
+    KeyboardFocusTraverser* createFocusTraverser() override;
     /** @internal */
     void textEditorTextChanged (TextEditor&) override;
     /** @internal */
@@ -356,7 +357,6 @@ private:
     bool lossOfFocusDiscardsChanges = false;
     bool leftOfOwnerComp = false;
 
-    std::unique_ptr<AccessibilityHandler> createAccessibilityHandler() override;
     bool updateFromTextEditorContents (TextEditor&);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Label)

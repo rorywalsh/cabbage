@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -22,8 +23,6 @@
 
   ==============================================================================
 */
-
-JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wdeprecated-declarations")
 
 namespace juce
 {
@@ -272,10 +271,10 @@ struct PushNotificationsDelegate
 
         id<NSApplicationDelegate> appDelegate = [[NSApplication sharedApplication] delegate];
 
-        JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wundeclared-selector")
-        if ([appDelegate respondsToSelector: @selector (setPushNotificationsDelegate:)])
-            [appDelegate performSelector: @selector (setPushNotificationsDelegate:) withObject: delegate.get()];
-        JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+        SEL selector = NSSelectorFromString (@"setPushNotificationsDelegate:");
+
+        if ([appDelegate respondsToSelector: selector])
+            [appDelegate performSelector: selector withObject: delegate.get()];
 
         [NSUserNotificationCenter defaultUserNotificationCenter].delegate = delegate.get();
     }
@@ -298,7 +297,7 @@ struct PushNotificationsDelegate
     virtual bool shouldPresentNotification (NSUserNotification* notification) = 0;
 
 protected:
-    NSUniquePtr<NSObject<NSApplicationDelegate, NSUserNotificationCenterDelegate>> delegate;
+    std::unique_ptr<NSObject<NSApplicationDelegate, NSUserNotificationCenterDelegate>, NSObjectDeleter> delegate;
 
 private:
     struct Class    : public ObjCClass<NSObject<NSApplicationDelegate, NSUserNotificationCenterDelegate>>
@@ -312,7 +311,7 @@ private:
             addMethod (@selector (application:didReceiveRemoteNotification:),                     didReceiveRemoteNotification,           "v@:@@");
             addMethod (@selector (userNotificationCenter:didDeliverNotification:),                didDeliverNotification,                 "v@:@@");
             addMethod (@selector (userNotificationCenter:didActivateNotification:),               didActivateNotification,                "v@:@@");
-            addMethod (@selector (userNotificationCenter:shouldPresentNotification:),             shouldPresentNotification,              "c@:@@");
+            addMethod (@selector (userNotificationCenter:shouldPresentNotification:),             shouldPresentNotification,              "B@:@@");
 
             registerClass();
         }
@@ -564,5 +563,3 @@ private:
 };
 
 } // namespace juce
-
-JUCE_END_IGNORE_WARNINGS_GCC_LIKE

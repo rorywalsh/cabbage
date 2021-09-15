@@ -8,11 +8,11 @@
 
 namespace BinaryData
 {
-    extern const char*   CabbageLogoBig_png;
-    const int            CabbageLogoBig_pngSize = 27551;
-
     extern const char*   cabbage_png;
     const int            cabbage_pngSize = 18257;
+
+    extern const char*   CabbageLogoBig_png;
+    const int            CabbageLogoBig_pngSize = 27551;
 
     // Number of elements in the namedResourceList and originalFileNames arrays.
     const int namedResourceListSize = 2;

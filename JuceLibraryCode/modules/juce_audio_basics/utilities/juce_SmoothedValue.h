@@ -369,7 +369,7 @@ private:
     template <typename T = SmoothingType>
     MultiplicativeVoid<T> setStepSize()
     {
-        step = std::exp ((std::log (std::abs (this->target)) - std::log (std::abs (this->currentValue))) / (FloatType) this->countdown);
+        step = std::exp ((std::log (std::abs (this->target)) - std::log (std::abs (this->currentValue))) / this->countdown);
     }
 
     //==============================================================================
@@ -510,7 +510,7 @@ public:
             expect (referenceData.getSample (0, 10) < sv.getTargetValue());
             expectWithinAbsoluteError (referenceData.getSample (0, 11),
                                        sv.getTargetValue(),
-                                       2.0e-7f);
+                                       1.0e-7f);
 
             auto getUnitData = [] (int numSamplesToGenerate)
             {
@@ -522,13 +522,13 @@ public:
                 return result;
             };
 
-            auto compareData = [this] (const AudioBuffer<float>& test,
-                                       const AudioBuffer<float>& reference)
+            auto compareData = [this](const AudioBuffer<float>& test,
+                                      const AudioBuffer<float>& reference)
             {
                 for (int i = 0; i < test.getNumSamples(); ++i)
                     expectWithinAbsoluteError (test.getSample (0, i),
                                                reference.getSample (0, i),
-                                               2.0e-7f);
+                                               1.0e-7f);
             };
 
             auto testData = getUnitData (numSamples);

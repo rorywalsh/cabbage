@@ -23,7 +23,7 @@
 namespace juce
 {
 
-static bool isValidXmlNameStartCharacter (juce_wchar character) noexcept
+inline static bool isValidXmlNameStartCharacter (juce_wchar character) noexcept
 {
     return character == ':'
         || character == '_'
@@ -43,7 +43,7 @@ static bool isValidXmlNameStartCharacter (juce_wchar character) noexcept
         || (character >= 0x10000 && character <= 0xeffff);
 }
 
-static bool isValidXmlNameBodyCharacter (juce_wchar character) noexcept
+inline static bool isValidXmlNameBodyCharacter (juce_wchar character) noexcept
 {
     return isValidXmlNameStartCharacter (character)
         || character == '-'

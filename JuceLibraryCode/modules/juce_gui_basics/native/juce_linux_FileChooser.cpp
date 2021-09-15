@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -26,18 +27,16 @@
 namespace juce
 {
 
-static bool exeIsAvailable (String executable)
+static bool exeIsAvailable (const char* const executable)
 {
     ChildProcess child;
+    const bool ok = child.start ("which " + String (executable))
+                      && child.readAllProcessOutput().trim().isNotEmpty();
 
-    if (child.start ("which " + executable))
-    {
-        child.waitForProcessToFinish (60 * 1000);
-        return (child.getExitCode() == 0);
-    }
-
-    return false;
+    child.waitForProcessToFinish (60 * 1000);
+    return ok;
 }
+
 
 class FileChooser::Native    : public FileChooser::Pimpl,
                                private Timer
@@ -66,17 +65,13 @@ public:
 
     void runModally() override
     {
-       #if JUCE_MODAL_LOOPS_PERMITTED
         child.start (args, ChildProcess::wantStdOut);
 
         while (child.isRunning())
-            if (! MessageManager::getInstance()->runDispatchLoopUntil (20))
+            if (! MessageManager::getInstance()->runDispatchLoopUntil(20))
                 break;
 
         finish (false);
-       #else
-        jassertfalse;
-       #endif
     }
 
     void launch() override
@@ -192,7 +187,7 @@ private:
         }
 
         args.add (startPath.getFullPathName());
-        args.add ("(" + owner.filters.replaceCharacter (';', ' ') + ")");
+        args.add (owner.filters.replaceCharacter (';', ' '));
     }
 
     void addZenityArgs()
@@ -214,19 +209,17 @@ private:
         }
         else
         {
-            if (isSave)
-                args.add ("--save");
+            if (isDirectory)  args.add ("--directory");
+            if (isSave)       args.add ("--save");
         }
-
-        if (isDirectory)
-            args.add ("--directory");
 
         if (owner.filters.isNotEmpty() && owner.filters != "*" && owner.filters != "*.*")
         {
             StringArray tokens;
             tokens.addTokens (owner.filters, ";,|", "\"");
 
-            args.add ("--file-filter=" + tokens.joinIntoString (" "));
+            for (int i = 0; i < tokens.size(); ++i)
+                args.add ("--file-filter=" + tokens[i]);
         }
 
         if (owner.startingFile.isDirectory())
@@ -259,9 +252,9 @@ bool FileChooser::isPlatformDialogAvailable()
    #endif
 }
 
-std::shared_ptr<FileChooser::Pimpl> FileChooser::showPlatformDialog (FileChooser& owner, int flags, FilePreviewComponent*)
+FileChooser::Pimpl* FileChooser::showPlatformDialog (FileChooser& owner, int flags, FilePreviewComponent*)
 {
-    return std::make_shared<Native> (owner, flags);
+    return new Native (owner, flags);
 }
 
 } // namespace juce

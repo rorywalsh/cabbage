@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -28,17 +29,18 @@ namespace juce
 
 const int kilobytesPerSecond1x = 176;
 
-struct AudioTrackProducerClass  : public ObjCClass<NSObject>
+struct AudioTrackProducerClass  : public ObjCClass <NSObject>
 {
-    AudioTrackProducerClass()  : ObjCClass<NSObject> ("JUCEAudioTrackProducer_")
+    AudioTrackProducerClass()  : ObjCClass <NSObject> ("JUCEAudioTrackProducer_")
     {
         addIvar<AudioSourceHolder*> ("source");
 
-        JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wundeclared-selector")
+       #pragma clang diagnostic push
+       #pragma clang diagnostic ignored "-Wundeclared-selector"
         addMethod (@selector (initWithAudioSourceHolder:),     initWithAudioSourceHolder,     "@@:^v");
         addMethod (@selector (verifyDataForTrack:intoBuffer:length:atAddress:blockSize:ioFlags:),
                    produceDataForTrack,           "I@:@^cIQI^I");
-        JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+       #pragma clang diagnostic pop
 
         addMethod (@selector (cleanupTrackAfterBurn:),         cleanupTrackAfterBurn,         "v@:@");
         addMethod (@selector (cleanupTrackAfterVerification:), cleanupTrackAfterVerification, "c@:@");
@@ -73,7 +75,7 @@ struct AudioTrackProducerClass  : public ObjCClass<NSObject>
 private:
     static id initWithAudioSourceHolder (id self, SEL, AudioSourceHolder* source)
     {
-        self = sendSuperclassMessage<id> (self, @selector (init));
+        self = sendSuperclassMessage (self, @selector (init));
         object_setInstanceVariable (self, "source", source);
         return self;
     }
@@ -86,7 +88,7 @@ private:
     static void dealloc (id self, SEL)
     {
         delete getSource (self);
-        sendSuperclassMessage<void> (self, @selector (dealloc));
+        sendSuperclassMessage (self, @selector (dealloc));
     }
 
     static void cleanupTrackAfterBurn (id, SEL, DRTrack*) {}
@@ -187,10 +189,11 @@ struct OpenDiskDevice
 
             static AudioTrackProducerClass cls;
 
-            JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wundeclared-selector")
+           #pragma clang diagnostic push
+           #pragma clang diagnostic ignored "-Wundeclared-selector"
             NSObject* producer = [cls.createInstance()  performSelector: @selector (initWithAudioSourceHolder:)
                                                              withObject: (id) new AudioTrackProducerClass::AudioSourceHolder (source, numFrames)];
-            JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+           #pragma clang diagnostic pop
             DRTrack* track = [[DRTrack alloc] initWithProducer: producer];
 
             {

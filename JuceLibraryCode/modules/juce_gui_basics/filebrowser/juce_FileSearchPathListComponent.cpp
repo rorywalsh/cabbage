@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -129,7 +130,7 @@ void FileSearchPathListComponent::paintListBoxItem (int rowNumber, Graphics& g, 
         g.fillAll (findColour (TextEditor::highlightColourId));
 
     g.setColour (findColour (ListBox::textColourId));
-    Font f ((float) height * 0.7f);
+    Font f (height * 0.7f);
     f.setHorizontalScale (0.9f);
     g.setFont (f);
 
@@ -149,18 +150,18 @@ void FileSearchPathListComponent::deleteKeyPressed (int row)
 
 void FileSearchPathListComponent::returnKeyPressed (int row)
 {
-    chooser = std::make_unique<FileChooser> (TRANS("Change folder..."), path[row], "*");
-    auto chooserFlags = FileBrowserComponent::openMode | FileBrowserComponent::canSelectDirectories;
+   #if JUCE_MODAL_LOOPS_PERMITTED
+    FileChooser chooser (TRANS("Change folder..."), path[row], "*");
 
-    chooser->launchAsync (chooserFlags, [this, row] (const FileChooser& fc)
+    if (chooser.browseForDirectory())
     {
-        if (fc.getResult() == File{})
-            return;
-
         path.remove (row);
-        path.add (fc.getResult(), row);
+        path.add (chooser.getResult(), row);
         changed();
-    });
+    }
+   #else
+    ignoreUnused (row);
+   #endif
 }
 
 void FileSearchPathListComponent::listBoxItemDoubleClicked (int row, const MouseEvent&)
@@ -226,17 +227,16 @@ void FileSearchPathListComponent::addPath()
     if (start == File())
         start = File::getCurrentWorkingDirectory();
 
-    chooser = std::make_unique<FileChooser> (TRANS("Add a folder..."), start, "*");
-    auto chooserFlags = FileBrowserComponent::openMode | FileBrowserComponent::canSelectDirectories;
+   #if JUCE_MODAL_LOOPS_PERMITTED
+    FileChooser chooser (TRANS("Add a folder..."), start, "*");
 
-    chooser->launchAsync (chooserFlags, [this] (const FileChooser& fc)
-    {
-        if (fc.getResult() == File{})
-            return;
+    if (chooser.browseForDirectory())
+        path.add (chooser.getResult(), listBox.getSelectedRow());
 
-        path.add (fc.getResult(), listBox.getSelectedRow());
-        changed();
-    });
+    changed();
+   #else
+    jassertfalse; // needs rewriting to deal with non-modal environments
+   #endif
 }
 
 void FileSearchPathListComponent::deleteSelected()

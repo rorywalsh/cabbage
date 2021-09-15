@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -317,7 +318,7 @@ public:
         GroupAlertBehaviour groupAlertBehaviour = alertAll;
 
         int timeoutAfterMs = 0;    /**< specifies a duration in milliseconds, after which the notification should be
-                                        cancelled, if it is not already cancelled. Available from Android API 26 or above. */
+                                        cancelled, if it is not already canceled. Available from Android API 26 or above. */
         /**@}*/
     };
 

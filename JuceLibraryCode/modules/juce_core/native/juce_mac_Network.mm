@@ -676,7 +676,8 @@ std::unique_ptr<URL::DownloadTask> URL::downloadToFile (const File& targetLocati
 // so we'll turn off deprecation warnings. This code will be removed at some point
 // in the future.
 
-JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wdeprecated")
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
 
 //==============================================================================
 class URLConnectionState   : public Thread
@@ -934,7 +935,7 @@ std::unique_ptr<URL::DownloadTask> URL::downloadToFile (const File& targetLocati
     return URL::DownloadTask::createFallbackDownloader (*this, targetLocation, extraHeaders, listener, shouldUsePost);
 }
 
-JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+#pragma clang diagnostic pop
 
 #endif
 
@@ -943,12 +944,9 @@ JUCE_END_IGNORE_WARNINGS_GCC_LIKE
 class WebInputStream::Pimpl
 {
 public:
-    Pimpl (WebInputStream& pimplOwner, const URL& urlToUse, bool addParametersToBody)
-      : owner (pimplOwner),
-        url (urlToUse),
-        addParametersToRequestBody (addParametersToBody),
-        hasBodyDataToSend (addParametersToRequestBody || url.hasBodyDataToSend()),
-        httpRequestCmd (hasBodyDataToSend ? "POST" : "GET")
+    Pimpl (WebInputStream& pimplOwner, const URL& urlToUse, bool shouldBePost)
+      : owner (pimplOwner), url (urlToUse), isPost (shouldBePost),
+        httpRequestCmd (shouldBePost ? "POST" : "GET")
     {
     }
 
@@ -1092,7 +1090,7 @@ private:
     MemoryBlock postData;
     int64 position = 0;
     bool finished = false;
-    const bool addParametersToRequestBody, hasBodyDataToSend;
+    const bool isPost;
     int timeOutMs = 0;
     int numRedirectsToFollow = 5;
     String httpRequestCmd;
@@ -1104,32 +1102,21 @@ private:
     {
         jassert (connection == nullptr);
 
-        if (NSURL* nsURL = [NSURL URLWithString: juceStringToNS (url.toString (! addParametersToRequestBody))])
+        if (NSURL* nsURL = [NSURL URLWithString: juceStringToNS (url.toString (! isPost))])
         {
-            const auto timeOutSeconds = [this]
-            {
-                if (timeOutMs > 0)
-                    return timeOutMs / 1000.0;
-
-                return timeOutMs < 0 ? std::numeric_limits<double>::infinity() : 60.0;
-            }();
-
             if (NSMutableURLRequest* req = [NSMutableURLRequest requestWithURL: nsURL
                                                                    cachePolicy: NSURLRequestReloadIgnoringLocalCacheData
-                                                               timeoutInterval: timeOutSeconds])
+                                                               timeoutInterval: timeOutMs <= 0 ? 60.0 : (timeOutMs / 1000.0)])
             {
                 if (NSString* httpMethod = [NSString stringWithUTF8String: httpRequestCmd.toRawUTF8()])
                 {
                     [req setHTTPMethod: httpMethod];
 
-                    if (hasBodyDataToSend)
+                    if (isPost)
                     {
-                        WebInputStream::createHeadersAndPostData (url,
-                                                                  headers,
-                                                                  postData,
-                                                                  addParametersToRequestBody);
+                        WebInputStream::createHeadersAndPostData (url, headers, postData);
 
-                        if (! postData.isEmpty())
+                        if (postData.getSize() > 0)
                             [req setHTTPBody: [NSData dataWithBytes: postData.getData()
                                                              length: postData.getSize()]];
                     }

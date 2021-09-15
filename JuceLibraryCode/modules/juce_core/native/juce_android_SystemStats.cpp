@@ -40,14 +40,14 @@ namespace AndroidStatsHelpers
     DECLARE_JNI_CLASS (JavaLocale, "java/util/Locale")
     #undef JNI_CLASS_MEMBERS
 
-    static String getSystemProperty (const String& name)
+    static inline String getSystemProperty (const String& name)
     {
         return juceString (LocalRef<jstring> ((jstring) getEnv()->CallStaticObjectMethod (SystemClass,
                                                                                           SystemClass.getProperty,
                                                                                           javaString (name).get())));
     }
 
-    static String getLocaleValue (bool isRegion)
+    static inline String getLocaleValue (bool isRegion)
     {
         auto* env = getEnv();
         LocalRef<jobject> locale (env->CallStaticObjectMethod (JavaLocale, JavaLocale.getDefault));
@@ -58,7 +58,7 @@ namespace AndroidStatsHelpers
         return juceString (LocalRef<jstring> ((jstring) stringResult));
     }
 
-    static String getAndroidOsBuildValue (const char* fieldName)
+    static inline String getAndroidOsBuildValue (const char* fieldName)
     {
         return juceString (LocalRef<jstring> ((jstring) getEnv()->GetStaticObjectField (
                             AndroidBuild, getEnv()->GetStaticFieldID (AndroidBuild, fieldName, "Ljava/lang/String;"))));
@@ -229,7 +229,7 @@ int64 Time::getHighResolutionTicksPerSecond() noexcept
 
 double Time::getMillisecondCounterHiRes() noexcept
 {
-    return (double) getHighResolutionTicks() * 0.001;
+    return getHighResolutionTicks() * 0.001;
 }
 
 bool Time::setSystemTimeToThisTime() const

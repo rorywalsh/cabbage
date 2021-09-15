@@ -30,8 +30,12 @@
 // GCC
 #if JUCE_GCC
 
- #if (__GNUC__ * 100 + __GNUC_MINOR__) < 500
-  #error "JUCE requires GCC 5.0 or later"
+ #if (__GNUC__ * 100 + __GNUC_MINOR__) < 407
+  #error "JUCE requires GCC 4.7 or later"
+ #endif
+
+ #if ! (__cplusplus >= 201103L || defined (__GXX_EXPERIMENTAL_CXX0X__))
+  #error "JUCE requires that GCC has C++11 compatibility enabled"
  #endif
 
  #ifndef JUCE_EXCEPTIONS_DISABLED
@@ -40,7 +44,7 @@
   #endif
  #endif
 
- #define JUCE_CXX14_IS_AVAILABLE (__cplusplus >= 201402L)
+ #define JUCE_CXX14_IS_AVAILABLE ((__cplusplus >= 201402L) || ((__GNUC__ * 100 + __GNUC_MINOR__) >= 409 && (__cplusplus >= 201300L)))
  #define JUCE_CXX17_IS_AVAILABLE (__cplusplus >= 201703L)
 
 #endif
@@ -49,8 +53,8 @@
 // Clang
 #if JUCE_CLANG
 
- #if (__clang_major__ < 3) || (__clang_major__ == 3 && __clang_minor__ < 4)
-  #error "JUCE requires Clang 3.4 or later"
+ #if (__clang_major__ < 3) || (__clang_major__ == 3 && __clang_minor__ < 3)
+  #error "JUCE requires Clang 3.3 or later"
  #endif
 
  #ifndef JUCE_COMPILER_SUPPORTS_ARC
@@ -66,18 +70,14 @@
  #define JUCE_CXX14_IS_AVAILABLE (__cplusplus >= 201402L)
  #define JUCE_CXX17_IS_AVAILABLE (__cplusplus >= 201703L)
 
- #if defined (__OBJC__)
-  #define JUCE_OBJC_HAS_AVAILABLE_FEATURE (__clang_major__ >= 9)
- #endif
-
 #endif
 
 //==============================================================================
 // MSVC
 #if JUCE_MSVC
 
- #if _MSC_FULL_VER < 190024210  // VS2015
-   #error "JUCE requires Visual Studio 2015 Update 3 or later"
+ #if _MSC_VER < 1900 // VS2015
+   #error "JUCE requires Visual Studio 2015 or later"
  #endif
 
  #ifndef JUCE_EXCEPTIONS_DISABLED
@@ -91,8 +91,21 @@
 #endif
 
 //==============================================================================
-#if ! JUCE_CXX14_IS_AVAILABLE
- #error "JUCE requires C++14 or later"
+// C++ library
+#if (defined (__GLIBCXX__) && __GLIBCXX__ < 20130322) || (defined(_LIBCPP_VERSION) && (_LIBCPP_VERSION < 3700))
+ #error "JUCE requires a C++ library containing std::atomic"
+#endif
+
+//==============================================================================
+#if (! JUCE_MSVC) && (! JUCE_CXX14_IS_AVAILABLE)
+namespace std
+{
+    template<typename T, typename... Args>
+    unique_ptr<T> make_unique (Args&&... args)
+    {
+        return unique_ptr<T> (new T (std::forward<Args> (args)...));
+    }
+}
 #endif
 
 //==============================================================================

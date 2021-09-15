@@ -25,19 +25,18 @@
  The block below describes the properties of this module, and is read by
  the Projucer to automatically generate project code that uses it.
  For details about the syntax and how to create or use a module, see the
- JUCE Module Format.md file.
+ JUCE Module Format.txt file.
 
 
  BEGIN_JUCE_MODULE_DECLARATION
 
   ID:                 juce_audio_basics
   vendor:             juce
-  version:            6.1.0
+  version:            5.4.7
   name:               JUCE audio and MIDI data classes
   description:        Classes for audio buffer manipulation, midi message handling, synthesis, etc.
   website:            http://www.juce.com/juce
   license:            ISC
-  minimumCppStandard: 14
 
   dependencies:       juce_core
   OSXFrameworks:      Accelerate
@@ -89,8 +88,8 @@
 #include "buffers/juce_AudioProcessLoadMeasurer.h"
 #include "utilities/juce_Decibels.h"
 #include "utilities/juce_IIRFilter.h"
-#include "utilities/juce_GenericInterpolator.h"
-#include "utilities/juce_Interpolators.h"
+#include "utilities/juce_LagrangeInterpolator.h"
+#include "utilities/juce_CatmullRomInterpolator.h"
 #include "utilities/juce_SmoothedValue.h"
 #include "utilities/juce_Reverb.h"
 #include "utilities/juce_ADSR.h"

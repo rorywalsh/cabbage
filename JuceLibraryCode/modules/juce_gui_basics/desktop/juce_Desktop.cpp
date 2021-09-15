@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -192,10 +193,8 @@ void Desktop::handleAsyncUpdate()
 {
     // The component may be deleted during this operation, but we'll use a SafePointer rather than a
     // BailOutChecker so that any remaining listeners will still get a callback (with a null pointer).
-    focusListeners.call ([currentFocus = WeakReference<Component> { Component::getCurrentlyFocusedComponent() }] (FocusChangeListener& l)
-    {
-        l.globalFocusChanged (currentFocus.get());
-    });
+    WeakReference<Component> currentFocus (Component::getCurrentlyFocusedComponent());
+    focusListeners.call ([&] (FocusChangeListener& l) { l.globalFocusChanged (currentFocus.get()); });
 }
 
 //==============================================================================
@@ -331,11 +330,6 @@ void Desktop::setGlobalScaleFactor (float newScaleFactor) noexcept
         masterScaleFactor = newScaleFactor;
         displays->refresh();
     }
-}
-
-bool Desktop::isHeadless() const noexcept
-{
-    return displays->displays.isEmpty();
 }
 
 } // namespace juce

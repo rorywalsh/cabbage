@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -38,30 +39,20 @@ private:
     Displays (Desktop&);
 
 public:
-    //==============================================================================
     /** Represents a connected display device. */
-    struct JUCE_API  Display
+    struct Display
     {
         /** This will be true if this is the user's main display device. */
         bool isMain;
 
         /** The total area of this display in logical pixels including any OS-dependent objects
-            like the taskbar, menu bar, etc.
-        */
+            like the taskbar, menu bar, etc. */
         Rectangle<int> totalArea;
 
         /** The total area of this display in logical pixels which isn't covered by OS-dependent
             objects like the taskbar, menu bar, etc.
         */
         Rectangle<int> userArea;
-
-        /** Represents the area of this display in logical pixels that is not functional for
-            displaying content.
-
-            On mobile devices this may be the area covered by display cutouts and notches, where
-            you still want to draw a background but should not position important content.
-        */
-        BorderSize<int> safeAreaInsets;
 
         /** The top-left of this display in physical coordinates. */
         Point<int> topLeftPhysical;
@@ -84,75 +75,44 @@ public:
         double dpi;
     };
 
-    //==============================================================================
-    /** Converts an integer Rectangle from physical to logical pixels.
+    /** Converts a Rectangle from physical to logical pixels.
 
         If useScaleFactorOfDisplay is not null then its scale factor will be used for the conversion
         regardless of the display that the Rectangle to be converted is on.
     */
-    Rectangle<int> physicalToLogical (Rectangle<int> physicalRect,
-                                      const Display* useScaleFactorOfDisplay = nullptr) const noexcept;
+    Rectangle<int> physicalToLogical (Rectangle<int>, const Display* useScaleFactorOfDisplay = nullptr) const noexcept;
 
-    /** Converts a floating-point Rectangle from physical to logical pixels.
-
-        If useScaleFactorOfDisplay is not null then its scale factor will be used for the conversion
-        regardless of the display that the Rectangle to be converted is on.
-    */
-    Rectangle<float> physicalToLogical (Rectangle<float> physicalRect,
-                                        const Display* useScaleFactorOfDisplay = nullptr) const noexcept;
-
-    /** Converts an integer Rectangle from logical to physical pixels.
+    /** Converts a Rectangle from logical to physical pixels.
 
         If useScaleFactorOfDisplay is not null then its scale factor will be used for the conversion
         regardless of the display that the Rectangle to be converted is on.
     */
-    Rectangle<int> logicalToPhysical (Rectangle<int> logicalRect,
-                                      const Display* useScaleFactorOfDisplay = nullptr) const noexcept;
+    Rectangle<int> logicalToPhysical (Rectangle<int>, const Display* useScaleFactorOfDisplay = nullptr) const noexcept;
 
-    /** Converts a floating-point Rectangle from logical to physical pixels.
-
-        If useScaleFactorOfDisplay is not null then its scale factor will be used for the conversion
-        regardless of the display that the Rectangle to be converted is on.
-    */
-    Rectangle<float> logicalToPhysical (Rectangle<float> logicalRect,
-                                        const Display* useScaleFactorOfDisplay = nullptr) const noexcept;
-
-    /** Converts a Point from physical to logical pixels.
-
-        If useScaleFactorOfDisplay is not null then its scale factor will be used for the conversion
-        regardless of the display that the Point to be converted is on.
-    */
+    /** Converts a Point from physical to logical pixels. */
     template <typename ValueType>
-    Point<ValueType> physicalToLogical (Point<ValueType> physicalPoint,
-                                        const Display* useScaleFactorOfDisplay = nullptr) const noexcept;
+    Point<ValueType> physicalToLogical (Point<ValueType>, const Display* useScaleFactorOfDisplay = nullptr) const noexcept;
 
-    /** Converts a Point from logical to physical pixels.
-
-        If useScaleFactorOfDisplay is not null then its scale factor will be used for the conversion
-        regardless of the display that the Point to be converted is on.
-    */
+    /** Converts a Point from logical to physical pixels. */
     template <typename ValueType>
-    Point<ValueType> logicalToPhysical (Point<ValueType> logicalPoint,
-                                        const Display* useScaleFactorOfDisplay = nullptr) const noexcept;
+    Point<ValueType> logicalToPhysical (Point<ValueType>, const Display* useScaleFactorOfDisplay = nullptr) const noexcept;
 
     /** Returns the Display object representing the display containing a given Rectangle (either
-        in logical or physical pixels), or nullptr if there are no connected displays.
+        in logical or physical pixels).
 
         If the Rectangle lies outside all the displays then the nearest one will be returned.
     */
-    const Display* getDisplayForRect (Rectangle<int> rect, bool isPhysical = false) const noexcept;
+    const Display& findDisplayForRect (Rectangle<int>, bool isPhysical = false)  const noexcept;
 
     /** Returns the Display object representing the display containing a given Point (either
-        in logical or physical pixels), or nullptr if there are no connected displays.
+        in logical or physical pixels).
 
         If the Point lies outside all the displays then the nearest one will be returned.
     */
-    const Display* getDisplayForPoint (Point<int> point, bool isPhysical = false) const noexcept;
+    const Display& findDisplayForPoint (Point<int>, bool isPhysical = false)  const noexcept;
 
-    /** Returns the Display object representing the display acting as the user's main screen, or nullptr
-        if there are no connected displays.
-    */
-    const Display* getPrimaryDisplay() const noexcept;
+    /** Returns the Display object representing the display acting as the user's main screen. */
+    const Display& getMainDisplay() const noexcept;
 
     /** Returns a RectangleList made up of all the displays in LOGICAL pixels. */
     RectangleList<int> getRectangleList (bool userAreasOnly) const;
@@ -168,15 +128,9 @@ public:
     void refresh();
     /** @internal */
     ~Displays() = default;
-    // This method has been deprecated - use the getDisplayForPoint() or getDisplayForRect() methods instead
+    // This method has been deprecated - use the findDisplayForPoint() or findDisplayForRect() methods instead
     // as they can deal with converting between logical and physical pixels
     JUCE_DEPRECATED (const Display& getDisplayContaining (Point<int> position) const noexcept);
-
-    // These methods have been deprecated - use the methods which return a Display* instead as they will return
-    // nullptr on headless systems with no connected displays
-    JUCE_DEPRECATED (const Display& findDisplayForRect (Rectangle<int>, bool isPhysical = false) const noexcept);
-    JUCE_DEPRECATED (const Display& findDisplayForPoint (Point<int>, bool isPhysical = false) const noexcept);
-    JUCE_DEPRECATED (const Display& getMainDisplay() const noexcept);
    #endif
 
 private:
@@ -186,8 +140,6 @@ private:
     void findDisplays (float masterScale);
 
     void updateToLogical();
-
-    Display emptyDisplay;
 };
 
 } // namespace juce

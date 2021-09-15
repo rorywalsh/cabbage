@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -110,7 +111,7 @@ public:
     /** Finds the character at a given on-screen position.
         The coordinates are relative to this component's top-left origin.
     */
-    CodeDocument::Position getPositionAt (int x, int y) const;
+    CodeDocument::Position getPositionAt (int x, int y);
 
     /** Returns the start of the selection as a position. */
     CodeDocument::Position getSelectionStart() const            { return selectionStart; }
@@ -378,8 +379,6 @@ public:
     void getCommandInfo (CommandID, ApplicationCommandInfo&) override;
     /** @internal */
     bool perform (const InvocationInfo&) override;
-    /** @internal */
-    void lookAndFeelChanged() override;
 
 private:
     //==============================================================================
@@ -403,8 +402,6 @@ private:
 
     class GutterComponent;
     std::unique_ptr<GutterComponent> gutter;
-
-    class CodeEditorAccessibilityHandler;
 
     enum DragType
     {
@@ -434,7 +431,6 @@ private:
     int getGutterSize() const noexcept;
 
     //==============================================================================
-    std::unique_ptr<AccessibilityHandler> createAccessibilityHandler() override;
     void insertText (const String&);
     virtual void updateCaretPosition();
     void updateScrollBars();
@@ -445,7 +441,6 @@ private:
     void indentSelectedLines (int spacesToAdd);
     bool skipBackwardsToPreviousTab();
     bool performCommand (CommandID);
-    void setSelection (CodeDocument::Position, CodeDocument::Position);
 
     int indexToColumn (int line, int index) const noexcept;
     int columnToIndex (int line, int column) const noexcept;

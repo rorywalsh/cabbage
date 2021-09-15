@@ -42,7 +42,7 @@ void MidiKeyboardState::reset()
 
 bool MidiKeyboardState::isNoteOn (const int midiChannel, const int n) const noexcept
 {
-    jassert (midiChannel > 0 && midiChannel <= 16);
+    jassert (midiChannel >= 0 && midiChannel <= 16);
 
     return isPositiveAndBelow (n, 128)
             && (noteStates[n] & (1 << (midiChannel - 1))) != 0;
@@ -56,7 +56,7 @@ bool MidiKeyboardState::isNoteOnForChannels (const int midiChannelMask, const in
 
 void MidiKeyboardState::noteOn (const int midiChannel, const int midiNoteNumber, const float velocity)
 {
-    jassert (midiChannel > 0 && midiChannel <= 16);
+    jassert (midiChannel >= 0 && midiChannel <= 16);
     jassert (isPositiveAndBelow (midiNoteNumber, 128));
 
     const ScopedLock sl (lock);
@@ -76,7 +76,9 @@ void MidiKeyboardState::noteOnInternal  (const int midiChannel, const int midiNo
     if (isPositiveAndBelow (midiNoteNumber, 128))
     {
         noteStates[midiNoteNumber] = static_cast<uint16> (noteStates[midiNoteNumber] | (1 << (midiChannel - 1)));
-        listeners.call ([&] (Listener& l) { l.handleNoteOn (this, midiChannel, midiNoteNumber, velocity); });
+
+        for (int i = listeners.size(); --i >= 0;)
+            listeners.getUnchecked(i)->handleNoteOn (this, midiChannel, midiNoteNumber, velocity);
     }
 }
 
@@ -99,7 +101,9 @@ void MidiKeyboardState::noteOffInternal  (const int midiChannel, const int midiN
     if (isNoteOn (midiChannel, midiNoteNumber))
     {
         noteStates[midiNoteNumber] = static_cast<uint16> (noteStates[midiNoteNumber] & ~(1 << (midiChannel - 1)));
-        listeners.call ([&] (Listener& l) { l.handleNoteOff (this, midiChannel, midiNoteNumber, velocity); });
+
+        for (int i = listeners.size(); --i >= 0;)
+            listeners.getUnchecked(i)->handleNoteOff (this, midiChannel, midiNoteNumber, velocity);
     }
 }
 
@@ -141,20 +145,25 @@ void MidiKeyboardState::processNextMidiBuffer (MidiBuffer& buffer,
                                                const int numSamples,
                                                const bool injectIndirectEvents)
 {
+    MidiBuffer::Iterator i (buffer);
+    MidiMessage message;
+    int time;
+
     const ScopedLock sl (lock);
 
-    for (const auto metadata : buffer)
-        processNextMidiEvent (metadata.getMessage());
+    while (i.getNextEvent (message, time))
+        processNextMidiEvent (message);
 
     if (injectIndirectEvents)
     {
+        MidiBuffer::Iterator i2 (eventsToAdd);
         const int firstEventToAdd = eventsToAdd.getFirstEventTime();
         const double scaleFactor = numSamples / (double) (eventsToAdd.getLastEventTime() + 1 - firstEventToAdd);
 
-        for (const auto metadata : eventsToAdd)
+        while (i2.getNextEvent (message, time))
         {
-            const auto pos = jlimit (0, numSamples - 1, roundToInt ((metadata.samplePosition - firstEventToAdd) * scaleFactor));
-            buffer.addEvent (metadata.getMessage(), startSample + pos);
+            const int pos = jlimit (0, numSamples - 1, roundToInt ((time - firstEventToAdd) * scaleFactor));
+            buffer.addEvent (message, startSample + pos);
         }
     }
 
@@ -162,16 +171,16 @@ void MidiKeyboardState::processNextMidiBuffer (MidiBuffer& buffer,
 }
 
 //==============================================================================
-void MidiKeyboardState::addListener (Listener* listener)
+void MidiKeyboardState::addListener (MidiKeyboardStateListener* const listener)
 {
     const ScopedLock sl (lock);
-    listeners.add (listener);
+    listeners.addIfNotAlreadyThere (listener);
 }
 
-void MidiKeyboardState::removeListener (Listener* listener)
+void MidiKeyboardState::removeListener (MidiKeyboardStateListener* const listener)
 {
     const ScopedLock sl (lock);
-    listeners.remove (listener);
+    listeners.removeFirstMatchingValue (listener);
 }
 
 } // namespace juce

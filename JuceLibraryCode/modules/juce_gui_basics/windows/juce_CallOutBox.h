@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -43,12 +44,11 @@ namespace juce
     @code
     void mouseUp (const MouseEvent&)
     {
-        auto content = std::make_unique<FoobarContentComp>();
+        FoobarContentComp* content = new FoobarContentComp();
         content->setSize (300, 300);
 
-        auto& myBox = CallOutBox::launchAsynchronously (std::move (content),
-                                                        getScreenBounds(),
-                                                        nullptr);
+        CallOutBox& myBox
+            = CallOutBox::launchAsynchronously (content, getScreenBounds(), nullptr);
     }
     @endcode
 
@@ -77,6 +77,9 @@ public:
     CallOutBox (Component& contentComponent,
                 Rectangle<int> areaToPointTo,
                 Component* parentComponent);
+
+    /** Destructor. */
+    ~CallOutBox() override;
 
     //==============================================================================
     /** Changes the base width of the arrow. */
@@ -107,13 +110,15 @@ public:
         @param contentComponent     the component to display inside the call-out. This should
                                     already have a size set (although the call-out will also
                                     update itself when the component's size is changed later).
+                                    This component will be owned by the callout box and deleted
+                                    later when the box is dismissed.
         @param areaToPointTo        the area that the call-out's arrow should point towards. If
                                     a parentComponent is supplied, then this is relative to that
                                     parent; otherwise, it's a global screen coord.
         @param parentComponent      if not a nullptr, this is the component to add the call-out to.
                                     If this is a nullptr, the call-out will be added to the desktop.
     */
-    static CallOutBox& launchAsynchronously (std::unique_ptr<Component> contentComponent,
+    static CallOutBox& launchAsynchronously (Component* contentComponent,
                                              Rectangle<int> areaToPointTo,
                                              Component* parentComponent);
 
@@ -162,8 +167,6 @@ public:
     void handleCommandMessage (int) override;
     /** @internal */
     int getBorderSize() const noexcept;
-    /** @internal */
-    void lookAndFeelChanged() override;
 
 private:
     //==============================================================================
@@ -177,7 +180,6 @@ private:
 
     Time creationTime;
 
-    std::unique_ptr<AccessibilityHandler> createAccessibilityHandler() override;
     void refreshPath();
     void timerCallback() override;
 

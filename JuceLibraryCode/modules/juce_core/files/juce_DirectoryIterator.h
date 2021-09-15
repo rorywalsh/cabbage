@@ -25,8 +25,6 @@ namespace juce
 
 //==============================================================================
 /**
-    This class is now deprecated in favour of RangedDirectoryIterator.
-
     Searches through the files in a directory, returning each file that is found.
 
     A DirectoryIterator will search through a directory and its subdirectories using
@@ -44,15 +42,12 @@ namespace juce
     It also provides an estimate of its progress, using a (highly inaccurate!) algorithm.
 
     @tags{Core}
-    @see RangedDirectoryIterator
 */
 class JUCE_API  DirectoryIterator  final
 {
 public:
     //==============================================================================
-    /** This class is now deprecated in favour of RangedDirectoryIterator.
-
-        Creates a DirectoryIterator for a given directory.
+    /** Creates a DirectoryIterator for a given directory.
 
         After creating one of these, call its next() method to get the
         first file - e.g. @code
@@ -67,12 +62,17 @@ public:
         }
         @endcode
 
-        @see RangedDirectoryIterator
+        @param directory    the directory to search in
+        @param isRecursive  whether all the subdirectories should also be searched
+        @param wildCard     the file pattern to match. This may contain multiple patterns
+                            separated by a semi-colon or comma, e.g. "*.jpg;*.png"
+        @param whatToLookFor    a value from the File::TypesOfFileToFind enum, specifying
+                                whether to look for files, directories, or both.
     */
-    JUCE_DEPRECATED (DirectoryIterator (const File& directory,
-                                        bool isRecursive,
-                                        const String& wildCard = "*",
-                                        int whatToLookFor = File::findFiles));
+    DirectoryIterator (const File& directory,
+                       bool isRecursive,
+                       const String& wildCard = "*",
+                       int whatToLookFor = File::findFiles);
 
     /** Destructor. */
     ~DirectoryIterator();

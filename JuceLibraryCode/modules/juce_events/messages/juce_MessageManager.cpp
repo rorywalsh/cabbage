@@ -78,10 +78,31 @@ bool MessageManager::MessageBase::post()
 }
 
 //==============================================================================
-#if ! (JUCE_MAC || JUCE_IOS || JUCE_ANDROID)
-// implemented in platform-specific code (juce_linux_Messaging.cpp and juce_win32_Messaging.cpp)
-bool dispatchNextMessageOnSystemQueue (bool returnIfNoPendingMessages);
+#if JUCE_MODAL_LOOPS_PERMITTED && ! (JUCE_MAC || JUCE_IOS)
+bool MessageManager::runDispatchLoopUntil (int millisecondsToRunFor)
+{
+    jassert (isThisTheMessageThread()); // must only be called by the message thread
 
+    auto endTime = Time::currentTimeMillis() + millisecondsToRunFor;
+
+    while (quitMessageReceived.get() == 0)
+    {
+        JUCE_TRY
+        {
+            if (! dispatchNextMessageOnSystemQueue (millisecondsToRunFor >= 0))
+                Thread::sleep (1);
+        }
+        JUCE_CATCH_EXCEPTION
+
+        if (millisecondsToRunFor >= 0 && Time::currentTimeMillis() >= endTime)
+            break;
+    }
+
+    return quitMessageReceived.get() == 0;
+}
+#endif
+
+#if ! (JUCE_MAC || JUCE_IOS || JUCE_ANDROID)
 class MessageManager::QuitMessage   : public MessageManager::MessageBase
 {
 public:
@@ -116,30 +137,6 @@ void MessageManager::stopDispatchLoop()
     (new QuitMessage())->post();
     quitMessagePosted = true;
 }
-
-#if JUCE_MODAL_LOOPS_PERMITTED
-bool MessageManager::runDispatchLoopUntil (int millisecondsToRunFor)
-{
-    jassert (isThisTheMessageThread()); // must only be called by the message thread
-
-    auto endTime = Time::currentTimeMillis() + millisecondsToRunFor;
-
-    while (quitMessageReceived.get() == 0)
-    {
-        JUCE_TRY
-        {
-            if (! dispatchNextMessageOnSystemQueue (millisecondsToRunFor >= 0))
-                Thread::sleep (1);
-        }
-        JUCE_CATCH_EXCEPTION
-
-        if (millisecondsToRunFor >= 0 && Time::currentTimeMillis() >= endTime)
-            break;
-    }
-
-    return quitMessageReceived.get() == 0;
-}
-#endif
 
 #endif
 
@@ -234,11 +231,9 @@ void MessageManager::setCurrentThreadAsMessageThread()
     {
         messageThreadId = thisThread;
 
-       #if JUCE_WINDOWS
         // This is needed on windows to make sure the message window is created by this thread
         doPlatformSpecificShutdown();
         doPlatformSpecificInitialisation();
-       #endif
     }
 }
 

@@ -38,9 +38,8 @@ namespace AndroidHighPerformanceAudioHelpers
         return audioManagerGetProperty ("android.media.property.OUTPUT_SAMPLE_RATE").getDoubleValue();
     }
 
-    static int getNativeBufferSizeHint()
+    static int getNativeBufferSize()
     {
-        // This property is a hint of a native buffer size but it does not guarantee the size used.
         auto deviceBufferSize = audioManagerGetProperty ("android.media.property.OUTPUT_FRAMES_PER_BUFFER").getIntValue();
 
         if (deviceBufferSize == 0)
@@ -62,17 +61,17 @@ namespace AndroidHighPerformanceAudioHelpers
         return androidHasSystemFeature ("android.hardware.audio.low_latency");
     }
 
-    static bool canUseHighPerformanceAudioPath (int nativeBufferSize, int requestedBufferSize, int requestedSampleRate)
+    static bool canUseHighPerformanceAudioPath (int requestedBufferSize, int requestedSampleRate)
     {
-        return ((requestedBufferSize % nativeBufferSize) == 0)
+        return ((requestedBufferSize % getNativeBufferSize()) == 0)
                && (requestedSampleRate == getNativeSampleRate())
                && isProAudioDevice();
     }
 
     //==============================================================================
-    static int getMinimumBuffersToEnqueue (int nativeBufferSize, double requestedSampleRate)
+    static int getMinimumBuffersToEnqueue (double requestedSampleRate)
     {
-        if (canUseHighPerformanceAudioPath (nativeBufferSize, nativeBufferSize, (int) requestedSampleRate))
+        if (canUseHighPerformanceAudioPath (getNativeBufferSize(), (int) requestedSampleRate))
         {
             // see https://developer.android.com/ndk/guides/audio/opensl/opensl-prog-notes.html#sandp
             // "For Android 4.2 (API level 17) and earlier, a buffer count of two or more is required
@@ -85,27 +84,29 @@ namespace AndroidHighPerformanceAudioHelpers
         return 1;
     }
 
-    static int buffersToQueueForBufferDuration (int nativeBufferSize, int bufferDurationInMs, double sampleRate) noexcept
+    static int buffersToQueueForBufferDuration (int bufferDurationInMs, double sampleRate) noexcept
     {
         auto maxBufferFrames = static_cast<int> (std::ceil (bufferDurationInMs * sampleRate / 1000.0));
         auto maxNumBuffers   = static_cast<int> (std::ceil (static_cast<double> (maxBufferFrames)
-                                                  / static_cast<double> (nativeBufferSize)));
+                                                  / static_cast<double> (getNativeBufferSize())));
 
-        return jmax (getMinimumBuffersToEnqueue (nativeBufferSize, sampleRate), maxNumBuffers);
+        return jmax (getMinimumBuffersToEnqueue (sampleRate), maxNumBuffers);
     }
 
-    static int getMaximumBuffersToEnqueue (int nativeBufferSize, double maximumSampleRate) noexcept
+    static int getMaximumBuffersToEnqueue (double maximumSampleRate) noexcept
     {
         static constexpr int maxBufferSizeMs = 200;
 
-        return jmax (8, buffersToQueueForBufferDuration (nativeBufferSize, maxBufferSizeMs, maximumSampleRate));
+        return jmax (8, buffersToQueueForBufferDuration (maxBufferSizeMs, maximumSampleRate));
     }
 
-    static Array<int> getAvailableBufferSizes (int nativeBufferSize, Array<double> availableSampleRates)
+    static Array<int> getAvailableBufferSizes (Array<double> availableSampleRates)
     {
-        auto minBuffersToQueue = getMinimumBuffersToEnqueue (nativeBufferSize, getNativeSampleRate());
-        auto maxBuffersToQueue = getMaximumBuffersToEnqueue (nativeBufferSize, findMaximum (availableSampleRates.getRawDataPointer(),
-                                                                                            availableSampleRates.size()));
+        auto nativeBufferSize  = getNativeBufferSize();
+
+        auto minBuffersToQueue = getMinimumBuffersToEnqueue (getNativeSampleRate());
+        auto maxBuffersToQueue = getMaximumBuffersToEnqueue (findMaximum (availableSampleRates.getRawDataPointer(),
+                                                                          availableSampleRates.size()));
 
         Array<int> bufferSizes;
 
@@ -115,7 +116,7 @@ namespace AndroidHighPerformanceAudioHelpers
         return bufferSizes;
     }
 
-    static int getDefaultBufferSize (int nativeBufferSize, double currentSampleRate)
+    static int getDefaultBufferSize (double currentSampleRate)
     {
         static constexpr int defaultBufferSizeForLowLatencyDeviceMs = 40;
         static constexpr int defaultBufferSizeForStandardLatencyDeviceMs = 100;
@@ -123,8 +124,8 @@ namespace AndroidHighPerformanceAudioHelpers
         auto defaultBufferLength = (hasLowLatencyAudioPath() ? defaultBufferSizeForLowLatencyDeviceMs
                                                              : defaultBufferSizeForStandardLatencyDeviceMs);
 
-        auto defaultBuffersToEnqueue = buffersToQueueForBufferDuration (nativeBufferSize, defaultBufferLength, currentSampleRate);
-        return defaultBuffersToEnqueue * nativeBufferSize;
+        auto defaultBuffersToEnqueue = buffersToQueueForBufferDuration (defaultBufferLength, currentSampleRate);
+        return defaultBuffersToEnqueue * getNativeBufferSize();
     }
 }
 

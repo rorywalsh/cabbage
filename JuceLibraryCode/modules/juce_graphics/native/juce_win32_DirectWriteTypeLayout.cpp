@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -33,7 +34,7 @@ namespace DirectWriteTypeLayout
     {
     public:
         CustomDirectWriteTextRenderer (IDWriteFontCollection& fonts, const AttributedString& as)
-            : ComBaseClassHelper (0),
+            : ComBaseClassHelper<IDWriteTextRenderer> (0),
               attributedString (as),
               fontCollection (fonts)
         {
@@ -41,14 +42,10 @@ namespace DirectWriteTypeLayout
 
         JUCE_COMRESULT QueryInterface (REFIID refId, void** result) override
         {
-            JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wlanguage-extension-token")
-
             if (refId == __uuidof (IDWritePixelSnapping))
                 return castToType<IDWritePixelSnapping> (result);
 
             return ComBaseClassHelper<IDWriteTextRenderer>::QueryInterface (refId, result);
-
-            JUCE_END_IGNORE_WARNINGS_GCC_LIKE
         }
 
         JUCE_COMRESULT IsPixelSnappingDisabled (void* /*clientDrawingContext*/, BOOL* isDisabled) noexcept override
@@ -90,19 +87,6 @@ namespace DirectWriteTypeLayout
                                      DWRITE_GLYPH_RUN const* glyphRun, DWRITE_GLYPH_RUN_DESCRIPTION const* runDescription,
                                      IUnknown* clientDrawingEffect) noexcept override
         {
-            const auto containsTextOrNewLines = [runDescription]
-            {
-                const String runString (runDescription->string, runDescription->stringLength);
-
-                if (runString.containsNonWhitespaceChars() || runString.containsAnyOf ("\n\r"))
-                    return true;
-
-                return false;
-            }();
-
-            if (! containsTextOrNewLines)
-                return S_OK;
-
             auto layout = static_cast<TextLayout*> (clientDrawingContext);
 
             if (! (baselineOriginY >= -1.0e10f && baselineOriginY <= 1.0e10f))
@@ -131,9 +115,9 @@ namespace DirectWriteTypeLayout
             glyphLine.ascent  = jmax (glyphLine.ascent,  scaledFontSize (dwFontMetrics.ascent,  dwFontMetrics, *glyphRun));
             glyphLine.descent = jmax (glyphLine.descent, scaledFontSize (dwFontMetrics.descent, dwFontMetrics, *glyphRun));
 
-            auto glyphRunLayout = new TextLayout::Run (Range<int> ((int) runDescription->textPosition,
-                                                                   (int) (runDescription->textPosition + runDescription->stringLength)),
-                                                       (int) glyphRun->glyphCount);
+            auto glyphRunLayout = new TextLayout::Run (Range<int> (runDescription->textPosition,
+                                                                   runDescription->textPosition + runDescription->stringLength),
+                                                       glyphRun->glyphCount);
             glyphLine.runs.add (glyphRunLayout);
 
             glyphRun->fontFace->GetMetrics (&dwFontMetrics);
@@ -273,8 +257,8 @@ namespace DirectWriteTypeLayout
                              const int textLen, ID2D1RenderTarget& renderTarget, IDWriteFontCollection& fontCollection)
     {
         DWRITE_TEXT_RANGE range;
-        range.startPosition = (UINT32) attr.range.getStart();
-        range.length = (UINT32) jmin (attr.range.getLength(), textLen - attr.range.getStart());
+        range.startPosition = attr.range.getStart();
+        range.length = jmin (attr.range.getLength(), textLen - attr.range.getStart());
 
         {
             auto familyName = FontStyleHelpers::getConcreteFamilyName (attr.font);
@@ -293,9 +277,9 @@ namespace DirectWriteTypeLayout
             uint32 fontFacesCount = 0;
             fontFacesCount = fontFamily->GetFontCount();
 
-            for (int i = (int) fontFacesCount; --i >= 0;)
+            for (int i = fontFacesCount; --i >= 0;)
             {
-                hr = fontFamily->GetFont ((UINT32) i, dwFont.resetAndGetPointerAddress());
+                hr = fontFamily->GetFont (i, dwFont.resetAndGetPointerAddress());
 
                 if (attr.font.getTypefaceStyle() == getFontFaceName (dwFont))
                     break;
@@ -366,7 +350,7 @@ namespace DirectWriteTypeLayout
 
         auto textLen = text.getText().length();
 
-        hr = directWriteFactory.CreateTextLayout (text.getText().toWideCharPointer(), (UINT32) textLen, dwTextFormat,
+        hr = directWriteFactory.CreateTextLayout (text.getText().toWideCharPointer(), textLen, dwTextFormat,
                                                   maxWidth, maxHeight, textLayout.resetAndGetPointerAddress());
 
         if (FAILED (hr) || textLayout == nullptr)
@@ -394,7 +378,7 @@ namespace DirectWriteTypeLayout
         UINT32 actualLineCount = 0;
         auto hr = dwTextLayout->GetLineMetrics (nullptr, 0, &actualLineCount);
 
-        layout.ensureStorageAllocated ((int) actualLineCount);
+        layout.ensureStorageAllocated (actualLineCount);
 
         {
             ComSmartPtr<CustomDirectWriteTextRenderer> textRenderer (new CustomDirectWriteTextRenderer (fontCollection, text));
@@ -411,7 +395,7 @@ namespace DirectWriteTypeLayout
         for (int i = 0; i < numLines; ++i)
         {
             auto& line = layout.getLine (i);
-            line.stringRange = Range<int> (lastLocation, lastLocation + (int) dwLineMetrics[i].length);
+            line.stringRange = Range<int> (lastLocation, (int) lastLocation + dwLineMetrics[i].length);
             line.lineOrigin.y += yAdjustment;
             yAdjustment += extraLineSpacing;
             lastLocation += dwLineMetrics[i].length;
@@ -436,17 +420,13 @@ namespace DirectWriteTypeLayout
     }
 }
 
-static bool canAllTypefacesAndFontsBeUsedInLayout (const AttributedString& text)
+static bool canAllTypefacesBeUsedInLayout (const AttributedString& text)
 {
     auto numCharacterAttributes = text.getNumAttributes();
 
     for (int i = 0; i < numCharacterAttributes; ++i)
-    {
-        const auto& font = text.getAttribute (i).font;
-
-        if (font.getHorizontalScale() != 1.0f || dynamic_cast<WindowsDirectWriteTypeface*> (font.getTypeface()) == nullptr)
+        if (dynamic_cast<WindowsDirectWriteTypeface*> (text.getAttribute(i).font.getTypeface()) == nullptr)
             return false;
-    }
 
     return true;
 }
@@ -456,15 +436,12 @@ static bool canAllTypefacesAndFontsBeUsedInLayout (const AttributedString& text)
 bool TextLayout::createNativeLayout (const AttributedString& text)
 {
    #if JUCE_USE_DIRECTWRITE
-    if (! canAllTypefacesAndFontsBeUsedInLayout (text))
+    if (! canAllTypefacesBeUsedInLayout (text))
         return false;
 
     SharedResourcePointer<Direct2DFactories> factories;
 
-    if (factories->d2dFactory != nullptr
-        && factories->directWriteFactory != nullptr
-        && factories->systemFonts != nullptr
-        && factories->directWriteRenderTarget != nullptr)
+    if (factories->d2dFactory != nullptr && factories->systemFonts != nullptr)
     {
         DirectWriteTypeLayout::createLayout (*this, text,
                                              *factories->directWriteFactory,

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -993,12 +994,10 @@ public:
                     input->skipNextBytes (2);
                     bitsPerSample = (unsigned int) (int) input->readShort();
 
-                    if (bitsPerSample > 64 && (int) sampleRate != 0)
+                    if (bitsPerSample > 64)
                     {
                         bytesPerFrame = bytesPerSec / (int) sampleRate;
-
-                        if (numChannels != 0)
-                            bitsPerSample = 8 * (unsigned int) bytesPerFrame / numChannels;
+                        bitsPerSample = 8 * (unsigned int) bytesPerFrame / numChannels;
                     }
                     else
                     {
@@ -1476,7 +1475,7 @@ private:
 
         output->writeShort ((short) numChannels);
         output->writeInt ((int) sampleRate);
-        output->writeInt ((int) ((double) bytesPerFrame * sampleRate)); // nAvgBytesPerSec
+        output->writeInt ((int) (bytesPerFrame * sampleRate)); // nAvgBytesPerSec
         output->writeShort ((short) bytesPerFrame); // nBlockAlign
         output->writeShort ((short) bitsPerSample); // wBitsPerSample
 
@@ -1509,7 +1508,7 @@ private:
         usesFloatingPointData = (bitsPerSample == 32);
     }
 
-    static size_t chunkSize (const MemoryBlock& data) noexcept     { return data.isEmpty() ? 0 : (8 + data.getSize()); }
+    static size_t chunkSize (const MemoryBlock& data) noexcept     { return data.getSize() > 0 ? (8 + data.getSize()) : 0; }
 
     void writeChunkHeader (int chunkType, int size) const
     {
@@ -1519,7 +1518,7 @@ private:
 
     void writeChunk (const MemoryBlock& data, int chunkType, int size = 0) const
     {
-        if (! data.isEmpty())
+        if (data.getSize() > 0)
         {
             writeChunkHeader (chunkType, size != 0 ? size : (int) data.getSize());
             *output << data;

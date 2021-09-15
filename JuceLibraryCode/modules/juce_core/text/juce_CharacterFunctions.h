@@ -146,27 +146,25 @@ public:
     template <typename CharPointerType>
     static double readDoubleValue (CharPointerType& text) noexcept
     {
-        constexpr auto inf = std::numeric_limits<double>::infinity();
-
+       #if JUCE_MINGW
         bool isNegative = false;
-       #if ! JUCE_MINGW
+       #else
         constexpr const int maxSignificantDigits = 17 + 1; // An additional digit for rounding
         constexpr const int bufferSize = maxSignificantDigits + 7 + 1; // -.E-XXX and a trailing null-terminator
         char buffer[(size_t) bufferSize] = {};
-        char* writePtr = &(buffer[0]);
+        char* currentCharacter = &(buffer[0]);
        #endif
 
-        const auto endOfWhitspace = text.findEndOfWhitespace();
-        text = endOfWhitspace;
-
+        text = text.findEndOfWhitespace();
         auto c = *text;
 
         switch (c)
         {
             case '-':
+               #if JUCE_MINGW
                 isNegative = true;
-               #if ! JUCE_MINGW
-                *writePtr++ = '-';
+               #else
+                *currentCharacter++ = '-';
                #endif
                 JUCE_FALLTHROUGH
             case '+':
@@ -180,29 +178,15 @@ public:
         {
             case 'n':
             case 'N':
-            {
                 if ((text[1] == 'a' || text[1] == 'A') && (text[2] == 'n' || text[2] == 'N'))
-                {
-                    text += 3;
                     return std::numeric_limits<double>::quiet_NaN();
-                }
-
-                text = endOfWhitspace;
-                return 0.0;
-            }
+                break;
 
             case 'i':
             case 'I':
-            {
                 if ((text[1] == 'n' || text[1] == 'N') && (text[2] == 'f' || text[2] == 'F'))
-                {
-                    text += 3;
-                    return isNegative ? -inf : inf;
-                }
-
-                text = endOfWhitspace;
-                return 0.0;
-            }
+                    return std::numeric_limits<double>::infinity();
+                break;
 
             default:
                 break;
@@ -315,8 +299,9 @@ public:
 
        #else   // ! JUCE_MINGW
 
-        int numSigFigs = 0, extraExponent = 0;
-        bool decimalPointFound = false, leadingZeros = false;
+        int numSigFigs = 0;
+        bool decimalPointFound = false;
+        int extraExponent = 0;
 
         for (;;)
         {
@@ -338,19 +323,16 @@ public:
                     }
 
                     if (numSigFigs == 0 && digit == 0)
-                    {
-                        leadingZeros = true;
                         continue;
-                    }
                 }
 
-                *writePtr++ = (char) ('0' + (char) digit);
+                *currentCharacter++ = (char) ('0' + (char) digit);
                 numSigFigs++;
             }
             else if ((! decimalPointFound) && *text == '.')
             {
                 ++text;
-                *writePtr++ = '.';
+                *currentCharacter++ = '.';
                 decimalPointFound = true;
             }
             else
@@ -359,13 +341,9 @@ public:
             }
         }
 
-        if ((! leadingZeros) && (numSigFigs == 0))
-        {
-            text = endOfWhitspace;
-            return 0.0;
-        }
+        c = *text;
 
-        auto writeExponentDigits = [] (int exponent, char* destination)
+        auto writeExponentDigits = [](int exponent, char* destination)
         {
             auto exponentDivisor = 100;
 
@@ -380,28 +358,19 @@ public:
             *destination++ = (char) ('0' + (char) exponent);
         };
 
-        c = *text;
-
-        if (c == 'e' || c == 'E')
+        if ((c == 'e' || c == 'E') && numSigFigs > 0)
         {
-            const auto startOfExponent = text;
-            *writePtr++ = 'e';
+            *currentCharacter++ = 'e';
             bool parsedExponentIsPositive = true;
 
             switch (*++text)
             {
-                case '-':
-                    parsedExponentIsPositive = false;
-                    JUCE_FALLTHROUGH
-                case '+':
-                    ++text;
-                    break;
-                default:
-                    break;
+                case '-':  parsedExponentIsPositive = false; JUCE_FALLTHROUGH
+                case '+':  ++text; break;
+                default:   break;
             }
 
             int exponent = 0;
-            const auto startOfExponentDigits = text;
 
             while (text.isDigit())
             {
@@ -411,30 +380,22 @@ public:
                     exponent = (exponent * 10) + digit;
             }
 
-            if (text == startOfExponentDigits)
-                text = startOfExponent;
-
             exponent = extraExponent + (parsedExponentIsPositive ? exponent : -exponent);
 
             if (exponent < 0)
-            {
-                if (exponent < std::numeric_limits<double>::min_exponent10 - 1)
-                    return isNegative ? -0.0 : 0.0;
+                *currentCharacter++ = '-';
 
-                *writePtr++ = '-';
-                exponent = -exponent;
-            }
-            else if (exponent > std::numeric_limits<double>::max_exponent10 + 1)
-            {
-                return isNegative ? -inf : inf;
-            }
+            exponent = std::abs (exponent);
 
-            writeExponentDigits (exponent, writePtr);
+            if (exponent > std::numeric_limits<double>::max_exponent10)
+                return std::numeric_limits<double>::quiet_NaN();
+
+            writeExponentDigits (exponent, currentCharacter);
         }
         else if (extraExponent > 0)
         {
-            *writePtr++ = 'e';
-            writeExponentDigits (extraExponent, writePtr);
+            *currentCharacter++ = 'e';
+            writeExponentDigits (extraExponent, currentCharacter);
         }
 
        #if JUCE_WINDOWS
@@ -590,7 +551,7 @@ public:
     }
 
     /** Compares two characters. */
-    static int compare (juce_wchar char1, juce_wchar char2) noexcept
+    static inline int compare (juce_wchar char1, juce_wchar char2) noexcept
     {
         if (auto diff = static_cast<int> (char1) - static_cast<int> (char2))
             return diff < 0 ? -1 : 1;
@@ -635,7 +596,7 @@ public:
     }
 
     /** Compares two characters, using a case-independant match. */
-    static int compareIgnoreCase (juce_wchar char1, juce_wchar char2) noexcept
+    static inline int compareIgnoreCase (juce_wchar char1, juce_wchar char2) noexcept
     {
         return char1 != char2 ? compare (toUpperCase (char1), toUpperCase (char2)) : 0;
     }
@@ -794,19 +755,6 @@ public:
         return -1;
     }
 
-    /** Increments a pointer until it points to the first non-whitespace character
-        in a string.
-
-        If the string contains only whitespace, the pointer will point to the
-        string's null terminator.
-    */
-    template <typename Type>
-    static void incrementToEndOfWhitespace (Type& text) noexcept
-    {
-        while (text.isWhitespace())
-            ++text;
-    }
-
     /** Returns a pointer to the first non-whitespace character in a string.
         If the string contains only whitespace, this will return a pointer
         to its null terminator.
@@ -814,7 +762,9 @@ public:
     template <typename Type>
     static Type findEndOfWhitespace (Type text) noexcept
     {
-        incrementToEndOfWhitespace (text);
+        while (text.isWhitespace())
+            ++text;
+
         return text;
     }
 

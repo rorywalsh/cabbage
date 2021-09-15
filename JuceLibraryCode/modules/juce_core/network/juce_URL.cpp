@@ -377,11 +377,6 @@ String URL::getFileName() const
 }
 #endif
 
-URL::ParameterHandling URL::toHandling (bool usePostData)
-{
-    return usePostData ? ParameterHandling::inPostData : ParameterHandling::inAddress;
-}
-
 File URL::fileFromFileSchemeURL (const URL& fileURL)
 {
     if (! fileURL.isLocalFile())
@@ -452,21 +447,14 @@ URL URL::getChildURL (const String& subPath) const
     return u;
 }
 
-bool URL::hasBodyDataToSend() const
-{
-    return filesToUpload.size() > 0 || ! postData.isEmpty();
-}
-
-void URL::createHeadersAndPostData (String& headers,
-                                    MemoryBlock& postDataToWrite,
-                                    bool addParametersToBody) const
+void URL::createHeadersAndPostData (String& headers, MemoryBlock& postDataToWrite) const
 {
     MemoryOutputStream data (postDataToWrite, false);
 
     if (filesToUpload.size() > 0)
     {
         // (this doesn't currently support mixing custom post-data with uploads..)
-        jassert (postData.isEmpty());
+        jassert (postData.getSize() == 0);
 
         auto boundary = String::toHexString (Random::getSystemRandom().nextInt64());
 
@@ -503,10 +491,8 @@ void URL::createHeadersAndPostData (String& headers,
     }
     else
     {
-        if (addParametersToBody)
-            data << URLHelpers::getMangledParameters (*this);
-
-        data << postData;
+        data << URLHelpers::getMangledParameters (*this)
+             << postData;
 
         // if the user-supplied headers didn't contain a content-type, add one now..
         if (! headers.containsIgnoreCase ("Content-Type"))
@@ -670,127 +656,73 @@ private:
     }
 };
 #endif
-//==============================================================================
-template <typename Member, typename Item>
-static URL::InputStreamOptions with (URL::InputStreamOptions options, Member&& member, Item&& item)
-{
-    options.*member = std::forward<Item> (item);
-    return options;
-}
-
-URL::InputStreamOptions::InputStreamOptions (ParameterHandling handling)  : parameterHandling (handling)  {}
-
-URL::InputStreamOptions URL::InputStreamOptions::withProgressCallback (std::function<bool (int, int)> cb) const
-{
-    return with (*this, &InputStreamOptions::progressCallback, std::move (cb));
-}
-
-URL::InputStreamOptions URL::InputStreamOptions::withExtraHeaders (const String& headers) const
-{
-    return with (*this, &InputStreamOptions::extraHeaders, headers);
-}
-
-URL::InputStreamOptions URL::InputStreamOptions::withConnectionTimeoutMs (int timeout) const
-{
-    return with (*this, &InputStreamOptions::connectionTimeOutMs, timeout);
-}
-
-URL::InputStreamOptions URL::InputStreamOptions::withResponseHeaders (StringPairArray* headers) const
-{
-    return with (*this, &InputStreamOptions::responseHeaders, headers);
-}
-
-URL::InputStreamOptions URL::InputStreamOptions::withStatusCode (int* status) const
-{
-    return with (*this, &InputStreamOptions::statusCode, status);
-}
-
-URL::InputStreamOptions URL::InputStreamOptions::withNumRedirectsToFollow (int numRedirects) const
-{
-    return with (*this, &InputStreamOptions::numRedirectsToFollow, numRedirects);
-}
-
-URL::InputStreamOptions URL::InputStreamOptions::withHttpRequestCmd (const String& cmd) const
-{
-    return with (*this, &InputStreamOptions::httpRequestCmd, cmd);
-}
 
 //==============================================================================
-std::unique_ptr<InputStream> URL::createInputStream (const InputStreamOptions& options) const
+std::unique_ptr<InputStream> URL::createInputStream (bool usePostCommand,
+                                                     OpenStreamProgressCallback* progressCallback,
+                                                     void* progressCallbackContext,
+                                                     String headers,
+                                                     int timeOutMs,
+                                                     StringPairArray* responseHeaders,
+                                                     int* statusCode,
+                                                     int numRedirectsToFollow,
+                                                     String httpRequestCmd) const
 {
     if (isLocalFile())
     {
        #if JUCE_IOS
         // We may need to refresh the embedded bookmark.
-        return std::make_unique<iOSFileStreamWrapper<FileInputStream>> (const_cast<URL&> (*this));
+        return std::make_unique<iOSFileStreamWrapper<FileInputStream>> (const_cast<URL&>(*this));
        #else
         return getLocalFile().createInputStream();
        #endif
     }
 
-    auto webInputStream = [&]
-    {
-        const auto usePost = options.getParameterHandling() == ParameterHandling::inPostData;
-        auto stream = std::make_unique<WebInputStream> (*this, usePost);
-
-        auto extraHeaders = options.getExtraHeaders();
-
-        if (extraHeaders.isNotEmpty())
-            stream->withExtraHeaders (extraHeaders);
-
-        auto timeout = options.getConnectionTimeoutMs();
-
-        if (timeout != 0)
-            stream->withConnectionTimeout (timeout);
-
-        auto requestCmd = options.getHttpRequestCmd();
-
-        if (requestCmd.isNotEmpty())
-            stream->withCustomRequestCommand (requestCmd);
-
-        stream->withNumRedirectsToFollow (options.getNumRedirectsToFollow());
-
-        return stream;
-    }();
+    auto wi = std::make_unique<WebInputStream> (*this, usePostCommand);
 
     struct ProgressCallbackCaller  : public WebInputStream::Listener
     {
-        ProgressCallbackCaller (std::function<bool (int, int)> progressCallbackToUse)
-            : callback (std::move (progressCallbackToUse))
-        {
-        }
+        ProgressCallbackCaller (OpenStreamProgressCallback* progressCallbackToUse, void* progressCallbackContextToUse)
+            : callback (progressCallbackToUse), data (progressCallbackContextToUse)
+        {}
 
         bool postDataSendProgress (WebInputStream&, int bytesSent, int totalBytes) override
         {
-            return callback (bytesSent, totalBytes);
+            return callback (data, bytesSent, totalBytes);
         }
 
-        std::function<bool (int, int)> callback;
+        OpenStreamProgressCallback* callback;
+        void* const data;
     };
 
-    auto callbackCaller = [&options]() -> std::unique_ptr<ProgressCallbackCaller>
-    {
-        if (auto progressCallback = options.getProgressCallback())
-            return std::make_unique<ProgressCallbackCaller> (progressCallback);
+    std::unique_ptr<ProgressCallbackCaller> callbackCaller
+        (progressCallback != nullptr ? new ProgressCallbackCaller (progressCallback, progressCallbackContext) : nullptr);
 
-        return {};
-    }();
+    if (headers.isNotEmpty())
+        wi->withExtraHeaders (headers);
 
-    auto success = webInputStream->connect (callbackCaller.get());
+    if (timeOutMs != 0)
+        wi->withConnectionTimeout (timeOutMs);
 
-    if (auto* status = options.getStatusCode())
-        *status = webInputStream->getStatusCode();
+    if (httpRequestCmd.isNotEmpty())
+        wi->withCustomRequestCommand (httpRequestCmd);
 
-    if (auto* responseHeaders = options.getResponseHeaders())
-        *responseHeaders = webInputStream->getResponseHeaders();
+    wi->withNumRedirectsToFollow (numRedirectsToFollow);
 
-    if (! success || webInputStream->isError())
+    bool success = wi->connect (callbackCaller.get());
+
+    if (statusCode != nullptr)
+        *statusCode = wi->getStatusCode();
+
+    if (responseHeaders != nullptr)
+        *responseHeaders = wi->getResponseHeaders();
+
+    if (! success || wi->isError())
         return nullptr;
 
-    // std::move() needed here for older compilers
-    JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wredundant-move")
-    return std::move (webInputStream);
-    JUCE_END_IGNORE_WARNINGS_GCC_LIKE
+    // Older GCCs complain about binding unique_ptr<WebInputStream>&& to unique_ptr<InputStream>
+    // if we just `return wi` here.
+    return std::unique_ptr<InputStream> (std::move (wi));
 }
 
 #if JUCE_ANDROID
@@ -820,7 +752,7 @@ std::unique_ptr<OutputStream> URL::createOutputStream() const
 bool URL::readEntireBinaryStream (MemoryBlock& destData, bool usePostCommand) const
 {
     const std::unique_ptr<InputStream> in (isLocalFile() ? getLocalFile().createInputStream()
-                                                         : createInputStream (InputStreamOptions (toHandling (usePostCommand))));
+                                                         : createInputStream (usePostCommand));
 
     if (in != nullptr)
     {
@@ -834,7 +766,7 @@ bool URL::readEntireBinaryStream (MemoryBlock& destData, bool usePostCommand) co
 String URL::readEntireTextStream (bool usePostCommand) const
 {
     const std::unique_ptr<InputStream> in (isLocalFile() ? getLocalFile().createInputStream()
-                                                         : createInputStream (InputStreamOptions (toHandling (usePostCommand))));
+                                                         : createInputStream (usePostCommand));
 
     if (in != nullptr)
         return in->readEntireStreamAsString();
@@ -891,7 +823,7 @@ URL URL::withUpload (Upload* const f) const
     auto u = *this;
 
     for (int i = u.filesToUpload.size(); --i >= 0;)
-        if (u.filesToUpload.getObjectPointerUnchecked (i)->parameterName == f->parameterName)
+        if (u.filesToUpload.getObjectPointerUnchecked(i)->parameterName == f->parameterName)
             u.filesToUpload.remove (i);
 
     u.filesToUpload.add (f);
@@ -977,32 +909,6 @@ bool URL::launchInDefaultBrowser() const
         u = "mailto:" + u;
 
     return Process::openDocument (u, {});
-}
-
-//==============================================================================
-std::unique_ptr<InputStream> URL::createInputStream (bool usePostCommand,
-                                                     OpenStreamProgressCallback* cb,
-                                                     void* context,
-                                                     String headers,
-                                                     int timeOutMs,
-                                                     StringPairArray* responseHeaders,
-                                                     int* statusCode,
-                                                     int numRedirectsToFollow,
-                                                     String httpRequestCmd) const
-{
-    std::function<bool (int, int)> callback;
-
-    if (cb != nullptr)
-        callback = [context, cb] (int sent, int total) { return cb (context, sent, total); };
-
-    return createInputStream (InputStreamOptions (toHandling (usePostCommand))
-                                .withProgressCallback (std::move (callback))
-                                .withExtraHeaders (headers)
-                                .withConnectionTimeoutMs (timeOutMs)
-                                .withResponseHeaders (responseHeaders)
-                                .withStatusCode (statusCode)
-                                .withNumRedirectsToFollow(numRedirectsToFollow)
-                                .withHttpRequestCmd (httpRequestCmd));
 }
 
 } // namespace juce

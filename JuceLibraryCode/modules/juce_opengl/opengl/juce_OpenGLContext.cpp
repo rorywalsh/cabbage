@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -68,24 +69,6 @@ private:
 #if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
  extern JUCE_API double getScaleFactorForWindow (HWND);
 #endif
-
-static bool contextHasTextureNpotFeature()
-{
-    if (getOpenGLVersion() >= Version (2))
-        return true;
-
-    // If the version is < 2, we can't use the newer extension-checking API
-    // so we have to use glGetString
-    const auto* extensionsBegin = glGetString (GL_EXTENSIONS);
-
-    if (extensionsBegin == nullptr)
-        return false;
-
-    const auto* extensionsEnd = findNullTerminator (extensionsBegin);
-    const std::string extensionsString (extensionsBegin, extensionsEnd);
-    const auto stringTokens = StringArray::fromTokens (extensionsString.c_str(), false);
-    return stringTokens.contains ("GL_ARB_texture_non_power_of_two");
-}
 
 //==============================================================================
 class OpenGLContext::CachedImage  : public CachedComponentImage,
@@ -162,6 +145,16 @@ public:
         if (renderThread != nullptr)
             renderThread->addJob (this, false);
     }
+
+   #if JUCE_MAC
+    static CVReturn displayLinkCallback (CVDisplayLinkRef, const CVTimeStamp*, const CVTimeStamp*,
+                                         CVOptionFlags, CVOptionFlags*, void* displayLinkContext)
+    {
+        auto* self = (CachedImage*) displayLinkContext;
+        self->renderFrame();
+        return kCVReturnSuccess;
+    }
+   #endif
 
     //==============================================================================
     void paint (Graphics&) override
@@ -304,16 +297,12 @@ public:
         if (auto* peer = component.getPeer())
         {
             auto localBounds = component.getLocalBounds();
-            auto displayScale = Desktop::getInstance().getDisplays().getDisplayForRect (component.getTopLevelComponent()->getScreenBounds())->scale;
+            auto displayScale = Desktop::getInstance().getDisplays().findDisplayForRect (component.getTopLevelComponent()->getScreenBounds()).scale;
 
             auto newArea = peer->getComponent().getLocalArea (&component, localBounds).withZeroOrigin() * displayScale;
 
            #if JUCE_WINDOWS && JUCE_WIN_PER_MONITOR_DPI_AWARE
             auto newScale = getScaleFactorForWindow (nativeContext->getNativeHandle());
-            auto desktopScale = Desktop::getInstance().getGlobalScaleFactor();
-
-            if (! approximatelyEqual (1.0f, desktopScale))
-                newScale *= desktopScale;
            #else
             auto newScale = displayScale;
            #endif
@@ -335,9 +324,10 @@ public:
 
     void bindVertexArray() noexcept
     {
-        if (openGLVersion.major >= 3)
-            if (vertexArrayObject != 0)
-                context.extensions.glBindVertexArray (vertexArrayObject);
+       #if JUCE_OPENGL3
+        if (vertexArrayObject != 0)
+            context.extensions.glBindVertexArray (vertexArrayObject);
+       #endif
     }
 
     void checkViewportBounds()
@@ -485,7 +475,6 @@ public:
             if (backgroundProcessCheck.isBackgroundProcess())
             {
                 repaintEvent.wait (300);
-                repaintEvent.reset();
                 continue;
             }
            #endif
@@ -494,19 +483,13 @@ public:
                 break;
 
            #if JUCE_MAC
-            if (cvDisplayLinkWrapper != nullptr)
-            {
-                repaintEvent.wait (-1);
-                renderFrame();
-            }
-            else
-           #endif
+            repaintEvent.wait (1000);
+           #else
             if (! renderFrame())
                 repaintEvent.wait (5); // failed to render, so avoid a tight fail-loop.
             else if (! context.continuousRepaint && ! shouldExit())
                 repaintEvent.wait (-1);
-
-            repaintEvent.reset();
+           #endif
         }
 
         hasInitialised = false;
@@ -535,15 +518,15 @@ public:
         context.makeActive();
        #endif
 
-        gl::loadFunctions();
+        context.extensions.initialise();
 
-        openGLVersion = getOpenGLVersion();
-
-        if (openGLVersion.major >= 3)
+       #if JUCE_OPENGL3
+        if (OpenGLShaderProgram::getLanguageVersion() > 1.2)
         {
             context.extensions.glGenVertexArrays (1, &vertexArrayObject);
             bindVertexArray();
         }
+       #endif
 
         glViewport (0, 0, component.getWidth(), component.getHeight());
 
@@ -555,14 +538,13 @@ public:
         clearGLError();
        #endif
 
-        textureNpotSupported = contextHasTextureNpotFeature();
-
         if (context.renderer != nullptr)
             context.renderer->newOpenGLContextCreated();
 
        #if JUCE_MAC
-        if (context.continuousRepaint)
-            cvDisplayLinkWrapper = std::make_unique<CVDisplayLinkWrapper> (this);
+        CVDisplayLinkCreateWithActiveCGDisplays (&displayLink);
+        CVDisplayLinkSetOutputCallback (displayLink, &displayLinkCallback, this);
+        CVDisplayLinkStart (displayLink);
        #endif
 
         return true;
@@ -571,14 +553,17 @@ public:
     void shutdownOnThread()
     {
        #if JUCE_MAC
-        cvDisplayLinkWrapper = nullptr;
+        CVDisplayLinkStop (displayLink);
+        CVDisplayLinkRelease (displayLink);
        #endif
 
         if (context.renderer != nullptr)
             context.renderer->openGLContextClosing();
 
+       #if JUCE_OPENGL3
         if (vertexArrayObject != 0)
             context.extensions.glDeleteVertexArrays (1, &vertexArrayObject);
+       #endif
 
         associatedObjectNames.clear();
         associatedObjects.clear();
@@ -676,57 +661,30 @@ public:
     OpenGLContext& context;
     Component& component;
 
-    Version openGLVersion;
     OpenGLFrameBuffer cachedImageFrameBuffer;
     RectangleList<int> validArea;
     Rectangle<int> viewportArea, lastScreenBounds;
     double scale = 1.0;
     AffineTransform transform;
+   #if JUCE_OPENGL3
     GLuint vertexArrayObject = 0;
+   #endif
 
     StringArray associatedObjectNames;
     ReferenceCountedArray<ReferenceCountedObject> associatedObjects;
 
-    WaitableEvent canPaintNowFlag, finishedPaintingFlag, repaintEvent { true };
+    WaitableEvent canPaintNowFlag, finishedPaintingFlag, repaintEvent;
    #if JUCE_OPENGL_ES
     bool shadersAvailable = true;
    #else
     bool shadersAvailable = false;
    #endif
-    bool textureNpotSupported = false;
     std::atomic<bool> hasInitialised { false }, needsUpdate { true }, destroying { false };
     uint32 lastMMLockReleaseTime = 0;
 
    #if JUCE_MAC
-    struct CVDisplayLinkWrapper
-    {
-        CVDisplayLinkWrapper (CachedImage* im)
-        {
-            CVDisplayLinkCreateWithActiveCGDisplays (&displayLink);
-            CVDisplayLinkSetOutputCallback (displayLink, &displayLinkCallback, im);
-            CVDisplayLinkStart (displayLink);
-        }
-
-        ~CVDisplayLinkWrapper()
-        {
-            CVDisplayLinkStop (displayLink);
-            CVDisplayLinkRelease (displayLink);
-        }
-
-        static CVReturn displayLinkCallback (CVDisplayLinkRef, const CVTimeStamp*, const CVTimeStamp*,
-                                             CVOptionFlags, CVOptionFlags*, void* displayLinkContext)
-        {
-            auto* self = (CachedImage*) displayLinkContext;
-            self->repaintEvent.signal();
-            return kCVReturnSuccess;
-        }
-
-        CVDisplayLinkRef displayLink;
-    };
-
-    std::unique_ptr<CVDisplayLinkWrapper> cvDisplayLinkWrapper;
+    CVDisplayLinkRef displayLink;
    #endif
-
     std::unique_ptr<ThreadPool> renderThread;
     ReferenceCountedArray<OpenGLContext::AsyncWorker, CriticalSection> workQueue;
     MessageManager::Lock messageManagerLock;
@@ -930,15 +888,6 @@ void OpenGLContext::setComponentPaintingEnabled (bool shouldPaintComponent) noex
 void OpenGLContext::setContinuousRepainting (bool shouldContinuouslyRepaint) noexcept
 {
     continuousRepaint = shouldContinuouslyRepaint;
-
-    #if JUCE_MAC
-     if (auto* component = getTargetComponent())
-     {
-         detach();
-         attachment.reset (new Attachment (*this, *component));
-     }
-    #endif
-
     triggerRepaint();
 }
 
@@ -1095,12 +1044,6 @@ bool OpenGLContext::areShadersAvailable() const
 {
     auto* c = getCachedImage();
     return c != nullptr && c->shadersAvailable;
-}
-
-bool OpenGLContext::isTextureNpotSupported() const
-{
-    auto* c = getCachedImage();
-    return c != nullptr && c->textureNpotSupported;
 }
 
 ReferenceCountedObject* OpenGLContext::getAssociatedObject (const char* name) const

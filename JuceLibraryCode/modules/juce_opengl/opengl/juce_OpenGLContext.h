@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -129,9 +130,6 @@ public:
 
     /** Returns true if shaders can be used in this context. */
     bool areShadersAvailable() const;
-
-    /** Returns true if non-power-of-two textures are supported in this context. */
-    bool isTextureNpotSupported() const;
 
     /** OpenGL versions, used by setOpenGLVersionRequired(). */
     enum OpenGLVersion
@@ -330,8 +328,7 @@ private:
     void* contextToShareWith = nullptr;
     OpenGLVersion versionRequired = defaultGLVersion;
     size_t imageCacheMaxSize = 8 * 1024 * 1024;
-    bool renderComponents = true, useMultisampling = false, overrideCanAttach = false;
-    std::atomic<bool> continuousRepaint { false };
+    bool renderComponents = true, useMultisampling = false, continuousRepaint = false, overrideCanAttach = false;
     TextureMagnificationFilter texMagFilter = linear;
 
     //==============================================================================

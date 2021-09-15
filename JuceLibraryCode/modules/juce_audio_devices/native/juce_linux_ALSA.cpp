@@ -791,7 +791,7 @@ private:
     //==============================================================================
     const String inputId, outputId;
     std::unique_ptr<ALSADevice> outputDevice, inputDevice;
-    std::atomic<int> numCallbacks { 0 };
+    int numCallbacks = 0;
     bool audioIoInProgress = false;
 
     CriticalSection callbackLock;
@@ -1297,6 +1297,11 @@ AudioIODeviceType* createAudioIODeviceType_ALSA_Soundcards()
 AudioIODeviceType* createAudioIODeviceType_ALSA_PCMDevices()
 {
     return new ALSAAudioIODeviceType (false, "ALSA");
+}
+
+AudioIODeviceType* AudioIODeviceType::createAudioIODeviceType_ALSA()
+{
+    return createAudioIODeviceType_ALSA_PCMDevices();
 }
 
 } // namespace juce

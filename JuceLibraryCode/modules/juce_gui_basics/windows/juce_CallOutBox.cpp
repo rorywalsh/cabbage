@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -40,7 +41,9 @@ CallOutBox::CallOutBox (Component& c, Rectangle<int> area, Component* const pare
     else
     {
         setAlwaysOnTop (juce_areThereAnyAlwaysOnTopWindows());
-        updatePosition (area, Desktop::getInstance().getDisplays().getDisplayForRect (area)->userArea);
+
+        updatePosition (area, Desktop::getInstance().getDisplays().findDisplayForRect (area).userArea);
+
         addToDesktop (ComponentPeer::windowIsTemporary);
 
         startTimer (100);
@@ -49,14 +52,17 @@ CallOutBox::CallOutBox (Component& c, Rectangle<int> area, Component* const pare
     creationTime = Time::getCurrentTime();
 }
 
+CallOutBox::~CallOutBox()
+{
+}
+
 //==============================================================================
 class CallOutBoxCallback  : public ModalComponentManager::Callback,
                             private Timer
 {
 public:
-    CallOutBoxCallback (std::unique_ptr<Component> c, const Rectangle<int>& area, Component* parent)
-        : content (std::move (c)),
-          callout (*content, area, parent)
+    CallOutBoxCallback (Component* c, const Rectangle<int>& area, Component* parent)
+        : content (c), callout (*c, area, parent)
     {
         callout.setVisible (true);
         callout.enterModalState (true, this);
@@ -67,7 +73,7 @@ public:
 
     void timerCallback() override
     {
-        if (! isForegroundOrEmbeddedProcess (&callout))
+        if (! Process::isForegroundProcess())
             callout.dismiss();
     }
 
@@ -77,11 +83,11 @@ public:
     JUCE_DECLARE_NON_COPYABLE (CallOutBoxCallback)
 };
 
-CallOutBox& CallOutBox::launchAsynchronously (std::unique_ptr<Component> content, Rectangle<int> area, Component* parent)
+CallOutBox& CallOutBox::launchAsynchronously (Component* content, Rectangle<int> area, Component* parent)
 {
     jassert (content != nullptr); // must be a valid content component!
 
-    return (new CallOutBoxCallback (std::move (content), area, parent))->callout;
+    return (new CallOutBoxCallback (content, area, parent))->callout;
 }
 
 //==============================================================================
@@ -94,12 +100,6 @@ void CallOutBox::setArrowSize (const float newSize)
 int CallOutBox::getBorderSize() const noexcept
 {
     return jmax (getLookAndFeel().getCallOutBoxBorderSize (*this), (int) arrowSize);
-}
-
-void CallOutBox::lookAndFeelChanged()
-{
-    resized();
-    repaint();
 }
 
 void CallOutBox::paint (Graphics& g)
@@ -159,7 +159,7 @@ void CallOutBox::setDismissalMouseClicksAreAlwaysConsumed (bool b) noexcept
     dismissalMouseClicksAreAlwaysConsumed = b;
 }
 
-static constexpr int callOutBoxDismissCommandId = 0x4f83a04b;
+enum { callOutBoxDismissCommandId = 0x4f83a04b };
 
 void CallOutBox::handleCommandMessage (int commandId)
 {
@@ -194,14 +194,15 @@ void CallOutBox::updatePosition (const Rectangle<int>& newAreaToPointTo, const R
     availableArea = newAreaToFitIn;
 
     auto borderSpace = getBorderSize();
-    auto newBounds = getLocalArea (&content, Rectangle<int> (content.getWidth()  + borderSpace * 2,
-                                                             content.getHeight() + borderSpace * 2));
+
+    Rectangle<int> newBounds (content.getWidth()  + borderSpace * 2,
+                              content.getHeight() + borderSpace * 2);
 
     auto hw = newBounds.getWidth() / 2;
     auto hh = newBounds.getHeight() / 2;
     auto hwReduced = (float) (hw - borderSpace * 2);
     auto hhReduced = (float) (hh - borderSpace * 2);
-    auto arrowIndent = (float) borderSpace - arrowSize;
+    auto arrowIndent = borderSpace - arrowSize;
 
     Point<float> targets[4] = { { (float) targetArea.getCentreX(), (float) targetArea.getBottom() },
                                 { (float) targetArea.getRight(),   (float) targetArea.getCentreY() },
@@ -234,8 +235,8 @@ void CallOutBox::updatePosition (const Rectangle<int>& newAreaToPointTo, const R
             nearest = distanceFromCentre;
             targetPoint = targets[i];
 
-            newBounds.setPosition ((int) (centre.x - (float) hw),
-                                   (int) (centre.y - (float) hh));
+            newBounds.setPosition ((int) (centre.x - hw),
+                                   (int) (centre.y - hh));
         }
     }
 
@@ -250,7 +251,7 @@ void CallOutBox::refreshPath()
 
     const float gap = 4.5f;
 
-    outline.addBubble (getLocalArea (&content, content.getLocalBounds().toFloat()).expanded (gap, gap),
+    outline.addBubble (content.getBounds().toFloat().expanded (gap, gap),
                        getLocalBounds().toFloat(),
                        targetPoint - getPosition().toFloat(),
                        getLookAndFeel().getCallOutBoxCornerSize (*this), arrowSize * 0.7f);
@@ -260,12 +261,6 @@ void CallOutBox::timerCallback()
 {
     toFront (true);
     stopTimer();
-}
-
-//==============================================================================
-std::unique_ptr<AccessibilityHandler> CallOutBox::createAccessibilityHandler()
-{
-    return std::make_unique<AccessibilityHandler> (*this, AccessibilityRole::window);
 }
 
 } // namespace juce

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -28,23 +29,21 @@
  The block below describes the properties of this module, and is read by
  the Projucer to automatically generate project code that uses it.
  For details about the syntax and how to create or use a module, see the
- JUCE Module Format.md file.
+ JUCE Module Format.txt file.
 
 
  BEGIN_JUCE_MODULE_DECLARATION
 
   ID:                 juce_gui_extra
   vendor:             juce
-  version:            6.1.0
+  version:            5.4.7
   name:               JUCE extended GUI classes
   description:        Miscellaneous GUI classes for specialised tasks.
   website:            http://www.juce.com/juce
   license:            GPL/Commercial
-  minimumCppStandard: 14
 
   dependencies:       juce_gui_basics
   OSXFrameworks:      WebKit
-  iOSFrameworks:      WebKit
 
  END_JUCE_MODULE_DECLARATION
 
@@ -58,27 +57,11 @@
 
 //==============================================================================
 /** Config: JUCE_WEB_BROWSER
-    This lets you disable the WebBrowserComponent class.
+    This lets you disable the WebBrowserComponent class (Mac and Windows).
     If you're not using any embedded web-pages, turning this off may reduce your code size.
 */
 #ifndef JUCE_WEB_BROWSER
  #define JUCE_WEB_BROWSER 1
-#endif
-
-/** Config: JUCE_USE_WIN_WEBVIEW2
-    Enables the use of the Microsoft Edge (Chromium) WebView2 browser on Windows,
-    currently in developer preview.
-
-    If using the Projucer, the Microsoft.Web.WebView2 package will be added to the
-    project solution if this flag is enabled. If you are building using CMake you
-    will need to manually add the package via the Visual Studio package manager.
-
-    In addition to enabling this macro, you will need to use the
-    WindowsWebView2WebBrowserComponent wrapper - see the documentation of that
-    class for more details.
-*/
-#ifndef JUCE_USE_WIN_WEBVIEW2
- #define JUCE_USE_WIN_WEBVIEW2 0
 #endif
 
 /** Config: JUCE_ENABLE_LIVE_CONSTANT_EDITOR
@@ -107,7 +90,6 @@
 #include "embedding/juce_UIViewComponent.h"
 #include "embedding/juce_XEmbedComponent.h"
 #include "embedding/juce_ScopedDPIAwarenessDisabler.h"
-#include "embedding/juce_HWNDComponent.h"
 #include "misc/juce_AppleRemote.h"
 #include "misc/juce_BubbleMessageComponent.h"
 #include "misc/juce_ColourSelector.h"

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -47,7 +48,7 @@ namespace juce
     @tags{Audio}
 */
 class JUCE_API  MidiKeyboardComponent  : public Component,
-                                         public MidiKeyboardState::Listener,
+                                         public MidiKeyboardStateListener,
                                          public ChangeBroadcaster,
                                          private Timer
 {
@@ -382,6 +383,19 @@ protected:
     */
     virtual void mouseUpOnKey (int midiNoteNumber, const MouseEvent& e);
 
+    /** Callback for when the mouse is down on a key on which it wasn't already
+        down.
+    */
+    virtual void mouseDownStartedOnKey(int midiNoteNumber, float velocity);
+
+    /** Callback for when the mouse was down on a key and is no longer down on it.
+        This can happen on mouse up, or if the mouse is still down but is being
+        dragged away from the key.
+
+        Timing wise, this will be called -after- the mouseDownOnKey, mouseUpOnKey,
+        and mouseDraggedToKey callbacks. */
+    virtual void mouseDownFinishedOnKey (int midiNoteNumber, float velocity);
+
     /** Calculates the position of a given midi-note.
 
         This can be overridden to create layouts with custom key-widths.
@@ -395,6 +409,9 @@ protected:
     /** Returns the rectangle for a given key if within the displayable range */
     Rectangle<float> getRectangleForKey (int midiNoteNumber) const;
 
+
+    /** Interface for subclasses for read-only access to the mouseDownNotes array. */
+    const Array<int>& getMouseDownNotes();
 
 private:
     //==============================================================================
@@ -441,6 +458,39 @@ private:
    #endif
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MidiKeyboardComponent)
+};
+
+
+//==============================================================================
+/**
+ A MidiKeyboardComponent subclass with a "sticky" keys behavior - A clicked key
+ remains pressed until clicked again.
+
+ @see MidiKeyboardComponent
+ */
+class StickyMidiKeyboardComponent : public MidiKeyboardComponent
+{
+public:
+    //==============================================================================
+    /** Creates a StickyMidiKeyboardComponent.
+
+     @see MidiKeyboardComponent constructor.
+     */
+    StickyMidiKeyboardComponent (MidiKeyboardState& state,
+                                 Orientation orientation);
+    /** Destructor. */
+    ~StickyMidiKeyboardComponent();
+
+protected:
+    //==============================================================================
+    virtual void mouseUpOnKey (int midiNoteNumber, const MouseEvent& e) override;
+    virtual void mouseDownStartedOnKey(int midiNoteNumber, float velocity) override;
+    virtual void mouseDownFinishedOnKey (int midiNoteNumber, float velocity) override;
+
+private:
+    BigInteger stuckKeys = BigInteger();
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StickyMidiKeyboardComponent)
 };
 
 } // namespace juce

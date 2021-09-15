@@ -71,11 +71,12 @@ static void destroyObject (SLObjectType object)
         (*object)->Destroy (object);
 }
 
-struct SLObjectItfFree
+template <>
+struct ContainerDeletePolicy<const SLObjectItf_* const>
 {
-    void operator() (SLObjectItf obj) const noexcept
+    static void destroy (SLObjectItf object)
     {
-        destroyObject (obj);
+        destroyObject (object);
     }
 };
 
@@ -111,7 +112,7 @@ private:
         ControlBlock() = default;
         ControlBlock (SLObjectItf o) : ptr (o) {}
 
-        std::unique_ptr<const SLObjectItf_* const, SLObjectItfFree> ptr;
+        std::unique_ptr<const SLObjectItf_* const> ptr;
     };
 
     ReferenceCountedObjectPtr<ControlBlock> cb;
@@ -865,8 +866,7 @@ public:
 
     Array<int> getAvailableBufferSizes() override
     {
-        return AndroidHighPerformanceAudioHelpers::getAvailableBufferSizes (AndroidHighPerformanceAudioHelpers::getNativeBufferSizeHint(),
-                                                                            getAvailableSampleRates());
+        return AndroidHighPerformanceAudioHelpers::getAvailableBufferSizes (getAvailableSampleRates());
     }
 
     String open (const BigInteger& inputChannels,
@@ -883,13 +883,8 @@ public:
 
         audioBuffersToEnqueue = [this, preferredBufferSize]
         {
-            using namespace AndroidHighPerformanceAudioHelpers;
-
-            auto nativeBufferSize = getNativeBufferSizeHint();
-
-            if (canUseHighPerformanceAudioPath (nativeBufferSize, preferredBufferSize, sampleRate))
-                return preferredBufferSize / nativeBufferSize;
-
+            if (AndroidHighPerformanceAudioHelpers::canUseHighPerformanceAudioPath (preferredBufferSize, sampleRate))
+                return preferredBufferSize / AndroidHighPerformanceAudioHelpers::getNativeBufferSize();
 
             return 1;
         }();
@@ -935,7 +930,7 @@ public:
 
         DBG ("OpenSL: numInputChannels = " << numInputChannels
              << ", numOutputChannels = " << numOutputChannels
-             << ", nativeBufferSize = " << AndroidHighPerformanceAudioHelpers::getNativeBufferSizeHint()
+             << ", nativeBufferSize = " << AndroidHighPerformanceAudioHelpers::getNativeBufferSize()
              << ", nativeSampleRate = " << AndroidHighPerformanceAudioHelpers::getNativeSampleRate()
              << ", actualBufferSize = " << actualBufferSize
              << ", audioBuffersToEnqueue = " << audioBuffersToEnqueue
@@ -969,8 +964,7 @@ public:
 
     int getDefaultBufferSize() override
     {
-        return AndroidHighPerformanceAudioHelpers::getDefaultBufferSize (AndroidHighPerformanceAudioHelpers::getNativeBufferSizeHint(),
-                                                                         getCurrentSampleRate());
+        return AndroidHighPerformanceAudioHelpers::getDefaultBufferSize (getCurrentSampleRate());
     }
 
     double getCurrentSampleRate() override
@@ -1120,6 +1114,11 @@ const char* const OpenSLAudioIODevice::openSLTypeName = "Android OpenSL";
 //==============================================================================
 bool isOpenSLAvailable()  { return OpenSLAudioDeviceType::isOpenSLAvailable(); }
 
+AudioIODeviceType* AudioIODeviceType::createAudioIODeviceType_OpenSLES()
+{
+    return isOpenSLAvailable() ? new OpenSLAudioDeviceType() : nullptr;
+}
+
 //==============================================================================
 class SLRealtimeThread
 {
@@ -1254,7 +1253,7 @@ public:
             threadEntryProc = nullptr;
 
             (*player)->SetPlayState (player, SL_PLAYSTATE_STOPPED);
-            MessageManager::callAsync ([this]() { delete this; });
+            MessageManager::callAsync ([this] () { delete this; });
         }
     }
 
@@ -1273,7 +1272,7 @@ private:
     SlRef<SLPlayItf_>      player;
     SlRef<SLAndroidSimpleBufferQueueItf_> queue;
 
-    int bufferSize = AndroidHighPerformanceAudioHelpers::getNativeBufferSizeHint();
+    int bufferSize = AndroidHighPerformanceAudioHelpers::getNativeBufferSize();
     HeapBlock<int16> buffer { HeapBlock<int16> (static_cast<size_t> (1 * bufferSize * numBuffers)) };
 
     void* (*threadEntryProc) (void*) = nullptr;

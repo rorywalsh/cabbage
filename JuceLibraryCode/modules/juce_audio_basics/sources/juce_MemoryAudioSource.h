@@ -29,7 +29,7 @@ namespace juce
 
     @tags{Audio}
 */
-class JUCE_API MemoryAudioSource   : public PositionableAudioSource
+class JUCE_API MemoryAudioSource   : public AudioSource
 {
 public:
     //==============================================================================
@@ -52,28 +52,11 @@ public:
     /** Implementation of the AudioSource method. */
     void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) override;
 
-    //==============================================================================
-    /** Implementation of the PositionableAudioSource method. */
-    void setNextReadPosition (int64 newPosition) override;
-
-    /** Implementation of the PositionableAudioSource method. */
-    int64 getNextReadPosition() const override;
-
-    /** Implementation of the PositionableAudioSource method. */
-    int64 getTotalLength() const override;
-
-    //==============================================================================
-    /** Implementation of the PositionableAudioSource method. */
-    bool isLooping() const override;
-
-    /** Implementation of the PositionableAudioSource method. */
-    void setLooping (bool shouldLoop) override;
-
 private:
     //==============================================================================
     AudioBuffer<float> buffer;
     int position = 0;
-    bool isCurrentlyLooping;
+    bool isLooping;
 
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MemoryAudioSource)

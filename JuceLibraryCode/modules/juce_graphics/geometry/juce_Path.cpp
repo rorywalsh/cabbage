@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -37,7 +38,7 @@ namespace PathHelpers
 
     static String nextToken (String::CharPointerType& t)
     {
-        t.incrementToEndOfWhitespace();
+        t = t.findEndOfWhitespace();
 
         auto start = t;
         size_t numChars = 0;
@@ -67,7 +68,7 @@ const float Path::closeSubPathMarker   = 100005.0f;
 const float Path::defaultToleranceForTesting = 1.0f;
 const float Path::defaultToleranceForMeasurement = 0.6f;
 
-static bool isMarker (float value, float marker) noexcept
+static inline bool isMarker (float value, float marker) noexcept
 {
     return value == marker;
 }
@@ -615,11 +616,11 @@ void Path::addPolygon (Point<float> centre, int numberOfSides,
 
     if (numberOfSides > 1)
     {
-        auto angleBetweenPoints = MathConstants<float>::twoPi / (float) numberOfSides;
+        auto angleBetweenPoints = MathConstants<float>::twoPi / numberOfSides;
 
         for (int i = 0; i < numberOfSides; ++i)
         {
-            auto angle = startAngle + (float) i * angleBetweenPoints;
+            auto angle = startAngle + i * angleBetweenPoints;
             auto p = centre.getPointOnCircumference (radius, angle);
 
             if (i == 0)
@@ -639,11 +640,11 @@ void Path::addStar (Point<float> centre, int numberOfPoints, float innerRadius,
 
     if (numberOfPoints > 1)
     {
-        auto angleBetweenPoints = MathConstants<float>::twoPi / (float) numberOfPoints;
+        auto angleBetweenPoints = MathConstants<float>::twoPi / numberOfPoints;
 
         for (int i = 0; i < numberOfPoints; ++i)
         {
-            auto angle = startAngle + (float) i * angleBetweenPoints;
+            auto angle = startAngle + i * angleBetweenPoints;
             auto p = centre.getPointOnCircumference (outerRadius, angle);
 
             if (i == 0)

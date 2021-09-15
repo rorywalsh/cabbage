@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -75,12 +76,12 @@ bool OpenGLShaderProgram::addShader (const String& code, GLenum type)
     GLint status = GL_FALSE;
     context.extensions.glGetShaderiv (shaderID, GL_COMPILE_STATUS, &status);
 
-    if (status == (GLint) GL_FALSE)
+    if (status == GL_FALSE)
     {
-        std::vector<GLchar> infoLog (16384);
+        GLchar infoLog [16384];
         GLsizei infoLogLength = 0;
-        context.extensions.glGetShaderInfoLog (shaderID, (GLsizei) infoLog.size(), &infoLogLength, infoLog.data());
-        errorLog = String (infoLog.data(), (size_t) infoLogLength);
+        context.extensions.glGetShaderInfoLog (shaderID, sizeof (infoLog), &infoLogLength, infoLog);
+        errorLog = String (infoLog, (size_t) infoLogLength);
 
        #if JUCE_DEBUG && ! JUCE_DONT_ASSERT_ON_GLSL_COMPILE_ERROR
         // Your GLSL code contained compile errors!
@@ -113,12 +114,12 @@ bool OpenGLShaderProgram::link() noexcept
     GLint status = GL_FALSE;
     context.extensions.glGetProgramiv (progID, GL_LINK_STATUS, &status);
 
-    if (status == (GLint) GL_FALSE)
+    if (status == GL_FALSE)
     {
-        std::vector<GLchar> infoLog (16384);
+        GLchar infoLog [16384];
         GLsizei infoLogLength = 0;
-        context.extensions.glGetProgramInfoLog (progID, (GLsizei) infoLog.size(), &infoLogLength, infoLog.data());
-        errorLog = String (infoLog.data(), (size_t) infoLogLength);
+        context.extensions.glGetProgramInfoLog (progID, sizeof (infoLog), &infoLogLength, infoLog);
+        errorLog = String (infoLog, (size_t) infoLogLength);
 
        #if JUCE_DEBUG && ! JUCE_DONT_ASSERT_ON_GLSL_COMPILE_ERROR
         // Your GLSL code contained link errors!
@@ -129,7 +130,7 @@ bool OpenGLShaderProgram::link() noexcept
     }
 
     JUCE_CHECK_OPENGL_ERROR
-    return status != (GLint) GL_FALSE;
+    return status != GL_FALSE;
 }
 
 void OpenGLShaderProgram::use() const noexcept

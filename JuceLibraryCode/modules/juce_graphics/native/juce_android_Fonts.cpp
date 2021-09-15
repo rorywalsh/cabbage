@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -352,7 +353,7 @@ public:
             LocalRef<jobject> bitmap (env->CallStaticObjectMethod (AndroidBitmap, AndroidBitmap.createBitmap, w, h, bitmapConfig.get()));
             LocalRef<jobject> canvas (env->NewObject (AndroidCanvas, AndroidCanvas.create, bitmap.get()));
 
-            env->CallBooleanMethod (matrix.get(), AndroidMatrix.postTranslate, (float) -bounds.getX(), (float) -bounds.getY());
+            env->CallBooleanMethod (matrix.get(), AndroidMatrix.postTranslate, bounds.getX() * -1.0f, bounds.getY() * -1.0f);
             env->CallVoidMethod (canvas.get(), AndroidCanvas.setMatrix, matrix.get());
             env->CallVoidMethod (canvas.get(), AndroidCanvas.drawPath, path.get(), paint.get());
 
@@ -458,7 +459,7 @@ private:
 
     static File getCacheDirectory()
     {
-        static File result = []()
+        static File result = [] ()
         {
             auto appContext = getAppContext();
 

@@ -66,23 +66,30 @@ public:
     struct JUCE_API  CurrentPositionInfo
     {
         /** The tempo in BPM */
-        double bpm = 120.0;
+        double bpm;
 
         /** Time signature numerator, e.g. the 3 of a 3/4 time sig */
-        int timeSigNumerator = 4;
+        int timeSigNumerator;
         /** Time signature denominator, e.g. the 4 of a 3/4 time sig */
-        int timeSigDenominator = 4;
+        int timeSigDenominator;
 
         /** The current play position, in samples from the start of the timeline. */
-        int64 timeInSamples = 0;
+        int64 timeInSamples;
         /** The current play position, in seconds from the start of the timeline. */
-        double timeInSeconds = 0;
+        double timeInSeconds;
 
         /** For timecode, the position of the start of the timeline, in seconds from 00:00:00:00. */
-        double editOriginTime = 0;
+        double editOriginTime;
+
+        /** The current play position, in samples from the start of processing.
+            Without looping.
+            Note - this value may be unavailable on some hosts.
+            @see isContinuousValid.
+         */
+        int64 continuousTimeInSamples;
 
         /** The current play position, in units of quarter-notes. */
-        double ppqPosition = 0;
+        double ppqPosition;
 
         /** The position of the start of the last bar, in units of quarter-notes.
 
@@ -92,67 +99,43 @@ public:
             Note - this value may be unavailable on some hosts, e.g. Pro-Tools. If
             it's not available, the value will be 0.
         */
-        double ppqPositionOfLastBarStart = 0;
+        double ppqPositionOfLastBarStart;
 
         /** The video frame rate, if applicable. */
-        FrameRateType frameRate = FrameRateType::fps23976;
+        FrameRateType frameRate;
 
         /** True if the transport is currently playing. */
-        bool isPlaying = false;
+        bool isPlaying;
 
         /** True if the transport is currently recording.
 
             (When isRecording is true, then isPlaying will also be true).
         */
-        bool isRecording = false;
+        bool isRecording;
 
         /** The current cycle start position in units of quarter-notes.
             Note that not all hosts or plugin formats may provide this value.
             @see isLooping
         */
-        double ppqLoopStart = 0;
+        double ppqLoopStart;
 
         /** The current cycle end position in units of quarter-notes.
             Note that not all hosts or plugin formats may provide this value.
             @see isLooping
         */
-        double ppqLoopEnd = 0;
+        double ppqLoopEnd;
 
         /** True if the transport is currently looping. */
-        bool isLooping = false;
+        bool isLooping;
+
+        /** True if the continuous time is valid/supported. */
+        bool isContinuousValid;
 
         //==============================================================================
-        bool operator== (const CurrentPositionInfo& other) const noexcept
-        {
-            auto tie = [] (const CurrentPositionInfo& i)
-            {
-                return std::tie (i.timeInSamples,
-                                 i.ppqPosition,
-                                 i.editOriginTime,
-                                 i.ppqPositionOfLastBarStart,
-                                 i.frameRate,
-                                 i.isPlaying,
-                                 i.isRecording,
-                                 i.bpm,
-                                 i.timeSigNumerator,
-                                 i.timeSigDenominator,
-                                 i.ppqLoopStart,
-                                 i.ppqLoopEnd,
-                                 i.isLooping);
-            };
+        bool operator== (const CurrentPositionInfo& other) const noexcept;
+        bool operator!= (const CurrentPositionInfo& other) const noexcept;
 
-            return tie (*this) == tie (other);
-        }
-
-        bool operator!= (const CurrentPositionInfo& other) const noexcept
-        {
-            return ! operator== (other);
-        }
-
-        void resetToDefault()
-        {
-            *this = CurrentPositionInfo{};
-        }
+        void resetToDefault();
     };
 
     //==============================================================================

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -23,30 +24,17 @@
   ==============================================================================
 */
 
-#if defined (__IPHONE_13_0)
- #define JUCE_HAS_IOS_POINTER_SUPPORT 1
-#else
- #define JUCE_HAS_IOS_POINTER_SUPPORT 0
-#endif
-
 namespace juce
 {
 
 class UIViewComponentPeer;
 
-static UIInterfaceOrientation getWindowOrientation()
+// The way rotation works changed in iOS8..
+static bool isUsingOldRotationMethod() noexcept
 {
-    UIApplication* sharedApplication = [UIApplication sharedApplication];
-
-   #if (defined (__IPHONE_13_0) && __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_13_0)
-    for (UIScene* scene in [sharedApplication connectedScenes])
-        if ([scene isKindOfClass: [UIWindowScene class]])
-            return [(UIWindowScene*) scene interfaceOrientation];
-
-    return UIInterfaceOrientationPortrait;
-   #else
-    return [sharedApplication statusBarOrientation];
-   #endif
+    static bool isPreV8 = ([[[UIDevice currentDevice] systemVersion] compare: @"8.0"
+                                                                     options: NSNumericSearch] == NSOrderedAscending);
+    return isPreV8;
 }
 
 namespace Orientations
@@ -81,11 +69,28 @@ namespace Orientations
         return UIInterfaceOrientationPortrait;
     }
 
+    static CGAffineTransform getCGTransformFor (const Desktop::DisplayOrientation orientation) noexcept
+    {
+        if (isUsingOldRotationMethod())
+        {
+            switch (orientation)
+            {
+                case Desktop::upsideDown:             return CGAffineTransformMake (-1, 0,  0, -1, 0, 0);
+                case Desktop::rotatedClockwise:       return CGAffineTransformMake (0, -1,  1,  0, 0, 0);
+                case Desktop::rotatedAntiClockwise:   return CGAffineTransformMake (0,  1, -1,  0, 0, 0);
+                case Desktop::upright:
+                case Desktop::allOrientations:
+                default:                              break;
+            }
+        }
+
+        return CGAffineTransformIdentity;
+    }
 
     static NSUInteger getSupportedOrientations()
     {
         NSUInteger allowed = 0;
-        auto& d = Desktop::getInstance();
+        Desktop& d = Desktop::getInstance();
 
         if (d.isOrientationEnabled (Desktop::upright))              allowed |= UIInterfaceOrientationMaskPortrait;
         if (d.isOrientationEnabled (Desktop::upsideDown))           allowed |= UIInterfaceOrientationMaskPortraitUpsideDown;
@@ -96,18 +101,28 @@ namespace Orientations
     }
 }
 
-enum class MouseEventFlags
+struct AsyncBoundsUpdater  : public AsyncUpdater
 {
-    none,
-    down,
-    up,
-    upAndCancel,
+    AsyncBoundsUpdater (UIViewController* vc)
+        : viewController (vc)
+    {
+    }
+
+    ~AsyncBoundsUpdater() override
+    {
+        cancelPendingUpdate();
+    }
+
+    void handleAsyncUpdate() override;
+
+    UIViewController* viewController;
 };
 
 //==============================================================================
 } // namespace juce
 
 using namespace juce;
+
 
 @interface JuceUIView : UIView <UITextViewDelegate>
 {
@@ -126,25 +141,18 @@ using namespace juce;
 - (void) touchesEnded:     (NSSet*) touches  withEvent: (UIEvent*) event;
 - (void) touchesCancelled: (NSSet*) touches  withEvent: (UIEvent*) event;
 
-#if JUCE_HAS_IOS_POINTER_SUPPORT
-- (void) onHover: (UIHoverGestureRecognizer*) gesture API_AVAILABLE (ios (13.0));
-- (void) onScroll: (UIPanGestureRecognizer*) gesture;
-#endif
-
 - (BOOL) becomeFirstResponder;
 - (BOOL) resignFirstResponder;
 - (BOOL) canBecomeFirstResponder;
 
 - (BOOL) textView: (UITextView*) textView shouldChangeTextInRange: (NSRange) range replacementText: (NSString*) text;
-
-- (BOOL) isAccessibilityElement;
-- (CGRect) accessibilityFrame;
-- (NSArray*) accessibilityElements;
 @end
 
 //==============================================================================
 @interface JuceUIViewController : UIViewController
 {
+@public
+    std::unique_ptr<AsyncBoundsUpdater> boundsUpdater;
 }
 
 - (JuceUIViewController*) init;
@@ -182,9 +190,11 @@ namespace juce
 
 struct UIViewPeerControllerReceiver
 {
-    virtual ~UIViewPeerControllerReceiver() = default;
+    virtual ~UIViewPeerControllerReceiver();
     virtual void setViewController (UIViewController*) = 0;
 };
+
+UIViewPeerControllerReceiver::~UIViewPeerControllerReceiver() {}
 
 class UIViewComponentPeer  : public ComponentPeer,
                              public FocusChangeListener,
@@ -209,8 +219,8 @@ public:
     Rectangle<int> getBounds() const override               { return getBounds (! isSharedWindow); }
     Rectangle<int> getBounds (bool global) const;
     Point<float> localToGlobal (Point<float> relativePosition) override;
-    Point<float> globalToLocal (Point<float> screenPosition) override;
     using ComponentPeer::localToGlobal;
+    Point<float> globalToLocal (Point<float> screenPosition) override;
     using ComponentPeer::globalToLocal;
     void setAlpha (float newAlpha) override;
     void setMinimised (bool) override                       {}
@@ -239,41 +249,93 @@ public:
     void updateHiddenTextContent (TextInputTarget*);
     void globalFocusChanged (Component*) override;
 
-    void updateScreenBounds();
+    void updateTransformAndScreenBounds();
 
-    void handleTouches (UIEvent*, MouseEventFlags);
-
-   #if JUCE_HAS_IOS_POINTER_SUPPORT
-    API_AVAILABLE (ios (13.0)) void onHover (UIHoverGestureRecognizer*);
-    void onScroll (UIPanGestureRecognizer*);
-   #endif
+    void handleTouches (UIEvent*, bool isDown, bool isUp, bool isCancel);
 
     //==============================================================================
     void repaint (const Rectangle<int>& area) override;
     void performAnyPendingRepaintsNow() override;
 
     //==============================================================================
-    UIWindow* window = nil;
-    JuceUIView* view = nil;
-    UIViewController* controller = nil;
-    const bool isSharedWindow, isAppex;
-    bool fullScreen = false, insideDrawRect = false;
-
-    static int64 getMouseTime (NSTimeInterval timestamp) noexcept
-    {
-        return (Time::currentTimeMillis() - Time::getMillisecondCounter())
-             + (int64) (timestamp * 1000.0);
-    }
+    UIWindow* window;
+    JuceUIView* view;
+    UIViewController* controller;
+    bool isSharedWindow, fullScreen, insideDrawRect, isAppex;
 
     static int64 getMouseTime (UIEvent* e) noexcept
     {
-        return getMouseTime ([e timestamp]);
+        return (Time::currentTimeMillis() - Time::getMillisecondCounter())
+                + (int64) ([e timestamp] * 1000.0);
+    }
+
+    static Rectangle<int> rotatedScreenPosToReal (const Rectangle<int>& r)
+    {
+        if (! SystemStats::isRunningInAppExtensionSandbox() && isUsingOldRotationMethod())
+        {
+            const Rectangle<int> screen (convertToRectInt ([UIScreen mainScreen].bounds));
+
+            switch ([[UIApplication sharedApplication] statusBarOrientation])
+            {
+                case UIInterfaceOrientationPortrait:
+                    return r;
+
+                case UIInterfaceOrientationPortraitUpsideDown:
+                    return Rectangle<int> (screen.getWidth() - r.getRight(), screen.getHeight() - r.getBottom(),
+                                           r.getWidth(), r.getHeight());
+
+                case UIInterfaceOrientationLandscapeLeft:
+                    return Rectangle<int> (r.getY(), screen.getHeight() - r.getRight(),
+                                           r.getHeight(), r.getWidth());
+
+                case UIInterfaceOrientationLandscapeRight:
+                    return Rectangle<int> (screen.getWidth() - r.getBottom(), r.getX(),
+                                           r.getHeight(), r.getWidth());
+
+                case UIInterfaceOrientationUnknown:
+                default: jassertfalse; // unknown orientation!
+            }
+        }
+
+        return r;
+    }
+
+    static Rectangle<int> realScreenPosToRotated (const Rectangle<int>& r)
+    {
+        if (! SystemStats::isRunningInAppExtensionSandbox() && isUsingOldRotationMethod())
+        {
+            const Rectangle<int> screen (convertToRectInt ([UIScreen mainScreen].bounds));
+
+            switch ([[UIApplication sharedApplication] statusBarOrientation])
+            {
+                case UIInterfaceOrientationPortrait:
+                    return r;
+
+                case UIInterfaceOrientationPortraitUpsideDown:
+                    return Rectangle<int> (screen.getWidth() - r.getRight(), screen.getHeight() - r.getBottom(),
+                                           r.getWidth(), r.getHeight());
+
+                case UIInterfaceOrientationLandscapeLeft:
+                    return Rectangle<int> (screen.getHeight() - r.getBottom(), r.getX(),
+                                           r.getHeight(), r.getWidth());
+
+                case UIInterfaceOrientationLandscapeRight:
+                    return Rectangle<int> (r.getY(), screen.getWidth() - r.getRight(),
+                                           r.getHeight(), r.getWidth());
+
+                case UIInterfaceOrientationUnknown:
+                default: jassertfalse; // unknown orientation!
+            }
+        }
+
+        return r;
     }
 
     static MultiTouchMapper<UITouch*> currentTouches;
 
 private:
-    //==============================================================================
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UIViewComponentPeer)
+
     class AsyncRepaintMessage  : public CallbackMessage
     {
     public:
@@ -291,9 +353,6 @@ private:
                 peer->repaint (rect);
         }
     };
-
-    //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (UIViewComponentPeer)
 };
 
 static void sendScreenBoundsUpdate (JuceUIViewController* c)
@@ -301,18 +360,18 @@ static void sendScreenBoundsUpdate (JuceUIViewController* c)
     JuceUIView* juceView = (JuceUIView*) [c view];
 
     if (juceView != nil && juceView->owner != nullptr)
-        juceView->owner->updateScreenBounds();
+        juceView->owner->updateTransformAndScreenBounds();
+}
+
+void AsyncBoundsUpdater::handleAsyncUpdate()
+{
+    sendScreenBoundsUpdate ((JuceUIViewController*) viewController);
 }
 
 static bool isKioskModeView (JuceUIViewController* c)
 {
     JuceUIView* juceView = (JuceUIView*) [c view];
-
-    if (juceView == nil || juceView->owner == nullptr)
-    {
-        jassertfalse;
-        return false;
-    }
+    jassert (juceView != nil && juceView->owner != nullptr);
 
     return Desktop::getInstance().getKioskModeComponent() == &(juceView->owner->getComponent());
 }
@@ -328,6 +387,8 @@ MultiTouchMapper<UITouch*> UIViewComponentPeer::currentTouches;
 - (JuceUIViewController*) init
 {
     self = [super init];
+
+    boundsUpdater = std::make_unique<AsyncBoundsUpdater> (self);
 
     return self;
 }
@@ -360,18 +421,17 @@ MultiTouchMapper<UITouch*> UIViewComponentPeer::currentTouches;
 - (void) viewWillTransitionToSize: (CGSize) size withTransitionCoordinator: (id<UIViewControllerTransitionCoordinator>) coordinator
 {
     [super viewWillTransitionToSize: size withTransitionCoordinator: coordinator];
-    [coordinator animateAlongsideTransition: nil completion: ^void (id<UIViewControllerTransitionCoordinatorContext>)
-    {
-        sendScreenBoundsUpdate (self);
-    }];
+    sendScreenBoundsUpdate (self);
+
+    // On some devices the screen-size isn't yet updated at this point, so also trigger another
+    // async update to double-check..
+    if (boundsUpdater != nullptr)
+        boundsUpdater->triggerAsyncUpdate();
 }
 
 - (BOOL) prefersStatusBarHidden
 {
-    if (isKioskModeView (self))
-        return true;
-
-    return [[[NSBundle mainBundle] objectForInfoDictionaryKey: @"UIStatusBarHidden"] boolValue];
+    return isKioskModeView (self);
 }
 
 #if defined (__IPHONE_11_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_11_0
@@ -430,25 +490,6 @@ MultiTouchMapper<UITouch*> UIViewComponentPeer::currentTouches;
 
     hiddenTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     hiddenTextView.autocorrectionType = UITextAutocorrectionTypeNo;
-    hiddenTextView.inputAssistantItem.leadingBarButtonGroups = @[];
-    hiddenTextView.inputAssistantItem.trailingBarButtonGroups = @[];
-
-   #if JUCE_HAS_IOS_POINTER_SUPPORT
-    if (@available (iOS 13.4, *))
-    {
-        auto hoverRecognizer = [[[UIHoverGestureRecognizer alloc] initWithTarget: self action: @selector (onHover:)] autorelease];
-        [hoverRecognizer setCancelsTouchesInView: NO];
-        [hoverRecognizer setRequiresExclusiveTouchType: YES];
-        [self addGestureRecognizer: hoverRecognizer];
-
-        auto panRecognizer = [[[UIPanGestureRecognizer alloc] initWithTarget: self action: @selector (onScroll:)] autorelease];
-        [panRecognizer setCancelsTouchesInView: NO];
-        [panRecognizer setRequiresExclusiveTouchType: YES];
-        [panRecognizer setAllowedScrollTypesMask: UIScrollTypeMaskAll];
-        [panRecognizer setMaximumNumberOfTouches: 0];
-        [self addGestureRecognizer: panRecognizer];
-    }
-   #endif
 
     return self;
 }
@@ -474,7 +515,7 @@ MultiTouchMapper<UITouch*> UIViewComponentPeer::currentTouches;
     ignoreUnused (touches);
 
     if (owner != nullptr)
-        owner->handleTouches (event, MouseEventFlags::down);
+        owner->handleTouches (event, true, false, false);
 }
 
 - (void) touchesMoved: (NSSet*) touches withEvent: (UIEvent*) event
@@ -482,7 +523,7 @@ MultiTouchMapper<UITouch*> UIViewComponentPeer::currentTouches;
     ignoreUnused (touches);
 
     if (owner != nullptr)
-        owner->handleTouches (event, MouseEventFlags::none);
+        owner->handleTouches (event, false, false, false);
 }
 
 - (void) touchesEnded: (NSSet*) touches withEvent: (UIEvent*) event
@@ -490,30 +531,16 @@ MultiTouchMapper<UITouch*> UIViewComponentPeer::currentTouches;
     ignoreUnused (touches);
 
     if (owner != nullptr)
-        owner->handleTouches (event, MouseEventFlags::up);
+        owner->handleTouches (event, false, true, false);
 }
 
 - (void) touchesCancelled: (NSSet*) touches withEvent: (UIEvent*) event
 {
     if (owner != nullptr)
-        owner->handleTouches (event, MouseEventFlags::upAndCancel);
+        owner->handleTouches (event, false, true, true);
 
     [self touchesEnded: touches withEvent: event];
 }
-
-#if JUCE_HAS_IOS_POINTER_SUPPORT
-- (void) onHover: (UIHoverGestureRecognizer*) gesture
-{
-    if (owner != nullptr)
-        owner->onHover (gesture);
-}
-
-- (void) onScroll: (UIPanGestureRecognizer*) gesture
-{
-    if (owner != nullptr)
-        owner->onScroll (gesture);
-}
-#endif
 
 //==============================================================================
 - (BOOL) becomeFirstResponder
@@ -542,29 +569,6 @@ MultiTouchMapper<UITouch*> UIViewComponentPeer::currentTouches;
     ignoreUnused (textView);
     return owner->textViewReplaceCharacters (Range<int> ((int) range.location, (int) (range.location + range.length)),
                                              nsStringToJuce (text));
-}
-
-- (BOOL) isAccessibilityElement
-{
-    return NO;
-}
-
-- (CGRect) accessibilityFrame
-{
-    if (owner != nullptr)
-        if (auto* handler = owner->getComponent().getAccessibilityHandler())
-            return convertToCGRect (handler->getComponent().getScreenBounds());
-
-    return CGRectZero;
-}
-
-- (NSArray*) accessibilityElements
-{
-    if (owner != nullptr)
-        if (auto* handler = owner->getComponent().getAccessibilityHandler())
-            return getContainerAccessibilityElements (*handler);
-
-    return nil;
 }
 
 @end
@@ -600,9 +604,14 @@ bool KeyPress::isKeyCurrentlyDown (int)
 Point<float> juce_lastMousePos;
 
 //==============================================================================
-UIViewComponentPeer::UIViewComponentPeer (Component& comp, int windowStyleFlags, UIView* viewToAttachTo)
+UIViewComponentPeer::UIViewComponentPeer (Component& comp, const int windowStyleFlags, UIView* viewToAttachTo)
     : ComponentPeer (comp, windowStyleFlags),
+      window (nil),
+      view (nil),
+      controller (nil),
       isSharedWindow (viewToAttachTo != nil),
+      fullScreen (false),
+      insideDrawRect (false),
       isAppex (SystemStats::isRunningInAppExtensionSandbox())
 {
     CGRect r = convertToCGRect (component.getBounds());
@@ -613,11 +622,7 @@ UIViewComponentPeer::UIViewComponentPeer (Component& comp, int windowStyleFlags,
     view.hidden = true;
     view.opaque = component.isOpaque();
     view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent: 0];
-
-   #if JUCE_COREGRAPHICS_DRAW_ASYNC
-    if (! getComponentAsyncLayerBackedViewDisabled (component))
-        [[view layer] setDrawsAsynchronously: YES];
-   #endif
+    view.transform = CGAffineTransformIdentity;
 
     if (isSharedWindow)
     {
@@ -626,7 +631,7 @@ UIViewComponentPeer::UIViewComponentPeer (Component& comp, int windowStyleFlags,
     }
     else
     {
-        r = convertToCGRect (component.getBounds());
+        r = convertToCGRect (rotatedScreenPosToReal (component.getBounds()));
         r.origin.y = [UIScreen mainScreen].bounds.size.height - (r.origin.y + r.size.height);
 
         window = [[JuceUIWindow alloc] initWithFrame: r];
@@ -637,6 +642,7 @@ UIViewComponentPeer::UIViewComponentPeer (Component& comp, int windowStyleFlags,
         window.rootViewController = controller;
 
         window.hidden = true;
+        window.transform = Orientations::getCGTransformFor (Desktop::getInstance().getCurrentOrientation());
         window.opaque = component.isOpaque();
         window.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent: 0];
 
@@ -644,6 +650,8 @@ UIViewComponentPeer::UIViewComponentPeer (Component& comp, int windowStyleFlags,
             window.windowLevel = UIWindowLevelAlert;
 
         view.frame = CGRectMake (0, 0, r.size.width, r.size.height);
+
+        [window addSubview: view];
     }
 
     setTitle (component.getName());
@@ -657,6 +665,8 @@ UIViewComponentPeer::~UIViewComponentPeer()
     currentTouches.deleteAllTouchesForPeer (this);
     Desktop::getInstance().removeFocusChangeListener (this);
 
+    ((JuceUIViewController*) controller)->boundsUpdater = nullptr;
+
     view->owner = nullptr;
     [view removeFromSuperview];
     [view release];
@@ -665,12 +675,6 @@ UIViewComponentPeer::~UIViewComponentPeer()
     if (! isSharedWindow)
     {
         [((JuceUIWindow*) window) setOwner: nil];
-
-      #if defined (__IPHONE_13_0)
-        if (@available (iOS 13.0, *))
-            window.windowScene = nil;
-      #endif
-
         [window release];
     }
 }
@@ -704,7 +708,7 @@ void UIViewComponentPeer::setBounds (const Rectangle<int>& newBounds, const bool
     }
     else
     {
-        window.frame = convertToCGRect (newBounds);
+        window.frame = convertToCGRect (rotatedScreenPosToReal (newBounds));
         view.frame = CGRectMake (0, 0, (CGFloat) newBounds.getWidth(), (CGFloat) newBounds.getHeight());
 
         handleMovedOrResized();
@@ -713,20 +717,14 @@ void UIViewComponentPeer::setBounds (const Rectangle<int>& newBounds, const bool
 
 Rectangle<int> UIViewComponentPeer::getBounds (const bool global) const
 {
-    auto r = view.frame;
+    CGRect r = view.frame;
 
-    if (global)
+    if (global && view.window != nil)
     {
-        if (view.window != nil)
-        {
-            r = [view convertRect: r toView: view.window];
-            r = [view.window convertRect: r toWindow: nil];
-        }
-        else if (window != nil)
-        {
-            r.origin.x += window.frame.origin.x;
-            r.origin.y += window.frame.origin.y;
-        }
+        r = [view convertRect: r toView: view.window];
+        r = [view.window convertRect: r toWindow: nil];
+
+        return realScreenPosToRotated (convertToRectInt (r));
     }
 
     return convertToRectInt (r);
@@ -751,8 +749,8 @@ void UIViewComponentPeer::setFullScreen (bool shouldBeFullScreen)
 {
     if (! isSharedWindow)
     {
-        auto r = shouldBeFullScreen ? Desktop::getInstance().getDisplays().getPrimaryDisplay()->userArea
-                                    : lastNonFullscreenBounds;
+        Rectangle<int> r (shouldBeFullScreen ? Desktop::getInstance().getDisplays().getMainDisplay().userArea
+                                             : lastNonFullscreenBounds);
 
         if ((! shouldBeFullScreen) && r.isEmpty())
             r = getBounds();
@@ -765,14 +763,16 @@ void UIViewComponentPeer::setFullScreen (bool shouldBeFullScreen)
     }
 }
 
-void UIViewComponentPeer::updateScreenBounds()
+void UIViewComponentPeer::updateTransformAndScreenBounds()
 {
-    auto& desktop = Desktop::getInstance();
+    Desktop& desktop = Desktop::getInstance();
+    const Rectangle<int> oldArea (component.getBounds());
+    const Rectangle<int> oldDesktop (desktop.getDisplays().getMainDisplay().userArea);
 
-    auto oldArea = component.getBounds();
-    auto oldDesktop = desktop.getDisplays().getPrimaryDisplay()->userArea;
+    const_cast<Displays&> (desktop.getDisplays()).refresh();
 
-    forceDisplayUpdate();
+    window.transform = Orientations::getCGTransformFor (desktop.getCurrentOrientation());
+    view.transform = CGAffineTransformIdentity;
 
     if (fullScreen)
     {
@@ -781,20 +781,16 @@ void UIViewComponentPeer::updateScreenBounds()
     }
     else if (! isSharedWindow)
     {
-        auto newDesktop = desktop.getDisplays().getPrimaryDisplay()->userArea;
+        // this will re-centre the window, but leave its size unchanged
+        const float centreRelX = oldArea.getCentreX() / (float) oldDesktop.getWidth();
+        const float centreRelY = oldArea.getCentreY() / (float) oldDesktop.getHeight();
 
-        if (newDesktop != oldDesktop)
-        {
-            // this will re-centre the window, but leave its size unchanged
+        const Rectangle<int> newDesktop (desktop.getDisplays().getMainDisplay().userArea);
 
-            auto centreRelX = oldArea.getCentreX() / (float) oldDesktop.getWidth();
-            auto centreRelY = oldArea.getCentreY() / (float) oldDesktop.getHeight();
+        const int x = ((int) (newDesktop.getWidth()  * centreRelX)) - (oldArea.getWidth()  / 2);
+        const int y = ((int) (newDesktop.getHeight() * centreRelY)) - (oldArea.getHeight() / 2);
 
-            auto x = ((int) (newDesktop.getWidth()  * centreRelX)) - (oldArea.getWidth()  / 2);
-            auto y = ((int) (newDesktop.getHeight() * centreRelY)) - (oldArea.getHeight() / 2);
-
-            component.setBounds (oldArea.withPosition (x, y));
-        }
+        component.setBounds (oldArea.withPosition (x, y));
     }
 
     [view setNeedsDisplay];
@@ -802,8 +798,13 @@ void UIViewComponentPeer::updateScreenBounds()
 
 bool UIViewComponentPeer::contains (Point<int> localPos, bool trueIfInAChildWindow) const
 {
-    if (! ScalingHelpers::scaledScreenPosToUnscaled (component, component.getLocalBounds()).contains (localPos))
-        return false;
+    {
+        Rectangle<int> localBounds =
+            ScalingHelpers::scaledScreenPosToUnscaled (component, component.getLocalBounds());
+
+        if (! localBounds.contains (localPos))
+            return false;
+    }
 
     UIView* v = [view hitTest: convertToCGPoint (localPos)
                     withEvent: nil];
@@ -833,10 +834,16 @@ void UIViewComponentPeer::toFront (bool makeActiveWindow)
 
 void UIViewComponentPeer::toBehind (ComponentPeer* other)
 {
-    if (auto* otherPeer = dynamic_cast<UIViewComponentPeer*> (other))
+    if (UIViewComponentPeer* const otherPeer = dynamic_cast<UIViewComponentPeer*> (other))
     {
         if (isSharedWindow)
+        {
             [[view superview] insertSubview: view belowSubview: otherPeer->view];
+        }
+        else
+        {
+            // don't know how to do this
+        }
     }
     else
     {
@@ -852,46 +859,48 @@ void UIViewComponentPeer::setIcon (const Image& /*newIcon*/)
 //==============================================================================
 static float getMaximumTouchForce (UITouch* touch) noexcept
 {
+   #if defined (__IPHONE_9_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0
     if ([touch respondsToSelector: @selector (maximumPossibleForce)])
         return (float) touch.maximumPossibleForce;
+   #endif
 
+    ignoreUnused (touch);
     return 0.0f;
 }
 
 static float getTouchForce (UITouch* touch) noexcept
 {
+   #if defined (__IPHONE_9_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_9_0
     if ([touch respondsToSelector: @selector (force)])
         return (float) touch.force;
+   #endif
 
+    ignoreUnused (touch);
     return 0.0f;
 }
 
-void UIViewComponentPeer::handleTouches (UIEvent* event, MouseEventFlags mouseEventFlags)
+void UIViewComponentPeer::handleTouches (UIEvent* event, const bool isDown, const bool isUp, bool isCancel)
 {
     NSArray* touches = [[event touchesForView: view] allObjects];
 
     for (unsigned int i = 0; i < [touches count]; ++i)
     {
         UITouch* touch = [touches objectAtIndex: i];
-        auto maximumForce = getMaximumTouchForce (touch);
+        const float maximumForce = getMaximumTouchForce (touch);
 
         if ([touch phase] == UITouchPhaseStationary && maximumForce <= 0)
             continue;
 
-        auto pos = convertToPointFloat ([touch locationInView: view]);
+        CGPoint p = [touch locationInView: view];
+        const Point<float> pos (static_cast<float> (p.x), static_cast<float> (p.y));
         juce_lastMousePos = pos + getBounds (true).getPosition().toFloat();
 
-        auto time = getMouseTime (event);
-        auto touchIndex = currentTouches.getIndexOfTouch (this, touch);
+        const int64 time = getMouseTime (event);
+        const int touchIndex = currentTouches.getIndexOfTouch (this, touch);
 
-        auto modsToSend = ModifierKeys::currentModifiers;
+        ModifierKeys modsToSend (ModifierKeys::currentModifiers);
 
-        auto isUp = [] (MouseEventFlags m)
-        {
-            return m == MouseEventFlags::up || m == MouseEventFlags::upAndCancel;
-        };
-
-        if (mouseEventFlags == MouseEventFlags::down)
+        if (isDown)
         {
             if ([touch phase] != UITouchPhaseBegan)
                 continue;
@@ -906,7 +915,7 @@ void UIViewComponentPeer::handleTouches (UIEvent* event, MouseEventFlags mouseEv
             if (! isValidPeer (this)) // (in case this component was deleted by the event)
                 return;
         }
-        else if (isUp (mouseEventFlags))
+        else if (isUp)
         {
             if (! ([touch phase] == UITouchPhaseEnded || [touch phase] == UITouchPhaseCancelled))
                 continue;
@@ -915,26 +924,26 @@ void UIViewComponentPeer::handleTouches (UIEvent* event, MouseEventFlags mouseEv
             currentTouches.clearTouch (touchIndex);
 
             if (! currentTouches.areAnyTouchesActive())
-                mouseEventFlags = MouseEventFlags::upAndCancel;
+                isCancel = true;
         }
 
-        if (mouseEventFlags == MouseEventFlags::upAndCancel)
+        if (isCancel)
         {
             currentTouches.clearTouch (touchIndex);
             modsToSend = ModifierKeys::currentModifiers = ModifierKeys::currentModifiers.withoutMouseButtons();
         }
 
         // NB: some devices return 0 or 1.0 if pressure is unknown, so we'll clip our value to a believable range:
-        auto pressure = maximumForce > 0 ? jlimit (0.0001f, 0.9999f, getTouchForce (touch) / maximumForce)
-                                         : MouseInputSource::invalidPressure;
+        float pressure = maximumForce > 0 ? jlimit (0.0001f, 0.9999f, getTouchForce (touch) / maximumForce)
+                                          : MouseInputSource::invalidPressure;
 
-        handleMouseEvent (MouseInputSource::InputSourceType::touch,
-                          pos, modsToSend, pressure, MouseInputSource::invalidOrientation, time, { }, touchIndex);
+        handleMouseEvent (MouseInputSource::InputSourceType::touch, pos, modsToSend, pressure,
+                          MouseInputSource::invalidOrientation, time, { }, touchIndex);
 
         if (! isValidPeer (this)) // (in case this component was deleted by the event)
             return;
 
-        if (isUp (mouseEventFlags))
+        if (isUp || isCancel)
         {
             handleMouseEvent (MouseInputSource::InputSourceType::touch, MouseInputSource::offscreenMousePos, modsToSend,
                               MouseInputSource::invalidPressure, MouseInputSource::invalidOrientation, time, {}, touchIndex);
@@ -944,39 +953,6 @@ void UIViewComponentPeer::handleTouches (UIEvent* event, MouseEventFlags mouseEv
         }
     }
 }
-
-#if JUCE_HAS_IOS_POINTER_SUPPORT
-void UIViewComponentPeer::onHover (UIHoverGestureRecognizer* gesture)
-{
-    auto pos = convertToPointFloat ([gesture locationInView: view]);
-    juce_lastMousePos = pos + getBounds (true).getPosition().toFloat();
-
-    handleMouseEvent (MouseInputSource::InputSourceType::touch,
-                      pos,
-                      ModifierKeys::currentModifiers,
-                      MouseInputSource::invalidPressure, MouseInputSource::invalidOrientation,
-                      UIViewComponentPeer::getMouseTime ([[NSProcessInfo processInfo] systemUptime]),
-                      {});
-}
-
-void UIViewComponentPeer::onScroll (UIPanGestureRecognizer* gesture)
-{
-    const auto offset = [gesture translationInView: view];
-    const auto scale = 0.5f / 256.0f;
-
-    MouseWheelDetails details;
-    details.deltaX = scale * (float) offset.x;
-    details.deltaY = scale * (float) offset.y;
-    details.isReversed = false;
-    details.isSmooth = true;
-    details.isInertial = false;
-
-    handleMouseWheel (MouseInputSource::InputSourceType::touch,
-                      convertToPointFloat ([gesture locationInView: view]),
-                      UIViewComponentPeer::getMouseTime ([[NSProcessInfo processInfo] systemUptime]),
-                      details);
-}
-#endif
 
 //==============================================================================
 static UIViewComponentPeer* currentlyFocusedPeer = nullptr;
@@ -1025,13 +1001,18 @@ void UIViewComponentPeer::textInputRequired (Point<int>, TextInputTarget&)
 {
 }
 
+static bool isIOS4_1() noexcept
+{
+    return [[[UIDevice currentDevice] systemVersion] doubleValue] >= 4.1;
+}
+
 static UIKeyboardType getUIKeyboardType (TextInputTarget::VirtualKeyboardType type) noexcept
 {
     switch (type)
     {
         case TextInputTarget::textKeyboard:          return UIKeyboardTypeAlphabet;
-        case TextInputTarget::numericKeyboard:       return UIKeyboardTypeNumbersAndPunctuation;
-        case TextInputTarget::decimalKeyboard:       return UIKeyboardTypeNumbersAndPunctuation;
+        case TextInputTarget::numericKeyboard:       return isIOS4_1() ? UIKeyboardTypeNumberPad  : UIKeyboardTypeNumbersAndPunctuation;
+        case TextInputTarget::decimalKeyboard:       return isIOS4_1() ? UIKeyboardTypeDecimalPad : UIKeyboardTypeNumbersAndPunctuation;
         case TextInputTarget::urlKeyboard:           return UIKeyboardTypeURL;
         case TextInputTarget::emailAddressKeyboard:  return UIKeyboardTypeEmailAddress;
         case TextInputTarget::phoneNumberKeyboard:   return UIKeyboardTypePhonePad;
@@ -1050,23 +1031,20 @@ void UIViewComponentPeer::updateHiddenTextContent (TextInputTarget* target)
 
 BOOL UIViewComponentPeer::textViewReplaceCharacters (Range<int> range, const String& text)
 {
-    if (auto* target = findCurrentTextInputTarget())
+    if (TextInputTarget* const target = findCurrentTextInputTarget())
     {
-        auto currentSelection = target->getHighlightedRegion();
+        const Range<int> currentSelection (target->getHighlightedRegion());
 
         if (range.getLength() == 1 && text.isEmpty()) // (detect backspace)
             if (currentSelection.isEmpty())
                 target->setHighlightedRegion (currentSelection.withStart (currentSelection.getStart() - 1));
-
-        WeakReference<Component> deletionChecker (dynamic_cast<Component*> (target));
 
         if (text == "\r" || text == "\n" || text == "\r\n")
             handleKeyPress (KeyPress::returnKey, text[0]);
         else
             target->insertTextAtCaret (text);
 
-        if (deletionChecker != nullptr)
-            updateHiddenTextContent (target);
+        updateHiddenTextContent (target);
     }
 
     return NO;
@@ -1074,22 +1052,22 @@ BOOL UIViewComponentPeer::textViewReplaceCharacters (Range<int> range, const Str
 
 void UIViewComponentPeer::globalFocusChanged (Component*)
 {
-    if (auto* target = findCurrentTextInputTarget())
+    if (TextInputTarget* const target = findCurrentTextInputTarget())
     {
-        if (auto* comp = dynamic_cast<Component*> (target))
-        {
-            auto pos = component.getLocalPoint (comp, Point<int>());
-            view->hiddenTextView.frame = CGRectMake (pos.x, pos.y, 0, 0);
+        Component* comp = dynamic_cast<Component*> (target);
 
-            updateHiddenTextContent (target);
-            [view->hiddenTextView becomeFirstResponder];
-        }
+        Point<int> pos (component.getLocalPoint (comp, Point<int>()));
+        view->hiddenTextView.frame = CGRectMake (pos.x, pos.y, 0, 0);
+
+        updateHiddenTextContent (target);
+        [view->hiddenTextView becomeFirstResponder];
     }
     else
     {
         [view->hiddenTextView resignFirstResponder];
     }
 }
+
 
 //==============================================================================
 void UIViewComponentPeer::drawRect (CGRect r)
@@ -1103,7 +1081,10 @@ void UIViewComponentPeer::drawRect (CGRect r)
         CGContextClearRect (cg, CGContextGetClipBoundingBox (cg));
 
     CGContextConcatCTM (cg, CGAffineTransformMake (1, 0, 0, -1, 0, getComponent().getHeight()));
-    CoreGraphicsContext g (cg, getComponent().getHeight());
+
+    // NB the CTM on iOS already includes a factor for the display scale, so
+    // we'll tell the context that the scale is 1.0 to avoid it using it twice
+    CoreGraphicsContext g (cg, getComponent().getHeight(), 1.0f);
 
     insideDrawRect = true;
     handlePaint (g);
@@ -1120,9 +1101,9 @@ void Desktop::setKioskComponent (Component* kioskModeComp, bool enableOrDisable,
 {
     displays->refresh();
 
-    if (auto* peer = kioskModeComp->getPeer())
+    if (ComponentPeer* peer = kioskModeComp->getPeer())
     {
-        if (auto* uiViewPeer = dynamic_cast<UIViewComponentPeer*> (peer))
+        if (UIViewComponentPeer* uiViewPeer = dynamic_cast<UIViewComponentPeer*> (peer))
             [uiViewPeer->controller setNeedsStatusBarAppearanceUpdate];
 
         peer->setFullScreen (enableOrDisable);
@@ -1134,18 +1115,21 @@ void Desktop::allowedOrientationsChanged()
     // if the current orientation isn't allowed anymore then switch orientations
     if (! isOrientationEnabled (getCurrentOrientation()))
     {
-        auto newOrientation = [this]
-        {
-            for (auto orientation : { upright, upsideDown, rotatedClockwise, rotatedAntiClockwise })
-                if (isOrientationEnabled (orientation))
-                    return orientation;
+        DisplayOrientation orientations[] = { upright, upsideDown, rotatedClockwise, rotatedAntiClockwise };
 
-            // you need to support at least one orientation
-            jassertfalse;
-            return upright;
-        }();
+        const int n = sizeof (orientations) / sizeof (DisplayOrientation);
+        int i;
 
-        NSNumber* value = [NSNumber numberWithInt: (int) Orientations::convertFromJuce (newOrientation)];
+        for (i = 0; i < n; ++i)
+            if (isOrientationEnabled (orientations[i]))
+                break;
+
+
+        // you need to support at least one orientation
+        jassert (i < n);
+        i = jmin (n - 1, i);
+
+        NSNumber *value = [NSNumber numberWithInt: (int) Orientations::convertFromJuce (orientations[i])];
         [[UIDevice currentDevice] setValue:value forKey:@"orientation"];
         [value release];
     }
@@ -1170,77 +1154,77 @@ ComponentPeer* Component::createNewPeer (int styleFlags, void* windowToAttachTo)
 }
 
 //==============================================================================
-const int KeyPress::spaceKey              = ' ';
-const int KeyPress::returnKey             = 0x0d;
-const int KeyPress::escapeKey             = 0x1b;
-const int KeyPress::backspaceKey          = 0x7f;
-const int KeyPress::leftKey               = 0x1000;
-const int KeyPress::rightKey              = 0x1001;
-const int KeyPress::upKey                 = 0x1002;
-const int KeyPress::downKey               = 0x1003;
-const int KeyPress::pageUpKey             = 0x1004;
-const int KeyPress::pageDownKey           = 0x1005;
-const int KeyPress::endKey                = 0x1006;
-const int KeyPress::homeKey               = 0x1007;
-const int KeyPress::deleteKey             = 0x1008;
-const int KeyPress::insertKey             = -1;
-const int KeyPress::tabKey                = 9;
-const int KeyPress::F1Key                 = 0x2001;
-const int KeyPress::F2Key                 = 0x2002;
-const int KeyPress::F3Key                 = 0x2003;
-const int KeyPress::F4Key                 = 0x2004;
-const int KeyPress::F5Key                 = 0x2005;
-const int KeyPress::F6Key                 = 0x2006;
-const int KeyPress::F7Key                 = 0x2007;
-const int KeyPress::F8Key                 = 0x2008;
-const int KeyPress::F9Key                 = 0x2009;
-const int KeyPress::F10Key                = 0x200a;
-const int KeyPress::F11Key                = 0x200b;
-const int KeyPress::F12Key                = 0x200c;
-const int KeyPress::F13Key                = 0x200d;
-const int KeyPress::F14Key                = 0x200e;
-const int KeyPress::F15Key                = 0x200f;
-const int KeyPress::F16Key                = 0x2010;
-const int KeyPress::F17Key                = 0x2011;
-const int KeyPress::F18Key                = 0x2012;
-const int KeyPress::F19Key                = 0x2013;
-const int KeyPress::F20Key                = 0x2014;
-const int KeyPress::F21Key                = 0x2015;
-const int KeyPress::F22Key                = 0x2016;
-const int KeyPress::F23Key                = 0x2017;
-const int KeyPress::F24Key                = 0x2018;
-const int KeyPress::F25Key                = 0x2019;
-const int KeyPress::F26Key                = 0x201a;
-const int KeyPress::F27Key                = 0x201b;
-const int KeyPress::F28Key                = 0x201c;
-const int KeyPress::F29Key                = 0x201d;
-const int KeyPress::F30Key                = 0x201e;
-const int KeyPress::F31Key                = 0x201f;
-const int KeyPress::F32Key                = 0x2020;
-const int KeyPress::F33Key                = 0x2021;
-const int KeyPress::F34Key                = 0x2022;
-const int KeyPress::F35Key                = 0x2023;
-const int KeyPress::numberPad0            = 0x30020;
-const int KeyPress::numberPad1            = 0x30021;
-const int KeyPress::numberPad2            = 0x30022;
-const int KeyPress::numberPad3            = 0x30023;
-const int KeyPress::numberPad4            = 0x30024;
-const int KeyPress::numberPad5            = 0x30025;
-const int KeyPress::numberPad6            = 0x30026;
-const int KeyPress::numberPad7            = 0x30027;
-const int KeyPress::numberPad8            = 0x30028;
-const int KeyPress::numberPad9            = 0x30029;
-const int KeyPress::numberPadAdd          = 0x3002a;
-const int KeyPress::numberPadSubtract     = 0x3002b;
-const int KeyPress::numberPadMultiply     = 0x3002c;
-const int KeyPress::numberPadDivide       = 0x3002d;
-const int KeyPress::numberPadSeparator    = 0x3002e;
-const int KeyPress::numberPadDecimalPoint = 0x3002f;
-const int KeyPress::numberPadEquals       = 0x30030;
-const int KeyPress::numberPadDelete       = 0x30031;
-const int KeyPress::playKey               = 0x30000;
-const int KeyPress::stopKey               = 0x30001;
-const int KeyPress::fastForwardKey        = 0x30002;
-const int KeyPress::rewindKey             = 0x30003;
+const int KeyPress::spaceKey        = ' ';
+const int KeyPress::returnKey       = 0x0d;
+const int KeyPress::escapeKey       = 0x1b;
+const int KeyPress::backspaceKey    = 0x7f;
+const int KeyPress::leftKey         = 0x1000;
+const int KeyPress::rightKey        = 0x1001;
+const int KeyPress::upKey           = 0x1002;
+const int KeyPress::downKey         = 0x1003;
+const int KeyPress::pageUpKey       = 0x1004;
+const int KeyPress::pageDownKey     = 0x1005;
+const int KeyPress::endKey          = 0x1006;
+const int KeyPress::homeKey         = 0x1007;
+const int KeyPress::deleteKey       = 0x1008;
+const int KeyPress::insertKey       = -1;
+const int KeyPress::tabKey          = 9;
+const int KeyPress::F1Key           = 0x2001;
+const int KeyPress::F2Key           = 0x2002;
+const int KeyPress::F3Key           = 0x2003;
+const int KeyPress::F4Key           = 0x2004;
+const int KeyPress::F5Key           = 0x2005;
+const int KeyPress::F6Key           = 0x2006;
+const int KeyPress::F7Key           = 0x2007;
+const int KeyPress::F8Key           = 0x2008;
+const int KeyPress::F9Key           = 0x2009;
+const int KeyPress::F10Key          = 0x200a;
+const int KeyPress::F11Key          = 0x200b;
+const int KeyPress::F12Key          = 0x200c;
+const int KeyPress::F13Key          = 0x200d;
+const int KeyPress::F14Key          = 0x200e;
+const int KeyPress::F15Key          = 0x200f;
+const int KeyPress::F16Key          = 0x2010;
+const int KeyPress::F17Key          = 0x2011;
+const int KeyPress::F18Key          = 0x2012;
+const int KeyPress::F19Key          = 0x2013;
+const int KeyPress::F20Key          = 0x2014;
+const int KeyPress::F21Key          = 0x2015;
+const int KeyPress::F22Key          = 0x2016;
+const int KeyPress::F23Key          = 0x2017;
+const int KeyPress::F24Key          = 0x2018;
+const int KeyPress::F25Key          = 0x2019;
+const int KeyPress::F26Key          = 0x201a;
+const int KeyPress::F27Key          = 0x201b;
+const int KeyPress::F28Key          = 0x201c;
+const int KeyPress::F29Key          = 0x201d;
+const int KeyPress::F30Key          = 0x201e;
+const int KeyPress::F31Key          = 0x201f;
+const int KeyPress::F32Key          = 0x2020;
+const int KeyPress::F33Key          = 0x2021;
+const int KeyPress::F34Key          = 0x2022;
+const int KeyPress::F35Key          = 0x2023;
+const int KeyPress::numberPad0      = 0x30020;
+const int KeyPress::numberPad1      = 0x30021;
+const int KeyPress::numberPad2      = 0x30022;
+const int KeyPress::numberPad3      = 0x30023;
+const int KeyPress::numberPad4      = 0x30024;
+const int KeyPress::numberPad5      = 0x30025;
+const int KeyPress::numberPad6      = 0x30026;
+const int KeyPress::numberPad7      = 0x30027;
+const int KeyPress::numberPad8      = 0x30028;
+const int KeyPress::numberPad9      = 0x30029;
+const int KeyPress::numberPadAdd            = 0x3002a;
+const int KeyPress::numberPadSubtract       = 0x3002b;
+const int KeyPress::numberPadMultiply       = 0x3002c;
+const int KeyPress::numberPadDivide         = 0x3002d;
+const int KeyPress::numberPadSeparator      = 0x3002e;
+const int KeyPress::numberPadDecimalPoint   = 0x3002f;
+const int KeyPress::numberPadEquals         = 0x30030;
+const int KeyPress::numberPadDelete         = 0x30031;
+const int KeyPress::playKey         = 0x30000;
+const int KeyPress::stopKey         = 0x30001;
+const int KeyPress::fastForwardKey  = 0x30002;
+const int KeyPress::rewindKey       = 0x30003;
 
 } // namespace juce

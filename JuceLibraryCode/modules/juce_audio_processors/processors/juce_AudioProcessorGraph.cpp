@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -196,19 +197,18 @@ private:
     OwnedArray<RenderingOp> renderOps;
 
     //==============================================================================
-    template <typename LambdaType,
-              std::enable_if_t<std::is_rvalue_reference<LambdaType&&>::value, int> = 0>
+    template <typename LambdaType>
     void createOp (LambdaType&& fn)
     {
         struct LambdaOp  : public RenderingOp
         {
-            LambdaOp (LambdaType&& f) : function (std::forward<LambdaType> (f)) {}
+            LambdaOp (LambdaType&& f) : function (std::move (f)) {}
             void perform (const Context& c) override    { function (c); }
 
             LambdaType function;
         };
 
-        renderOps.add (new LambdaOp (std::forward<LambdaType> (fn)));
+        renderOps.add (new LambdaOp (std::move (fn)));
     }
 
     //==============================================================================
@@ -338,8 +338,10 @@ template <typename RenderSequence>
 struct RenderSequenceBuilder
 {
     RenderSequenceBuilder (AudioProcessorGraph& g, RenderSequence& s)
-        : graph (g), sequence (s), orderedNodes (createOrderedNodeList (graph))
+        : graph (g), sequence (s)
     {
+        createOrderedNodeList();
+
         audioBuffers.add (AssignedBuffer::createReadOnlyEmpty()); // first buffer is read-only zeros
         midiBuffers .add (AssignedBuffer::createReadOnlyEmpty());
 
@@ -357,13 +359,12 @@ struct RenderSequenceBuilder
     }
 
     //==============================================================================
-    using Node = AudioProcessorGraph::Node;
     using NodeID = AudioProcessorGraph::NodeID;
 
     AudioProcessorGraph& graph;
     RenderSequence& sequence;
 
-    const Array<Node*> orderedNodes;
+    Array<AudioProcessorGraph::Node*> orderedNodes;
 
     struct AssignedBuffer
     {
@@ -415,58 +416,21 @@ struct RenderSequenceBuilder
     }
 
     //==============================================================================
-    static void getAllParentsOfNode (const Node* child,
-                                     std::unordered_set<Node*>& parents,
-                                     const std::unordered_map<Node*, std::unordered_set<Node*>>& otherParents)
+    void createOrderedNodeList()
     {
-        for (auto&& i : child->inputs)
-        {
-            auto* parentNode = i.otherNode;
-
-            if (parentNode == child)
-                continue;
-
-            if (parents.insert (parentNode).second)
-            {
-                auto parentParents = otherParents.find (parentNode);
-
-                if (parentParents != otherParents.end())
-                {
-                    parents.insert (parentParents->second.begin(), parentParents->second.end());
-                    continue;
-                }
-
-                getAllParentsOfNode (i.otherNode, parents, otherParents);
-            }
-        }
-    }
-
-    static auto createOrderedNodeList (const AudioProcessorGraph& graph)
-    {
-        Array<Node*> result;
-
-        std::unordered_map<Node*, std::unordered_set<Node*>> nodeParents;
-
         for (auto* node : graph.getNodes())
         {
-            int insertionIndex = 0;
+            int j = 0;
 
-            for (; insertionIndex < result.size(); ++insertionIndex)
-            {
-                auto& parents = nodeParents[result.getUnchecked (insertionIndex)];
+            for (; j < orderedNodes.size(); ++j)
+                if (graph.isAnInputTo (*node, *orderedNodes.getUnchecked(j)))
+                  break;
 
-                if (parents.find (node) != parents.end())
-                    break;
-            }
-
-            result.insert (insertionIndex, node);
-            getAllParentsOfNode (node, nodeParents[node], nodeParents);
+            orderedNodes.insert (j, node);
         }
-
-        return result;
     }
 
-    int findBufferForInputAudioChannel (Node& node, const int inputChan,
+    int findBufferForInputAudioChannel (AudioProcessorGraph::Node& node, const int inputChan,
                                         const int ourRenderingIndex, const int maxLatency)
     {
         auto& processor = *node.getProcessor();
@@ -598,7 +562,7 @@ struct RenderSequenceBuilder
         return bufIndex;
     }
 
-    int findBufferForInputMidiChannel (Node& node, int ourRenderingIndex)
+    int findBufferForInputMidiChannel (AudioProcessorGraph::Node& node, int ourRenderingIndex)
     {
         auto& processor = *node.getProcessor();
         auto sources = getSourcesForChannel (node, AudioProcessorGraph::midiChannelIndex);
@@ -689,7 +653,7 @@ struct RenderSequenceBuilder
         return midiBufferToUse;
     }
 
-    void createRenderingOpsForNode (Node& node, const int ourRenderingIndex)
+    void createRenderingOpsForNode (AudioProcessorGraph::Node& node, const int ourRenderingIndex)
     {
         auto& processor = *node.getProcessor();
         auto numIns  = processor.getTotalNumInputChannels();
@@ -734,7 +698,7 @@ struct RenderSequenceBuilder
     }
 
     //==============================================================================
-    Array<AudioProcessorGraph::NodeAndChannel> getSourcesForChannel (Node& node, int inputChannelIndex)
+    Array<AudioProcessorGraph::NodeAndChannel> getSourcesForChannel (AudioProcessorGraph::Node& node, int inputChannelIndex)
     {
         Array<AudioProcessorGraph::NodeAndChannel> results;
         AudioProcessorGraph::NodeAndChannel nc { node.nodeID, inputChannelIndex };
@@ -1005,31 +969,31 @@ AudioProcessorGraph::Node::Ptr AudioProcessorGraph::addNode (std::unique_ptr<Aud
     return n;
 }
 
-AudioProcessorGraph::Node::Ptr AudioProcessorGraph::removeNode (NodeID nodeId)
+bool AudioProcessorGraph::removeNode (NodeID nodeId)
 {
     const ScopedLock sl (getCallbackLock());
 
     for (int i = nodes.size(); --i >= 0;)
     {
-        if (nodes.getUnchecked (i)->nodeID == nodeId)
+        if (nodes.getUnchecked(i)->nodeID == nodeId)
         {
             disconnectNode (nodeId);
-            auto node = nodes.removeAndReturn (i);
+            nodes.remove (i);
             topologyChanged();
-            return node;
+            return true;
         }
     }
 
-    return {};
+    return false;
 }
 
-AudioProcessorGraph::Node::Ptr AudioProcessorGraph::removeNode (Node* node)
+bool AudioProcessorGraph::removeNode (Node* node)
 {
     if (node != nullptr)
         return removeNode (node->nodeID);
 
     jassertfalse;
-    return {};
+    return false;
 }
 
 //==============================================================================
@@ -1302,22 +1266,6 @@ void AudioProcessorGraph::prepareToPlay (double sampleRate, int estimatedSamples
     {
         const ScopedLock sl (getCallbackLock());
         setRateAndBufferSizeDetails (sampleRate, estimatedSamplesPerBlock);
-
-        const auto newPrepareSettings = [&]
-        {
-            PrepareSettings settings;
-            settings.precision  = getProcessingPrecision();
-            settings.sampleRate = sampleRate;
-            settings.blockSize  = estimatedSamplesPerBlock;
-            settings.valid      = true;
-            return settings;
-        }();
-
-        if (prepareSettings != newPrepareSettings)
-        {
-            unprepare();
-            prepareSettings = newPrepareSettings;
-        }
     }
 
     clearRenderingSequence();
@@ -1330,23 +1278,16 @@ bool AudioProcessorGraph::supportsDoublePrecisionProcessing() const
     return true;
 }
 
-void AudioProcessorGraph::unprepare()
-{
-    prepareSettings.valid = false;
-
-    isPrepared = 0;
-
-    for (auto* n : nodes)
-        n->unprepare();
-}
-
 void AudioProcessorGraph::releaseResources()
 {
     const ScopedLock sl (getCallbackLock());
 
     cancelPendingUpdate();
 
-    unprepare();
+    isPrepared = 0;
+
+    for (auto* n : nodes)
+        n->unprepare();
 
     if (renderSequenceFloat != nullptr)
         renderSequenceFloat->releaseBuffers();
@@ -1376,7 +1317,7 @@ void AudioProcessorGraph::setNonRealtime (bool isProcessingNonRealtime) noexcept
 double AudioProcessorGraph::getTailLengthSeconds() const            { return 0; }
 bool AudioProcessorGraph::acceptsMidi() const                       { return true; }
 bool AudioProcessorGraph::producesMidi() const                      { return true; }
-void AudioProcessorGraph::getStateInformation (MemoryBlock&)        {}
+void AudioProcessorGraph::getStateInformation (juce::MemoryBlock&)  {}
 void AudioProcessorGraph::setStateInformation (const void*, int)    {}
 
 template <typename FloatType, typename SequenceType>
@@ -1444,8 +1385,8 @@ const String AudioProcessorGraph::AudioGraphIOProcessor::getName() const
     {
         case audioOutputNode:   return "Audio Output";
         case audioInputNode:    return "Audio Input";
-        case midiOutputNode:    return "MIDI Output";
-        case midiInputNode:     return "MIDI Input";
+        case midiOutputNode:    return "Midi Output";
+        case midiInputNode:     return "Midi Input";
         default:                break;
     }
 
@@ -1455,13 +1396,12 @@ const String AudioProcessorGraph::AudioGraphIOProcessor::getName() const
 void AudioProcessorGraph::AudioGraphIOProcessor::fillInPluginDescription (PluginDescription& d) const
 {
     d.name = getName();
+    d.uid = d.name.hashCode();
     d.category = "I/O devices";
     d.pluginFormatName = "Internal";
     d.manufacturerName = "JUCE";
     d.version = "1.0";
     d.isInstrument = false;
-
-    d.deprecatedUid = d.uniqueId = d.name.hashCode();
 
     d.numInputChannels = getTotalNumInputChannels();
 
@@ -1567,7 +1507,7 @@ void AudioProcessorGraph::AudioGraphIOProcessor::setCurrentProgram (int)        
 const String AudioProcessorGraph::AudioGraphIOProcessor::getProgramName (int)       { return {}; }
 void AudioProcessorGraph::AudioGraphIOProcessor::changeProgramName (int, const String&) {}
 
-void AudioProcessorGraph::AudioGraphIOProcessor::getStateInformation (MemoryBlock&)     {}
+void AudioProcessorGraph::AudioGraphIOProcessor::getStateInformation (juce::MemoryBlock&) {}
 void AudioProcessorGraph::AudioGraphIOProcessor::setStateInformation (const void*, int) {}
 
 void AudioProcessorGraph::AudioGraphIOProcessor::setParentGraph (AudioProcessorGraph* const newGraph)

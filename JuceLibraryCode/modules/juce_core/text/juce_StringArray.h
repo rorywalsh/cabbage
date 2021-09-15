@@ -49,8 +49,7 @@ public:
 
     /** Creates an array containing a list of strings. */
     template <typename... OtherElements>
-    StringArray (StringRef firstValue, OtherElements&&... otherValues)
-        : strings (firstValue, std::forward<OtherElements> (otherValues)...) {}
+    StringArray (StringRef firstValue, OtherElements... otherValues) : strings (firstValue, otherValues...) {}
 
     /** Creates an array containing a list of strings. */
     StringArray (const std::initializer_list<const char*>& strings);
@@ -152,12 +151,6 @@ public:
         the index is in-range.
     */
     String& getReference (int index) noexcept;
-
-    /** Returns a reference to one of the strings in the array.
-        This lets you modify a string in-place in the array, but you must be sure that
-        the index is in-range.
-    */
-    const String& getReference (int index) const noexcept;
 
     /** Returns a pointer to the first String in the array.
         This method is provided for compatibility with standard C++ iteration mechanisms.

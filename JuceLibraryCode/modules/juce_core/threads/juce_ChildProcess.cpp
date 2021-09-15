@@ -96,7 +96,7 @@ public:
     {
         beginTest ("Child Processes");
 
-      #if JUCE_WINDOWS || JUCE_MAC || JUCE_LINUX || JUCE_BSD
+      #if JUCE_WINDOWS || JUCE_MAC || JUCE_LINUX
         ChildProcess p;
 
        #if JUCE_WINDOWS

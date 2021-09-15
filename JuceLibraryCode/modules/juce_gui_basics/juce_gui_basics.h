@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -28,23 +29,23 @@
  The block below describes the properties of this module, and is read by
  the Projucer to automatically generate project code that uses it.
  For details about the syntax and how to create or use a module, see the
- JUCE Module Format.md file.
+ JUCE Module Format.txt file.
 
 
  BEGIN_JUCE_MODULE_DECLARATION
 
   ID:                 juce_gui_basics
   vendor:             juce
-  version:            6.1.0
+  version:            5.4.7
   name:               JUCE GUI core classes
   description:        Basic user-interface components and related classes.
   website:            http://www.juce.com/juce
   license:            GPL/Commercial
-  minimumCppStandard: 14
 
   dependencies:       juce_graphics juce_data_structures
   OSXFrameworks:      Cocoa Carbon QuartzCore
-  iOSFrameworks:      UIKit CoreServices
+  iOSFrameworks:      UIKit MobileCoreServices
+  linuxPackages:      x11 xinerama xext
 
  END_JUCE_MODULE_DECLARATION
 
@@ -156,8 +157,6 @@ namespace juce
     class ApplicationCommandManagerListener;
     class DrawableButton;
     class Displays;
-    class AccessibilityHandler;
-    class KeyboardFocusTraverser;
 
     class FlexBox;
     class Grid;
@@ -170,8 +169,7 @@ namespace juce
 #include "mouse/juce_MouseEvent.h"
 #include "keyboard/juce_KeyPress.h"
 #include "keyboard/juce_KeyListener.h"
-#include "components/juce_ComponentTraverser.h"
-#include "components/juce_FocusTraverser.h"
+#include "keyboard/juce_KeyboardFocusTraverser.h"
 #include "components/juce_ModalComponentManager.h"
 #include "components/juce_ComponentListener.h"
 #include "components/juce_CachedComponentImage.h"
@@ -189,7 +187,6 @@ namespace juce
 #include "mouse/juce_TextDragAndDropTarget.h"
 #include "mouse/juce_TooltipClient.h"
 #include "keyboard/juce_CaretComponent.h"
-#include "keyboard/juce_KeyboardFocusTraverser.h"
 #include "keyboard/juce_SystemClipboard.h"
 #include "keyboard/juce_TextEditorKeyMapper.h"
 #include "keyboard/juce_TextInputTarget.h"
@@ -258,7 +255,6 @@ namespace juce
 #include "misc/juce_JUCESplashScreen.h"
 #include "widgets/juce_TreeView.h"
 #include "windows/juce_TopLevelWindow.h"
-#include "windows/juce_MessageBoxOptions.h"
 #include "windows/juce_AlertWindow.h"
 #include "windows/juce_CallOutBox.h"
 #include "windows/juce_ComponentPeer.h"
@@ -299,66 +295,9 @@ namespace juce
 #include "lookandfeel/juce_LookAndFeel_V3.h"
 #include "lookandfeel/juce_LookAndFeel_V4.h"
 #include "mouse/juce_LassoComponent.h"
-#include "accessibility/interfaces/juce_AccessibilityCellInterface.h"
-#include "accessibility/interfaces/juce_AccessibilityTableInterface.h"
-#include "accessibility/interfaces/juce_AccessibilityTextInterface.h"
-#include "accessibility/interfaces/juce_AccessibilityValueInterface.h"
-#include "accessibility/enums/juce_AccessibilityActions.h"
-#include "accessibility/enums/juce_AccessibilityEvent.h"
-#include "accessibility/enums/juce_AccessibilityRole.h"
-#include "accessibility/juce_AccessibilityState.h"
-#include "accessibility/juce_AccessibilityHandler.h"
 
-#if JUCE_LINUX || JUCE_BSD
- #if JUCE_GUI_BASICS_INCLUDE_XHEADERS
-  // If you're missing these headers, you need to install the libx11-dev package
-  #include <X11/Xlib.h>
-  #include <X11/Xatom.h>
-  #include <X11/Xresource.h>
-  #include <X11/Xutil.h>
-  #include <X11/Xmd.h>
-  #include <X11/keysym.h>
-  #include <X11/XKBlib.h>
-  #include <X11/cursorfont.h>
-  #include <unistd.h>
-
-  #if JUCE_USE_XRANDR
-   // If you're missing this header, you need to install the libxrandr-dev package
-   #include <X11/extensions/Xrandr.h>
-  #endif
-
-  #if JUCE_USE_XINERAMA
-   // If you're missing this header, you need to install the libxinerama-dev package
-   #include <X11/extensions/Xinerama.h>
-  #endif
-
-  #if JUCE_USE_XSHM
-   #include <X11/extensions/XShm.h>
-   #include <sys/shm.h>
-   #include <sys/ipc.h>
-  #endif
-
-  #if JUCE_USE_XRENDER
-   // If you're missing these headers, you need to install the libxrender-dev and libxcomposite-dev packages
-   #include <X11/extensions/Xrender.h>
-   #include <X11/extensions/Xcomposite.h>
-  #endif
-
-  #if JUCE_USE_XCURSOR
-   // If you're missing this header, you need to install the libxcursor-dev package
-   #include <X11/Xcursor/Xcursor.h>
-  #endif
-
-  #undef SIZEOF
-  #undef KeyPress
-
-  #include "native/x11/juce_linux_XWindowSystem.h"
-  #include "native/x11/juce_linux_X11_Symbols.h"
- #endif
-#endif
-
-#if JUCE_GUI_BASICS_INCLUDE_SCOPED_THREAD_DPI_AWARENESS_SETTER && JUCE_WINDOWS
- #include "native/juce_win32_ScopedThreadDPIAwarenessSetter.h"
+#if JUCE_LINUX
+ #include "native/juce_linux_X11.h"
 #endif
 
 #include "layout/juce_FlexItem.h"

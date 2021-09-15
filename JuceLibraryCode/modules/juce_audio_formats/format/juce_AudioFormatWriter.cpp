@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -108,10 +109,8 @@ bool AudioFormatWriter::writeFromAudioReader (AudioFormatReader& reader,
             {
                 void* const b = *bufferChan++;
 
-                constexpr auto scaleFactor = 1.0f / static_cast<float> (0x7fffffff);
-
                 if (isFloatingPoint())
-                    FloatVectorOperations::convertFixedToFloat ((float*) b, (int*) b, scaleFactor, numToDo);
+                    FloatVectorOperations::convertFixedToFloat ((float*) b, (int*) b, 1.0f / 0x7fffffff, numToDo);
                 else
                     convertFloatsToInts ((int*) b, (float*) b, numToDo);
             }
@@ -157,16 +156,16 @@ bool AudioFormatWriter::writeFromFloatArrays (const float* const* channels, int 
     if (isFloatingPoint())
         return write ((const int**) channels, numSamples);
 
-    std::vector<int*> chans (256);
-    std::vector<int> scratch (4096);
+    int* chans[256];
+    int scratch[4096];
 
-    jassert (numSourceChannels < (int) chans.size());
-    const int maxSamples = (int) scratch.size() / numSourceChannels;
+    jassert (numSourceChannels < numElementsInArray (chans));
+    const int maxSamples = (int) (numElementsInArray (scratch) / numSourceChannels);
 
     for (int i = 0; i < numSourceChannels; ++i)
-        chans[(size_t) i] = scratch.data() + (i * maxSamples);
+        chans[i] = scratch + (i * maxSamples);
 
-    chans[(size_t) numSourceChannels] = nullptr;
+    chans[numSourceChannels] = nullptr;
     int startSample = 0;
 
     while (numSamples > 0)
@@ -174,9 +173,9 @@ bool AudioFormatWriter::writeFromFloatArrays (const float* const* channels, int 
         auto numToDo = jmin (numSamples, maxSamples);
 
         for (int i = 0; i < numSourceChannels; ++i)
-            convertFloatsToInts (chans[(size_t) i], channels[(size_t) i] + startSample, numToDo);
+            convertFloatsToInts (chans[i], channels[i] + startSample, numToDo);
 
-        if (! write ((const int**) chans.data(), numToDo))
+        if (! write ((const int**) chans, numToDo))
             return false;
 
         startSample += numToDo;

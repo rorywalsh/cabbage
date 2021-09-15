@@ -97,7 +97,7 @@ void MPEChannelAssigner::noteOff (int noteNumber, int midiChannel)
         return false;
     };
 
-    if (midiChannel >= 0 && midiChannel <= 16)
+    if (midiChannel >= 0 && midiChannel < 17)
     {
         removeNote (midiChannels[midiChannel], noteNumber);
         return;

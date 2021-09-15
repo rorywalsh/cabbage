@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -26,87 +27,75 @@
 namespace juce
 {
 
-JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wundeclared-selector")
-static const auto nsViewFrameChangedSelector = @selector (frameChanged:);
-JUCE_END_IGNORE_WARNINGS_GCC_LIKE
-
-struct NSViewCallbackInterface
+struct NSViewResizeWatcher
 {
-    virtual ~NSViewCallbackInterface() = default;
-    virtual void frameChanged() = 0;
-};
+    NSViewResizeWatcher() : callback (nil) {}
 
-//==============================================================================
-struct NSViewFrameChangeCallbackClass   : public ObjCClass<NSObject>
-{
-    NSViewFrameChangeCallbackClass()
-        : ObjCClass ("JUCE_NSViewCallback_")
+    virtual ~NSViewResizeWatcher()
     {
-        addIvar<NSViewCallbackInterface*> ("target");
-
-        addMethod (nsViewFrameChangedSelector, frameChanged, "v@:@");
-
-        registerClass();
+        // must call detachViewWatcher() first
+        jassert (callback == nil);
     }
 
-    static void setTarget (id self, NSViewCallbackInterface* c)
+    void attachViewWatcher (NSView* view)
     {
-        object_setInstanceVariable (self, "target", c);
-    }
+        static ViewFrameChangeCallbackClass cls;
+        callback = [cls.createInstance() init];
+        ViewFrameChangeCallbackClass::setTarget (callback, this);
 
-private:
-    static void frameChanged (id self, SEL, NSNotification*)
-    {
-        if (auto* target = getIvar<NSViewCallbackInterface*> (self, "target"))
-            target->frameChanged();
-    }
-
-    JUCE_DECLARE_NON_COPYABLE (NSViewFrameChangeCallbackClass)
-};
-
-//==============================================================================
-class NSViewFrameWatcher : private NSViewCallbackInterface
-{
-public:
-    NSViewFrameWatcher (NSView* viewToWatch, std::function<void()> viewResizedIn)
-        : viewResized (std::move (viewResizedIn)), callback (makeCallbackForView (viewToWatch))
-    {
-    }
-
-    ~NSViewFrameWatcher() override
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver: callback];
-        [callback release];
-        callback = nil;
-    }
-
-    JUCE_DECLARE_NON_COPYABLE (NSViewFrameWatcher)
-    JUCE_DECLARE_NON_MOVEABLE (NSViewFrameWatcher)
-
-private:
-    id makeCallbackForView (NSView* view)
-    {
-        static NSViewFrameChangeCallbackClass cls;
-        auto* result = [cls.createInstance() init];
-        NSViewFrameChangeCallbackClass::setTarget (result, this);
-
-        [[NSNotificationCenter defaultCenter]  addObserver: result
-                                                  selector: nsViewFrameChangedSelector
+        [[NSNotificationCenter defaultCenter]  addObserver: callback
+                                                  selector: @selector (frameChanged:)
                                                       name: NSViewFrameDidChangeNotification
                                                     object: view];
-
-        return result;
     }
 
-    void frameChanged() override { viewResized(); }
+    void detachViewWatcher()
+    {
+        if (callback != nil)
+        {
+            [[NSNotificationCenter defaultCenter] removeObserver: callback];
+            [callback release];
+            callback = nil;
+        }
+    }
 
-    std::function<void()> viewResized;
+    virtual void viewResized() = 0;
+
+private:
     id callback;
+
+    //==============================================================================
+    struct ViewFrameChangeCallbackClass   : public ObjCClass<NSObject>
+    {
+        ViewFrameChangeCallbackClass()  : ObjCClass<NSObject> ("JUCE_NSViewCallback_")
+        {
+            addIvar<NSViewResizeWatcher*> ("target");
+            addMethod (@selector (frameChanged:),  frameChanged, "v@:@");
+            registerClass();
+        }
+
+        static void setTarget (id self, NSViewResizeWatcher* c)
+        {
+            object_setInstanceVariable (self, "target", c);
+        }
+
+    private:
+        static void frameChanged (id self, SEL, NSNotification*)
+        {
+            if (auto* target = getIvar<NSViewResizeWatcher*> (self, "target"))
+                target->viewResized();
+        }
+
+        JUCE_DECLARE_NON_COPYABLE (ViewFrameChangeCallbackClass)
+    };
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (NSViewResizeWatcher)
 };
 
 //==============================================================================
 class NSViewAttachment  : public ReferenceCountedObject,
-                          public ComponentMovementWatcher
+                          public ComponentMovementWatcher,
+                          private NSViewResizeWatcher
 {
 public:
     NSViewAttachment (NSView* v, Component& comp)
@@ -120,10 +109,13 @@ public:
 
         if (owner.isShowing())
             componentPeerChanged();
+
+        attachViewWatcher (view);
     }
 
     ~NSViewAttachment() override
     {
+        detachViewWatcher();
         removeFromParent();
         [view release];
     }
@@ -133,8 +125,9 @@ public:
         ComponentMovementWatcher::componentMovedOrResized (comp, wasMoved, wasResized);
 
         // The ComponentMovementWatcher version of this method avoids calling
-        // us when the top-level comp is resized, but if we're listening to the
-        // top-level comp we still want the NSView to track its size.
+        // us when the top-level comp is resized, but for an NSView we need to know this
+        // because with inverted coordinates, we need to update the position even if the
+        // top-left pos hasn't changed
         if (comp.isOnDesktop() && wasResized)
             componentMovedOrResized (wasMoved, wasResized);
     }
@@ -143,10 +136,9 @@ public:
     {
         if (auto* peer = owner.getTopLevelComponent()->getPeer())
         {
-            const auto newArea = peer->getAreaCoveredBy (owner);
-
-            if (convertToRectInt ([view frame]) != newArea)
-                [view setFrame: makeNSRect (newArea)];
+            auto r = makeNSRect (peer->getAreaCoveredBy (owner));
+            r.origin.y = [[view superview] frame].size.height - (r.origin.y + r.size.height);
+            [view setFrame: r];
         }
     }
 
@@ -178,6 +170,11 @@ public:
         componentPeerChanged();
     }
 
+    void viewResized() override
+    {
+        owner.childBoundsChanged (nullptr);
+    }
+
     void updateAlpha()
     {
         [view setAlphaValue: (CGFloat) owner.getAlpha()];
@@ -190,7 +187,6 @@ public:
 private:
     Component& owner;
     ComponentPeer* currentPeer;
-    NSViewFrameWatcher frameWatcher { view, [this] { owner.childBoundsChanged (nullptr); } };
 
     void removeFromParent()
     {
@@ -203,8 +199,8 @@ private:
 };
 
 //==============================================================================
-NSViewComponent::NSViewComponent() = default;
-NSViewComponent::~NSViewComponent() = default;
+NSViewComponent::NSViewComponent() {}
+NSViewComponent::~NSViewComponent() {}
 
 void NSViewComponent::setView (void* view)
 {
@@ -212,11 +208,12 @@ void NSViewComponent::setView (void* view)
     {
         auto old = attachment;
 
-        attachment = nullptr;
+        ReferenceCountedObject* object = nullptr;
 
         if (view != nullptr)
-            attachment = attachViewToComponent (*this, view);
+            object = attachViewToComponent (*this, view);
 
+        attachment = object;
         old = nullptr;
     }
 }
@@ -231,15 +228,8 @@ void NSViewComponent::resizeToFitView()
 {
     if (attachment != nullptr)
     {
-        auto* view = static_cast<NSViewAttachment*> (attachment.get())->view;
-        auto r = [view frame];
+        auto r = [static_cast<NSViewAttachment*> (attachment.get())->view frame];
         setBounds (Rectangle<int> ((int) r.size.width, (int) r.size.height));
-
-        if (auto* peer = getTopLevelComponent()->getPeer())
-        {
-            const auto position = peer->getAreaCoveredBy (*this).getPosition();
-            [view setFrameOrigin: convertToCGPoint (position)];
-        }
     }
 }
 

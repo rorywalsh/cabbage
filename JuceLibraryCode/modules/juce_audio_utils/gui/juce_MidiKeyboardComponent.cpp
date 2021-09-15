@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -220,7 +221,7 @@ Range<float> MidiKeyboardComponent::getKeyPosition (int midiNoteNumber, float ta
     auto octave = midiNoteNumber / 12;
     auto note   = midiNoteNumber % 12;
 
-    auto start = (float) octave * 7.0f * targetKeyWidth + notePos[note] * targetKeyWidth;
+    auto start = octave * 7.0f * targetKeyWidth + notePos[note] * targetKeyWidth;
     auto width = MidiMessage::isMidiNoteBlack (note) ? blackNoteWidthRatio * targetKeyWidth : targetKeyWidth;
 
     return { start, start + width };
@@ -248,8 +249,8 @@ Rectangle<float> MidiKeyboardComponent::getRectangleForKey (int note) const
         switch (orientation)
         {
             case horizontalKeyboard:            return { x, 0, w, blackNoteLength };
-            case verticalKeyboardFacingLeft:    return { (float) getWidth() - blackNoteLength, x, blackNoteLength, w };
-            case verticalKeyboardFacingRight:   return { 0, (float) getHeight() - x - w, blackNoteLength, w };
+            case verticalKeyboardFacingLeft:    return { getWidth() - blackNoteLength, x, blackNoteLength, w };
+            case verticalKeyboardFacingRight:   return { 0, getHeight() - x - w, blackNoteLength, w };
             default:                            jassertfalse; break;
         }
     }
@@ -259,7 +260,7 @@ Rectangle<float> MidiKeyboardComponent::getRectangleForKey (int note) const
         {
             case horizontalKeyboard:            return { x, 0, w, (float) getHeight() };
             case verticalKeyboardFacingLeft:    return { 0, x, (float) getWidth(), w };
-            case verticalKeyboardFacingRight:   return { 0, (float) getHeight() - x - w, (float) getWidth(), w };
+            case verticalKeyboardFacingRight:   return { 0, getHeight() - x - w, (float) getWidth(), w };
             default:                            jassertfalse; break;
         }
     }
@@ -295,9 +296,9 @@ int MidiKeyboardComponent::xyToNote (Point<float> pos, float& mousePositionVeloc
         p = { p.y, p.x };
 
         if (orientation == verticalKeyboardFacingLeft)
-            p = { p.x, (float) getWidth() - p.y };
+            p = { p.x, getWidth() - p.y };
         else
-            p = { (float) getHeight() - p.x, p.y };
+            p = { getHeight() - p.x, p.y };
     }
 
     return remappedXYToNote (p + Point<float> (xOffset, 0), mousePositionVelocity);
@@ -382,8 +383,8 @@ void MidiKeyboardComponent::paint (Graphics& g)
 
     if (orientation == verticalKeyboardFacingLeft)
     {
-        x1 = (float) width - 1.0f;
-        x2 = (float) width - 5.0f;
+        x1 = width - 1.0f;
+        x2 = width - 5.0f;
     }
     else if (orientation == verticalKeyboardFacingRight)
         x2 = 5.0f;
@@ -400,7 +401,7 @@ void MidiKeyboardComponent::paint (Graphics& g)
         switch (orientation)
         {
             case horizontalKeyboard:            g.fillRect (0.0f, 0.0f, x, 5.0f); break;
-            case verticalKeyboardFacingLeft:    g.fillRect ((float) width - 5.0f, 0.0f, 5.0f, x); break;
+            case verticalKeyboardFacingLeft:    g.fillRect (width - 5.0f, 0.0f, 5.0f, x); break;
             case verticalKeyboardFacingRight:   g.fillRect (0.0f, 0.0f, 5.0f, x); break;
             default: break;
         }
@@ -412,9 +413,9 @@ void MidiKeyboardComponent::paint (Graphics& g)
 
         switch (orientation)
         {
-            case horizontalKeyboard:            g.fillRect (0.0f, (float) height - 1.0f, x, 1.0f); break;
+            case horizontalKeyboard:            g.fillRect (0.0f, height - 1.0f, x, 1.0f); break;
             case verticalKeyboardFacingLeft:    g.fillRect (0.0f, 0.0f, 1.0f, x); break;
-            case verticalKeyboardFacingRight:   g.fillRect ((float) width - 1.0f, 0.0f, 1.0f, x); break;
+            case verticalKeyboardFacingRight:   g.fillRect (width - 1.0f, 0.0f, 1.0f, x); break;
             default: break;
         }
     }
@@ -561,7 +562,7 @@ void MidiKeyboardComponent::drawUpDownButton (Graphics& g, int w, int h,
     g.setColour (findColour (upDownButtonArrowColourId)
                   .withAlpha (buttonDown ? 1.0f : (mouseOver ? 0.6f : 0.4f)));
 
-    g.fillPath (path, path.getTransformToScaleToFit (1.0f, 1.0f, (float) w - 2.0f, (float) h - 2.0f, true));
+    g.fillPath (path, path.getTransformToScaleToFit (1.0f, 1.0f, w - 2.0f, h - 2.0f, true));
 }
 
 void MidiKeyboardComponent::setBlackNoteLengthProportion (float ratio) noexcept
@@ -578,7 +579,7 @@ void MidiKeyboardComponent::setBlackNoteLengthProportion (float ratio) noexcept
 float MidiKeyboardComponent::getBlackNoteLength() const noexcept
 {
     auto whiteNoteLength = orientation == horizontalKeyboard ? getHeight() : getWidth();
-    return (float) whiteNoteLength * blackNoteLengthRatio;
+    return whiteNoteLength * blackNoteLengthRatio;
 }
 
 void MidiKeyboardComponent::setBlackNoteWidthProportion (float ratio) noexcept
@@ -608,7 +609,7 @@ void MidiKeyboardComponent::resized()
         {
             auto kx1 = getKeyPos (rangeStart).getStart();
 
-            if (kx2 - kx1 <= (float) w)
+            if (kx2 - kx1 <= w)
             {
                 firstKey = (float) rangeStart;
                 sendChangeMessage();
@@ -645,7 +646,7 @@ void MidiKeyboardComponent::resized()
 
             float mousePositionVelocity;
             auto spaceAvailable = w;
-            auto lastStartKey = remappedXYToNote ({ endOfLastKey - (float) spaceAvailable, 0 }, mousePositionVelocity) + 1;
+            auto lastStartKey = remappedXYToNote ({ endOfLastKey - spaceAvailable, 0 }, mousePositionVelocity) + 1;
 
             if (lastStartKey >= 0 && ((int) firstKey) > lastStartKey)
             {
@@ -660,7 +661,7 @@ void MidiKeyboardComponent::resized()
             firstKey = (float) rangeStart;
         }
 
-        scrollUp->setVisible (canScroll && getKeyPos (rangeEnd).getStart() > (float) w);
+        scrollUp->setVisible (canScroll && getKeyPos (rangeEnd).getStart() > w);
         repaint();
     }
 }
@@ -707,6 +708,16 @@ void MidiKeyboardComponent::updateNoteUnderMouse (const MouseEvent& e, bool isDo
     updateNoteUnderMouse (e.getEventRelativeTo (this).position, isDown, e.source.getIndex());
 }
 
+void MidiKeyboardComponent::mouseDownStartedOnKey (int midiNoteNumber, float eventVelocity)
+{
+    state.noteOn (midiChannel, midiNoteNumber, eventVelocity);
+}
+
+void MidiKeyboardComponent::mouseDownFinishedOnKey (int midiNoteNumber, float eventVelocity)
+{
+    state.noteOff (midiChannel, midiNoteNumber, eventVelocity);
+}
+
 void MidiKeyboardComponent::updateNoteUnderMouse (Point<float> pos, bool isDown, int fingerNum)
 {
     float mousePositionVelocity = 0.0f;
@@ -731,12 +742,12 @@ void MidiKeyboardComponent::updateNoteUnderMouse (Point<float> pos, bool isDown,
                 mouseDownNotes.set (fingerNum, -1);
 
                 if (! mouseDownNotes.contains (oldNoteDown))
-                    state.noteOff (midiChannel, oldNoteDown, eventVelocity);
+                    mouseDownFinishedOnKey(oldNoteDown, eventVelocity);
             }
 
             if (newNote >= 0 && ! mouseDownNotes.contains (newNote))
             {
-                state.noteOn (midiChannel, newNote, eventVelocity);
+                mouseDownStartedOnKey(newNote, eventVelocity);
                 mouseDownNotes.set (fingerNum, newNote);
             }
         }
@@ -746,7 +757,7 @@ void MidiKeyboardComponent::updateNoteUnderMouse (Point<float> pos, bool isDown,
         mouseDownNotes.set (fingerNum, -1);
 
         if (! mouseDownNotes.contains (oldNoteDown))
-            state.noteOff (midiChannel, oldNoteDown, eventVelocity);
+            mouseDownFinishedOnKey(oldNoteDown, eventVelocity);
     }
 }
 
@@ -779,13 +790,14 @@ void MidiKeyboardComponent::mouseDown (const MouseEvent& e)
 
 void MidiKeyboardComponent::mouseUp (const MouseEvent& e)
 {
-    updateNoteUnderMouse (e, false);
 
     float mousePositionVelocity;
     auto note = xyToNote (e.position, mousePositionVelocity);
 
     if (note >= 0)
         mouseUpOnKey (note, e);
+
+    updateNoteUnderMouse (e, false);
 }
 
 void MidiKeyboardComponent::mouseEnter (const MouseEvent& e)
@@ -824,6 +836,11 @@ void MidiKeyboardComponent::timerCallback()
             }
         }
     }
+}
+
+const Array<int>& MidiKeyboardComponent::getMouseDownNotes()
+{
+    return mouseDownNotes;
 }
 
 //==============================================================================
@@ -888,7 +905,6 @@ bool MidiKeyboardComponent::keyStateChanged (bool /*isKeyDown*/)
             }
         }
     }
-
     return keyPressUsed;
 }
 
@@ -899,7 +915,72 @@ bool MidiKeyboardComponent::keyPressed (const KeyPress& key)
 
 void MidiKeyboardComponent::focusLost (FocusChangeType)
 {
-    resetAnyKeysInUse();
+    // TODO: Restore
+    //    resetAnyKeysInUse();
+}
+
+//==============================================================================
+StickyMidiKeyboardComponent::StickyMidiKeyboardComponent (MidiKeyboardState& s,
+                                                          const Orientation o)
+: MidiKeyboardComponent(s, o)
+{
+    // restores current state to stucked keys
+    for (int i = 128; --i >= 0;)
+        if (s.isNoteOn(1, i))
+            stuckKeys.setBit(i);
+        else
+            stuckKeys.clearBit(i);
+}
+
+StickyMidiKeyboardComponent::~StickyMidiKeyboardComponent()
+{
+    /* Empty */
+}
+
+void StickyMidiKeyboardComponent::mouseUpOnKey (int /**midiNoteNumber*/, const MouseEvent& e)
+{
+    /** Note: We don't use the midiNoteNumber figured out by the caller by examining
+     the mouse event location. Instead, we are interested in what note was under
+     the released finger according to the maintained mouseDownNotes array. On iOS
+     these will usually be the same, but might not be in case of a finger being
+     very quickly dragged from the edge of one note to the adjacent note and then
+     released, resulting in a mouseDown followed by a mouseUp event with no
+     intervening drag event to update the mouseDownNotes model.
+     */
+    const Array<int>& mouseDownNotes = getMouseDownNotes();
+    int oldNoteDown = mouseDownNotes.getUnchecked (e.source.getIndex());
+    jassert(oldNoteDown != -1);
+
+    long keyDownCount = std::count (mouseDownNotes.begin(), mouseDownNotes.end(), oldNoteDown);
+    jassert(keyDownCount > 0);
+    
+    /* Stick or unstick the key in case the last mouse button on the key is about to 
+       be released. Note: on iOS, keyDownCount may be zero, because the touchesEnded which
+       triggers mouseUp may have a location which is different than the last 
+       touchesBegan/touchesMoved event. */
+    if (keyDownCount == 1)
+    {
+        if (stuckKeys.getBitRangeAsInt(oldNoteDown,1) != 0) {
+            stuckKeys.clearBit(oldNoteDown);
+        } else {
+            stuckKeys.setBit(oldNoteDown);
+        }
+    }
+}
+
+void StickyMidiKeyboardComponent::mouseDownStartedOnKey (int midiNoteNumber, float velocity)
+{
+    /* No need to set the key state if key is already stuck from before */
+    if (stuckKeys.getBitRangeAsInt(midiNoteNumber,1) == 0)
+        MidiKeyboardComponent::mouseDownStartedOnKey (midiNoteNumber, velocity);
+}
+
+void StickyMidiKeyboardComponent::mouseDownFinishedOnKey (int midiNoteNumber, float velocity)
+{
+    /* Only release the key if it isn't stuck. Note the logic assumes we get here after
+       mouseUpOnKey has been called to correctly set or remove stuck keys. */
+    if (stuckKeys.getBitRangeAsInt(midiNoteNumber,1) == 0)
+        MidiKeyboardComponent::mouseDownFinishedOnKey(midiNoteNumber, velocity);
 }
 
 } // namespace juce

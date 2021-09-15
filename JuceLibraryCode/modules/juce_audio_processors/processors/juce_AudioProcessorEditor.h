@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -26,6 +27,7 @@
 namespace juce
 {
 
+class AudioProcessor;
 class AudioProcessorEditorListener;
 
 //==============================================================================
@@ -53,12 +55,12 @@ public:
     /** Destructor. */
     ~AudioProcessorEditor() override;
 
+
     //==============================================================================
     /** The AudioProcessor that this editor represents. */
     AudioProcessor& processor;
 
     /** Returns a pointer to the processor that this editor represents.
-
         This method is here to support legacy code, but it's easier to just use the
         AudioProcessorEditor::processor member variable directly to get this object.
     */
@@ -75,7 +77,6 @@ public:
 
     /** Some types of plugin can call this to suggest that the control for a particular
         parameter should be highlighted.
-
         Currently only AAX plugins will call this, and implementing it is optional.
     */
     virtual void setControlHighlight (ParameterControlHighlightInfo);
@@ -116,45 +117,57 @@ public:
     */
     virtual void setScaleFactor (float newScale);
 
+    /** Used by the getCustomLabel() method. */
+    enum CustomHostLabel
+    {
+        AnalyzeLabel,
+        MonoModeLabel,
+        MultiInputModeLabel,
+        ClipByClipLabel,
+        WholeFileLabel,
+        ClipNameLabel,
+        ProgressLabel,
+        PlugInFileNameLabel,
+        PreviewLabel,
+        RenderLabel,
+        BypassLabel
+    };
+
+    /** Some types of plugin can call this to set different naming for their own UI labels.
+     Currently only AAX (AudioSuite) plugins will call this, and implementing it is optional.
+     */
+    virtual String getCustomLabel (CustomHostLabel buttonLabel);
+
     //==============================================================================
-    /** Sets whether the editor is resizable by the host and/or user.
+    /** Marks the host's editor window as resizable
 
-        @param allowHostToResize            whether the editor's parent window can be resized
-                                            by the host. Even if this is false, you can still
-                                            resize your window yourself by calling setBounds
-                                            (for example, when a user clicks on a button in
-                                            your editor to drop out a panel) which will bypass
-                                            any resizable/constraints checks.
-        @param useBottomRightCornerResizer  if this is true, a ResizableCornerComponent will be
-                                            added to the editor's bottom-right to allow the user
-                                            to resize the editor regardless of the value of
-                                            `allowHostToResize`.
-
+        @param allowHostToResize   whether the editor's parent window can be resized
+                                   by the user or the host. Even if this is false, you
+                                   can still resize your window yourself by calling
+                                   setBounds (for example, when a user clicks on a button
+                                   in your editor to drop out a panel) which will bypass any
+                                   resizable/constraints checks. If you are using
+                                   your own corner resizer than this will also bypass
+                                   any checks.
+        @param useBottomRightCornerResizer
         @see setResizeLimits, isResizable
     */
     void setResizable (bool allowHostToResize, bool useBottomRightCornerResizer);
 
-    /** Returns true if the host is allowed to resize the editor's parent window.
+    /** Returns true if the host is allowed to resize editor's parent window
 
         @see setResizable
     */
-    bool isResizable() const noexcept      { return resizableByHost; }
+    bool isResizable() const noexcept      { return resizable; }
 
     /** This sets the maximum and minimum sizes for the window.
 
         If the window's current size is outside these limits, it will be resized to
         make sure it's within them.
 
-        If you pass in a different minimum and maximum size, this will mark the editor
-        as resizable by the host.
-
         A direct call to setBounds() will bypass any constraint checks, but when the
         window is dragged by the user or resized by other indirect means, the constrainer
         will limit the numbers involved.
-
-        Note that if you have set a custom constrainer for this editor then this will have
-        no effect, and if you have removed the constrainer with `setConstrainer (nullptr);`
-        then this will re-add the default constrainer with the new limits.
 
         @see setResizable
     */
@@ -163,8 +176,8 @@ public:
                           int newMaximumWidth,
                           int newMaximumHeight) noexcept;
 
-    /** Returns the bounds constrainer object that this window is using.
 
+    /** Returns the bounds constrainer object that this window is using.
         You can access this to change its properties.
     */
     ComponentBoundsConstrainer* getConstrainer() noexcept           { return constrainer; }
@@ -185,30 +198,11 @@ public:
      */
     void setBoundsConstrained (Rectangle<int> newBounds);
 
-    /** Gets a context object, if one is available.
-
-        Returns nullptr if the host does not provide any information that the editor
-        can query.
-
-        The returned pointer is non-owning, so do not attempt to free it.
-    */
-    AudioProcessorEditorHostContext* getHostContext() const noexcept          { return hostContext; }
-
-    /** Sets a context object that can be queried to find information that the host
-        makes available to the plugin.
-
-        You will only need to call this function if you are implementing a plugin host.
-    */
-    void setHostContext (AudioProcessorEditorHostContext* context) noexcept   { hostContext = context; }
-
-    /** The ResizableCornerComponent which is currently being used by this editor,
-        or nullptr if it does not have one.
-    */
     std::unique_ptr<ResizableCornerComponent> resizableCorner;
 
 private:
     //==============================================================================
-    struct AudioProcessorEditorListener : public ComponentListener
+    struct AudioProcessorEditorListener : ComponentListener
     {
         AudioProcessorEditorListener (AudioProcessorEditor& e) : ed (e) {}
 
@@ -231,10 +225,9 @@ private:
 
     //==============================================================================
     std::unique_ptr<AudioProcessorEditorListener> resizeListener;
-    bool resizableByHost = false;
+    bool resizable;
     ComponentBoundsConstrainer defaultConstrainer;
-    ComponentBoundsConstrainer* constrainer = nullptr;
-    AudioProcessorEditorHostContext* hostContext = nullptr;
+    ComponentBoundsConstrainer* constrainer = {};
     Component::SafePointer<Component> splashScreen;
     AffineTransform hostScaleTransform;
 

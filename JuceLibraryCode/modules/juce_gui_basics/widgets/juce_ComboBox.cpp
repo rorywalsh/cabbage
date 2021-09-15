@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -424,7 +425,6 @@ void ComboBox::lookAndFeelChanged()
 
     label->onTextChange = [this] { triggerAsyncUpdate(); };
     label->addMouseListener (this, false);
-    label->setAccessible (labelEditableState == labelIsEditable);
 
     label->setColour (Label::backgroundColourId, Colours::transparentBlack);
     label->setColour (Label::textColourId, findColour (ComboBox::textColourId));
@@ -482,11 +482,14 @@ void ComboBox::showPopupIfNotActive()
     {
         menuActive = true;
 
+        SafePointer<ComboBox> safePointer (this);
+
         // as this method was triggered by a mouse event, the same mouse event may have
         // exited the modal state of other popups currently on the screen. By calling
         // showPopup asynchronously, we are giving the other popups a chance to properly
         // close themselves
-        MessageManager::callAsync ([safePointer = SafePointer<ComboBox> { this }]() mutable { if (safePointer != nullptr) safePointer->showPopup(); });
+        MessageManager::callAsync ([safePointer]() mutable { if (safePointer != nullptr) safePointer->showPopup(); });
+
         repaint();
     }
 }
@@ -638,45 +641,5 @@ void ComboBox::clear (const bool dontSendChange)                                
 void ComboBox::setSelectedItemIndex (const int index, const bool dontSendChange) { setSelectedItemIndex (index, dontSendChange ? dontSendNotification : sendNotification); }
 void ComboBox::setSelectedId (const int newItemId, const bool dontSendChange)    { setSelectedId (newItemId, dontSendChange ? dontSendNotification : sendNotification); }
 void ComboBox::setText (const String& newText, const bool dontSendChange)        { setText (newText, dontSendChange ? dontSendNotification : sendNotification); }
-
-//==============================================================================
-class ComboBoxAccessibilityHandler  : public AccessibilityHandler
-{
-public:
-    explicit ComboBoxAccessibilityHandler (ComboBox& comboBoxToWrap)
-        : AccessibilityHandler (comboBoxToWrap,
-                                AccessibilityRole::comboBox,
-                                getAccessibilityActions (comboBoxToWrap)),
-          comboBox (comboBoxToWrap)
-    {
-    }
-
-    AccessibleState getCurrentState() const override
-    {
-        auto state = AccessibilityHandler::getCurrentState().withExpandable();
-
-        return comboBox.isPopupActive() ? state.withExpanded() : state.withCollapsed();
-    }
-
-    String getTitle() const override  { return comboBox.getText(); }
-    String getHelp() const override   { return comboBox.getTooltip(); }
-
-private:
-    static AccessibilityActions getAccessibilityActions (ComboBox& comboBox)
-    {
-        return AccessibilityActions().addAction (AccessibilityActionType::press,    [&comboBox] { comboBox.showPopup(); })
-                                     .addAction (AccessibilityActionType::showMenu, [&comboBox] { comboBox.showPopup(); });
-    }
-
-    ComboBox& comboBox;
-
-    //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComboBoxAccessibilityHandler)
-};
-
-std::unique_ptr<AccessibilityHandler> ComboBox::createAccessibilityHandler()
-{
-    return std::make_unique<ComboBoxAccessibilityHandler> (*this);
-}
 
 } // namespace juce

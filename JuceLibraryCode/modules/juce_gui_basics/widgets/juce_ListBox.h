@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -85,12 +86,6 @@ public:
     */
     virtual Component* refreshComponentForRow (int rowNumber, bool isRowSelected,
                                                Component* existingComponentToUpdate);
-
-    /** This can be overridden to return a name for the specified row.
-
-        By default this will just return a string containing the row number.
-    */
-    virtual String getNameForRow (int rowNumber);
 
     /** This can be overridden to react to the user clicking on a row.
         @see listBoxItemDoubleClicked
@@ -497,7 +492,7 @@ public:
         The component will be deleted when setHeaderComponent() is called with a
         different component, or when the listbox is deleted.
     */
-    void setHeaderComponent (std::unique_ptr<Component> newHeaderComponent);
+    void setHeaderComponent (Component* newHeaderComponent);
 
     /** Returns whatever header component was set with setHeaderComponent(). */
     Component* getHeaderComponent() const noexcept      { return headerComponent.get(); }
@@ -588,8 +583,6 @@ private:
     int lastRowSelected = -1;
     bool multipleSelection = false, alwaysFlipSelection = false, hasDoneInitialUpdate = false, selectOnMouseDown = true;
 
-    std::unique_ptr<AccessibilityHandler> createAccessibilityHandler() override;
-    bool hasAccessibleHeaderComponent() const;
     void selectRowInternal (int rowNumber, bool dontScrollToShowThisRow,
                             bool deselectOthersFirst, bool isMouseClick);
 

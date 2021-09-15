@@ -138,7 +138,7 @@ String SystemStats::getStackBacktrace()
 {
     String result;
 
-   #if JUCE_ANDROID || JUCE_MINGW || JUCE_WASM
+   #if JUCE_ANDROID || JUCE_MINGW
     jassertfalse; // sorry, not implemented yet!
 
    #elif JUCE_WINDOWS
@@ -174,7 +174,7 @@ String SystemStats::getStackBacktrace()
 
    #else
     void* stack[128];
-    auto frames = backtrace (stack, numElementsInArray (stack));
+    int frames = backtrace (stack, numElementsInArray (stack));
     char** frameStrings = backtrace_symbols (stack, frames);
 
     for (int i = 0; i < frames; ++i)
@@ -187,8 +187,6 @@ String SystemStats::getStackBacktrace()
 }
 
 //==============================================================================
-#if ! JUCE_WASM
-
 static SystemStats::CrashHandlerFunction globalCrashHandler = nullptr;
 
 #if JUCE_WINDOWS
@@ -224,8 +222,6 @@ void SystemStats::setApplicationCrashHandler (CrashHandlerFunction handler)
     }
    #endif
 }
-
-#endif
 
 bool SystemStats::isRunningInAppExtensionSandbox() noexcept
 {

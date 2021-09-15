@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -28,19 +29,18 @@
  The block below describes the properties of this module, and is read by
  the Projucer to automatically generate project code that uses it.
  For details about the syntax and how to create or use a module, see the
- JUCE Module Format.md file.
+ JUCE Module Format.txt file.
 
 
  BEGIN_JUCE_MODULE_DECLARATION
 
   ID:                 juce_audio_processors
   vendor:             juce
-  version:            6.1.0
+  version:            5.4.7
   name:               JUCE audio processor classes
   description:        Classes for loading and playing VST, AU, LADSPA, or internally-generated audio processors.
   website:            http://www.juce.com/juce
   license:            GPL/Commercial
-  minimumCppStandard: 14
 
   dependencies:       juce_gui_extra, juce_audio_basics
   OSXFrameworks:      CoreAudio CoreMIDI AudioToolbox
@@ -56,6 +56,14 @@
 
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <juce_audio_basics/juce_audio_basics.h>
+
+#if JucePlugin_EnhancedAudioSuite
+ #define RANDOM_AUDIO_ACCESS_SUPPORTED 1
+#if ! JUCE_MODULE_AVAILABLE_juce_audio_formats
+#error To compile random access support plug-in formats, you need to add the juce_audio_formats module!
+#endif
+#include <juce_audio_formats/juce_audio_formats.h>
+#endif
 
 //==============================================================================
 /** Config: JUCE_PLUGINHOST_VST
@@ -94,16 +102,18 @@
  #define JUCE_PLUGINHOST_LADSPA 0
 #endif
 
-/** Config: JUCE_CUSTOM_VST3_SDK
-    If enabled, the embedded VST3 SDK in JUCE will not be added to the project and instead you should
-    add the path to your custom VST3 SDK to the project's header search paths. Most users shouldn't
-    need to enable this and should just use the version of the SDK included with JUCE.
-*/
-#ifndef JUCE_CUSTOM_VST3_SDK
- #define JUCE_CUSTOM_VST3_SDK 0
+ /** Config: JUCE_PLUGINHOST_ARA
+     Enables the ARA support in the VST3 audio plugin hosting classes.
+
+     @see VSTPluginFormat, VST3PluginFormat, AudioPluginFormat, AudioPluginFormatManager, JUCE_PLUGINHOST_VST, JUCE_PLUGINHOST_AU
+    
+    AudioUnit support coming soon!
+ */
+#ifndef JUCE_PLUGINHOST_ARA
+ #define JUCE_PLUGINHOST_ARA 0
 #endif
 
-#if ! (JUCE_PLUGINHOST_AU || JUCE_PLUGINHOST_VST || JUCE_PLUGINHOST_VST3 || JUCE_PLUGINHOST_LADSPA)
+#if ! (JUCE_PLUGINHOST_AU || JUCE_PLUGINHOST_VST || JUCE_PLUGINHOST_VST3 || JUCE_PLUGINHOST_LADSPA|| JUCE_PLUGINHOST_ARA)
 // #error "You need to set either the JUCE_PLUGINHOST_AU and/or JUCE_PLUGINHOST_VST and/or JUCE_PLUGINHOST_VST3 and/or JUCE_PLUGINHOST_LADSPA flags if you're using this module!"
 #endif
 
@@ -116,13 +126,9 @@
 #endif
 
 //==============================================================================
-#include "utilities/juce_VSTCallbackHandler.h"
-#include "utilities/juce_VST3ClientExtensions.h"
-#include "utilities/juce_ExtensionsVisitor.h"
-#include "processors/juce_AudioProcessorParameter.h"
-#include "processors/juce_AudioProcessorEditorHostContext.h"
 #include "processors/juce_AudioProcessorEditor.h"
 #include "processors/juce_AudioProcessorListener.h"
+#include "processors/juce_AudioProcessorParameter.h"
 #include "processors/juce_AudioProcessorParameterGroup.h"
 #include "processors/juce_AudioProcessor.h"
 #include "processors/juce_PluginDescription.h"
@@ -145,6 +151,4 @@
 #include "utilities/juce_AudioParameterInt.h"
 #include "utilities/juce_AudioParameterBool.h"
 #include "utilities/juce_AudioParameterChoice.h"
-#include "utilities/juce_ParameterAttachments.h"
 #include "utilities/juce_AudioProcessorValueTreeState.h"
-#include "utilities/juce_PluginHostType.h"

@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -30,11 +31,7 @@ class TableListBox::RowComp   : public Component,
                                 public TooltipClient
 {
 public:
-    RowComp (TableListBox& tlb) noexcept
-        : owner (tlb)
-    {
-        setFocusContainerType (FocusContainerType::focusContainer);
-    }
+    RowComp (TableListBox& tlb) noexcept  : owner (tlb) {}
 
     void paint (Graphics& g) override
     {
@@ -50,7 +47,7 @@ public:
             {
                 if (columnComponents[i] == nullptr)
                 {
-                    auto columnRect = headerComp.getColumnPosition (i).withHeight (getHeight());
+                    auto columnRect = headerComp.getColumnPosition(i).withHeight (getHeight());
 
                     if (columnRect.getX() >= clipBounds.getRight())
                         break;
@@ -223,80 +220,7 @@ public:
         return columnComponents [owner.getHeader().getIndexOfColumnId (columnId, true)];
     }
 
-    std::unique_ptr<AccessibilityHandler> createAccessibilityHandler() override
-    {
-        return std::make_unique<RowAccessibilityHandler> (*this);
-    }
-
-    //==============================================================================
-    class RowAccessibilityHandler  : public AccessibilityHandler
-    {
-    public:
-        RowAccessibilityHandler (RowComp& rowComp)
-            : AccessibilityHandler (rowComp,
-                                    AccessibilityRole::row,
-                                    getListRowAccessibilityActions (rowComp),
-                                    { std::make_unique<RowComponentCellInterface> (*this) }),
-              rowComponent (rowComp)
-        {
-        }
-
-        String getTitle() const override
-        {
-            if (auto* m = rowComponent.owner.ListBox::model)
-                return m->getNameForRow (rowComponent.row);
-
-            return {};
-        }
-
-        String getHelp() const override  { return rowComponent.getTooltip(); }
-
-        AccessibleState getCurrentState() const override
-        {
-            if (auto* m = rowComponent.owner.getModel())
-                if (rowComponent.row >= m->getNumRows())
-                    return AccessibleState().withIgnored();
-
-            auto state = AccessibilityHandler::getCurrentState();
-
-            if (rowComponent.owner.multipleSelection)
-                state = state.withMultiSelectable();
-            else
-                state = state.withSelectable();
-
-            if (rowComponent.isSelected)
-                return state.withSelected();
-
-            return state;
-        }
-
-        class RowComponentCellInterface  : public AccessibilityCellInterface
-        {
-        public:
-            RowComponentCellInterface (RowAccessibilityHandler& handler)
-                : owner (handler)
-            {
-            }
-
-            int getColumnIndex() const override      { return 0; }
-            int getColumnSpan() const override       { return 1; }
-
-            int getRowIndex() const override         { return owner.rowComponent.row; }
-            int getRowSpan() const override          { return 1; }
-
-            int getDisclosureLevel() const override  { return 0; }
-
-            const AccessibilityHandler* getTableHandler() const override  { return owner.rowComponent.owner.getAccessibilityHandler(); }
-
-        private:
-            RowAccessibilityHandler& owner;
-        };
-
-    private:
-        RowComp& rowComponent;
-    };
-
-    //==============================================================================
+private:
     TableListBox& owner;
     OwnedArray<Component> columnComponents;
     int row = -1;
@@ -348,7 +272,7 @@ TableListBox::TableListBox (const String& name, TableListBoxModel* const m)
 {
     ListBox::model = this;
 
-    setHeader (std::make_unique<Header> (*this));
+    setHeader (new Header (*this));
 }
 
 TableListBox::~TableListBox()
@@ -364,23 +288,19 @@ void TableListBox::setModel (TableListBoxModel* newModel)
     }
 }
 
-void TableListBox::setHeader (std::unique_ptr<TableHeaderComponent> newHeader)
+void TableListBox::setHeader (TableHeaderComponent* newHeader)
 {
-    if (newHeader == nullptr)
-    {
-        jassertfalse; // you need to supply a real header for a table!
-        return;
-    }
+    jassert (newHeader != nullptr); // you need to supply a real header for a table!
 
     Rectangle<int> newBounds (100, 28);
 
     if (header != nullptr)
         newBounds = header->getBounds();
 
-    header = newHeader.get();
+    header = newHeader;
     header->setBounds (newBounds);
 
-    setHeaderComponent (std::move (newHeader));
+    setHeaderComponent (header);
 
     header->addListener (this);
 }
@@ -542,56 +462,6 @@ void TableListBox::updateColumnComponents() const
     for (int i = firstRow + getNumRowsOnScreen() + 2; --i >= firstRow;)
         if (auto* rowComp = dynamic_cast<RowComp*> (getComponentForRowNumber (i)))
             rowComp->resized();
-}
-
-std::unique_ptr<AccessibilityHandler> TableListBox::createAccessibilityHandler()
-{
-    class TableInterface  : public AccessibilityTableInterface
-    {
-    public:
-        explicit TableInterface (TableListBox& tableListBoxToWrap)
-            : tableListBox (tableListBoxToWrap)
-        {
-        }
-
-        int getNumRows() const override
-        {
-            if (auto* tableModel = tableListBox.getModel())
-                return tableModel->getNumRows();
-
-            return 0;
-        }
-
-        int getNumColumns() const override
-        {
-            return tableListBox.getHeader().getNumColumns (false);
-        }
-
-        const AccessibilityHandler* getCellHandler (int row, int column) const override
-        {
-            if (isPositiveAndBelow (row, getNumRows()))
-            {
-                if (isPositiveAndBelow (column, getNumColumns()))
-                    if (auto* cellComponent = tableListBox.getCellComponent (tableListBox.getHeader().getColumnIdOfIndex (column, false), row))
-                        return cellComponent->getAccessibilityHandler();
-
-                if (auto* rowComp = tableListBox.getComponentForRowNumber (row))
-                    return rowComp->getAccessibilityHandler();
-            }
-
-            return nullptr;
-        }
-
-    private:
-        TableListBox& tableListBox;
-
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TableInterface)
-    };
-
-    return std::make_unique<AccessibilityHandler> (*this,
-                                                   AccessibilityRole::list,
-                                                   AccessibilityActions{},
-                                                   AccessibilityHandler::Interfaces { std::make_unique<TableInterface> (*this) });
 }
 
 //==============================================================================

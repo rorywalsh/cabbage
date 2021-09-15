@@ -399,7 +399,7 @@ public:
 
         jassert (currentCallback == nullptr);
 
-        if (bufferSizeSamples < 8 || bufferSizeSamples > 32768)
+        if (bufferSizeSamples < 8 || bufferSizeSamples > 16384)
             shouldUsePreferredSize = true;
 
         if (asioObject == nullptr)
@@ -415,8 +415,11 @@ public:
         auto err = asioObject->getChannels (&totalNumInputChans, &totalNumOutputChans);
         jassert (err == ASE_OK);
 
+        bufferSizeSamples = readBufferSizes (bufferSizeSamples);
+
         auto sampleRate = sr;
         currentSampleRate = sampleRate;
+        currentBlockSizeSamples = bufferSizeSamples;
         currentChansOut.clear();
         currentChansIn.clear();
 
@@ -438,7 +441,6 @@ public:
         buffersCreated = false;
 
         setSampleRate (sampleRate);
-        currentBlockSizeSamples = bufferSizeSamples = readBufferSizes (bufferSizeSamples);
 
         // (need to get this again in case a sample rate change affected the channel count)
         err = asioObject->getChannels (&totalNumInputChans, &totalNumOutputChans);
@@ -502,7 +504,7 @@ public:
                 {
                     inBuffers[n] = ioBufferSpace + (currentBlockSizeSamples * n);
 
-                    ASIOChannelInfo channelInfo = {};
+                    ASIOChannelInfo channelInfo = { 0 };
                     channelInfo.channel = i;
                     channelInfo.isInput = 1;
                     asioObject->getChannelInfo (&channelInfo);
@@ -524,7 +526,7 @@ public:
                 {
                     outBuffers[n] = ioBufferSpace + (currentBlockSizeSamples * (numActiveInputChans + n));
 
-                    ASIOChannelInfo channelInfo = {};
+                    ASIOChannelInfo channelInfo = { 0 };
                     channelInfo.channel = i;
                     channelInfo.isInput = 0;
                     asioObject->getChannelInfo (&channelInfo);
@@ -671,10 +673,10 @@ public:
             lastCallback->audioDeviceStopped();
     }
 
-    String getLastError() override           { return error; }
-    bool hasControlPanel() const override    { return true; }
+    String getLastError()           { return error; }
+    bool hasControlPanel() const    { return true; }
 
-    bool showControlPanel() override
+    bool showControlPanel()
     {
         JUCE_ASIO_LOG ("showing control panel");
 
@@ -765,7 +767,7 @@ private:
 
     bool deviceIsOpen = false, isStarted = false, buffersCreated = false;
     std::atomic<bool> calledback { false };
-    bool postOutput = true, needToReset = false;
+    bool littleEndian = false, postOutput = true, needToReset = false;
     bool insideControlPanelModalLoop = false;
     bool shouldUsePreferredSize = false;
     int xruns = 0;
@@ -783,7 +785,7 @@ private:
 
     String getChannelName (int index, bool isInput) const
     {
-        ASIOChannelInfo channelInfo = {};
+        ASIOChannelInfo channelInfo = { 0 };
         channelInfo.channel = index;
         channelInfo.isInput = isInput ? 1 : 0;
         asioObject->getChannelInfo (&channelInfo);
@@ -819,15 +821,7 @@ private:
 
     long refreshBufferSizes()
     {
-        const auto err = asioObject->getBufferSize (&minBufferSize, &maxBufferSize, &preferredBufferSize, &bufferGranularity);
-
-        if (err == ASE_OK)
-        {
-            bufferSizes.clear();
-            addBufferSizes (minBufferSize, maxBufferSize, preferredBufferSize, bufferGranularity);
-        }
-
-        return err;
+        return asioObject->getBufferSize (&minBufferSize, &maxBufferSize, &preferredBufferSize, &bufferGranularity);
     }
 
     int readBufferSizes (int bufferSizeSamples)
@@ -1071,7 +1065,7 @@ private:
 
         for (int i = 0; i < totalNumOutputChans; ++i)
         {
-            ASIOChannelInfo channelInfo = {};
+            ASIOChannelInfo channelInfo = { 0 };
             channelInfo.channel = i;
             channelInfo.isInput = 0;
             asioObject->getChannelInfo (&channelInfo);
@@ -1220,6 +1214,8 @@ private:
 
                     if ((err = refreshBufferSizes()) == 0)
                     {
+                        addBufferSizes (minBufferSize, maxBufferSize, preferredBufferSize, bufferGranularity);
+
                         auto currentRate = getSampleRate();
 
                         if (currentRate < 1.0 || currentRate > 192001.0)
@@ -1642,6 +1638,11 @@ void sendASIODeviceChangeToListeners (ASIOAudioIODeviceType* type)
 {
     if (type != nullptr)
         type->sendDeviceChangeToListeners();
+}
+
+AudioIODeviceType* AudioIODeviceType::createAudioIODeviceType_ASIO()
+{
+    return new ASIOAudioIODeviceType();
 }
 
 } // namespace juce

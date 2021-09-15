@@ -20,7 +20,7 @@
   ==============================================================================
 */
 
-#if ! DOXYGEN && (JUCE_MAC || JUCE_IOS)
+#if JUCE_MAC || JUCE_IOS
  // Annoyingly we can only forward-declare a typedef by forward-declaring the
  // aliased type
  #if __has_attribute(objc_bridge)
@@ -307,13 +307,13 @@ public:
         Note that there's also an isNotEmpty() method to help write readable code.
         @see containsNonWhitespaceChars()
     */
-    bool isEmpty() const noexcept                           { return text.isEmpty(); }
+    inline bool isEmpty() const noexcept                    { return text.isEmpty(); }
 
     /** Returns true if the string contains at least one character.
         Note that there's also an isEmpty() method to help write readable code.
         @see containsNonWhitespaceChars()
     */
-    bool isNotEmpty() const noexcept                        { return ! text.isEmpty(); }
+    inline bool isNotEmpty() const noexcept                 { return ! text.isEmpty(); }
 
     /** Resets this string to be empty. */
     void clear() noexcept;
@@ -919,35 +919,6 @@ public:
     template <typename... Args>
     static String formatted (const String& formatStr, Args... args)      { return formattedRaw (formatStr.toRawUTF8(), args...); }
 
-    /** Returns an iterator pointing at the beginning of the string. */
-    CharPointerType begin() const                                        { return getCharPointer(); }
-
-    /** Returns an iterator pointing at the terminating null of the string.
-
-        Note that this has to find the terminating null before returning it, so prefer to
-        call this once before looping and then reuse the result, rather than calling 'end()'
-        each time through the loop.
-
-        @code
-        String str = ...;
-
-        // BEST
-        for (auto c : str)
-            DBG (c);
-
-        // GOOD
-        for (auto ptr = str.begin(), end = str.end(); ptr != end; ++ptr)
-            DBG (*ptr);
-
-        std::for_each (str.begin(), str.end(), [] (juce_wchar c) { DBG (c); });
-
-        // BAD
-        for (auto ptr = str.begin(); ptr != str.end(); ++ptr)
-            DBG (*ptr);
-        @endcode
-    */
-    CharPointerType end() const                                          { return begin().findTerminatingNull(); }
-
     //==============================================================================
     // Numeric conversions..
 
@@ -1049,8 +1020,7 @@ public:
         This will look for a value at the end of the string.
         e.g. for "321 xyz654" it will return 654; for "2 3 4" it'll return 4.
 
-        If the string ends with a hyphen followed by numeric characters, the
-        return value will be negative.
+        Negative numbers are not handled, so "xyz-5" returns 5.
 
         @see getIntValue
     */
@@ -1134,6 +1104,94 @@ public:
 
         auto numDigitsBeforePoint = (int) std::ceil (std::log10 (number < 0 ? -number : number));
 
+       #if JUCE_PROJUCER_LIVE_BUILD
+        auto doubleNumber = (double) number;
+        constexpr int bufferSize = 311;
+        char buffer[bufferSize];
+        auto* ptr = &(buffer[0]);
+        auto* const safeEnd = ptr + (bufferSize - 1);
+        auto numSigFigsParsed = 0;
+
+        auto writeToBuffer = [safeEnd] (char* destination, char data)
+        {
+            *destination++ = data;
+
+            if (destination == safeEnd)
+            {
+                *destination = '\0';
+                return true;
+            }
+
+            return false;
+        };
+
+        auto truncateOrRound = [numberOfSignificantFigures] (double fractional, int sigFigsParsed)
+        {
+            return (sigFigsParsed == numberOfSignificantFigures - 1) ? (int) std::round (fractional)
+                                                                     : (int) fractional;
+        };
+
+        if (doubleNumber < 0)
+        {
+            doubleNumber *= -1;
+            *ptr++ = '-';
+        }
+
+        if (numDigitsBeforePoint > 0)
+        {
+            doubleNumber /= std::pow (10.0, numDigitsBeforePoint);
+
+            while (numDigitsBeforePoint-- > 0)
+            {
+                if (numSigFigsParsed == numberOfSignificantFigures)
+                {
+                    if (writeToBuffer (ptr++, '0'))
+                        return buffer;
+
+                    continue;
+                }
+
+                doubleNumber *= 10;
+                auto digit = truncateOrRound (doubleNumber, numSigFigsParsed);
+
+                if (writeToBuffer (ptr++, (char) ('0' + digit)))
+                    return buffer;
+
+                ++numSigFigsParsed;
+                doubleNumber -= digit;
+            }
+
+            if (numSigFigsParsed == numberOfSignificantFigures)
+            {
+                *ptr++ = '\0';
+                return buffer;
+            }
+        }
+        else
+        {
+            *ptr++ = '0';
+        }
+
+        if (writeToBuffer (ptr++, '.'))
+            return buffer;
+
+        while (numSigFigsParsed < numberOfSignificantFigures)
+        {
+            doubleNumber *= 10;
+            auto digit = truncateOrRound (doubleNumber, numSigFigsParsed);
+
+            if (writeToBuffer (ptr++, (char) ('0' + digit)))
+                return buffer;
+
+            if (numSigFigsParsed != 0 || digit != 0)
+                ++numSigFigsParsed;
+
+            doubleNumber -= digit;
+        }
+
+        *ptr++ = '\0';
+        return buffer;
+       #else
         auto shift = numberOfSignificantFigures - numDigitsBeforePoint;
         auto factor = std::pow (10.0, shift);
         auto rounded = std::round (number * factor) / factor;
@@ -1141,6 +1199,7 @@ public:
         std::stringstream ss;
         ss << std::fixed << std::setprecision (std::max (shift, 0)) << rounded;
         return ss.str();
+       #endif
     }
 
     //==============================================================================
@@ -1150,7 +1209,7 @@ public:
         that is returned must not be stored anywhere, as it can be deleted whenever the
         string changes.
     */
-    CharPointerType getCharPointer() const noexcept             { return text; }
+    inline CharPointerType getCharPointer() const noexcept      { return text; }
 
     /** Returns a pointer to a UTF-8 version of this string.
 

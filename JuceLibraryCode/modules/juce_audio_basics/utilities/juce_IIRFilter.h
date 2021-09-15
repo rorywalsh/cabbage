@@ -153,8 +153,7 @@ public:
 
     @tags{Audio}
 */
-template <typename Mutex>
-class JUCE_API  IIRFilterBase
+class JUCE_API  IIRFilter
 {
 public:
     //==============================================================================
@@ -164,10 +163,13 @@ public:
         you process with it. Use the setCoefficients() method to turn it into the
         type of filter needed.
     */
-    IIRFilterBase() noexcept;
+    IIRFilter() noexcept;
 
     /** Creates a copy of another filter. */
-    IIRFilterBase (const IIRFilterBase&) noexcept;
+    IIRFilter (const IIRFilter&) noexcept;
+
+    /** Destructor. */
+    ~IIRFilter() noexcept;
 
     //==============================================================================
     /** Clears the filter so that any incoming data passes through unchanged. */
@@ -200,7 +202,7 @@ public:
 
 protected:
     //==============================================================================
-    Mutex processLock;
+    SpinLock processLock;
     IIRCoefficients coefficients;
     float v1 = 0, v2 = 0;
     bool active = false;
@@ -210,45 +212,6 @@ protected:
     IIRFilter& operator= (const IIRFilter&) = delete;
 
     JUCE_LEAK_DETECTOR (IIRFilter)
-};
-
-/**
-    An IIR filter that can perform low, high, or band-pass filtering on an
-    audio signal, and which attempts to implement basic thread-safety.
-
-    This class synchronises calls to some of its member functions, making it
-    safe (although not necessarily real-time-safe) to reset the filter or
-    apply new coefficients while the filter is processing on another thread.
-    In most cases this style of internal locking should not be used, and you
-    should attempt to provide thread-safety at a higher level in your program.
-    If you can guarantee that calls to the filter will be synchronised externally,
-    you could consider switching to SingleThreadedIIRFilter instead.
-
-    @see SingleThreadedIIRFilter, IIRCoefficient, IIRFilterAudioSource
-
-    @tags{Audio}
-*/
-class IIRFilter : public IIRFilterBase<SpinLock>
-{
-public:
-    using IIRFilterBase::IIRFilterBase;
-};
-
-/**
-    An IIR filter that can perform low, high, or band-pass filtering on an
-    audio signal, with no thread-safety guarantees.
-
-    You should use this class if you need an IIR filter, and don't plan to
-    call its member functions from multiple threads at once.
-
-    @see IIRFilter, IIRCoefficient, IIRFilterAudioSource
-
-    @tags{Audio}
-*/
-class SingleThreadedIIRFilter : public IIRFilterBase<DummyCriticalSection>
-{
-public:
-    using IIRFilterBase::IIRFilterBase;
 };
 
 } // namespace juce

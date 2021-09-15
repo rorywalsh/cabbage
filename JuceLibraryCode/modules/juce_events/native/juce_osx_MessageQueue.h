@@ -40,14 +40,15 @@ public:
         zerostruct (sourceContext); // (can't use "= { 0 }" on this object because it's typedef'ed as a C struct)
         sourceContext.info = this;
         sourceContext.perform = runLoopSourceCallback;
-        runLoopSource.reset (CFRunLoopSourceCreate (kCFAllocatorDefault, 1, &sourceContext));
-        CFRunLoopAddSource (runLoop, runLoopSource.get(), kCFRunLoopCommonModes);
+        runLoopSource = CFRunLoopSourceCreate (kCFAllocatorDefault, 1, &sourceContext);
+        CFRunLoopAddSource (runLoop, runLoopSource, kCFRunLoopCommonModes);
     }
 
     ~MessageQueue() noexcept
     {
-        CFRunLoopRemoveSource (runLoop, runLoopSource.get(), kCFRunLoopCommonModes);
-        CFRunLoopSourceInvalidate (runLoopSource.get());
+        CFRunLoopRemoveSource (runLoop, runLoopSource, kCFRunLoopCommonModes);
+        CFRunLoopSourceInvalidate (runLoopSource);
+        CFRelease (runLoopSource);
     }
 
     void post (MessageManager::MessageBase* const message)
@@ -59,11 +60,11 @@ public:
 private:
     ReferenceCountedArray<MessageManager::MessageBase, CriticalSection> messages;
     CFRunLoopRef runLoop;
-    CFUniquePtr<CFRunLoopSourceRef> runLoopSource;
+    CFRunLoopSourceRef runLoopSource;
 
     void wakeUp() noexcept
     {
-        CFRunLoopSourceSignal (runLoopSource.get());
+        CFRunLoopSourceSignal (runLoopSource);
         CFRunLoopWakeUp (runLoop);
     }
 

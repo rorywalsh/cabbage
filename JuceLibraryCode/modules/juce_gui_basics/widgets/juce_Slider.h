@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -605,10 +606,10 @@ public:
     std::function<void()> onDragEnd;
 
     /** You can assign a lambda that will be used to convert textual values to the slider's normalised position. */
-    std::function<double (const String&)> valueFromTextFunction;
+    std::function<double(const String&)> valueFromTextFunction;
 
     /** You can assign a lambda that will be used to convert the slider's normalised position to a textual value. */
-    std::function<String (double)> textFromValueFunction;
+    std::function<String(double)> textFromValueFunction;
 
     //==============================================================================
     /** This lets you choose whether double-clicking or single-clicking with a specified
@@ -700,9 +701,6 @@ public:
         By default it's enabled.
     */
     void setScrollWheelEnabled (bool enabled);
-
-    /** Returns true if the scroll wheel can move the slider. */
-    bool isScrollWheelEnabled() const noexcept;
 
     /** Returns a number to indicate which thumb is currently being dragged by the mouse.
 
@@ -887,27 +885,6 @@ public:
     };
 
     //==============================================================================
-    /** An RAII class for sending slider listener drag messages.
-
-        This is useful if you are programatically updating the slider's value and want
-        to imitate a mouse event, for example in a custom AccessibilityHandler.
-
-        @see Slider::Listener
-    */
-    class JUCE_API  ScopedDragNotification
-    {
-    public:
-        explicit ScopedDragNotification (Slider&);
-        ~ScopedDragNotification();
-
-    private:
-        Slider& sliderBeingDragged;
-
-        JUCE_DECLARE_NON_MOVEABLE (ScopedDragNotification)
-        JUCE_DECLARE_NON_COPYABLE (ScopedDragNotification)
-    };
-
-    //==============================================================================
     /** This abstract base class is implemented by LookAndFeel classes to provide
         slider drawing functionality.
     */
@@ -997,7 +974,6 @@ private:
     JUCE_PUBLIC_IN_DLL_BUILD (class Pimpl)
     std::unique_ptr<Pimpl> pimpl;
 
-    std::unique_ptr<AccessibilityHandler> createAccessibilityHandler() override;
     void init (SliderStyle, TextEntryBoxPosition);
 
    #if JUCE_CATCH_DEPRECATED_CODE_MISUSE

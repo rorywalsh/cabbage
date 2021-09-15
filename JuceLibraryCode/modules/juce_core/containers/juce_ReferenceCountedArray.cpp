@@ -158,9 +158,7 @@ private:
             {
                 parent.expect (o != nullptr);
                 parent.expect (o != this);
-
-                if (o != nullptr)
-                    parent.expectEquals (o->data, 374);
+                parent.expectEquals (o->data, 374);
             }
         }
 

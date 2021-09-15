@@ -25,22 +25,21 @@
  The block below describes the properties of this module, and is read by
  the Projucer to automatically generate project code that uses it.
  For details about the syntax and how to create or use a module, see the
- JUCE Module Format.md file.
+ JUCE Module Format.txt file.
 
 
  BEGIN_JUCE_MODULE_DECLARATION
 
   ID:                 juce_core
   vendor:             juce
-  version:            6.1.0
+  version:            5.4.7
   name:               JUCE core classes
   description:        The essential set of basic JUCE classes, as required by all the other JUCE modules. Includes text, container, memory, threading and i/o functionality.
   website:            http://www.juce.com/juce
   license:            ISC
-  minimumCppStandard: 14
 
   dependencies:
-  OSXFrameworks:      Cocoa Foundation IOKit
+  OSXFrameworks:      Cocoa IOKit
   iOSFrameworks:      Foundation
   linuxLibs:          rt dl pthread
   mingwLibs:          uuid wsock32 wininet version ole32 ws2_32 oleaut32 imm32 comdlg32 shlwapi rpcrt4 winmm
@@ -178,13 +177,6 @@
  #define JUCE_STRICT_REFCOUNTEDPOINTER 0
 #endif
 
-/** Config: JUCE_ENABLE_ALLOCATION_HOOKS
-    If enabled, this will add global allocation functions with built-in assertions, which may
-    help when debugging allocations in unit tests.
-*/
-#ifndef JUCE_ENABLE_ALLOCATION_HOOKS
- #define JUCE_ENABLE_ALLOCATION_HOOKS 0
-#endif
 
 #ifndef JUCE_STRING_UTF_TYPE
  #define JUCE_STRING_UTF_TYPE 8
@@ -225,14 +217,19 @@ namespace juce
 #include "memory/juce_Atomic.h"
 #include "text/juce_CharacterFunctions.h"
 
-JUCE_BEGIN_IGNORE_WARNINGS_MSVC (4514 4996)
+#if JUCE_MSVC
+ #pragma warning (push)
+ #pragma warning (disable: 4514 4996)
+#endif
 
 #include "text/juce_CharPointer_UTF8.h"
 #include "text/juce_CharPointer_UTF16.h"
 #include "text/juce_CharPointer_UTF32.h"
 #include "text/juce_CharPointer_ASCII.h"
 
-JUCE_END_IGNORE_WARNINGS_MSVC
+#if JUCE_MSVC
+ #pragma warning (pop)
+#endif
 
 #include "text/juce_String.h"
 #include "text/juce_StringRef.h"
@@ -273,7 +270,6 @@ JUCE_END_IGNORE_WARNINGS_MSVC
 #include "text/juce_TextDiff.h"
 #include "text/juce_LocalisedStrings.h"
 #include "text/juce_Base64.h"
-#include "misc/juce_Functional.h"
 #include "misc/juce_Result.h"
 #include "misc/juce_Uuid.h"
 #include "misc/juce_ConsoleApplication.h"
@@ -292,7 +288,6 @@ JUCE_END_IGNORE_WARNINGS_MSVC
 #include "streams/juce_InputSource.h"
 #include "files/juce_File.h"
 #include "files/juce_DirectoryIterator.h"
-#include "files/juce_RangedDirectoryIterator.h"
 #include "files/juce_FileInputStream.h"
 #include "files/juce_FileOutputStream.h"
 #include "files/juce_FileSearchPath.h"
@@ -339,10 +334,9 @@ JUCE_END_IGNORE_WARNINGS_MSVC
 #include "zip/juce_ZipFile.h"
 #include "containers/juce_PropertySet.h"
 #include "memory/juce_SharedResourcePointer.h"
-#include "memory/juce_AllocationHooks.h"
 
 #if JUCE_CORE_INCLUDE_OBJC_HELPERS && (JUCE_MAC || JUCE_IOS)
- #include "native/juce_mac_ObjCHelpers.h"
+ #include "native/juce_osx_ObjCHelpers.h"
 #endif
 
 #if JUCE_CORE_INCLUDE_COM_SMART_PTR && JUCE_WINDOWS
@@ -381,9 +375,11 @@ namespace juce
 }
 #endif
 
-JUCE_END_IGNORE_WARNINGS_MSVC
+#if JUCE_MSVC
+ #pragma warning (pop)
 
-// In DLL builds, need to disable this warnings for other modules
-#if defined (JUCE_DLL_BUILD) || defined (JUCE_DLL)
- JUCE_IGNORE_MSVC (4251)
+ // In DLL builds, need to disable this warnings for other modules
+ #if defined (JUCE_DLL_BUILD) || defined (JUCE_DLL)
+  #pragma warning (disable: 4251)
+ #endif
 #endif

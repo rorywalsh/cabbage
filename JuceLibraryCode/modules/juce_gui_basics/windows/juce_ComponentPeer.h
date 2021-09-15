@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -70,8 +71,7 @@ public:
                                                         performAnyPendingRepaintsNow() method is called. */
         windowIgnoresKeyPresses     = (1 << 10),   /**< Tells the window not to catch any keypresses. This can
                                                         be used for things like plugin windows, to stop them interfering
-                                                        with the host's shortcut keys. This will prevent the window from
-                                                        gaining keyboard focus. */
+                                                        with the host's shortcut keys */
         windowIsSemiTransparent     = (1 << 30)    /**< Not intended for public use - makes a window transparent. */
 
     };
@@ -168,16 +168,10 @@ public:
     /** Converts a screen area to a position relative to the top-left of this component. */
     virtual Rectangle<int> globalToLocal (const Rectangle<int>& screenPosition);
 
-    /** Converts a rectangle relative to the top-left of this component to screen coordinates. */
-    Rectangle<float> localToGlobal (const Rectangle<float>& relativePosition);
-
-    /** Converts a screen area to a position relative to the top-left of this component. */
-    Rectangle<float> globalToLocal (const Rectangle<float>& screenPosition);
-
     /** Returns the area in peer coordinates that is covered by the given sub-comp (which
         may be at any depth)
     */
-    Rectangle<int> getAreaCoveredBy (const Component& subComponent) const;
+    Rectangle<int> getAreaCoveredBy (Component& subComponent) const;
 
     /** Minimises the window. */
     virtual void setMinimised (bool shouldBeMinimised) = 0;
@@ -247,8 +241,8 @@ public:
     */
     virtual bool setAlwaysOnTop (bool alwaysOnTop) = 0;
 
-    /** Brings the window to the top, optionally also giving it keyboard focus. */
-    virtual void toFront (bool takeKeyboardFocus) = 0;
+    /** Brings the window to the top, optionally also giving it focus. */
+    virtual void toFront (bool makeActive) = 0;
 
     /** Moves the window to be just behind another one. */
     virtual void toBehind (ComponentPeer* other) = 0;
@@ -415,8 +409,6 @@ public:
 
 protected:
     //==============================================================================
-    static void forceDisplayUpdate();
-
     Component& component;
     const int styleFlags;
     Rectangle<int> lastNonFullscreenBounds;
@@ -426,14 +418,12 @@ protected:
 
 private:
     //==============================================================================
-    Component* getTargetForKeyPress();
-
     WeakReference<Component> lastFocusedComponent, dragAndDropTargetComponent;
     Component* lastDragAndDropCompUnderMouse = nullptr;
     const uint32 uniqueID;
     bool isWindowMinimised = false;
+    Component* getTargetForKeyPress();
 
-    //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ComponentPeer)
 };
 

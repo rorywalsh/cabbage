@@ -132,11 +132,6 @@ String& StringArray::getReference (int index) noexcept
     return strings.getReference (index);
 }
 
-const String& StringArray::getReference (int index) const noexcept
-{
-    return strings.getReference (index);
-}
-
 void StringArray::add (String newString)
 {
     // NB: the local temp copy is to avoid a dangling pointer if the

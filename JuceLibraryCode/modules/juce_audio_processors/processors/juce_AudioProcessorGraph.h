@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -133,8 +134,6 @@ public:
         friend class AudioProcessorGraph;
         template <typename Float>
         friend struct GraphRenderSequence;
-        template <typename Float>
-        friend struct RenderSequenceBuilder;
 
         struct Connection
         {
@@ -144,7 +143,7 @@ public:
             bool operator== (const Connection&) const noexcept;
         };
 
-        std::unique_ptr<AudioProcessor> processor;
+        const std::unique_ptr<AudioProcessor> processor;
         Array<Connection> inputs, outputs;
         bool isPrepared = false;
         std::atomic<bool> bypassed { false };
@@ -240,12 +239,12 @@ public:
     /** Deletes a node within the graph which has the specified ID.
         This will also delete any connections that are attached to this node.
     */
-    Node::Ptr removeNode (NodeID);
+    bool removeNode (NodeID);
 
     /** Deletes a node within the graph.
         This will also delete any connections that are attached to this node.
     */
-    Node::Ptr removeNode (Node*);
+    bool removeNode (Node*);
 
     /** Returns the list of connections in the graph. */
     std::vector<Connection> getConnections() const;
@@ -405,24 +404,6 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 private:
-    struct PrepareSettings
-    {
-        ProcessingPrecision precision = ProcessingPrecision::singlePrecision;
-        double sampleRate             = 0.0;
-        int blockSize                 = 0;
-        bool valid                    = false;
-
-        using Tied = std::tuple<const ProcessingPrecision&,
-                                const double&,
-                                const int&,
-                                const bool&>;
-
-        Tied tie() const noexcept { return std::tie (precision, sampleRate, blockSize, valid); }
-
-        bool operator== (const PrepareSettings& other) const noexcept { return tie() == other.tie(); }
-        bool operator!= (const PrepareSettings& other) const noexcept { return tie() != other.tie(); }
-    };
-
     //==============================================================================
     ReferenceCountedArray<Node> nodes;
     NodeID lastNodeID = {};
@@ -432,14 +413,11 @@ private:
     std::unique_ptr<RenderSequenceFloat> renderSequenceFloat;
     std::unique_ptr<RenderSequenceDouble> renderSequenceDouble;
 
-    PrepareSettings prepareSettings;
-
     friend class AudioGraphIOProcessor;
 
     std::atomic<bool> isPrepared { false };
 
     void topologyChanged();
-    void unprepare();
     void handleAsyncUpdate() override;
     void clearRenderingSequence();
     void buildRenderingSequence();

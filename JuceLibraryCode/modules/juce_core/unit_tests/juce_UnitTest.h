@@ -376,31 +376,18 @@ public:
     */
     struct TestResult
     {
-        TestResult() = default;
-
-        explicit TestResult (const String& name, const String& subCategory)
-             : unitTestName (name),
-               subcategoryName (subCategory)
-        {
-        }
-
         /** The main name of this test (i.e. the name of the UnitTest object being run). */
         String unitTestName;
         /** The name of the current subcategory (i.e. the name that was set when UnitTest::beginTest() was called). */
         String subcategoryName;
 
         /** The number of UnitTest::expect() calls that succeeded. */
-        int passes = 0;
+        int passes;
         /** The number of UnitTest::expect() calls that failed. */
-        int failures = 0;
+        int failures;
 
         /** A list of messages describing the failed tests. */
         StringArray messages;
-
-        /** The time at which this test was started. */
-        Time startTime = Time::getCurrentTime();
-        /** The time at which this test ended. */
-        Time endTime;
     };
 
     /** Returns the number of TestResult objects that have been performed.

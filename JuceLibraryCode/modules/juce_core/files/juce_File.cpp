@@ -231,7 +231,7 @@ String File::addTrailingSeparator (const String& path)
 }
 
 //==============================================================================
-#if JUCE_LINUX || JUCE_BSD
+#if JUCE_LINUX
  #define NAMES_ARE_CASE_SENSITIVE 1
 #endif
 
@@ -485,7 +485,7 @@ String File::descriptionOfSizeInBytes (const int64 bytes)
     else if (bytes < 1024 * 1024 * 1024)  { suffix = " MB"; divisor = 1024.0 * 1024.0; }
     else                                  { suffix = " GB"; divisor = 1024.0 * 1024.0 * 1024.0; }
 
-    return (divisor > 0 ? String ((double) bytes / divisor, 1) : String (bytes)) + suffix;
+    return (divisor > 0 ? String (bytes / divisor, 1) : String (bytes)) + suffix;
 }
 
 //==============================================================================
@@ -574,7 +574,7 @@ int File::findChildFiles (Array<File>& results, int whatToLookFor, bool searchRe
 {
     int total = 0;
 
-    for (const auto& di : RangedDirectoryIterator (*this, searchRecursively, wildcard, whatToLookFor))
+    for (DirectoryIterator di (*this, searchRecursively, wildcard, whatToLookFor); di.next();)
     {
         results.add (di.getFile());
         ++total;
@@ -585,10 +585,12 @@ int File::findChildFiles (Array<File>& results, int whatToLookFor, bool searchRe
 
 int File::getNumberOfChildFiles (const int whatToLookFor, const String& wildCardPattern) const
 {
-    return std::accumulate (RangedDirectoryIterator (*this, false, wildCardPattern, whatToLookFor),
-                            RangedDirectoryIterator(),
-                            0,
-                            [] (int acc, const DirectoryEntry&) { return acc + 1; });
+    int total = 0;
+
+    for (DirectoryIterator di (*this, false, wildCardPattern, whatToLookFor); di.next();)
+        ++total;
+
+    return total;
 }
 
 bool File::containsSubDirectories() const
@@ -596,7 +598,8 @@ bool File::containsSubDirectories() const
     if (! isDirectory())
         return false;
 
-    return RangedDirectoryIterator (*this, false, "*", findDirectories) != RangedDirectoryIterator();
+    DirectoryIterator di (*this, false, "*", findDirectories);
+    return di.next();
 }
 
 //==============================================================================
@@ -1061,25 +1064,7 @@ public:
         expect (! home.isOnCDRomDrive());
         expect (File::getCurrentWorkingDirectory().exists());
         expect (home.setAsCurrentWorkingDirectory());
-
-        {
-            auto homeParent = home;
-            bool noSymlinks = true;
-
-            while (! homeParent.isRoot())
-            {
-                if (homeParent.isSymbolicLink())
-                {
-                    noSymlinks = false;
-                    break;
-                }
-
-                homeParent = homeParent.getParentDirectory();
-            }
-
-            if (noSymlinks)
-                expect (File::getCurrentWorkingDirectory() == home);
-        }
+        expect (File::getCurrentWorkingDirectory() == home);
 
         {
             Array<File> roots;
@@ -1097,11 +1082,7 @@ public:
 
         beginTest ("Writing");
 
-        auto random = getRandom();
-        const auto tempFolderName = "JUCE UnitTests Temp Folder "
-                                  + String::toHexString (random.nextInt())
-                                  + ".folder";
-        File demoFolder (temp.getChildFile (tempFolderName));
+        File demoFolder (temp.getChildFile ("JUCE UnitTests Temp Folder.folder"));
         expect (demoFolder.deleteRecursively());
         expect (demoFolder.createDirectory());
         expect (demoFolder.isDirectory());

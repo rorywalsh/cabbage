@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -76,10 +77,11 @@ public:
             auto relativePos = ScalingHelpers::unscaledScreenPosToScaled (peer->getComponent(),
                                                                           peer->globalToLocal (screenPos));
             auto& comp = peer->getComponent();
+            auto pos = relativePos.roundToInt();
 
             // (the contains() call is needed to test for overlapping desktop windows)
-            if (comp.containsInternal (relativePos))
-                return comp.getComponentAtInternal (relativePos);
+            if (comp.contains (pos))
+                return comp.getComponentAt (pos);
         }
 
         return nullptr;
@@ -537,8 +539,8 @@ private:
         bool canBePartOfMultipleClickWith (const RecentMouseDown& other, int maxTimeBetweenMs) const noexcept
         {
             return time - other.time < RelativeTime::milliseconds (maxTimeBetweenMs)
-                    && std::abs (position.x - other.position.x) < (float) getPositionToleranceForInputType()
-                    && std::abs (position.y - other.position.y) < (float) getPositionToleranceForInputType()
+                    && std::abs (position.x - other.position.x) < getPositionToleranceForInputType()
+                    && std::abs (position.y - other.position.y) < getPositionToleranceForInputType()
                     && buttons == other.buttons
                     && peerID == other.peerID;
         }

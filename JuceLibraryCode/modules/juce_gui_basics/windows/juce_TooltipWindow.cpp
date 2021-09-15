@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -32,7 +33,6 @@ TooltipWindow::TooltipWindow (Component* parentComp, int delayMs)
 {
     setAlwaysOnTop (true);
     setOpaque (true);
-    setAccessible (false);
 
     if (parentComp != nullptr)
         parentComp->addChildComponent (this);
@@ -92,14 +92,12 @@ void TooltipWindow::displayTip (Point<int> screenPos, const String& tip)
         }
         else
         {
-            const auto physicalPos = ScalingHelpers::scaledScreenPosToUnscaled (screenPos);
-            const auto scaledPos = ScalingHelpers::unscaledScreenPosToScaled (*this, physicalPos);
-            updatePosition (tip, scaledPos, Desktop::getInstance().getDisplays().getDisplayForPoint (screenPos)->userArea);
+            updatePosition (tip, screenPos, Desktop::getInstance().getDisplays().findDisplayForPoint (screenPos).userArea);
 
             addToDesktop (ComponentPeer::windowHasDropShadow
-                          | ComponentPeer::windowIsTemporary
-                          | ComponentPeer::windowIgnoresKeyPresses
-                          | ComponentPeer::windowIgnoresMouseClicks);
+                            | ComponentPeer::windowIsTemporary
+                            | ComponentPeer::windowIgnoresKeyPresses
+                            | ComponentPeer::windowIgnoresMouseClicks);
         }
 
        #if JUCE_DEBUG
@@ -109,7 +107,7 @@ void TooltipWindow::displayTip (Point<int> screenPos, const String& tip)
 
         for (auto* w : activeTooltipWindows)
         {
-            if (w != nullptr && w != this && w->tipShowing == tipShowing && w->getParentComponent() == parent)
+            if (w != this && w->tipShowing == tipShowing && w->getParentComponent() == parent)
             {
                 // Looks like you have more than one TooltipWindow showing the same tip..
                 // Be careful not to create more than one instance of this class with the
@@ -125,7 +123,7 @@ void TooltipWindow::displayTip (Point<int> screenPos, const String& tip)
 
 String TooltipWindow::getTipFor (Component& c)
 {
-    if (isForegroundOrEmbeddedProcess (&c)
+    if (Process::isForegroundProcess()
          && ! ModifierKeys::currentModifiers.isAnyMouseButtonDown())
     {
         if (auto* ttc = dynamic_cast<TooltipClient*> (&c))
@@ -148,19 +146,6 @@ void TooltipWindow::hideTip()
         activeTooltipWindows.removeAllInstancesOf (this);
        #endif
     }
-}
-
-float TooltipWindow::getDesktopScaleFactor() const
-{
-    if (lastComponentUnderMouse != nullptr)
-        return Component::getApproximateScaleFactorForComponent (lastComponentUnderMouse);
-
-    return Component::getDesktopScaleFactor();
-}
-
-std::unique_ptr<AccessibilityHandler> TooltipWindow::createAccessibilityHandler()
-{
-    return createIgnoredAccessibilityHandler (*this);
 }
 
 void TooltipWindow::timerCallback()

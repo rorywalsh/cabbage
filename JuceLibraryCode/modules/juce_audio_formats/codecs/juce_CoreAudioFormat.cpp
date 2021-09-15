@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -25,8 +26,7 @@
 
 #if JUCE_MAC || JUCE_IOS
 
-#include <juce_audio_basics/native/juce_mac_CoreAudioLayouts.h>
-#include <juce_core/native/juce_mac_CFHelpers.h>
+#include "../../juce_audio_basics/native/juce_mac_CoreAudioLayouts.h"
 
 namespace juce
 {
@@ -39,15 +39,17 @@ namespace
     StringArray findFileExtensionsForCoreAudioCodecs()
     {
         StringArray extensionsArray;
-        CFObjectHolder<CFArrayRef> extensions;
-        UInt32 sizeOfArray = sizeof (extensions.object);
+        CFArrayRef extensions = nullptr;
+        UInt32 sizeOfArray = sizeof (extensions);
 
-        if (AudioFileGetGlobalInfo (kAudioFileGlobalInfo_AllExtensions, 0, nullptr, &sizeOfArray, &extensions.object) == noErr)
+        if (AudioFileGetGlobalInfo (kAudioFileGlobalInfo_AllExtensions, 0, nullptr, &sizeOfArray, &extensions) == noErr)
         {
-            auto numValues = CFArrayGetCount (extensions.object);
+            auto numValues = CFArrayGetCount (extensions);
 
             for (CFIndex i = 0; i < numValues; ++i)
-                extensionsArray.add ("." + String::fromCFString ((CFStringRef) CFArrayGetValueAtIndex (extensions.object, i)));
+                extensionsArray.add ("." + String::fromCFString ((CFStringRef) CFArrayGetValueAtIndex (extensions, i)));
+
+            CFRelease (extensions);
         }
 
         return extensionsArray;

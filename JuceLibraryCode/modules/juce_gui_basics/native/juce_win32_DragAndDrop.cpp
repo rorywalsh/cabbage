@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -57,7 +58,7 @@ namespace DragAndDropHelpers
 
         JUCE_COMRESULT Clone (IEnumFORMATETC** result) override
         {
-            if (result == nullptr)
+            if (result == 0)
                 return E_POINTER;
 
             auto newOne = new JuceEnumFormatEtc (format);
@@ -73,7 +74,7 @@ namespace DragAndDropHelpers
             else if (celt != 1)
                 return S_FALSE;
 
-            if (index == 0 && celt > 0 && lpFormatEtc != nullptr)
+            if (index == 0 && celt > 0 && lpFormatEtc != 0)
             {
                 copyFormatEtc (lpFormatEtc [0], *format);
                 ++index;
@@ -92,7 +93,7 @@ namespace DragAndDropHelpers
             if (index + (int) celt >= 1)
                 return S_FALSE;
 
-            index += (int) celt;
+            index += celt;
             return S_OK;
         }
 
@@ -110,12 +111,10 @@ namespace DragAndDropHelpers
         {
             dest = source;
 
-            if (source.ptd != nullptr)
+            if (source.ptd != 0)
             {
                 dest.ptd = (DVTARGETDEVICE*) CoTaskMemAlloc (sizeof (DVTARGETDEVICE));
-
-                if (dest.ptd != nullptr)
-                    *(dest.ptd) = *(source.ptd);
+                *(dest.ptd) = *(source.ptd);
             }
         }
 
@@ -143,7 +142,7 @@ namespace DragAndDropHelpers
                  && pFormatEtc->dwAspect == format->dwAspect)
             {
                 pMedium->tymed = format->tymed;
-                pMedium->pUnkForRelease = nullptr;
+                pMedium->pUnkForRelease = 0;
 
                 if (format->tymed == TYMED_HGLOBAL)
                 {
@@ -151,8 +150,7 @@ namespace DragAndDropHelpers
                     void* const src = GlobalLock (medium->hGlobal);
                     void* const dst = GlobalAlloc (GMEM_FIXED, len);
 
-                    if (src != nullptr && dst != nullptr)
-                        memcpy (dst, src, len);
+                    memcpy (dst, src, len);
 
                     GlobalUnlock (medium->hGlobal);
 
@@ -166,7 +164,7 @@ namespace DragAndDropHelpers
 
         JUCE_COMRESULT QueryGetData (FORMATETC* f)
         {
-            if (f == nullptr)
+            if (f == 0)
                 return E_INVALIDARG;
 
             if (f->tymed == format->tymed
@@ -179,13 +177,13 @@ namespace DragAndDropHelpers
 
         JUCE_COMRESULT GetCanonicalFormatEtc (FORMATETC*, FORMATETC* pFormatEtcOut)
         {
-            pFormatEtcOut->ptd = nullptr;
+            pFormatEtcOut->ptd = 0;
             return E_NOTIMPL;
         }
 
         JUCE_COMRESULT EnumFormatEtc (DWORD direction, IEnumFORMATETC** result)
         {
-            if (result == nullptr)
+            if (result == 0)
                 return E_POINTER;
 
             if (direction == DATADIR_GET)
@@ -194,7 +192,7 @@ namespace DragAndDropHelpers
                 return S_OK;
             }
 
-            *result = nullptr;
+            *result = 0;
             return E_NOTIMPL;
         }
 
@@ -214,24 +212,15 @@ namespace DragAndDropHelpers
     //==============================================================================
     HDROP createHDrop (const StringArray& fileNames)
     {
-        size_t totalBytes = 0;
+        int totalBytes = 0;
         for (int i = fileNames.size(); --i >= 0;)
-            totalBytes += CharPointer_UTF16::getBytesRequiredFor (fileNames[i].getCharPointer()) + sizeof (WCHAR);
+            totalBytes += (int) CharPointer_UTF16::getBytesRequiredFor (fileNames[i].getCharPointer()) + sizeof (WCHAR);
 
-        struct Deleter
+        HDROP hDrop = (HDROP) GlobalAlloc (GMEM_MOVEABLE | GMEM_ZEROINIT, sizeof (DROPFILES) + totalBytes + 4);
+
+        if (hDrop != 0)
         {
-            void operator() (void* ptr) const noexcept { GlobalFree (ptr); }
-        };
-
-        auto hDrop = std::unique_ptr<void, Deleter> ((HDROP) GlobalAlloc (GMEM_MOVEABLE | GMEM_ZEROINIT, sizeof (DROPFILES) + totalBytes + 4));
-
-        if (hDrop != nullptr)
-        {
-            auto pDropFiles = (LPDROPFILES) GlobalLock (hDrop.get());
-
-            if (pDropFiles == nullptr)
-                return nullptr;
-
+            auto pDropFiles = (LPDROPFILES) GlobalLock (hDrop);
             pDropFiles->pFiles = sizeof (DROPFILES);
             pDropFiles->fWide = true;
 
@@ -245,10 +234,10 @@ namespace DragAndDropHelpers
 
             *fname = 0;
 
-            GlobalUnlock (hDrop.get());
+            GlobalUnlock (hDrop);
         }
 
-        return static_cast<HDROP> (hDrop.release());
+        return hDrop;
     }
 
     struct DragAndDropJob   : public ThreadPoolJob
@@ -262,10 +251,10 @@ namespace DragAndDropHelpers
 
         JobStatus runJob() override
         {
-            ignoreUnused (OleInitialize (nullptr));
+            OleInitialize (0);
 
-            auto* source = new JuceDropSource();
-            auto* data = new JuceDataObject (&format, &medium);
+            auto source = new JuceDropSource();
+            auto data = new JuceDataObject (&format, &medium);
 
             DWORD effect;
             DoDragDrop (data, source, whatToDo, &effect);
@@ -319,8 +308,8 @@ bool DragAndDropContainer::performExternalDragDropOfFiles (const StringArray& fi
     if (files.isEmpty())
         return false;
 
-    FORMATETC format = { CF_HDROP, nullptr, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
-    STGMEDIUM medium = { TYMED_HGLOBAL, { nullptr }, nullptr };
+    FORMATETC format = { CF_HDROP, 0, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
+    STGMEDIUM medium = { TYMED_HGLOBAL, { 0 }, 0 };
 
     medium.hGlobal = DragAndDropHelpers::createHDrop (files);
 
@@ -338,16 +327,12 @@ bool DragAndDropContainer::performExternalDragDropOfText (const String& text, Co
     if (text.isEmpty())
         return false;
 
-    FORMATETC format = { CF_TEXT, nullptr, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
-    STGMEDIUM medium = { TYMED_HGLOBAL, { nullptr }, nullptr };
+    FORMATETC format = { CF_TEXT, 0, DVASPECT_CONTENT, -1, TYMED_HGLOBAL };
+    STGMEDIUM medium = { TYMED_HGLOBAL, { 0 }, 0 };
 
     auto numBytes = CharPointer_UTF16::getBytesRequiredFor (text.getCharPointer());
 
     medium.hGlobal = GlobalAlloc (GMEM_MOVEABLE | GMEM_ZEROINIT, numBytes + 2);
-
-    if (medium.hGlobal == nullptr)
-        return false;
-
     auto* data = static_cast<WCHAR*> (GlobalLock (medium.hGlobal));
 
     text.copyToUTF16 (data, numBytes + 2);

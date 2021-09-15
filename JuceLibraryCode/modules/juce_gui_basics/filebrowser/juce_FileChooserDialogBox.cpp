@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -63,7 +64,7 @@ public:
         auto area = getLocalBounds();
 
         text.createLayout (getLookAndFeel().createFileChooserHeaderText (getName(), instructions),
-                           (float) getWidth() - 12.0f);
+                           getWidth() - 12.0f);
 
         area.removeFromTop (roundToInt (text.getHeight()) + 10);
 
@@ -114,8 +115,6 @@ FileChooserDialogBox::FileChooserDialogBox (const String& name,
 
     if (parentComp != nullptr)
         parentComp->addAndMakeVisible (this);
-    else
-        setAlwaysOnTop (juce_areThereAnyAlwaysOnTopWindows());
 }
 
 FileChooserDialogBox::~FileChooserDialogBox()
@@ -194,7 +193,7 @@ void FileChooserDialogBox::okButtonPressed()
          && content->chooserComponent.isSaveMode()
          && content->chooserComponent.getSelectedFile(0).exists())
     {
-        AlertWindow::showOkCancelBox (MessageBoxIconType::WarningIcon,
+        AlertWindow::showOkCancelBox (AlertWindow::WarningIcon,
                                       TRANS("File already exists"),
                                       TRANS("There's already a file called: FLNM")
                                          .replace ("FLNM", content->chooserComponent.getSelectedFile(0).getFullPathName())
@@ -229,7 +228,7 @@ void FileChooserDialogBox::createNewFolder()
     {
         auto* aw = new AlertWindow (TRANS("New Folder"),
                                     TRANS("Please enter the name for the folder"),
-                                    MessageBoxIconType::NoIcon, this);
+                                    AlertWindow::NoIcon, this);
 
         aw->addTextEditor ("Folder Name", String(), String(), false);
         aw->addButton (TRANS("Create Folder"), 1, KeyPress (KeyPress::returnKey));
@@ -251,7 +250,7 @@ void FileChooserDialogBox::createNewFolderConfirmed (const String& nameFromDialo
         auto parent = content->chooserComponent.getRoot();
 
         if (! parent.getChildFile (name).createDirectory())
-            AlertWindow::showMessageBoxAsync (MessageBoxIconType::WarningIcon,
+            AlertWindow::showMessageBoxAsync (AlertWindow::WarningIcon,
                                               TRANS ("New Folder"),
                                               TRANS ("Couldn't create the folder!"));
 

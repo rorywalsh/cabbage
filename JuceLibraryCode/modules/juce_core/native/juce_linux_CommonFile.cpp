@@ -62,9 +62,8 @@ bool File::isSymbolicLink() const
 
 String File::getNativeLinkedTarget() const
 {
-    constexpr int bufferSize = 8194;
-    HeapBlock<char> buffer (bufferSize);
-    auto numBytes = (int) readlink (getFullPathName().toRawUTF8(), buffer, bufferSize - 2);
+    HeapBlock<char> buffer (8194);
+    const int numBytes = (int) readlink (getFullPathName().toRawUTF8(), buffer, 8192);
     return String::fromUTF8 (buffer, jmax (0, numBytes));
 }
 

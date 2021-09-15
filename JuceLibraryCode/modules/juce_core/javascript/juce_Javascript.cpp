@@ -54,7 +54,10 @@ namespace TokenTypes
     JUCE_DECLARE_JS_TOKEN (identifier, "$identifier")
 }
 
-JUCE_BEGIN_IGNORE_WARNINGS_MSVC (4702)
+#if JUCE_MSVC
+ #pragma warning (push)
+ #pragma warning (disable: 4702)
+#endif
 
 //==============================================================================
 struct JavascriptEngine::RootObject   : public DynamicObject
@@ -594,7 +597,7 @@ struct JavascriptEngine::RootObject   : public DynamicObject
     {
         DivideOp (const CodeLocation& l, ExpPtr& a, ExpPtr& b) noexcept : BinaryOperator (l, a, b, TokenTypes::divide) {}
         var getWithDoubles (double a, double b) const override  { return b != 0 ? a / b : std::numeric_limits<double>::infinity(); }
-        var getWithInts (int64 a, int64 b) const override       { return b != 0 ? var ((double) a / (double) b) : var (std::numeric_limits<double>::infinity()); }
+        var getWithInts (int64 a, int64 b) const override       { return b != 0 ? var (a / (double) b) : var (std::numeric_limits<double>::infinity()); }
     };
 
     struct ModuloOp  : public BinaryOperator
@@ -814,9 +817,7 @@ struct JavascriptEngine::RootObject   : public DynamicObject
                 a.add (values.getUnchecked(i)->getResult (s));
 
             // std::move() needed here for older compilers
-            JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wredundant-move")
             return std::move (a);
-            JUCE_END_IGNORE_WARNINGS_GCC_LIKE
         }
 
         OwnedArray<Expression> values;
@@ -940,7 +941,7 @@ struct JavascriptEngine::RootObject   : public DynamicObject
         {
             for (;;)
             {
-                p.incrementToEndOfWhitespace();
+                p = p.findEndOfWhitespace();
 
                 if (*p == '/')
                 {
@@ -1626,9 +1627,7 @@ struct JavascriptEngine::RootObject   : public DynamicObject
                     array->insert (start++, get (a, i));
 
                 // std::move() needed here for older compilers
-                JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wredundant-move")
                 return std::move (itemsRemoved);
-                JUCE_END_IGNORE_WARNINGS_GCC_LIKE
             }
 
             return var::undefined();
@@ -1914,6 +1913,8 @@ const NamedValueSet& JavascriptEngine::getRootObjectProperties() const noexcept
     return root->getProperties();
 }
 
-JUCE_END_IGNORE_WARNINGS_MSVC
+#if JUCE_MSVC
+ #pragma warning (pop)
+#endif
 
 } // namespace juce

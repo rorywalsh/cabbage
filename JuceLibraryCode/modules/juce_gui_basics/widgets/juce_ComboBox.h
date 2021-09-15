@@ -7,11 +7,12 @@
    JUCE is an open source library subject to commercial or open-source
    licensing.
 
-   By using JUCE, you agree to the terms of both the JUCE 6 End-User License
-   Agreement and JUCE Privacy Policy (both effective as of the 16th June 2020).
+   By using JUCE, you agree to the terms of both the JUCE 5 End-User License
+   Agreement and JUCE 5 Privacy Policy (both updated and effective as of the
+   22nd April 2020).
 
-   End User License Agreement: www.juce.com/juce-6-licence
-   Privacy Policy: www.juce.com/juce-privacy-policy
+   End User License Agreement: www.juce.com/juce-5-licence
+   Privacy Policy: www.juce.com/juce-5-privacy-policy
 
    Or: You may also use this code under the terms of the GPL v3 (see
    www.gnu.org/licenses).
@@ -272,10 +273,7 @@ public:
     /** Returns the PopupMenu object associated with the ComboBox.
         Can be useful for adding sub-menus to the ComboBox standard PopupMenu
     */
-    PopupMenu* getRootMenu() noexcept { return &currentMenu; }
-
-    /** Returns the PopupMenu object associated with the ComboBox. */
-    const PopupMenu* getRootMenu() const noexcept { return &currentMenu; }
+    PopupMenu* getRootMenu() { return &currentMenu; }
 
     //==============================================================================
     /**
@@ -445,7 +443,6 @@ private:
     String textWhenNothingSelected, noChoicesMessage;
     EditableState labelEditableState = editableUnknown;
 
-    std::unique_ptr<AccessibilityHandler> createAccessibilityHandler() override;
     PopupMenu::Item* getItemForId (int) const noexcept;
     PopupMenu::Item* getItemForIndex (int) const noexcept;
     bool selectIfEnabled (int index);
