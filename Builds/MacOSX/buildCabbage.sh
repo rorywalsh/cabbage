@@ -7,7 +7,7 @@ export PROJUCER=/Users/walshr/sourcecode/JUCE/extras/Projucer/Builds/MacOSX/buil
 
 $PROJUCER --resave ../../CabbageIDE.jucer	
 git apply ../../patches/*.patch
-echo "Building Universal build"
+echo "Building MacOS build"
 
 xcodebuild -project Cabbage.xcodeproj clean
 xcodebuild -project Cabbage.xcodeproj/ ARCHS="x86_64" ONLY_ACTIVE_ARCH=YES -configuration Release
