@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT bundleIdentifier="com.cabbageaudio.cabbage" companyCopyright=""
-              cppLanguageStandard="14" displaySplashScreen="0" id="CxJYjd"
+              cppLanguageStandard="17" displaySplashScreen="0" id="CxJYjd"
               includeBinaryInAppConfig="0" name="Cabbage" projectType="guiapp"
               reportAppUsage="1" splashScreenColour="Dark" version="2.8.4"
               jucerFormatVersion="1">
