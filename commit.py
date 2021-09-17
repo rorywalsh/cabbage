@@ -12,6 +12,7 @@ newVersionNum = ""
 
 if len(sys.argv) < 2:
     print("Please provide a commit message enclosed in quotation marks")
+    exit()
 
 if len(sys.argv) == 3:
     newVersionNum = sys.argv[2]
