@@ -867,7 +867,9 @@ const String CsoundPluginProcessor::getCsoundOutput()
 //==============================================================================
 const String CsoundPluginProcessor::getName() const
 {
-    return JucePlugin_Name;
+    String pluginString =  File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension();
+    //return JucePlugin_Name;
+    return pluginString;
 }
 
 bool CsoundPluginProcessor::acceptsMidi() const

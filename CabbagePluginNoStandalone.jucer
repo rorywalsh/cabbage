@@ -266,7 +266,7 @@
     </LINUX_MAKE>
     <XCODE_MAC bigIcon="nMt6S5" extraDefs="MACOSX=1" extraFrameworks="/Library/Frameworks/CsoundLib64"
                smallIcon="nMt6S5" targetFolder="Builds/MacOSX" vst3Folder="~/SDKs/VST_SDK"
-               vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK" xcodeValidArchs="arm64">
+               vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK" xcodeValidArchs="x86_64">
       <CONFIGURATIONS>
         <CONFIGURATION customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/"
                        enablePluginBinaryCopyStep="1" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers"
