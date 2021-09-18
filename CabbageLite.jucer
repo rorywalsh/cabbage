@@ -186,7 +186,7 @@
     <XCODE_MAC bigIcon="Cl3fhx" extraDefs="Cabbage_IDE_Build=1&#10;CABBAGE=1&#10;Cabbage_Lite=1" extraFrameworks="/Library/Frameworks/CsoundLib64" iosDevelopmentTeamID="" microphonePermissionNeeded="1" smallIcon="Cl3fhx" targetFolder="Builds/MacOSX" xcodeValidArchs="arm64,x86_64">
       <CONFIGURATIONS>
         <CONFIGURATION customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/&#10;OTHER_CODE_SIGN_FLAGS=--timestamp" enablePluginBinaryCopyStep="1" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers" isDebug="1" libraryPath="" linkTimeOptimisation="0" name="Debug" optimisation="1" osxArchitecture="64BitIntel" targetName="CabbageLite" />
-        <CONFIGURATION customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/&#10;OTHER_CODE_SIGN_FLAGS=--timestamp" enablePluginBinaryCopyStep="1" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers" isDebug="0" linkTimeOptimisation="1" name="Release" optimisation="3" osxArchitecture="64BitIntel" targetName="CabbageLite" />
+        <CONFIGURATION codeSigningIdentity="Apple Development: R Walsh (HMWP7CPRS9)" customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/&#10;OTHER_CODE_SIGN_FLAGS=--timestamp" enablePluginBinaryCopyStep="1" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers" isDebug="0" linkTimeOptimisation="1" name="Release" optimisation="3" osxArchitecture="64BitIntel" targetName="CabbageLite" />
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="../JUCE/" />

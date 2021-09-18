@@ -144,7 +144,7 @@
     <XCODE_MAC extraDefs="MACOSX=1&#10;Cabbage_Plugin_Synth=1" extraFrameworks="/Library/Frameworks/CsoundLib64" iosDevelopmentTeamID="" targetFolder="Builds/MacOSX" vst3Folder="~/SDKs/VST_SDK" vstLegacyFolder="~/SDKs/VST_SDK/VST3_SDK" xcodeValidArchs="arm64,x86_64">
       <CONFIGURATIONS>
         <CONFIGURATION customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/&#10;OTHER_CODE_SIGN_FLAGS=--timestamp" enablePluginBinaryCopyStep="1" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers" isDebug="1" macOSDeploymentTarget="10.11" name="Debug" optimisation="1" osxArchitecture="64BitIntel" osxCompatibility="10.11 SDK" targetName="CabbagePlugin" />
-        <CONFIGURATION customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/&#10;OTHER_CODE_SIGN_FLAGS=--timestamp" enablePluginBinaryCopyStep="1" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers" isDebug="0" macOSDeploymentTarget="10.11" name="Release" optimisation="3" osxArchitecture="64BitIntel" osxCompatibility="10.11 SDK" targetName="CabbagePlugin" />
+        <CONFIGURATION codeSigningIdentity="Apple Development: R Walsh (HMWP7CPRS9)" customXcodeFlags="FRAMEWORK_SEARCH_PATHS=/Library/Frameworks/&#10;OTHER_CODE_SIGN_FLAGS=--timestamp" enablePluginBinaryCopyStep="1" headerPath="/Library/Frameworks/CsoundLib64.framework/Headers" isDebug="0" macOSDeploymentTarget="10.11" name="Release" optimisation="3" osxArchitecture="64BitIntel" osxCompatibility="10.11 SDK" targetName="CabbagePlugin" />
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="../JUCE/" />

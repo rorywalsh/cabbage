@@ -192,7 +192,7 @@
     <LINUX_MAKE cppLanguageStandard="-std=c++11" externalLibraries="csound64&#10;sndfile" extraCompilerFlags="" extraDefs="Cabbage_IDE_Build=1&#10;" targetFolder="Builds/LinuxMakefile">
       <CONFIGURATIONS>
         <CONFIGURATION headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;" isDebug="1" libraryPath="&quot;/usr/local/lib&quot;" name="Debug" optimisation="1" targetName="Cabbage" />
-        <CONFIGURATION headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;" isDebug="0" libraryPath="&quot;/usr/local/lib&quot;" name="Release" optimisation="3" targetName="Cabbage" />
+        <CONFIGURATION codeSigningIdentity="Apple Development: R Walsh (HMWP7CPRS9)" headerPath="&quot;/usr/local/include/csound&quot;&#10;&quot;/usr/include/csound&quot;&#10;&quot;~/SDKs/VST_SDK/VST3_SDK&quot;" isDebug="0" libraryPath="&quot;/usr/local/lib&quot;" name="Release" optimisation="3" targetName="Cabbage" />
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../JUCE/modules" />
