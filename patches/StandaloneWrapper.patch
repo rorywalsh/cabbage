@@ -7,7 +7,7 @@ index cb099283..c97a93f9 100644
      }
  
 -    const String getApplicationName() override              { return JucePlugin_Name; }
-+    const String getApplicationName() override              { return
++    const String getApplicationName() override              { 
 +        String pluginString =  File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension();
 +        return pluginString; }
      const String getApplicationVersion() override           { return JucePlugin_VersionString; }
