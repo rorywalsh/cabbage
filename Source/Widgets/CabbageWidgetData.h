@@ -124,6 +124,7 @@ public:
     static String getCabbageCodeFromIdentifiers (ValueTree props, const String);
     //============================================================================
     static void setSVGText(ValueTree widgetData, StringArray tokens);
+    static void setCurrentDir(ValueTree widgetData, StringArray tokens);
     static String getBoundsTextAsCabbageCode (Rectangle<int> rect);
     static String getFilmStripTextAsCabbageCode(ValueTree widgetData, const String macroText);
     static String getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText);

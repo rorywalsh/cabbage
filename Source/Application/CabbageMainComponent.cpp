@@ -2145,6 +2145,7 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
     {
         const String widgetTreeIdentifier = "tempWidget";
         ValueTree tempWidget(widgetTreeIdentifier);
+        tempWidget.setProperty(CabbageIdentifierIds::csdfile, file.getFullPathName(), nullptr);
         CabbageWidgetData::setWidgetState(tempWidget, string.trimCharactersAtStart(" \t"), -9);
         
         

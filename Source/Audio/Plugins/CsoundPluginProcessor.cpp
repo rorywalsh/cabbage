@@ -130,6 +130,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     for (auto line : csdLines)
     {
         ValueTree temp("temp");
+        temp.setProperty(CabbageIdentifierIds::csdfile, csdFile.getFullPathName(), nullptr);
         
         if(line.contains("populate") && line.contains("snaps") && line.contains("combobox"))
             line = line.replace("combobox", "combobox channelType(\"string\")");

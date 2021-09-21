@@ -183,6 +183,7 @@ void CabbagePluginProcessor::setWidthHeight() {
 			return;
 
 		ValueTree temp("temp");
+		temp.setProperty(CabbageIdentifierIds::csdfile, csdFile.getFullPathName(), nullptr);
 		CabbageWidgetData::setWidgetState(temp, line, 0);
 
 		if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form) {
@@ -197,6 +198,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 	for (auto line : linesFromCsd)
 	{
 		ValueTree temp("temp");
+		temp.setProperty(CabbageIdentifierIds::csdfile, csdFile.getFullPathName(), nullptr);
 		CabbageWidgetData::setWidgetState(temp, line, 0);
 
 		if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == CabbageWidgetTypes::form)
@@ -236,6 +238,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 			return;
 
         ValueTree tempWidget(Identifier("WidgetFromLine_" + std::to_string(lineNumber)));
+		tempWidget.setProperty(CabbageIdentifierIds::csdfile, csdFile.getFullPathName(), nullptr);
 
 		String currentLineOfCabbageCode = linesFromCsd[lineNumber].replace("\t", " ");
 
@@ -397,6 +400,7 @@ bool CabbagePluginProcessor::addImportFiles(StringArray& linesFromCsd) {
 	bool hasImportFiles = false;
 	for (int i = 0; i < linesFromCsd.size(); i++) {
 		ValueTree temp("temp");
+		temp.setProperty(CabbageIdentifierIds::csdfile, csdFile.getFullPathName(), nullptr);
 		String newCsdLine = linesFromCsd[i];
 		expandMacroText(newCsdLine, temp);
 		CabbageWidgetData::setWidgetState(temp, newCsdLine, 0);
@@ -486,6 +490,7 @@ void CabbagePluginProcessor::insertPlantCode(StringArray& linesFromCsd) {
 			float scaleY = 1;
 			StringArray importedLines("");
 			ValueTree temp("temp");
+			temp.setProperty(CabbageIdentifierIds::csdfile, csdFile.getFullPathName(), nullptr);
 			expandMacroText(currentLineOfCode, temp);
 			// CabbageUtilities::debug(currentLineOfCode);
 			CabbageWidgetData::setWidgetState(temp, currentLineOfCode.trim(), lineIndex);
@@ -503,7 +508,7 @@ void CabbagePluginProcessor::insertPlantCode(StringArray& linesFromCsd) {
 						if (plantCode.isNotEmpty()) {
 							if (plantCode.contains("}") == false) {
 								ValueTree temp1("temp1");
-
+								temp1.setProperty(CabbageIdentifierIds::csdfile, csdFile.getFullPathName(), nullptr);
 								expandMacroText(plantCode, temp);
 								CabbageWidgetData::setWidgetState(temp1, plantCode.trim(), -99);
 								CabbageWidgetData::setNumProp(temp1, CabbageIdentifierIds::plant,

@@ -73,6 +73,7 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, const String lineF
     setProperty(widgetData, CabbageIdentifierIds::opcode6dir64, "");
     setProperty(widgetData, CabbageIdentifierIds::openGL, 0);
 
+    DBG(getProperty(widgetData, CabbageIdentifierIds::csdfile).toString());
 
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");
@@ -356,7 +357,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
                 setProperty (widgetData, identifier, (identifier.contains("fix") ? strTokens[0] : strTokens[0].trim()));
                 break;
                 
-            case HashStringToInt ("svgElement"):
+            case HashStringToInt("svgElement"):
                 setSVGText(widgetData, strTokens);
                 
             case HashStringToInt ("valuePrefix"):
@@ -1207,8 +1208,12 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
     setProperty (widgetData, CabbageIdentifierIds::filetype, strTokens[0].trim());
 
     if (strTokens.size() > 1)
-        setProperty (widgetData, CabbageIdentifierIds::currentdir, strTokens[1].trim());
-
+    {
+        const String test = getProperty(widgetData, CabbageIdentifierIds::csdfile);
+        const String absolutePath = File(getProperty(widgetData, CabbageIdentifierIds::csdfile)).getChildFile(strTokens[1].trim()).getFullPathName();
+        setProperty(widgetData, CabbageIdentifierIds::currentdir, absolutePath.replaceCharacters("\\", "/"));
+    }
+        
     if(strTokens.size() > 2)
         setProperty (widgetData, CabbageIdentifierIds::ignorelastdir, strTokens[2].trim().getIntValue());
     
