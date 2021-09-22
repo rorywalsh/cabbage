@@ -1211,7 +1211,7 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
     {
         const String test = getProperty(widgetData, CabbageIdentifierIds::csdfile);
         const String absolutePath = File(getProperty(widgetData, CabbageIdentifierIds::csdfile)).getChildFile(strTokens[1].trim()).getFullPathName();
-        setProperty(widgetData, CabbageIdentifierIds::currentdir, absolutePath.replaceCharacters("\\", "/"));
+        setProperty(widgetData, CabbageIdentifierIds::currentdir, strTokens[1].trim());//absolutePath.replaceCharacters("\\", "/"));
     }
         
     if(strTokens.size() > 2)
