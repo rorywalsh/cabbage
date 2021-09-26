@@ -17,24 +17,25 @@ if len(sys.argv) < 2:
 if len(sys.argv) == 3:
     newVersionNum = sys.argv[2]
 
-files = ["CabbageIDE.jucer", "CabbagePlugin.jucer", "CabbagePluginSynth.jucer",  "CabbageLite.jucer", "CabbagePluginMIDIEffect.jucer", "CabbagePluginNoStandalone.jucer", "CabbagePluginStandalone.jucer"]
-
 #bump jucer version numbers
+newFileText = ""
+with open("CMakeLists.txt", "rt") as inputFile:
+    for line in inputFile:
+        if "set" in line and "BUILD_VERSION" in line:
+            if len(newVersionNum) > 0:
+                line = "\tset(BUILD_VERSION "+newVersionNum+ ")\n"
+            else:
+                number = line.replace("set", "").replace("(", "").replace(")", ""). replace("BUILD_VERSION", "")
+                line = "\tset(BUILD_VERSION "+increment_ver(number.strip())+ ")\n"
 
-for filename in files:
-    tree = ET.parse(filename)
-    for element in tree.getiterator('JUCERPROJECT'):
-        # print(element.attrib['version'])
-        verStr = element.attrib['version']
-        if len(newVersionNum) == 0:
-            newVersionNum = increment_ver(verStr)
-        element.set('version', newVersionNum)
-        # print(element.attrib['version'])
+        newFileText = newFileText+line
 
-    tree.write(filename, encoding='utf8')
+print(newFileText)
+with open("CMakeLists.txt", "w") as f:
+    f.write(newFileText)
 
 os.system('git add Source')
 os.system('git add Examples')
 os.system('git add Docs')
-os.system('git add *.jucer')
+os.system('git add CMakeLists.txt')
 os.system('git commit -m "'+sys.argv[1]+' - Version number:'+newVersionNum+'"')
