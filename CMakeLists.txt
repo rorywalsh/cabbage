@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.19)
 
 macro(ternaryBool var targetType value1 value2)
     if("${PROJECT_NAME}" STREQUAL "${targetType}")
@@ -20,13 +20,26 @@ if(NOT DEFINED PROJECT_NAME)
     set(PROJECT_NAME "Cabbage")
 endif()
 
-project(${PROJECT_NAME} VERSION 2.8.8)
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug")
+endif()
+
+if(NOT DEFINED BUILD_VERSION)
+    set(BUILD_VERSION 2.8.8)
+endif()
+
+message("============================================================")
+message("============ Project name: " ${PROJECT_NAME} "\t============")
+message("============ Build type: " ${CMAKE_BUILD_TYPE} "\t\t\t============")
+message("============ Version: " ${BUILD_VERSION} "\t\t\t============")
+message("============================================================")
+
+project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
 add_subdirectory(JUCE)                    # If you've put JUCE in a subdirectory called JUCE
 
 if(NOT DEFINED JucePlugin_Manufacturer)
     set(JucePlugin_Manufacturer "CabbageAudio")
 endif()
-
 
 if(NOT DEFINED JucePlugin_Desc)
     set(JucePlugin_Desc "CabbagePlugin")
@@ -34,48 +47,48 @@ endif()
 
 
 if("${PROJECT_NAME}" STREQUAL "Cabbage")
-message("Creating Cabbage IDE Build project")
-juce_add_gui_app(${PROJECT_NAME}
-    # VERSION ...                       # Set this if the app version is different to the project version
-    # ICON_BIG ...                      # ICON_* arguments specify a path to an image file to use as an icon
-    # ICON_SMALL ...
-    # DOCUMENT_EXTENSIONS ...           # Specify file extensions that should be associated with this app
-    # COMPANY_NAME ...                  # Specify the name of the app's author
-    PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
+    juce_add_gui_app(${PROJECT_NAME}
+        # VERSION ...                       # Set this if the app version is different to the project version
+        # ICON_BIG ...                      # ICON_* arguments specify a path to an image file to use as an icon
+        # ICON_SMALL ...
+        # DOCUMENT_EXTENSIONS ...           # Specify file extensions that should be associated with this app
+        # COMPANY_NAME ...                  # Specify the name of the app's author
+        PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
 elseif("${PROJECT_NAME}" STREQUAL "CabbagePluginEffect" OR "${PROJECT_NAME}" STREQUAL "CabbagePluginSynth")
-message("Creating Cabbage Plugin Build project")
-juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
-set(PLUGIN_IS_A_SYNTH, FALSE)
-ternaryBool(PLUGIN_IS_A_SYNTH "CabbagePluginSynth" TRUE FALSE)
-set(PLUGIN_NEEDS_MIDI_OUTPUT, FALSE)
-ternaryBool(PLUGIN_NEEDS_MIDI_OUTPUT "CabbagePluginSynth" TRUE FALSE)
-set(PLUGIN_VST2_CATEGORY, "")
-ternaryString(PLUGIN_VST2_CATEGORY "CabbagePluginSynth" "kPlugCategSynth" "kPlugCategEffect")
-set(PLUGIN_AU_MAIN_TYPE, "")
-ternaryString(PLUGIN_AU_MAIN_TYPE "CabbagePluginSynth" "aumi" "aumf")
+    juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
+    set(PLUGIN_IS_A_SYNTH, FALSE)
+    ternaryBool(PLUGIN_IS_A_SYNTH "CabbagePluginSynth" TRUE FALSE)
+    set(PLUGIN_NEEDS_MIDI_OUTPUT, FALSE)
+    ternaryBool(PLUGIN_NEEDS_MIDI_OUTPUT "CabbagePluginSynth" TRUE FALSE)
+    set(PLUGIN_VST2_CATEGORY, "")
+    ternaryString(PLUGIN_VST2_CATEGORY "CabbagePluginSynth" "kPlugCategSynth" "kPlugCategEffect")
+    set(PLUGIN_AU_MAIN_TYPE, "")
+    ternaryString(PLUGIN_AU_MAIN_TYPE "CabbagePluginSynth" "aumi" "aumf")
+    set(PLUGIN_VST3_CATEGORIES, "")
+    ternaryString(PLUGIN_VST3_CATEGORIES "CabbagePluginSynth" "Instrument|Synth" "Fx")
 
-message(${PLUGIN_AU_MAIN_TYPE})
+    message(${PLUGIN_AU_MAIN_TYPE})
 
-
-juce_add_plugin(${PROJECT_NAME}
-    PLUGIN_NAME ${PROJECT_NAME}
-    FORMATS VST VST3 Standalone AU
-    PLUGIN_MANUFACTURER_CODE "Cabb"
-    PLUGIN_CODE "RORY"
-    DESCRIPTION ${JucePlugin_Desc}
-    NEEDS_MIDI_INPUT TRUE
-    IS_SYNTH ${PLUGIN_IS_A_SYNTH}
-    NEEDS_MIDI_OUTPUT ${PLUGIN_NEEDS_MIDI_OUTPUT}
-    IS_MIDI_EFFECT FALSE
-    EDITOR_WANTS_KEYBOARD_FOCUS FALSE
-    VST_NUM_MIDI_INS 16
-    VST_NUM_MIDI_OUTS 16
-    VST2_CATEGORY "${PLUGIN_VST2_CATEGORY}"
-    VST3_CATEGORIES "Instrument|Synth"
-    AU_EXPORT_PREFIX "${PROJECT_NAME}AU"
-    AU_SANDBOX_SAFE TRUE
-    COPY_PLUGIN_AFTER_BUILD FALSE 
-    PRODUCT_NAME "${PROJECT_NAME}")   
+    juce_add_plugin(${PROJECT_NAME}
+        PLUGIN_NAME ${PROJECT_NAME}
+        FORMATS VST VST3 Standalone AU
+        PLUGIN_MANUFACTURER_CODE "Cabb"
+        PLUGIN_CODE "RORY"
+        DESCRIPTION ${JucePlugin_Desc}
+        NEEDS_MIDI_INPUT TRUE
+        IS_SYNTH ${PLUGIN_IS_A_SYNTH}
+        BUNDLE_ID com.pamplejuce.pamplejuce
+        NEEDS_MIDI_OUTPUT ${PLUGIN_NEEDS_MIDI_OUTPUT}
+        IS_MIDI_EFFECT FALSE
+        EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+        VST_NUM_MIDI_INS 16
+        VST_NUM_MIDI_OUTS 16
+        VST2_CATEGORY "${PLUGIN_VST2_CATEGORY}"
+        VST3_CATEGORIES "${PLUGIN_VST3_CATEGORIES}"
+        AU_EXPORT_PREFIX "${PROJECT_NAME}AU"
+        AU_SANDBOX_SAFE TRUE
+        COPY_PLUGIN_AFTER_BUILD FALSE 
+        PRODUCT_NAME "${PROJECT_NAME}")   
 endif()
 
 juce_generate_juce_header(${PROJECT_NAME})
@@ -250,27 +263,20 @@ elseif("${PROJECT_NAME}" STREQUAL "CabbagePluginEffect" OR "${PROJECT_NAME}" STR
 endif()
 
 set(JUCE_MODULES
+    juce::juce_core
+    juce::juce_events
+    juce::juce_graphics
+    juce::juce_data_structures
+    juce::juce_gui_basics
+    juce::juce_gui_extra
+    juce::juce_cryptography
     juce::juce_audio_basics
     juce::juce_audio_devices
     juce::juce_audio_formats
-    juce::juce_audio_plugin_client
     juce::juce_audio_processors
     juce::juce_audio_utils
-    juce::juce_core
-    juce::juce_cryptography
-    juce::juce_data_structures
-    juce::juce_events
-    juce::juce_graphics
-    juce::juce_gui_basics
-    juce::juce_gui_extra
+    juce::juce_audio_plugin_client
     juce::juce_opengl)
-
-# `target_compile_definitions` adds some preprocessor definitions to our target. In a Projucer
-# project, these might be passed in the 'Preprocessor Definitions' field. JUCE modules also make use
-# of compile definitions to switch certain features on/off, so if there's a particular feature you
-# need that's not on by default, check the module header for the correct flag to set here. These
-# definitions will be visible both to your code, and also the JUCE module code, so for new
-# definitions, pick unique names that are unlikely to collide! This is a standard CMake command.
 
 target_compile_definitions(${PROJECT_NAME}
     PRIVATE
@@ -281,27 +287,18 @@ target_compile_definitions(${PROJECT_NAME}
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
         JUCE_MODAL_LOOPS_PERMITTED-=1
         JucePlugin_Manufacturer="${JucePlugin_Manufacturer}"
-        JucePlugin_Desc="${JucePlugin_Desc}")
+        JucePlugin_Desc="${JucePlugin_Desc}"
+        JUCE_VST3_CAN_REPLACE_VST2=0)
 
 if(MSVC)
 
-    # SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "C:/Program Files/Csound6_x64/include/csound")
-    include_directories("C:\\Program Files\\Csound6_x64\\include\\csound")
-    find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${CSOUND_LIBRARY}
-    # AudioPluginData           # If we'd created a binary data target, we'd link to it here
-    juce::juce_audio_utils)
-
 elseif(APPLE)
-
     SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
-
     find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
-    "$ENV{HOME}/Library/Frameworks/CsoundLib64.framework")  
-
+    "/Library/Frameworks/CsoundLib64.framework")  
     include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
 
-    target_link_libraries(${PROJECT_NAME}
+    target_link_libraries(${PROJECT_NAME} 
     PRIVATE
         ${JUCE_MODULES}
         ${CSOUND_LIBRARY}
@@ -311,12 +308,34 @@ elseif(APPLE)
         juce::juce_recommended_warning_flags)
 else()
 
-    include_directories("/usr/local/include/csound")
-    include_directories("/usr/include/csound")
-    find_library(CSOUND_LIBRARY NAMES csound64)
-    find_library(LIBSNDFILE_LIBRARY NAMES sndfile libsndfile-1 libsndfile)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${CSOUND_LIBRARY} ${LIBSNDFILE_LIBRARY}    
-    # AudioPluginData           # If we'd created a binary data target, we'd link to it here
-    juce::juce_audio_utils)
+endif()
 
+if(APPLE)
+    if("${PROJECT_NAME}" STREQUAL "Cabbage")
+        add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}
+            COMMAND cp -Rf ${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/${PROJECT_NAME}.app ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.app)
+    elseif("${PROJECT_NAME}" STREQUAL "CabbagePluginEffect" OR "${PROJECT_NAME}" STREQUAL "CabbagePluginSynth")
+        if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/AU/${PROJECT_NAME}.component")
+            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}
+                COMMAND cp -Rf ${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/AU/${PROJECT_NAME}.component ${CMAKE_CURRENT_SOURCE_DIR}/Cabbage.app/Contents/${PROJECT_NAME}.component)
+        endif()    
+        if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/VST/${PROJECT_NAME}.vst")
+            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+               COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}
+                COMMAND cp -Rf ${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/VST/${PROJECT_NAME}.vst ${CMAKE_CURRENT_SOURCE_DIR}/Cabbage.app/Contents/${PROJECT_NAME}.vst)
+        endif()       
+        if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/VST3/${PROJECT_NAME}.vst3")
+            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}
+                COMMAND cp -Rf ${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/VST3/${PROJECT_NAME}.vst3 ${CMAKE_CURRENT_SOURCE_DIR}/Cabbage.app/Contents/${PROJECT_NAME}.vst3)
+        endif()   
+        if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/Standalone/${PROJECT_NAME}.app")
+            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+                COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}
+                COMMAND cp -Rf ${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/Standalone/${PROJECT_NAME}.app ${CMAKE_CURRENT_SOURCE_DIR}/Cabbage.app/Contents/${PROJECT_NAME}.app)
+        endif()   
+    endif()
 endif()
