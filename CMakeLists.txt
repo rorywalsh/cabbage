@@ -292,7 +292,8 @@ target_compile_definitions(${PROJECT_NAME}
         JucePlugin_Manufacturer="${JucePlugin_Manufacturer}"
         JucePlugin_Desc="${JucePlugin_Desc}"
         Use_Native_File_Browser=1
-        JUCE_VST3_CAN_REPLACE_VST2=0)
+        JUCE_VST3_CAN_REPLACE_VST2=0
+        JUCE_DISPLAY_SPLASH_SCREEN=0)
 
 if(MSVC)
     # SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "C:/Program Files/Csound6_x64/include/csound")

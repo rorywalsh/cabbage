@@ -1,7 +1,7 @@
-diff --git a/JuceLibraryCode/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp b/JuceLibraryCode/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp
+diff --git a/JUCE/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp b/JUCE/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp
 index cb099283..9879cd8a 100644
---- a/JuceLibraryCode/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp
-+++ b/JuceLibraryCode/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp
+--- a/JUCE/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp
++++ b/JUCE/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp
 @@ -67,7 +67,12 @@ public:
          appProperties.setStorageParameters (options);
      }
