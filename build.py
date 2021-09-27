@@ -6,7 +6,7 @@ import platform
 rootDir = os.getcwd()
 
 print("===========================================================")
-print("Uasge: python buildAll.py BuildType(Debug/Release)")
+print("Uasge: python buildAll.py BuildType(Debug/Release) taget")
 print("===========================================================")
 
 if len(sys.argv) < 2:
@@ -15,8 +15,11 @@ if len(sys.argv) < 2:
 else:
     buildType = sys.argv[1]
 
-projects = ["Cabbage", "CabbagePluginEffect", "CabbagePluginSynth"]
-project = projects[2]
+if len(sys.argv) == 3:
+    projects = [sys.argv[2]]
+else:
+    projects = ["Cabbage", "CabbagePluginEffect", "CabbagePluginSynth"]
+
 
 if not os.path.exists("JUCE"):
     os.system('got clone https://github.com/juce-framework/JUCE.git')
