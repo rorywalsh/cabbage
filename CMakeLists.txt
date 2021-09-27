@@ -54,7 +54,11 @@ if("${PROJECT_NAME}" STREQUAL "Cabbage")
         COMPANY_NAME CabbageAudio
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
 elseif("${PROJECT_NAME}" STREQUAL "CabbagePluginEffect" OR "${PROJECT_NAME}" STREQUAL "CabbagePluginSynth")
+if(APPLE)
     juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
+elseif(MSVC)
+    juce_set_vst2_sdk_path("C:/SDKs/VST_SDK/VST3_SDK")
+endif()
     set(PLUGIN_IS_A_SYNTH, FALSE)
     ternaryBool(PLUGIN_IS_A_SYNTH "CabbagePluginSynth" TRUE FALSE)
     set(PLUGIN_NEEDS_MIDI_OUTPUT, FALSE)
