@@ -27,7 +27,7 @@ The simplest thing to do to get started with VCV Rack module is to create a new 
 
 ## The following caveats apply to all Cabbage VCV Rack modules:
 
-* Plugin width MUST be 380. If you make your instrument bigger or smaller than this it won't fit in the rack.
+* Plugin height MUST be 380. If you make your instrument taller or shorter than this it won't fit in the rack.
 
 * Of the standard set of Cabbage widgets, only rslider, label, groupbox, checkbox, button, combobox and image widgets are supported (with reduced functionality). Only the most basic identifiers are supported, so please keep things simple and keep testing your modules to make sure you are not using unsupported identifiers. Also note that the combobox is more like a multi-switch than a traditional combobox.  
 
