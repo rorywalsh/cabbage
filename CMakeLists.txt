@@ -29,9 +29,9 @@ if(NOT DEFINED BUILD_VERSION)
 endif()
 
 message("============================================================")
-message("============ Project name: " ${PROJECT_NAME} "\t============")
-message("============ Build type: " ${CMAKE_BUILD_TYPE} "\t\t\t============")
-message("============ Version: " ${BUILD_VERSION} "\t\t\t============")
+message("============ Project name: " ${PROJECT_NAME})
+message("============ Build type: " ${CMAKE_BUILD_TYPE})
+message("============ Version: " ${BUILD_VERSION})
 message("============================================================")
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -308,34 +308,4 @@ elseif(APPLE)
         juce::juce_recommended_warning_flags)
 else()
 
-endif()
-
-if(APPLE)
-    if("${PROJECT_NAME}" STREQUAL "Cabbage")
-        add_custom_command(
-            TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}
-            COMMAND cp -Rf ${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/${PROJECT_NAME}.app ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.app)
-    elseif("${PROJECT_NAME}" STREQUAL "CabbagePluginEffect" OR "${PROJECT_NAME}" STREQUAL "CabbagePluginSynth")
-        if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/AU/${PROJECT_NAME}.component")
-            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}
-                COMMAND cp -Rf ${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/AU/${PROJECT_NAME}.component ${CMAKE_CURRENT_SOURCE_DIR}/Cabbage.app/Contents/${PROJECT_NAME}.component)
-        endif()    
-        if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/VST/${PROJECT_NAME}.vst")
-            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-               COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}
-                COMMAND cp -Rf ${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/VST/${PROJECT_NAME}.vst ${CMAKE_CURRENT_SOURCE_DIR}/Cabbage.app/Contents/${PROJECT_NAME}.vst)
-        endif()       
-        if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/VST3/${PROJECT_NAME}.vst3")
-            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}
-                COMMAND cp -Rf ${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/VST3/${PROJECT_NAME}.vst3 ${CMAKE_CURRENT_SOURCE_DIR}/Cabbage.app/Contents/${PROJECT_NAME}.vst3)
-        endif()   
-        if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/Standalone/${PROJECT_NAME}.app")
-            add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-                COMMAND cd ${CMAKE_CURRENT_SOURCE_DIR}
-                COMMAND cp -Rf ${CMAKE_CURRENT_SOURCE_DIR}/build/${PROJECT_NAME}_artefacts/${CMAKE_BUILD_TYPE}/Standalone/${PROJECT_NAME}.app ${CMAKE_CURRENT_SOURCE_DIR}/Cabbage.app/Contents/${PROJECT_NAME}.app)
-        endif()   
-    endif()
 endif()
