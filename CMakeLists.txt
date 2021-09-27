@@ -48,11 +48,10 @@ endif()
 
 if("${PROJECT_NAME}" STREQUAL "Cabbage")
     juce_add_gui_app(${PROJECT_NAME}
-        # VERSION ...                       # Set this if the app version is different to the project version
-        # ICON_BIG ...                      # ICON_* arguments specify a path to an image file to use as an icon
-        # ICON_SMALL ...
-        # DOCUMENT_EXTENSIONS ...           # Specify file extensions that should be associated with this app
-        # COMPANY_NAME ...                  # Specify the name of the app's author
+        ICON_BIG ${CMAKE_CURRENT_SOURCE_DIR}/Images/Cabbage.png              
+        ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/Cabbage.png  
+        DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
+        COMPANY_NAME CabbageAudio
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
 elseif("${PROJECT_NAME}" STREQUAL "CabbagePluginEffect" OR "${PROJECT_NAME}" STREQUAL "CabbagePluginSynth")
     juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
