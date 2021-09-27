@@ -24,16 +24,24 @@ else:
 if not os.path.exists("JUCE"):
     os.system('got clone https://github.com/juce-framework/JUCE.git')
 
-if os.path.exists("Cabbage.app"):
+if platform.system() == "Darwin" and os.path.exists("Cabbage.app"):
     os.system('rm -rf Cabbage.app')
+
+if platform.system() == "Windows" and os.path.exists("CabbageBinaries"):
+    os.system('rm -rf CabbageBinaries')
+    
+os.system('mkdir CabbageBinaries')
+
 
 for project in projects:
     if os.path.exists("build"):
         shutil.rmtree("build")
     os.system('mkdir build')
     os.chdir('build')
-    print('cmake -DCMAKE_BUILD_TYPE='+buildType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'"')
-    os.system('cmake -DCMAKE_BUILD_TYPE='+buildType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'"')
+    if platform.system() == "Darwin": 
+        os.system('cmake -DCMAKE_BUILD_TYPE='+buildType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'"')
+    elif platform.system() == "Windows": 
+        os.system('cmake -DCMAKE_BUILD_TYPE='+buildType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'"')
     print("===========================================================")
     print(" Running build for "+project)
     print("===========================================================")    
@@ -52,6 +60,15 @@ for project in projects:
             os.system('cp -Rf '+project+'_artefacts/'+buildType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+project+'.component')
             if project == "CabbagePluginSynth":
                 os.system('cp -Rf '+project+'_artefacts/'+buildType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/CabbagePlugin.app')
+
+    if platform.system() == "Windows": 
+        if project == "Cabbage":
+            os.system('cp -Rf Cabbage_artefacts/'+buildType+'/Cabbage.exe '+rootDir+'/CabbageBinaries/Cabbage.exe')
+        elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
+            os.system('cp -Rf '+project+'_artefacts/'+buildType+'/VST/'+project+'.dll ' +rootDir+'/CabbageBinaries/'+project+'.dll')
+            os.system('cp -Rf '+project+'_artefacts/'+buildType+'/VST3/'+project+'.vst3 ' +rootDir+'/CabbageBinaries/'+project+'.vst3')
+            if project == "CabbagePluginSynth":
+                os.system('cp -Rf '+project+'_artefacts/'+buildType+'/Standalone/'+project+'.exe ' +rootDir+'/CabbageBinaries/CabbagePlugin.exe')
 
     os.chdir('..')
 

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.15)
 
 macro(ternaryBool var targetType value1 value2)
     if("${PROJECT_NAME}" STREQUAL "${targetType}")
@@ -284,12 +284,25 @@ target_compile_definitions(${PROJECT_NAME}
         JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
         JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
-        JUCE_MODAL_LOOPS_PERMITTED-=1
+        JUCE_MODAL_LOOPS_PERMITTED=1
         JucePlugin_Manufacturer="${JucePlugin_Manufacturer}"
         JucePlugin_Desc="${JucePlugin_Desc}"
+        Use_Native_File_Browser=1
         JUCE_VST3_CAN_REPLACE_VST2=0)
 
 if(MSVC)
+    # SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "C:/Program Files/Csound6_x64/include/csound")
+    include_directories("C:\\Program Files\\Csound6_x64\\include\\csound")
+    find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
+
+    target_link_libraries(${PROJECT_NAME} 
+    PRIVATE
+        ${JUCE_MODULES}
+        ${CSOUND_LIBRARY}
+    PUBLIC
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_lto_flags
+        juce::juce_recommended_warning_flags)
 
 elseif(APPLE)
     SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
