@@ -6,7 +6,7 @@ Cabbage provides experimental support for the creation of VCV Rack modules. The 
 
 The simplest thing to get started with a VCV Rack module is to create a new VCV Rack file from the 'New' dialogue window. Cabbage will bundle all the VCV Rack files into a single folder when you export your file. You must place this folder in the [Rack plugins-v1 folder](https://vcvrack.com/manual/FAQ.html#where-is-the-rack-user-folder). From there, you can start editing the .csd file directly to save having to export each time you wish to update your module. 
 
-## The following caveats apply to all Cabbage VCV Rack modules:
+## Caveats that apply to Cabbage VCV Rack modules
 
 * Plugin height MUST be 380. If you make your instrument taller or shorter than this, it won't fit in the rack.
 
