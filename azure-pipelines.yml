@@ -38,13 +38,9 @@ jobs:
     vmImage: 'macOS-11'
     # xcodeVersion: '9.4.1'
   steps:
-  - bash: |
-     cd CiScripts
-     pwd
-     ls 
-     chmod +x buildMacCI.sh
-     ./buildMacCI.sh
-    displayName: "Running buildMacCI script"
+  - script: |
+     python build.py --config=Release --build_type="Remote Release"
+    displayName: "Building..."
     env:
       COREHOST_TRACE: 0
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1

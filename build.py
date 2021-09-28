@@ -16,7 +16,7 @@ info = """
 print(info)
 rootDir = os.getcwd()
 
-def getVersionNumber():
+# def getVersionNumber():
     with open(rootDir+"/CMakeLists.txt", "rt") as inputFile:
         for line in inputFile:
             if "set" in line and "BUILD_VERSION" in line:
@@ -63,22 +63,38 @@ if buildType is not "Local Debug":
         with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
             zip_ref.extractall()
         
-        if platform.system() == "Darwin":
-            if not os.path.exists("CabbageRack"):
-                url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-mac.zip"
-                r = requests.get(url, allow_redirects=True)
-                open('CabbageRack-1.0.0-mac.zip', 'wb').write(r.content)  
-                with zipfile.ZipFile("CabbageRack-1.0.0-mac.zip", 'r') as zip_ref:
-                    zip_ref.extractall()     
-            if not os.path.exists("fmod_csound_fx.dylib"):
-                url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound_fx.dylib"
-                r = requests.get(url, allow_redirects=True)
-                open('fmod_csound_fx.dylib', 'wb').write(r.content)  
-            if not os.path.exists("fmod_csound.dylib"):
-                url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound.dylib"
-                r = requests.get(url, allow_redirects=True)
-                open('fmod_csound.dylib', 'wb').write(r.content)  
+    if platform.system() == "Darwin":
+        if not os.path.exists("CabbageRack"):
+            url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-mac.zip"
+            r = requests.get(url, allow_redirects=True)
+            open('CabbageRack-1.0.0-mac.zip', 'wb').write(r.content)  
+            with zipfile.ZipFile("CabbageRack-1.0.0-mac.zip", 'r') as zip_ref:
+                zip_ref.extractall()     
+        if not os.path.exists("fmod_csound_fx.dylib"):
+            url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound_fx.dylib"
+            r = requests.get(url, allow_redirects=True)
+            open('fmod_csound_fx.dylib', 'wb').write(r.content)  
+        if not os.path.exists("fmod_csound.dylib"):
+            url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound.dylib"
+            r = requests.get(url, allow_redirects=True)
+            open('fmod_csound.dylib', 'wb').write(r.content)  
 
+    if platform.system() == "Windows":     
+        if not os.path.exists("CabbageRack"):
+            url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip"
+            r = requests.get(url, allow_redirects=True)
+            open('./CabbageInstall/CabbageRack-1.0.0-win.zip', 'wb').write(r.content)  
+            with zipfile.ZipFile(rootDir+"/CabbageInstall/CabbageRack-1.0.0-win.zip", 'r') as zip_ref:
+                zip_ref.extractall() 
+            shutil.copytree('CabbageRack', rootDir+'/CabbageInstall/CabbageRack')
+        if not os.path.exists("fmod_csound64_fx.dll"):
+            url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64_fx.dll"
+            r = requests.get(url, allow_redirects=True)
+            open(rootDir+'/CabbageInstall/fmod_csound_fx64.dll', 'wb').write(r.content)  
+        if not os.path.exists("fmod_csound64.dll"):
+            url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64.dll"
+            r = requests.get(url, allow_redirects=True)
+            open(rootDir+'/CabbageInstall/fmod_csound64.dll', 'wb').write(r.content)  
 
 if buildType is "Remote Release":
     if platform.system() == "Darwin":
@@ -179,20 +195,30 @@ for project in projects:
 
     if platform.system() == "Windows": 
         if project == "Cabbage":
-            os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.exe '+rootDir+'/CabbageBinaries/Cabbage.exe')
+            os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.exe '+rootDir+'/CabbageInstall/Cabbage.exe')
+            if buildType is not "Local Debug":
+                os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
+                os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
+                os.system('cp -Rf ../CabbageManual '+rootDir+'/CabbageInstall/CabbageManual')
+                os.system('cp -Rf ../CabbageRack '+rootDir+'/CabbageInstall/CabbageRack')
+                os.system('cp ../fmod_csound_fx.dylib '+rootDir+'/CabbageInstall/fmod_csound_fx.dylib')
+                os.system('cp ../fmod_csound.dylib '+rootDir+'/CabbageInstall/fmod_csound.dylib')
         elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
-            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageBinaries/'+project+'.dll')
-            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageBinaries/'+project+'.vst3')
+            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+project+'.dll')
+            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+project+'.vst3')
             if project == "CabbagePluginSynth":
-                os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.exe ' +rootDir+'/CabbageBinaries/CabbagePlugin.exe')
+                os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.exe ' +rootDir+'/CabbageInstall/CabbagePlugin.exe')
 
     os.chdir('..')
 
+if "Release" in buildType:
+    if platform.system() == "Darwin":
+        os.chdir(rootDir+'/Installers/MacOS') 
+        os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
+        os.system('packagesbuild Installer.pkgproj')
+        os.system('mv ./build/Cabbage.pkg '+rootDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
 
-if platform.system() == "Darwin" and "Release" is in build_type:
-    os.chdir(rootDir+'/Installers/MacOS') 
-    os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
-    os.system('packagesbuild Installer.pkgproj')
-    os.system('mv ./build/Cabbage.pkg '+rootDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
-
-
+    if platform.system() == "Windows":
+        os.chdir(rootDir+'/Installers/Windows') 
+        os.system('set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"')
+        os.system('iscc Installer.iss')
