@@ -38,7 +38,7 @@ jobs:
     vmImage: 'macOS-11'
     # xcodeVersion: '9.4.1'
   steps:
-  - bash: ls && cd ./CiScripts
+  - bash: ls && cd CiScripts
   - bash: ls && chmod +x buildMacCI.sh
   - bash: ./buildMacCI.sh
     env:
