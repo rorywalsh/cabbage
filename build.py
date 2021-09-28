@@ -16,7 +16,7 @@ info = """
 print(info)
 rootDir = os.getcwd()
 
-# def getVersionNumber():
+def getVersionNumber():
     with open(rootDir+"/CMakeLists.txt", "rt") as inputFile:
         for line in inputFile:
             if "set" in line and "BUILD_VERSION" in line:
