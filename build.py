@@ -8,15 +8,15 @@ import zipfile
 
 info = """
 ================================================
-=== Build script for Cabbage Plugin Framework =="""
-print("     Arch:"+platform.architecture()[0])
-info+="""
+=== Build script for Cabbage Plugin Framework ==
 ================================================
 === Run python build.py -h for help...        ==
 ================================================
 """
 
 print(info)
+
+platformArch = os.popen('arch').read()
 
 rootDir = os.getcwd()
 
@@ -180,8 +180,10 @@ for project in projects:
         shutil.rmtree("build")
     os.system('mkdir build')
     os.chdir('build')
-    if platform.system() == "Darwin": 
+    if platform.system() == "Darwin" and 'arm64' in platformArch: 
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'"')
+    elif platform.system() == "Darwin":
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'"')
     elif platform.system() == "Windows": 
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'"')
     print("===========================================================")
