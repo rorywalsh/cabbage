@@ -17,6 +17,20 @@ info = """
 
 rootDir = os.getcwd()
 
+print("================== Installing Csound ========================")
+url = 'https://github.com/csound/csound/releases/download/6.16.2/csound-MacOS_x86_64-6.16.2.dmg'
+r = requests.get(url, allow_redirects=True)
+open('csound6.16.0-MacOS_x86_64.dmg', 'wb').write(r.content)  
+os.system('hdiutil attach '+rootDir+'/csound6.16.0-MacOS_x86_64.dmg')
+os.system('ls')
+os.system('cp -R /Volumes/Csound6.16.2/ Csound')
+os.system('hdiutil detach /Volumes/Csound6.16.2/')
+os.system('ls')
+os.system('cd Csound')
+os.system('sudo installer -pkg csound-MacOS_x86_64-6.16.2.pkg -target /Library/Frameworks/')
+
+exit()
+
 def getVersionNumber():
     with open(rootDir+"/CMakeLists.txt", "rt") as inputFile:
         for line in inputFile:
