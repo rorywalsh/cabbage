@@ -121,11 +121,11 @@ if "Remote Release" in buildType:
         os.system('ls')
         os.system('cp -R /Volumes/Csound6.16.2/ Csound')
         os.system('hdiutil detach /Volumes/Csound6.16.2/')
-
-        os.system('cd Csound')
+        os.chdir(rootDir+'/Csound')
         os.system('sudo installer -pkg csound-MacOS_x86_64-6.16.2.pkg -target /')
         os.system('sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64')
 
+    os.chdir(rootDir)
     url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
     r = requests.get(url, allow_redirects=True)
     open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
@@ -147,23 +147,20 @@ if "Remote Release" in buildType:
 
 os.chdir(rootDir)
 
-# if not os.path.exists("JUCE"):
-#     os.system('git clone https://github.com/juce-framework/JUCE.git')
-#     os.system('git apply ./patches/StandaloneWrapper.patch')
-#     os.system('git apply ./patches/AUWrapper.patch')
-#     os.system('git apply ./patches/UtilityWrapper.patch')
-#     os.system('git apply ./patches/VST2Wrapper.patch')
-#     os.system('git apply ./patches/VST3Wrapper.patch')
-#     newFileText = ""
-#     with open("JUCE/extras/Build/juceaide/CMakeLists.txt", "rt") as cmakeFile:
-#         for line in cmakeFile:
-#             if "juce_add_console_app(juceaide)" in line:
-#                 line += "\njuce_add_console_app(juceaide)\n"
-#             newFileText += line      
+if not os.path.exists("JUCE"):
+    os.system('git clone https://github.com/juce-framework/JUCE.git')
+    os.system('git apply ./patches/StandaloneWrapper.patch')
+    os.system('git apply ./patches/AUWrapper.patch')
+    os.system('git apply ./patches/UtilityWrapper.patch')
+    os.system('git apply ./patches/VST2Wrapper.patch')
+    os.system('git apply ./patches/VST3Wrapper.patch')
+    newFileText = ""
+    with open("JUCE/extras/Build/juceaide/CMakeLists.txt", "rt") as cmakeFile:
+        for line in cmakeFile:
+            if "juce_add_console_app(juceaide)" in line:
+                line += "\njuce_add_console_app(juceaide)\n"
+            newFileText += line      
 
-
-
-# curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
 
 if platform.system() == "Darwin" and os.path.exists("Cabbage.app"):
     os.system('rm -rf Cabbage.app')
@@ -175,68 +172,68 @@ if platform.system() == "Windows":
     os.system('mkdir CabbageInstall')
 
 
-# for project in projects:
-#     if os.path.exists("build"):
-#         shutil.rmtree("build")
-#     os.system('mkdir build')
-#     os.chdir('build')
-#     if platform.system() == "Darwin": 
-#         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'"')
-#     elif platform.system() == "Windows": 
-#         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'"')
-#     print("===========================================================")
-#     print(" Running build for "+project)
-#     print("===========================================================")    
-#     os.system('cmake --build . --config '+configType)
+for project in projects:
+    if os.path.exists("build"):
+        shutil.rmtree("build")
+    os.system('mkdir build')
+    os.chdir('build')
+    if platform.system() == "Darwin": 
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'"')
+    elif platform.system() == "Windows": 
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'"')
+    print("===========================================================")
+    print(" Running build for "+project)
+    print("===========================================================")    
+    os.system('cmake --build . --config '+configType)
 
-#     # post build steps - take binaries and palce them outside build folder
-#     print("===========================================================")
-#     print(" Copying binaries before removing build folder")
-#     print("===========================================================")
-#     if platform.system() == "Darwin": 
-#         if project == "Cabbage":
-#             os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.app '+rootDir+'/Cabbage.app')
-#             if buildType is not "Local Debug":
-#                 os.system('cp -Rf ../Examples '+rootDir+'/Cabbage.app/Contents/Examples')
-#                 os.system('cp -Rf ../Themes '+rootDir+'/Cabbage.app/Contents/Themes')
-#                 os.system('cp -Rf ../CabbageManual '+rootDir+'/Cabbage.app/Contents/CabbageManual')
-#                 os.system('cp -Rf ../CabbageRack '+rootDir+'/Cabbage.app/Contents/CabbageRack')
-#                 os.system('cp ../fmod_csound_fx.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound_fx.dylib')
-#                 os.system('cp ../fmod_csound.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound.dylib')
+    # post build steps - take binaries and palce them outside build folder
+    print("===========================================================")
+    print(" Copying binaries before removing build folder")
+    print("===========================================================")
+    if platform.system() == "Darwin": 
+        if project == "Cabbage":
+            os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.app '+rootDir+'/Cabbage.app')
+            if buildType is not "Local Debug":
+                os.system('cp -Rf ../Examples '+rootDir+'/Cabbage.app/Contents/Examples')
+                os.system('cp -Rf ../Themes '+rootDir+'/Cabbage.app/Contents/Themes')
+                os.system('cp -Rf ../CabbageManual '+rootDir+'/Cabbage.app/Contents/CabbageManual')
+                os.system('cp -Rf ../CabbageRack '+rootDir+'/Cabbage.app/Contents/CabbageRack')
+                os.system('cp ../fmod_csound_fx.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound_fx.dylib')
+                os.system('cp ../fmod_csound.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound.dylib')
 
-#         elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
-#             os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+project+'.vst')
-#             os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3 ' +rootDir+'/Cabbage.app/Contents/'+project+'.vst3')
-#             os.system('cp -Rf '+project+'_artefacts/'+configType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+project+'.component')
-#             if project == "CabbagePluginSynth":
-#                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/CabbagePlugin.app')
+        elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
+            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+project+'.vst')
+            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3 ' +rootDir+'/Cabbage.app/Contents/'+project+'.vst3')
+            os.system('cp -Rf '+project+'_artefacts/'+configType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+project+'.component')
+            if project == "CabbagePluginSynth":
+                os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/CabbagePlugin.app')
 
-#     if platform.system() == "Windows": 
-#         if project == "Cabbage":
-#             os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.exe '+rootDir+'/CabbageInstall/Cabbage.exe')
-#             if buildType is not "Local Debug":
-#                 os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
-#                 os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
-#                 os.system('cp -Rf ../CabbageManual '+rootDir+'/CabbageInstall/CabbageManual')
-#                 os.system('cp -Rf ../CabbageRack '+rootDir+'/CabbageInstall/CabbageRack')
-#                 os.system('cp ../fmod_csound_fx.dylib '+rootDir+'/CabbageInstall/fmod_csound_fx.dylib')
-#                 os.system('cp ../fmod_csound.dylib '+rootDir+'/CabbageInstall/fmod_csound.dylib')
-#         elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
-#             os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+project+'.dll')
-#             os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+project+'.vst3')
-#             if project == "CabbagePluginSynth":
-#                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.exe ' +rootDir+'/CabbageInstall/CabbagePlugin.exe')
+    if platform.system() == "Windows": 
+        if project == "Cabbage":
+            os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.exe '+rootDir+'/CabbageInstall/Cabbage.exe')
+            if buildType is not "Local Debug":
+                os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
+                os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
+                os.system('cp -Rf ../CabbageManual '+rootDir+'/CabbageInstall/CabbageManual')
+                os.system('cp -Rf ../CabbageRack '+rootDir+'/CabbageInstall/CabbageRack')
+                os.system('cp ../fmod_csound_fx.dylib '+rootDir+'/CabbageInstall/fmod_csound_fx.dylib')
+                os.system('cp ../fmod_csound.dylib '+rootDir+'/CabbageInstall/fmod_csound.dylib')
+        elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
+            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+project+'.dll')
+            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+project+'.vst3')
+            if project == "CabbagePluginSynth":
+                os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.exe ' +rootDir+'/CabbageInstall/CabbagePlugin.exe')
 
-#     os.chdir('..')
+    os.chdir('..')
 
-# if "Release" in buildType:
-#     if platform.system() == "Darwin":
-#         os.chdir(rootDir+'/Installers/MacOS') 
-#         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
-#         os.system('packagesbuild Installer.pkgproj')
-#         os.system('mv ./build/Cabbage.pkg '+rootDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
+if "Release" in buildType:
+    if platform.system() == "Darwin":
+        os.chdir(rootDir+'/Installers/MacOS') 
+        os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
+        os.system('packagesbuild Installer.pkgproj')
+        os.system('mv ./build/Cabbage.pkg '+rootDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
 
-#     if platform.system() == "Windows":
-#         os.chdir(rootDir+'/Installers/Windows') 
-#         os.system('set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"')
-#         os.system('iscc Installer.iss')
+    if platform.system() == "Windows":
+        os.chdir(rootDir+'/Installers/Windows') 
+        os.system('set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"')
+        os.system('iscc Installer.iss')
