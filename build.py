@@ -139,19 +139,19 @@ if buildType is "Remote Release":
 
 os.chdir(rootDir)
 
-if not os.path.exists("JUCE"):
-    os.system('git clone https://github.com/juce-framework/JUCE.git')
-    os.system('git apply ./patches/StandaloneWrapper.patch')
-    os.system('git apply ./patches/AUWrapper.patch')
-    os.system('git apply ./patches/UtilityWrapper.patch')
-    os.system('git apply ./patches/VST2Wrapper.patch')
-    os.system('git apply ./patches/VST3Wrapper.patch')
-    newFileText = ""
-    with open("JUCE/extras/Build/juceaide/CMakeLists.txt", "rt") as cmakeFile:
-        for line in cmakeFile:
-            if "juce_add_console_app(juceaide)" in line:
-                line += "\njuce_add_console_app(juceaide)\n"
-            newFileText += line      
+# if not os.path.exists("JUCE"):
+#     os.system('git clone https://github.com/juce-framework/JUCE.git')
+#     os.system('git apply ./patches/StandaloneWrapper.patch')
+#     os.system('git apply ./patches/AUWrapper.patch')
+#     os.system('git apply ./patches/UtilityWrapper.patch')
+#     os.system('git apply ./patches/VST2Wrapper.patch')
+#     os.system('git apply ./patches/VST3Wrapper.patch')
+#     newFileText = ""
+#     with open("JUCE/extras/Build/juceaide/CMakeLists.txt", "rt") as cmakeFile:
+#         for line in cmakeFile:
+#             if "juce_add_console_app(juceaide)" in line:
+#                 line += "\njuce_add_console_app(juceaide)\n"
+#             newFileText += line      
 
 
 
