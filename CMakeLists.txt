@@ -25,7 +25,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-    set(BUILD_VERSION 2.8.8)
+	set(BUILD_VERSION 2.8.9)
 endif()
 
 message("============================================================")
@@ -51,7 +51,7 @@ if("${PROJECT_NAME}" STREQUAL "Cabbage")
         ICON_BIG ${CMAKE_CURRENT_SOURCE_DIR}/Images/Cabbage.png              
         ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/Cabbage.png  
         DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
-        COMPANY_NAME CabbageAudio
+        COMPANY_NAME ${JucePlugin_Manufacturer}
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
 elseif("${PROJECT_NAME}" STREQUAL "CabbagePluginEffect" OR "${PROJECT_NAME}" STREQUAL "CabbagePluginSynth")
 if(APPLE)

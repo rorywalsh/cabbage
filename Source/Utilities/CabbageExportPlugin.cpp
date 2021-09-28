@@ -224,7 +224,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
 #ifdef CabbagePro
         const String pluginDesc = String(JucePlugin_Manufacturer);
 #else
-        const String pluginDesc = String(JucePlugin_Desc);
+        const String pluginDesc = VSTData.getFileNameWithoutExtension();
 #endif
         if(fileExtension.containsIgnoreCase("component"))
             exportedCsdFile = exportedPlugin.getFullPathName() + String ("/Contents/"+pluginDesc+".csd");
