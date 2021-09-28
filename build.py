@@ -14,10 +14,6 @@ info = """
 ================================================
 """
 
-print(info)
-print("========")
-print(platform.system())
-print("========")
 
 rootDir = os.getcwd()
 
@@ -71,16 +67,19 @@ if buildType is not "Local Debug":
         
     if platform.system() == "Darwin":
         if not os.path.exists("CabbageRack"):
+            print("================== Installing CabbageRack libs ========================")
             url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-mac.zip"
             r = requests.get(url, allow_redirects=True)
             open('CabbageRack-1.0.0-mac.zip', 'wb').write(r.content)  
             with zipfile.ZipFile("CabbageRack-1.0.0-mac.zip", 'r') as zip_ref:
                 zip_ref.extractall()     
         if not os.path.exists("fmod_csound_fx.dylib"):
+            print("================== Installing FMOD libs ========================")
             url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound_fx.dylib"
             r = requests.get(url, allow_redirects=True)
             open('fmod_csound_fx.dylib', 'wb').write(r.content)  
         if not os.path.exists("fmod_csound.dylib"):
+            print("================== Installing FMOD libs ========================")
             url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound.dylib"
             r = requests.get(url, allow_redirects=True)
             open('fmod_csound.dylib', 'wb').write(r.content)  
