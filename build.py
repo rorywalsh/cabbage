@@ -35,6 +35,7 @@ if args.config is None:
 
 
 configType = args.config
+
 if args.project is not None:
     projects = [args.project]
 else:
@@ -55,12 +56,6 @@ if buildType is not "Local Debug":
 
 
 rootDir = os.getcwd()
-
-if len(sys.argv) < 2:
-    print("Please pass a build type")
-    exit()
-else:
-    configType = sys.argv[1]
 
 
 if not os.path.exists("JUCE"):
