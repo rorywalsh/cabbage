@@ -17,19 +17,6 @@ info = """
 
 rootDir = os.getcwd()
 
-print("================== Installing Csound ========================")
-url = 'https://github.com/csound/csound/releases/download/6.16.2/csound-MacOS_x86_64-6.16.2.dmg'
-r = requests.get(url, allow_redirects=True)
-open('csound6.16.0-MacOS_x86_64.dmg', 'wb').write(r.content)  
-os.system('hdiutil attach '+rootDir+'/csound6.16.0-MacOS_x86_64.dmg')
-os.system('cp -R /Volumes/Csound6.16.2/ Csound')
-os.system('hdiutil detach /Volumes/Csound6.16.2/')
-os.system('cd Csound')
-os.system('ls')
-# os.system('sudo installer -pkg csound-MacOS_x86_64-6.16.2.pkg -target /Library/Frameworks/')
-
-exit()
-
 def getVersionNumber():
     with open(rootDir+"/CMakeLists.txt", "rt") as inputFile:
         for line in inputFile:
@@ -134,11 +121,11 @@ if "Remote Release" in buildType:
         os.system('ls')
         os.system('cp -R /Volumes/Csound6.16.2/ Csound')
         os.system('hdiutil detach /Volumes/Csound6.16.2/')
-
-        os.system('cd Csound')
+        os.chdir(rootDir+'/Csound')
         os.system('sudo installer -pkg csound-MacOS_x86_64-6.16.2.pkg -target /')
         os.system('sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64')
 
+    os.chdir(rootDir)
     url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
     r = requests.get(url, allow_redirects=True)
     open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
