@@ -39,6 +39,7 @@ jobs:
   steps:
   - script: |
      pip install requests
+     python --version
      python build.py --config=Release --project="Cabbage" --build_type="Remote Release"
     displayName: "Building..."
     env:
