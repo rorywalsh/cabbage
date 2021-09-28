@@ -51,11 +51,10 @@ else:
     projects = ["Cabbage", "CabbagePluginEffect", "CabbagePluginSynth"]
 
 if args.build_type is not None:
-    buildType = [args.build_type]
+    buildType = args.build_type
 else:
     buildType = "Local Debug"
 
-print("build type is "+buildType)
 
 if buildType is not "Local Debug":
     if not os.path.exists("CabbageManual"):
