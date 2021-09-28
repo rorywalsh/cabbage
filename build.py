@@ -14,6 +14,15 @@ info = """
 ================================================"""
 
 print(info)
+rootDir = os.getcwd()
+
+def getVersionNumber():
+    with open(rootDir+"/CMakeLists.txt", "rt") as inputFile:
+        for line in inputFile:
+            if "set" in line and "BUILD_VERSION" in line:
+                number = line.replace("set", "").replace("(", "").replace(")", ""). replace("BUILD_VERSION", "")
+                return number.strip()
+        return -1
 
 # Instantiate the parser
 parser = argparse.ArgumentParser(description="")
@@ -47,16 +56,70 @@ else:
     buildType = "Local Debug"
 
 if buildType is not "Local Debug":
-    if not os.path.exists("CabbageManual.zip") and not os.path.exists("CabbageManual"):
+    if not os.path.exists("CabbageManual"):
         url = "http://cabbageaudio.com/beta/CabbageManual.zip"
         r = requests.get(url, allow_redirects=True)
         open('CabbageManual.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
-            zip_ref.extractall('CabbageManual')
+            zip_ref.extractall()
+        
+        if platform.system() == "Darwin":
+            if not os.path.exists("CabbageRack"):
+                url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-mac.zip"
+                r = requests.get(url, allow_redirects=True)
+                open('CabbageRack-1.0.0-mac.zip', 'wb').write(r.content)  
+                with zipfile.ZipFile("CabbageRack-1.0.0-mac.zip", 'r') as zip_ref:
+                    zip_ref.extractall()     
+            if not os.path.exists("fmod_csound_fx.dylib"):
+                url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound_fx.dylib"
+                r = requests.get(url, allow_redirects=True)
+                open('fmod_csound_fx.dylib', 'wb').write(r.content)  
+            if not os.path.exists("fmod_csound.dylib"):
+                url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound.dylib"
+                r = requests.get(url, allow_redirects=True)
+                open('fmod_csound.dylib', 'wb').write(r.content)  
 
 
-rootDir = os.getcwd()
+if buildType is "Remote Release":
+    if platform.system() == "Darwin":
+        # installing packages
+        url = "http://s.sudre.free.fr/Software/files/Packages.dmg"
+        r = requests.get(url, allow_redirects=True)
+        open('Packages.dmg', 'wb').write(r.content)  
+        os.system("hdiutil mount Packages.dmg")
+        os.system("sudo installer -pkg /Volumes/Packages\ 1.2.9/Install\ Packages.pkg -target /")
+        os.system("hdiutil detach /Volumes/Packages\ 1.2.9/")
+        # installing Csound
+        url = 'https://github.com/csound/csound/releases/download/6.16.2/csound-MacOS_x86_64-6.16.2.dmg'
+        r = requests.get(url, allow_redirects=True)
+        open('csound6.16.0-MacOS_x86_64.dmg', 'wb').write(r.content)  
+        os.system('hdiutil attach csound6.16.0-MacOS_x86_64.dmg')
+        os.system('cp -R /Volumes/Csound6.16.2/ Csound')
+        os.system('hdiutil detach /Volumes/Csound6.16.2/')
+        os.system('cd Csound')
+        os.system('sudo installer -pkg csound-MacOS_x86_64-6.16.2.pkg -target /')
+        os.system('sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64')
 
+    url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
+    r = requests.get(url, allow_redirects=True)
+    open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
+    with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
+        zip_ref.extractall()
+
+    url = "http://cabbageaudio.com/beta/heads.zip"
+    r = requests.get(url, allow_redirects=True)
+    open('heads.zip', 'wb').write(r.content)       
+    with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
+        zip_ref.extractall()
+
+    if platform.system() == "Darwin":
+        os.system('mkdir ~/SDKs')
+        os.system('cp -rf VST_SDK ~/SDKs')
+        os.system('cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+        os.system('ls ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+        os.system('echo "\n"')
+
+os.chdir(rootDir)
 
 if not os.path.exists("JUCE"):
     os.system('git clone https://github.com/juce-framework/JUCE.git')
@@ -103,6 +166,9 @@ for project in projects:
                 os.system('cp -Rf ../Examples '+rootDir+'/Cabbage.app/Contents/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/Cabbage.app/Contents/Themes')
                 os.system('cp -Rf ../CabbageManual '+rootDir+'/Cabbage.app/Contents/CabbageManual')
+                os.system('cp -Rf ../CabbageRack '+rootDir+'/Cabbage.app/Contents/CabbageRack')
+                os.system('cp ../fmod_csound_fx.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound_fx.dylib')
+                os.system('cp ../fmod_csound.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound.dylib')
 
         elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
             os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+project+'.vst')
@@ -121,4 +187,12 @@ for project in projects:
                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.exe ' +rootDir+'/CabbageBinaries/CabbagePlugin.exe')
 
     os.chdir('..')
+
+
+if platform.system() == "Darwin" and "Release" is in build_type:
+    os.chdir(rootDir+'/Installers/MacOS') 
+    os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
+    os.system('packagesbuild Installer.pkgproj')
+    os.system('mv ./build/Cabbage.pkg '+rootDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
+
 
