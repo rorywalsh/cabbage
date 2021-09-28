@@ -38,6 +38,7 @@ jobs:
     vmImage: 'macOS-latest'
   steps:
   - script: |
+     pip install requests
      python build.py --config=Release --build_type="Remote Release"
     displayName: "Building..."
     env:
