@@ -34,8 +34,8 @@ inline std::unique_ptr<Drawable> createDrawableFromSVG (const char* data)
 class CabbageFoldersLookAndFeel   : public LookAndFeel_V4
 {
 public:
-    CabbageFoldersLookAndFeel(){};
-    ~CabbageFoldersLookAndFeel() {};
+    CabbageFoldersLookAndFeel(){}
+    ~CabbageFoldersLookAndFeel() {}
     
     const Drawable* getDefaultFolderImage() override;
 private:
@@ -46,7 +46,7 @@ class CabbageLookAndFeel2   : public LookAndFeel_V3
 {
 public:
     CabbageLookAndFeel2();
-    ~CabbageLookAndFeel2() {};
+    ~CabbageLookAndFeel2() {}
 
     float titlebarContrastingGradient = 0; // 0.0: no gradient in the titlebar - 1.0: max contrasting gradient
 

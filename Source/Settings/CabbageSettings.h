@@ -30,7 +30,7 @@ public:
     ~CabbageSettings()
     {
         defaultPropSet = nullptr;
-    };
+    }
 
     void set (String child, Identifier identifier, var value);
     String get (String child, String identifier);

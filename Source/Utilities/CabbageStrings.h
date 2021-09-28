@@ -19,9 +19,9 @@ public:
     {
 
 
-    };
+    }
 
-    ~CabbageStrings() {};
+    ~CabbageStrings() {}
 
 
     static String getNewCsoundFileText()
@@ -2024,7 +2024,7 @@ static const StringArray getOpcodeHints(){
         
         "\"cabbageFindFiles\";\"Gets an array of files from a directory.\";\"Gets an array of files from a directory\";\"SFiles[] cabbageFindFiles SLocation [, SType, SExtension] - SFiles[] cabbageFindFiles kTriggerFind, SLocation [, SType, SExtension]"};
     return opcodes;
-};
+}
 
 
 

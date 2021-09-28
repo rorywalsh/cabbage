@@ -24,8 +24,8 @@
 class PropertyPanelLookAndFeel : public LookAndFeel_V3
 {
 public:
-    PropertyPanelLookAndFeel() {};
-    ~PropertyPanelLookAndFeel() {};
+    PropertyPanelLookAndFeel() {}
+    ~PropertyPanelLookAndFeel() {}
 
     void setColours (Colour panelBG, Colour labelBG, Colour labelText);
 

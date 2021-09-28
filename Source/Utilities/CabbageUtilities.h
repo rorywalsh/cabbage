@@ -373,8 +373,8 @@ public:
 class CabbageUtilities
 {
 public:
-    CabbageUtilities() {};
-    ~CabbageUtilities() {};
+    CabbageUtilities() {}
+    ~CabbageUtilities() {}
 
     enum TargetTypes
     {

@@ -40,8 +40,8 @@ public:
         StringArray parameter;
     };
 
-    CabbageWidgetData() {};
-    ~CabbageWidgetData() {};
+    CabbageWidgetData() {}
+    ~CabbageWidgetData() {}
     //============================================================================
     static void setWidgetState (ValueTree widgetData, const String lineFromCsd, int ID);
     static void setCustomWidgetState (ValueTree widgetData, const String lineFromCsd);

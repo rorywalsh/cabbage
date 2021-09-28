@@ -152,7 +152,7 @@ public:
             parseTextForVariables();
 
         parseForVariables = false;
-    };
+    }
 
     void addToGUIEditorContextMenu();
     void updateCurrenLineMarker (ArrowKeys arrow = ArrowKeys::None);
@@ -211,7 +211,7 @@ public:
     void setFontSize (int size) {             currentFontSize = size;                             }
     //=========================================================
     void removeSelectedText();
-    void listBoxItemDoubleClicked (int row, const MouseEvent& e) override {};
+    void listBoxItemDoubleClicked (int row, const MouseEvent& e) override {}
     void paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected) override;
     void selectedRowsChanged (int /*lastRowselected*/) override {};
     String lastAction;

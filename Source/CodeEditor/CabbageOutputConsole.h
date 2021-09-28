@@ -46,14 +46,14 @@ public:
         updateColourScheme();
 
 
-    };
+    }
 
     ~CabbageOutputConsole() 
     {
         textEditor->getDocument().replaceAllContent("");
         setLookAndFeel(nullptr);
         DBG("cleaing");
-    };
+    }
 
     void setText (String text)
     {
