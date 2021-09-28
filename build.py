@@ -57,6 +57,7 @@ else:
 
 
 if buildType is not "Local Debug":
+    print("============== Downloading Manual and other things ==============")
     if not os.path.exists("CabbageManual"):
         url = "http://cabbageaudio.com/beta/CabbageManual.zip"
         r = requests.get(url, allow_redirects=True)
