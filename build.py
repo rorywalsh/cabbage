@@ -98,14 +98,14 @@ if buildType is not "Local Debug":
 
 if buildType is "Remote Release":
     if platform.system() == "Darwin":
-        # installing packages
+        print("================== Installing Pacakges ========================")
         url = "http://s.sudre.free.fr/Software/files/Packages.dmg"
         r = requests.get(url, allow_redirects=True)
         open('Packages.dmg', 'wb').write(r.content)  
         os.system("hdiutil mount Packages.dmg")
         os.system("sudo installer -pkg /Volumes/Packages\ 1.2.9/Install\ Packages.pkg -target /")
         os.system("hdiutil detach /Volumes/Packages\ 1.2.9/")
-        # installing Csound
+        print("================== Installing Csound ========================")
         url = 'https://github.com/csound/csound/releases/download/6.16.2/csound-MacOS_x86_64-6.16.2.dmg'
         r = requests.get(url, allow_redirects=True)
         open('csound6.16.0-MacOS_x86_64.dmg', 'wb').write(r.content)  
@@ -144,6 +144,14 @@ if not os.path.exists("JUCE"):
     os.system('git apply ./patches/UtilityWrapper.patch')
     os.system('git apply ./patches/VST2Wrapper.patch')
     os.system('git apply ./patches/VST3Wrapper.patch')
+    newFileText = ""
+    with open("JUCE/extras/Build/juceaide/CMakeLists.txt", "rt") as cmakeFile:
+        for line in cmakeFile:
+            if "juce_add_console_app(juceaide)" in line:
+                line += "\njuce_add_console_app(juceaide)\n"
+            newFileText += line      
+
+
 
 # curl -L -o CabbageManual.zip 'http://cabbageaudio.com/beta/CabbageManual.zip'
 
