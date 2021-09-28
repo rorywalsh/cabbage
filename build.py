@@ -26,7 +26,7 @@ os.system('cp -R /Volumes/Csound6.16.2/ Csound')
 os.system('hdiutil detach /Volumes/Csound6.16.2/')
 os.system('cd Csound')
 os.system('ls')
-os.system('sudo installer -pkg csound-MacOS_x86_64-6.16.2.pkg -target /Library/Frameworks/')
+# os.system('sudo installer -pkg csound-MacOS_x86_64-6.16.2.pkg -target /Library/Frameworks/')
 
 exit()
 
