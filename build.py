@@ -8,12 +8,15 @@ import zipfile
 
 info = """
 ================================================
-=== Build script for Cabbage Plugin Framework ==
+=== Build script for Cabbage Plugin Framework =="""
+print("     Arch:"+platform.architecture()[0])
+info+="""
 ================================================
 === Run python build.py -h for help...        ==
 ================================================
 """
 
+print(info)
 
 rootDir = os.getcwd()
 
