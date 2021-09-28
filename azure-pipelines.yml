@@ -38,12 +38,13 @@ jobs:
     vmImage: 'macOS-11'
     # xcodeVersion: '9.4.1'
   steps:
-  - bash: ls
-  - bash: cd CiScripts
-  - bash: pwd
-  - bash: ls 
-  - bash: chmod +x buildMacCI.sh
-  - bash: ./buildMacCI.sh
+  - bash: |
+     cd CiScripts
+     pwd
+     ls 
+     chmod +x buildMacCI.sh
+     ./buildMacCI.sh
+    displayName: "Running buildMacCI script"
     env:
       COREHOST_TRACE: 0
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1

@@ -100,9 +100,9 @@ for project in projects:
         if project == "Cabbage":
             os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.app '+rootDir+'/Cabbage.app')
             if buildType is not "Local Debug":
-                os.system('cp -rf Examples Cabbage.app/Contents/Examples')
-                os.system('cp -rf Themes Cabbage.app/Contents/Themes')
-                os.system('cp -rf CabbageManual ././build/Release/Cabbage.app/Contents/CabbageManual')
+                os.system('cp -Rf ../Examples '+rootDir+'/Cabbage.app/Contents/Examples')
+                os.system('cp -Rf ../Themes '+rootDir+'/Cabbage.app/Contents/Themes')
+                os.system('cp -Rf ../CabbageManual '+rootDir+'/Cabbage.app/Contents/CabbageManual')
 
         elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
             os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+project+'.vst')
