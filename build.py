@@ -11,9 +11,14 @@ info = """
 === Build script for Cabbage Plugin Framework ==
 ================================================
 === Run python build.py -h for help...        ==
-================================================"""
+================================================
+"""
 
 print(info)
+print("========")
+print(platform.system())
+print("========")
+
 rootDir = os.getcwd()
 
 def getVersionNumber():
@@ -57,7 +62,6 @@ else:
 
 
 if buildType is not "Local Debug":
-    print("============== Downloading Manual and other things ==============")
     if not os.path.exists("CabbageManual"):
         url = "http://cabbageaudio.com/beta/CabbageManual.zip"
         r = requests.get(url, allow_redirects=True)
@@ -100,7 +104,6 @@ if buildType is not "Local Debug":
 
 
 if buildType is "Remote Release":
-    print("Build type = "+buildType)
     if platform.system() == "Darwin":
         print("================== Installing Pacakges ========================")
         url = "http://s.sudre.free.fr/Software/files/Packages.dmg"
