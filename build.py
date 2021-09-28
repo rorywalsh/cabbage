@@ -97,6 +97,7 @@ if buildType is not "Local Debug":
             r = requests.get(url, allow_redirects=True)
             open(rootDir+'/CabbageInstall/fmod_csound64.dll', 'wb').write(r.content)  
 
+print("Build type = "+buildType)
 if buildType is "Remote Release":
     if platform.system() == "Darwin":
         print("================== Installing Pacakges ========================")
