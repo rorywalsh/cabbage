@@ -35,8 +35,7 @@ jobs:
 - job: macOS
   timeoutInMinutes: 100
   pool:
-    vmImage: 'macOS-11'
-    # xcodeVersion: '9.4.1'
+    vmImage: 'macOS-latest'
   steps:
   - script: |
      python build.py --config=Release --build_type="Remote Release"
