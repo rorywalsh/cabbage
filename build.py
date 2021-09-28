@@ -84,7 +84,7 @@ if buildType is not "Local Debug":
             r = requests.get(url, allow_redirects=True)
             open('fmod_csound.dylib', 'wb').write(r.content)  
 
-    if platform.system() == "Windows":     
+    elif platform.system() == "Windows":     
         if not os.path.exists("CabbageRack"):
             url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip"
             r = requests.get(url, allow_redirects=True)
@@ -99,10 +99,10 @@ if buildType is not "Local Debug":
         if not os.path.exists("fmod_csound64.dll"):
             url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64.dll"
             r = requests.get(url, allow_redirects=True)
-            open(rootDir+'/CabbageInstall/fmod_csound64.dll', 'wb').write(r.content)  
+            open(rootDir+'/CabbageInstall/fmod_csound64.dll', 'wb').write(r.content)
 
 
-if buildType is "Remote Release":
+if "Remote Release" in buildType:
     print("================== Setting up for Release build ========================")
     if platform.system() == "Darwin":
         print("================== Installing Pacakges ========================")
