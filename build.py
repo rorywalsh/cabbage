@@ -103,6 +103,7 @@ if buildType is not "Local Debug":
 
 
 if buildType is "Remote Release":
+    print("================== Setting up for Release build ========================")
     if platform.system() == "Darwin":
         print("================== Installing Pacakges ========================")
         url = "http://s.sudre.free.fr/Software/files/Packages.dmg"
