@@ -112,13 +112,16 @@ if "Remote Release" in buildType:
         os.system("hdiutil mount Packages.dmg")
         os.system("sudo installer -pkg /Volumes/Packages\ 1.2.9/Install\ Packages.pkg -target /")
         os.system("hdiutil detach /Volumes/Packages\ 1.2.9/")
+
         print("================== Installing Csound ========================")
         url = 'https://github.com/csound/csound/releases/download/6.16.2/csound-MacOS_x86_64-6.16.2.dmg'
         r = requests.get(url, allow_redirects=True)
         open('csound6.16.0-MacOS_x86_64.dmg', 'wb').write(r.content)  
-        os.system('hdiutil attach csound6.16.0-MacOS_x86_64.dmg')
+        os.system('hdiutil attach '+rootDir+'csound6.16.0-MacOS_x86_64.dmg')
+        os.system('ls')
         os.system('cp -R /Volumes/Csound6.16.2/ Csound')
         os.system('hdiutil detach /Volumes/Csound6.16.2/')
+
         os.system('cd Csound')
         os.system('sudo installer -pkg csound-MacOS_x86_64-6.16.2.pkg -target /')
         os.system('sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64')
