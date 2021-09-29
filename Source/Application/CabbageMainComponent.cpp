@@ -706,10 +706,10 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
                                                                             CabbageIdentifierIds::surrogatelinenumber);
                 const Rectangle<int> rect = CabbageWidgetData::getBounds(widgetData);
                 const String newBounds = CabbageWidgetData::getBoundsTextAsCabbageCode(rect);
-                String newLine = CabbageWidgetData::replaceIdentifier(
+                String newL = CabbageWidgetData::replaceIdentifier(
                         getCurrentCodeEditor()->getLineText(lineNumberOfCustomPlant), "bounds", newBounds);
 
-                getCurrentCodeEditor()->insertCode(lineNumberOfCustomPlant, newLine, true, true);
+                getCurrentCodeEditor()->insertCode(lineNumberOfCustomPlant, newL, true, true);
 
             }
         }

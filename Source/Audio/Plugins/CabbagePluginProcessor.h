@@ -398,7 +398,7 @@ private:
     const String widgetName;
     const bool isAutomatable = true;
 
-    CabbagePluginProcessor* owner;
+    //CabbagePluginProcessor* owner;
     
 //    bool isCombo(const String name)
 //    {

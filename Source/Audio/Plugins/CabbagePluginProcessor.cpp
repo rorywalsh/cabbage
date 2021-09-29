@@ -227,7 +227,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 	String parentComponent, previousComponent;
 	StringArray parents;
 
-    const String csdFilePath = csdFile.getFullPathName();
+    const String csdFileFullPath = csdFile.getFullPathName();
 	getMacros(linesFromCsd);
 
 	for (int lineNumber = 0; lineNumber < linesFromCsd.size(); lineNumber++)
@@ -290,7 +290,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 				parents[parents.size() - 1]);
 
 		CabbageWidgetData::setNumProp(newWidget, CabbageIdentifierIds::linenumber, lineNumber - linesToSkip);
-		CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::csdfile, csdFilePath);
+		CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::csdfile, csdFileFullPath);
 
 
 		CabbageWidgetData::setProperty(newWidget, CabbageIdentifierIds::macronames, macroNames);
@@ -307,10 +307,10 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 			const String caption = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::caption);
 			setPluginName(caption.length() > 0 ? caption : "Untitled");
             
-            const String polling = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::guimode);
-            if(polling == "polling")
+            const String poll = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::guimode);
+            if(poll == "polling")
                 pollingChannels(1);
-            else if(polling == "queue")
+            else if(poll == "queue")
                 pollingChannels(0);
             else
                 pollingChannels(2);

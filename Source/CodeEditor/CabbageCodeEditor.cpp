@@ -288,14 +288,14 @@ void CabbageCodeEditorComponent::updateCurrenLineMarker (ArrowKeys arrowKey)
 
     }
 
-    int xOffset = 0;
+    int xOff = 0;
 
     if (arrowKey == ArrowKeys::Up)
-        xOffset = -getFontSize();
+        xOff = -getFontSize();
     else if (arrowKey == ArrowKeys::Down)
-        xOffset = getFontSize();
+        xOff = getFontSize();
 
-    currentLineMarker.setBounds (12, getCharacterBounds (linePos).getY() + xOffset, 20, getFontSize());
+    currentLineMarker.setBounds (12, getCharacterBounds (linePos).getY() + xOff, 20, getFontSize());
     lastLinePosition = start.getPosition();
 }
 

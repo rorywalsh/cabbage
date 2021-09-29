@@ -30,7 +30,7 @@ class PluginExporter
     CabbageIDELookAndFeel lookAndFeel;
     PropertiesFile* settings;
 public:
-    PluginExporter():lookAndFeel(){}
+    PluginExporter():lookAndFeel(), settings(nullptr){}
     void settingsToUse(PropertiesFile* cabSettings){   settings = cabSettings; }
 
     long cabbageFindPluginId (unsigned char* buf, size_t len, const char* s);

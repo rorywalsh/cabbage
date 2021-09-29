@@ -201,7 +201,7 @@ public:
 
 				if (auto* plugin = dynamic_cast <AudioPluginInstance*> (node->getProcessor()))
 					plugin->fillInPluginDescription(pd);
-				else if (auto* plugin = dynamic_cast <CabbagePluginProcessor*> (node->getProcessor()))
+				else if (auto* plugin2 = dynamic_cast <CabbagePluginProcessor*> (node->getProcessor()))
 				{
 					//grab description of native plugin for saving...
 					pd = getPluginDescriptor(node->nodeID, node->properties.getWithDefault("pluginFile", ""));
