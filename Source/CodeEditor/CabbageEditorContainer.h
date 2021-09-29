@@ -36,7 +36,7 @@ public:
 	public:
 		StatusBar(ValueTree valueTree, CabbageEditorContainer* parent)
 			: Component("StatusBar"),
-			valueTree(valueTree),
+			valueTree(valueTree)
 		{
             ignoreUnused(parent);
 			String initString = (SystemStats::getOperatingSystemName() +
@@ -59,6 +59,7 @@ public:
 	private:
 		ValueTree valueTree;
 		StringArray statusText;
+		int currentYPos = 550;
 	};
 
 	CabbageMainComponent* getContentComponent();
