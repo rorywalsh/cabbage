@@ -58,10 +58,6 @@ if args.build_type is not None:
 else:
     buildType = "Local Debug"
 
-if "Remote Release" in buildType:
-    stagingDir = os.popen('echo $BUILD_ARTIFACTSTAGINGDIRECTORY').read()
-    print("ArtifactStagingDirectory: "+stagingDir)
-
 if platform.system() == "Windows" and os.path.exists("CabbageInstall"):
     os.system('rm -rf CabbageInstall')
 
@@ -113,9 +109,10 @@ if buildType is not "Local Debug":
             open(rootDir+'/CabbageInstall/fmod_csound64.dll', 'wb').write(r.content)
 
 
-if "Remote Release" in buildType:
+if "Remote Release" in buildType:        
     print("================== Setting up for Release build ========================")
     if platform.system() == "Darwin":
+        stagingDir = os.popen('echo $BUILD_ARTIFACTSTAGINGDIRECTORY').read()
         print("================== Installing Pacakges ========================")
         url = "http://s.sudre.free.fr/Software/files/Packages.dmg"
         r = requests.get(url, allow_redirects=True)
@@ -136,9 +133,8 @@ if "Remote Release" in buildType:
         os.system('sudo installer -pkg csound-MacOS_x86_64-6.16.2.pkg -target /')
         os.system('sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64')
 
-    os.chdir(rootDir)
+        os.chdir(rootDir)
 
-    if platform.system() == "Darwin":
         url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
         r = requests.get(url, allow_redirects=True)
         open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
@@ -155,6 +151,7 @@ if "Remote Release" in buildType:
             zip_ref.extractall()
 
     if platform.system() == "Windows":
+        stagingDir = 'D:/a/1/a'
         url = "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.16.0.zip"
         r = requests.get(url, allow_redirects=True)
         open('csound-windows_x64-6.16.0.zip', 'wb').write(r.content)       
@@ -200,8 +197,6 @@ if not os.path.exists("JUCE"):
 
 if platform.system() == "Darwin" and os.path.exists("Cabbage.app"):
     os.system('rm -rf Cabbage.app')
-
-
 
 for project in projects:
     if os.path.exists("build"):
