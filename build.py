@@ -60,8 +60,8 @@ else:
     buildType = "Local Debug"
 
 if "Remote Release" in buildType:
-    os.system('echo $BUILD_ARTIFACTSTAGINGDIRECTORY')
-    # print("ArtifactStagingDirectory: "+stagingDir)
+    stagingDir = os.popen('echo $BUILD_ARTIFACTSTAGINGDIRECTORY').read()
+    print("ArtifactStagingDirectory: "+stagingDir)
 
 exit()
 
