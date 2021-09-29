@@ -158,7 +158,7 @@ if "Remote Release" in buildType:
         r = requests.get(url, allow_redirects=True)
         open('csound-windows_x64-6.16.0.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("csound-windows_x64-6.16.0.zip", 'r') as zip_ref:
-            zip_ref.extractall('C:/Program Files/Csound6_x64')
+            zip_ref.extractall('C:/Program Files')
 
         os.system('mkdir C:/SDKs')
         url = "https://download.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip"
@@ -173,15 +173,12 @@ if "Remote Release" in buildType:
         with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
             zip_ref.extractall('C:/SDKs/VST_SDK')
 
-        os.system('cp -rf '+rootDir+'/vst2.x C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
-
         url = "http://cabbageaudio.com/beta/heads.zip"
         r = requests.get(url, allow_redirects=True)
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
             zip_ref.extractall("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x")
 
-        os.system('ls C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/')
 
 os.chdir(rootDir)
 
