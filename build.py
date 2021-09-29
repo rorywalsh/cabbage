@@ -16,8 +16,6 @@ info = """
 
 print(info)
 rootDir = os.getcwd()
-os.system('ls '+rootDir+'/Installers')
-os.system('ls '+rootDir+'/Installers/Windows')
 
 platformArch = os.popen('arch').read()
 
