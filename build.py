@@ -94,7 +94,7 @@ if buildType is not "Local Debug":
         if not os.path.exists("CabbageRack"):
             url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip"
             r = requests.get(url, allow_redirects=True)
-            open('./CabbageInstall/CabbageRack-1.0.0-win.zip', 'wb').write(r.content)  
+            open(rootDir+'/CabbageInstall/CabbageRack-1.0.0-win.zip', 'wb').write(r.content)  
             with zipfile.ZipFile(rootDir+"/CabbageInstall/CabbageRack-1.0.0-win.zip", 'r') as zip_ref:
                 zip_ref.extractall() 
             shutil.copytree('CabbageRack', rootDir+'/CabbageInstall/CabbageRack')
