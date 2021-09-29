@@ -173,7 +173,7 @@ if "Remote Release" in buildType:
         with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
             zip_ref.extractall('C:/SDKs/VST_SDK')
 
-        os.system('cp -rf 'rootDir+'/vst2.x C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+        os.system('cp -rf '+rootDir+'/vst2.x C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
 
         url = "http://cabbageaudio.com/beta/heads.zip"
         r = requests.get(url, allow_redirects=True)
