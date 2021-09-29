@@ -247,10 +247,10 @@ for project in projects:
                 os.system('cp ../fmod_csound_fx.dylib '+rootDir+'/CabbageInstall/fmod_csound_fx.dylib')
                 os.system('cp ../fmod_csound.dylib '+rootDir+'/CabbageInstall/fmod_csound.dylib')
         elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
-            os.system('cp -Rf '+rootDir+'/'+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+project+'.dll')
-            os.system('cp -Rf '+rootDir+'/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+project+'.vst3')
+            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+project+'.dll')
+            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+project+'.vst3')
             if project == "CabbagePluginSynth":
-                os.system('cp -Rf '+rootDir+'/'+project+'_artefacts/'+configType+'/Standalone/'+project+'.exe ' +rootDir+'/CabbageInstall/CabbagePlugin.exe')
+                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+'.exe ' +rootDir+'/CabbageInstall/CabbagePlugin.exe')
 
     os.chdir('..')
 
