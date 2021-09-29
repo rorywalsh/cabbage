@@ -63,8 +63,6 @@ if "Remote Release" in buildType:
     stagingDir = os.popen('echo $BUILD_ARTIFACTSTAGINGDIRECTORY').read()
     print("ArtifactStagingDirectory: "+stagingDir)
 
-exit()
-
 if buildType is not "Local Debug":
     if not os.path.exists("CabbageManual"):
         url = "http://cabbageaudio.com/beta/CabbageManual.zip"
@@ -236,12 +234,26 @@ for project in projects:
 
     os.chdir('..')
 
-if "Release" in buildType:
+# If local release is specified, then packages things from the current dir
+if "Local Release" in buildType:
     if platform.system() == "Darwin":
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
         os.system('packagesbuild Installer.pkgproj')
         os.system('mv ./build/Cabbage.pkg '+rootDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
+
+    if platform.system() == "Windows":
+        os.chdir(rootDir+'/Installers/Windows') 
+        os.system('set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"')
+        os.system('iscc Installer.iss')
+
+# If remote release is specified, package things into teh staging directory
+if "Remote Release" in buildType:
+    if platform.system() == "Darwin":
+        os.chdir(rootDir+'/Installers/MacOS') 
+        os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
+        os.system('packagesbuild Installer.pkgproj')
+        os.system('mv ./build/Cabbage.pkg '+stagingDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
 
     if platform.system() == "Windows":
         os.chdir(rootDir+'/Installers/Windows') 
