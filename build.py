@@ -137,13 +137,6 @@ if "Remote Release" in buildType:
 
     os.chdir(rootDir)
 
-
-    url = "http://cabbageaudio.com/beta/heads.zip"
-    r = requests.get(url, allow_redirects=True)
-    open('heads.zip', 'wb').write(r.content)       
-    with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
-        zip_ref.extractall()
-
     if platform.system() == "Darwin":
         url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
         r = requests.get(url, allow_redirects=True)
@@ -153,6 +146,12 @@ if "Remote Release" in buildType:
         os.system('mkdir ~/SDKs')
         os.system('cp -rf VST_SDK ~/SDKs')
         os.system('cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+
+        url = "http://cabbageaudio.com/beta/heads.zip"
+        r = requests.get(url, allow_redirects=True)
+        open('heads.zip', 'wb').write(r.content)       
+        with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
+            zip_ref.extractall()
 
     if platform.system() == "Windows":
         url = "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.16.0.zip"
@@ -174,14 +173,15 @@ if "Remote Release" in buildType:
         with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
             zip_ref.extractall('C:/SDKs/VST_SDK')
 
-        os.system('cp -rf VST_SDK C:/SDKs/VST_SDK')
-        os.system('cp -rf vst2.x C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+        os.system('cp -rf 'rootDir+'/vst2.x C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
 
-        # os.system('ls C:/')
-        # os.system('powershell Get-ChildItem -Path "'+rootDir+'/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container')
-        # os.system('ls C:/SDKs')
-        # os.system('powershell "Copy-Item "'+rootDir+'/vst2.x -Destination C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/ -Recurse"')
+        url = "http://cabbageaudio.com/beta/heads.zip"
+        r = requests.get(url, allow_redirects=True)
+        open('heads.zip', 'wb').write(r.content)       
+        with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
+            zip_ref.extractall("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x")
 
+        os.system('ls C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/')
 
 os.chdir(rootDir)
 
