@@ -176,6 +176,10 @@ if "Remote Release" in buildType:
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
             zip_ref.extractall("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x")
+        print('------------------------------------------------------')
+        os.system('ls C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/')
+        os.system('ls C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x')
+        
 
 
 os.chdir(rootDir)
@@ -279,4 +283,5 @@ if "Remote Release" in buildType:
         os.chdir(rootDir+'/Installers/Windows') 
         os.system('set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"')
         os.system('iscc Installer.iss')
-        os.system('mv ./Output/Cabbage64Setup.exe '+stagingDir+'/Cabbage64Setup-'+getVersionNumber()+'.exe')
+        os.system(rootDir+'/Installers/Windows/Output')
+        os.system('cp '+rootDir+'/Installers/Windows/Output/Cabbage64Setup.exe '+stagingDir+'/Cabbage64Setup-'+getVersionNumber()+'.exe')
