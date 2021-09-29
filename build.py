@@ -102,7 +102,7 @@ if buildType is not "Local Debug":
         if not os.path.exists("fmod_csound64_fx.dll"):
             url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64_fx.dll"
             r = requests.get(url, allow_redirects=True)
-            open(rootDir+'/CabbageInstall/fmod_csound_fx64.dll', 'wb').write(r.content)  
+            open(rootDir+'/CabbageInstall/fmod_csound64_fx.dll', 'wb').write(r.content)  
         if not os.path.exists("fmod_csound64.dll"):
             url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64.dll"
             r = requests.get(url, allow_redirects=True)
