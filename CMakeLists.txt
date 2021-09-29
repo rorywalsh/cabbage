@@ -96,6 +96,8 @@ endif()
 
 juce_generate_juce_header(${PROJECT_NAME})
 
+target_compile_options(${PROJECT_NAME} PRIVATE -Wno-reorder)
+
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 
 set(COMMON_SOURCES
@@ -310,6 +312,7 @@ if(MSVC)
         juce::juce_recommended_warning_flags)
 
 elseif(APPLE)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
     SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
     find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
     "/Library/Frameworks/CsoundLib64.framework")  
