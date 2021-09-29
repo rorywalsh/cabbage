@@ -15,12 +15,12 @@ info = """
 """
 
 print(info)
-
+rootDir = os.getcwd()
 os.system('ls '+rootDir+'/Installers/Windows')
 
 platformArch = os.popen('arch').read()
 
-rootDir = os.getcwd()
+
 
 def getVersionNumber():
     with open(rootDir+"/CMakeLists.txt", "rt") as inputFile:
