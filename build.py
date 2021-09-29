@@ -59,7 +59,7 @@ if args.build_type is not None:
 else:
     buildType = "Local Debug"
 
-if "Release Remote" in buildType:
+if "Remote Release" in buildType:
     stagingDir = os.popen('echo $(Build.ArtifactStagingDirectory)').read()
     print("ArtifactStagingDirectory: "+stagingDir)
 
