@@ -45,8 +45,6 @@ if args.config is None:
     print("You must pass a valid config, i.e, --config=Debug ")
     exit()
 
-
-
 configType = args.config
 
 if args.project is not None:
@@ -90,7 +88,9 @@ if buildType is not "Local Debug":
             r = requests.get(url, allow_redirects=True)
             open('fmod_csound.dylib', 'wb').write(r.content)  
 
-    elif platform.system() == "Windows":     
+    elif platform.system() == "Windows": 
+        if not os.path.exists(rootDir+"/CabbageInstall")
+            os.system('mkdir '+(rootDir+'/CababgeInstall')    
         if not os.path.exists("CabbageRack"):
             url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip"
             r = requests.get(url, allow_redirects=True)
@@ -259,3 +259,4 @@ if "Remote Release" in buildType:
         os.chdir(rootDir+'/Installers/Windows') 
         os.system('set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"')
         os.system('iscc Installer.iss')
+        os.system('mv ./Output/Cabbage64Setup.exe '+stagingDir+'/Cabbage64Setup-'+getVersionNumber()+'.exe')
