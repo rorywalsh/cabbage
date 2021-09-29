@@ -154,11 +154,20 @@ if "Remote Release" in buildType:
         os.system('cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
 
     if platform.system() == "Windows":
-        print("============================================================")
-        os.system('ls')
-        os.system('mkdir C:/SDKs')
-        os.system('cp -rf VST_SDK C:/SDKs')
-        os.system('cp -rf vst2.x C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+        url = "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.16.0.zip"
+        r = requests.get(url, allow_redirects=True)
+        open('csound-windows_x64-6.16.0.zip', 'wb').write(r.content)       
+        with zipfile.ZipFile("csound-windows_x64-6.16.0.zip", 'r') as zip_ref:
+            zip_ref.extractall('C:/Program Files/Csound6_x64')
+
+        url = "https://download.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip"
+        r = requests.get(url, allow_redirects=True)
+        open('asiosdk_2.3.3_2019-06-14.zip', 'wb').write(r.content)       
+        with zipfile.ZipFile("asiosdk_2.3.3_2019-06-14.zip", 'r') as zip_ref:
+            zip_ref.extractall('C:/SDKs/ASIOSDK2.3.2')
+
+        os.system('Get-ChildItem -Path "'+rootDir+'/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container')
+        os.system('Copy-Item "'+rootDir+'/vst2.x" -Destination "C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/" -Recurse)
 
 
 os.chdir(rootDir)
