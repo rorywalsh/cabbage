@@ -89,7 +89,7 @@ if buildType is not "Local Debug":
             open('fmod_csound.dylib', 'wb').write(r.content)  
 
     elif platform.system() == "Windows": 
-        if not os.path.exists(rootDir+"/CabbageInstall")
+        if not os.path.exists(rootDir+"/CabbageInstall"):
             os.system('mkdir '+(rootDir+'/CababgeInstall')    
         if not os.path.exists("CabbageRack"):
             url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip"
