@@ -90,7 +90,7 @@ if buildType is not "Local Debug":
 
     elif platform.system() == "Windows": 
         if not os.path.exists(rootDir+"/CabbageInstall"):
-            os.system('mkdir '+(rootDir+'/CababgeInstall')    
+            os.system('mkdir '+rootDir+'/CababgeInstall')    
         if not os.path.exists("CabbageRack"):
             url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip"
             r = requests.get(url, allow_redirects=True)
