@@ -168,7 +168,7 @@ if "Remote Release" in buildType:
 
         os.system('ls C:/')
         os.system('powershell Get-ChildItem -Path "'+rootDir+'/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container')
-        os.system('powershell Copy-Item "'+rootDir+'/vst2.x" -Destination "C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/" -Recurse')
+        os.system('powershell -Command Copy-Item "'+rootDir+'/vst2.x" -Destination "C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/" -Recurse')
 
 
 os.chdir(rootDir)
