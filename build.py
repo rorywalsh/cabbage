@@ -166,8 +166,9 @@ if "Remote Release" in buildType:
         with zipfile.ZipFile("asiosdk_2.3.3_2019-06-14.zip", 'r') as zip_ref:
             zip_ref.extractall('C:/SDKs/ASIOSDK2.3.2')
 
+        os.system('ls C:/')
         os.system('Get-ChildItem -Path "'+rootDir+'/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container')
-        os.system('Copy-Item "'+rootDir+'/vst2.x" -Destination "C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/" -Recurse)
+        os.system('Copy-Item "'+rootDir+'/vst2.x" -Destination "C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/" -Recurse')
 
 
 os.chdir(rootDir)
