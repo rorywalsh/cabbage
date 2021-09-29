@@ -61,6 +61,12 @@ if "Remote Release" in buildType:
     stagingDir = os.popen('echo $BUILD_ARTIFACTSTAGINGDIRECTORY').read()
     print("ArtifactStagingDirectory: "+stagingDir)
 
+if platform.system() == "Windows" and os.path.exists("CabbageInstall"):
+    os.system('rm -rf CabbageInstall')
+
+if platform.system() == "Windows":   
+    os.system('mkdir CabbageInstall')
+
 if buildType is not "Local Debug":
     if not os.path.exists("CabbageManual"):
         url = "http://cabbageaudio.com/beta/CabbageManual.zip"
@@ -88,9 +94,7 @@ if buildType is not "Local Debug":
             r = requests.get(url, allow_redirects=True)
             open('fmod_csound.dylib', 'wb').write(r.content)  
 
-    elif platform.system() == "Windows": 
-        if not os.path.exists(rootDir+"/CabbageInstall"):
-            os.system('mkdir '+rootDir+'/CababgeInstall')    
+    elif platform.system() == "Windows":   
         if not os.path.exists("CabbageRack"):
             url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip"
             r = requests.get(url, allow_redirects=True)
@@ -171,11 +175,6 @@ if not os.path.exists("JUCE"):
 if platform.system() == "Darwin" and os.path.exists("Cabbage.app"):
     os.system('rm -rf Cabbage.app')
 
-if platform.system() == "Windows" and os.path.exists("CabbageInstall"):
-    os.system('rm -rf CabbageInstall')
-
-if platform.system() == "Windows":   
-    os.system('mkdir CabbageInstall')
 
 
 for project in projects:
