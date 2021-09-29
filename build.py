@@ -174,9 +174,8 @@ if "Remote Release" in buildType:
         with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
             zip_ref.extractall('C:/SDKs/VST_SDK')
 
-        os.system('mkdir ~/SDKs')
-        os.system('cp -rf VST_SDK ~/SDKs')
-        os.system('cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+        os.system('cp -rf VST_SDK C:/SDKs/VST_SDK')
+        os.system('cp -rf vst2.x C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
 
         # os.system('ls C:/')
         # os.system('powershell Get-ChildItem -Path "'+rootDir+'/VST_SDK" | Copy-Item -Destination "C:/SDKs/VST_SDK" -Recurse -Container')
