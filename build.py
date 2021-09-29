@@ -155,7 +155,7 @@ if "Remote Release" in buildType:
 
     if platform.system() == "Windows":
         print("============================================================")
-        print('ls')
+        os.system('ls')
         os.system('mkdir C:/SDKs')
         os.system('cp -rf VST_SDK C:/SDKs')
         os.system('cp -rf vst2.x C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces')

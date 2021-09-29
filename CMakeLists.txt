@@ -97,7 +97,9 @@ endif()
 juce_generate_juce_header(${PROJECT_NAME})
 
 if(MSVC)
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd 4996")
+    # C4996 are warnings caused by deprecated function
+    # C26495 are warnings caused by JUCE classes
+    add_definitions( "/wd26495 /wd4996" )
 endif()
 
 add_compile_options ( -Wno-reorder -Wno-deprecated -Wno-deprecated-declarations)
