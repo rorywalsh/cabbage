@@ -31,8 +31,8 @@ class SliderLookAndFeel : public LookAndFeel_V2
 	int fontSize = -1;
 public:
 
-	SliderLookAndFeel(Colour col = { 255, 255, 255 }, int fS = -1) :fontColour(col), fontSize(fS) {};
-	~SliderLookAndFeel() {};
+	SliderLookAndFeel(Colour col = { 255, 255, 255 }, int fS = -1) :fontColour(col), fontSize(fS) {}
+	~SliderLookAndFeel() override {}
 	void setFontColour(Colour col) { fontColour = col; }
 	void setFontSize(int fS) { fontSize = fS; }
     
@@ -68,6 +68,7 @@ public:
 		float sliderPos, float minSliderPos, float maxSliderPos,
 		const Slider::SliderStyle style, Slider& slider) override
 	{
+        ignoreUnused(style, maxSliderPos);
 		g.setColour(slider.findColour(Slider::thumbColourId));
         const int corners = slider.getProperties().getWithDefault("corners", 3);
         if(corners!=0)
@@ -89,30 +90,29 @@ class CabbageNumberSlider : public Component, public ValueTree::Listener, public
 public:
 	SliderLookAndFeel sliderLookAndFeel;
 	explicit CabbageNumberSlider (ValueTree wData, CabbagePluginEditor* owner);
-	~CabbageNumberSlider() {
+	~CabbageNumberSlider() override {
 		widgetData.removeListener(this);
 		slider.setLookAndFeel(nullptr);
-
-	};
+	}
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
     void resized() override;
     
 
     Slider& getSlider()
     {
         return slider;
-    };
+    }
 
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageNumberSlider);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageNumberSlider)
 };
 
 

@@ -40,7 +40,7 @@ public:
 
     }
 
-    ~ColourPallete()
+    ~ColourPallete() override
     {
         this->removeAllChangeListeners();
     }
@@ -105,7 +105,7 @@ class ColourPropertyComponent : public PropertyComponent, public ChangeListener,
 public :
     //======= ColourPropertyComponent =======
     ColourPropertyComponent (String name, String colourString, bool colourSettings = false);
-    ~ColourPropertyComponent() {}
+    ~ColourPropertyComponent() override {}
     void paint (Graphics& g)  override;
     void mouseDown (const MouseEvent& e) override;
     void changeListenerCallback (juce::ChangeBroadcaster* source) override;

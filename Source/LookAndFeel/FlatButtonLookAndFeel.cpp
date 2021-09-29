@@ -53,8 +53,9 @@ namespace LookAndFeelHelpers
 
 FlatButtonLookAndFeel::FlatButtonLookAndFeel() {
     //setDefaultFont(File("/Users/walshr/Documents/Csoundfiles/RobotoCondensed-Italic.ttf"));
-};
-FlatButtonLookAndFeel::~FlatButtonLookAndFeel() {};
+}
+
+FlatButtonLookAndFeel::~FlatButtonLookAndFeel() {}
 
 void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, const Colour &backgroundColour, bool isMouseOverButton, bool isButtonDown)
 {

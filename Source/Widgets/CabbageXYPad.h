@@ -82,13 +82,13 @@ class CabbageXYPad
 public:
 
     CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor);
-    ~CabbageXYPad();
+    ~CabbageXYPad() override;
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
 
     void changeListenerCallback (ChangeBroadcaster* source) override;
     ValueTree widgetData;
@@ -119,7 +119,7 @@ public:
     juce::Point<float> getValueAsPosition (juce::Point<float> position);
     void setPositionAsValue (juce::Point<float> position);
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageXYPad);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageXYPad)
 };
 
 //=============================================================================
@@ -141,7 +141,7 @@ class XYPadAutomator : public ChangeBroadcaster, public Timer
 public:
     XYPadAutomator (String name, CabbagePluginParameter* xParam, CabbagePluginParameter* yParam, CabbagePluginProcessor* _owner);
 
-    ~XYPadAutomator()
+    ~XYPadAutomator() override
     {
         stopTimer();
         removeAllChangeListeners();

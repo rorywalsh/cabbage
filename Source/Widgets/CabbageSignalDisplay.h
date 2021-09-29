@@ -55,16 +55,16 @@ class CabbageSignalDisplay : public Component, public ValueTree::Listener, publi
 public:
 
     CabbageSignalDisplay (ValueTree wData, CabbagePluginEditor* owner);
-    ~CabbageSignalDisplay() {
+    ~CabbageSignalDisplay() override {
         widgetData.removeListener(this);
-    };
+    }
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
 
     ValueTree widgetData;
 
@@ -86,7 +86,7 @@ public:
     void zoomIn (int factor = 1);
     void timerCallback() override;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSignalDisplay);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSignalDisplay)
 };
 
 

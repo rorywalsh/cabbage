@@ -101,7 +101,7 @@ struct WriteStateData : csnd::InPlug<2>
             }
         }
         std::string jsonData = "";
-        int writeMode = args[0];
+        int writeMode = int(args[0]);
         json j;
 
         CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
@@ -202,7 +202,7 @@ struct SetStateFloatData : csnd::InPlug<2>
         else
         {
             csound->create_global_variable("cabbageData", sizeof(CabbagePersistentData*));
-            CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+            pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
             *pd = new CabbagePersistentData();
             perData = *pd;
             csound->message("Creating new internal state object...\n");
@@ -280,7 +280,7 @@ struct SetStateFloatArrayData : csnd::InPlug<2>
         else
         {
             csound->create_global_variable("cabbageData", sizeof(CabbagePersistentData*));
-            CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+            pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
             *pd = new CabbagePersistentData();
             perData = *pd;
             csound->message("Creating new internal state object...\n");
@@ -288,8 +288,8 @@ struct SetStateFloatArrayData : csnd::InPlug<2>
         }
 
         std::string newData = "{ \"" + jsonKeyName + "\" : [";
-        for (int i = 0; i < inputArgs.len(); i++) {
-            newData += std::to_string(inputArgs[i]) + (i < inputArgs.len() - 1 ? ", " : "");
+        for (int i = 0; i < int(inputArgs.len()); i++) {
+            newData += std::to_string(inputArgs[i]) + (i < int(inputArgs.len()) - 1 ? ", " : "");
         }
         newData += "]}";
 
@@ -358,7 +358,7 @@ struct SetStateStringData : csnd::InPlug<2>
         else
         {
             csound->create_global_variable("cabbageData", sizeof(CabbagePersistentData*));
-            CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+            pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
             *pd = new CabbagePersistentData();
             perData = *pd;
             csound->message("Creating new internal state object...\n");
@@ -431,7 +431,7 @@ struct SetStateStringArrayData : csnd::InPlug<2>
         else
         {
             csound->create_global_variable("cabbageData", sizeof(CabbagePersistentData*));
-            CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+            pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
             *pd = new CabbagePersistentData();
             perData = *pd;
             csound->message("Creating new internal state object...\n");
@@ -439,8 +439,8 @@ struct SetStateStringArrayData : csnd::InPlug<2>
         }
 
         std::string newData = "{ \"" + jsonKeyName + "\" : [";
-        for (int i = 0; i < strs.len(); i++) {
-            newData += "\""+(strs[i].data + std::string(i < strs.len() - 1 ? "\", " : ""));
+        for (int i = 0; i < int(strs.len()); i++) {
+            newData += "\""+(strs[i].data + std::string(i < int(strs.len()) - 1 ? "\", " : ""));
         }
         newData += "\"]}";
 
@@ -482,6 +482,7 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
 
     void readData(int mode)
     {
+        ignoreUnused(mode);
         std::string chString;
         json j;
         bool firstTimeSuccess = false;
@@ -632,7 +633,6 @@ struct GetStateFloatValue : csnd::Plugin<1, 1>
     {
         std::string chString;
         json j;
-        MYFLT* value;
         bool firstTimeSuccess = false;
         std::string channelKey(inargs.str_data(0).data);
         
@@ -776,7 +776,7 @@ struct ChannelStateSave : csnd::Plugin<1, 1>
 
     int writeDataToDisk(int mode)
     {
-        
+        ignoreUnused(mode);
         String filename(inargs.str_data(0).data);
         
         if(filename.isEmpty()){
@@ -864,7 +864,7 @@ struct ChannelStateSave : csnd::Plugin<1, 1>
             char* chString;
             bool ignore = false;
             
-            for (int n = 0; n < ignoreStrings.size(); n++)
+            for (int n = 0; n < int(ignoreStrings.size()); n++)
             {
                 if (strcmp(csoundChanList[i].name, ignoreStrings[n].c_str()) == 0)
                 {
@@ -936,7 +936,7 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
         if (in_count() == 2)
         {
             csnd::Vector<STRINGDAT>& in = inargs.vector_data<STRINGDAT>(1);
-            for (int i = 0; i < in.len(); i++)
+            for (int i = 0; i < int(in.len()); i++)
             {
                 ignoreStrings.push_back(std::string(in[i].data));
                 DBG(in[i].data);

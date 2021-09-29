@@ -38,7 +38,7 @@ public:
         resolution (10)
     {}
 
-    ~FrequencyRangeDisplayComponent() {}
+    ~FrequencyRangeDisplayComponent() override {}
 
     void resized() override
     {

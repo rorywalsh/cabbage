@@ -22,13 +22,13 @@ class InternalCabbagePluginFormat : public AudioPluginFormat
 {
 public:
 	//==============================================================================
-	InternalCabbagePluginFormat() {};
-	~InternalCabbagePluginFormat() {}
+	InternalCabbagePluginFormat() {}
+	~InternalCabbagePluginFormat() override {}
 
 	//==============================================================================
 	PluginDescription cabbagePluginDesc;
 
-	void getAllTypes(OwnedArray<PluginDescription>&) {};
+	void getAllTypes(OwnedArray<PluginDescription>&) {}
 
 	//==============================================================================
 	String getName() const override { return "Cabbage"; }

@@ -33,7 +33,7 @@ class RangeSlider  : public Slider
 public:
     explicit RangeSlider (CabbageRangeSlider* owner);
 
-    ~RangeSlider();
+    ~RangeSlider() override;
 
 private:
     void mouseDown (const MouseEvent& event) override;
@@ -72,21 +72,21 @@ class CabbageRangeSlider  : public Component, public ValueTree::Listener, public
     LookAndFeel_V4 flatLookAndFeel;
 public:
     CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageRangeSlider() {
+    ~CabbageRangeSlider() override{
         widgetData.removeListener(this); 
         slider.setLookAndFeel (nullptr); 
         setLookAndFeel(nullptr);
-    };
+    }
 
     void setCurrentValues (float min, float max);
     void resized()  override;
     void showPopup (int displayTime);
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
 
     RangeSlider& getSlider()
     {
@@ -95,7 +95,7 @@ public:
 
     ValueTree widgetData;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageRangeSlider);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageRangeSlider)
 
 };
 

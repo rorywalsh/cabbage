@@ -29,7 +29,7 @@ class CabbageGenericPluginLookAndFeel   : public LookAndFeel_V3
 {
 public:
     CabbageGenericPluginLookAndFeel();
-    ~CabbageGenericPluginLookAndFeel() {};
+    ~CabbageGenericPluginLookAndFeel() {}
 
     void drawLinearSliderThumb (Graphics& g, int x, int y, int width, int height, float sliderPos,
                                 float minSliderPos,

@@ -65,7 +65,7 @@ public:
 
 	//==============================================================================
 	CabbageMainComponent(CabbageDocumentWindow* owner, CabbageSettings* settings);
-	~CabbageMainComponent();
+	~CabbageMainComponent() override;
 	//==============================================================================
 	void changeListenerCallback(ChangeBroadcaster* source) override;
 	void actionListenerCallback(const String& message) override;
@@ -126,8 +126,8 @@ public:
 	void exportTheme();
     void addCabbageSection();
 
-	int getNumberOfFileTabs() { return fileTabs.size(); };
-	FileTab* getFileTab(int index) { return fileTabs[index]; };
+	int getNumberOfFileTabs() { return fileTabs.size(); }
+	FileTab* getFileTab(int index) { return fileTabs[index]; }
 	FileTab* getFileTabForNodeId(AudioProcessorGraph::NodeID nodeId)
 	{
 		for (auto& fileTab : fileTabs)
@@ -145,8 +145,8 @@ public:
 	public:
 		GoUpButton() : Component(""), upArrowColour(160, 160, 160) {
 			setInterceptsMouseClicks(false, true);
-		};
-		~GoUpButton() {};
+		}
+		~GoUpButton() {}
 
 		void paint(Graphics& g)
 		{
@@ -162,7 +162,7 @@ public:
 
 	GoUpButton goUpButton;
 
-	void selectionChanged() override {};
+	void selectionChanged() override {}
 	void fileClicked(const File& file, const MouseEvent& e) override;
 	void fileDoubleClicked(const File& file) override;
 	void browserRootChanged(const File& newRoot) override;
@@ -197,7 +197,7 @@ public:
 	CabbageCodeEditorComponent* getCurrentCodeEditor();
 	CabbageEditorContainer* getCurrentEditorContainer();
 	CabbageEditorContainer* getEditorContainer(int index);
-	GraphDocumentComponent* getGraphComponent(){	return graphComponent;	};
+	GraphDocumentComponent* getGraphComponent(){	return graphComponent;	}
 
     int getStatusbarYPos();
     CabbageSettings* getCabbageSettings() {      return cabbageSettings; }
@@ -239,7 +239,7 @@ public:
         void paint (Graphics& g)  override
         {
             g.fillAll(CabbageSettings::getColourFromValueTree (valueTree, CabbageColourIds::menuBarBackground, Colours::black));
-        };
+        }
         
         int getCurrentYPos() {   return currentYPos; }
         

@@ -37,24 +37,24 @@ class CabbagePath : public Component, public ValueTree::Listener, public Cabbage
 public:
     
     CabbagePath (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbagePath() {
+    ~CabbagePath() override {
         widgetData.removeListener(this);
-    };
+    }
     
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
     
     ValueTree widgetData;
     
-    void resized() override {};
+    void resized() override {}
     void paint (Graphics& g)  override;
     
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePath);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePath)
 };
 
 

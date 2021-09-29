@@ -37,21 +37,21 @@ class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener
 public:
 
     CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, MidiKeyboardState& state);
-    ~CabbageKeyboard() {
+    ~CabbageKeyboard() override {
         widgetData.removeListener(this);
-    };
+    }
 
     //VlaueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
 
     ValueTree widgetData;
 
     void updateColours(ValueTree& wData);
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageKeyboard);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageKeyboard)
 };
 
 

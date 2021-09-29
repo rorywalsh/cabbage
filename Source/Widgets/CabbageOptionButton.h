@@ -34,17 +34,17 @@ class CabbageOptionButton : public TextButton, public ValueTree::Listener, publi
 public:
     
     CabbageOptionButton(ValueTree wData, CabbagePluginEditor* owner);
-    ~CabbageOptionButton() { 
+    ~CabbageOptionButton() override {
         widgetData.removeListener(this); 
         setLookAndFeel(nullptr); 
-    };
+    }
     
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged(ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded(ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded(ValueTree&, ValueTree&) override {}
     void valueTreeChildRemoved(ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged(ValueTree&, int, int) override {}
-    void valueTreeParentChanged(ValueTree&) override {};
+    void valueTreeParentChanged(ValueTree&) override {}
     
     void setLookAndFeelColours(ValueTree wData);
     
@@ -53,5 +53,5 @@ public:
     ValueTree widgetData;
     
     
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbageOptionButton);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbageOptionButton)
 };

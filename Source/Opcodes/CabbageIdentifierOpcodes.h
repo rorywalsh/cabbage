@@ -378,8 +378,8 @@ struct CabbageGetFileExtension : csnd::Plugin<1, 1>
 struct CabbageGetFileNoExtension : csnd::Plugin<1, 1>
 {
     std::string currentPath = "";
-    int init(){ return getFileInfo(this, "noExtension", currentPath); };
-    int kperf(){ return getFileInfo(this, "noExtension", currentPath); };
+    int init(){ return getFileInfo(this, "noExtension", currentPath); }
+    int kperf(){ return getFileInfo(this, "noExtension", currentPath); }
 };
 struct CabbageGetFilePath : csnd::Plugin<1, 1>
 {

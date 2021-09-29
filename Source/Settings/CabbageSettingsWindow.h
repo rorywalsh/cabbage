@@ -41,7 +41,7 @@ class CabbageSettingsWindow :
 
 public:
     CabbageSettingsWindow (CabbageSettings& settings, AudioDeviceSelectorComponent* audioDevice);
-    ~CabbageSettingsWindow()
+    ~CabbageSettingsWindow() override
     {
         codeEditor = nullptr;
         audioDeviceSelector = nullptr;
@@ -50,7 +50,7 @@ public:
         setLookAndFeel (nullptr);
         miscPanel.setLookAndFeel (nullptr);
         colourPanel.setLookAndFeel (nullptr);
-    };
+    }
 
     CabbageSettings& settings;
     void changeListenerCallback (ChangeBroadcaster* source) override;
@@ -77,18 +77,18 @@ public:
 
     public:
         RepoListBox (CabbageSettingsWindow* _owner);
-        ~RepoListBox();
+        ~RepoListBox() override;
         void paint (Graphics& g) override
         {
             listBox.setBounds (0, 0, getWidth(), getHeight());
-        };
-        void resized() override {};
-        int getNumRows() override { return items.size();};
+        }
+        void resized() override {}
+        int getNumRows() override { return items.size();}
         void setDefaultItem();
         void listBoxItemClicked (int row, const MouseEvent&) override;
         void paintListBoxItem (int rowNumber, Graphics& g,
                                int width, int height, bool rowIsSelected) override;
-        void selectedRowsChanged (int /*lastRowselected*/) override {};
+        void selectedRowsChanged (int /*lastRowselected*/) override {}
         void update();
         ListBox listBox;
         StringArray items;

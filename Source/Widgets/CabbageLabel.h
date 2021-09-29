@@ -40,27 +40,27 @@ class CabbageLabel : public Component, public ValueTree::Listener, public Cabbag
 public:
 
     CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageLabel() {
+    ~CabbageLabel() override {
         widgetData.removeListener(this);
         setLookAndFeel(nullptr);
-    };
+    }
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
 
     ValueTree widgetData;
 
-    void resized() override {};
+    void resized() override {}
     void paint (Graphics& g)  override;
     void mouseDown (const MouseEvent& e)  override;
     void setText (String _text);
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageLabel);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageLabel)
 };
 
 

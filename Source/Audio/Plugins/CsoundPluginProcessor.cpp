@@ -25,9 +25,9 @@
 
 
 //==============================================================================
-CsoundPluginProcessor::CsoundPluginProcessor (File csdFile, const BusesProperties ioBuses)
+CsoundPluginProcessor::CsoundPluginProcessor (File selectedCsdFile, const BusesProperties ioBuses)
     : AudioProcessor (ioBuses),
-csdFile (csdFile)
+csdFile (selectedCsdFile)
 {
     hostInfo = {};  
 	matchingNumberOfIOChannels = getTotalNumInputChannels() == getTotalNumOutputChannels() ? true : false;
@@ -93,7 +93,7 @@ void CsoundPluginProcessor::destroyCsoundGlobalVars()
 void CsoundPluginProcessor::createCsoundGlobalVars(ValueTree cabbageData)
 {
     CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-    if (pd == NULL) {
+    if (pd == nullptr) {
         getCsound()->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
         pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
         *pd = new CabbagePersistentData();
@@ -102,12 +102,12 @@ void CsoundPluginProcessor::createCsoundGlobalVars(ValueTree cabbageData)
     }
 
     CabbageWidgetIdentifiers** wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageData");
-    if (wi == NULL) {
+    if (wi == nullptr) {
         getCsound()->CreateGlobalVariable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
     }
 
     CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
-    if (vt == NULL) {
+    if (vt == nullptr) {
         getCsound()->CreateGlobalVariable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
         vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
         *vt = new CabbageWidgetsValueTree();
@@ -441,7 +441,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type);
         if(typeOfWidget == CabbageWidgetTypes::form)
         {
-            const int latency = CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::latency);
+            const int latency = int(CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::latency));
             preferredLatency = latency;
             //DBG(CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::width)
             csound->SetChannel("SCREEN_WIDTH", CabbageWidgetData::getNumProp(cabbageData.getChild(i), CabbageIdentifierIds::width));
@@ -472,13 +472,13 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                         && !CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype).contains("snaps"))
                     {
                         const String workingDir = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::currentdir);
-                        const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype");
+
                         if(workingDir.isNotEmpty())
                         {
                             int numOfFiles;
                             Array<File> folderFiles;
                             StringArray comboItems;
-                            CabbageUtilities::searchDirectoryForFiles(cabbageData.getChild(i), workingDir, fileType, folderFiles, comboItems, numOfFiles);
+                            CabbageUtilities::searchDirectoryForFiles(workingDir, fileType, folderFiles, comboItems, numOfFiles);
                             const String currentValue = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::value);
 
                             const int index = comboItems.indexOf(currentValue) + 1;
@@ -673,7 +673,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel("IS_A_PLUGIN", 1.0);
     }
 
-    if (getPlayHead() != 0 && getPlayHead()->getCurrentPosition (hostInfo))
+    if (getPlayHead() != nullptr && getPlayHead()->getCurrentPosition (hostInfo))
     {
         csound->SetChannel (CabbageIdentifierIds::hostbpm.toUTF8(), hostInfo.bpm);
         csound->SetChannel (CabbageIdentifierIds::timeinseconds.toUTF8(), hostInfo.timeInSeconds);
@@ -722,7 +722,7 @@ void CsoundPluginProcessor::addMacros (String& csdText)
             {
 			    StringArray tokens;
                 //CabbageUtilities::debug(csdArray[i]);
-                tokens.addTokens (csdArray[i].replace ("#", "").trim() , " ");
+                tokens.addTokens (csdArray[i].replace("#", "").trim() , " ");
                 tokens.removeEmptyStrings();
                 macroName = tokens[1].trim();
                 tokens.remove (0);
@@ -908,15 +908,18 @@ int CsoundPluginProcessor::getCurrentProgram()
 
 void CsoundPluginProcessor::setCurrentProgram (int index)
 {
+    ignoreUnused(index);
 }
 
 const String CsoundPluginProcessor::getProgramName (int index)
 {
+    ignoreUnused(index);
     return String();
 }
 
 void CsoundPluginProcessor::changeProgramName (int index, const String& newName)
 {
+    ignoreUnused(index, newName);
 }
 
 //==============================================================================
@@ -955,7 +958,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
        || numCsoundOutputChannels != outputs)
     {
         //if sampling rate is other than default or has been changed, recompile..
-        samplingRate = sampleRate;
+        samplingRate = (double)sampleRate;
         setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
 
@@ -1125,9 +1128,10 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 		sideChainBuffer = getBusBuffer(buffer, true, getBusCount(true)-1).getArrayOfWritePointers();
 		numSideChainChannels = getBusBuffer(buffer, true, getBusCount(true) - 1).getNumChannels();
 	}
-
+#ifndef Cabbage_IDE_Build
     Type** ioBuffer = buffer.getArrayOfWritePointers();
-#if !JucePlugin_IsSynth
+#endif
+#if !JucePlugin_IsSynth && !Cabbage_IDE_Build
 	Type** inputBuffer = mainInput.getArrayOfWritePointers();
 #endif
     const int numSamples = buffer.getNumSamples();
@@ -1338,6 +1342,7 @@ AudioProcessorEditor* CsoundPluginProcessor::createEditor()
 //==============================================================================
 void CsoundPluginProcessor::getStateInformation (MemoryBlock& destData)
 {
+    ignoreUnused(destData);
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
@@ -1345,6 +1350,7 @@ void CsoundPluginProcessor::getStateInformation (MemoryBlock& destData)
 
 void CsoundPluginProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
+    ignoreUnused(data, sizeInBytes);
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
 }
@@ -1443,8 +1449,9 @@ int CsoundPluginProcessor::WriteMidiData (CSOUND* /*csound*/, void* _userData,
 
 void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, const char* name)
 {
+    ignoreUnused(name);
     CsoundPluginProcessor* ud = static_cast<CsoundPluginProcessor*>(csoundGetHostData (csound));
-    SignalDisplay* display = new SignalDisplay (String (windat->caption), (int)windat->windid, windat->oabsmax, windat->min, windat->max, windat->npts);
+    SignalDisplay* display = new SignalDisplay (String (windat->caption), (int)windat->windid, (float)windat->oabsmax, (int)windat->min, (int)windat->max, (int)windat->npts);
 
     bool addDisplay = true;
 
@@ -1473,6 +1480,7 @@ void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, c
 
 void CsoundPluginProcessor::drawGraphCallback (CSOUND* csound, WINDAT* windat)
 {
+    ignoreUnused(csound);
     CsoundPluginProcessor* ud = static_cast<CsoundPluginProcessor*> (csoundGetHostData (csound));
     Array<float, CriticalSection> tablePoints;
     //only take all samples if dealing with fft, waveforms and lissajous curves can be drawn with less samples
@@ -1486,11 +1494,13 @@ void CsoundPluginProcessor::drawGraphCallback (CSOUND* csound, WINDAT* windat)
 
 void CsoundPluginProcessor::killGraphCallback (CSOUND* csound, WINDAT* windat)
 {
+    ignoreUnused(csound, windat);
 
 }
 
 int CsoundPluginProcessor::exitGraphCallback (CSOUND* csound)
 {
+    ignoreUnused(csound);
     return 0;
 }
 

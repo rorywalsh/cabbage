@@ -30,8 +30,8 @@ class CabbageIDELookAndFeel : public LookAndFeel_V3
 {
 public:
     CabbageIDELookAndFeel();
-    ~CabbageIDELookAndFeel() {};
-
+    ~CabbageIDELookAndFeel() override {}
+    
     void refreshLookAndFeel (ValueTree valueTree);
 
     void drawMenuBarBackground (Graphics& g, int width, int height, bool isMouseOverBar, MenuBarComponent& menuBar) override;

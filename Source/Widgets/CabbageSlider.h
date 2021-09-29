@@ -80,7 +80,7 @@ public:
     SliderThumb(CabbageSlider* slider) : Component(), owner(slider)
     {
 
-    };
+    }
 
     void paint(Graphics& g) override {
         if (image.isValid())
@@ -89,7 +89,7 @@ public:
         }
     }
 
-    void setThumbImage(Image img) { image = img; };
+    void setThumbImage(Image img) { image = img; }
     void mouseDrag(const MouseEvent& e) override;
     void mouseUp(const MouseEvent& e) override;
     void mouseDown(const MouseEvent& e) override;
@@ -147,7 +147,7 @@ class CabbageSlider
     SliderThumb thumb;
 public:
     CabbageSlider (ValueTree cAttr, CabbagePluginEditor* _owner);
-    ~CabbageSlider();
+    ~CabbageSlider() override;
     void paint(Graphics& g) override;
     void paintOverChildren(Graphics& g) override;
 
@@ -164,14 +164,14 @@ public:
 
     void setTextBoxOrientation (String type, int textBox);
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&) override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&) override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
     Slider& getSlider()
     {
         return slider;
-    };
+    }
 
     bool shouldDisplayPopup = true;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageSlider)

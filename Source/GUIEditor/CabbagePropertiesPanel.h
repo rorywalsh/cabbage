@@ -38,7 +38,7 @@ class CabbagePropertiesPanel :
 {
 public:
     CabbagePropertiesPanel (ValueTree widgetData);
-    ~CabbagePropertiesPanel();
+    ~CabbagePropertiesPanel() override;
     void paint (Graphics& g) override;
     void resized() override;
     void getAmpRangeForTable (String identifier, var value);

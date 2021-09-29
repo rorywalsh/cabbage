@@ -48,7 +48,7 @@ public:
 
     }
 
-    ~CabbageOutputConsole() 
+    ~CabbageOutputConsole() override
     {
         textEditor->getDocument().replaceAllContent("");
         setLookAndFeel(nullptr);

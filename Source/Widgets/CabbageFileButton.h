@@ -29,24 +29,24 @@ class CabbagePluginEditor;
 class CabbageFileButton : public TextButton, public ValueTree::Listener, public CabbageWidgetBase, public Button::Listener, public Timer
 {
     CabbagePluginEditor* owner;
-    String mode, filetype, tooltipText;;
+    String mode, filetype, tooltipText;
 
 public:
 
     CabbageFileButton (ValueTree wData, CabbagePluginEditor* owner);
-    ~CabbageFileButton() {  
+    ~CabbageFileButton() override {
         stopTimer();  
         setLookAndFeel(nullptr); 
         widgetData.removeListener(this);
-    };
+    }
 
     //ValueTree::Listener virtual methods....
     void setFile(ValueTree wData);
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
     String returnValidPath (File path);
     void setLookAndFeelColours (ValueTree wData);
     bool allowPresetChanges(String presetName);
@@ -58,7 +58,7 @@ public:
     FlatButtonLookAndFeel flatLookAndFeel;
     LookAndFeel_V4 lAndF;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageFileButton);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageFileButton)
 };
 
 

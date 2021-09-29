@@ -23,15 +23,15 @@ class ComponentOverlay   :   public Component, public KeyListener
 {
 public:
     ComponentOverlay (Component* targetChild, ComponentLayoutEditor* layoutEditor);
-    ~ComponentOverlay ();
+    ~ComponentOverlay () override;
     void resized () override;
     void paint (Graphics& g) override;
     const Component* getTargetChild ();
     void updateFromTarget ();
     void applyToTarget ();
     virtual void userChangedBounds ();
-    virtual void userStartedChangingBounds () {};
-    virtual void userStoppedChangingBounds () {};
+    virtual void userStartedChangingBounds () {}
+    virtual void userStoppedChangingBounds () {}
     bool boundsChangedSinceStart ();
     bool keyPressed (const KeyPress& key, Component* originatingComponent) override;
 

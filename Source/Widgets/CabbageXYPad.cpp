@@ -309,14 +309,15 @@ juce::Point<float> CabbageXYPad::getValueAsPosition (juce::Point<float> position
 
 void CabbageXYPad::setValues (float x, float y, bool notify)
 {
+    ignoreUnused(notify);
     xAxis.setValue (x, sendNotification);
     yAxis.setValue (minY + (maxY - y), sendNotification);
     xValueLabel.setText (createValueText(x, 3, xPrefix, xPostfix), dontSendNotification);
     yValueLabel.setText (createValueText(minY + (maxY - y), 3, yPrefix, yPostfix), dontSendNotification);
 }
 //========================================================================
-XYPadAutomator::XYPadAutomator (String name, CabbagePluginParameter* xParam, CabbagePluginParameter* yParam, CabbagePluginProcessor* _owner)
-    : name (name), xParam (xParam), yParam (yParam), owner (_owner)
+XYPadAutomator::XYPadAutomator (String xyName, CabbagePluginParameter* xParam, CabbagePluginParameter* yParam, CabbagePluginProcessor* _owner)
+    : name (xyName), xParam (xParam), yParam (yParam), owner (_owner)
 {}
 
 

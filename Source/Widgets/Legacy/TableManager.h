@@ -51,7 +51,7 @@ class TableManager : public Component,
 
 public:
     TableManager();
-    ~TableManager() {};
+    ~TableManager() override {}
     void paint (Graphics& g)  override;
     void setGridColour (Colour col);
     void setOutlineThickness (float thickness);
@@ -102,7 +102,7 @@ class GenTable : public Component,
 {
 public:
     GenTable();
-    ~GenTable();
+    ~GenTable() override;
 
     double getCurrentPlayPos()
     {
@@ -111,12 +111,12 @@ public:
 
     int getCurrentPlayPosInSamples()
     {
-        return currentPlayPosition * sampleRate;
+        return (int)currentPlayPosition * sampleRate;
     }
 
     int getLoopLengthInSamples()
     {
-        return loopLength * sampleRate;
+        return (int)loopLength * sampleRate;
     }
 
     void setColour (Colour col) { tableColour = col; repaint();    }
@@ -198,7 +198,7 @@ public:
 
     int displayAsGrid()
     {
-        return qsteps;
+        return (int)qsteps;
     }
 
     void setTraceThickness (float thickness)
@@ -303,7 +303,7 @@ class HandleViewer : public Component
 
 public:
     HandleViewer();
-    ~HandleViewer();
+    ~HandleViewer() override;
     std::unique_ptr<TextButton> button1;
     std::unique_ptr<TextButton> button2;
     void mouseDown (const MouseEvent& e) override;
@@ -343,7 +343,7 @@ public:
     GenTable* getParentTable()
     {
         return findParentComponentOfClass <GenTable>();
-    };
+    }
 
 };
 
@@ -355,7 +355,7 @@ class HandleComponent : public Component,
 {
 public:
     HandleComponent (double xPos, double yPos, int index, bool fixed, int gen, Colour colour);
-    ~HandleComponent();
+    ~HandleComponent() override;
 
 
     void setPosition (double x, double y, bool circularEnv);
@@ -376,17 +376,17 @@ public:
     HandleViewer* getParentHandleViewer()
     {
         return findParentComponentOfClass <HandleViewer>();
-    };
+    }
 
     GenTable* getParentGenTable()
     {
         return findParentComponentOfClass <GenTable>();
-    };
+    }
 
     TableManager* getParentTableManager()
     {
         return findParentComponentOfClass <TableManager>();
-    };
+    }
 
     int getUniqueID()
     {
@@ -426,7 +426,7 @@ private:
     int offsetX, offsetY;
     int genRoutine;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HandleComponent);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (HandleComponent)
 };
 
 #endif // SOUNDFILEWAVEFORM_H

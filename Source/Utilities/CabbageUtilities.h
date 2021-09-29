@@ -159,7 +159,7 @@ public:
         }
         else
         {
-            p.addArc (x + w, y + h / 2.f + d / 2.f, 5, 5, 3.14, 3.14);
+            p.addArc (x + w, y + h / 2.f + d / 2.f, 5, 5, 3.14f, 3.14f);
         }
 
         p.closeSubPath();
@@ -258,14 +258,14 @@ public:
         else
         {
             g.setColour (Colours::white/*Colours::lime.darker (.7f)*/);
-            p.addRectangle (newWidth * .62f - scaleFactor, 4 - scaleFactor, newWidth * .3 + scaleFactor * 2, newHeight - 11 + scaleFactor);
+            p.addRectangle (newWidth * .62f - scaleFactor, 4 - scaleFactor, newWidth * .3f + scaleFactor * 2.f, newHeight - 11 + scaleFactor);
         }
 
         p.closeSubPath();
         g.fillPath (p);
         g.setColour (Colours::whitesmoke.darker());
         g.setColour (Colours::whitesmoke);
-        g.drawFittedText (isPlaying == true ? "Stop" : "Play", 0, 0, width * .6, height - 1, Justification::centred, 1);
+        g.drawFittedText (isPlaying == true ? "Stop" : "Play", 0, 0, int(width * .6), height - 1, Justification::centred, 1);
         return img;
     }
 
@@ -344,13 +344,13 @@ public:
         const float h = height;
         g.setColour (Colours::whitesmoke);
         Path p;
-        p.startNewSubPath (x, y + h * .33);
-        p.lineTo (x + w / 2.f, y + h * .33);
+        p.startNewSubPath (x, y + h * .33f);
+        p.lineTo (x + w / 2.f, y + h * .33f);
         p.lineTo (x + w, y + 0.f);
         p.lineTo (x + w, y + h);
-        p.lineTo (x + w / 2.f, y + h * .66);
-        p.lineTo (x, y + h * .66);
-        p.lineTo (x, y + h * .33);
+        p.lineTo (x + w / 2.f, y + h * .66f);
+        p.lineTo (x, y + h * .66f);
+        p.lineTo (x, y + h * .33f);
         p.closeSubPath();
         g.strokePath (p, PathStrokeType (1));
 
@@ -585,6 +585,7 @@ public:
 
     static void addExampleFilesToPopupMenu (PopupMenu& m, Array<File>& filesArray, String dir, String ext, int indexOffset)
     {
+        ignoreUnused(ext);
         filesArray.clear();
         addExamples (m, "Effects", dir, filesArray, CabbageExamplesFolder::getEffects(), indexOffset);
         addExamples (m, "FilePlayers", dir, filesArray, StringArray(), indexOffset);
@@ -662,7 +663,7 @@ public:
 
     static int roundIntToMultiple (int x, int multiple)
     {
-        return round (x / multiple) * multiple;
+        return int(round (x / multiple) * multiple);
     }
 
     static double roundToPrec (double x, int prec)
@@ -798,7 +799,7 @@ public:
 #endif
     }
 
-	static bool showMessageWithHideOption(String title, String message, LookAndFeel* feel, bool dismiss)
+	static bool showMessageWithHideOption(String title, String message, LookAndFeel* feel)
 	{		
 		AlertWindow alert(title, message, AlertWindow::WarningIcon);
 		alert.setLookAndFeel(feel);
@@ -921,7 +922,7 @@ public:
     {
 
         int count = 0;
-        float num = abs (incr.getDoubleValue());
+        float num = abs ((float)incr.getDoubleValue());
         num = num - int (num);
 
         while (abs (num) >= 0.0000001)
@@ -1177,7 +1178,7 @@ public:
     //======================================================================================
     static String setDecimalPlaces (const double& x, const int& numDecimals)
     {
-        int y = x;
+        int y = int(x);
         double z = x - y;
         double m = pow ((double)10.f, (double)numDecimals);
         double q = z * m;
@@ -1205,7 +1206,7 @@ public:
 
     }
     //======================================================================================
-    static void writeValueTreeToFile (ValueTree valueTree, String filePath)
+    static void writeValueTreeToFile (ValueTree valueTree)
     {
 		std::unique_ptr<XmlElement> data(valueTree.createXml());
         // only works when there are no objects in the array...
@@ -1234,7 +1235,7 @@ public:
         return firstSection + updatedIdentifier + secondSection;
     }
 
-	static void searchDirectoryForFiles(ValueTree valueTree, String workingDir, String fileType, Array<File> & folderFiles, StringArray &comboItems, int& numberOfFiles)
+	static void searchDirectoryForFiles(String workingDir, String fileType, Array<File> & folderFiles, StringArray &comboItems, int& numberOfFiles)
 	{
 		Array<File> dirFiles;
 		File pluginDir;
@@ -1315,10 +1316,11 @@ public:
         colour = _colour;
         mode = 0;
     }
-    ~RoundButton() {}
+    ~RoundButton() override {}
 
     void mouseDown (const MouseEvent& e) override
     {
+        ignoreUnused(e);
         //Logger::writeToLog("Mouse down on round button:"+String(type));
         sendChangeMessage();
         mode = (mode == 1 ? 0 : mode + 1);
@@ -1335,10 +1337,10 @@ public:
             g.setColour (Colours::white.withAlpha (.8f));
             g.fillEllipse (1, 1, getWidth() - 2, getHeight() - 2);
             g.setColour (Colours::black);
-            g.fillRoundedRectangle (getWidth()*.18, getHeight()*.4f, getWidth()*.65, getHeight()*.25, 2);
+            g.fillRoundedRectangle (getWidth()*.18f, getHeight()*.4f, getWidth()*.65f, getHeight()*.25f, 2);
 
             if (getName() == "zoomIn")
-                g.fillRoundedRectangle (getWidth()*.38f, getHeight()*.20, getWidth()*.25, getHeight()*.65, 2);
+                g.fillRoundedRectangle (getWidth()*.38f, getHeight()*.20f, getWidth()*.25f, getHeight()*.65f, 2);
         }
         else
         {

@@ -251,6 +251,6 @@ public:
 
 	CabbageMainComponent* getOwner() {
 		return owner;
-	};
+	}
 
 };

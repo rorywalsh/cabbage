@@ -25,7 +25,7 @@ class FlatButtonLookAndFeel : public LookAndFeel_V3
 {
 public:
     FlatButtonLookAndFeel();
-    ~FlatButtonLookAndFeel();
+    ~FlatButtonLookAndFeel() override;
 
     float titlebarContrastingGradient = 0; // 0.0: no gradient in the titlebar - 1.0: max contrasting gradient
 

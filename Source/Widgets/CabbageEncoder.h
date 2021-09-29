@@ -59,18 +59,18 @@ class CabbageEncoder : public Component, public ValueTree::Listener, public Cabb
 public:
 
     CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageEncoder() {
+    ~CabbageEncoder() override {
         widgetData.removeListener(this);
-    };
+    }
 
     CabbagePluginEditor* owner;
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
 
     void labelTextChanged (Label* label) override;
     void mouseDown (const MouseEvent& e)  override;
@@ -87,7 +87,7 @@ public:
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageEncoder);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageEncoder)
 };
 
 

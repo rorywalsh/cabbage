@@ -42,7 +42,7 @@ class ComponentLayoutEditor   :   public Component, public LassoSource <Componen
 {
 public:
     ComponentLayoutEditor (ValueTree valueTree);
-    ~ComponentLayoutEditor ();
+    ~ComponentLayoutEditor() override;
 
     ValueTree widgetData;
     void resized () override;

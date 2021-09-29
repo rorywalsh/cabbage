@@ -35,7 +35,7 @@ class CabbageFoldersLookAndFeel   : public LookAndFeel_V4
 {
 public:
     CabbageFoldersLookAndFeel(){}
-    ~CabbageFoldersLookAndFeel() {}
+    ~CabbageFoldersLookAndFeel() override {}
     
     const Drawable* getDefaultFolderImage() override;
 private:
@@ -46,7 +46,7 @@ class CabbageLookAndFeel2   : public LookAndFeel_V3
 {
 public:
     CabbageLookAndFeel2();
-    ~CabbageLookAndFeel2() {}
+    ~CabbageLookAndFeel2() override {}
 
     float titlebarContrastingGradient = 0; // 0.0: no gradient in the titlebar - 1.0: max contrasting gradient
 

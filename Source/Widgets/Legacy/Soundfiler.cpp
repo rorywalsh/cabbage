@@ -31,10 +31,11 @@ public:
     {
         setName (type);
     }
-    ~ZoomButton() {}
+    ~ZoomButton() override {}
 
     void mouseDown (const MouseEvent& e) override
     {
+        ignoreUnused(e);
         sendChangeMessage();
     }
 
@@ -129,6 +130,7 @@ void Soundfiler::scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newRan
 
 void Soundfiler::showScrollbars (bool show)
 {
+    ignoreUnused(show);
     if(scrollbar)
         scrollbar->setVisible(false);
 }

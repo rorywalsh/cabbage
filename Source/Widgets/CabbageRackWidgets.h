@@ -43,7 +43,7 @@ class CabbageLight : public Component, public ValueTree::Listener, public Cabbag
 public:
 
     CabbageLight (ValueTree cAttr, CabbagePluginEditor* _owner);
-    ~CabbageLight() {};
+    ~CabbageLight() override {}
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
     void paint (Graphics& g) override;
@@ -57,7 +57,7 @@ public:
         return tooltipText;
     }
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageLight);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageLight)
 };
 
 class CabbageScrew : public Component, public ValueTree::Listener, public CabbageWidgetBase
@@ -71,9 +71,9 @@ class CabbageScrew : public Component, public ValueTree::Listener, public Cabbag
 public:
 
     explicit CabbageScrew (ValueTree cAttr, CabbagePluginEditor* _owner);
-    ~CabbageScrew() {
+    ~CabbageScrew() override {
         widgetData.removeListener(this);
-    };
+    }
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
     void paint (Graphics& g) override;
@@ -88,7 +88,7 @@ public:
         return tooltipText;
     }
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageScrew);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageScrew)
 };
 
 class CabbagePort : public Component, public ValueTree::Listener, public CabbageWidgetBase
@@ -103,7 +103,7 @@ class CabbagePort : public Component, public ValueTree::Listener, public Cabbage
 public:
 
     explicit CabbagePort (ValueTree cAttr, CabbagePluginEditor* _owner);
-    ~CabbagePort() {};
+    ~CabbagePort() override {}
 
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
     void paint (Graphics& g) override;
@@ -118,7 +118,7 @@ public:
         return tooltipText;
     }
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePort);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbagePort)
 };
 
 

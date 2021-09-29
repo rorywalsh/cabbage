@@ -29,7 +29,7 @@ class CabbageEventSequencer : public Component, public ValueTree::Listener, publ
 public:
 
     CabbageEventSequencer (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageEventSequencer();
+    ~CabbageEventSequencer() override;
 
 
 
@@ -44,10 +44,10 @@ public:
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
     void setColours(ValueTree wData);
     void createNumberLabels(ValueTree wData, int height, int showNumbers);
 
@@ -55,7 +55,7 @@ public:
 
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageEventSequencer);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageEventSequencer)
 
 private:
     int numColumns = 0;

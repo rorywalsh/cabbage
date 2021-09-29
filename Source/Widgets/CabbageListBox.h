@@ -26,17 +26,17 @@ class CabbageListBox : public Component, public ListBoxModel, public ValueTree::
 public:
 
     CabbageListBox (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageListBox() {
+    ~CabbageListBox() override {
         widgetData.removeListener(this);
         setLookAndFeel(nullptr);
-    };
+    }
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
 
     ValueTree widgetData;
     int offX, offY, offWidth, offHeight, pivotx, pivoty, refresh;
@@ -69,5 +69,5 @@ public:
     void resized() override;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageListBox);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageListBox)
 };

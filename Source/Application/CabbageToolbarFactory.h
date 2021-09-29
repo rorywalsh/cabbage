@@ -30,9 +30,7 @@ class CabbageToolbarFactory   : public ToolbarItemFactory
 {
 public:
     CabbageToolbarFactory (CabbageMainComponent* owner);
-    ~CabbageToolbarFactory()
-    {
-    }
+    ~CabbageToolbarFactory() override {}
 
     //==============================================================================
     // Each type of item a toolbar can contain must be given a unique ID. These

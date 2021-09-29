@@ -863,7 +863,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 						int numOfFiles;
 						Array<File> folderFiles;
 						StringArray comboItems;
-						CabbageUtilities::searchDirectoryForFiles(cabbageWidgets.getChild(i), workingDir, fileType, folderFiles, comboItems, numOfFiles);
+						CabbageUtilities::searchDirectoryForFiles(workingDir, fileType, folderFiles, comboItems, numOfFiles);
 						const String currentValue = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
 						const float min = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 							CabbageIdentifierIds::min);

@@ -30,7 +30,7 @@ class CabbageSSHFileBrowser   : public Component,
 {
 public:
     CabbageSSHFileBrowser (String ip, String homeDir, CabbageMainComponent* owner, String mode, String csdFilePath);
-    ~CabbageSSHFileBrowser();
+    ~CabbageSSHFileBrowser() override;
     void paint (Graphics& g) override;
     void resized() override;
     int getNumRows() override;
@@ -39,8 +39,8 @@ public:
     void paintListBoxItem (int rowNumber, Graphics& g,
                            int width, int height, bool rowIsSelected) override;
 
-    void selectedRowsChanged (int /*lastRowselected*/) override {};
-    ListBox filesListBox;;
+    void selectedRowsChanged (int /*lastRowselected*/) override {}
+    ListBox filesListBox;
     void launchChildProcess (const String command);
 
 private:

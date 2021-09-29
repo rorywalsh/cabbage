@@ -27,7 +27,7 @@ class CabbageSettings : public ApplicationProperties, public ValueTree::Listener
 {
 public:
     CabbageSettings();
-    ~CabbageSettings()
+    ~CabbageSettings() override
     {
         defaultPropSet = nullptr;
     }

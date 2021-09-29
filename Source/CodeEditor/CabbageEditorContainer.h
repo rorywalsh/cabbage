@@ -37,8 +37,8 @@ public:
 		StatusBar(ValueTree valueTree, CabbageEditorContainer* parent)
 			: Component("StatusBar"),
 			valueTree(valueTree),
-			owner(parent)
 		{
+            ignoreUnused(parent);
 			String initString = (SystemStats::getOperatingSystemName() +
 				"CPU: " + String(SystemStats::getCpuSpeedInMegaherz())
 				+ "MHz  Cores: " + String(SystemStats::getNumCpus())
@@ -59,16 +59,12 @@ public:
 	private:
 		ValueTree valueTree;
 		StringArray statusText;
-		int startingYPos;
-		bool isActive = false;
-		int currentYPos = 550;
-		CabbageEditorContainer* owner;
 	};
 
 	CabbageMainComponent* getContentComponent();
 	//=============================================================================
 	CabbageEditorContainer(CabbageSettings* settings, bool isCsdFile = true);
-	~CabbageEditorContainer();
+	~CabbageEditorContainer() override;
 	void updateLookAndFeel();
 	void openFile(File file);
 	File getFile() { return currentFile; }

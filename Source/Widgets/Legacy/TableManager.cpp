@@ -262,6 +262,7 @@ void TableManager::setRange (double start, double end)
 
 void TableManager::setDrawMode (String mode)
 {
+    ignoreUnused(mode);
     for (int i = 0; i < tables.size(); i++)
     {
         if (tables[i]->genRoutine == 2)
@@ -308,7 +309,7 @@ void TableManager::scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double newR
     {
         for (int i = 0; i < tables.size(); i++)
         {
-            float moveBy = newRangeStart / scrollBarThatHasMoved->getCurrentRange().getLength();
+            double moveBy = newRangeStart / scrollBarThatHasMoved->getCurrentRange().getLength();
             moveBy = tables[i]->visibleRange.getLength() * moveBy;
             tables[i]->setRange (tables[i]->visibleRange.movedToStartAt (moveBy), true);
         }
@@ -665,8 +666,8 @@ void GenTable::changeListenerCallback (ChangeBroadcaster* source)
     if (currentHandle)
     {
         //fill coordinate string and send change message to plugin editor to show bubble
-        float curY = (float)jlimit (minMax.getStart(), minMax.getEnd(), pixelToAmp (thumbArea.getHeight() - zoomButtonsOffset, minMax, currentHandle->getY()));
-        curY = CabbageUtilities::roundToMultiple (curY, quantiseSpace);
+        double curY = (float)jlimit (minMax.getStart(), minMax.getEnd(), pixelToAmp (thumbArea.getHeight() - zoomButtonsOffset, minMax, currentHandle->getY()));
+        curY = (double)CabbageUtilities::roundToMultiple (curY, quantiseSpace);
 
 
         coordinates = "";
@@ -716,7 +717,7 @@ void GenTable::showScrollbar (bool show)
 
 //==============================================================================
 
-void GenTable::scrollBarMoved (ScrollBar* scrollBarThatHasMoved, double /*newRangeStart*/)
+void GenTable::scrollBarMoved (ScrollBar* /*scrollBarThatHasMoved*/, double /*newRangeStart*/)
 {
     //visibleRange = visibleRange.movedToStartAt (newRangeStart);
     //setRange (visibleRange.movedToStartAt (newRangeStart), true);
@@ -735,9 +736,9 @@ void GenTable::setFile (const File& file)
 
         if (reader) //if a reader got created
         {
-            AudioSampleBuffer buffer (reader->numChannels, (int)reader->lengthInSamples);
+            AudioSampleBuffer buffer (reader->numChannels, (unsigned int)reader->lengthInSamples);
             buffer.clear();
-            buffer.setSize (reader->numChannels, (int)reader->lengthInSamples);
+            buffer.setSize (reader->numChannels, (unsigned int)reader->lengthInSamples);
             reader->read (&buffer, 0, buffer.getNumSamples(), 0, true, true);
             setWaveform (buffer);
         }
@@ -764,7 +765,7 @@ Array<double> GenTable::getPfields()
 
             values.add (jmax (0.0, ceil (currXPos - prevXPos)));
             //hack to prevent csound from bawking with a 0 in gen05
-            float amp = pixelToAmp (handleViewer->getHeight(), minMax, currYPos);
+            float amp = pixelToAmp (handleViewer->getHeight(), minMax, (float)currYPos);
 
             if (genRoutine == 5)
                 amp = jmax (0.001f, amp);
@@ -785,7 +786,7 @@ Array<double> GenTable::getPfields()
             }
             else
             {
-                float amp = pixelToAmp (handleViewer->getHeight(), minMax, currYPos);
+                float amp = pixelToAmp (handleViewer->getHeight(), minMax, (float)currYPos);
                 values.add (amp);
             }
         }
@@ -882,13 +883,13 @@ void GenTable::enableEditMode (StringArray m_pFields)
         {
             float pFieldAmpValue = (normalised < 0 ? pFields[5].getFloatValue() : pFields[5].getFloatValue() / pFieldMinMax.getEnd());
             // const float amp = ampToPixel (thumbHeight, minMax, pFieldAmpValue);
-            handleViewer->addHandle (0, ampToPixel (thumbHeight, minMax, pFieldAmpValue), (width > 10 ? width : 15), (width > 10 ? 5 : 15), this->tableColour);
+            handleViewer->addHandle (0, ampToPixel(int(thumbHeight), minMax, pFieldAmpValue), (width > 10 ? width : 15), (width > 10 ? 5 : 15), this->tableColour);
 
             for (int i = 6; i < pFields.size(); i += 2)
             {
                 xPos = xPos + pFields[i].getFloatValue();
                 pFieldAmpValue = (normalised < 0 ? pFields[i + 1].getFloatValue() : pFields[i + 1].getFloatValue() / pFieldMinMax.getEnd());
-                handleViewer->addHandle (xPos / (double)waveformBuffer.size(), ampToPixel (thumbHeight, minMax, pFieldAmpValue), (width > 10 ? width : 15), (width > 10 ? 5 : 15), this->tableColour);
+                handleViewer->addHandle (xPos / (double)waveformBuffer.size(), ampToPixel ((int)thumbHeight, minMax, pFieldAmpValue), (width > 10 ? width : 15), (width > 10 ? 5 : 15), this->tableColour);
             }
 
             handleViewer->fixEdgePoints (genRoutine);
@@ -896,14 +897,14 @@ void GenTable::enableEditMode (StringArray m_pFields)
         else if (genRoutine == 2)
         {
             float pFieldAmpValue = (normalised < 0 ? pFields[5].getFloatValue() : pFields[5].getFloatValue() / pFieldMinMax.getEnd());
-            handleViewer->addHandle (0, ampToPixel (thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->tableColour, pFieldAmpValue == 1 ? true : false);
+            handleViewer->addHandle (0, ampToPixel (int(thumbHeight), minMax, pFieldAmpValue), width + 1, 5, this->tableColour, pFieldAmpValue == 1 ? true : false);
 
             for (double i = 6; i < pFields.size(); i++)
             {
                 pfieldCount++;
                 xPos = (i - 5.0) / (double (tableSize)) * tableSize;
-                pFieldAmpValue = (normalised < 0 ? pFields[i].getFloatValue() : pFields[i].getFloatValue() / pFieldMinMax.getEnd());
-                handleViewer->addHandle (xPos / tableSize, ampToPixel (thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->tableColour, pFieldAmpValue == 1 ? true : false);
+                pFieldAmpValue = (normalised < 0 ? pFields[int(i)].getFloatValue() : pFields[i].getFloatValue() / pFieldMinMax.getEnd());
+                handleViewer->addHandle (xPos / tableSize, ampToPixel ((int)thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->tableColour, pFieldAmpValue == 1 ? true : false);
             }
 
             //initialise all remaining points in the table if user hasn't
@@ -911,7 +912,7 @@ void GenTable::enableEditMode (StringArray m_pFields)
             {
                 xPos = (i + 1) / (double (tableSize)) * tableSize;
                 pFieldAmpValue = pFieldMinMax.getEnd();
-                handleViewer->addHandle (xPos / tableSize, ampToPixel (thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->tableColour, false);
+                handleViewer->addHandle (xPos / tableSize, ampToPixel ((int)thumbHeight, minMax, pFieldAmpValue), width + 1, 5, this->tableColour, false);
             }
 
             handleViewer->fixEdgePoints (genRoutine);
@@ -967,7 +968,7 @@ const Image GenTable::drawGridImage (bool redraw, double width, double height, d
 {
     if (redraw == true)
     {
-        Image gridImage (Image::RGB, width, height, true);
+        Image gridImage (Image::RGB, int(width), int(height), true);
         Graphics g (gridImage);
         const double widthOfGridElement = width / waveformBuffer.size();
         //g.fillAll(Colours::transparentBlack);
@@ -975,20 +976,20 @@ const Image GenTable::drawGridImage (bool redraw, double width, double height, d
         //draw grid image
         for (double i = 0; i < waveformBuffer.size(); i++)
         {
-            g.drawImageAt (CabbageLookAndFeel2::drawToggleImage (widthOfGridElement - 3.f,
-                                                                 height,
-                                                                 (waveformBuffer[i] > 0.0 ? true : false),
-                                                                 (waveformBuffer[i] > 0.0 ? tableColour : backgroundColour),
+            g.drawImageAt (CabbageLookAndFeel2::drawToggleImage ((float)widthOfGridElement - 3.f,
+                                                                 (float)height,
+                                                                 (waveformBuffer[(int)i] > 0.0 ? true : false),
+                                                                 (waveformBuffer[(int)i] > 0.0 ? tableColour : backgroundColour),
                                                                  true,
                                                                  4.f),
-                           i * (widthOfGridElement) + 2,
+                           (int)i * ((int)widthOfGridElement) + 2,
                            1.f);
         }
 
 
         //g.strokePath(p, PathStrokeType(1));
         //return a clipped image
-        Rectangle<int> clippedImage (offset * -1, 0, width, height);
+        Rectangle<int> clippedImage ((int)offset * -1, 0, (int)width, (int)height);
         return gridImage.getClippedImage (clippedImage);
     }
     else
@@ -1009,6 +1010,7 @@ void GenTable::setSampleRange (double start, double end)
 //==============================================================================
 void GenTable::mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel)
 {
+    ignoreUnused(wheel);
     /*
     if(genRoutine==1)
     {
@@ -1221,12 +1223,12 @@ void GenTable::mouseDown (const MouseEvent& e)
 //==============================================================================
 void GenTable::mouseEnter (const MouseEvent& e)
 {
-
+    ignoreUnused(e);
 }
 //==============================================================================
 void GenTable::mouseExit (const MouseEvent& e)
 {
-
+    ignoreUnused(e);
 }
 //==============================================================================
 void GenTable::mouseDrag (const MouseEvent& e)
@@ -1324,6 +1326,7 @@ void GenTable::setScrubberPos (double pos)
 //==============================================================================
 void GenTable::mouseUp (const MouseEvent& e)
 {
+    ignoreUnused(e);
     if (genRoutine == 1)
         sendChangeMessage();
 }
@@ -1336,15 +1339,16 @@ void GenTable::mouseUp (const MouseEvent& e)
 HandleViewer::HandleViewer(): Component()
 {
 
-};
+}
 
 HandleViewer::~HandleViewer()
 {
-};
+}
 
 //==============================================================================
 void HandleViewer::addHandle (double x, double y, double /*width*/, double height, Colour handleColour, bool status)
 {
+    ignoreUnused(height);
     //add a handle component to our handleViewer
     GenTable* table = getParentTable();
 
@@ -1648,6 +1652,7 @@ void HandleComponent::removeThisHandle()
 //==================================================================================
 void HandleComponent::mouseEnter (const MouseEvent& e)
 {
+    ignoreUnused(e);
     setMouseCursor (MouseCursor::DraggingHandCursor);
     mouseStatus = "mouseEnter";
     sendChangeMessage();
@@ -1655,11 +1660,13 @@ void HandleComponent::mouseEnter (const MouseEvent& e)
 //==================================================================================
 void HandleComponent::mouseUp (const MouseEvent& e)
 {
+    ignoreUnused(e);
     mouseStatus = "mouseUp";
 }
 //==================================================================================
 void HandleComponent::mouseExit (const MouseEvent& e)
 {
+    ignoreUnused(e);
     mouseStatus = "mouseUp";
 }
 //==================================================================================

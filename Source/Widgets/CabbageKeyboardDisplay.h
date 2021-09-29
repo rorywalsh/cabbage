@@ -49,7 +49,7 @@ public:
 	explicit MidiKeyboardDisplay(Orientation orientation);
 
 	/** Destructor. */
-	~MidiKeyboardDisplay();
+	~MidiKeyboardDisplay() override;
 
 	//==============================================================================
     void updateKeys();
@@ -340,19 +340,19 @@ class CabbageKeyboardDisplay : public MidiKeyboardDisplay, public ValueTree::Lis
 public:
 
 	explicit CabbageKeyboardDisplay(ValueTree wData, CabbagePluginEditor* _owner);
-	~CabbageKeyboardDisplay() {
+	~CabbageKeyboardDisplay() override {
 		widgetData.removeListener(this);
-	};
+	}
 
 	//VlaueTree::Listener virtual methods....
 	void valueTreePropertyChanged(ValueTree& valueTree, const Identifier&) override;
-	void valueTreeChildAdded(ValueTree&, ValueTree&)override {};
+	void valueTreeChildAdded(ValueTree&, ValueTree&)override {}
 	void valueTreeChildRemoved(ValueTree&, ValueTree&, int) override {}
 	void valueTreeChildOrderChanged(ValueTree&, int, int) override {}
-	void valueTreeParentChanged(ValueTree&) override {};
+	void valueTreeParentChanged(ValueTree&) override {}
 
 	ValueTree widgetData;
     void colourPressedNotes(ValueTree wData);
 	void updateColours(ValueTree& wData);
-	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbageKeyboardDisplay);
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbageKeyboardDisplay)
 };

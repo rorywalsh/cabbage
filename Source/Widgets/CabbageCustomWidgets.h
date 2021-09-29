@@ -32,19 +32,19 @@ class DemoCabbageWidget : public Component, public ValueTree::Listener, public C
 public:
 
     explicit DemoCabbageWidget (ValueTree wData);
-    ~DemoCabbageWidget() {};
+    ~DemoCabbageWidget() override {}
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
 
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoCabbageWidget);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoCabbageWidget)
 };
 
 //add any new class declarations below this line..
@@ -63,29 +63,29 @@ class CabbageMeter : public Component, public ValueTree::Listener, public Cabbag
     {
     public:
         Colour colour;
-        explicit Overlay (Colour colour): Component(), colour (colour) {}
-        void paint (Graphics& g) {    g.fillAll (colour);  };
+        explicit Overlay (Colour inColour): Component(), colour (inColour) {}
+        void paint (Graphics& g) {    g.fillAll (colour);  }
     };
 
     Overlay overlayRect;
 public:
 
     CabbageMeter (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageMeter() {};
+    ~CabbageMeter() override {}
 
     void paint (Graphics& g)  override;
     void resized()  override;
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
     void setValue (ValueTree& valueTree);
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMeter);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageMeter)
 };
 #endif  // CABBAGECUSTOMWIDGETS_H_INCLUDED

@@ -29,8 +29,8 @@ class CabbageCsoundBreakpointData : public CabbageUtilities
 
 public:
     CabbageCsoundBreakpointData(): valueTree ("BreakPointData")
-    {};
-    ~CabbageCsoundBreakpointData() {};
+    {}
+    ~CabbageCsoundBreakpointData() {}
 
     void set (String child, Identifier identifier, var value)
     {

@@ -38,24 +38,24 @@ class CabbageGroupBox : public GroupComponent, public ValueTree::Listener, publi
 public:
 
     CabbageGroupBox (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageGroupBox() {
+    ~CabbageGroupBox() override {
         widgetData.removeListener(this);
         setLookAndFeel(nullptr);
-    };
+    }
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
 
     void changeListenerCallback (ChangeBroadcaster* source)  override;
 
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageGroupBox);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageGroupBox)
 };
 
 

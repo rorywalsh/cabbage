@@ -33,7 +33,7 @@ class Soundfiler : public Component,
 {
 public:
     Soundfiler (int sr, Colour col, Colour fcol);
-    ~Soundfiler();
+    ~Soundfiler() override;
 
     double getCurrentPlayPos()
     {
@@ -42,12 +42,12 @@ public:
 
     int getCurrentPlayPosInSamples()
     {
-        return currentPlayPosition * sampleRate;
+        return (int)currentPlayPosition * sampleRate;
     }
 
     int getLoopLengthInSamples()
     {
-        return loopLength * sampleRate;
+        return (int)loopLength * sampleRate;
     }
 
     void setIsRangeSelectable (bool isSelectable)
@@ -77,11 +77,12 @@ public:
     void setWaveformColour (String waveform)
     {
         colour = Colour::fromString (waveform);
-    };
+    }
+    
     void setBackgroundColour (String tableColour)
     {
         bgColour = Colour::fromString (tableColour);
-    };
+    }
 
     void setZoomFactor (double amount);
     void setFile (const File& file);

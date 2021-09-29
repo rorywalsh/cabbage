@@ -16,7 +16,7 @@ class JavascriptTokeniser   : public CodeTokeniser
 {
 public:
     JavascriptTokeniser() {}
-    ~JavascriptTokeniser() {}
+    ~JavascriptTokeniser() override {}
     
     static CodeEditorComponent::ColourScheme getDefaultEditorColourScheme();
     CodeEditorComponent::ColourScheme getDefaultColourScheme() override;

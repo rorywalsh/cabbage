@@ -30,9 +30,9 @@ class CabbageCsoundConsole : public TextEditor, public Timer, public ValueTree::
 public:
 
     CabbageCsoundConsole (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageCsoundConsole() {
+    ~CabbageCsoundConsole() override {
         widgetData.removeListener(this);
-    };
+    }
 
     void setMonospaced(bool value);
     void setMonospaced(const ValueTree &valueTree);
@@ -41,17 +41,17 @@ public:
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&)  override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
 
     void timerCallback()  override;
 
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageCsoundConsole);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageCsoundConsole)
 
 private:
     bool monospaced = false;
