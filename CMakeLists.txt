@@ -96,7 +96,11 @@ endif()
 
 juce_generate_juce_header(${PROJECT_NAME})
 
-target_compile_options(${PROJECT_NAME} PRIVATE -Wno-reorder)
+if(MSVC)
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /wd 4996")
+endif()
+
+add_compile_options ( -Wno-reorder -Wno-deprecated -Wno-deprecated-declarations)
 
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 
