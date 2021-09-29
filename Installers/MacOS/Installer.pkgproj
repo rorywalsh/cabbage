@@ -38,7 +38,7 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
-									<string>/Users/walshr/sourcecode/cabbage/Cabbage.app</string>
+									<string>SOURCE_PATH/Cabbage.app</string>
 									<key>PATH_TYPE</key>
 									<integer>0</integer>
 									<key>PERMISSIONS</key>
@@ -448,6 +448,8 @@
 				</dict>
 				<key>PAYLOAD_TYPE</key>
 				<integer>0</integer>
+				<key>PRESERVE_EXTENDED_ATTRIBUTES</key>
+				<false/>
 				<key>SHOW_INVISIBLE</key>
 				<false/>
 				<key>SPLIT_FORKS</key>
@@ -921,6 +923,8 @@
 				</dict>
 				<key>PAYLOAD_TYPE</key>
 				<integer>0</integer>
+				<key>PRESERVE_EXTENDED_ATTRIBUTES</key>
+				<false/>
 				<key>SHOW_INVISIBLE</key>
 				<false/>
 				<key>SPLIT_FORKS</key>
@@ -986,7 +990,7 @@
 						<key>BACKGROUND_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>/Users/walshr/sourcecode/cabbage/Images/CabbageOSXInstallerBackground.png</string>
+							<string>SOURCE_PATH/Images/CabbageOSXInstallerBackground.png</string>
 							<key>PATH_TYPE</key>
 							<integer>0</integer>
 						</dict>
@@ -1004,7 +1008,7 @@
 						<key>BACKGROUND_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>/Users/walshr/sourcecode/cabbage/Images/CabbageOSXInstallerBackground.png</string>
+							<string>SOURCE_PATH/Images/CabbageOSXInstallerBackground.png</string>
 							<key>PATH_TYPE</key>
 							<integer>0</integer>
 						</dict>
@@ -1019,7 +1023,7 @@
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>/Users/walshr/sourcecode/cabbage/Images/CabbageOSXInstallerBackground.png</string>
+					<string>SOURCE_PATH/Images/CabbageOSXInstallerBackground.png</string>
 					<key>PATH_TYPE</key>
 					<integer>0</integer>
 				</dict>

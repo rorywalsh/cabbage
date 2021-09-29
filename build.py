@@ -59,6 +59,11 @@ if args.build_type is not None:
 else:
     buildType = "Local Debug"
 
+if "Release Remote" in buildType:
+    stagingDir = os.popen('echo $(Build.ArtifactStagingDirectory)').read()
+    print("ArtifactStagingDirectory: "+stagingDir)
+
+exit()
 
 if buildType is not "Local Debug":
     if not os.path.exists("CabbageManual"):
