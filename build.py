@@ -152,8 +152,12 @@ if "Remote Release" in buildType:
         os.system('mkdir ~/SDKs')
         os.system('cp -rf VST_SDK ~/SDKs')
         os.system('cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
-        os.system('ls ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
-        os.system('echo "\n"')
+
+    if platform.system() == "Windows":
+        os.system('mkdir C:/SDKs')
+        os.system('cp -rf VST_SDK C:/SDKs')
+        os.system('cp -rf vst2.x C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+
 
 os.chdir(rootDir)
 
