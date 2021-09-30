@@ -65,14 +65,14 @@ if platform.system() == "Windows":
     os.system('mkdir CabbageInstall')
 
 if buildType is not "Local Debug":
-    if not os.path.exists("CabbageManual"):
-        url = "http://cabbageaudio.com/beta/CabbageManual.zip"
-        r = requests.get(url, allow_redirects=True)
-        open('CabbageManual.zip', 'wb').write(r.content)       
-        with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
-            zip_ref.extractall()
         
     if platform.system() == "Darwin":
+        if not os.path.exists("CabbageManual"):
+            url = "http://cabbageaudio.com/beta/CabbageManual.zip"
+            r = requests.get(url, allow_redirects=True)
+            open('CabbageManual.zip', 'wb').write(r.content)       
+            with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
+                zip_ref.extractall()
         if not os.path.exists("CabbageRack"):
             print("================== Installing CabbageRack libs ========================")
             url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-mac.zip"
@@ -102,11 +102,17 @@ if buildType is not "Local Debug":
         if not os.path.exists("fmod_csound64_fx.dll"):
             url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64_fx.dll"
             r = requests.get(url, allow_redirects=True)
-            open(rootDir+'/CabbageInstall/fmod_csound64_fx.dll', 'wb').write(r.content)  
+            open(rootDir+'/CabbageInstall/fmod_csound_fx64.dll', 'wb').write(r.content)  
         if not os.path.exists("fmod_csound64.dll"):
             url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64.dll"
             r = requests.get(url, allow_redirects=True)
             open(rootDir+'/CabbageInstall/fmod_csound64.dll', 'wb').write(r.content)
+        if not os.path.exists("CabbageManual"):
+            url = "http://cabbageaudio.com/beta/CabbageManual.zip"
+            r = requests.get(url, allow_redirects=True)
+            open('CabbageManual.zip', 'wb').write(r.content)       
+            with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
+                zip_ref.extractall((rootDir+'/CabbageInstall/CabbageManual')
 
 
 if "Remote Release" in buildType:        
@@ -175,9 +181,11 @@ if "Remote Release" in buildType:
         r = requests.get(url, allow_redirects=True)
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
-            zip_ref.extractall("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces")
-        os.system('ls C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+            zip_ref.extractall("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x")
+        print('------------------------------------------------------')
+        os.system('ls C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/')
         os.system('ls C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x')
+        
 
 
 os.chdir(rootDir)
@@ -244,7 +252,6 @@ for project in projects:
             if buildType is not "Local Debug":
                 os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
-                os.system('cp -Rf ../CabbageManual '+rootDir+'/CabbageInstall/CabbageManual')
                 os.system('cp -Rf ../CabbageRack '+rootDir+'/CabbageInstall/CabbageRack')
                 os.system('cp ../fmod_csound_fx.dylib '+rootDir+'/CabbageInstall/fmod_csound_fx.dylib')
                 os.system('cp ../fmod_csound.dylib '+rootDir+'/CabbageInstall/fmod_csound.dylib')
@@ -281,4 +288,5 @@ if "Remote Release" in buildType:
         os.chdir(rootDir+'/Installers/Windows') 
         os.system('set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"')
         os.system('iscc Installer.iss')
-        os.system('mv ./Output/Cabbage64Setup.exe '+stagingDir+'/Cabbage64Setup-'+getVersionNumber()+'.exe')
+        os.system(rootDir+'/Installers/Windows/Output')
+        os.system('cp '+rootDir+'/Installers/Windows/Output/Cabbage64Setup.exe '+stagingDir+'/Cabbage64Setup-'+getVersionNumber()+'.exe')
