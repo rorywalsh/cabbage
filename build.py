@@ -40,6 +40,8 @@ parser.add_argument('--project', type=str,
 parser.add_argument('--build_type', type=str,
                     help='"Local Release", "Remote Release", "Local Debug"')
 
+parser.add_argument('--manufacturer', type=str,
+                    help='"CabbageAudio"')
 args = parser.parse_args()
 
 if args.config is None:
@@ -57,6 +59,11 @@ if args.build_type is not None:
     buildType = args.build_type
 else:
     buildType = "Local Debug"
+
+if args.manufacturer is not None:
+    manufacturer = args.manufacturer
+else:
+    manufacturer = "CabbageAudio"
 
 if platform.system() == "Windows" and os.path.exists("CabbageInstall"):
     os.system('rm -rf CabbageInstall')
@@ -211,11 +218,11 @@ for project in projects:
     os.system('mkdir build')
     os.chdir('build')
     if platform.system() == "Darwin" and 'arm64' in platformArch: 
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'"')
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'"')
     elif platform.system() == "Darwin":
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'"')
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'"')
     elif platform.system() == "Windows": 
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'"')
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'"')
     print("===========================================================")
     print(" Running build for "+project)
     print("===========================================================")    
@@ -249,9 +256,6 @@ for project in projects:
             if buildType is not "Local Debug":
                 os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
-                os.system('cp -Rf ../CabbageRack '+rootDir+'/CabbageInstall/CabbageRack')
-                os.system('cp ../fmod_csound_fx.dylib '+rootDir+'/CabbageInstall/fmod_csound_fx.dylib')
-                os.system('cp ../fmod_csound.dylib '+rootDir+'/CabbageInstall/fmod_csound.dylib')
         elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
             os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+project+'.dll')
             os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+project+'.vst3')
