@@ -29,7 +29,9 @@ def getVersionNumber():
                 return number.strip()
         return -1
 
+# ==============================================================================================
 # Instantiate the parser
+# ==============================================================================================
 parser = argparse.ArgumentParser(description="")
 parser.add_argument('--config', type=str,
                     help='Debug/Release')
@@ -48,6 +50,9 @@ parser.add_argument('--plugin_description', type=str,
 
 parser.add_argument('--manufacturer_code', type=str,
                     help='A unique 4 character ID with an uppercase first character, i.e, "Cabb"')
+
+parser.add_argument('--license', type=str,
+                    help='GPL, or CabbagePro')
 
 args = parser.parse_args()
 
@@ -81,6 +86,17 @@ if args.manufacturer_code is not None:
     manufacturerCode = args.manufacturer_code
 else:
     manufacturerCode = "Cabb"
+
+if args.license is not None:
+    if "GPL" in args.license or "gpl" in args.license:
+        pro = 0
+    else:
+        pro = 1
+else:
+    pro = 0
+
+# ==============================================================================================
+
 
 if platform.system() == "Windows" and os.path.exists("CabbageInstall"):
     os.system('rm -rf CabbageInstall')
@@ -222,7 +238,7 @@ if not os.path.exists("JUCE"):
     with open(rootDir+"/JUCE/extras/Build/juceaide/CMakeLists.txt", "rt") as cmakeFile:
         for line in cmakeFile:
             if "juce_add_console_app(juceaide)" in line:
-                line += "\n\t\ttarget_compile_features(juceaide PRIVATE cxx_std_17)\n"
+                line += "\n\ttarget_compile_features(juceaide PRIVATE cxx_std_17)\n"
             newFileText += line    
 
     
@@ -240,11 +256,13 @@ for project in projects:
     os.system('mkdir build')
     os.chdir('build')
     if platform.system() == "Darwin" and 'arm64' in platformArch: 
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_Manufacturer_Code="'+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'"')
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode="'+manufacturerCode+'" -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
     elif platform.system() == "Darwin":
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_Manufacturer_Code="'+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'"')
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode="'+manufacturerCode+'" -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
     elif platform.system() == "Windows": 
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_Manufacturer_Code="'+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'"')
+        print('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode="'+manufacturerCode+'" -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
+        
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode="'+manufacturerCode+'" -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
     print("===========================================================")
     print(" Running build for "+project)
     print("===========================================================")    

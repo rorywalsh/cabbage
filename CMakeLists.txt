@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.15)
 set( CMAKE_WARN_DEPRECATED OFF )
 set(CMAKE_WARN_DEPRECATED OFF CACHE BOOL "" FORCE)
 
-macro(ternaryBool var targetType value1 value2)
+macro(ternaryValue var targetType value1 value2)
     if("${PROJECT_NAME}" STREQUAL "${targetType}")
         set(${var} ${value1})
     else()
@@ -20,6 +20,7 @@ macro(ternaryString var targetType value1 value2)
         set(${var} "${value2}")
     endif()
 endmacro()
+
 
 if(NOT DEFINED PROJECT_NAME)
     set(PROJECT_NAME "Cabbage")
@@ -46,10 +47,24 @@ if(NOT DEFINED JucePlugin_Manufacturer)
     set(JucePlugin_Manufacturer "CabbageAudio")
 endif()
 
+if(NOT DEFINED CabbagePro)
+    set(CabbagePro 0)
+else()
+    message("CabbagePRO=================")
+    message("${CabbagePro}")
+endif()
+
+
+
+
+
+if(NOT DEFINED JucePlugin_ManufacturerCode)
+    set(JucePlugin_ManufacturerCode "Cabb")
+endif()
+
 if(NOT DEFINED JucePlugin_Desc)
     set(JucePlugin_Desc "CabbagePlugin")
 endif()
-
 
 if("${PROJECT_NAME}" STREQUAL "Cabbage")
     juce_add_gui_app(${PROJECT_NAME}
@@ -65,9 +80,9 @@ elseif(MSVC)
     juce_set_vst2_sdk_path("C:/SDKs/VST_SDK/VST3_SDK")
 endif()
     set(PLUGIN_IS_A_SYNTH, FALSE)
-    ternaryBool(PLUGIN_IS_A_SYNTH "CabbagePluginSynth" TRUE FALSE)
+    ternaryValue(PLUGIN_IS_A_SYNTH "CabbagePluginSynth" TRUE FALSE)
     set(PLUGIN_NEEDS_MIDI_OUTPUT, FALSE)
-    ternaryBool(PLUGIN_NEEDS_MIDI_OUTPUT "CabbagePluginSynth" TRUE FALSE)
+    ternaryValue(PLUGIN_NEEDS_MIDI_OUTPUT "CabbagePluginSynth" TRUE FALSE)
     set(PLUGIN_VST2_CATEGORY, "")
     ternaryString(PLUGIN_VST2_CATEGORY "CabbagePluginSynth" "kPlugCategSynth" "kPlugCategEffect")
     set(PLUGIN_AU_MAIN_TYPE, "")
@@ -80,7 +95,7 @@ endif()
     juce_add_plugin(${PROJECT_NAME}
         PLUGIN_NAME ${PROJECT_NAME}
         FORMATS VST VST3 Standalone AU
-        PLUGIN_MANUFACTURER_CODE "Cabb"
+        PLUGIN_MANUFACTURER_CODE ${JucePlugin_ManufacturerCode}
         PLUGIN_CODE "RORY"
         DESCRIPTION ${JucePlugin_Desc}
         NEEDS_MIDI_INPUT TRUE
@@ -305,6 +320,8 @@ target_compile_definitions(${PROJECT_NAME}
         JUCE_MODAL_LOOPS_PERMITTED=1
         JucePlugin_Manufacturer="${JucePlugin_Manufacturer}"
         JucePlugin_Desc="${JucePlugin_Desc}"
+        JucePlugin_ManufacturerCode="${JucePlugin_ManufacturerCode}"
+        CabbagePro=${CabbagePro}
         Use_Native_File_Browser=1
         JUCE_VST3_CAN_REPLACE_VST2=0
         JUCE_DISPLAY_SPLASH_SCREEN=0)
