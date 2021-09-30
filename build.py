@@ -42,6 +42,13 @@ parser.add_argument('--build_type', type=str,
 
 parser.add_argument('--manufacturer', type=str,
                     help='"CabbageAudio"')
+
+parser.add_argument('--plugin_description', type=str,
+                    help='"CabbagePlugin"')
+
+parser.add_argument('--manufacturer_code', type=str,
+                    help='A unique 4 character ID with an uppercase first character, i.e, "Cabb"')
+
 args = parser.parse_args()
 
 if args.config is None:
@@ -61,9 +68,19 @@ else:
     buildType = "Local Debug"
 
 if args.manufacturer is not None:
+    pluginDescription = args.plugin_description
+else:
+    pluginDescription = "CabbagePlugin"
+
+if args.manufacturer is not None:
     manufacturer = args.manufacturer
 else:
     manufacturer = "CabbageAudio"
+
+if args.manufacturer_code is not None:
+    manufacturerCode = args.manufacturer_code
+else:
+    manufacturerCode = "Cabb"
 
 if platform.system() == "Windows" and os.path.exists("CabbageInstall"):
     os.system('rm -rf CabbageInstall')
@@ -202,11 +219,16 @@ if not os.path.exists("JUCE"):
     os.system('git apply ./patches/VST2Wrapper.patch')
     os.system('git apply ./patches/VST3Wrapper.patch')
     newFileText = ""
-    with open("JUCE/extras/Build/juceaide/CMakeLists.txt", "rt") as cmakeFile:
+    with open(rootDir+"/JUCE/extras/Build/juceaide/CMakeLists.txt", "rt") as cmakeFile:
         for line in cmakeFile:
             if "juce_add_console_app(juceaide)" in line:
-                line += "\njuce_add_console_app(juceaide)\n"
-            newFileText += line      
+                line += "\n\t\ttarget_compile_features(juceaide PRIVATE cxx_std_17)\n"
+            newFileText += line    
+
+    
+    with open(rootDir+"/JUCE/extras/Build/juceaide/CMakeLists.txt", "w") as cmakeFile:
+        cmakeFile.write(newFileText)
+
 
 
 if platform.system() == "Darwin" and os.path.exists("Cabbage.app"):
@@ -218,11 +240,11 @@ for project in projects:
     os.system('mkdir build')
     os.chdir('build')
     if platform.system() == "Darwin" and 'arm64' in platformArch: 
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'"')
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_Manufacturer_Code="'+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'"')
     elif platform.system() == "Darwin":
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'"')
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_Manufacturer_Code="'+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'"')
     elif platform.system() == "Windows": 
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'"')
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_Manufacturer_Code="'+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'"')
     print("===========================================================")
     print(" Running build for "+project)
     print("===========================================================")    
@@ -256,6 +278,7 @@ for project in projects:
             if buildType is not "Local Debug":
                 os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
+                os.system('cp -Rf ../Icons '+rootDir+'/CabbageInstall/Icons')
         elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
             os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+project+'.dll')
             os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+project+'.vst3')
