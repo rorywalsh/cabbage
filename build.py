@@ -72,7 +72,7 @@ if args.build_type is not None:
 else:
     buildType = "Local Debug"
 
-if args.manufacturer is not None:
+if args.plugin_description is not None:
     pluginDescription = args.plugin_description
 else:
     pluginDescription = "CabbagePlugin"
@@ -261,7 +261,6 @@ for project in projects:
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode="'+manufacturerCode+'" -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
     elif platform.system() == "Windows": 
         print('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode="'+manufacturerCode+'" -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
-        
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode="'+manufacturerCode+'" -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
     print("===========================================================")
     print(" Running build for "+project)
@@ -298,10 +297,11 @@ for project in projects:
                 os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
                 os.system('cp -Rf ../Icons '+rootDir+'/CabbageInstall/Icons')
         elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
-            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+project+'.dll')
-            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+project+'.vst3')
+            newProjectName = project.replace("CabbagePlugin", pluginDescription)
+            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+newProjectName+'.dll')
+            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+newProjectName+'.vst3')
             if project == "CabbagePluginSynth":
-                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+'.exe ' +rootDir+'/CabbageInstall/CabbagePlugin.exe')
+                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+'.exe ' +rootDir+'/CabbageInstall/'+pluginDescription+'.exe')
 
     os.chdir('..')
 
