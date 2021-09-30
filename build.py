@@ -181,10 +181,7 @@ if "Remote Release" in buildType:
         r = requests.get(url, allow_redirects=True)
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
-            zip_ref.extractall("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x")
-        print('------------------------------------------------------')
-        os.system('ls C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/')
-        os.system('ls C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces/vst2.x')
+            zip_ref.extractall("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces")
         
 
 
