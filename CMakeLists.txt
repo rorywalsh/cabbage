@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.15)
 
+# Having used JUCE 5.4.7 for so long, this project uses quite a function that have been mark
+# few deprecated in JUCE 6. Until I have time to fix them all, I'm disabling the warnings.. 
+set( CMAKE_WARN_DEPRECATED OFF )
+set(CMAKE_WARN_DEPRECATED OFF CACHE BOOL "" FORCE)
+
 macro(ternaryBool var targetType value1 value2)
     if("${PROJECT_NAME}" STREQUAL "${targetType}")
         set(${var} ${value1})
@@ -101,6 +106,7 @@ if(MSVC)
     # C26495 are warnings caused by JUCE classes
     add_definitions( "/wd26495 /wd4996" )
 endif()
+
 
 add_compile_options ( -Wno-reorder -Wno-deprecated -Wno-deprecated-declarations)
 
