@@ -40,7 +40,7 @@ parser.add_argument('--project', type=str,
                     help='Cabbage, CabbagePluginEffect, CabagePluginSynth')
 
 parser.add_argument('--build_type', type=str,
-                    help='"Local Release", "Remote Release", "Local Debug"')
+                    help='"Local", "Remote", "Minimal"')
 
 parser.add_argument('--manufacturer', type=str,
                     help='"CabbageAudio"')
@@ -70,7 +70,7 @@ else:
 if args.build_type is not None:
     buildType = args.build_type
 else:
-    buildType = "Local Debug"
+    buildType = "Minimal"
 
 if args.plugin_description is not None:
     pluginDescription = args.plugin_description
@@ -104,7 +104,7 @@ if platform.system() == "Windows" and os.path.exists("CabbageInstall"):
 if platform.system() == "Windows":   
     os.system('mkdir CabbageInstall')
 
-if buildType is not "Local Debug":
+if buildType is not "Local":
         
     if platform.system() == "Darwin":
         if not os.path.exists("CabbageManual"):
@@ -155,7 +155,7 @@ if buildType is not "Local Debug":
                 zip_ref.extractall(rootDir+'/CabbageInstall/CabbageManual')
 
 
-if "Remote Release" in buildType:        
+if "Remote" in buildType:        
     print("================== Setting up for Release build ========================")
     if platform.system() == "Darwin":
         stagingDir = os.popen('echo $BUILD_ARTIFACTSTAGINGDIRECTORY').read()
@@ -274,7 +274,7 @@ for project in projects:
     if platform.system() == "Darwin": 
         if project == "Cabbage":
             os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.app '+rootDir+'/Cabbage.app')
-            if buildType is not "Local Debug":
+            if buildType is not "Minimal":
                 os.system('cp -Rf ../Examples '+rootDir+'/Cabbage.app/Contents/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/Cabbage.app/Contents/Themes')
                 os.system('cp -Rf ../CabbageManual '+rootDir+'/Cabbage.app/Contents/CabbageManual')
@@ -293,7 +293,7 @@ for project in projects:
     if platform.system() == "Windows": 
         if project == "Cabbage":
             os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.exe '+rootDir+'/CabbageInstall/Cabbage.exe')
-            if buildType is not "Local Debug":
+            if buildType is not "Minimal":
                 os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
                 os.system('cp -Rf ../Icons '+rootDir+'/CabbageInstall/Icons')
@@ -307,7 +307,7 @@ for project in projects:
     os.chdir('..')
 
 # If local release is specified, then packages things from the current dir
-if "Local Release" in buildType:
+if "Local" in buildType:
     if platform.system() == "Darwin":
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
@@ -320,7 +320,7 @@ if "Local Release" in buildType:
         os.system('iscc Installer.iss')
 
 # If remote release is specified, package things into teh staging directory
-if "Remote Release" in buildType:
+if "Remote" in buildType:
     if platform.system() == "Darwin":
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
