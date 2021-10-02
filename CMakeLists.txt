@@ -329,8 +329,11 @@ target_compile_definitions(${PROJECT_NAME}
 if(MSVC)
     # SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "C:/Program Files/Csound6_x64/include/csound")
     include_directories("C:\\Program Files\\Csound6_x64\\include\\csound")
+    if(${CabbagePro} EQUAL 1)
+        find_library(CSOUND_LIBRARY NAMES libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
+    else()
     find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
-
+    endif()
     target_link_libraries(${PROJECT_NAME} 
     PRIVATE
         ${JUCE_MODULES}
