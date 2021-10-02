@@ -40,7 +40,7 @@ parser.add_argument('--project', type=str,
                     help='Cabbage, CabbagePluginEffect, CabagePluginSynth')
 
 parser.add_argument('--build_type', type=str,
-                    help='"Local Release", "Remote Release", "Local Debug"')
+                    help='"Local", "Remote", "Minimal"')
 
 parser.add_argument('--manufacturer', type=str,
                     help='"CabbageAudio"')
@@ -70,7 +70,7 @@ else:
 if args.build_type is not None:
     buildType = args.build_type
 else:
-    buildType = "Local Debug"
+    buildType = "Minimal"
 
 if args.plugin_description is not None:
     pluginDescription = args.plugin_description
@@ -104,7 +104,7 @@ if platform.system() == "Windows" and os.path.exists("CabbageInstall"):
 if platform.system() == "Windows":   
     os.system('mkdir CabbageInstall')
 
-if buildType is not "Local Debug":
+if buildType is not "Local":
         
     if platform.system() == "Darwin":
         if not os.path.exists("CabbageManual"):
@@ -155,7 +155,7 @@ if buildType is not "Local Debug":
                 zip_ref.extractall(rootDir+'/CabbageInstall/CabbageManual')
 
 
-if "Remote Release" in buildType:        
+if "Remote" in buildType:        
     print("================== Setting up for Release build ========================")
     if platform.system() == "Darwin":
         stagingDir = os.popen('echo $BUILD_ARTIFACTSTAGINGDIRECTORY').read()
@@ -256,12 +256,12 @@ for project in projects:
     os.system('mkdir build')
     os.chdir('build')
     if platform.system() == "Darwin" and 'arm64' in platformArch: 
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode="'+manufacturerCode+'" -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
     elif platform.system() == "Darwin":
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode="'+manufacturerCode+'" -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
     elif platform.system() == "Windows": 
-        print('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode="'+manufacturerCode+'" -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode="'+manufacturerCode+'" -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
+        print('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
     print("===========================================================")
     print(" Running build for "+project)
     print("===========================================================")    
@@ -274,7 +274,7 @@ for project in projects:
     if platform.system() == "Darwin": 
         if project == "Cabbage":
             os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.app '+rootDir+'/Cabbage.app')
-            if buildType is not "Local Debug":
+            if buildType is not "Minimal":
                 os.system('cp -Rf ../Examples '+rootDir+'/Cabbage.app/Contents/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/Cabbage.app/Contents/Themes')
                 os.system('cp -Rf ../CabbageManual '+rootDir+'/Cabbage.app/Contents/CabbageManual')
@@ -283,16 +283,17 @@ for project in projects:
                 os.system('cp ../fmod_csound.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound.dylib')
 
         elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
-            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+project+'.vst')
-            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3 ' +rootDir+'/Cabbage.app/Contents/'+project+'.vst3')
-            os.system('cp -Rf '+project+'_artefacts/'+configType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+project+'.component')
+            newProjectName = project.replace("CabbagePlugin", pluginDescription)
+            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst')
+            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3 ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst3')
+            os.system('cp -Rf '+project+'_artefacts/'+configType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.component')
             if project == "CabbagePluginSynth":
-                os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/CabbagePlugin.app')
+                os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.app')
 
     if platform.system() == "Windows": 
         if project == "Cabbage":
             os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.exe '+rootDir+'/CabbageInstall/Cabbage.exe')
-            if buildType is not "Local Debug":
+            if buildType is not "Minimal":
                 os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
                 os.system('cp -Rf ../Icons '+rootDir+'/CabbageInstall/Icons')
@@ -306,7 +307,7 @@ for project in projects:
     os.chdir('..')
 
 # If local release is specified, then packages things from the current dir
-if "Local Release" in buildType:
+if "Local" in buildType:
     if platform.system() == "Darwin":
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
@@ -319,7 +320,7 @@ if "Local Release" in buildType:
         os.system('iscc Installer.iss')
 
 # If remote release is specified, package things into teh staging directory
-if "Remote Release" in buildType:
+if "Remote" in buildType:
     if platform.system() == "Darwin":
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')

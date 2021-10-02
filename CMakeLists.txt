@@ -59,7 +59,7 @@ endif()
 
 
 if(NOT DEFINED JucePlugin_ManufacturerCode)
-    set(JucePlugin_ManufacturerCode "Cabb")
+    set(JucePlugin_ManufacturerCode Cabb)
 endif()
 
 if(NOT DEFINED JucePlugin_Desc)
@@ -95,7 +95,7 @@ endif()
     juce_add_plugin(${PROJECT_NAME}
         PLUGIN_NAME ${PROJECT_NAME}
         FORMATS VST VST3 Standalone AU
-        PLUGIN_MANUFACTURER_CODE ${JucePlugin_ManufacturerCode}
+        PLUGIN_MANUFACTURER_CODE "${JucePlugin_ManufacturerCode}"
         PLUGIN_CODE "RORY"
         DESCRIPTION ${JucePlugin_Desc}
         NEEDS_MIDI_INPUT TRUE
@@ -320,7 +320,6 @@ target_compile_definitions(${PROJECT_NAME}
         JUCE_MODAL_LOOPS_PERMITTED=1
         JucePlugin_Manufacturer="${JucePlugin_Manufacturer}"
         JucePlugin_Desc="${JucePlugin_Desc}"
-        JucePlugin_ManufacturerCode="${JucePlugin_ManufacturerCode}"
         CabbagePro=${CabbagePro}
         Use_Native_File_Browser=1
         JUCE_VST3_CAN_REPLACE_VST2=0
