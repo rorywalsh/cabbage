@@ -60,11 +60,11 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
                 fileExtension = "dll";
         }
         
-#if CabbagePro && JUCE_MAC
-        const String pluginDesc = String(JucePlugin_Manufacturer);
-#else
+// #if CabbagePro && JUCE_MAC
+//         const String pluginDesc = String(JucePlugin_Manufacturer);
+// #else
         const String pluginDesc = String(JucePlugin_Desc);
-#endif
+// #endifs
         
         if (type == "VSTi" || type == "AUi" || type == "VST3i")
             pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"Synth." + fileExtension);
@@ -221,11 +221,11 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     
     if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
     {
-#if CabbagePro
-        const String pluginDesc = String(JucePlugin_Manufacturer);
-#else
+// #if CabbagePro
+//         const String pluginDesc = String(JucePlugin_Manufacturer);
+// #else
         const String pluginDesc = VSTData.getFileNameWithoutExtension();
-#endif
+// #endif
         if(fileExtension.containsIgnoreCase("component"))
             exportedCsdFile = exportedPlugin.getFullPathName() + String ("/Contents/"+pluginDesc+".csd");
         else if(fileExtension.containsIgnoreCase("vst"))
@@ -317,52 +317,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         File pluginBinary (exportedPlugin.getFullPathName() + String ("/Contents/Resources/CabbagePlugin.rsrc"));
 //        setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
     }
-    
-#if CabbagePro //bundle and relink Csound
-    //removing this for now to see if I can relink manually...
-    //    if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0 && encrypt)
-    //    {
-    //        File csoundFramework(File::getSpecialLocation (File::currentApplicationFile).getFullPathName()+"/Contents/CsoundLib64.framework");
-    //        if(!csoundFramework.exists())
-    //            jassertfalse;
-    //
-    //        if(!csoundFramework.copyFileTo(File(exportedPlugin.getFullPathName()+"/Contents/Resources/CsoundLib64.framework")))
-    //            jassertfalse;
-    //
-    //        ChildProcess childProc;
-    //        String pluginBinaryPath;
-    //
-    //        if(fileExtension.containsIgnoreCase("vst"))
-    //            pluginBinaryPath = exportedPlugin.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension();
-    //        else
-    //            pluginBinaryPath = exportedPlugin.getFullPathName() + String ("/Contents/MacOS/CabbagePlugin");
-    //
-    //
-    //
-    //        if(!childProc.start("otool -L "+pluginBinaryPath))
-    //        {
-    //            CabbageUtilities::showMessage("You will need Xcode's CLI developer tools in order to include Csound in your plugin bundle. Please install them and try again.", &lookAndFeel);
-    //            return;
-    //        }
-    //
-    //
-    //        StringArray lines;
-    //        lines.addLines(childProc.readAllProcessOutput());
-    //        const String csoundPath = lines[1].substring(0, lines[1].indexOf("("));
-    //        const String install_name_tool = "install_name_tool -change " + csoundPath + "@loader_path/../Resources/CsoundLib64.framework/CsoundLib64 /" + pluginBinaryPath;
-    //
-    //
-    //        childProc.start(install_name_tool);
-    //        if(childProc.readAllProcessOutput().length()>1)
-    //            CabbageUtilities::showMessage("There was a problem relinking the Csound binaries: " + childProc.readAllProcessOutput() + " Please contact Cabbage support and quote the following error message:", &lookAndFeel);
-    //
-    //
-    //
-    //
-    //    }
-#endif
-    
-    
+        
 }
 
 //==============================================================================
