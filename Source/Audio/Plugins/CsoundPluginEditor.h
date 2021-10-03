@@ -31,7 +31,7 @@ class CsoundPluginEditor  : public AudioProcessorEditor
 {
 public:
     explicit CsoundPluginEditor (CsoundPluginProcessor&);
-    ~CsoundPluginEditor();
+    ~CsoundPluginEditor() override;
 
     //==============================================================================
     void paint (Graphics&) override;

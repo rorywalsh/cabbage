@@ -49,7 +49,7 @@ class FilterGraph   : public FileBasedDocument,
 public:
     //==============================================================================
     FilterGraph (AudioPluginFormatManager&);
-    ~FilterGraph();
+    ~FilterGraph() override;
 
     //==============================================================================
     using NodeID = AudioProcessorGraph::NodeID;
@@ -479,6 +479,7 @@ public:
 
 	juce::Point<int> getPositionOfCurrentlyOpenWindow(AudioProcessorGraph::NodeID  nodeId)
 	{
+        ignoreUnused(nodeId);
 		for (auto* w : activePluginWindows)
 			return w->getPosition();
 

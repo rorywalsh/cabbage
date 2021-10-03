@@ -268,12 +268,12 @@ void Soundfiler::mouseDown (const MouseEvent& e)
 //==============================================================================
 void Soundfiler::mouseEnter (const MouseEvent& e)
 {
-
+    ignoreUnused(e);
 }
 //==============================================================================
 void Soundfiler::mouseExit (const MouseEvent& e)
 {
-
+    ignoreUnused(e);
 }
 //==============================================================================
 void Soundfiler::mouseDrag (const MouseEvent& e)

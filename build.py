@@ -284,15 +284,15 @@ for project in projects:
 
         elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
             newProjectName = project.replace("CabbagePlugin", pluginDescription)
-            os.system('mv '+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+project+' '+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+newProjectName) 
-            os.system('mv '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+project+' '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst/Contents/MacOS/'+newProjectName) 
-            os.system('mv '+project+'_artefacts/'+configType+'/Components/'+project+'.component/Contents/MacOS/'+project+' '+project+'_artefacts/'+configType+'/Components/'+project+'.vst/Contents/MacOS/'+newProjectName) 
+            os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+project+' ' +rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+pluginDescription) 
+            os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+pluginDescription) 
+            os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+pluginDescription) 
             
             os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst')
             os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3 ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst3')
             os.system('cp -Rf '+project+'_artefacts/'+configType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.component')
             if project == "CabbagePluginSynth":
-                os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.app')
+                os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'Plugin.app')
 
     if platform.system() == "Windows": 
         if project == "Cabbage":

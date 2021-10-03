@@ -68,7 +68,8 @@ public:
 		float sliderPos, float minSliderPos, float maxSliderPos,
 		const Slider::SliderStyle style, Slider& slider) override
 	{
-        ignoreUnused(style, maxSliderPos);
+        
+        ignoreUnused(sliderPos, minSliderPos, style, maxSliderPos);
 		g.setColour(slider.findColour(Slider::thumbColourId));
         const int corners = slider.getProperties().getWithDefault("corners", 3);
         if(corners!=0)

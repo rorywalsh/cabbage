@@ -798,6 +798,7 @@ void GraphEditorPanel::mouseUp (const MouseEvent&)
 
 void GraphEditorPanel::mouseDrag (const MouseEvent& e)
 {
+    ignoreUnused(e);
     //if (isOnTouchDevice() && e.getDistanceFromDragStart() > 5)
     //    stopTimer();
 }
@@ -902,7 +903,7 @@ void GraphEditorPanel::updateComponents()
     
     for (auto* f : graph.graph.getNodes())
     {
-        if (getComponentForFilter (f->nodeID) == 0)
+        if (getComponentForFilter (f->nodeID) == nullptr)
         {
             auto* comp = nodes.add (new FilterComponent (*this, f->nodeID));
             addAndMakeVisible (comp);
@@ -912,7 +913,7 @@ void GraphEditorPanel::updateComponents()
     
     for (auto& c : graph.graph.getConnections())
     {
-        if (getComponentForConnection (c) == 0)
+        if (getComponentForConnection (c) == nullptr)
         {
             auto* comp = connectors.add (new ConnectorComponent (*this));
             addAndMakeVisible (comp);

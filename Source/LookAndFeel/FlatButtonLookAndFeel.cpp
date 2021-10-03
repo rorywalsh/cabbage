@@ -59,6 +59,7 @@ FlatButtonLookAndFeel::~FlatButtonLookAndFeel() {}
 
 void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, const Colour &backgroundColour, bool isMouseOverButton, bool isButtonDown)
 {
+    ignoreUnused(backgroundColour);
     const int width = button.getWidth();
     const int height = button.getHeight();
     
@@ -84,6 +85,7 @@ void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, co
 
 void FlatButtonLookAndFeel::drawButtonText(Graphics &g, TextButton &button, bool isMouseOverButton, bool isButtonDown)
 {
+    ignoreUnused(isMouseOverButton, isButtonDown);
     Font font (FlatButtonLookAndFeel::getTextButtonFont (button, button.getHeight() * 1.6));
     g.setFont (font);
     g.setColour (button.findColour (button.getToggleState() ? TextButton::textColourOnId
@@ -195,6 +197,7 @@ void FlatButtonLookAndFeel::drawLinearSliderBackground (Graphics& g, int x, int 
     const Slider::SliderStyle style,
     Slider& slider)
 {
+    ignoreUnused(minSliderPos, maxSliderPos, style);
     const float sliderRadius = (float)(getSliderThumbRadius (slider) - 2);
     const Colour trackColour (slider.findColour (Slider::trackColourId));
     float zeroPosProportional = 0;
@@ -392,6 +395,7 @@ void FlatButtonLookAndFeel::drawThumb (Graphics& g, const float x, const float y
     const float w, const float h, const Colour& colour,
     const float outlineThickness)
 {
+    ignoreUnused(outlineThickness);
     ColourGradient cg = ColourGradient (Colours::white, 0, 0, colour, w / 2, h / 2, false);
     cg.addColour (0.4, Colours::white.overlaidWith (colour));
     g.setGradientFill (cg);
@@ -439,6 +443,7 @@ void FlatButtonLookAndFeel::drawTwoValueThumb (Graphics& g, float x, float y, fl
 void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int width, int height, float sliderPos,
     const float rotaryStartAngle, const float rotaryEndAngle, Slider& slider)
 {
+    ignoreUnused(height, width, x, y);
     const int filmStrip = slider.getProperties().getWithDefault("filmstrip", 0);
     if (filmStrip == 1)
     {
@@ -551,6 +556,7 @@ Font FlatButtonLookAndFeel::getComboBoxFont (ComboBox& box)
 
 Font FlatButtonLookAndFeel::getLabelFont(Label& label)
 {
+    ignoreUnused(label);
     if(customFont.getHeight()>900)
         return Font();
     

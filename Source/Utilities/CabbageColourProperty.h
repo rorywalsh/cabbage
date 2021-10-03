@@ -142,7 +142,7 @@ class ColourMultiPropertyComponent : public PropertyComponent, public ChangeList
 public :
     //======= ColourPropertyComponent =======
     ColourMultiPropertyComponent (String name, var colours, bool colourSettings = false);
-    ~ColourMultiPropertyComponent() {}
+    ~ColourMultiPropertyComponent() override {}
     void paint (Graphics& g)  override;
     void mouseDown (const MouseEvent& e) override;
     void changeListenerCallback (juce::ChangeBroadcaster* source) override;

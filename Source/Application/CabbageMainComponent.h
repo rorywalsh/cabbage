@@ -228,10 +228,9 @@ public:
     class VerticalResizerBar : public Component
     {
     public:
-        VerticalResizerBar (ValueTree valueTree, CabbageMainComponent* parent)
+        VerticalResizerBar (ValueTree valueTree, CabbageMainComponent*)
         :   Component ("ResizerBar"),
         valueTree (valueTree)
-        // owner (parent)
         {
             
         }

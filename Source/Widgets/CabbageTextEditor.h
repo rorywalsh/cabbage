@@ -39,6 +39,7 @@ public:
 
         void addPopupMenuItems (PopupMenu& menuToAddTo, const MouseEvent* mouseClickEvent) override
         {
+            ignoreUnused(mouseClickEvent);
             menuToAddTo.addItem (1, "Cut");
             menuToAddTo.addItem (2, "Copy");
             menuToAddTo.addItem (3, "Paste");

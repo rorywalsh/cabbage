@@ -389,7 +389,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
         const String version = String("Cabbage version:")+ProjectInfo::versionString+String("\n");
         csound->Message(version.toRawUTF8());
         
-#ifdef CabbagePro
+#if CabbagePro
         const String encryptedOrcCode = Encrypt::decode(csdFile, "orc");
         const String encryptedScoCode = Encrypt::decode(csdFile, "sco");
         if(encryptedOrcCode.isNotEmpty())

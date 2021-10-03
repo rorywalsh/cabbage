@@ -1597,8 +1597,8 @@ void HandleViewer::removeHandle (HandleComponent* thisHandle)
         handles[0]->sendChangeMessage();
 }
 //==================================================================================
-HandleComponent::HandleComponent (double xPos, double yPos, int _index, bool fixed, int gen, Colour _colour):
-    index (_index), x (0), y (0), status (false), colour (_colour), fixed (fixed)
+HandleComponent::HandleComponent (double xPos, double yPos, int _index, bool isFixed, int gen, Colour _colour):
+    index (_index), x (0), y (0), status (false), colour (_colour), fixed (isFixed)
 {
     //our main handle object. xPos and xPos are always between 0 and 1
     //we convert them to pixel positions later, based on the size of the handleViewer

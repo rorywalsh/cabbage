@@ -29,7 +29,7 @@
 #include "../../Opcodes/CabbageIdentifierOpcodes.h"
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"
-#ifdef CabbagePro
+#if CabbagePro
 #include "../../Utilities/encrypt.h"
 #endif
 

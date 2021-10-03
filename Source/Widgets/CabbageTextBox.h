@@ -35,7 +35,7 @@ class CabbageTextBox : public TextEditor, public ValueTree::Listener, public Cab
 public:
 
     explicit CabbageTextBox (ValueTree wData, CabbagePluginEditor* owner);
-    ~CabbageTextBox() {
+    ~CabbageTextBox() override {
         widgetData.removeListener(this);
     }
 
