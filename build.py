@@ -228,6 +228,7 @@ if "Remote" in buildType:
 os.chdir(rootDir)
 
 if not os.path.exists("JUCE"):
+    print('Cloning JUCE and applying patches....')
     os.system('git clone https://github.com/juce-framework/JUCE.git')
     os.system('git apply ./patches/StandaloneWrapper.patch')
     os.system('git apply ./patches/AUWrapper.patch')
@@ -284,9 +285,9 @@ for project in projects:
 
         elif project == "CabbagePluginEffect" or project == "CabbagePluginSynth":
             newProjectName = project.replace("CabbagePlugin", pluginDescription)
-            os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+project+' ' +rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+pluginDescription) 
-            os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+pluginDescription) 
-            os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+pluginDescription) 
+            os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+project+' ' +rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+newProjectName) 
+            os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+newProjectName) 
+            os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+newProjectName) 
             
             os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst')
             os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3 ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst3')
