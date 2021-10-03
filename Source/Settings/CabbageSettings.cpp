@@ -63,7 +63,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("lastPluginScanPath_AudioUnit", "");
 #endif
 
-#ifdef CabbagePro
+#if CabbagePro
     defaultPropSet->setValue ("CsoundPath", "/Library/Frameworks/CsoundLib64.framework/CsoundLib64"); 
 #endif
     

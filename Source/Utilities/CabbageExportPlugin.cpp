@@ -221,7 +221,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     
     if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
     {
-#ifdef CabbagePro
+#if CabbagePro
         const String pluginDesc = String(JucePlugin_Manufacturer);
 #else
         const String pluginDesc = VSTData.getFileNameWithoutExtension();
@@ -269,7 +269,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             String manu(JucePlugin_Manufacturer);
             const String pluginName = "<string>" +manu + ": " + fc.getFileNameWithoutExtension() + "</string>";
             const String toReplace = "<string>"+manu+": CabbageEffectNam</string>";
-#ifdef CabbagePro
+#if CabbagePro
             //be sure to remove CabbageAudio from plugin plist..
             const String toReplace2 = "<string>CabbageAudio: CabbageEffectNam<string>";
             newPList = newPList.replace (toReplace2, pluginName);
@@ -318,7 +318,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
 //        setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
     }
     
-#ifdef CabbagePro //bundle and relink Csound
+#if CabbagePro //bundle and relink Csound
     //removing this for now to see if I can relink manually...
     //    if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0 && encrypt)
     //    {

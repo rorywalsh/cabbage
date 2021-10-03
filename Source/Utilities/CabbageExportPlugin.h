@@ -22,7 +22,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "../LookAndFeel/CabbageIDELookAndFeel.h"
-#ifdef CabbagePro
+#if CabbagePro
 #include "encrypt.h"
 #endif
 class PluginExporter
@@ -41,7 +41,7 @@ public:
 
     String encodeString (File csdFile)
     {
-#ifdef CabbagePro
+#if CabbagePro
         NamedValueSet tagPositions;
         String csdText = csdFile.loadFileAsString();
         StringArray originalCsdText;

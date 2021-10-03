@@ -384,7 +384,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsAUMIDIFx);
         subMenu3.addSubMenu("AU Export", subMenu2);
         menu.addSubMenu("Export Plugin", subMenu3);
-#ifdef CabbagePro
+#if CabbagePro
         PopupMenu subMenu4, subMenu5, subMenu6;
         subMenu4.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffectEncrypted);
         subMenu4.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynthEncrypted);
@@ -407,7 +407,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         subMenu1.addCommandItem(&commandManager, CommandIDs::exportAsVST3Synth);
         menu.addSubMenu("Export plugin", subMenu1);
         
-#ifdef CabbagePro
+#if CabbagePro
         PopupMenu subMenu2;
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffectEncrypted);
         subMenu2.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynthEncrypted);
@@ -420,7 +420,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::exportAsVCVRackModule);
     menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneApp);
 
-#ifdef CabbagePro
+#if CabbagePro
     menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneEncrypted);
 #endif
     
@@ -433,7 +433,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     
     menu.addSeparator();
     
-#ifndef CabbagePro
+#if !CabbagePro
     if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
     {
         PopupMenu batch;
@@ -1061,7 +1061,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 
 bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
-#ifdef CabbagePro
+#if CabbagePro
     String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString)+"\nLicensed to: " + String(JucePlugin_Manufacturer);
 #else
     String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString);
