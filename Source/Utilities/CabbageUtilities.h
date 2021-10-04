@@ -393,7 +393,7 @@ public:
     //==============================================================
     static int getTarget()
     {
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
         return TargetTypes::IDE;
 #elif Cabbage_Plugin_Synth
         return TargetTypes::PluginSynth;
