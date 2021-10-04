@@ -5,22 +5,6 @@ cmake_minimum_required(VERSION 3.15)
 set( CMAKE_WARN_DEPRECATED OFF )
 set(CMAKE_WARN_DEPRECATED OFF CACHE BOOL "" FORCE)
 
-macro(ternaryValue var targetType value1 value2)
-    if("${PROJECT_NAME}" STREQUAL "${targetType}")
-        set(${var} ${value1})
-    else()
-        set(${var} ${value2})
-    endif()
-endmacro()
-
-macro(ternaryString var targetType value1 value2)
-    if("${PROJECT_NAME}" STREQUAL "${targetType}")
-        set(${var} "${value1}")
-    else()
-        set(${var} "${value2}")
-    endif()
-endmacro()
-
 
 if(NOT DEFINED PROJECT_NAME)
     set(PROJECT_NAME "Cabbage")
@@ -49,14 +33,7 @@ endif()
 
 if(NOT DEFINED CabbagePro)
     set(CabbagePro 0)
-else()
-    message("CabbagePRO=================")
-    message("${CabbagePro}")
 endif()
-
-
-
-
 
 if(NOT DEFINED JucePlugin_ManufacturerCode)
     set(JucePlugin_ManufacturerCode Cabb)
@@ -66,6 +43,25 @@ if(NOT DEFINED JucePlugin_Desc)
     set(JucePlugin_Desc "CabbagePlugin")
 endif()
 
+
+# ==== Find out what kind of project this is
+string(FIND ${PROJECT_NAME} "Synth" synthProject)
+string(FIND ${PROJECT_NAME} "Effect" effectProject)
+
+IF(${synthProject} GREATER 0)
+    set(PLUGIN_IS_A_SYNTH ON)
+ELSEIF(${effectProject} GREATER 0)
+    set(PLUGIN_IS_A_SYNTH OFF)
+ENDIF()
+
+macro(SetIfSynth var value1 value2)
+    if(${PLUGIN_IS_A_SYNTH})
+        set(${var} "${value1}")
+    else()
+        set(${var} "${value2}")
+    endif()
+endmacro()
+
 if("${PROJECT_NAME}" STREQUAL "Cabbage")
     juce_add_gui_app(${PROJECT_NAME}
         ICON_BIG ${CMAKE_CURRENT_SOURCE_DIR}/Images/Cabbage.png              
@@ -73,24 +69,20 @@ if("${PROJECT_NAME}" STREQUAL "Cabbage")
         DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
         COMPANY_NAME ${JucePlugin_Manufacturer}
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
-elseif("${PROJECT_NAME}" STREQUAL "CabbagePluginEffect" OR "${PROJECT_NAME}" STREQUAL "CabbagePluginSynth")
+else()
+# ============== This part of the CMake setup deals with plugins only.....
 if(APPLE)
     juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
 elseif(MSVC)
     juce_set_vst2_sdk_path("C:/SDKs/VST_SDK/VST3_SDK")
 endif()
-    set(PLUGIN_IS_A_SYNTH, FALSE)
-    ternaryValue(PLUGIN_IS_A_SYNTH "CabbagePluginSynth" TRUE FALSE)
-    set(PLUGIN_NEEDS_MIDI_OUTPUT, FALSE)
-    ternaryValue(PLUGIN_NEEDS_MIDI_OUTPUT "CabbagePluginSynth" TRUE FALSE)
-    set(PLUGIN_VST2_CATEGORY, "")
-    ternaryString(PLUGIN_VST2_CATEGORY "CabbagePluginSynth" "kPlugCategSynth" "kPlugCategEffect")
-    set(PLUGIN_AU_MAIN_TYPE, "")
-    ternaryString(PLUGIN_AU_MAIN_TYPE "CabbagePluginSynth" "aumi" "aumf")
-    set(PLUGIN_VST3_CATEGORIES, "")
-    ternaryString(PLUGIN_VST3_CATEGORIES "CabbagePluginSynth" "Instrument|Synth" "Fx")
 
-    message(${PLUGIN_AU_MAIN_TYPE})
+    set(PLUGIN_NEEDS_OUTPUT PLUGIN_IS_A_SYNTH)
+    SetIfSynth(PLUGIN_VST2_CATEGORY "kPlugCategSynth" "kPlugCategEffect")
+    SetIfSynth(PLUGIN_AU_MAIN_TYPE "aumi" "aumf")
+    SetIfSynth(PLUGIN_VST3_CATEGORIES "Instrument|Synth" "Fx")
+    SetIfSynth(SYNTH_OR_EFFECT "Synth" "Effect")
+
 
     juce_add_plugin(${PROJECT_NAME}
         PLUGIN_NAME ${PROJECT_NAME}
@@ -111,7 +103,7 @@ endif()
         AU_EXPORT_PREFIX "${PROJECT_NAME}AU"
         AU_SANDBOX_SAFE TRUE
         COPY_PLUGIN_AFTER_BUILD FALSE
-        PRODUCT_NAME "${PROJECT_NAME}")   
+        PRODUCT_NAME "${JucePlugin_Desc}${SYNTH_OR_EFFECT}")   
 endif()
 
 juce_generate_juce_header(${PROJECT_NAME})
@@ -289,7 +281,8 @@ set(IDE_SOURCES
 if("${PROJECT_NAME}" STREQUAL "Cabbage")
     target_sources(${PROJECT_NAME} PRIVATE ${COMMON_SOURCES} ${IDE_SOURCES} )
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "" FILES ${COMMON_SOURCES} ${IDE_SOURCES})
-elseif("${PROJECT_NAME}" STREQUAL "CabbagePluginEffect" OR "${PROJECT_NAME}" STREQUAL "CabbagePluginSynth")
+else()
+# ============== This part of the CMake setup deals with plugins only.....
     target_sources(${PROJECT_NAME} PRIVATE ${COMMON_SOURCES} )
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "" FILES ${COMMON_SOURCES})
 endif()
