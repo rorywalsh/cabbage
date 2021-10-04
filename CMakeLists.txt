@@ -103,7 +103,7 @@ endif()
         AU_EXPORT_PREFIX "${PROJECT_NAME}AU"
         AU_SANDBOX_SAFE TRUE
         COPY_PLUGIN_AFTER_BUILD FALSE
-        PRODUCT_NAME "${JucePlugin_Desc}${SYNTH_OR_EFFECT}")   
+        PRODUCT_NAME "${PROJECT_NAME}")   
 endif()
 
 juce_generate_juce_header(${PROJECT_NAME})
