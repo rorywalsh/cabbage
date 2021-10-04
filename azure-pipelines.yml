@@ -35,24 +35,24 @@ jobs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
 #       # artifactName: 'Cabbage64Setup.exe'
   
-# - job: macOS
-#   timeoutInMinutes: 100
-#   pool:
-#     vmImage: 'macOS-latest'
-#   steps:
-#   - script: |
-#      pip install requests
-#      python --version
-#      python build.py --config=Release --build_type="Remote Release"
-#     displayName: "Building..."
-#     env:
-#       COREHOST_TRACE: 0
-#       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-#       DOTNET_CLI_TELEMETRY_OPTOUT: 1
-#   - task: PublishBuildArtifacts@1
-#     inputs:
-#       artifactName: 'Installers' 
-#       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+- job: macOS
+  timeoutInMinutes: 100
+  pool:
+    vmImage: 'macOS-latest'
+  steps:
+  - script: |
+     pip install requests
+     python --version
+     python build.py --config=Release --build_type="Remote Release"
+    displayName: "Building..."
+    env:
+      COREHOST_TRACE: 0
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  - task: PublishBuildArtifacts@1
+    inputs:
+      artifactName: 'Installers' 
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
 #       # artifactName: '${SYSTEM_DEFAULTWORKINGDIRECTORY}/Cabbage.pkg'
 
 # - job: Linux
