@@ -62,10 +62,18 @@ if args.config is None:
 
 configType = args.config
 
+if args.manufacturer is not None:
+    manufacturer = args.manufacturer
+else:
+    manufacturer = "CabbageAudio"
+
 if args.project is not None:
     projects = [args.project]
 else:
-    projects = ["Cabbage", "CabbagePluginEffect", "CabbagePluginSynth"]
+    if manufacturer == "CabbageAudio":
+        projects = ["Cabbage", "CabbagePluginEffect", "CabbagePluginSynth"]
+    else:
+        projects = ["Cabbage", manufacturer+"Effect", manufacturer+"Synth"]
 
 if args.build_type is not None:
     buildType = args.build_type
@@ -77,10 +85,7 @@ if args.plugin_description is not None:
 else:
     pluginDescription = "CabbagePlugin"
 
-if args.manufacturer is not None:
-    manufacturer = args.manufacturer
-else:
-    manufacturer = "CabbageAudio"
+
 
 if args.manufacturer_code is not None:
     manufacturerCode = args.manufacturer_code
