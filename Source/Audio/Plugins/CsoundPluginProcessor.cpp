@@ -1128,7 +1128,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 		sideChainBuffer = getBusBuffer(buffer, true, getBusCount(true)-1).getArrayOfWritePointers();
 		numSideChainChannels = getBusBuffer(buffer, true, getBusCount(true) - 1).getNumChannels();
 	}
-#ifndef Cabbage_IDE_Build
+#if !Cabbage_IDE_Build
     Type** ioBuffer = buffer.getArrayOfWritePointers();
 #endif
 #if !JucePlugin_IsSynth && !Cabbage_IDE_Build

@@ -1515,14 +1515,14 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                         {
                             if (cabbageParam->getChannel() == channels[0].toString())
                             {
-#ifndef Cabbage_IDE_Build
+#if !Cabbage_IDE_Build
                                 if(pluginType.isAbletonLive())
                                     if(cabbageParam->isPerformingGesture==true)
                                         cabbageParam->endChangeGesture();
 #endif
                                 cabbageParam->beginChangeGesture();
                                 cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(getCsound()->GetChannel(channels[0].toString().toUTF8())));
-#ifndef Cabbage_IDE_Build
+#if !Cabbage_IDE_Build
                                 if(!pluginType.isAbletonLive())
 #endif
                                 cabbageParam->endChangeGesture();

@@ -172,7 +172,7 @@ public:
     
 
 private:
-#ifndef Cabbage_IDE_Build
+#if !Cabbage_IDE_Build
     PluginHostType pluginType;
 #endif
     controlChannelInfo_s* csoundChanList;

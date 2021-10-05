@@ -596,7 +596,7 @@ void CabbagePluginEditor::insertKeyboard (ValueTree cabbageWidgetData)
         components.add (midiKeyboard = new CabbageKeyboard (cabbageWidgetData, this, cabbageProcessor.keyboardState));
         //midiKeyboard->setKeyPressBaseOctave (3); // <-- now you can set this with 'keypressbaseoctave' identifier
         
-#ifndef Cabbage_IDE_Build
+#if !Cabbage_IDE_Build
         for(int i = 0 ; i < 128 ; i++)
             midiKeyboard->removeKeyPressForNote(i);
 #endif
@@ -844,7 +844,7 @@ void CabbagePluginEditor::sliderDragStarted(Slider* slider)
     {
         if (CabbagePluginParameter* param = getParameterForComponent(slider->getName()))
         {
-#ifndef Cabbage_IDE_Build
+#if !Cabbage_IDE_Build
             if(pluginType.isAbletonLive())
                 if(param->isPerformingGesture==true)
                     param->endChangeGesture();
@@ -875,7 +875,7 @@ void CabbagePluginEditor::sliderDragEnded(Slider* slider)
     {
         if (CabbagePluginParameter* param = getParameterForComponent(slider->getName()))
         {
-#ifndef Cabbage_IDE_Build
+#if !Cabbage_IDE_Build
             if(!pluginType.isAbletonLive())
 #endif
             param->endChangeGesture();
