@@ -52,6 +52,8 @@ IF(${synthProject} GREATER 0)
     set(PLUGIN_IS_A_SYNTH ON)
 ELSEIF(${effectProject} GREATER 0)
     set(PLUGIN_IS_A_SYNTH OFF)
+ELSE()
+    set(IS_IDE_Build 1)
 ENDIF()
 
 macro(SetIfSynth var value1 value2)
@@ -317,6 +319,7 @@ target_compile_definitions(${PROJECT_NAME}
         CabbagePro=${CabbagePro}
         Use_Native_File_Browser=1
         JUCE_VST3_CAN_REPLACE_VST2=0
+        Cabbage_IDE_Build=${IS_IDE_Build}
         JUCE_DISPLAY_SPLASH_SCREEN=0)
 
 if(MSVC)

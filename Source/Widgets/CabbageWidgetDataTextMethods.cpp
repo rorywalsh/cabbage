@@ -198,7 +198,9 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
         const String currentIdentName = currentIdentifier.substring(0, currentIdentifier.indexOf(
                                                                                                  "(")).trim().removeCharacters(", ");
             
-        //I need to check that the current identifiers are not the same as the existing ones, if so don't replace anything
+		if (currentIdentName.startsWith("_"))
+			fullListOfIdentifierStrings.add(currentIdentName);
+		//I need to check that the current identifiers are not the same as the existing ones, if so don't replace anything
         if (currentIdentName.isNotEmpty())
         {
             //getCabbageCodeForIdentifier will return multiple imgFile() identifiers, this will create a problem...

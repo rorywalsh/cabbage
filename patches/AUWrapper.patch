@@ -7,7 +7,7 @@ index 55d597aa..e789c5b5 100644
          static NSString* description (id, SEL)
          {
 -            return [NSString stringWithString: nsStringLiteral (JucePlugin_Name)];
-+            String pluginString =  File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension();
++            String pluginString = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getFileName();
 +            return [NSString stringWithString: nsStringLiteral (pluginString.toUTF8().getAddress())];
          }
  

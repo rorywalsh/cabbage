@@ -30,7 +30,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
       cabbageForm(this),
       lookAndFeel(),
     cabbageProcessor(p)
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     , layoutEditor (cabbageProcessor.cabbageWidgets)
 #endif
 {
@@ -53,7 +53,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 	cabbageForm.setWantsKeyboardFocus(true);
     createEditorInterface (cabbageProcessor.cabbageWidgets);
 
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     viewportContainer->addAndMakeVisible (layoutEditor);
     layoutEditor.setTargetComponent (&cabbageForm);
     layoutEditor.updateFrames();
@@ -112,7 +112,7 @@ void CabbagePluginEditor::resized()
 {
     sendChannelDataToCsound("SCREEN_WIDTH", getWidth());
     sendChannelDataToCsound("SCREEN_HEIGHT", getHeight());
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     layoutEditor.setBounds (getLocalBounds());
     
 #endif
@@ -897,7 +897,7 @@ void CabbagePluginEditor::sliderDragEnded(Slider* slider)
 //======================================================================================================
 void CabbagePluginEditor::enableEditMode (bool enable)
 {
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     layoutEditor.setEnabled (enable);
     editModeEnabled = enable;
     layoutEditor.toFront (false);
@@ -956,7 +956,7 @@ ValueTree CabbagePluginEditor::getValueTreeForComponent (String compName)
 
 void CabbagePluginEditor::updateLayoutEditorFrames()
 {
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
 
     if (editModeEnabled)
         layoutEditor.updateFrames();

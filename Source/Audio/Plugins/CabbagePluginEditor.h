@@ -23,7 +23,7 @@
 #include "JuceHeader.h"
 #include "CabbagePluginProcessor.h"
 
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     #include "../../GUIEditor/ComponentLayoutEditor.h"
 #endif
 
@@ -262,7 +262,7 @@ public:
     //=============================================================================
     void updatefTableData (GenTable* table);
 
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     ComponentLayoutEditor& getLayoutEditor()
     {
         return layoutEditor;
@@ -363,7 +363,7 @@ private:
     SharedResourcePointer<TooltipWindow> tooltipWindow;
     bool isSliderDragging = false;
 
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     ComponentLayoutEditor layoutEditor;
 #else
     PluginHostType pluginType;
