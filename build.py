@@ -112,7 +112,7 @@ if platform.system() == "Linux" and os.path.exists("CabbageInstall"):
 if platform.system() == "Windows" or platform.system() == "Linux":   
     os.system('mkdir CabbageInstall')
 
-if platform.syste() == "Linux":
+if platform.system() == "Linux":
     os.system('mkdir CabbageInstall/bin')
     os.system('mkdir CabbageInstall/images')
     os.system('mkdir CabbageInstall/desktop')
@@ -173,7 +173,7 @@ if buildType is not "Local":
             open(rootDir+'/CabbageInstall/CabbageRack-1.0.0-win.zip', 'wb').write(r.content)  
             with zipfile.ZipFile(rootDir+"/CabbageInstall/CabbageRack-1.0.0-win.zip", 'r') as zip_ref:
                 zip_ref.extractall() 
-            shutil.copytree('CabbageRack', rootDir+'/CabbageInstall/CabbageRack')
+            shutil.copytree('CabbageRack', rootDir+'/CabbageInstall/bin/CabbageRack')
         if not os.path.exists("CabbageManual"):
             url = "http://cabbageaudio.com/beta/CabbageManual.zip"
             r = requests.get(url, allow_redirects=True)
