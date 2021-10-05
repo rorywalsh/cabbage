@@ -92,7 +92,7 @@ endif()
         DESCRIPTION ${JucePlugin_Desc}
         NEEDS_MIDI_INPUT TRUE
         IS_SYNTH ${PLUGIN_IS_A_SYNTH}
-        BUNDLE_ID com.pamplejuce.pamplejuce
+        BUNDLE_ID com.CabbageAudio.plugin
         NEEDS_MIDI_OUTPUT ${PLUGIN_NEEDS_MIDI_OUTPUT}
         IS_MIDI_EFFECT FALSE
         EDITOR_WANTS_KEYBOARD_FOCUS FALSE
@@ -103,6 +103,7 @@ endif()
         AU_EXPORT_PREFIX "${PROJECT_NAME}AU"
         AU_SANDBOX_SAFE TRUE
         COPY_PLUGIN_AFTER_BUILD FALSE
+        COMPANY_NAME ${JucePlugin_Manufacturer}
         PRODUCT_NAME "${PROJECT_NAME}")   
 endif()
 
@@ -280,11 +281,11 @@ set(IDE_SOURCES
 
 if("${PROJECT_NAME}" STREQUAL "Cabbage")
     target_sources(${PROJECT_NAME} PRIVATE ${COMMON_SOURCES} ${IDE_SOURCES} )
-    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "" FILES ${COMMON_SOURCES} ${IDE_SOURCES})
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${COMMON_SOURCES} ${IDE_SOURCES})
 else()
 # ============== This part of the CMake setup deals with plugins only.....
     target_sources(${PROJECT_NAME} PRIVATE ${COMMON_SOURCES} )
-    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "" FILES ${COMMON_SOURCES})
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${COMMON_SOURCES})
 endif()
 
 set(JUCE_MODULES
