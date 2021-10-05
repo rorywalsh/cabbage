@@ -68,8 +68,8 @@ endmacro()
 
 if("${PROJECT_NAME}" STREQUAL "Cabbage")
     juce_add_gui_app(${PROJECT_NAME}
-        ICON_BIG ${CMAKE_CURRENT_SOURCE_DIR}/Images/Cabbage.png              
-        ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/Cabbage.png  
+        ICON_BIG ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png              
+        ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png  
         DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
         COMPANY_NAME ${JucePlugin_Manufacturer}
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
@@ -79,6 +79,8 @@ if(APPLE)
     juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
 elseif(MSVC)
     juce_set_vst2_sdk_path("C:/SDKs/VST_SDK/VST3_SDK")
+else()
+juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
 endif()
 
     set(PLUGIN_NEEDS_OUTPUT PLUGIN_IS_A_SYNTH)
@@ -357,5 +359,17 @@ elseif(APPLE)
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
 else()
-
+    include_directories("/usr/local/include/csound")
+    include_directories("/usr/include/csound")
+    find_library(CSOUND_LIBRARY NAMES csound64)
+    find_library(LIBSNDFILE_LIBRARY NAMES sndfile libsndfile-1 libsndfile)
+    add_compile_options(-j4)
+    target_link_libraries(${PROJECT_NAME} 
+    PRIVATE
+        ${JUCE_MODULES}
+        ${CSOUND_LIBRARY}
+    PUBLIC
+        juce::juce_recommended_config_flags
+        juce::juce_recommended_lto_flags
+        juce::juce_recommended_warning_flags)
 endif()
