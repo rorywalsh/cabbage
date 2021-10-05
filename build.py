@@ -351,12 +351,11 @@ for project in projects:
         elif "Effect" in project or "Synth" in project:
             newProjectName = project.replace("CabbagePlugin", pluginDescription)
             os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/lib'+project+'.so ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
-            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-linux/'+project+'.vst3 ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
+            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-linux/'+project+'.so ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
             if "Synth" in project:
                 os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+' ' +rootDir+'/CabbageInstall/bin/'+pluginDescription)
 
-        # os.system('sed "s@CURRENTDIR@$(pwd)@" Cabbage.desktop > ./install/desktop/cabbage.desktop')
-        # os.system('sed "s@CURRENTDIR@$(pwd)@" Cabbage.desktop > ./install/desktop/cabbageLite.desktop')  
+        os.system('cp Cabbage.desktop '+rootDir+'/CabbageInstall/desktop/Cabbage.desktop')
 
     os.chdir('..')
 
@@ -374,9 +373,7 @@ if "Local" in buildType:
         os.system('iscc Installer.iss')
 
     if platform.system() == "Linux":
-        os.chdir(rootDir+'/Installers/Windows') 
-        os.system('set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"')
-        os.system('iscc Installer.iss')
+        os.chdir(rootDir+'/Installers/Linux') 
 
 # If remote release is specified, package things into teh staging directory
 if "Remote" in buildType:

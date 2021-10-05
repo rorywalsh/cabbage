@@ -12,7 +12,7 @@ doc_path=$doc_path_default
 theme_path=$theme_path_default
 desktop_path=$desktop_path_default
 
-build_path="../../CabbageInstall/install"
+build_path="../../CabbageInstall"
 
 while getopts ":hb:i:d:t:" opt; do
   case $opt in
