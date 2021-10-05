@@ -324,7 +324,7 @@ for project in projects:
         elif "Effect" in project or "Synth" in project:
             newProjectName = project.replace("CabbagePlugin", pluginDescription)
             os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.so ' +rootDir+'/CabbageInstall/'+newProjectName+'.so')
-            /os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+newProjectName+'.vst3')
+            # os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+newProjectName+'.vst3')
             if "Synth" in project:
                 os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+' ' +rootDir+'/CabbageInstall/'+pluginDescription)
 
