@@ -103,11 +103,19 @@ else:
 # ==============================================================================================
 
 
-if platform.system() == "Windows" or platform.system() == "Linux" and os.path.exists("CabbageInstall"):
+if platform.system() == "Windows" and os.path.exists("CabbageInstall"):
     os.system('rm -rf CabbageInstall')
+
+if platform.system() == "Linux" and os.path.exists("CabbageInstall"):
+   os.system('rm -rf CabbageInstall')
 
 if platform.system() == "Windows" or platform.system() == "Linux":   
     os.system('mkdir CabbageInstall')
+
+if platform.syste() == "Linux":
+    os.system('mkdir CabbageInstall/bin')
+    os.system('mkdir CabbageInstall/images')
+    os.system('mkdir CabbageInstall/desktop')
 
 if buildType is not "Local":
     if platform.system() == "Darwin":
@@ -158,6 +166,20 @@ if buildType is not "Local":
             with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
                 zip_ref.extractall(rootDir+'/CabbageInstall/CabbageManual')
 
+    elif platform.system() == "Linux":   
+        if not os.path.exists("CabbageRack"):
+            url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-lin.zip"
+            r = requests.get(url, allow_redirects=True)
+            open(rootDir+'/CabbageInstall/CabbageRack-1.0.0-win.zip', 'wb').write(r.content)  
+            with zipfile.ZipFile(rootDir+"/CabbageInstall/CabbageRack-1.0.0-win.zip", 'r') as zip_ref:
+                zip_ref.extractall() 
+            shutil.copytree('CabbageRack', rootDir+'/CabbageInstall/CabbageRack')
+        if not os.path.exists("CabbageManual"):
+            url = "http://cabbageaudio.com/beta/CabbageManual.zip"
+            r = requests.get(url, allow_redirects=True)
+            open('CabbageManual.zip', 'wb').write(r.content)       
+            with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
+                zip_ref.extractall(rootDir+'/CabbageInstall/CabbageManual')
 
 if "Remote" in buildType:        
     print("================== Setting up for Release build ========================")
@@ -265,14 +287,18 @@ for project in projects:
     elif platform.system() == "Darwin":
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
     elif platform.system() == "Linux":
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G "Ninja" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
+        
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G "Unix Makefiles" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
     elif platform.system() == "Windows": 
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
     print("===========================================================")
     print(" Running build for "+project)
-    print("===========================================================")    
-    os.system('cmake --build . --config '+configType)
+    print("===========================================================")   
 
+    if platform.system() != "Linux":
+        os.system('cmake --build . --config '+configType)
+    else:
+        os.system('cmake --build . -j8 --config '+configType)
     # post build steps - take binaries and palce them outside build folder
     print("===========================================================")
     print(" Copying binaries before removing build folder")
@@ -316,18 +342,21 @@ for project in projects:
 
     if platform.system() == "Linux":
         if project == "Cabbage":
-            os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage '+rootDir+'/CabbageInstall/Cabbage')
+            os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage '+rootDir+'/CabbageInstall/bin/Cabbage')
             if buildType is not "Minimal":
+                os.system('cp -Rf '+rootDir+'/Images/cabbage.png '+rootDir+'/CabbageInstall/images/cabbage.png')
                 os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
                 os.system('cp -Rf ../Icons '+rootDir+'/CabbageInstall/Icons')
         elif "Effect" in project or "Synth" in project:
             newProjectName = project.replace("CabbagePlugin", pluginDescription)
-            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/lib'+project+'.so ' +rootDir+'/CabbageInstall/'+newProjectName+'.so')
-            # os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+newProjectName+'.vst3')
+            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/lib'+project+'.so ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
+            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-linux/'+project+'.vst3 ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
             if "Synth" in project:
-                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+' ' +rootDir+'/CabbageInstall/'+pluginDescription)
+                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+' ' +rootDir+'/CabbageInstall/bin/'+pluginDescription)
 
+        # os.system('sed "s@CURRENTDIR@$(pwd)@" Cabbage.desktop > ./install/desktop/cabbage.desktop')
+        # os.system('sed "s@CURRENTDIR@$(pwd)@" Cabbage.desktop > ./install/desktop/cabbageLite.desktop')  
 
     os.chdir('..')
 
@@ -340,6 +369,11 @@ if "Local" in buildType:
         os.system('mv ./build/Cabbage.pkg '+rootDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
 
     if platform.system() == "Windows":
+        os.chdir(rootDir+'/Installers/Windows') 
+        os.system('set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"')
+        os.system('iscc Installer.iss')
+
+    if platform.system() == "Linux":
         os.chdir(rootDir+'/Installers/Windows') 
         os.system('set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"')
         os.system('iscc Installer.iss')
