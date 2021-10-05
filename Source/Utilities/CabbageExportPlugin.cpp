@@ -221,11 +221,9 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     
     if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
     {
-// #if CabbagePro
-//         const String pluginDesc = String(JucePlugin_Manufacturer);
-// #else
+
         const String pluginDesc = VSTData.getFileNameWithoutExtension();
-// #endif
+
         if(fileExtension.containsIgnoreCase("component"))
             exportedCsdFile = exportedPlugin.getFullPathName() + String ("/Contents/"+pluginDesc+".csd");
         else if(fileExtension.containsIgnoreCase("vst"))
@@ -268,7 +266,9 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             
             String manu(JucePlugin_Manufacturer);
             const String pluginName = "<string>" +manu + ": " + fc.getFileNameWithoutExtension() + "</string>";
-            const String toReplace = "<string>"+manu+": CabbageEffectNam</string>";
+            const String toReplace = "<string>"+manu+": "+VSTData.getFileNameWithoutExtension()+"</string>";
+            DBG(toReplace);
+            
 #if CabbagePro
             //be sure to remove CabbageAudio from plugin plist..
             const String toReplace2 = "<string>CabbageAudio: CabbageEffectNam<string>";
@@ -291,6 +291,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             
             pl.replaceWithText (newPList);
         }
+        
         //bundle all auxiliary files
         addFilesToPluginBundle(csdFile, exportedCsdFile);
         
@@ -305,19 +306,10 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         
         else
             exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
-        
-//        setUniquePluginId (exportedPlugin, exportedCsdFile, pluginId);
-        
-        //bundle all auxiliary files
+
         addFilesToPluginBundle(csdFile, exportedPlugin);
     }
-    
-    if(type.containsIgnoreCase("AU"))
-    {
-        File pluginBinary (exportedPlugin.getFullPathName() + String ("/Contents/Resources/CabbagePlugin.rsrc"));
-//        setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
-    }
-        
+            
 }
 
 //==============================================================================
@@ -389,34 +381,34 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
             
             
 //            //set plugin name based on .csd file
-//            const char* pluginName = "CabbageEffectNam";
-//            String plugLibName = csdFile.getFileNameWithoutExtension();
-//            
-//            if (plugLibName.length() < 16)
-//                for (int y = plugLibName.length(); y < 16; y++)
-//                    plugLibName.append (String (" "), 1);
-//            
-//            mFile.seekg (0, ios::end);
-//            //buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
-//            
-//            for (int i = 0; i < 5; i++)
-//            {
-//                
-//                mFile.seekg (0, ios::beg);
-//                mFile.read ((char*)&buffer[0], file_size);
-//                
-//                
-//                loc = cabbageFindPluginId (buffer, file_size, pluginName);
-//                
-//                if (loc < 0)
-//                    break;
-//                else
-//                {
-//                    mFile.seekg (loc, ios::beg);
-//                    mFile.write (plugLibName.toUTF8(), 16);
-//                }
-//            }
-//            
+            const char* pluginName = "CabbagePluginSynth";
+            String plugLibName = csdFile.getFileNameWithoutExtension();
+
+            if (plugLibName.length() < 18)
+                for (int y = plugLibName.length(); y < 18; y++)
+                    plugLibName.append (String (" "), 1);
+
+            mFile.seekg (0, std::ios::end);
+            //buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
+
+            for (int i = 0; i < 5; i++)
+            {
+
+                mFile.seekg (0, std::ios::beg);
+                mFile.read ((char*)&buffer[0], file_size);
+
+
+                loc = cabbageFindPluginId (buffer, file_size, pluginName);
+
+                if (loc < 0)
+                    break;
+                else
+                {
+                    mFile.seekg (loc, std::ios::beg);
+                    mFile.write (plugLibName.toUTF8(), 18);
+                }
+            }
+
             loc = cabbageFindPluginId (buffer, file_size, pluginIDToReplace[i]);
             
             free (buffer);
