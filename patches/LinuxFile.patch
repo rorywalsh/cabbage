@@ -1,0 +1,15 @@
+Submodule JUCE contains modified content
+diff --git a/JUCE/modules/juce_core/native/juce_linux_Files.cpp b/JUCE/modules/juce_core/native/juce_linux_Files.cpp
+index 99893aaa0..5421916f1 100644
+--- a/JUCE/modules/juce_core/native/juce_linux_Files.cpp
++++ b/JUCE/modules/juce_core/native/juce_linux_Files.cpp
+@@ -145,9 +145,7 @@ File File::getSpecialLocation (const SpecialLocationType type)
+ 
+         case currentExecutableFile:
+         case currentApplicationFile:
+-           #if ! JUCE_STANDALONE_APPLICATION
+             return juce_getExecutableFile();
+-           #endif
+             // deliberate fall-through if this is not a shared-library
+             JUCE_FALLTHROUGH
+ 

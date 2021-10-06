@@ -1,3 +1,4 @@
+Submodule JUCE contains modified content
 diff --git a/JUCE/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp b/JUCE/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp
 index cb099283..c97a93f9 100644
 --- a/JUCE/modules/juce_audio_plugin_client/Standalone/juce_StandaloneFilterApp.cpp

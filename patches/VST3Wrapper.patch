@@ -1,3 +1,4 @@
+Submodule JUCE contains modified content
 diff --git a/JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp b/JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
 index 28c48424..3d75a594 100644
 --- a/JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp

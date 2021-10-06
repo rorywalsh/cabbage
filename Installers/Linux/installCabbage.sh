@@ -55,27 +55,36 @@ done
 install -d "$icon_path"
 for file in "$build_path"/images/*; do
   install -m644 "$file" "$icon_path"
+  echo "installing $file to $icon_path"
 done
 
 install -d "$bin_path"
 for file in "$build_path"/bin/*; do
   install -m755 "$file" "$bin_path"
-done
-
-install -d "$cabbage_rack_path"
-for file in "$build_path"/CabbageRack/*; do
-  install -m755 "$file" "$cabbage_rack_path"
+  echo "installing $file to $bin_path"
 done
 
 install -d "$desktop_path"
 for file in "$build_path"/desktop/*; do
   install -m644 "$file" "$desktop_path"
+  echo "installing $file to $desktop_path"
 done
 
+echo "installing Examples to $doc_path/Examples"
 install -d "$doc_path"
 cp -r "${build_path}/Examples" "$doc_path"
 chmod -R 755 "$doc_path"
 
+echo "installing CabbageManual to $doc_path/CabbageManual"
+cp -r "${build_path}/CabbageManual" "$doc_path"
+chmod -R 755 "$doc_path"
+
+echo "installing CabbageRack to $cabbage_rack_path"
+install -d "$cabbage_rack_path"
+cp -r "${build_path}/CabbageRack" "$bin_path"
+chmod -R 755 "$cabbage_rack_path"
+
+echo "installing Themes to $theme_path/Themes"
 install -d "$theme_path"
 cp -r "${build_path}/Themes" "$theme_path"
 chmod -R 755 "$theme_path"
