@@ -117,7 +117,7 @@ if platform.system() == "Linux":
     os.system('mkdir CabbageInstall/images')
     os.system('mkdir CabbageInstall/desktop')
 
-if buildType is not "Local":
+if buildType is not "Minimal":
     if platform.system() == "Darwin":
         if not os.path.exists("CabbageManual"):
             url = "http://cabbageaudio.com/beta/CabbageManual.zip"
@@ -170,16 +170,15 @@ if buildType is not "Local":
         if not os.path.exists("CabbageRack"):
             url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-lin.zip"
             r = requests.get(url, allow_redirects=True)
-            open(rootDir+'/CabbageInstall/CabbageRack-1.0.0-win.zip', 'wb').write(r.content)  
-            with zipfile.ZipFile(rootDir+"/CabbageInstall/CabbageRack-1.0.0-win.zip", 'r') as zip_ref:
-                zip_ref.extractall() 
-            shutil.copytree('CabbageRack', rootDir+'/CabbageInstall/bin/CabbageRack')
+            open(rootDir+'/CabbageRack-1.0.0-lin.zip', 'wb').write(r.content)  
+            with zipfile.ZipFile(rootDir+"/CabbageRack-1.0.0-lin.zip", 'r') as zip_ref:
+                zip_ref.extractall(rootDir+'/CabbageInstall') 
         if not os.path.exists("CabbageManual"):
             url = "http://cabbageaudio.com/beta/CabbageManual.zip"
             r = requests.get(url, allow_redirects=True)
             open('CabbageManual.zip', 'wb').write(r.content)       
             with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
-                zip_ref.extractall(rootDir+'/CabbageInstall/CabbageManual')
+                zip_ref.extractall(rootDir+'/CabbageInstall')
 
 if "Remote" in buildType:        
     print("================== Setting up for Release build ========================")
@@ -255,12 +254,15 @@ os.chdir(rootDir)
 
 if not os.path.exists("JUCE"):
     print('Cloning JUCE and applying patches....')
-    os.system('git submodule add  https://github.com/juce-framework/JUCE.git')
+    os.system('git submodule init')
+    os.system('git submodule update')
     os.system('git apply ./patches/StandaloneWrapper.patch')
     os.system('git apply ./patches/AUWrapper.patch')
     os.system('git apply ./patches/UtilityWrapper.patch')
     os.system('git apply ./patches/VST2Wrapper.patch')
     os.system('git apply ./patches/VST3Wrapper.patch')
+    if platform.system() == "Linux":
+         os.system('git apply ./patches/LinuxFile.patch')
     newFileText = ""
     with open(rootDir+"/JUCE/extras/Build/juceaide/CMakeLists.txt", "rt") as cmakeFile:
         for line in cmakeFile:
@@ -355,8 +357,6 @@ for project in projects:
             if "Synth" in project:
                 os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+' ' +rootDir+'/CabbageInstall/bin/'+pluginDescription)
 
-        os.system('cp Cabbage.desktop '+rootDir+'/CabbageInstall/desktop/Cabbage.desktop')
-
     os.chdir('..')
 
 # If local release is specified, then packages things from the current dir
@@ -374,6 +374,8 @@ if "Local" in buildType:
 
     if platform.system() == "Linux":
         os.chdir(rootDir+'/Installers/Linux') 
+        os.system('cp Cabbage.desktop '+rootDir+'/CabbageInstall/desktop/Cabbage.desktop')
+
 
 # If remote release is specified, package things into teh staging directory
 if "Remote" in buildType:

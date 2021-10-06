@@ -1,11 +1,13 @@
 #!/bin/bash  
 
 bin_path_default='/usr/bin'
+cabbage_rack_path_default='/usr/bin/CabbageRack'
 icon_path_default='/usr/share/icons/hicolor/512x512/apps'
 doc_path_default='/usr/share/doc/cabbage'
 theme_path_default='/usr/share/cabbage'
 desktop_path_default='/usr/share/applications'
 
+cabbage_rack_path=$cabbage_rack_path_default
 bin_path=$bin_path_default
 icon_path=$icon_path_default
 doc_path=$doc_path_default
@@ -58,6 +60,11 @@ done
 install -d "$bin_path"
 for file in "$build_path"/bin/*; do
   install -m755 "$file" "$bin_path"
+done
+
+install -d "$cabbage_rack_path"
+for file in "$build_path"/CabbageRack/*; do
+  install -m755 "$file" "$cabbage_rack_path"
 done
 
 install -d "$desktop_path"
