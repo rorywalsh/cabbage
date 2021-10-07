@@ -386,7 +386,7 @@ elif platform.system() == "Linux":
             zip_ref.extractall()
         os.system('mkdir ~/SDKs')
         os.system('cp -rf '+rootDir+'/VST_SDK '+os.path.expanduser('~/SDKs/'))
-        os.system('cp -rf '+rootDir+'vst2.x '+os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+        os.system('cp -rf '+rootDir+'vst2.x '+os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces'))
 
         url = "http://cabbageaudio.com/beta/heads.zip"
         r = requests.get(url, allow_redirects=True)
@@ -405,6 +405,7 @@ elif platform.system() == "Linux":
         os.system('ls')
         os.system('git clone https://github.com/csound/csound.git')
         os.system("sudo sed -i -- 's/#deb-src/deb-src/g' /etc/apt/sources.list && sudo sed -i -- 's/# deb-src/deb-src/g' /etc/apt/sources.list")
+        os-system('sudo apt-get update')
         # os.system('sudo apt-get build-dep csound')
         os.system('mkdir '+rootDir+'/csound/build')
         os.chdir(rootDir+'/csound/build')
