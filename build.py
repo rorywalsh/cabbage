@@ -371,7 +371,7 @@ elif platform.system() == "Linux":
         print('')
 
     #place CabbageManual into install folder...
-    with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
+    with zipfile.ZipFile(rootDir+'/CabbageManual.zip', 'r') as zip_ref:
             zip_ref.extractall(rootDir+'/CabbageInstall')
 
     if not os.path.exists(os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')):
@@ -404,6 +404,7 @@ elif platform.system() == "Linux":
         print('')
         os.system('git clone https://github.com/csound/csound.git')
         os.system('cd csound')
+        os.system("sudo sed -i -- 's/#deb-src/deb-src/g' /etc/apt/sources.list && sudo sed -i -- 's/# deb-src/deb-src/g' /etc/apt/sources.list")
         os.system('sudo apt-get build-dep csound')
         os.system('mkdir build')
         os.system('cd build')
