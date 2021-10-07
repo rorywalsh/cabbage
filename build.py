@@ -405,7 +405,7 @@ elif platform.system() == "Linux":
         os.system('git clone https://github.com/csound/csound.git')
         os.system('cd csound')
         os.system("sudo sed -i -- 's/#deb-src/deb-src/g' /etc/apt/sources.list && sudo sed -i -- 's/# deb-src/deb-src/g' /etc/apt/sources.list")
-        os.system('sudo apt-get build-dep csound')
+        # os.system('sudo apt-get build-dep csound')
         os.system('mkdir build')
         os.system('cd build')
         os.system('cmake .. -DUSE_GETTEXT=0 -DBUILD_CSOUNDVST=0 -DBUILD_PD_CLASS=0 -DBUILD_STATIC_LIBRARY=1 -DBUILD_VST4CS_OPCODES=0 -DBUILD_VST4CS_OPCODES=0 -DBUILD_CSOUND_AC_LUA_INTERFACE=0 -DBUILD_LUA_OPCODES:BOOL=0 -DBUILD_CSOUND_AC=0 -DBUILD_CSOUND_AC_LUA_INTERFACE=0 -DBUILD_CSOUND_AC_PYTHON_INTERFAC=0') 
