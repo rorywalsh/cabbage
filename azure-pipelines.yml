@@ -27,7 +27,7 @@ jobs:
 #   - script: |
 #      pip install requests
 #      python --version
-#      python build.py --config=Release --build_type="Remote Release"
+#      python build.py --config=Release --packageType="Remote"
 
 #   - task: PublishBuildArtifacts@1
 #     inputs:
@@ -43,7 +43,7 @@ jobs:
 #   - script: |
 #      pip install requests
 #      python --version
-#      python build.py --config=Release --build_type="Remote Release"
+#      python build.py --config=Release --packageType="Remote"
 #     displayName: "Building..."
 #     env:
 #       COREHOST_TRACE: 0
@@ -62,7 +62,7 @@ jobs:
   - script: |
      pip install requests
      python --version
-     python build.py --config=Release --build_type="Remote Release"
+     python build.py --config=Release --packageType="Remote"
     env:
       COREHOST_TRACE: 0
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
