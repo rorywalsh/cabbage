@@ -555,6 +555,8 @@ if "Minimal" not in packageType:
 
     if platform.system() == "Linux":
         os.chdir(rootDir)
+        print('=====================++++++++++++++++++++============================')
+        os.system('ls ' +rootDir+'/CabbageInstall')
         os.system('cp ./Installers/Linux/installCabbage.sh ' +rootDir+'/CabbageInstall')
 
         installerText = ''
