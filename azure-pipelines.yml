@@ -60,6 +60,7 @@ jobs:
     vmImage: 'ubuntu-latest'
   steps:
   - script: |
+     sudo apt-get install ninja-build
      pip install requests
      python --version
      python build.py --config=Release --packageType="Remote"
