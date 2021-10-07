@@ -384,9 +384,9 @@ elif platform.system() == "Linux":
         open(rootDir+'/vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
         with zipfile.ZipFile(rootDir+'/vstsdk3611_22_10_2018_build_34.zip', 'r') as zip_ref:
             zip_ref.extractall()
-        os.system('mkdir ~/SDKs')
+        os.system('mkdir '+os.path.expanduser('~/SDKs/'))
         os.system('cp -rf '+rootDir+'/VST_SDK '+os.path.expanduser('~/SDKs/'))
-        os.system('cp -rf '+rootDir+'vst2.x '+os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces'))
+        os.system('cp -rf '+rootDir+'/vst2.x '+os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces'))
 
         url = "http://cabbageaudio.com/beta/heads.zip"
         r = requests.get(url, allow_redirects=True)
