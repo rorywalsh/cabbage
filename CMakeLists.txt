@@ -18,12 +18,6 @@ if(NOT DEFINED BUILD_VERSION)
 	set(BUILD_VERSION 2.8.9)
 endif()
 
-message("============================================================")
-message("============ Project name: " ${PROJECT_NAME})
-message("============ Build type: " ${CMAKE_BUILD_TYPE})
-message("============ Version: " ${BUILD_VERSION})
-message("============================================================")
-
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
 add_subdirectory(JUCE)                    # If you've put JUCE in a subdirectory called JUCE
 
@@ -80,8 +74,10 @@ if(APPLE)
 elseif(MSVC)
     juce_set_vst2_sdk_path("C:/SDKs/VST_SDK/VST3_SDK")
 else()
-juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
+    juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
 endif()
+
+
 
     set(PLUGIN_NEEDS_OUTPUT PLUGIN_IS_A_SYNTH)
     SetIfSynth(PLUGIN_VST2_CATEGORY "kPlugCategSynth" "kPlugCategEffect")
@@ -321,6 +317,7 @@ target_compile_definitions(${PROJECT_NAME}
         JucePlugin_Manufacturer="${JucePlugin_Manufacturer}"
         JucePlugin_Desc="${JucePlugin_Desc}"
         CabbagePro=${CabbagePro}
+        PLUGIN_MANUFACTURER_CODE "${JucePlugin_ManufacturerCode}"
         Use_Native_File_Browser=1
         JUCE_VST3_CAN_REPLACE_VST2=0
         Cabbage_IDE_Build=${IS_IDE_Build}

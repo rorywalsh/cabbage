@@ -6,6 +6,16 @@ import requests
 import argparse
 import zipfile
 
+RED   = "\033[1;31m"  
+BLUE  = "\033[1;34m"
+CYAN  = "\033[1;36m"
+GREEN = "\033[0;32m"
+YELLOW = "\033[0;93m"
+RESET = "\033[0;0m"
+BOLD    = "\033[;1m"
+
+
+sys.stdout.write(BOLD)
 info = """
 ================================================
 === Build script for Cabbage Plugin Framework ==
@@ -17,9 +27,9 @@ info = """
 print(info)
 rootDir = os.getcwd()
 
+sys.stdout.write(RESET)
+
 platformArch = os.popen('arch').read()
-
-
 
 def getVersionNumber():
     with open(rootDir+"/CMakeLists.txt", "rt") as inputFile:
@@ -39,20 +49,26 @@ parser.add_argument('--config', type=str,
 parser.add_argument('--project', type=str,
                     help='Cabbage, CabbagePluginEffect, CabagePluginSynth')
 
-parser.add_argument('--build_type', type=str,
+parser.add_argument('--packageType', type=str,
                     help='"Local", "Remote", "Minimal"')
+
+parser.add_argument('--build', type=str,
+                    help='Set to "False" to disable building, in which case CMake will just generate the respective project in the build folder. If you do not specify a project, this will by default generate project files for the main Cabbage application.')
 
 parser.add_argument('--manufacturer', type=str,
                     help='"CabbageAudio"')
 
-parser.add_argument('--plugin_description', type=str,
+parser.add_argument('--pluginDescription', type=str,
                     help='"CabbagePlugin"')
 
-parser.add_argument('--manufacturer_code', type=str,
+parser.add_argument('--manufacturerCode', type=str,
                     help='A unique 4 character ID with an uppercase first character, i.e, "Cabb"')
 
+parser.add_argument('--installLinuxDeps', type=str,
+                    help='Set to False, set to True if you wish to download the following dependencies needed to build JUCE applications on Linux - libfreetype6-dev libx11-dev libstdc++6 libc++-dev libxinerama-dev libxrandr-dev libxcursor-dev libxcomposite-dev mesa-common-dev libasound2-dev freeglut3-dev libcurl4-gnutls-dev libasound2-dev libsndfile1 libsndfile-dev libjack-dev flex bison libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev')
+
 parser.add_argument('--license', type=str,
-                    help='GPL, or CabbagePro')
+                    help='GPL by default')
 
 args = parser.parse_args()
 
@@ -75,34 +91,69 @@ else:
     else:
         projects = ["Cabbage", manufacturer+"Effect", manufacturer+"Synth"]
 
-if args.build_type is not None:
-    buildType = args.build_type
+if args.packageType is not None:
+    packageType = args.packageType
 else:
-    buildType = "Minimal"
+    packageType = "Local"
 
-if args.plugin_description is not None:
-    pluginDescription = args.plugin_description
+executeBuild = True
+if args.build is not None:
+    if "True" in args.build:
+        executeBuild = True
+    else:
+        executeBuild = False
+        projects = ['Cabbage']
+
+
+if args.pluginDescription is not None:
+    pluginDescription = args.pluginDescription
 else:
     pluginDescription = "CabbagePlugin"
 
-
-
-if args.manufacturer_code is not None:
-    manufacturerCode = args.manufacturer_code
+if args.manufacturerCode is not None:
+    manufacturerCode = args.manufacturerCode
 else:
     manufacturerCode = "Cabb"
 
+buildPro = 0
 if args.license is not None:
     if "GPL" in args.license or "gpl" in args.license:
-        pro = 0
+        buildPro = 0
     else:
-        pro = 1
-else:
-    pro = 0
+        buildPro = 1
 
+installLinuxDeps = False
+if args.iinstallLinuxDeps is not None:
+    if "True" in args.installLinuxDeps:
+        installLinuxDeps = True
+    else:
+        installLinuxDeps = False
+
+if platform.system() == "Linux" and installLinuxDeps is True:
+    os.system('sudo apt-get update --fix-missing')
+    os.system('sudo apt-get update -qq')
+    os.system('sudo apt-get install -y libfreetype6-dev')
+    os.system('sudo apt-get install -y libx11-dev')
+    os.system('sudo apt-get install -y libstdc++6')
+    os.system('sudo apt-get install -y libc++-dev')
+    os.system('sudo apt-get install -y libxinerama-dev')
+    os.system('sudo apt-get install -y libxrandr-dev')
+    os.system('sudo apt-get install -y libxcursor-dev')
+    os.system('sudo apt-get install -y libxcomposite-dev')
+    os.system('sudo apt-get install -y mesa-common-dev')
+    os.system('sudo apt-get install -y libasound2-dev')
+    os.system('sudo apt-get install -y freeglut3-dev')
+    os.system('sudo apt-get install -y libcurl4-gnutls-dev+')
+    os.system('sudo apt-get install -y libasound2-dev')
+    os.system('sudo apt-get install -y libsndfile1')
+    os.system('sudo apt-get install -y libsndfile-dev')
+    os.system('sudo apt-get install -y libjack-dev')
+    os.system('sudo add-apt-repository -y ppa:webkit-team/ppa')
+    os.system('sudo apt-get install flex')
+    os.system('sudo apt-get install bison')
+    os.system('sudo apt-get update')
+    os.system('sudo apt-get install libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev')
 # ==============================================================================================
-
-
 if platform.system() == "Windows" and os.path.exists("CabbageInstall"):
     os.system('rm -rf CabbageInstall')
 
@@ -117,81 +168,65 @@ if platform.system() == "Linux":
     os.system('mkdir CabbageInstall/images')
     os.system('mkdir CabbageInstall/desktop')
 
-if buildType is not "Minimal":
-    if platform.system() == "Darwin":
-        if not os.path.exists("CabbageManual"):
-            url = "http://cabbageaudio.com/beta/CabbageManual.zip"
-            r = requests.get(url, allow_redirects=True)
-            open('CabbageManual.zip', 'wb').write(r.content)       
-            with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
-                zip_ref.extractall()
-        if not os.path.exists("CabbageRack"):
-            print("================== Installing CabbageRack libs ========================")
-            url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-mac.zip"
-            r = requests.get(url, allow_redirects=True)
-            open('CabbageRack-1.0.0-mac.zip', 'wb').write(r.content)  
-            with zipfile.ZipFile("CabbageRack-1.0.0-mac.zip", 'r') as zip_ref:
-                zip_ref.extractall()     
-        if not os.path.exists("fmod_csound_fx.dylib"):
-            print("================== Installing FMOD libs ========================")
-            url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound_fx.dylib"
-            r = requests.get(url, allow_redirects=True)
-            open('fmod_csound_fx.dylib', 'wb').write(r.content)  
-        if not os.path.exists("fmod_csound.dylib"):
-            print("================== Installing FMOD libs ========================")
-            url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound.dylib"
-            r = requests.get(url, allow_redirects=True)
-            open('fmod_csound.dylib', 'wb').write(r.content)  
-
-    elif platform.system() == "Windows":   
-        if not os.path.exists("CabbageRack"):
-            url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip"
-            r = requests.get(url, allow_redirects=True)
-            open(rootDir+'/CabbageInstall/CabbageRack-1.0.0-win.zip', 'wb').write(r.content)  
-            with zipfile.ZipFile(rootDir+"/CabbageInstall/CabbageRack-1.0.0-win.zip", 'r') as zip_ref:
-                zip_ref.extractall() 
-            shutil.copytree('CabbageRack', rootDir+'/CabbageInstall/CabbageRack')
-        if not os.path.exists("fmod_csound64_fx.dll"):
-            url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64_fx.dll"
-            r = requests.get(url, allow_redirects=True)
-            open(rootDir+'/CabbageInstall/fmod_csound64_fx.dll', 'wb').write(r.content)  
-        if not os.path.exists("fmod_csound64.dll"):
-            url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64.dll"
-            r = requests.get(url, allow_redirects=True)
-            open(rootDir+'/CabbageInstall/fmod_csound64.dll', 'wb').write(r.content)
-        if not os.path.exists("CabbageManual"):
-            url = "http://cabbageaudio.com/beta/CabbageManual.zip"
-            r = requests.get(url, allow_redirects=True)
-            open('CabbageManual.zip', 'wb').write(r.content)       
-            with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
-                zip_ref.extractall(rootDir+'/CabbageInstall/CabbageManual')
-
-    elif platform.system() == "Linux":   
-        if not os.path.exists("CabbageRack"):
-            url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-lin.zip"
-            r = requests.get(url, allow_redirects=True)
-            open(rootDir+'/CabbageRack-1.0.0-lin.zip', 'wb').write(r.content)  
-            with zipfile.ZipFile(rootDir+"/CabbageRack-1.0.0-lin.zip", 'r') as zip_ref:
-                zip_ref.extractall(rootDir+'/CabbageInstall') 
-        if not os.path.exists("CabbageManual"):
-            url = "http://cabbageaudio.com/beta/CabbageManual.zip"
-            r = requests.get(url, allow_redirects=True)
-            open('CabbageManual.zip', 'wb').write(r.content)       
-            with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
-                zip_ref.extractall(rootDir+'/CabbageInstall')
-
-if "Remote" in buildType:        
-    print("================== Setting up for Release build ========================")
+if "Remote" in packageType:
     if platform.system() == "Darwin":
         stagingDir = os.popen('echo $BUILD_ARTIFACTSTAGINGDIRECTORY').read()
-        print("================== Installing Pacakges ========================")
+    elif platform.system() == "Windows":
+        stagingDir = 'D:/a/1/a'
+
+
+# ================================================================================================
+# ======= Setup for MacOS - this will only install the things it can't find
+# ================================================================================================
+sys.stdout.write(YELLOW)
+if platform.system() == "Darwin":
+    if not os.path.exists("CabbageManual"):
+        url = "http://cabbageaudio.com/beta/CabbageManual.zip"
+        r = requests.get(url, allow_redirects=True)
+        open('CabbageManual.zip', 'wb').write(r.content)       
+        with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
+            zip_ref.extractall()
+    else:
+        print("Found Cabbage Manual...")
+
+    if not os.path.exists("CabbageRack"):
+        print("================== Installing CabbageRack libs ========================")
+        url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-mac.zip"
+        r = requests.get(url, allow_redirects=True)
+        open('CabbageRack-1.0.0-mac.zip', 'wb').write(r.content)  
+        with zipfile.ZipFile("CabbageRack-1.0.0-mac.zip", 'r') as zip_ref:
+            zip_ref.extractall()    
+    else:
+        print("Found CabbageRack...") 
+    
+    if not os.path.exists("fmod_csound_fx.dylib"):
+        print("================== Installing FMOD libs ========================")
+        url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound_fx.dylib"
+        r = requests.get(url, allow_redirects=True)
+        open('fmod_csound_fx.dylib', 'wb').write(r.content) 
+    else:
+        print("Found fmod_csound_fx.dylib...") 
+
+    if not os.path.exists("fmod_csound.dylib"):
+        print("================== Installing FMOD libs ========================")
+        url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound.dylib"
+        r = requests.get(url, allow_redirects=True)
+        open('fmod_csound.dylib', 'wb').write(r.content)  
+    else:
+        print("Found fmod_csound_.dylib...")        
+
+    if not os.path.exists('/Applications/Packages.app'):
+        print("================== Installing Packages ========================")
         url = "http://s.sudre.free.fr/Software/files/Packages.dmg"
         r = requests.get(url, allow_redirects=True)
         open('Packages.dmg', 'wb').write(r.content)  
         os.system("hdiutil mount Packages.dmg")
         os.system("sudo installer -pkg /Volumes/Packages\ 1.2.9/Install\ Packages.pkg -target /")
         os.system("hdiutil detach /Volumes/Packages\ 1.2.9/")
+    else:
+        print("Found Packages.app...")
 
+    if not os.path.exists('/Library/Frameworks/CsoundLib64.framework'):
         print("================== Installing Csound ========================")
         url = 'https://github.com/csound/csound/releases/download/6.16.2/csound-MacOS_x86_64-6.16.2.dmg'
         r = requests.get(url, allow_redirects=True)
@@ -203,9 +238,11 @@ if "Remote" in buildType:
         os.chdir(rootDir+'/Csound')
         os.system('sudo installer -pkg csound-MacOS_x86_64-6.16.2.pkg -target /')
         os.system('sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64')
+    else:
+        print("Found Csound...")
 
-        os.chdir(rootDir)
-
+    os.chdir(rootDir)
+    if not os.path.exists(os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')):
         url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
         r = requests.get(url, allow_redirects=True)
         open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
@@ -220,22 +257,34 @@ if "Remote" in buildType:
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
             zip_ref.extractall()
+    else:
+        print('Found VST SDK...')
 
-    if platform.system() == "Windows":
-        stagingDir = 'D:/a/1/a'
+# ================================================================================================
+# ======= Setup for Windows - this will only install the things it can't find
+# ================================================================================================
+elif platform.system() == "Windows":  
+
+    if not os.path.exists("C:/Program Files/Csound_x64"):
         url = "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.16.0.zip"
         r = requests.get(url, allow_redirects=True)
         open('csound-windows_x64-6.16.0.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("csound-windows_x64-6.16.0.zip", 'r') as zip_ref:
             zip_ref.extractall('C:/Program Files')
+    else:
+        print('Found Csound...')
 
+    if not os.path.exists("C:/SDKs/ASIOSDK2.3.2"):
         os.system('mkdir C:/SDKs')
         url = "https://download.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip"
         r = requests.get(url, allow_redirects=True)
         open('asiosdk_2.3.3_2019-06-14.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("asiosdk_2.3.3_2019-06-14.zip", 'r') as zip_ref:
             zip_ref.extractall('C:/SDKs/ASIOSDK2.3.2')
+    else:
+        print("Found ASIO SDK.....") 
 
+    if not os.path.exists("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces"):
         url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
         r = requests.get(url, allow_redirects=True)
         open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
@@ -246,13 +295,131 @@ if "Remote" in buildType:
         r = requests.get(url, allow_redirects=True)
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
-            zip_ref.extractall("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces")
-        
+            zip_ref.extractall("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces") 
+    else:
+        print('Found Csound...')
 
+    if not os.path.exists("CabbageRack"):
+        url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip"
+        r = requests.get(url, allow_redirects=True)
+        open(rootDir+'/CabbageInstall/CabbageRack-1.0.0-win.zip', 'wb').write(r.content)  
+        with zipfile.ZipFile(rootDir+"/CabbageInstall/CabbageRack-1.0.0-win.zip", 'r') as zip_ref:
+            zip_ref.extractall() 
+        shutil.copytree('CabbageRack', rootDir+'/CabbageInstall/CabbageRack')
+    else:
+        print('Found CabbageRack...')
 
+    if not os.path.exists("fmod_csound64_fx.dll"):
+        url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64_fx.dll"
+        r = requests.get(url, allow_redirects=True)
+        open(rootDir+'/CabbageInstall/fmod_csound64_fx.dll', 'wb').write(r.content)  
+    else:
+        print('Found fmod_csound64_fx...')
+
+    if not os.path.exists("fmod_csound64.dll"):
+        url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64.dll"
+        r = requests.get(url, allow_redirects=True)
+        open(rootDir+'/CabbageInstall/fmod_csound64.dll', 'wb').write(r.content)
+    else:
+        print('Found fmod_csound64...')
+
+    if not os.path.exists("CabbageManual"):
+        url = "http://cabbageaudio.com/beta/CabbageManual.zip"
+        r = requests.get(url, allow_redirects=True)
+        open('CabbageManual.zip', 'wb').write(r.content)       
+        with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
+            zip_ref.extractall(rootDir+'/CabbageInstall/CabbageManual')
+    else:
+        print('Found CabbageManual...')
+
+# ================================================================================================
+# ======= Setup for Linux - this will only install the things it can't find
+# ================================================================================================
+elif platform.system() == "Linux":   
+    if not os.path.exists(rootDir+'/CabbageRack-1.0.0-lin.zip'):
+        sys.stdout.write(RED)
+        print('Did not find CabbageRack-1.0.0-lin.zip. Downloading....')
+        sys.stdout.write(RESET)
+        print('')
+        url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-lin.zip"
+        r = requests.get(url, allow_redirects=True)
+        open(rootDir+'/CabbageRack-1.0.0-lin.zip', 'wb').write(r.content)  
+    else:
+        print('Found CabbageRack...')
+
+    #place CabbageRack into install folder...
+    with zipfile.ZipFile(rootDir+"/CabbageRack-1.0.0-lin.zip", 'r') as zip_ref:
+        zip_ref.extractall(rootDir+'/CabbageInstall') 
+
+    if not os.path.exists("CabbageManual.zip"):
+        sys.stdout.write(RED)
+        print('Did not find CabbageManual.zip. Downloading....')
+        sys.stdout.write(RESET)
+        print('')
+        url = "http://cabbageaudio.com/beta/CabbageManual.zip"
+        r = requests.get(url, allow_redirects=True)
+        open('CabbageManual.zip', 'wb').write(r.content)       
+    else:
+        print('Found CabbageManual...')
+        print('')
+
+    #place CabbageManual into install folder...
+    with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
+            zip_ref.extractall(rootDir+'/CabbageInstall')
+
+    if not os.path.exists(os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')):
+        sys.stdout.write(RED)
+        print('Did not find VST SDK. Downloading and installing to ~/SDKs....')
+        sys.stdout.write(RESET)
+        print('')
+        url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
+        r = requests.get(url, allow_redirects=True)
+        open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
+        with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
+            zip_ref.extractall()
+        os.system('mkdir ~/SDKs')
+        os.system('cp -rf VST_SDK ~/SDKs')
+        os.system('cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+
+        url = "http://cabbageaudio.com/beta/heads.zip"
+        r = requests.get(url, allow_redirects=True)
+        open('heads.zip', 'wb').write(r.content)       
+        with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
+            zip_ref.extractall()
+    else:
+        print('Found VST SDK...')
+        print('')
+
+    if not os.path.exists('/usr/local/bin/csound'):
+        sys.stdout.write(RED)
+        print('Did not find Csound. Downloading and installing to....')
+        sys.stdout.write(RESET)
+        print('')
+        os.system('git clone https://github.com/csound/csound.git')
+        os.system('cd csound')
+        os.system('sudo apt-get build-dep csound')
+        os.system('mkdir build')
+        os.system('cd build')
+        os.system('cmake .. -DUSE_GETTEXT=0 -DBUILD_CSOUNDVST=0 -DBUILD_PD_CLASS=0 -DBUILD_STATIC_LIBRARY=1 -DBUILD_VST4CS_OPCODES=0 -DBUILD_VST4CS_OPCODES=0 -DBUILD_CSOUND_AC_LUA_INTERFACE=0 -DBUILD_LUA_OPCODES:BOOL=0 -DBUILD_CSOUND_AC=0 -DBUILD_CSOUND_AC_LUA_INTERFACE=0 -DBUILD_CSOUND_AC_PYTHON_INTERFAC=0') 
+        os.system('sudo make -j4')
+        os.system('sudo make install')
+        os.system('sudo ldconfig') 
+    else:
+        print('Found Csound... ')
+        sys.stdout.write(RED)
+        print("Warning: Please make sure you are running the most up to date version of Csound. If you uninstall Csound")
+        print("and run this script again, it will automatically build and install the latest version of Csound")
+        sys.stdout.write(RESET)
+        print('')
+
+sys.stdout.write(RESET)
+print('')      
 os.chdir(rootDir)
 
-if not os.path.exists("JUCE"):
+
+sys.stdout.write(GREEN)
+
+if not os.path.exists("JUCE/modules"):
     print('Cloning JUCE and applying patches....')
     os.system('git submodule init')
     os.system('git submodule update')
@@ -284,31 +451,45 @@ for project in projects:
         shutil.rmtree("build")
     os.system('mkdir build')
     os.chdir('build')
+
+    sys.stdout.write(CYAN)
+    print("===========================================================")
+    print(" Running CMake for "+project + '('+configType+')')
+    print("===========================================================")   
+    sys.stdout.write(RESET)
+    print('')
+
     if platform.system() == "Darwin" and 'arm64' in platformArch: 
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     elif platform.system() == "Darwin":
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     elif platform.system() == "Linux":
         
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G "Ninja" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G "Ninja" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     elif platform.system() == "Windows": 
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(pro))
-    print("===========================================================")
-    print(" Running build for "+project)
-    print("===========================================================")   
-
-    if platform.system() != "Linux":
-        os.system('cmake --build . --config '+configType)
-    else:
-        os.system('cmake --build . -j8 --config '+configType)
-    # post build steps - take binaries and palce them outside build folder
-    print("===========================================================")
-    print(" Copying binaries before removing build folder")
-    print("===========================================================")
-    if platform.system() == "Darwin": 
-        if project == "Cabbage":
-            os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.app '+rootDir+'/Cabbage.app')
-            if buildType is not "Minimal":
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
+    
+    if executeBuild == True:
+        sys.stdout.write(CYAN)
+        print("===========================================================")
+        print(" Building "+project + '('+configType+')')
+        print("===========================================================")   
+        sys.stdout.write(RESET)
+        print('')
+        if platform.system() != "Linux":
+            os.system('cmake --build . --config '+configType)
+        else:
+            os.system('cmake --build . -j8 --config '+configType)
+        # post build steps - take binaries and place them outside build folder
+        sys.stdout.write(CYAN)
+        print("===========================================================")
+        print(" Copying binaries before removing build folder")
+        print("===========================================================")
+        sys.stdout.write(RESET)
+        print('')
+        if platform.system() == "Darwin": 
+            if project == "Cabbage":
+                os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.app '+rootDir+'/Cabbage.app')
                 os.system('cp -Rf ../Examples '+rootDir+'/Cabbage.app/Contents/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/Cabbage.app/Contents/Themes')
                 os.system('cp -Rf ../CabbageManual '+rootDir+'/Cabbage.app/Contents/CabbageManual')
@@ -316,51 +497,49 @@ for project in projects:
                 os.system('cp ../fmod_csound_fx.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound_fx.dylib')
                 os.system('cp ../fmod_csound.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound.dylib')
 
-        elif "Effect" in project or "Synth" in project:
-            newProjectName = project.replace("CabbagePlugin", pluginDescription)
-            # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+project+' ' +rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+newProjectName) 
-            # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+newProjectName) 
-            # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+newProjectName) 
-            
-            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst')
-            os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3 ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst3')
-            os.system('cp -Rf '+project+'_artefacts/'+configType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.component')
-            if "Synth" in project:
-                os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'Plugin.app')
+            elif "Effect" in project or "Synth" in project:
+                newProjectName = project.replace("CabbagePlugin", pluginDescription)
+                # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+project+' ' +rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+newProjectName) 
+                # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+newProjectName) 
+                # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+newProjectName) 
+                
+                os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst')
+                os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3 ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst3')
+                os.system('cp -Rf '+project+'_artefacts/'+configType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.component')
+                if "Synth" in project:
+                    os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'Plugin.app')
 
-    if platform.system() == "Windows":
-        if project == "Cabbage":
-            os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.exe '+rootDir+'/CabbageInstall/Cabbage.exe')
-            if buildType is not "Minimal":
+        if platform.system() == "Windows":
+            if project == "Cabbage":
+                os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage.exe '+rootDir+'/CabbageInstall/Cabbage.exe')
                 os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
                 os.system('cp -Rf ../Icons '+rootDir+'/CabbageInstall/Icons')
-        elif "Effect" in project or "Synth" in project:
-            newProjectName = project.replace("CabbagePlugin", pluginDescription)
-            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+newProjectName+'.dll')
-            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+newProjectName+'.vst3')
-            if "Synth" in project:
-                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+'.exe ' +rootDir+'/CabbageInstall/'+pluginDescription+'.exe')
+            elif "Effect" in project or "Synth" in project:
+                newProjectName = project.replace("CabbagePlugin", pluginDescription)
+                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+newProjectName+'.dll')
+                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-win/'+project+'.vst3 ' +rootDir+'/CabbageInstall/'+newProjectName+'.vst3')
+                if "Synth" in project:
+                    os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+'.exe ' +rootDir+'/CabbageInstall/'+pluginDescription+'.exe')
 
-    if platform.system() == "Linux":
-        if project == "Cabbage":
-            os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage '+rootDir+'/CabbageInstall/bin/Cabbage')
-            if buildType is not "Minimal":
+        if platform.system() == "Linux":
+            if project == "Cabbage":
+                os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage '+rootDir+'/CabbageInstall/bin/Cabbage')
                 os.system('cp -Rf '+rootDir+'/Images/cabbage.png '+rootDir+'/CabbageInstall/images/cabbage.png')
                 os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
                 os.system('cp -Rf ../Icons '+rootDir+'/CabbageInstall/Icons')
-        elif "Effect" in project or "Synth" in project:
-            newProjectName = project.replace("CabbagePlugin", pluginDescription)
-            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/lib'+project+'.so ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
-            os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-linux/'+project+'.so ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
-            if "Synth" in project:
-                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+' ' +rootDir+'/CabbageInstall/bin/'+pluginDescription)
+            elif "Effect" in project or "Synth" in project:
+                newProjectName = project.replace("CabbagePlugin", pluginDescription)
+                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/lib'+project+'.so ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
+                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-linux/'+project+'.so ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
+                if "Synth" in project:
+                    os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+' ' +rootDir+'/CabbageInstall/bin/'+pluginDescription)
 
-    os.chdir('..')
+os.chdir('..')
 
-# If local release is specified, then packages things from the current dir
-if "Local" in buildType:
+# If local release is specified, then package things from the current dir
+if "Local" in packageType:
     if platform.system() == "Darwin":
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
@@ -378,7 +557,7 @@ if "Local" in buildType:
 
 
 # If remote release is specified, package things into teh staging directory
-if "Remote" in buildType:
+if "Remote" in packageType:
     if platform.system() == "Darwin":
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
