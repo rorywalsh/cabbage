@@ -21,15 +21,13 @@ When run, the Python script will check for the relevant libraries and SDKs, and 
 
 This will generate the relevant build files in the `build` directory, but will not trigger a build to take place.
 
+### Note for Linux users
 
-
-If you are on Linux you may need to install some additional dependencies. You can do so by setting the `installLinuxDeps` parameter to True:
+If you are on Linux you may need to install some additional dependencies. You can do so by setting the `installLinuxDeps` parameter to True. :
 
 `python build.py --config=Release --installLinuxDeps=True`
 
-> Once is enough to use the `--installLinuxDeps` parameter onc, you do not need to keep calling it. 
-
-
+You only have to do this once. You can drop the `--installLinuxDeps=True` from subsequent calls. Note that the CabbageRack interface that gets bundled with Cabbage when you run build.py was built on Ubuntu 18.04. If it does not work you will need to build it yourself. You can then drop the resulted CabbageRack folder into the `CabbageInstall` directory before installing. 
 
 _______
 
@@ -44,12 +42,12 @@ If you wish to uninstall Cabbage on Linux run the `uninstallCabbage.sh` script.
 
 _______
 
-A full overview of the options provided by the build script can be seen here:
+A full overview of the options provided by the build.py script are shown below:
 
 ```
 usage: build.py [-h] [--config CONFIG] [--project PROJECT]
-                [--packageType PACKAGETYPE] [--build BUILD]
-                [--manufacturer MANUFACTURER]
+                [--packageType PACKAGETYPE] [--disable-feature]
+                [--build BUILD] [--manufacturer MANUFACTURER]
                 [--pluginDescription PLUGINDESCRIPTION]
                 [--manufacturerCode MANUFACTURERCODE]
                 [--installLinuxDeps INSTALLLINUXDEPS] [--license LICENSE]
@@ -60,11 +58,11 @@ optional arguments:
   --project PROJECT     Cabbage, CabbagePluginEffect, CabagePluginSynth
   --packageType PACKAGETYPE
                         "Local", "Remote", "Minimal"
+  --disable-feature
   --build BUILD         Set to "False" to disable building, in which case
                         CMake will just generate the respective project in the
-                        build folder. If you do not specify a project, this
-                        will by default generate project files for the main
-                        Cabbage application.
+                        build folder. You must specify a project if you
+                        disable building.
   --manufacturer MANUFACTURER
                         "CabbageAudio"
   --pluginDescription PLUGINDESCRIPTION
