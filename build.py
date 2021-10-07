@@ -303,7 +303,7 @@ elif platform.system() == "Windows":
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
             zip_ref.extractall("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces") 
     else:
-        print('Found Csound...')
+        print('Found VST SDK...')
 
     if not os.path.exists("CabbageRack"):
         url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip"
@@ -374,30 +374,19 @@ elif platform.system() == "Linux":
             zip_ref.extractall(rootDir+'/CabbageInstall')
 
     if not os.path.exists(os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')):
-        sys.stdout.write(RED)
-        print('Did not find VST SDK. Downloading and installing to ~/SDKs....')
-        sys.stdout.write(RESET)
-        print('')
         url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
         r = requests.get(url, allow_redirects=True)
-        open(rootDir+'/vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
-        with zipfile.ZipFile(rootDir+'/vstsdk3611_22_10_2018_build_34.zip', 'r') as zip_ref:
-            zip_ref.extractall()
-        os.system('mkdir '+os.path.expanduser('~/SDKs/'))
-        os.system('cp -rf '+rootDir+'/VST_SDK '+os.path.expanduser('~/SDKs/'))
-        os.system('cp -rf '+rootDir+'/vst2.x '+os.path.expanduser('~/SDKs')+'/VST_SDK/VST3_SDK/pluginterfaces')
-        print("===========+++++++++++++++++++++++++=======")
-        os.system('ls '+os.path.expanduser('~/SDKs/')+'/VST3_SDK/pluginterfaces')
-        os.system('ls '+os.path.expanduser('~/SDKs/')+'/VST3_SDK/pluginterfaces/vst.x')
-        print("===========+++++++++++++++++++++++++=======")
+        open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
+        with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
+            zip_ref.extractall(os.path.expanduser('~/SDKs/VST_SDK'))
+
         url = "http://cabbageaudio.com/beta/heads.zip"
         r = requests.get(url, allow_redirects=True)
-        open(rootDir+'/heads.zip', 'wb').write(r.content)       
-        with zipfile.ZipFile(rootDir+'/heads.zip', 'r') as zip_ref:
-            zip_ref.extractall()
+        open('heads.zip', 'wb').write(r.content)       
+        with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
+            zip_ref.extractall(os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')) 
     else:
         print('Found VST SDK...')
-        print('')
 
     if not os.path.exists('/usr/local/bin/csound'):
         os.chdir(rootDir)
