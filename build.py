@@ -52,8 +52,11 @@ parser.add_argument('--project', type=str,
 parser.add_argument('--packageType', type=str,
                     help='"Local", "Remote", "Minimal"')
 
-parser.add_argument('--build', type=str,
-                    help='Set to "False" to disable building, in which case CMake will just generate the respective project in the build folder. If you do not specify a project, this will by default generate project files for the main Cabbage application.')
+parser.add_argument('--disable-feature', dest='feature', 
+                    action='store_false')
+
+parser.add_argument('--build', type=str, 
+                    help='Set to "False" to disable building, in which case CMake will just generate the respective project in the build folder. You must specify a project if you disable building.')
 
 parser.add_argument('--manufacturer', type=str,
                     help='"CabbageAudio"')
@@ -78,6 +81,7 @@ if args.config is None:
 
 configType = args.config
 
+
 if args.manufacturer is not None:
     manufacturer = args.manufacturer
 else:
@@ -97,13 +101,17 @@ else:
     packageType = "Local"
 
 executeBuild = True
-if args.build is not None:
-    if "True" in args.build:
-        executeBuild = True
-    else:
-        executeBuild = False
-        projects = ['Cabbage']
 
+if args.build is not None:
+    if "False" in args.build and args.project is not None:
+        executeBuild = False
+    elif "False" in args.build and args.project is None:
+        sys.stdout.write(RED)
+        print('Warning: If you are generating build files, without actually building, you must specify a project')
+        sys.stdout.write(RESET)
+        exit()
+    else:
+        executeBuild = True 
 
 if args.pluginDescription is not None:
     pluginDescription = args.pluginDescription
@@ -447,10 +455,11 @@ if platform.system() == "Darwin" and os.path.exists("Cabbage.app"):
     os.system('rm -rf Cabbage.app')
 
 for project in projects:
-    if os.path.exists("build"):
-        shutil.rmtree("build")
-    os.system('mkdir build')
-    os.chdir('build')
+    os.chdir(rootDir)
+    if os.path.exists(rootDir+"/build"):
+        shutil.rmtree(rootDir+"/build")
+    os.system('mkdir '+rootDir+'/build')
+    os.chdir(rootDir+'/build')
 
     sys.stdout.write(CYAN)
     print("===========================================================")

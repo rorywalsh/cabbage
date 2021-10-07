@@ -1,6 +1,4 @@
 
-![logo_cabbage_black_no_text](https://f.cloud.github.com/assets/5950903/1797870/31b2206e-6b15-11e3-9a9b-553c1c8edaad.png)
-
 Cabbage. A framework for developing audio plugins and standalone instruments using the Csound programming language.  
 
 [Homepage](http://cabbageaudio.com)
@@ -9,21 +7,28 @@ _______
 
 ## Building
 
-Cabbage comprises of several different components. An IDE, a synth plugin and an effect plugin. Each component's build project is generated using CMake. CMake is called by the build.py script which resides in the repo's root folder. In order to run the Python script you will need to install [requests](https://pypi.org/project/requests/). You will need access to the internet the first time you run this script as it will need to download and install various SDKS.
+Cabbage comprises of several different components. There is the main Cabbage IDE, as well as synth and effect plugin interface. Each component's build project is generated using CMake, which is in turned called by the `build.py` script which resides in the Cabbage root folder. In order to run the build script you will need to install [requests](https://pypi.org/project/requests/). You will need access to the internet the first time you run this script as it will need to download and install various SDKs, as well as some additional auxiliary interfaces such as CabbageRack and CsoundFMOD. 
 
-To build the entire system run the following command from the root directory:
+By default, Cabbage will try building with Visual Studio 2019 on Windows, XCode on macOS, and GCC on Linux. You obviously need to have those compilers installed before attempting to build on your chosen platform.
+
+To build the entire Cabbage framework (on any platform) run the following command from the root directory:
 
 `python build.py --config=Release`
 
-When run, the Python script will check for the relevant SDKs (ASIO, VST) and libraries (FMOD, CabbageRack) and download and install them if they are not found. 
+When run, the Python script will check for the relevant libraries and SDKs, and will download and install them if they are not found. If you just wish to simply generate the CMake build files for a project, and disable automatic building, use the following command:
+
+`python build.py --config=Debug --project=CabbagePluginSynth --build=False`
+
+This will generate the relevant build files in the `build` directory, but will not trigger a build to take place.
+
+
 
 If you are on Linux you may need to install some additional dependencies. You can do so by setting the `installLinuxDeps` parameter to True:
 
 `python build.py --config=Release --installLinuxDeps=True`
 
-If you just wish to simply generate the CMake build files for a project, and disable automatic building, use the following command:
+> Once is enough to use the `--installLinuxDeps` parameter onc, you do not need to keep calling it. 
 
-`python build.py --config=Debug --project=CabbagePluginSynth --build=False`
 
 
 _______
