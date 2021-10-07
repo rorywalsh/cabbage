@@ -385,8 +385,8 @@ elif platform.system() == "Linux":
         with zipfile.ZipFile(rootDir+'/vstsdk3611_22_10_2018_build_34.zip', 'r') as zip_ref:
             zip_ref.extractall()
         os.system('mkdir ~/SDKs')
-        os.system('cp -rf VST_SDK ~/SDKs')
-        os.system('cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+        os.system('cp -rf '+rootDir+'/VST_SDK '+os.path.expanduser('~/SDKs/'))
+        os.system('cp -rf '+rootDir+'vst2.x '+os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
 
         url = "http://cabbageaudio.com/beta/heads.zip"
         r = requests.get(url, allow_redirects=True)
@@ -407,7 +407,7 @@ elif platform.system() == "Linux":
         os.system("sudo sed -i -- 's/#deb-src/deb-src/g' /etc/apt/sources.list && sudo sed -i -- 's/# deb-src/deb-src/g' /etc/apt/sources.list")
         # os.system('sudo apt-get build-dep csound')
         os.system('mkdir '+rootDir+'/csound/build')
-        os.system('cd '+rootDir+'/csound/build')
+        os.chdir(rootDir+'/csound/build')
         os.system('ls')
         os.system('cmake .. -DUSE_GETTEXT=0 -DBUILD_CSOUNDVST=0 -DBUILD_PD_CLASS=0 -DBUILD_STATIC_LIBRARY=1 -DBUILD_VST4CS_OPCODES=0 -DBUILD_VST4CS_OPCODES=0 -DBUILD_CSOUND_AC_LUA_INTERFACE=0 -DBUILD_LUA_OPCODES:BOOL=0 -DBUILD_CSOUND_AC=0 -DBUILD_CSOUND_AC_LUA_INTERFACE=0 -DBUILD_CSOUND_AC_PYTHON_INTERFAC=0') 
         os.system('sudo make -j4')
