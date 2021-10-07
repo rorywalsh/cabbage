@@ -26,9 +26,7 @@ info = """
 
 print(info)
 rootDir = os.getcwd()
-
 sys.stdout.write(RESET)
-
 platformArch = os.popen('arch').read()
 
 def getVersionNumber():
@@ -39,6 +37,7 @@ def getVersionNumber():
                 return number.strip()
         return -1
 
+       
 # ==============================================================================================
 # Instantiate the parser
 # ==============================================================================================
@@ -177,7 +176,7 @@ if platform.system() == "Linux":
     os.system('mkdir CabbageInstall/desktop')
 
 if "Remote" in packageType:
-    if platform.system() == "Darwin":
+    if platform.system() == "Darwin" or platform.system() == "Linux":
         stagingDir = os.popen('echo $BUILD_ARTIFACTSTAGINGDIRECTORY').read()
     elif platform.system() == "Windows":
         stagingDir = 'D:/a/1/a'
@@ -548,34 +547,31 @@ for project in projects:
 os.chdir('..')
 
 # If local release is specified, then package things from the current dir
-if "Local" in packageType:
+if "Minimal" not in packageType:
     if platform.system() == "Darwin":
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
         os.system('packagesbuild Installer.pkgproj')
-        os.system('mv ./build/Cabbage.pkg '+rootDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
+        if "Remote" in packageType:
+            os.system('mv ./build/Cabbage.pkg '+stagingDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
 
     if platform.system() == "Windows":
         os.chdir(rootDir+'/Installers/Windows') 
         os.system('set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"')
         os.system('iscc Installer.iss')
+        os.system('cp '+rootDir+'/Installers/Windows/Output/Cabbage64Setup.exe '+stagingDir+'/Cabbage64Setup-'+getVersionNumber()+'.exe')
 
     if platform.system() == "Linux":
-        os.chdir(rootDir+'/Installers/Linux') 
-        os.system('cp Cabbage.desktop '+rootDir+'/CabbageInstall/desktop/Cabbage.desktop')
+        os.chdir(rootDir)
+        os.system('cp ./Installers/Linux/installCabbage.sh ' +rootDir+'/CabbageInstall')
 
+        installerText = ''
+        with open(rootDir+'/CabbageInstall/installCabbage.sh', "rt") as installer:
+            installerText = installer.read().replace('build_path="../../CabbageInstall"', 'build_path="."')
+        with open(rootDir+'/CabbageInstall/installCabbage.sh', "w") as installer:
+            installer.write(installerText)
 
-# If remote release is specified, package things into teh staging directory
-if "Remote" in packageType:
-    if platform.system() == "Darwin":
-        os.chdir(rootDir+'/Installers/MacOS') 
-        os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
-        os.system('packagesbuild Installer.pkgproj')
-        os.system('mv ./build/Cabbage.pkg '+stagingDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
-
-    if platform.system() == "Windows":
-        os.chdir(rootDir+'/Installers/Windows') 
-        os.system('set PATH=%PATH%;"C:\\Program Files (x86)\\Inno Setup 5"')
-        os.system('iscc Installer.iss')
-        os.system(rootDir+'/Installers/Windows/Output')
-        os.system('cp '+rootDir+'/Installers/Windows/Output/Cabbage64Setup.exe '+stagingDir+'/Cabbage64Setup-'+getVersionNumber()+'.exe')
+        shutil.make_archive(rootDir+'/Installers/Linux/CabbageLinux-'+getVersionNumber(), 'zip', rootDir+'/CabbageInstall') 
+        if "Remote" in packageType:
+            os.system('mv '+rootDir+'/Installers/Linux/CabbageLinux-'+getVersionNumber()+'.zip '+stagingDir+'/CabbageLinux-'+getVersionNumber()+'.zip')
+    
