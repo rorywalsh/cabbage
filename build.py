@@ -358,14 +358,14 @@ elif platform.system() == "Linux":
     with zipfile.ZipFile(rootDir+"/CabbageRack-1.0.0-lin.zip", 'r') as zip_ref:
         zip_ref.extractall(rootDir+'/CabbageInstall') 
 
-    if not os.path.exists("CabbageManual.zip"):
+    if not os.path.exists(rootDir+"/CabbageManual.zip"):
         sys.stdout.write(RED)
         print('Did not find CabbageManual.zip. Downloading....')
         sys.stdout.write(RESET)
         print('')
         url = "http://cabbageaudio.com/beta/CabbageManual.zip"
         r = requests.get(url, allow_redirects=True)
-        open('CabbageManual.zip', 'wb').write(r.content)       
+        open(rootDir+'/CabbageManual.zip', 'wb').write(r.content)       
     else:
         print('Found CabbageManual...')
         print('')
@@ -381,8 +381,8 @@ elif platform.system() == "Linux":
         print('')
         url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
         r = requests.get(url, allow_redirects=True)
-        open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
-        with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
+        open(rootDir+'/vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
+        with zipfile.ZipFile(rootDir+'/vstsdk3611_22_10_2018_build_34.zip', 'r') as zip_ref:
             zip_ref.extractall()
         os.system('mkdir ~/SDKs')
         os.system('cp -rf VST_SDK ~/SDKs')
@@ -390,8 +390,8 @@ elif platform.system() == "Linux":
 
         url = "http://cabbageaudio.com/beta/heads.zip"
         r = requests.get(url, allow_redirects=True)
-        open('heads.zip', 'wb').write(r.content)       
-        with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
+        open(rootDir+'/heads.zip', 'wb').write(r.content)       
+        with zipfile.ZipFile(rootDir+'/heads.zip", 'r') as zip_ref:
             zip_ref.extractall()
     else:
         print('Found VST SDK...')
