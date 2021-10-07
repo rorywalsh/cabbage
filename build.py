@@ -123,7 +123,7 @@ if args.license is not None:
         buildPro = 1
 
 installLinuxDeps = False
-if args.iinstallLinuxDeps is not None:
+if args.installLinuxDeps is not None:
     if "True" in args.installLinuxDeps:
         installLinuxDeps = True
     else:

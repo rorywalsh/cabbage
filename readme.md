@@ -5,6 +5,7 @@ Cabbage. A framework for developing audio plugins and standalone instruments usi
 
 [Homepage](http://cabbageaudio.com)
 
+_______
 
 ## Building
 
@@ -16,15 +17,27 @@ To build the entire system run the following command from the root directory:
 
 When run, the Python script will check for the relevant SDKs (ASIO, VST) and libraries (FMOD, CabbageRack) and download and install them if they are not found. 
 
-
 If you are on Linux you may need to install some additional dependencies. You can do so by setting the `installLinuxDeps` parameter to True:
 
 `python build.py --config=Release --installLinuxDeps=True`
 
-If you just wish to generate the CMake build files for a project use the following command:
+If you just wish to simply generate the CMake build files for a project, and disable automatic building, use the following command:
 
-`python build.py --config=Release --installLinuxDeps=True`
+`python build.py --config=Debug --project=CabbagePluginSynth --build=False`
 
+
+_______
+
+## Installing
+
+If you successfully built Cabbage using the build.py script you will find platform installers in the `Installers` folder. Simply double click teh Windows or MacOS installers to install locally. If you are on Linux, cd to the `Installers/Linux` directory and run the following:
+
+`chmod +x installCabbage.sh`
+`./installCabbage.sh`
+
+If you wish to uninstall Cabbage on Linux run the `uninstallCabbage.sh` script. 
+
+_______
 
 A full overview of the options provided by the build script can be seen here:
 
@@ -65,12 +78,3 @@ optional arguments:
                         flex bison libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev
   --license LICENSE     GPL by default
 ```
-
-## Installing
-
-If you successfully built Cabbage using the build.py script you will find platform installers in the `Installers` folder. Simply double click teh Windows or MacOS installers to install locally. If you are on Linux, cd to the `Installers/Linux` directory and run the following:
-
-`chmod +x installCabbage.sh`
-`./installCabbage.sh`
-
-If you wish to uninstall Cabbage on Linux run the `uninstallCabbage.sh` script. 
