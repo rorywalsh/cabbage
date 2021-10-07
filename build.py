@@ -386,7 +386,7 @@ elif platform.system() == "Linux":
             zip_ref.extractall()
         os.system('mkdir '+os.path.expanduser('~/SDKs/'))
         os.system('cp -rf '+rootDir+'/VST_SDK '+os.path.expanduser('~/SDKs/'))
-        os.system('cp -rf '+rootDir+'/vst2.x '+os.path.expanduser('~/SDKs')+'/VST_SDK/VST3_SDK/pluginterfaces'))
+        os.system('cp -rf '+rootDir+'/vst2.x '+os.path.expanduser('~/SDKs')+'/VST_SDK/VST3_SDK/pluginterfaces')
         os.system('ls '+os.path.expanduser('~/SDKs/')+/'/VST3_SDK/pluginterfaces')
 
         url = "http://cabbageaudio.com/beta/heads.zip"
