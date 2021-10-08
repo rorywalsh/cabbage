@@ -312,7 +312,7 @@ elif platform.system() == "Windows":
         r = requests.get(url, allow_redirects=True)
         open(rootDir+'/CabbageInstall/CabbageRack-1.0.0-win.zip', 'wb').write(r.content)  
         with zipfile.ZipFile(rootDir+"/CabbageInstall/CabbageRack-1.0.0-win.zip", 'r') as zip_ref:
-            zip_ref.extractall(rootDir+'/CabbageInstall/CabbageRack) 
+            zip_ref.extractall(rootDir+'/CabbageInstall') 
     else:
         print('Found CabbageRack...')
 
