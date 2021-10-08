@@ -248,23 +248,23 @@ if platform.system() == "Darwin":
         print("Found Csound...")
 
     os.chdir(rootDir)
+
     if not os.path.exists(os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')):
+        os.system('mkdir ~/SDKs')
         url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
         r = requests.get(url, allow_redirects=True)
         open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
-            zip_ref.extractall()
-        os.system('mkdir ~/SDKs')
-        os.system('cp -rf VST_SDK ~/SDKs')
-        os.system('cp -rf vst2.x ~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')
+            zip_ref.extractall(os.path.expanduser('~/SDKs/VST_SDK'))
 
         url = "http://cabbageaudio.com/beta/heads.zip"
         r = requests.get(url, allow_redirects=True)
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
-            zip_ref.extractall()
+            zip_ref.extractall(os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')) 
     else:
         print('Found VST SDK...')
+
 
 # ================================================================================================
 # ======= Setup for Windows - this will only install the things it can't find
