@@ -271,7 +271,7 @@ if platform.system() == "Darwin":
 # ================================================================================================
 elif platform.system() == "Windows":  
 
-    if not os.path.exists("C:/Program Files/Csound_x64"):
+    if not os.path.exists("C:/Program Files/Csound6_x64"):
         url = "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.16.0.zip"
         r = requests.get(url, allow_redirects=True)
         open('csound-windows_x64-6.16.0.zip', 'wb').write(r.content)       
