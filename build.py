@@ -307,7 +307,7 @@ elif platform.system() == "Windows":
     else:
         print('Found VST SDK...')
 
-    if not os.path.exists(rootDir+'/CabbageInstall/CabbageRack-1.0.0-win.zip"):
+    if not os.path.exists(rootDir+'/CabbageInstall/CabbageRack-1.0.0-win.zip'):
         url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip"
         r = requests.get(url, allow_redirects=True)
         open(rootDir+'/CabbageInstall/CabbageRack-1.0.0-win.zip', 'wb').write(r.content)  
