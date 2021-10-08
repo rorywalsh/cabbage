@@ -38,7 +38,7 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
-									<string>/Users/rwalsh/sourcecode/cabbage/Cabbage.app</string>
+									<string>SOURCE_PATH/Builds/MacOSX/build/Release/Cabbage.app</string>
 									<key>PATH_TYPE</key>
 									<integer>0</integer>
 									<key>PERMISSIONS</key>
@@ -990,7 +990,7 @@
 						<key>BACKGROUND_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>/Users/rwalsh/sourcecode/cabbage/Images/CabbageOSXInstallerBackground.png</string>
+							<string>SOURCE_PATH/Images/CabbageOSXInstallerBackground.png</string>
 							<key>PATH_TYPE</key>
 							<integer>0</integer>
 						</dict>
