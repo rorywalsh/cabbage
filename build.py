@@ -72,6 +72,9 @@ parser.add_argument('--installLinuxDeps', type=str,
 parser.add_argument('--license', type=str,
                     help='GPL by default')
 
+parser.add_argument('--linuxBuildType', type=str,
+                    help='"Ninja" by default, can also be set to "Unix Makefiles"')
+
 args = parser.parse_args()
 
 if args.config is None:
@@ -85,6 +88,12 @@ if args.manufacturer is not None:
     manufacturer = args.manufacturer
 else:
     manufacturer = "CabbageAudio"
+
+if args.linuxBuildType is not None:
+    linuxBuildType = args.linuxBuildType
+else:
+    linuxBuildType = "Ninja"
+
 
 if args.project is not None:
     projects = [args.project]
@@ -464,9 +473,8 @@ for project in projects:
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     elif platform.system() == "Darwin":
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -GXcode .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
-    elif platform.system() == "Linux":
-        
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G "Ninja" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
+    elif platform.system() == "Linux":        
+        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G "'+linuxBuildType+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     elif platform.system() == "Windows": 
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G "Visual Studio 16 2019" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     
@@ -525,17 +533,17 @@ for project in projects:
 
         if platform.system() == "Linux":
             if project == "Cabbage":
-                os.system('cp -Rf Cabbage_artefacts/'+configType+'/Cabbage '+rootDir+'/CabbageInstall/bin/Cabbage')
-                os.system('cp -Rf '+rootDir+'/Images/cabbage.png '+rootDir+'/CabbageInstall/images/cabbage.png')
-                os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
-                os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
-                os.system('cp -Rf ../Icons '+rootDir+'/CabbageInstall/Icons')
+                os.system('cp Cabbage_artefacts/'+configType+'/Cabbage '+rootDir+'/CabbageInstall/bin/Cabbage')
+                os.system('cp '+rootDir+'/Images/cabbage.png '+rootDir+'/CabbageInstall/images/cabbage.png')
+                os.system('cp -rf ../Examples '+rootDir+'/CabbageInstall/Examples')
+                os.system('cp -rf ../Themes '+rootDir+'/CabbageInstall/Themes')
+                os.system('cp -rf ../Icons '+rootDir+'/CabbageInstall/Icons')
             elif "Effect" in project or "Synth" in project:
                 newProjectName = project.replace("CabbagePlugin", pluginDescription)
-                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/lib'+project+'.so ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
-                os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/x86_64-linux/'+project+'.so ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
+                os.system('cp '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/lib'+project+'.so ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
+                os.system('cp -rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3 ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.vst3')
                 if "Synth" in project:
-                    os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+' ' +rootDir+'/CabbageInstall/bin/'+pluginDescription)
+                    os.system('cp '+rootDir+'/build/'+project+'_artefacts/'+configType+'/Standalone/'+project+' ' +rootDir+'/CabbageInstall/bin/'+pluginDescription)
 
 os.chdir('..')
 
@@ -556,8 +564,6 @@ if "Minimal" not in packageType:
 
     if platform.system() == "Linux":
         os.chdir(rootDir)
-        print('=====================++++++++++++++++++++============================')
-        os.system('ls ' +rootDir+'/CabbageInstall')
         os.system('cp ./Installers/Linux/installCabbage.sh ' +rootDir+'/CabbageInstall')
 
         installerText = ''
