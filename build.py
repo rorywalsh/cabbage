@@ -180,6 +180,8 @@ if "Remote" in packageType:
         stagingDir = os.popen('echo $BUILD_ARTIFACTSTAGINGDIRECTORY').read()
     elif platform.system() == "Windows":
         stagingDir = 'D:/a/1/a'
+else:
+    stagingDir = rootDir
 
 
 # ================================================================================================
