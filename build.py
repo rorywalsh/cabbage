@@ -192,7 +192,9 @@ if "Remote" in packageType:
 else:
     stagingDir = rootDir
 
-
+print('======+++++++++++++++++++++===========')
+print(stagingDir)
+print('======+++++++++++++++++++++===========')
 # ================================================================================================
 # ======= Setup for MacOS - this will only install the things it can't find
 # ================================================================================================
@@ -556,6 +558,9 @@ if "Minimal" not in packageType:
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
         os.system('packagesbuild Installer.pkgproj')
+        print('======+++++++++++++++++++++===========')
+        print('ls ./build')
+        print('======+++++++++++++++++++++===========')
         if "Remote" in packageType:
             os.system('mv ./build/Cabbage.pkg '+stagingDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
 
