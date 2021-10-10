@@ -553,16 +553,18 @@ for project in projects:
 os.chdir('..')
 
 # If local release is specified, then package things from the current dir
-if "Minimal" not in packageType:
+if "Minimal" not in packageType and executeBuild == True:
     if platform.system() == "Darwin":
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
         os.system('packagesbuild Installer.pkgproj')
         print('======+++++++++++++++++++++===========')
-        print('ls ./build')
+        os.system('ls '+rootDir+'/Installers/MacOS')
+        os.system('ls')
+        os.system('ls '+rootDir+'/Installers/MacOS/build')
         print('======+++++++++++++++++++++===========')
         if "Remote" in packageType:
-            os.system('mv ./build/Cabbage.pkg '+stagingDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
+            os.system('mv '+rootDir+'/Installers/MacOS/build/Cabbage.pkg '+stagingDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
 
     if platform.system() == "Windows":
         os.chdir(rootDir+'/Installers/Windows') 
