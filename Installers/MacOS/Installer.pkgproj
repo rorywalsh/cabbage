@@ -1008,7 +1008,7 @@
 						<key>BACKGROUND_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>/Users/rwalsh/sourcecode/cabbage/Images/CabbageOSXInstallerBackground.png</string>
+							<string>SOURCE_PATH/Images/CabbageOSXInstallerBackground.png</string>
 							<key>PATH_TYPE</key>
 							<integer>0</integer>
 						</dict>
@@ -1023,7 +1023,7 @@
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>/Users/rwalsh/sourcecode/cabbage/Images/CabbageOSXInstallerBackground.png</string>
+					<string>SOURCE_PATH/Images/CabbageOSXInstallerBackground.png</string>
 					<key>PATH_TYPE</key>
 					<integer>0</integer>
 				</dict>
