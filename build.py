@@ -564,7 +564,7 @@ if "Minimal" not in packageType and executeBuild == True:
         os.system('ls '+rootDir+'/Installers/MacOS/build')
         print('======+++++++++++++++++++++===========')
         if "Remote" in packageType:
-            os.system('mv '+rootDir+'/Installers/MacOS/build/Cabbage.pkg '+stagingDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
+            os.system('cp '+rootDir+'/Installers/MacOS/build/Cabbage.pkg '+stagingDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
 
     if platform.system() == "Windows":
         os.chdir(rootDir+'/Installers/Windows') 
