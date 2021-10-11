@@ -309,14 +309,18 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
         String identifier = identifierValueSet.identifier[indx].trimCharactersAtStart (" ");
 
         
+
         if (identifier.indexOf (":") != -1 && !lineOfText.contains("svgElement"))
             identifier = identifier.substring (0, identifier.indexOf (":") + 1);
 
         
         //strTokens = CabbageUtilities::getTokens (identifierValueSet.parameter[indx], ',');
-        strTokens.addTokens(identifierValueSet.parameter[indx], ",", "\"");
-
-
+        
+        if(identifier == "text")
+            strTokens.add(identifierValueSet.parameter[indx]);
+        else
+            strTokens.addTokens(identifierValueSet.parameter[indx], ",", "\"");
+        
         bool isCabbageWidget = (identifier.indexOf("_") != -1 ? false : true);
 
         switch (HashStringToInt (identifier.toStdString().c_str()))
