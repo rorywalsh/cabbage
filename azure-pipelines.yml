@@ -11,29 +11,29 @@ trigger:
 jobs:
 
 # Run a build on Windows at the same time
-# - job: Windows
-#   timeoutInMinutes: 80
-#   pool:
-#     vmImage: 'windows-2019'
-#   # The Windows build involves running a powershell script
-#   # to execute the Cake build script
-#   steps:
-#   - powershell: gci env:* | sort-object name | Format-Table -AutoSize
-#   - powershell: 
-#     env:
-#       COREHOST_TRACE: 0
-#       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-#       DOTNET_CLI_TELEMETRY_OPTOUT: 1
-#   - script: |
-#      pip install requests
-#      python --version
-#      python build.py --config=Release --packageType="Remote"
+- job: Windows
+  timeoutInMinutes: 80
+  pool:
+    vmImage: 'windows-2019'
+  # The Windows build involves running a powershell script
+  # to execute the Cake build script
+  steps:
+  - powershell: gci env:* | sort-object name | Format-Table -AutoSize
+  - powershell: 
+    env:
+      COREHOST_TRACE: 0
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  - script: |
+     pip install requests
+     python --version
+     python build.py --config=Release --packageType="Remote"
 
-#   - task: PublishBuildArtifacts@1
-#     inputs:
-#       artifactName: 'Installers' 
-#       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-# #       # artifactName: 'Cabbage64Setup.exe'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      artifactName: 'Installers' 
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#       # artifactName: 'Cabbage64Setup.exe'
   
 - job: macOS
   timeoutInMinutes: 100
@@ -55,21 +55,21 @@ jobs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
 #       # artifactName: '${SYSTEM_DEFAULTWORKINGDIRECTORY}/Cabbage.pkg'
 
-# - job: Linux
-#   pool:
-#     vmImage: 'ubuntu-latest'
-#   steps:
-#   - script: |
-#      sudo apt-get install ninja-build
-#      pip install requests
-#      python --version
-#      python build.py --config=Release --installLinuxDeps=True --packageType="Remote"
-#     env:
-#       COREHOST_TRACE: 0
-#       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
-#       DOTNET_CLI_TELEMETRY_OPTOUT: 1
-#   - task: PublishBuildArtifacts@1
-#     inputs:
-#       artifactName: 'Installers'
-#       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-# #       artifactName: '${SYSTEM_DEFAULTWORKINGDIRECTORY}/Cabbage.pkg'
+- job: Linux
+  pool:
+    vmImage: 'ubuntu-latest'
+  steps:
+  - script: |
+     sudo apt-get install ninja-build
+     pip install requests
+     python --version
+     python build.py --config=Release --installLinuxDeps=True --packageType="Remote"
+    env:
+      COREHOST_TRACE: 0
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  - task: PublishBuildArtifacts@1
+    inputs:
+      artifactName: 'Installers'
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#       artifactName: '${SYSTEM_DEFAULTWORKINGDIRECTORY}/Cabbage.pkg'
