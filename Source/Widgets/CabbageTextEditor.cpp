@@ -26,19 +26,19 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     : owner (_owner),
     widgetData (wData),
     textEditor (this),
-    isMultiline (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::wrap)),
     CabbageWidgetBase(_owner)
 {
-    setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
-    widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
-    initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
+    isMultiline = int(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::wrap)) == 0 ? false : true;
+    textEditor.setMultiLine(isMultiline);
+    
 
     
-    const int readOnly = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::readonly);
+
+    const int readOnly = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::readonly);
     textEditor.setReadOnly(readOnly == 1 ? true : false);
     
-    
-    int fontSize =CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::fontsize);
+
+    int fontSize = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::fontsize);
     if(owner->getCustomFontFile().existsAsFile())
     {
         userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
@@ -71,6 +71,9 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     textEditor.setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
     textEditor.setColour(CaretComponent::ColourIds::caretColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::caretcolour)));
 
+    setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
+    widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
     
     const String filename = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
     const File textFile(File::getCurrentWorkingDirectory().getChildFile(filename).getFullPathName());
@@ -80,6 +83,7 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     else
         textEditor.setText (getCurrentText(widgetData), dontSendNotification);
 
+    
 }
 
 void CabbageTextEditor::textEditorReturnKeyPressed (TextEditor&)
