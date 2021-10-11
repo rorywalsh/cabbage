@@ -30,7 +30,6 @@ with open("CMakeLists.txt", "rt") as inputFile:
 
         newFileText = newFileText+line
 
-print(newFileText)
 with open("CMakeLists.txt", "w") as f:
     f.write(newFileText)
 
