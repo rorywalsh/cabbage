@@ -26,7 +26,10 @@ with open("CMakeLists.txt", "rt") as inputFile:
                 line = "\tset(BUILD_VERSION "+newVersionNum+ ")\n"
             else:
                 number = line.replace("set", "").replace("(", "").replace(")", ""). replace("BUILD_VERSION", "")
-                line = "\tset(BUILD_VERSION "+increment_ver(number.strip())+ ")\n"
+                newVersionNum = increment_ver(number.strip());
+                
+                line = "\tset(BUILD_VERSION "+ newVersionNum+")\n"
+                
 
         newFileText = newFileText+line
 
