@@ -316,7 +316,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
         
         //strTokens = CabbageUtilities::getTokens (identifierValueSet.parameter[indx], ',');
         
-        if(identifier == "text")
+        if(identifier == "text" && typeOfWidget == CabbageWidgetTypes::texteditor)
             strTokens.add(identifierValueSet.parameter[indx]);
         else
             strTokens.addTokens(identifierValueSet.parameter[indx], ",", "\"");
