@@ -239,6 +239,7 @@ bool ComponentOverlay::keyPressed (const KeyPress& key, Component* originatingCo
 {
     bool multipleSelection = false;
     const int gridSize =  2;
+    
 
     for (ComponentOverlay* child : layoutEditor->getLassoSelection())
     {
@@ -275,7 +276,7 @@ bool ComponentOverlay::keyPressed (const KeyPress& key, Component* originatingCo
     updateBoundsDataForTarget();
     layoutEditor->updateCodeEditor();
 
-    return false;
+    return true;
 }
 //===========================================================================
 CabbagePluginEditor* ComponentOverlay::getPluginEditor()
