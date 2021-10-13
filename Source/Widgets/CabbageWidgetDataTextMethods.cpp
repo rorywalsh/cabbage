@@ -173,7 +173,7 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     fullListOfIdentifierStrings.sort(true);
     
 
-    
+    String customIdentifier;
     var macroNames = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::macronames);
     var macroStrings = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::macrostrings);
     
@@ -181,6 +181,10 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     //deal with macros
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
     {
+        if (identifiersInLine[i].startsWith("_"))
+        {
+            customIdentifier = " "+identifiersInLine[i] + ")";
+        }
         if(identifiersInLine[i].contains("$"))
         {
             const String macroWithIdentifier = identifiersInLine[i].trimCharactersAtStart(", ");
@@ -263,9 +267,9 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     }
     
     if(widgetType == returnString.substring(0, returnString.indexOf(" ")))
-        return returnString;
+        return returnString + customIdentifier;
     else
-        return widgetType + returnString.trimEnd();
+        return widgetType + returnString.trimEnd() + customIdentifier;
 }
 
 String CabbageWidgetData::getBoundsTextAsCabbageCode (Rectangle<int> rect)
