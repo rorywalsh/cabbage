@@ -334,6 +334,7 @@ if(MSVC)
     PRIVATE
         ${JUCE_MODULES}
         ${CSOUND_LIBRARY}
+        ${EXTERNAL_LIBS}
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
