@@ -56,7 +56,7 @@ void ColourPropertyComponent::mouseDown (const MouseEvent& e)
         colourSelector->setNameOfParent (name);
         colourSelector->setCurrentColour (colour);
         CallOutBox::launchAsynchronously (std::move(colourSelector), getScreenBounds(), nullptr);
-        colour = colourSelector->getCurrentColour();
+        //colour = colourSelector->getCurrentColour();
 
     }
 }
@@ -196,7 +196,7 @@ void ColourMultiPropertyComponent::mouseDown (const MouseEvent& e)
             colourSelector->setNameOfParent (overlayComponentName);
             colourSelector->setCurrentColour (colours[colourIndex]);
             CallOutBox::launchAsynchronously (std::move(colourSelector), getScreenBounds(), nullptr);
-            colour = colourSelector->getCurrentColour();
+            //colour = colourSelector->getCurrentColour();
         }
     }
 }
