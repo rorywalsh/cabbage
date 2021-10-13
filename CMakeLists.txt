@@ -69,22 +69,19 @@ if("${PROJECT_NAME}" STREQUAL "Cabbage")
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
 else()
 # ============== This part of the CMake setup deals with plugins only.....
-if(APPLE)
-    juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
-elseif(MSVC)
-    juce_set_vst2_sdk_path("C:/SDKs/VST_SDK/VST3_SDK")
-else()
-    juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
-endif()
-
-
+    if(APPLE)
+        juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
+    elseif(MSVC)
+        juce_set_vst2_sdk_path("C:/SDKs/VST_SDK/VST3_SDK")
+    else()
+        juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
+    endif()
 
     set(PLUGIN_NEEDS_OUTPUT PLUGIN_IS_A_SYNTH)
     SetIfSynth(PLUGIN_VST2_CATEGORY "kPlugCategSynth" "kPlugCategEffect")
     SetIfSynth(PLUGIN_AU_MAIN_TYPE "aumi" "aumf")
     SetIfSynth(PLUGIN_VST3_CATEGORIES "Instrument|Synth" "Fx")
     SetIfSynth(SYNTH_OR_EFFECT "Synth" "Effect")
-
 
     juce_add_plugin(${PROJECT_NAME}
         PLUGIN_NAME ${PROJECT_NAME}
@@ -330,8 +327,6 @@ if(MSVC)
         # find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
         set(CSOUND_LIBRARY "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
         set(EXTERNAL_LIBS "c:\\Program Files\\Csound6_x64\\lib\\sndfile.lib" "c:\\Program Files\\Csound6_x64\\lib\\opus.lib" "c:\\Program Files\\Csound6_x64\\lib\\FLAC.lib")
-
-    else()
     else()
     find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
     endif()
