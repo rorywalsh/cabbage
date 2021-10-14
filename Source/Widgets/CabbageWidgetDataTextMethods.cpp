@@ -173,7 +173,6 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     fullListOfIdentifierStrings.sort(true);
     
 
-    String customIdentifier;
     var macroNames = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::macronames);
     var macroStrings = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::macrostrings);
     
@@ -181,10 +180,6 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     //deal with macros
     for ( int i = 0 ; i < identifiersInLine.size() ; i++)
     {
-        if (identifiersInLine[i].startsWith("_"))
-        {
-            customIdentifier = " "+identifiersInLine[i] + ")";
-        }
         if(identifiersInLine[i].contains("$"))
         {
             const String macroWithIdentifier = identifiersInLine[i].trimCharactersAtStart(", ");
@@ -207,9 +202,13 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
 		//I need to check that the current identifiers are not the same as the existing ones, if so don't replace anything
         if (currentIdentName.isNotEmpty())
         {
+            String newText;
             //getCabbageCodeForIdentifier will return multiple imgFile() identifiers, this will create a problem...
             String stringToReplace = currentIdentifier.trimCharactersAtStart(", ") + ")";
-            const String newText = getCabbageCodeForIdentifier(widgetData, currentIdentName).trimCharactersAtEnd(", ");
+            if(stringToReplace.startsWith("_"))
+                newText = stringToReplace;
+            else
+                newText = getCabbageCodeForIdentifier(widgetData, currentIdentName).trimCharactersAtEnd(", ");
             
             if(CabbageUtilities::getNumberOfOccurances(newText, "imgFile")>1)
             {
@@ -267,9 +266,9 @@ String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, c
     }
     
     if(widgetType == returnString.substring(0, returnString.indexOf(" ")))
-        return returnString + customIdentifier;
+        return returnString;
     else
-        return widgetType + returnString.trimEnd() + customIdentifier;
+        return widgetType + returnString.trimEnd();
 }
 
 String CabbageWidgetData::getBoundsTextAsCabbageCode (Rectangle<int> rect)

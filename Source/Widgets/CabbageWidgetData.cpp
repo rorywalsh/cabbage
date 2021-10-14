@@ -321,7 +321,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
         else
             strTokens.addTokens(identifierValueSet.parameter[indx], ",", "\"");
         
-        bool isCabbageWidget = (identifier.indexOf("_") != -1 ? false : true);
+        bool isCabbageIdenfitier = (identifier.indexOf("_") != -1 ? false : true);
 
         switch (HashStringToInt (identifier.toStdString().c_str()))
         {
@@ -657,7 +657,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt("matrixSize"):
                 setMatrixSize(strTokens, widgetData);
             default:
-                if(!isCabbageWidget)
+                if(!isCabbageIdenfitier)
                     setProperty (widgetData, identifier, strTokens);
                 break;
                 
