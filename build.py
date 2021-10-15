@@ -202,7 +202,7 @@ sys.stdout.write(YELLOW)
 if platform.system() == "Darwin":
     if not os.path.exists("CabbageManual"):
         url = "http://cabbageaudio.com/beta/CabbageManual.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('CabbageManual.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
             zip_ref.extractall()
@@ -212,7 +212,7 @@ if platform.system() == "Darwin":
     if not os.path.exists("CabbageRack"):
         print("================== Installing CabbageRack libs ========================")
         url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-mac.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('CabbageRack-1.0.0-mac.zip', 'wb').write(r.content)  
         with zipfile.ZipFile("CabbageRack-1.0.0-mac.zip", 'r') as zip_ref:
             zip_ref.extractall()    
@@ -222,7 +222,7 @@ if platform.system() == "Darwin":
     if not os.path.exists("fmod_csound_fx.dylib"):
         print("================== Installing FMOD libs ========================")
         url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound_fx.dylib"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('fmod_csound_fx.dylib', 'wb').write(r.content) 
     else:
         print("Found fmod_csound_fx.dylib...") 
@@ -230,7 +230,7 @@ if platform.system() == "Darwin":
     if not os.path.exists("fmod_csound.dylib"):
         print("================== Installing FMOD libs ========================")
         url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound.dylib"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('fmod_csound.dylib', 'wb').write(r.content)  
     else:
         print("Found fmod_csound_.dylib...")        
@@ -238,7 +238,7 @@ if platform.system() == "Darwin":
     if not os.path.exists('/Applications/Packages.app'):
         print("================== Installing Packages ========================")
         url = "http://s.sudre.free.fr/Software/files/Packages.dmg"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('Packages.dmg', 'wb').write(r.content)  
         os.system("hdiutil mount Packages.dmg")
         os.system("sudo installer -pkg /Volumes/Packages\ 1.2.9/Install\ Packages.pkg -target /")
@@ -249,7 +249,7 @@ if platform.system() == "Darwin":
     if not os.path.exists('/Library/Frameworks/CsoundLib64.framework'):
         print("================== Installing Csound ========================")
         url = 'https://github.com/csound/csound/releases/download/6.16.2/csound-MacOS_x86_64-6.16.2.dmg'
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('csound6.16.0-MacOS_x86_64.dmg', 'wb').write(r.content)  
         os.system('hdiutil attach '+rootDir+'/csound6.16.0-MacOS_x86_64.dmg')
         os.system('cp -R /Volumes/Csound6.16.2/ Csound')
@@ -265,13 +265,13 @@ if platform.system() == "Darwin":
     if not os.path.exists(os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')):
         os.system('mkdir ~/SDKs')
         url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
             zip_ref.extractall(os.path.expanduser('~/SDKs/VST_SDK'))
 
         url = "http://cabbageaudio.com/beta/heads.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
             zip_ref.extractall(os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')) 
@@ -286,7 +286,7 @@ elif platform.system() == "Windows":
 
     if not os.path.exists("C:/Program Files/Csound6_x64"):
         url = "https://github.com/rorywalsh/cabbage/releases/download/v2.0.00/csound-windows_x64-6.16.0.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('csound-windows_x64-6.16.0.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("csound-windows_x64-6.16.0.zip", 'r') as zip_ref:
             zip_ref.extractall('C:/Program Files')
@@ -296,7 +296,7 @@ elif platform.system() == "Windows":
     if not os.path.exists("C:/SDKs/ASIOSDK2.3.2"):
         os.system('mkdir C:/SDKs')
         url = "https://download.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('asiosdk_2.3.3_2019-06-14.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("asiosdk_2.3.3_2019-06-14.zip", 'r') as zip_ref:
             zip_ref.extractall('C:/SDKs/ASIOSDK2.3.2')
@@ -305,13 +305,13 @@ elif platform.system() == "Windows":
 
     if not os.path.exists("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces"):
         url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
             zip_ref.extractall('C:/SDKs/VST_SDK')
 
         url = "http://cabbageaudio.com/beta/heads.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
             zip_ref.extractall("C:/SDKs/VST_SDK/VST3_SDK/pluginterfaces") 
@@ -320,7 +320,7 @@ elif platform.system() == "Windows":
 
     if not os.path.exists(rootDir+'/CabbageInstall/CabbageRack-1.0.0-win.zip'):
         url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-win.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open(rootDir+'/CabbageInstall/CabbageRack-1.0.0-win.zip', 'wb').write(r.content)  
         with zipfile.ZipFile(rootDir+"/CabbageInstall/CabbageRack-1.0.0-win.zip", 'r') as zip_ref:
             zip_ref.extractall(rootDir+'/CabbageInstall') 
@@ -329,21 +329,21 @@ elif platform.system() == "Windows":
 
     if not os.path.exists("fmod_csound64_fx.dll"):
         url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64_fx.dll"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open(rootDir+'/CabbageInstall/fmod_csound64_fx.dll', 'wb').write(r.content)  
     else:
         print('Found fmod_csound64_fx...')
 
     if not os.path.exists("fmod_csound64.dll"):
         url = "https://github.com/rorywalsh/csoundfmod/releases/download/v2.0/fmod_csound64.dll"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open(rootDir+'/CabbageInstall/fmod_csound64.dll', 'wb').write(r.content)
     else:
         print('Found fmod_csound64...')
 
     if not os.path.exists("CabbageManual"):
         url = "http://cabbageaudio.com/beta/CabbageManual.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('CabbageManual.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
             zip_ref.extractall(rootDir+'/CabbageInstall/CabbageManual')
@@ -360,7 +360,7 @@ elif platform.system() == "Linux":
         sys.stdout.write(RESET)
         print('')
         url = "https://github.com/rorywalsh/CabbageRack/releases/download/v1.0/CabbageRack-1.0.0-lin.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open(rootDir+'/CabbageRack-1.0.0-lin.zip', 'wb').write(r.content)  
     else:
         print('Found CabbageRack...')
@@ -375,7 +375,7 @@ elif platform.system() == "Linux":
         sys.stdout.write(RESET)
         print('')
         url = "http://cabbageaudio.com/beta/CabbageManual.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open(rootDir+'/CabbageManual.zip', 'wb').write(r.content)       
     else:
         print('Found CabbageManual...')
@@ -387,13 +387,13 @@ elif platform.system() == "Linux":
 
     if not os.path.exists(os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')):
         url = "https://download.steinberg.net/sdk_downloads/vstsdk3611_22_10_2018_build_34.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('vstsdk3611_22_10_2018_build_34.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
             zip_ref.extractall(os.path.expanduser('~/SDKs/VST_SDK'))
 
         url = "http://cabbageaudio.com/beta/heads.zip"
-        r = requests.get(url, allow_redirects=True)
+        r = requests.get(url, allow_redirects=True, verify=False)
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
             zip_ref.extractall(os.path.expanduser('~/SDKs/VST_SDK/VST3_SDK/pluginterfaces')) 
