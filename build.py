@@ -92,7 +92,7 @@ else:
     elif platform.system() == "Linux":
         generator = "Ninja"
     elif platform.system() == "Darwin":
-        generator = "XCode"
+        generator = "Xcode"
 
 if args.manufacturer is not None:
     manufacturer = args.manufacturer
