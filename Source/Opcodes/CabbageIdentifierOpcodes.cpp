@@ -1256,7 +1256,7 @@ int SetCabbageIdentifierArray::setAttribute()
 
 int SetCabbageIdentifierSArgs::setAttribute(int rate)
 {
-    //csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSS", csnd::thread::k);
+    //csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->getEngine(), "cabbageSet", "", "kSS", csnd::thread::k);
     
     CabbageWidgetIdentifiers::IdentifierData data;
     int trigger = args[0];

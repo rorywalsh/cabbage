@@ -227,7 +227,7 @@ public:
 
 
 
-    Csound* getCsound()
+    Csound* getEngine()
     {
         return csound.get();
     }
@@ -241,7 +241,7 @@ public:
     {
         guiRefreshRate = rate;
     }
-
+		
     MidiKeyboardState keyboardState;
     bool hostIsCubase = false;
 

@@ -815,10 +815,10 @@ void CabbagePluginProcessor::createCabbageParameters()
 					}
 
 
-					auto xParam = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), currentChannel[0],
+					auto xParam = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getEngine(), currentChannel[0],
 						name + "_x", minX, maxX, value, increment, 1, automatable,
 						xPrefix, xPostfix);
-					auto yParam = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), currentChannel[1],
+					auto yParam = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getEngine(), currentChannel[1],
 						name + "_y", minY, maxY, value, increment, 1, automatable,
 						yPrefix, yPostfix);
 
@@ -844,9 +844,9 @@ void CabbagePluginProcessor::createCabbageParameters()
 						const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 							CabbageIdentifierIds::max);
 
-						auto minParam = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), currentChannel[0],
+						auto minParam = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getEngine(), currentChannel[0],
 							name + "_min", min, max, minValue, increment, skew, automatable, prefix, postfix);
-						auto maxParam = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), currentChannel[1],
+						auto maxParam = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getEngine(), currentChannel[1],
 							name + "_max", min, max, maxValue, increment, skew, automatable, prefix, postfix);
 
 						addCabbageParameter(std::move(minParam));
@@ -869,7 +869,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 							CabbageIdentifierIds::min);
 						const float max = numOfFiles == 0 ? 1 : numOfFiles;
 
-						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getEngine(), channel, name,
 							min, max, value, 1, 1, automatable, "", "");
 						addCabbageParameter(std::move(param));
 					}
@@ -880,7 +880,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 						const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 							CabbageIdentifierIds::comborange);
 
-						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getEngine(), channel, name,
 							min, max, value, 1, 1, automatable, "", "", true);
 						addCabbageParameter(std::move(param));
 					}
@@ -898,7 +898,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 						CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::max) :
 						min + 1;
 
-					auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+					auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getEngine(), channel, name,
 						min, max, value, increment, skew, automatable, prefix, postfix);
 					addCabbageParameter(std::move(param));
 				}
@@ -912,7 +912,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 
 					if (channel.isNotEmpty())
 					{
-						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getCsound(), channel, name,
+						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), *getEngine(), channel, name,
 							0, 1, value, 1, 1, automatable, prefix, postfix);
 						addCabbageParameter(std::move(param));
 					}
@@ -1063,8 +1063,8 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  String fileName
                                                                                                 CabbageIdentifierIds::channeltype) == "string")
                 {
                     char tmp_str[4096] = { 0 };
-                    if(getCsound())
-                        getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
+                    if(getEngine())
+                        getEngine()->GetStringChannel(channelName.getCharPointer(), tmp_str);
                     const String file(tmp_str);
                     j[presetName.toStdString()][channelName.toStdString()] = file.toStdString();
                     
@@ -1243,9 +1243,9 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 
     
     
-    if (getCsound())
+    if (getEngine())
     {
-        CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+        CabbagePersistentData** pd = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
         
         if (pd != nullptr)
         {
@@ -1325,8 +1325,8 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 				CabbageIdentifierIds::channeltype) == "string")
 			{
 				char tmp_str[4096] = { 0 };
-				if(getCsound())
-                    getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
+				if(getEngine())
+                    getEngine()->GetStringChannel(channelName.getCharPointer(), tmp_str);
 				const String file(tmp_str);
 				xml->setAttribute(channelName, file);
 
@@ -1362,7 +1362,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			//none of these are being updated in their respective valueTreeChanged listeners..
             if(e->getAttributeName(i) == "cabbageJSONData")
             {
-                CabbagePersistentData** pd = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+                CabbagePersistentData** pd = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
                 
                 if (pd != nullptr)
                 {
@@ -1459,10 +1459,10 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 void CabbagePluginProcessor::getIdentifierDataFromCsound()
 {
     
-    if(!getCsound())
+    if(!getEngine())
         return;
 
-    pd = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageWidgetData");
+    pd = (CabbageWidgetIdentifiers**)getEngine()->QueryGlobalVariable("cabbageWidgetData");
     
     if (pd == nullptr)
         return;
@@ -1521,7 +1521,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                                         cabbageParam->endChangeGesture();
 #endif
                                 cabbageParam->beginChangeGesture();
-                                cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(getCsound()->GetChannel(channels[0].toString().toUTF8())));
+                                cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(getEngine()->GetChannel(channels[0].toString().toUTF8())));
 #if !Cabbage_IDE_Build
                                 if(!pluginType.isAbletonLive())
 #endif
@@ -1553,7 +1553,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
 //==============================================================================
 void CabbagePluginProcessor::getChannelDataFromCsound()
 {
-	if (!getCsound())
+	if (!getEngine())
 		return;
 
     const int chnsetGestureMode = getChnsetGestureMode();
@@ -1589,10 +1589,10 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 
 			if (value.isString() == false)
 			{
-				if (getCsound()->GetChannel(channels[0].toUTF8()) != float(value))
+				if (getEngine()->GetChannel(channels[0].toUTF8()) != float(value))
 				{
 					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::value,
-						getCsound()->GetChannel(channels[0].toUTF8()));
+						getEngine()->GetChannel(channels[0].toUTF8()));
 					//now update plugin parameters..
 					
 					if (chnsetGestureMode == 1) // by default, we don't call beginChangeGesture()...
@@ -1602,7 +1602,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 							if (cabbageParam->getChannel() == channels[0].toUTF8())
 							{
 								cabbageParam->beginChangeGesture();
-								cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(getCsound()->GetChannel(channels[0].toUTF8())));
+								cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(getEngine()->GetChannel(channels[0].toUTF8())));
 								cabbageParam->endChangeGesture();
 							}
 						}
@@ -1613,7 +1613,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 			else
 			{
 				char tmp_str[4096] = { 0 };
-				getCsound()->GetStringChannel(channels[0].toUTF8(), tmp_str);
+				getEngine()->GetStringChannel(channels[0].toUTF8(), tmp_str);
 				CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value,
 					String(tmp_str));
 			}
@@ -1625,13 +1625,13 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 		{
 			const float valuex = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuex);
 			const float valuey = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuey);
-			if (getCsound()->GetChannel(channels[0].toUTF8()) != valuex
-				|| getCsound()->GetChannel(channels[1].toUTF8()) != valuey) {
+			if (getEngine()->GetChannel(channels[0].toUTF8()) != valuex
+				|| getEngine()->GetChannel(channels[1].toUTF8()) != valuey) {
 				if (typeOfWidget == CabbageWidgetTypes::xypad) {
 					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuex,
-						getCsound()->GetChannel(channels[0].toUTF8()));
+						getEngine()->GetChannel(channels[0].toUTF8()));
 					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::valuey,
-						getCsound()->GetChannel(channels[1].toUTF8()));
+						getEngine()->GetChannel(channels[1].toUTF8()));
 				}
 				else if (typeOfWidget.contains("range")) {
 					//                    const float minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
@@ -1639,9 +1639,9 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 					//                    const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 					//                        CabbageIdentifierIds::maxvalue);
 					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::minvalue,
-						getCsound()->GetChannel(channels[0].toUTF8()));
+						getEngine()->GetChannel(channels[0].toUTF8()));
 					CabbageWidgetData::setNumProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::maxvalue,
-						getCsound()->GetChannel(channels[1].toUTF8()));
+						getEngine()->GetChannel(channels[1].toUTF8()));
 				}
 			}
 		}
@@ -1651,7 +1651,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 			const String identChannelMessage = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 				CabbageIdentifierIds::identchannelmessage);
 			memset(&tmp_string[0], 0, sizeof(tmp_string));
-			getCsound()->GetStringChannel(identChannel.toUTF8(), tmp_string);
+			getEngine()->GetStringChannel(identChannel.toUTF8(), tmp_string);
 
 			const String identifierText(tmp_string);
 			//CabbageUtilities::debug(identifierText);
@@ -1667,7 +1667,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 						Random::getSystemRandom().nextInt());
 				}
 
-				getCsound()->SetChannel(identChannel.toUTF8(), (char*) "");
+				getEngine()->SetChannel(identChannel.toUTF8(), (char*) "");
 
 				CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update,
 					0); //reset value for further updates
@@ -1690,7 +1690,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 }
 
 void CabbagePluginProcessor::triggerCsoundEvents() {
-	if (!getCsound())
+	if (!getEngine())
 		return;
 
 	for (int x = 0; x < matrixEventSequencers.size(); x++) {
@@ -1698,14 +1698,14 @@ void CabbagePluginProcessor::triggerCsoundEvents() {
 			matrixEventSequencers[x]->channel,
 			true);
 		const String channel = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::channel);
-		const int position = getCsound()->GetChannel(channel.toUTF8());
+		const int position = getEngine()->GetChannel(channel.toUTF8());
 
 		if (CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::orientation) == "vertical") {
 			for (int i = 0; i < CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::matrixcols); i++) {
 				if (matrixEventSequencers[x]->position != position) {
 					String event = matrixEventSequencers[x]->events.getUnchecked(i)->getReference(position);
 					if (event.isNotEmpty()) {
-						getCsound()->InputMessage(event.toUTF8());
+						getEngine()->InputMessage(event.toUTF8());
 					}
 				}
 			}
@@ -1716,7 +1716,7 @@ void CabbagePluginProcessor::triggerCsoundEvents() {
 				if (matrixEventSequencers[x]->position != position) {
 					String event = matrixEventSequencers[x]->events.getUnchecked(position)->getReference(i);
 					if (event.isNotEmpty()) {
-						getCsound()->InputMessage(event.toUTF8());
+						getEngine()->InputMessage(event.toUTF8());
 					}
 				}
 			}
@@ -1826,8 +1826,8 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
         });
     }
     
-    if (getCsound())
-		getCsound()->SetChannel(channel.toUTF8().getAddress(), value);
+    if (getEngine())
+		getEngine()->SetChannel(channel.toUTF8().getAddress(), value);
     
 
     
