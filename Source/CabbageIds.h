@@ -418,7 +418,6 @@ public:
         add ("keyWidth");
         add ("pluginId");
 		add ("fontSize");
-        add ("cvOutput");
         add ("imgDebug");
         add ("position");
         add ("colour:0");
@@ -430,7 +429,6 @@ public:
         add ("cellData");
         add ("isparent");
         add ("latency");
-        add ("cvInput");
         add ("color:0");
         add ("color:1");
         add ("caption");
