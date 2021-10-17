@@ -267,12 +267,6 @@ bool ComponentOverlay::keyPressed (const KeyPress& key, Component* originatingCo
         layoutEditor->updateSelectedComponentBounds();
     }
 
-    if (multipleSelection == false)
-    {
-        setTopLeftPosition (getPosition().getX() - gridSize, getPosition().getY());
-        applyToTarget();
-    }
-
     updateBoundsDataForTarget();
     layoutEditor->updateCodeEditor();
 
