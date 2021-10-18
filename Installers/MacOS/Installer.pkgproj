@@ -472,7 +472,7 @@
 				<key>LOCATION</key>
 				<integer>0</integer>
 				<key>NAME</key>
-				<string>CABBAGE_INSTALLER_NAME</string>
+				<string>Cabbage</string>
 				<key>OVERWRITE_PERMISSIONS</key>
 				<false/>
 				<key>PAYLOAD_SIZE</key>
@@ -1386,7 +1386,7 @@
 				</dict>
 			</array>
 			<key>NAME</key>
-			<string>Cabbage</string>
+			<string>CABBAGE_INSTALLER_NAME</string>
 			<key>PAYLOAD_ONLY</key>
 			<false/>
 			<key>TREAT_MISSING_PRESENTATION_DOCUMENTS_AS_WARNING</key>
