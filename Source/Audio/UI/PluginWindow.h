@@ -303,7 +303,9 @@ private:
 			}
 
 			void refresh() override {}
-			void audioProcessorChanged(AudioProcessor*) override {}
+			void audioProcessorChanged(AudioProcessor*, const ChangeDetails &details) override {
+                ignoreUnused(details);
+            }
 			void audioProcessorParameterChanged(AudioProcessor*, int, float) override {}
 
 			AudioProcessor& owner;

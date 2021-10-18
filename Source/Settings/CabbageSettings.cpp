@@ -45,9 +45,9 @@ void CabbageSettings::setDefaultSettings()
     examplesDir = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Examples";
     cabbageHelp = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CabbageManual";
 	themePath = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getFullPathName() + "/Themes/modern-darkBG";
-#if defined(WIN32)
+#if JUCE_WINDOWS
     manualPath = "C:\\Program Files\\Csound6_x64\\doc\\manual";
-#elif !defined(MACOSX)
+#elif JUCE_LINUX
     //manualPath = File::getSpecialLocation (File::currentExecutableFile).getParentDirectory().getFullPathName() + "/CsoundDocs";
     examplesDir = "/usr/share/doc/cabbage/Examples";
     cabbageHelp = "/usr/share/doc/cabbage/CabbageManual";
@@ -63,7 +63,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("lastPluginScanPath_AudioUnit", "");
 #endif
 
-#ifdef CabbagePro
+#if CabbagePro
     defaultPropSet->setValue ("CsoundPath", "/Library/Frameworks/CsoundLib64.framework/CsoundLib64"); 
 #endif
     

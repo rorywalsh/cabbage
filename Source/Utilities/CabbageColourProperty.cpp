@@ -50,13 +50,13 @@ void ColourPropertyComponent::mouseDown (const MouseEvent& e)
 {
     if (isEnabled())
     {
-        ColourPallete* colourSelector;
+        auto colourSelector = std::make_unique<ColourPallete> ();
         colourSelector->setBounds (0, 0, 300, 300);
         colourSelector->addChangeListener (this);
         colourSelector->setNameOfParent (name);
         colourSelector->setCurrentColour (colour);
-        CallOutBox::launchAsynchronously (colourSelector, getScreenBounds(), nullptr);
-        colour = colourSelector->getCurrentColour();
+        CallOutBox::launchAsynchronously (std::move(colourSelector), getScreenBounds(), nullptr);
+        //colour = colourSelector->getCurrentColour();
 
     }
 }
@@ -190,13 +190,13 @@ void ColourMultiPropertyComponent::mouseDown (const MouseEvent& e)
         if (isEnabled())
         {
             const int colourIndex = overlayComponentName.replace ("overlay", "").getIntValue() - 1;
-            ColourPallete* colourSelector;
+            auto colourSelector = std::make_unique<ColourPallete> ();
             colourSelector->setBounds (0, 0, 300, 300);
             colourSelector->addChangeListener (this);
             colourSelector->setNameOfParent (overlayComponentName);
             colourSelector->setCurrentColour (colours[colourIndex]);
-            CallOutBox::launchAsynchronously (colourSelector, getScreenBounds(), nullptr);
-            colour = colourSelector->getCurrentColour();
+            CallOutBox::launchAsynchronously (std::move(colourSelector), getScreenBounds(), nullptr);
+            //colour = colourSelector->getCurrentColour();
         }
     }
 }

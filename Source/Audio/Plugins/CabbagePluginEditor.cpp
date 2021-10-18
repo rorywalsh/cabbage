@@ -30,7 +30,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
       cabbageForm(this),
       lookAndFeel(),
     cabbageProcessor(p)
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     , layoutEditor (cabbageProcessor.cabbageWidgets)
 #endif
 {
@@ -53,7 +53,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 	cabbageForm.setWantsKeyboardFocus(true);
     createEditorInterface (cabbageProcessor.cabbageWidgets);
 
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     viewportContainer->addAndMakeVisible (layoutEditor);
     layoutEditor.setTargetComponent (&cabbageForm);
     layoutEditor.updateFrames();
@@ -64,8 +64,8 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     resized();
 
     tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
-    if(cabbageProcessor.getCsound())
-        cabbageProcessor.getCsound()->SetControlChannel ("IS_EDITOR_OPEN", 1.0);
+    if(cabbageProcessor.getEngine())
+        cabbageProcessor.getEngine()->SetControlChannel ("IS_EDITOR_OPEN", 1.0);
 
     if(cabbageProcessor.currentPluginScale != -1)
         resizePlugin(cabbageProcessor.currentPluginScale);
@@ -84,8 +84,8 @@ CabbagePluginEditor::~CabbagePluginEditor()
     detachOpenGL();
 
     
-    if(cabbageProcessor.getCsound())
-    	cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 0.0);
+    if(cabbageProcessor.getEngine())
+    	cabbageProcessor.getEngine()->SetChannel ("IS_EDITOR_OPEN", 0.0);
 }
 
 void CabbagePluginEditor::refreshValueTreeListeners()
@@ -112,7 +112,7 @@ void CabbagePluginEditor::resized()
 {
     sendChannelDataToCsound("SCREEN_WIDTH", getWidth());
     sendChannelDataToCsound("SCREEN_HEIGHT", getHeight());
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     layoutEditor.setBounds (getLocalBounds());
     
 #endif
@@ -596,7 +596,7 @@ void CabbagePluginEditor::insertKeyboard (ValueTree cabbageWidgetData)
         components.add (midiKeyboard = new CabbageKeyboard (cabbageWidgetData, this, cabbageProcessor.keyboardState));
         //midiKeyboard->setKeyPressBaseOctave (3); // <-- now you can set this with 'keypressbaseoctave' identifier
         
-#ifndef Cabbage_IDE_Build
+#if !Cabbage_IDE_Build
         for(int i = 0 ; i < 128 ; i++)
             midiKeyboard->removeKeyPressForNote(i);
 #endif
@@ -844,7 +844,7 @@ void CabbagePluginEditor::sliderDragStarted(Slider* slider)
     {
         if (CabbagePluginParameter* param = getParameterForComponent(slider->getName()))
         {
-#ifndef Cabbage_IDE_Build
+#if !Cabbage_IDE_Build
             if(pluginType.isAbletonLive())
                 if(param->isPerformingGesture==true)
                     param->endChangeGesture();
@@ -868,14 +868,14 @@ void CabbagePluginEditor::sliderDragStarted(Slider* slider)
 void CabbagePluginEditor::sliderDragEnded(Slider* slider)
 {
     // If the Csound pointer is null then the given slider is invalid and should not be used (its private pimpl pointer is null and will cause a crash).
-    if (!cabbageProcessor.getCsound())
+    if (!cabbageProcessor.getEngine())
         return;
     
     if (slider->getSliderStyle() != Slider::TwoValueHorizontal && slider->getSliderStyle() != Slider::TwoValueVertical)
     {
         if (CabbagePluginParameter* param = getParameterForComponent(slider->getName()))
         {
-#ifndef Cabbage_IDE_Build
+#if !Cabbage_IDE_Build
             if(!pluginType.isAbletonLive())
 #endif
             param->endChangeGesture();
@@ -897,7 +897,7 @@ void CabbagePluginEditor::sliderDragEnded(Slider* slider)
 //======================================================================================================
 void CabbagePluginEditor::enableEditMode (bool enable)
 {
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     layoutEditor.setEnabled (enable);
     editModeEnabled = enable;
     layoutEditor.toFront (false);
@@ -956,7 +956,7 @@ ValueTree CabbagePluginEditor::getValueTreeForComponent (String compName)
 
 void CabbagePluginEditor::updateLayoutEditorFrames()
 {
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
 
     if (editModeEnabled)
         layoutEditor.updateFrames();
@@ -1012,7 +1012,7 @@ void CabbagePluginEditor::addPlantToPopupPlantsArray (ValueTree wData, Component
 //======================================================================================================
 void CabbagePluginEditor::updatefTableData (GenTable* table)
 {
-    if (!cabbageProcessor.getCsound())
+    if (!cabbageProcessor.getEngine())
         return;
     
     Array<double> pFields = table->getPfields();
@@ -1071,14 +1071,14 @@ void CabbagePluginEditor::updatefTableData (GenTable* table)
         fStatement.set (1, String (table->tableNumber));
         fStatement.set (0, "f");
 
-        cabbageProcessor.getCsound()->GetCsound()->hfgens (cabbageProcessor.getCsound()->GetCsound(), &ftpp, &evt, 1);
+        cabbageProcessor.getEngine()->GetCsound()->hfgens (cabbageProcessor.getEngine()->GetCsound(), &ftpp, &evt, 1);
         Array<float, CriticalSection> points;
 
         points = Array<float, CriticalSection> (ftpp->ftable, ftpp->flen);
         table->setWaveform (points, false);
         //table->enableEditMode(fStatement);
 
-        cabbageProcessor.getCsound()->InputMessage (fStatement.joinIntoString (" ").toUTF8());
+        cabbageProcessor.getEngine()->InputMessage (fStatement.joinIntoString (" ").toUTF8());
     }
 
 }
@@ -1086,28 +1086,28 @@ void CabbagePluginEditor::updatefTableData (GenTable* table)
 //======================================================================================================
 void CabbagePluginEditor::sendChannelDataToCsound (String channel, float value)
 {
-    if (csdCompiledWithoutError() && cabbageProcessor.getCsound())
-        cabbageProcessor.getCsound()->SetChannel (channel.getCharPointer(), value);
+    if (csdCompiledWithoutError() && cabbageProcessor.getEngine())
+        cabbageProcessor.getEngine()->SetChannel (channel.getCharPointer(), value);
 }
 
 float CabbagePluginEditor::getChannelDataFromCsound (String channel)
 {
-    if (csdCompiledWithoutError() && cabbageProcessor.getCsound())
-        return cabbageProcessor.getCsound()->GetChannel (channel.getCharPointer());
+    if (csdCompiledWithoutError() && cabbageProcessor.getEngine())
+        return cabbageProcessor.getEngine()->GetChannel (channel.getCharPointer());
     
     return 0;
 }
 
 void CabbagePluginEditor::sendChannelStringDataToCsound (String channel, String value)
 {
-    if (cabbageProcessor.csdCompiledWithoutError() && cabbageProcessor.getCsound())
-        cabbageProcessor.getCsound()->SetStringChannel (channel.getCharPointer(), value.toUTF8().getAddress());
+    if (cabbageProcessor.csdCompiledWithoutError() && cabbageProcessor.getEngine())
+        cabbageProcessor.getEngine()->SetStringChannel (channel.getCharPointer(), value.toUTF8().getAddress());
 }
 
 void CabbagePluginEditor::sendScoreEventToCsound (String scoreEvent)
 {
-    if (cabbageProcessor.csdCompiledWithoutError() && cabbageProcessor.getCsound())
-        cabbageProcessor.getCsound()->InputMessage(scoreEvent.toUTF8());
+    if (cabbageProcessor.csdCompiledWithoutError() && cabbageProcessor.getEngine())
+        cabbageProcessor.getEngine()->InputMessage(scoreEvent.toUTF8());
 }
 
 void CabbagePluginEditor::createEventMatrix(int cols, int rows, String channel)

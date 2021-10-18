@@ -465,12 +465,8 @@ int GetCabbageStringValue::getAttribute()
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
-        if(strcmp(lastString, (((STRINGDAT*)value)->data)) != 0)
-        {
-            outargs.str_data(0).size = ((STRINGDAT*)value)->size;
-            outargs.str_data(0).data = csound->strdup(((STRINGDAT*)value)->data);
-            lastString = outargs.str_data(0).data;
-        }
+        outargs.str_data(0).size = ((STRINGDAT*)value)->size;
+        outargs.str_data(0).data = (((STRINGDAT*)value)->data);
     }
     
     
@@ -1260,7 +1256,7 @@ int SetCabbageIdentifierArray::setAttribute()
 
 int SetCabbageIdentifierSArgs::setAttribute(int rate)
 {
-    //csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->GetCsound(), "cabbageSet", "", "kSS", csnd::thread::k);
+    //csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->getEngine(), "cabbageSet", "", "kSS", csnd::thread::k);
     
     CabbageWidgetIdentifiers::IdentifierData data;
     int trigger = args[0];

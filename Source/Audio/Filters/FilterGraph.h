@@ -49,7 +49,7 @@ class FilterGraph   : public FileBasedDocument,
 public:
     //==============================================================================
     FilterGraph (AudioPluginFormatManager&);
-    ~FilterGraph();
+    ~FilterGraph() override;
 
     //==============================================================================
     using NodeID = AudioProcessorGraph::NodeID;
@@ -95,7 +95,7 @@ public:
 		descript.numInputChannels = 2;
 		descript.numOutputChannels = 2;
 		descript.isInstrument = true;
-		descript.uid = nodeId.uid;
+		descript.uniqueId = nodeId.uid;
 		descript.manufacturerName = "CabbageAudio";
 		descript.pluginFormatName = "Cabbage";
 
@@ -201,7 +201,7 @@ public:
 
 				if (auto* plugin = dynamic_cast <AudioPluginInstance*> (node->getProcessor()))
 					plugin->fillInPluginDescription(pd);
-				else if (auto* plugin = dynamic_cast <CabbagePluginProcessor*> (node->getProcessor()))
+				else if (auto* plugin2 = dynamic_cast <CabbagePluginProcessor*> (node->getProcessor()))
 				{
 					//grab description of native plugin for saving...
 					pd = getPluginDescriptor(node->nodeID, node->properties.getWithDefault("pluginFile", ""));
@@ -406,7 +406,7 @@ public:
 
 	void addCabbagePlugin(const PluginDescription& desc, juce::Point<double> pos)
 	{
-		AudioProcessorGraph::NodeID nodeId(desc.uid);
+		AudioProcessorGraph::NodeID nodeId(desc.uniqueId);
 		std::unique_ptr <AudioProcessor> processor = createCabbageProcessor(desc.fileOrIdentifier);
 		const bool isCabbageFile = CabbageUtilities::hasCabbageTags(File(desc.fileOrIdentifier));
 
@@ -479,6 +479,7 @@ public:
 
 	juce::Point<int> getPositionOfCurrentlyOpenWindow(AudioProcessorGraph::NodeID  nodeId)
 	{
+        ignoreUnused(nodeId);
 		for (auto* w : activePluginWindows)
 			return w->getPosition();
 
@@ -544,7 +545,7 @@ public:
 
     //==============================================================================
     void audioProcessorParameterChanged (AudioProcessor*, int, float) override {}
-    void audioProcessorChanged (AudioProcessor*) override { changed(); }
+    void audioProcessorChanged (AudioProcessor*, const ChangeDetails &details) override { changed(); }
 
     //==============================================================================
     XmlElement* createXml() const;

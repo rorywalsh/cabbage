@@ -29,7 +29,7 @@
 #include "../../Opcodes/CabbageIdentifierOpcodes.h"
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"
-#ifdef CabbagePro
+#if CabbagePro
 #include "../../Utilities/encrypt.h"
 #endif
 
@@ -42,7 +42,7 @@ public:
     //==============================================================================
 	CsoundPluginProcessor(File csoundInputFile, 
         const BusesProperties ioBuses);
-	~CsoundPluginProcessor();
+	~CsoundPluginProcessor() override;
 
     void destroyCsoundGlobalVars();
     void createCsoundGlobalVars(ValueTree cabbageData);
@@ -56,6 +56,7 @@ public:
     void releaseResources() override;
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override
     {
+        ignoreUnused(layouts);
 #if ! Cabbage_IDE_Build
         if(AudioProcessor::wrapperType == wrapperType_AudioUnit)
         {
@@ -80,7 +81,7 @@ public:
 #else
         return true;
 #endif
-    };
+    }
 
 	void performCsoundKsmps();
 	int result = -1;
@@ -92,7 +93,9 @@ public:
 	void processSamples(AudioBuffer< Type >&, MidiBuffer&);
 	//bool supportsDoublePrecisionProcessing() const override { return true; }
 
-    virtual void processBlockBypassed (AudioBuffer< float > &buffer, MidiBuffer &midiMessages) override {}
+    virtual void processBlockBypassed (AudioBuffer< float > &buffer, MidiBuffer &midiMessages) override {
+        ignoreUnused(buffer, midiMessages);
+    }
 
 	enum BufferType {
 		inputOutput,
@@ -161,7 +164,7 @@ public:
     {
         if(csound)
         {
-            return csound->GetChannel("CSOUND_GESTURES");
+            return int(csound->GetChannel("CSOUND_GESTURES"));
         }
         
         return 0;
@@ -198,10 +201,10 @@ public:
     //Note that sendChannelDataToCsound() if we subclass the AudioprocessorParameter clas
     //as is done in CabbagePluginprocessor.
     virtual void triggerCsoundEvents();
-    virtual void sendChannelDataToCsound() {};
-    virtual void getIdentifierDataFromCsound() {};
+    virtual void sendChannelDataToCsound() {}
+    virtual void getIdentifierDataFromCsound() {}
     void sendHostDataToCsound();
-    virtual void getChannelDataFromCsound() {};
+    virtual void getChannelDataFromCsound() {}
     virtual void initAllCsoundChannels (ValueTree cabbageData);
     //=============================================================================
     void addMacros (String& csdText);
@@ -224,7 +227,7 @@ public:
 
 
 
-    Csound* getCsound()
+    Csound* getEngine()
     {
         return csound.get();
     }
@@ -238,7 +241,7 @@ public:
     {
         guiRefreshRate = rate;
     }
-
+		
     MidiKeyboardState keyboardState;
     bool hostIsCubase = false;
 
@@ -283,7 +286,7 @@ public:
         bool returnVal = bool(updateSignalDisplay.getWithDefault(signalDisplayName, false));
         updateSignalDisplay.set(signalDisplayName, false);
         return returnVal;
-    };
+    }
 
     OwnedArray<MatrixEventSequencer> matrixEventSequencers;
     OwnedArray <SignalDisplay, CriticalSection> signalArrays;   //holds values from FFT function table created using dispfft
@@ -334,7 +337,7 @@ private:
     File csdFile = {}, csdFilePath = {};
     std::unique_ptr<Csound> csound;
     std::unique_ptr<FileLogger> fileLogger;
-    int busIndex = 0;
+//    int busIndex = 0;
     bool disableLogging = false;
 	int preferredLatency = 32;
     String internalStateData = {};

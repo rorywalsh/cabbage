@@ -35,21 +35,21 @@ class CabbageTextBox : public TextEditor, public ValueTree::Listener, public Cab
 public:
 
     explicit CabbageTextBox (ValueTree wData, CabbagePluginEditor* owner);
-    ~CabbageTextBox() {
+    ~CabbageTextBox() override {
         widgetData.removeListener(this);
-    };
+    }
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
 
     ValueTree widgetData;
 
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageTextBox);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageTextBox)
 };
 
 

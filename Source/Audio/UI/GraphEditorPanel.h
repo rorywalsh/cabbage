@@ -41,7 +41,7 @@ public ChangeListener
 {
 public:
     GraphEditorPanel (FilterGraph& graph);
-    ~GraphEditorPanel();
+    ~GraphEditorPanel() override;
     
     void createNewPlugin (const PluginDescription&, juce::Point<double> position);
     
@@ -116,7 +116,7 @@ public:
                             AudioDeviceManager& deviceManager,
                             KnownPluginList& pluginList);
     
-    ~GraphDocumentComponent();
+    ~GraphDocumentComponent() override;
     
     //==============================================================================
     void createNewPlugin (const PluginDescription&, juce::Point<double> position);
@@ -251,6 +251,6 @@ public:
 
 	CabbageMainComponent* getOwner() {
 		return owner;
-	};
+	}
 
 };

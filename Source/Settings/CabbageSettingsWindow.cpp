@@ -353,7 +353,7 @@ void CabbageSettingsWindow::addMiscProperties()
     miscPanel.clear();
     miscPanel.addSection ("Editor", editorProps);
     miscPanel.addSection ("Directories", dirProps);
-#ifdef CabbagePro
+#if CabbagePro
     Array<PropertyComponent*> csoundProps;
     const String csoundPath = settings.getUserSettings()->getValue ("CsoundPath");
     csoundProps.add (new TextPropertyComponent (Value (csoundPath), "Csound Path (otool -L)", 200, false));

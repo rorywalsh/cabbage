@@ -160,7 +160,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 
         int currentSize = -1;
         if(owner->getPluginEditorScale() == -1)
-            currentSize = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
+            currentSize = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::value);
         else
             currentSize = owner->getPluginEditorScale();
         
@@ -219,14 +219,14 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         menuIndex = 1;
         if(menus.size()>0)
         {
-            for( int i = 0 ; i < menus.size() ; i++)
+            for( int i = 0 ; i < int(menus.size()) ; i++)
             {
                 subMenu.clear();
-                for( int x = 1 ; x < menus[i].size() ; x++)
+                for( int x = 1 ; x < int(menus[i].size()) ; x++)
                 {
                     subMenu.addItem(menuIndex, menus[i][x]);
                     menuIndex++;
-                    if(x == menus[i].size() - 1){
+                    if(x == int(menus[i].size() - 1)){
                         const String subMenuName = menus[i][0].substring(6);
                         getRootMenu()->addSubMenu(subMenuName, subMenu);
                     }
@@ -407,7 +407,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         {
             if (isStringCombo == false)
             {
-                const int comboValue = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
+                const int comboValue = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value);
 
                 if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::update) == 1)
                     setSelectedItemIndex (comboValue - 1, sendNotification);
@@ -428,7 +428,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 
                 if(pluginDir.getChildFile(currentValueAsText).existsAsFile())
                 {
-                    currentValueAsText = pluginDir.getChildFile(currentValueAsText).getFullPathName();// getFileNameWithoutExtension();
+                    currentValueAsText = pluginDir.getChildFile(currentValueAsText).getFileNameWithoutExtension();
                     index = stringItems.indexOf (currentValueAsText);
                 }
                 else
@@ -478,7 +478,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
         }
 
-        if(prop == CabbageIdentifierIds::text && isStringCombo == true)
+        if((prop == CabbageIdentifierIds::text && isStringCombo == true) || CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::automatable) == 0)
         {
                 addItemsToCombobox(valueTree);
         }

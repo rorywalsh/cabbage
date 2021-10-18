@@ -1,7 +1,8 @@
-diff --git a/JuceLibraryCode/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp b/JuceLibraryCode/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp
+Submodule JUCE contains modified content
+diff --git a/JUCE/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp b/JUCE/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp
 index 2c60956b..8cdd33b7 100644
---- a/JuceLibraryCode/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp
-+++ b/JuceLibraryCode/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp
+--- a/JUCE/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp
++++ b/JUCE/modules/juce_audio_plugin_client/utility/juce_PluginUtilities.cpp
 @@ -57,15 +57,20 @@ namespace juce
       strcpy (uidString, vstfxidStr);
  

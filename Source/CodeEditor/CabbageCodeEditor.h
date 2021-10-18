@@ -47,7 +47,6 @@ class CabbageCodeEditorComponent :
     ListBox autoCompleteListBox;
     StringArray variableNamesToShow, variableNames;
     CabbageEditorContainer* owner;
-    int updateGUICounter = 0;
     int currentFontSize = 17;
     LookAndFeel_V3 lookAndFeel3;
     Array<Range<int>> commentedSections;
@@ -55,7 +54,7 @@ class CabbageCodeEditorComponent :
 
 public:
     CabbageCodeEditorComponent (CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree, CodeDocument& document, CodeTokeniser* codeTokeniser);
-    ~CabbageCodeEditorComponent();
+    ~CabbageCodeEditorComponent() override;
     void updateColourScheme (bool isCsdFile = true);
     CodeDocument::Position positionInCode;
     ValueTree valueTree;
@@ -152,7 +151,7 @@ public:
             parseTextForVariables();
 
         parseForVariables = false;
-    };
+    }
 
     void addToGUIEditorContextMenu();
     void updateCurrenLineMarker (ArrowKeys arrow = ArrowKeys::None);
@@ -211,9 +210,11 @@ public:
     void setFontSize (int size) {             currentFontSize = size;                             }
     //=========================================================
     void removeSelectedText();
-    void listBoxItemDoubleClicked (int row, const MouseEvent& e) override {};
+    void listBoxItemDoubleClicked (int row, const MouseEvent& e) override {
+        ignoreUnused(row, e);
+    }
     void paintListBoxItem (int rowNumber, Graphics& g, int width, int height, bool rowIsSelected) override;
-    void selectedRowsChanged (int /*lastRowselected*/) override {};
+    void selectedRowsChanged (int /*lastRowselected*/) override {}
     String lastAction;
     bool allowUpdateOfPluginGUI = false;
 

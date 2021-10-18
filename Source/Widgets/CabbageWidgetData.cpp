@@ -73,7 +73,6 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, const String lineF
     setProperty(widgetData, CabbageIdentifierIds::opcode6dir64, "");
     setProperty(widgetData, CabbageIdentifierIds::openGL, 0);
 
-    DBG(getProperty(widgetData, CabbageIdentifierIds::csdfile).toString());
 
     StringArray strTokens;
     strTokens.addTokens (lineFromCsd, " ", "\"");
@@ -310,15 +309,19 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
         String identifier = identifierValueSet.identifier[indx].trimCharactersAtStart (" ");
 
         
+
         if (identifier.indexOf (":") != -1 && !lineOfText.contains("svgElement"))
             identifier = identifier.substring (0, identifier.indexOf (":") + 1);
 
         
         //strTokens = CabbageUtilities::getTokens (identifierValueSet.parameter[indx], ',');
-        strTokens.addTokens(identifierValueSet.parameter[indx], ",", "\"");
-
-
-        bool isCabbageWidget = (identifier.indexOf("_") != -1 ? false : true);
+        
+        if(identifier == "text" && typeOfWidget == CabbageWidgetTypes::texteditor)
+            strTokens.add(identifierValueSet.parameter[indx]);
+        else
+            strTokens.addTokens(identifierValueSet.parameter[indx], ",", "\"");
+        
+        bool isCabbageIdenfitier = (identifier.indexOf("_") != -1 ? false : true);
 
         switch (HashStringToInt (identifier.toStdString().c_str()))
         {
@@ -357,7 +360,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
                 setProperty (widgetData, identifier, (identifier.contains("fix") ? strTokens[0] : strTokens[0].trim()));
                 break;
                 
-            case HashStringToInt("svgElement"):
+            case HashStringToInt ("svgElement"):
                 setSVGText(widgetData, strTokens);
                 
             case HashStringToInt ("valuePrefix"):
@@ -654,7 +657,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt("matrixSize"):
                 setMatrixSize(strTokens, widgetData);
             default:
-                if(!isCabbageWidget)
+                if(!isCabbageIdenfitier)
                     setProperty (widgetData, identifier, strTokens);
                 break;
                 
@@ -1208,12 +1211,8 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
     setProperty (widgetData, CabbageIdentifierIds::filetype, strTokens[0].trim());
 
     if (strTokens.size() > 1)
-    {
-        const String test = getProperty(widgetData, CabbageIdentifierIds::csdfile);
-        const String absolutePath = File(getProperty(widgetData, CabbageIdentifierIds::csdfile)).getChildFile(strTokens[1].trim()).getFullPathName();
-        setProperty(widgetData, CabbageIdentifierIds::currentdir, strTokens[1].trim());//absolutePath.replaceCharacters("\\", "/"));
-    }
-        
+        setProperty (widgetData, CabbageIdentifierIds::currentdir, strTokens[1].trim());
+
     if(strTokens.size() > 2)
         setProperty (widgetData, CabbageIdentifierIds::ignorelastdir, strTokens[2].trim().getIntValue());
     

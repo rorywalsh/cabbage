@@ -1,7 +1,8 @@
-diff --git a/JuceLibraryCode/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp b/JuceLibraryCode/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp
+Submodule JUCE contains modified content
+diff --git a/JUCE/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp b/JUCE/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp
 index 84df483a..24294df9 100644
---- a/JuceLibraryCode/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp
-+++ b/JuceLibraryCode/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp
+--- a/JUCE/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp
++++ b/JUCE/modules/juce_audio_plugin_client/VST/juce_VST_Wrapper.cpp
 @@ -206,6 +206,43 @@ struct AbletonLiveHostSpecific
      int flags;           // KCantBeSuspended = (1 << 2)
  };

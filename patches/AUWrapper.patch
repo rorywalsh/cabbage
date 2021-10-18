@@ -1,13 +1,13 @@
-diff --git a/JuceLibraryCode/modules/juce_audio_plugin_client/AU/juce_AU_Wrapper.mm b/JuceLibraryCode/modules/juce_audio_plugin_client/AU/juce_AU_Wrapper.mm
+diff --git a/JUCE/modules/juce_audio_plugin_client/AU/juce_AU_Wrapper.mm b/JUCE/modules/juce_audio_plugin_client/AU/juce_AU_Wrapper.mm
 index 55d597aa..e789c5b5 100644
---- a/JuceLibraryCode/modules/juce_audio_plugin_client/AU/juce_AU_Wrapper.mm
-+++ b/JuceLibraryCode/modules/juce_audio_plugin_client/AU/juce_AU_Wrapper.mm
+--- a/JUCE/modules/juce_audio_plugin_client/AU/juce_AU_Wrapper.mm
++++ b/JUCE/modules/juce_audio_plugin_client/AU/juce_AU_Wrapper.mm
 @@ -1720,7 +1720,8 @@ static BOOL mouseDownCanMoveWindow (id, SEL)
  
          static NSString* description (id, SEL)
          {
 -            return [NSString stringWithString: nsStringLiteral (JucePlugin_Name)];
-+            String pluginString =  File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension();
++            String pluginString = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getFileName();
 +            return [NSString stringWithString: nsStringLiteral (pluginString.toUTF8().getAddress())];
          }
  

@@ -19,9 +19,9 @@ public:
     {
 
 
-    };
+    }
 
-    ~CabbageStrings() {};
+    ~CabbageStrings() {}
 
 
     static String getNewCsoundFileText()
@@ -57,7 +57,7 @@ public:
             "</Cabbage>\n"
             "<CsoundSynthesizer>\n"
             "<CsOptions>\n"
-            "-n -d -+rtmidi=NULL -M0 -m0d --midi-key-cps=4 --midi-velocity-amp=5\n"
+            "-n -d -+rtmidi=NULL -M0 	--midi-key-cps=4 --midi-velocity-amp=5\n"
             "</CsOptions>\n"
             "<CsInstruments>\n"
             "; Initialize the global variables. \n"
@@ -87,15 +87,15 @@ public:
     {
             String newRackFile =
         "<Cabbage>\n"
-        "form caption(\"CabbageModule\") size(100, 380), colour(255, 255, 255), pluginid(\"def1\")\n"
+        "form caption(\"CabbageModule\") size(100, 380), colour(255, 255, 255), pluginId(\"def1\")\n"
         "screw bounds(5, 10, 15, 15)\n"
         "screw bounds(80, 10, 15, 15)\n"
         "screw bounds(5, 360, 15, 15)\n"
         "screw bounds(80, 360, 15, 15)\n"
         "\n"
-        "cvinput bounds(34, 60, 30, 30), channel(\"cvInput1\")\n"
+        "cvinput bounds(34, 60, 30, 30), channel(\"input1\")\n"
         "label bounds(0, 90, 100, 12), fontColour(0,0,0) text(\"Input\")\n"
-        "cvoutput bounds(34, 300, 30, 30), channel(\"cvOutput1\")\n"
+        "cvoutput bounds(34, 300, 30, 30), channel(\"output1\")\n"
         "label bounds(0, 330, 100, 12), fontColour(0,0,0) text(\"Output\")\n"
         "rslider bounds(0, 150, 100, 100), channel(\"gain\"), text(\"Gain\"), textColour(0, 0, 0, 255), range(0, 1, 0, 1, 0.01)\n"
         "light bounds(45, 250, 10, 10), channel(\"light1\")\n"
@@ -2024,7 +2024,7 @@ static const StringArray getOpcodeHints(){
         
         "\"cabbageFindFiles\";\"Gets an array of files from a directory.\";\"Gets an array of files from a directory\";\"SFiles[] cabbageFindFiles SLocation [, SType, SExtension] - SFiles[] cabbageFindFiles kTriggerFind, SLocation [, SType, SExtension]"};
     return opcodes;
-};
+}
 
 
 

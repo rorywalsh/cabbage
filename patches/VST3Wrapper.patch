@@ -1,7 +1,8 @@
-diff --git a/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp b/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
+Submodule JUCE contains modified content
+diff --git a/JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp b/JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
 index 28c48424..3d75a594 100644
---- a/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
-+++ b/JuceLibraryCode/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
+--- a/JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
++++ b/JUCE/modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
 @@ -2467,7 +2467,7 @@ public:
          jassert (ByteOrder::bigEndianInt ("CcnK") == htonl ((uint32) bank->chunkMagic));
          jassert (ByteOrder::bigEndianInt ("FBCh") == htonl ((uint32) bank->fxMagic));

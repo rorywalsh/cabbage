@@ -43,7 +43,7 @@ public:
 
 
     explicit GenericCabbageEditor (AudioProcessor& parent);
-    ~GenericCabbageEditor();
+    ~GenericCabbageEditor() override;
 
     void resized() override;
 

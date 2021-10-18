@@ -57,11 +57,11 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
                 fileExtension = "dll";
         }
         
-#if CabbagePro && JUCE_MAC
-        const String pluginDesc = String(JucePlugin_Manufacturer);
-#else
+// #if CabbagePro && JUCE_MAC
+//         const String pluginDesc = String(JucePlugin_Manufacturer);
+// #else
         const String pluginDesc = String(JucePlugin_Desc);
-#endif
+// #endifs
         
         if (type == "VSTi" || type == "AUi" || type == "VST3i")
             pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"Synth." + fileExtension);
@@ -215,11 +215,9 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     
     if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
     {
-#ifdef CabbagePro
-        const String pluginDesc = String(JucePlugin_Manufacturer);
-#else
-        const String pluginDesc = String(JucePlugin_Desc);
-#endif
+
+        const String pluginDesc = VSTData.getFileNameWithoutExtension();
+
         if(fileExtension.containsIgnoreCase("component"))
             exportedCsdFile = exportedPlugin.getFullPathName() + String ("/Contents/"+pluginDesc+".csd");
         else if(fileExtension.containsIgnoreCase("vst"))
@@ -262,8 +260,10 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             
             String manu(JucePlugin_Manufacturer);
             const String pluginName = "<string>" +manu + ": " + fc.getFileNameWithoutExtension() + "</string>";
-            const String toReplace = "<string>"+manu+": CabbageEffectNam</string>";
-#ifdef CabbagePro
+            const String toReplace = "<string>"+manu+": "+VSTData.getFileNameWithoutExtension()+"</string>";
+            DBG(toReplace);
+            
+#if CabbagePro
             //be sure to remove CabbageAudio from plugin plist..
             const String toReplace2 = "<string>CabbageAudio: CabbageEffectNam<string>";
             newPList = newPList.replace (toReplace2, pluginName);
@@ -285,6 +285,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             
             pl.replaceWithText (newPList);
         }
+        
         //bundle all auxiliary files
         addFilesToPluginBundle(csdFile, exportedCsdFile);
         
@@ -299,64 +300,10 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         
         else
             exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
-        
-        setUniquePluginId (exportedPlugin, exportedCsdFile, pluginId);
-        
-        //bundle all auxiliary files
+
         addFilesToPluginBundle(csdFile, exportedPlugin);
     }
-    
-    if(type.containsIgnoreCase("AU"))
-    {
-        File pluginBinary (exportedPlugin.getFullPathName() + String ("/Contents/Resources/CabbagePlugin.rsrc"));
-        setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
-    }
-    
-#ifdef CabbagePro //bundle and relink Csound
-    //removing this for now to see if I can relink manually...
-    //    if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0 && encrypt)
-    //    {
-    //        File csoundFramework(File::getSpecialLocation (File::currentApplicationFile).getFullPathName()+"/Contents/CsoundLib64.framework");
-    //        if(!csoundFramework.exists())
-    //            jassertfalse;
-    //
-    //        if(!csoundFramework.copyFileTo(File(exportedPlugin.getFullPathName()+"/Contents/Resources/CsoundLib64.framework")))
-    //            jassertfalse;
-    //
-    //        ChildProcess childProc;
-    //        String pluginBinaryPath;
-    //
-    //        if(fileExtension.containsIgnoreCase("vst"))
-    //            pluginBinaryPath = exportedPlugin.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension();
-    //        else
-    //            pluginBinaryPath = exportedPlugin.getFullPathName() + String ("/Contents/MacOS/CabbagePlugin");
-    //
-    //
-    //
-    //        if(!childProc.start("otool -L "+pluginBinaryPath))
-    //        {
-    //            CabbageUtilities::showMessage("You will need Xcode's CLI developer tools in order to include Csound in your plugin bundle. Please install them and try again.", &lookAndFeel);
-    //            return;
-    //        }
-    //
-    //
-    //        StringArray lines;
-    //        lines.addLines(childProc.readAllProcessOutput());
-    //        const String csoundPath = lines[1].substring(0, lines[1].indexOf("("));
-    //        const String install_name_tool = "install_name_tool -change " + csoundPath + "@loader_path/../Resources/CsoundLib64.framework/CsoundLib64 /" + pluginBinaryPath;
-    //
-    //
-    //        childProc.start(install_name_tool);
-    //        if(childProc.readAllProcessOutput().length()>1)
-    //            CabbageUtilities::showMessage("There was a problem relinking the Csound binaries: " + childProc.readAllProcessOutput() + " Please contact Cabbage support and quote the following error message:", &lookAndFeel);
-    //
-    //
-    //
-    //
-    //    }
-#endif
-    
-    
+            
 }
 
 //==============================================================================
@@ -427,35 +374,35 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
             
             
             
-            //set plugin name based on .csd file
-            const char* pluginName = "CabbageEffectNam";
+//            //set plugin name based on .csd file
+            const char* pluginName = "CabbagePluginSynth";
             String plugLibName = csdFile.getFileNameWithoutExtension();
-            
-            if (plugLibName.length() < 16)
-                for (int y = plugLibName.length(); y < 16; y++)
+
+            if (plugLibName.length() < 18)
+                for (int y = plugLibName.length(); y < 18; y++)
                     plugLibName.append (String (" "), 1);
-            
-            mFile.seekg (0, ios::end);
+
+            mFile.seekg (0, std::ios::end);
             //buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
-            
+
             for (int i = 0; i < 5; i++)
             {
-                
-                mFile.seekg (0, ios::beg);
+
+                mFile.seekg (0, std::ios::beg);
                 mFile.read ((char*)&buffer[0], file_size);
-                
-                
+
+
                 loc = cabbageFindPluginId (buffer, file_size, pluginName);
-                
+
                 if (loc < 0)
                     break;
                 else
                 {
-                    mFile.seekg (loc, ios::beg);
-                    mFile.write (plugLibName.toUTF8(), 16);
+                    mFile.seekg (loc, std::ios::beg);
+                    mFile.write (plugLibName.toUTF8(), 18);
                 }
             }
-            
+
             loc = cabbageFindPluginId (buffer, file_size, pluginIDToReplace[i]);
             
             free (buffer);

@@ -35,10 +35,11 @@ public:
         bool toggleEditOnDoubleClick = false;
         
         explicit CustomTextEditor (CabbageTextEditor* _owner): TextEditor (""), owner (_owner) {}
-        ~CustomTextEditor() {}
+        ~CustomTextEditor() override {}
 
         void addPopupMenuItems (PopupMenu& menuToAddTo, const MouseEvent* mouseClickEvent) override
         {
+            ignoreUnused(mouseClickEvent);
             menuToAddTo.addItem (1, "Cut");
             menuToAddTo.addItem (2, "Copy");
             menuToAddTo.addItem (3, "Paste");
@@ -49,6 +50,7 @@ public:
 
         void mouseDoubleClick(const MouseEvent &e) override
         {
+            ignoreUnused(e);
             if(toggleEditOnDoubleClick){
                 if(isReadOnly())
                     setReadOnly(false);
@@ -78,18 +80,18 @@ public:
 
 
     CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageTextEditor() {
+    ~CabbageTextEditor() override {
         widgetData.removeListener(this);
-    };
+    }
 
     CabbagePluginEditor* owner;
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
-    void valueTreeChildAdded (ValueTree&, ValueTree&)override {};
+    void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
     void valueTreeChildRemoved (ValueTree&, ValueTree&, int) override {}
     void valueTreeChildOrderChanged (ValueTree&, int, int) override {}
-    void valueTreeParentChanged (ValueTree&) override {};
+    void valueTreeParentChanged (ValueTree&) override {}
 
     ValueTree widgetData;
 
@@ -104,7 +106,7 @@ public:
     
     void resized() override;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageTextEditor);
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageTextEditor)
 
 private:
     CustomTextEditor textEditor;

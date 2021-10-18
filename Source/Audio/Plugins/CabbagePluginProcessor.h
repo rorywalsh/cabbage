@@ -38,7 +38,7 @@ public:
         CabbagePluginProcessor* owner;
     public:
 
-        explicit CabbageJavaClass (CabbagePluginProcessor* owner): owner (owner)
+        explicit CabbageJavaClass (CabbagePluginProcessor* thisOwner): owner (thisOwner)
         {
             setMethod ("print", print);
         }
@@ -67,7 +67,7 @@ public:
 
 	CabbagePluginProcessor (File inputFile, BusesProperties IOBuses);
 	void createCsound(File inputFile, bool shouldCreateParameters = true);
-    ~CabbagePluginProcessor();
+    ~CabbagePluginProcessor() override;
 
     ValueTree cabbageWidgets;
     CachedValue<var> cachedValue;
@@ -172,7 +172,7 @@ public:
     
 
 private:
-#ifndef Cabbage_IDE_Build
+#if !Cabbage_IDE_Build
     PluginHostType pluginType;
 #endif
     controlChannelInfo_s* csoundChanList;
@@ -208,7 +208,7 @@ class CabbagePluginParameter
 {
     
 public:
-    CabbagePluginParameter(CabbagePluginProcessor* owner,
+    CabbagePluginParameter(CabbagePluginProcessor* thisOwner,
                           ValueTree wData,
                           Csound& csound,
                           const String& channelToUse,
@@ -222,12 +222,11 @@ public:
                           const String& prefix  = String(),
                           const String& postfix = String(),
                           bool isCombo = false)
-    : parameter(new CabbageHostParameter(*this, owner, wData, csound, channelToUse, name, prefix, postfix, minValue, maxValue, def, incr, skew, isCombo)),
+    : parameter(new CabbageHostParameter(*this, thisOwner, wData, csound, channelToUse, name, prefix, postfix, minValue, maxValue, def, incr, skew, isCombo)),
     widgetName(name),
-    isAutomatable(automatable),
-    owner(owner)
+    isAutomatable(automatable)
     {
-
+        ignoreUnused(thisOwner);
     }
     
     ~CabbagePluginParameter()
@@ -295,7 +294,7 @@ private:
     class CabbageHostParameter : public AudioParameterFloat
     {
     public:
-        virtual ~CabbageHostParameter() { }
+        virtual ~CabbageHostParameter() override { }
         float getValue() const override { return range.convertTo0to1(currentValue); }
         
         void setValue(float newValue) override
@@ -352,12 +351,12 @@ private:
         const String& getChannel() const { return channel; }
         
     private:
-        CabbageHostParameter(CabbagePluginParameter& owner,
+        CabbageHostParameter(CabbagePluginParameter& thisOwner,
                              CabbagePluginProcessor* proc,
                              ValueTree wData,
                              Csound& csound,
                              const String& channelToUse,
-                             const String& name,
+                             const String& thisName,
                              const String& prefixToUse,
                              const String& postfixToUse,
                              float minValue,
@@ -365,18 +364,18 @@ private:
                              float def,
                              float incr,
                              float skew,
-                             bool isCombo)
-        : AudioParameterFloat(name, channelToUse, NormalisableRange<float>(minValue, maxValue, incr, skew), def),
+                             bool isACombo)
+        : AudioParameterFloat(thisName, channelToUse, NormalisableRange<float>(minValue, maxValue, incr, skew), def),
         channel(channelToUse),
         prefix(prefixToUse),
         postfix(postfixToUse),
         currentValue(def),
-        isCombo(isCombo),
-        owner(owner),
+        isCombo(isACombo),
         processor(proc),
         valueTree(wData)
         {
-            
+            ignoreUnused(thisOwner);
+            ignoreUnused(csound);
         }
         
         String channel;
@@ -385,7 +384,6 @@ private:
         float currentValue;
         bool isCombo = false;
         
-        CabbagePluginParameter& owner;
         CabbagePluginProcessor* processor;
         ValueTree valueTree;
         
@@ -400,7 +398,7 @@ private:
     const String widgetName;
     const bool isAutomatable = true;
 
-    CabbagePluginProcessor* owner;
+    //CabbagePluginProcessor* owner;
     
 //    bool isCombo(const String name)
 //    {

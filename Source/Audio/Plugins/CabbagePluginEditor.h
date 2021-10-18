@@ -23,7 +23,7 @@
 #include "JuceHeader.h"
 #include "CabbagePluginProcessor.h"
 
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     #include "../../GUIEditor/ComponentLayoutEditor.h"
 #endif
 
@@ -72,12 +72,14 @@ class CabbagePluginEditor
 {
 public:
     explicit CabbagePluginEditor (CabbagePluginProcessor&);
-    ~CabbagePluginEditor();
+    ~CabbagePluginEditor() override;
 
     void createEditorInterface (ValueTree widgets);
     //==============================================================================
     void resized() override;
-    void paint (Graphics& g)  override {}
+    void paint (Graphics& g)  override {
+        ignoreUnused(g);
+    }
     //==============================================================================
     void setupWindow (ValueTree cabbageWidgetData);
 
@@ -100,7 +102,7 @@ public:
     void insertStringSequencer (ValueTree cabbageWidgetData);
     void insertGroupBox (ValueTree cabbageWidgetData);
     void insertSoundfiler (ValueTree cabbageWidgetData);
-    void insertSourceButton (ValueTree cabbageWidgetData) {};
+    void insertSourceButton (ValueTree cabbageWidgetData) { ignoreUnused(cabbageWidgetData);}
     void insertTextEditor (ValueTree cabbageWidgetData);
     void insertCsoundOutputConsole (ValueTree cabbageWidgetData);
     void insertKeyboard (ValueTree cabbageWidgetData);
@@ -110,12 +112,12 @@ public:
     void insertLine (ValueTree cabbageWidgetData);
     void insertLabel (ValueTree cabbageWidgetData);
     void insertListBox (ValueTree cabbageWidgetData);
-    void insertTable (ValueTree cabbageWidgetData) {};
+    void insertTable (ValueTree cabbageWidgetData) { ignoreUnused(cabbageWidgetData);}
     void insertInfoButton (ValueTree cabbageWidgetData);
     void insertGenTable (ValueTree cabbageWidgetData);
     void insertTextBox (ValueTree cabbageWidgetData);
     void insertSignalDisplay (ValueTree cabbageWidgetData);
-    void insertStepper (ValueTree cabbageWidgetData) {};
+    void insertStepper (ValueTree cabbageWidgetData) {ignoreUnused(cabbageWidgetData);}
     void insertMeter (ValueTree cabbageWidgetData);
     void insertPath (ValueTree cabbageWidgetData);
     void insertPort (ValueTree cabbageWidgetData);
@@ -191,15 +193,16 @@ public:
     void handleMouseClicks (const MouseEvent& e, bool isMousePressed);
     void handleMouseMovement (const MouseEvent& e);
     //=============================================================================
-	virtual bool keyPressed(const KeyPress& key, Component* originatingComponent) override
+	bool keyPressed(const KeyPress& key, Component* originatingComponent) override
 	{
-        cabbageProcessor.getCsound()->SetChannel("KEY_PRESSED", key.getKeyCode());
+        ignoreUnused(originatingComponent);
+        cabbageProcessor.getEngine()->SetChannel("KEY_PRESSED", key.getKeyCode());
 		return false;
 	}
 
-	virtual bool keyStateChanged(bool isKeyDown, Component* originatingComponent) override
+	bool keyStateChanged(bool isKeyDown, Component* originatingComponent) override
 	{
-        cabbageProcessor.getCsound()->SetChannel ("KEY_DOWN", isKeyDown);
+        cabbageProcessor.getEngine()->SetChannel ("KEY_DOWN", isKeyDown);
 		return false;
 	}
     
@@ -218,7 +221,7 @@ public:
                 mods.add("Alt");
         }
         
-        cabbageProcessor.getCsound()->SetChannel("KEY_MODIFIERS", mods.joinIntoString(" ").toUTF8().getAddress());
+        cabbageProcessor.getEngine()->SetChannel("KEY_MODIFIERS", mods.joinIntoString(" ").toUTF8().getAddress());
     }
 
 	//=============================================================================
@@ -259,7 +262,7 @@ public:
     //=============================================================================
     void updatefTableData (GenTable* table);
 
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     ComponentLayoutEditor& getLayoutEditor()
     {
         return layoutEditor;
@@ -328,6 +331,7 @@ private:
 
         void paint(Graphics &g)
         {
+            ignoreUnused(g);
             Viewport* const vp = findParentComponentOfClass<Viewport>(); //Get the parent viewport
             if(vp != nullptr) //Check for nullness
             {
@@ -359,7 +363,7 @@ private:
     SharedResourcePointer<TooltipWindow> tooltipWindow;
     bool isSliderDragging = false;
 
-#ifdef Cabbage_IDE_Build
+#if Cabbage_IDE_Build
     ComponentLayoutEditor layoutEditor;
 #else
     PluginHostType pluginType;
