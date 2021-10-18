@@ -564,7 +564,7 @@ if "Minimal" not in packageType and executeBuild == True:
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
         os.system('sed -i "" -e "s|CABBAGE_INSTALLER_NAME|CabbageOSXInstaller-'+getVersionNumber()+'|" Installer.pkgproj')
-        os.system('packagesbuild Installer.pkgproj')
+        os.system('packagesbuild Installer.pkgproj --verbose')
         print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
         os.system('ls '+rootDir+'/Installers/MacOS/build')
         print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
