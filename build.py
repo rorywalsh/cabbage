@@ -564,13 +564,14 @@ if "Minimal" not in packageType and executeBuild == True:
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
         os.system('sed -i "" -e "s|CABBAGE_INSTALLER_NAME|CabbageOSXInstaller-'+getVersionNumber()+'|" Installer.pkgproj')
-        os.system('packagesbuild Installer.pkgproj --verbose')
-        print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-        os.system('ls '+rootDir+'/Installers/MacOS/build')
-        print('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
+        
         if "Remote" in packageType:
-            os.system('cp -rf '+rootDir+'/Installers/MacOS/build/Cabbage.pkg '+stagingDir+'/Cabbage.pkg')
-            os.system('mv '+stagingDir+'/Cabbage.pkg '+stagingDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
+            os.system('packagesbuild Installer.pkgproj --verbose --build-folder '+stagingDir)
+            os.system('ls ' + stagingDir)
+            # os.system('cp -rf '+rootDir+'/Installers/MacOS/build/Cabbage.pkg '+stagingDir+'/Cabbage.pkg')
+            # os.system('mv '+stagingDir+'/Cabbage.pkg '+stagingDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
+        else:
+            os.system('packagesbuild Installer.pkgproj')
 
     if platform.system() == "Windows":
         os.chdir(rootDir+'/Installers/Windows') 
