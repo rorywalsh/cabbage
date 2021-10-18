@@ -564,12 +564,9 @@ if "Minimal" not in packageType and executeBuild == True:
     if platform.system() == "Darwin":
         os.chdir(rootDir+'/Installers/MacOS') 
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
+        os.system('sed -i "" -e "s|CABBAGE_INSTALLER_NAME|CabbageOSXInstaller-'+getVersionNumber()+'|" Installer.pkgproj')
         os.system('packagesbuild Installer.pkgproj')
-        print('======+++++++++++++++++++++===========')
-        os.system('ls '+rootDir+'/Installers/MacOS')
-        os.system('ls')
-        os.system('ls '+rootDir+'/Installers/MacOS/build')
-        print('======+++++++++++++++++++++===========')
+
         if "Remote" in packageType:
             os.system('cp -rf '+rootDir+'/Installers/MacOS/build/Cabbage.pkg '+stagingDir+'/Cabbage.pkg')
             os.system('mv '+stagingDir+'/Cabbage.pkg '+stagingDir+'/CabbageOSXInstaller-'+getVersionNumber()+'.pkg')
