@@ -566,6 +566,7 @@ if "Minimal" not in packageType and executeBuild == True:
         os.system('sed -i "" -e "s|SOURCE_PATH|'+rootDir+'|" Installer.pkgproj')
         os.system('sed -i "" -e "s|CABBAGE_INSTALLER_NAME|CabbageOSXInstaller-'+getVersionNumber()+'|" Installer.pkgproj')
         os.system('packagesbuild Installer.pkgproj')
+        os.system('ls '+rootDir+'/Installers/MacOS/build')
 
         if "Remote" in packageType:
             os.system('cp -rf '+rootDir+'/Installers/MacOS/build/Cabbage.pkg '+stagingDir+'/Cabbage.pkg')
