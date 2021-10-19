@@ -363,6 +363,10 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
                 setProperty (widgetData, identifier, (identifier.contains("fix") ? strTokens[0] : strTokens[0].trim()));
                 break;
                 
+			case HashStringToInt ("userFolder"):
+			case HashStringToInt ("factoryFolder"):
+				setProperty(widgetData, identifier, strTokens);
+
             case HashStringToInt ("svgElement"):
                 setSVGText(widgetData, strTokens);
                 

@@ -20,9 +20,9 @@
 #include "CabbagePresetButton.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
-CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* ownerComp)
+CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* owner)
     : TextButton(),
-    owner (ownerComp),
+    owner (owner),
     widgetData (wData),
     CabbageWidgetBase(owner),
     lAndF()
@@ -78,14 +78,40 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
         setLookAndFeel(&flatLookAndFeel);
     }
     
+	var userFolder = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::userFolder);
+	var factoryFolder = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::factoryFolder);
 
+
+	if (userFolder.size() == 0)
+	{
+		user.folder = File(getCsdFile()).getParentDirectory().getFullPathName();
+	}
+
+	if (factoryFolder.size() == 0)
+	{
+		factory.folder = File(getCsdFile()).getParentDirectory().getFullPathName();
+	}
+
+	user.extension = "snaps";
+	factory.extension = "snaps";
+
+	if (userFolder.size() > 0)
+		user.folder = userFolder[0].toString();
+	if (userFolder.size() > 1)
+		user.extension = userFolder[1].toString();
+
+	if (factoryFolder.size() > 0)
+		factoryFolder = factoryFolder[0].toString();
+	if (factoryFolder.size() > 1)
+		factory.extension = factoryFolder[1].toString();
+	
 }
 
 //===============================================================================
 void CabbagePresetButton::buttonClicked (Button* button)
 {
 
-    PopupMenu m = addPresetsToMenu(currentPresetDir);
+    PopupMenu m = addPresetsToMenu(currentPresetDir, "");
     
     m.showMenuAsync(juce::PopupMenu::Options(), [this](int r) {
         //minus the two default items on the menu
@@ -103,13 +129,13 @@ void CabbagePresetButton::buttonClicked (Button* button)
     
 }
 
-PopupMenu CabbagePresetButton::addPresetsToMenu(String root)
+PopupMenu CabbagePresetButton::addPresetsToMenu(String user, String factory)
 {
     PopupMenu m;
     m.addItem(1, "Load Preset Folder");
     m.addItem(2, "Save Preset");
     m.addSeparator();
-    String workingDir = root;
+    String workingDir = user;
     String fileType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype);
     
     Array<File> directories;
@@ -169,7 +195,9 @@ void CabbagePresetButton::setLookAndFeelColours (ValueTree wData)
 void CabbagePresetButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
     setLookAndFeelColours (valueTree);
-    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     setButtonText (getText());
     setTooltip(getCurrentPopupText(valueTree));
+
+	handleCommonUpdates(this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+
 }
