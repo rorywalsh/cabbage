@@ -32,6 +32,7 @@
 #include "../../Widgets/CabbageImage.h"
 #include "../../Widgets/CabbageButton.h"
 #include "../../Widgets/CabbageFileButton.h"
+#include "../../Widgets/CabbagePresetButton.h"
 #include "../../Widgets/CabbageForm.h"
 #include "../../Widgets/CabbageListBox.h"
 #include "../../Widgets/CabbageInfoButton.h"
@@ -108,6 +109,7 @@ public:
     void insertKeyboard (ValueTree cabbageWidgetData);
 	void insertKeyboardDisplay(ValueTree cabbageWidgetData);
     void insertFileButton (ValueTree cabbageWidgetData);
+    void insertPresetButton (ValueTree cabbageWidgetData);
     void insertImage (ValueTree cabbageWidgetData);
     void insertLine (ValueTree cabbageWidgetData);
     void insertLabel (ValueTree cabbageWidgetData);

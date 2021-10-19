@@ -348,6 +348,9 @@ void CabbagePluginEditor::insertWidget (ValueTree cabbageWidgetData)
     else if (widgetType == CabbageWidgetTypes::filebutton)
         insertFileButton (cabbageWidgetData);
 
+    else if (widgetType == CabbageWidgetTypes::presetbutton)
+        insertPresetButton (cabbageWidgetData);
+    
     else if (widgetType == CabbageWidgetTypes::infobutton)
         insertInfoButton (cabbageWidgetData);
 
@@ -515,6 +518,14 @@ void CabbagePluginEditor::insertFileButton (ValueTree cabbageWidgetData)
     components.add (fileButton = new CabbageFileButton (cabbageWidgetData, this));
     addToEditorAndMakeVisible (fileButton, cabbageWidgetData);
     addMouseListenerAndSetVisibility (fileButton, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertPresetButton (ValueTree cabbageWidgetData)
+{
+    CabbagePresetButton* presetButton;
+    components.add (presetButton = new CabbagePresetButton (cabbageWidgetData, this));
+    addToEditorAndMakeVisible (presetButton, cabbageWidgetData);
+    addMouseListenerAndSetVisibility (presetButton, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertSignalDisplay (ValueTree cabbageWidgetData)

@@ -498,6 +498,45 @@ void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::corners, 2.0f);
 }
 
+void CabbageWidgetData::setPresetButtonProperties (ValueTree widgetData, int ID)
+{
+    var array;
+    array.append ("Preset");
+    setProperty (widgetData, CabbageIdentifierIds::top, 10);
+    setProperty (widgetData, CabbageIdentifierIds::left, 10);
+    setProperty (widgetData, CabbageIdentifierIds::width, 80);
+    setProperty (widgetData, CabbageIdentifierIds::height, 40);
+    var channels;
+    channels.append ("presetbutton" + String(ID));
+    setProperty (widgetData, CabbageIdentifierIds::channel, channels);
+    setProperty (widgetData, CabbageIdentifierIds::value, 0);
+    setProperty (widgetData, CabbageIdentifierIds::text, array);
+    setProperty (widgetData, CabbageIdentifierIds::caption, "");
+    setProperty(widgetData, CabbageIdentifierIds::popuptext, "");
+    setProperty (widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
+    setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
+    setProperty (widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::type, "presetbutton");
+    setProperty (widgetData, CabbageIdentifierIds::name, "presetbutton");
+    setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
+    setProperty (widgetData, CabbageIdentifierIds::mode, "file");
+    setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
+    setProperty (widgetData, "name", getProperty (widgetData, "name").toString() + String (ID));
+    var populate;
+    populate.append ("");
+    populate.append ("");
+    setProperty (widgetData, "populate", populate);
+    setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty (widgetData, CabbageIdentifierIds::filetype, "*");
+    setProperty (widgetData, CabbageIdentifierIds::ignorelastdir, 0);
+    setProperty (widgetData, CabbageIdentifierIds::imgbuttonon, "");
+    setProperty (widgetData, CabbageIdentifierIds::imgbuttonoff, "");
+    setProperty(widgetData, CabbageIdentifierIds::style, "flat");
+    setProperty (widgetData, CabbageIdentifierIds::corners, 2.0f);
+}
+
+
 void CabbageWidgetData::setInfoButtonProperties (ValueTree widgetData, int ID)
 {
     setProperty (widgetData, CabbageIdentifierIds::top, 10);

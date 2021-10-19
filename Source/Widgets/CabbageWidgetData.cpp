@@ -157,6 +157,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, const String lineF
     else if (widgetType == CabbageWidgetTypes::infobutton)
         setInfoButtonProperties (widgetData, ID);
 
+    else if (widgetType == CabbageWidgetTypes::presetbutton)
+        setPresetButtonProperties (widgetData, ID);
+    
     else if (widgetType == CabbageWidgetTypes::line)
         setLineProperties (widgetData, ID);
     

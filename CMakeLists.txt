@@ -15,7 +15,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.24)
+	set(BUILD_VERSION 2.8.25)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -186,6 +186,8 @@ Source/Widgets/CabbageEncoder.cpp
 Source/Widgets/CabbageEncoder.h
 Source/Widgets/CabbageFileButton.cpp
 Source/Widgets/CabbageFileButton.h
+Source/Widgets/CabbagePresetButton.cpp
+Source/Widgets/CabbagePresetButton.h
 Source/Widgets/CabbageGenTable.cpp
 Source/Widgets/CabbageGenTable.h
 Source/Widgets/CabbageGroupBox.cpp
