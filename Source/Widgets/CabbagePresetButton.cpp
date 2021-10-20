@@ -34,7 +34,15 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
     if (tooltipText.isNotEmpty())
         setTooltip(tooltipText);
     
-    setButtonText (getText());
+    const String valueText = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::value);
+    auto presetFile = File(valueText);
+    if(valueText.isEmpty())
+        setButtonText (getText());
+    else if(presetFile.existsAsFile())
+        setButtonText (presetFile.getFileNameWithoutExtension());
+    else
+        setButtonText(valueText);
+
 
     replaceTextWithPreset = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::presetnameastext) == 1 ? true : false;
     
@@ -145,7 +153,7 @@ void CabbagePresetButton::buttonClicked (Button* button)
             {
                 owner->savePluginStateToFile (fc.getResult().getFileNameWithoutExtension(), fc.getResult().getFullPathName(), false);
                 owner->sendChannelStringDataToCsound(this->getChannel(), fc.getResult().getFullPathName());
-                
+                CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, fc.getResult().getFullPathName());
             }
         }
         else
@@ -154,6 +162,7 @@ void CabbagePresetButton::buttonClicked (Button* button)
 //            DBG(File(this->fullPresetList[choice-3]).getFullPathName());
             owner->sendChannelStringDataToCsound(this->getChannel(), File(this->fullPresetList[choice-3]).getFullPathName());
             owner->restorePluginStateFrom (File(this->fullPresetList[choice-3]).getFileNameWithoutExtension(), this->fullPresetList[choice-3]);
+            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, this->fullPresetList[choice-3]);
             if(replaceTextWithPreset)
             {
                 setButtonText(File(this->fullPresetList[choice-3]).getFileNameWithoutExtension());
@@ -246,8 +255,8 @@ void CabbagePresetButton::valueTreePropertyChanged (ValueTree& valueTree, const 
         {
             owner->restorePluginStateFrom (file.getFileNameWithoutExtension(), file.getFullPathName());
         }
-//        owner->sendChannelStringDataToCsound(this->getChannel(), File(this->fullPresetList[choice-3]).getFullPathName());
-//        owner->restorePluginStateFrom (File(this->fullPresetList[choice-3]).getFileNameWithoutExtension(), this->fullPresetList[choice-3]);
+        if(replaceTextWithPreset)
+            setButtonText(file.getFileNameWithoutExtension());
     }
     else
     {

@@ -1317,6 +1317,11 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
                 else
                     xml->setAttribute(channelName, presetName);
             }
+            else if (type == CabbageWidgetTypes::presetbutton)
+            {
+                const String presetName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::value);
+                xml->setAttribute(channelName, presetName);
+            }
 			else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
 				CabbageIdentifierIds::channeltype) == "string")
 			{
@@ -1388,6 +1393,13 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
                 currentPresetName = e->getAttributeValue(i);
                 CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
                 
+            }
+            else if (type == CabbageWidgetTypes::presetbutton)
+            {
+                currentPresetName = e->getAttributeValue(i);
+                String channel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
+                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
+                getEngine()->SetStringChannel(channel.toUTF8().getAddress(), currentPresetName.toUTF8().getAddress());
             }
 			else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 			{

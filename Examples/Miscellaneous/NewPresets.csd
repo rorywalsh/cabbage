@@ -1,5 +1,6 @@
 <Cabbage>
-form caption("Presets") size(370, 280), guiMode("queue") pluginId("MPre")
+form caption("Presets") size(370, 580), guiMode("queue") pluginId("MPre")
+csoundoutput bounds(0, 300, 370, 300)
 keyboard bounds(14, 122, 345, 95)
 rslider bounds(16, 40, 85, 79), channel("att"), range(0, 1, 0.01), text("Att.")
 rslider bounds(102, 40, 85, 79), channel("dec"), range(0, 1, 0.4), text("Dec.")
@@ -24,7 +25,7 @@ nchnls = 2
 instr 1
     ;update label with preset name
     SPresetFile, kTrig cabbageGetValue "presetChannel"
-    printf "Updating preset", kTrig
+    printf "PresetName: %s", kTrig, SPresetFile
     cabbageSet kTrig, "presetLabel", sprintfk("text(\"Preset: %s\")", cabbageGetFileNoExtension(SPresetFile))
     
     kVal, kUpdate cabbageGetValue "setPreset"
