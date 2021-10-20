@@ -517,6 +517,10 @@ void CabbageWidgetData::setPresetButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::backgroundcolour, Colour(34, 34, 34).toString());
+    setProperty (widgetData, CabbageIdentifierIds::textcolour, Colour(100, 100, 100).toString());
+    setProperty (widgetData, CabbageIdentifierIds::highlightedtextcolour, Colour(64, 64, 64).toString());
+    setProperty (widgetData, CabbageIdentifierIds::highlighteditemcolour, Colour(64, 64, 64).toString());
     setProperty (widgetData, CabbageIdentifierIds::type, "presetbutton");
     setProperty (widgetData, CabbageIdentifierIds::name, "presetbutton");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");

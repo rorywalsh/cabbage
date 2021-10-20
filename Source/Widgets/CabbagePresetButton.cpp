@@ -24,8 +24,7 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
     : TextButton(),
     owner (owner),
     widgetData (wData),
-    CabbageWidgetBase(owner),
-    lAndF()
+    CabbageWidgetBase(owner)
 {
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
@@ -119,9 +118,17 @@ void CabbagePresetButton::buttonClicked (Button* button)
 {
 
     PopupMenu m = addPresetsToMenu("");
+    laf.setColour(PopupMenu::ColourIds::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::backgroundcolour)));
+    laf.setColour(PopupMenu::ColourIds::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::textcolour)));
+    laf.setColour(PopupMenu::ColourIds::highlightedTextColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlightedtextcolour)));
+    laf.setColour(PopupMenu::ColourIds::highlightedBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlighteditemcolour)));
+    
+    m.setLookAndFeel(&laf);
     
     m.showMenuAsync(juce::PopupMenu::Options(), [this](int choice) {
-        //minus the two default items on the menu
+        if(choice == 0)
+            return;
+        
         if(choice == 2){
             FileChooser fc ("Choose preset folder", File(this->currentPresetDir), "", CabbageUtilities::shouldUseNativeBrowser());
 
@@ -146,7 +153,7 @@ void CabbagePresetButton::buttonClicked (Button* button)
         }
     });
 
-    
+    m.setLookAndFeel(nullptr);
 }
 
 PopupMenu CabbagePresetButton::addPresetsToMenu(String custom)

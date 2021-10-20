@@ -2,7 +2,7 @@
 
 Cabbage reserves several channels and macros. These can be used to retrieve in Csound from either the host application, or from Cabbage itself. To retrieve info from a reserved channels use a chnget opcode, i.e, `SCsdPath chnget "CSD_PATH"`. A full list of reserved channels is given below. 
 
-Cabbage also reserved the following macros which can be used to expand system directories when defined Cabbage widgets. For example, if you want a `filebutton` to open at a user sample folder within the user's music directory, you can pass the `#USER_MUSIC_DIRECTORY` macros to the populate identifier, i.e, `populate("*.wav", "#USER_MUSIC_DIRECTORY/MySamples")`. 
+Cabbage also reserved the following macros which can be used to expand system directories when defined Cabbage widgets. For example, if you want a `filebutton` to open at a user sample folder within the user's music directory, you can pass the `#USER_MUSIC_DIRECTORY` macros to the populate identifier, i.e, `populate("*.wav", "#USER_MUSIC_DIRECTORY/MySamples")`. Note these macros are only available in the Cabbage section. If you need to access these paths in the Csound orchestra, you the equivalent reserved channels.
 
 `#USER_HOME_DIRECTORY` - retrieves the full path of the user’s home directory. 
 `#USER_DESKTOP_DIRECTORY` - retrieves the full path of the user’s Desktop directory. 

@@ -606,32 +606,36 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
                 break;
                 
                 //============ colours ===================
-            case HashStringToInt ("fontColour:0"):
-            case HashStringToInt ("menuColour"):
-            case HashStringToInt ("tableBackgroundColour"):
-            case HashStringToInt ("overlayColour"):
-            case HashStringToInt ("backgroundColour"):
-            case HashStringToInt ("keySeparatorColour"):
-            case HashStringToInt ("blackNoteColour"):
-            case HashStringToInt ("keyDownColour"):
-            case HashStringToInt ("whiteNoteColour"):
-            case HashStringToInt ("mouseOverKeyColour"):
+            case HashStringToInt ("activeCellColour"):
             case HashStringToInt ("arrowBackgroundColour"):
             case HashStringToInt ("arrowColour"):
+            case HashStringToInt ("backgroundColour"):
             case HashStringToInt ("ballColour"):
+            case HashStringToInt ("blackNoteColour"):
             case HashStringToInt ("caretColour"):
+            case HashStringToInt ("fontColour:0"):
             case HashStringToInt ("fillColour"):
-            case HashStringToInt ("tableGridColour"):
-            case HashStringToInt ("trackerColour"):
-            case HashStringToInt ("trackerBackgroundColour"):
             case HashStringToInt ("highlightColour"):
-            case HashStringToInt ("activeCellColour"):
-            case HashStringToInt ("titleBarColour"):
+            case HashStringToInt ("highlightedItemColour"):
+            case HashStringToInt ("highlightedTextColour"):
+            case HashStringToInt ("keyDownColour"):
+            case HashStringToInt ("keySeparatorColour"):
+            case HashStringToInt ("markerColour"):
+            case HashStringToInt ("menuColour"):
+            case HashStringToInt ("mouseOverKeyColour"):
             case HashStringToInt ("outlineColour"):
-            case HashStringToInt ("textColour"):
+            case HashStringToInt ("overlayColour"):
+            case HashStringToInt ("tableBackgroundColour"):
+            case HashStringToInt ("tableGridColour"):
             case HashStringToInt ("textBoxColour"):
             case HashStringToInt ("textBoxOutlineColour"):
-            case HashStringToInt ("markerColour"):
+            case HashStringToInt ("textColour"):
+            case HashStringToInt ("titleBarColour"):
+            case HashStringToInt ("trackerBackgroundColour"):
+            case HashStringToInt ("trackerColour"):
+            case HashStringToInt ("whiteNoteColour"):
+            
+                
                 setProperty (widgetData, identifier, getColourFromText (strTokens.joinIntoString (",")).toString());
                 break;
                 
@@ -1450,13 +1454,13 @@ Colour CabbageWidgetData::getColourFromText (String text)
     strTokens.addTokens (text, ",", "");
     Colour colour;
 
+    
     if (strTokens.size() < 2)
     {
         if (strTokens[0].trim() == "0")
             colour = Colours::white.withAlpha (1.f);
         else
-            colour = Colours::findColourForName (strTokens[0].trim(), Colours::white);
-
+            colour = Colour(strTokens[0].trim().getIntValue(), strTokens[0].trim().getIntValue(), strTokens[0].trim().getIntValue());
     }
     else if (strTokens.size() == 4)
         colour = Colour::fromRGBA (strTokens[0].getIntValue(),

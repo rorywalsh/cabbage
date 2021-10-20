@@ -298,6 +298,8 @@ public:
         add ("scrubberposition_sample");
         add ("doubleClickTogglesEdit");
         add ("scrubberposition_table");
+        add ("highlightedTextColour");
+        add ("highlightedItemColour");
         add ("tableBackgroundColour");
         add ("arrowBackgroundColour");
         add ("amprange_tablenumber");
@@ -629,6 +631,8 @@ namespace CabbageIdentifierIds
     static const Identifier queue = "queue";
     static const Identifier height = "height";
     static const Identifier highlightcolour = "highlightColour";
+    static const Identifier highlighteditemcolour = "highlightedItemColour";
+    static const Identifier highlightedtextcolour = "highlightedTextColour";
     static const Identifier identchannel = "identChannel";
     static const Identifier identchannelarray = "identChannelArray";
     static const Identifier identchannelmessage = "identChannelMessage";
@@ -1002,7 +1006,7 @@ static const char* const CsoundKeywords[] =
     "transegr", "trcross", "trfilter", "trhighest", "trlowest", "trmix", "trscale", "trshift", "trsplit", "urandom", "vadd_i", "vaddv_i", "vaget", "vaset", "vbap", "vbapmove", "vbapg", "vbapgmove", "vdivv_i",
     "vexp_i", "vexpv_i", "vmult_i", "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "writescratch", "encoder", "fftdisplay", "keyboard", "label",
     "listbox", "hrange", "vrange", "active", "align", "alpha", "ampRange", "bounds", "caption", "channel", "channelArray", "channelType", "child", "colour", "colour:0", "colour:1", "corners", "displayType", "file",
-    "fontColour", "fontStyle", "fontStyle", "guiRefresh", "highlightColour", "identChannel", "items", "latched", "line", "middleC", "max", "min", "mode", "outlineColour", "outlineThickness", "plant", "pluginId", "populate",
+    "fontColour", "fontStyle", "fontStyle", "guiRefresh", "highlightColour", "highlightedTextColour", "highlightedItemColour", "identChannel", "items", "latched", "line", "middleC", "max", "min", "mode", "outlineColour", "outlineThickness", "plant", "pluginId", "populate",
     "popup", "popupText", "popupPostfix", "popupPrefix", "range", "rangeX", "rangeY", "rotate", "sampleRange", "scrubberpos", "scrubberPosition", "shape", "show", "size", "sliderincr", "svgfile", "svgElement", "tableBackgroundColour", "tableColour",
     "tableGridColour", "tableNumber", "text", "textColour", "textBox", "trackerBackgroundColour", "trackerColour", "trackerEnd", "trackerStart", "trackerCentre", "trackerThickness", "trackerOuterRadius", "trackerInnerRadius", "typeface", "widgetArray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
     "od", "gentable", "texteditor", "textBox", "sprintfk", "strcpyk", "sprintf", "strcmpk", "strcmp", "a", "abetarand", "abexprnd", "infobutton", "groupbox", "do", "popupmenu", "filebutton", "presetbutton", "until",
