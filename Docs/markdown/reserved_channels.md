@@ -1,6 +1,14 @@
-# Reserved Channels
+# Reserved Channels and Macros
 
-Cabbage reserves several channels which are used to send information to Csound from either the host application, or from Cabbage itself. To retrieve info from any of these channels just use a chnget opcode.
+Cabbage reserves several channels and macros. These can be used to retrieve in Csound from either the host application, or from Cabbage itself. To retrieve info from a reserved channels use a chnget opcode, i.e, `SCsdPath chnget "CSD_PATH"`. A full list of reserved channels is given below. 
+
+Cabbage also reserved the following macros which can be used to expand system directories when defined Cabbage widgets. For example, if you want a `filebutton` to open at a user sample folder within the user's music directory, you can pass the `#USER_MUSIC_DIRECTORY` macros to the populate identifier, i.e, `populate("*.wav", "#USER_MUSIC_DIRECTORY/MySamples")`. 
+
+`#USER_HOME_DIRECTORY` - retrieves the full path of the user’s home directory. 
+`#USER_DESKTOP_DIRECTORY` - retrieves the full path of the user’s Desktop directory. 
+`#USER_MUSIC_DIRECTORY` - retrieves the full path of the user’s Desktop directory.
+`#USER_APPLICATION_DATA_DIRECTORY` - retrieves the full path of the user’s application directory. C:/Users/username/AppData on Windows, ~/Library on MacOS
+`#USER_DOCUMENTS_DIRECTORY` - retrieves the full path of the user’s application directory
 
 **CSD_PATH** This string channel will retrieve the full path to the current csd file.
 
@@ -105,11 +113,13 @@ Cabbage also set the host type, which can be retrieved using the following chann
 
 **Wavelab** Returns 1 if Cabbage is host is WaveLab
 
-**USER_HOME_DIRECTORY** - retrieves the full path of the user’s home directory. “USER_DESKTOP_DIRECTORY” - retrieves the full path of the user’s Desktop directory. 
+**USER_HOME_DIRECTORY** - retrieves the full path of the user’s home directory. 
+
+**USER_DESKTOP_DIRECTORY** - retrieves the full path of the user’s Desktop directory. 
 
 **USER_MUSIC_DIRECTORY** - retrieves the full path of the user’s Desktop directory.
 
-**USER_APPLICATION_DIRECTORY** - retrieves the full path of the user’s application directory. C:/Users/username/AppData on Windows, ~/Library on MacOS
+**USER_APPLICATION_DATA_DIRECTORY** - retrieves the full path of the user’s application directory. C:/Users/username/AppData on Windows, ~/Library on MacOS
 
 **USER_DOCUMENTS_DIRECTORY**, - retrieves the full path of the user’s application directory
 

@@ -1078,11 +1078,7 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  String fileName
     }
     
     presetFile.replaceWithText(String(j.dump(4)));
-    
-//    // range-based for
-//    for (json::iterator it = j.begin(); it != j.end(); ++it) {
-//        std::cout << it.key();// << " : " << it.value() << "\n";
-//    }
+
 
 }
 

@@ -51,6 +51,8 @@ public:
         widgetData.removeListener(this);
     }
 
+    
+    
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
@@ -59,7 +61,7 @@ public:
     void valueTreeParentChanged (ValueTree&) override {}
     String returnValidPath (File path);
     void setLookAndFeelColours (ValueTree wData);
-    PopupMenu addPresetsToMenu(String user, String factory);
+    PopupMenu addPresetsToMenu(String custom);
 
     void buttonClicked (Button* button)  override;
     ValueTree widgetData;

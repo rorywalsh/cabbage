@@ -172,7 +172,7 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
     else
     {
         workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::currentdir);
-
+        workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
 		if (File::getCurrentWorkingDirectory().getChildFile(workingDir).exists())
 			listboxDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
 		else if(workingDir.isNotEmpty())
@@ -226,6 +226,7 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
 
                 File pluginDir;
                 String workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
+                workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
                 
                 if(workingDir.isNotEmpty() && File::getCurrentWorkingDirectory().getChildFile (currentValueAsText).exists())
                 {
@@ -275,6 +276,7 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
         {
             addItemsToListbox (valueTree);
             workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
+            workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
         }
 
         if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::refreshfiles)==1)

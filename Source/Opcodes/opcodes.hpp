@@ -799,7 +799,7 @@ struct ChannelStateSave : csnd::Plugin<1, 1>
         ignoreStrings.push_back("SECONDS_SINCE_EPOCH");
         ignoreStrings.push_back("SECONDS_SINCE_EPOCH");
         ignoreStrings.push_back("SECONDS_SINCE_EPOCH");
-        ignoreStrings.push_back("USER_APPLICATION_DIRECTORY");
+        ignoreStrings.push_back("USER_APPLICATION_DATA_DIRECTORY");
         ignoreStrings.push_back("USER_DESKTOP_DIRECTORY");
         ignoreStrings.push_back("USER_DOCUMENTS_DIRECTORY");
         ignoreStrings.push_back("USER_HOME_DIRECTORY");

@@ -57,6 +57,7 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
     mode = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mode);
     
     currentPresetDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::currentdir);
+    currentPresetDir = CabbageUtilities::expandDirectoryMacro(currentPresetDir);
     
     
     if(globalStyle == "legacy")
@@ -80,30 +81,36 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
     
 	var userFolder = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::userFolder);
 	var factoryFolder = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::factoryFolder);
-
+    DBG(factoryFolder.toString());
 
 	if (userFolder.size() == 0)
 	{
-		user.folder = File(getCsdFile()).getParentDirectory().getFullPathName();
+		user.folder = "undefined";
 	}
 
 	if (factoryFolder.size() == 0)
 	{
-		factory.folder = File(getCsdFile()).getParentDirectory().getFullPathName();
+        factory.folder = "undefined";
 	}
 
 	user.extension = "snaps";
 	factory.extension = "snaps";
 
 	if (userFolder.size() > 0)
-		user.folder = userFolder[0].toString();
+    {
+        userFolder[0] = CabbageUtilities::expandDirectoryMacro(userFolder[0]);
+        user.folder = File(getCsdFile()).getParentDirectory().getChildFile(userFolder[0].toString()).getFullPathName();
+    }
 	if (userFolder.size() > 1)
-		user.extension = userFolder[1].toString();
+		user.extension = userFolder[1].toString().trim();
 
 	if (factoryFolder.size() > 0)
-		factoryFolder = factoryFolder[0].toString();
+    {
+        factoryFolder[0] = CabbageUtilities::expandDirectoryMacro(factoryFolder[0]);
+        factory.folder = File(getCsdFile()).getParentDirectory().getChildFile(factoryFolder[0].toString()).getFullPathName();
+    }
 	if (factoryFolder.size() > 1)
-		factory.extension = factoryFolder[1].toString();
+		factory.extension = factoryFolder[1].toString().trim();
 	
 }
 
@@ -111,65 +118,87 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
 void CabbagePresetButton::buttonClicked (Button* button)
 {
 
-    PopupMenu m = addPresetsToMenu(currentPresetDir, "");
+    PopupMenu m = addPresetsToMenu("");
     
-    m.showMenuAsync(juce::PopupMenu::Options(), [this](int r) {
+    m.showMenuAsync(juce::PopupMenu::Options(), [this](int choice) {
         //minus the two default items on the menu
-        DBG(this->fullPresetList[r-2]);
-        if(r == 1){
-            FileChooser fc ("Choose preset folder", this->currentPresetDir, "", CabbageUtilities::shouldUseNativeBrowser());
+        if(choice == 2){
+            FileChooser fc ("Choose preset folder", File(this->currentPresetDir), "", CabbageUtilities::shouldUseNativeBrowser());
 
             if (fc.browseForDirectory())
             {
                 this->currentPresetDir = fc.getResult().getFullPathName();
             }
         }
+        else if(choice == 1){
+            FileChooser fc("Save preset", File(this->user.folder), this->user.extension, CabbageUtilities::shouldUseNativeBrowser());
+
+            if (fc.browseForFileToSave(true))
+            {
+                owner->savePluginStateToFile (fc.getResult().getFileNameWithoutExtension(), fc.getResult().getFullPathName(), false);
+            }
+        }
+        else
+        {
+            DBG(File(this->fullPresetList[choice-3]).getFileNameWithoutExtension());
+            DBG(File(this->fullPresetList[choice-3]).getFullPathName());
+            owner->restorePluginStateFrom (File(this->fullPresetList[choice-3]).getFileNameWithoutExtension(), this->fullPresetList[choice-3]);
+        }
     });
 
     
 }
 
-PopupMenu CabbagePresetButton::addPresetsToMenu(String user, String factory)
+PopupMenu CabbagePresetButton::addPresetsToMenu(String custom)
 {
+    fullPresetList.clear();
     PopupMenu m;
-    m.addItem(1, "Load Preset Folder");
-    m.addItem(2, "Save Preset");
-    m.addSeparator();
-    String workingDir = user;
-    String fileType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype);
-    
-    Array<File> directories;
-    Array<File> presetFiles;
+    m.addItem(1, "Save");
+    m.addItem(2, "Load Preset Folder");
 
-    File dirToSearch = File::getCurrentWorkingDirectory().getChildFile(workingDir);
-    directories = dirToSearch.findChildFiles (File::TypesOfFileToFind::findDirectories, true);
-
-    
-    presetFiles = File(workingDir).findChildFiles (File::TypesOfFileToFind::findFiles, false, fileType);
-    for ( int x = 0 ; x < presetFiles.size() ; x++)
-    {
-        m.addItem(2+x, presetFiles[x].getFileNameWithoutExtension());
-        fullPresetList.add(presetFiles[x].getFullPathName());
-    }
-    
-    int numPresetFiles = presetFiles.size()+2;
     m.addSeparator();
-//    DBG(directories.size());
+    int numPresetFiles = 3;
+    StringArray presets = {"User", "Factory"};
     
-    for ( int i = 0 ; i < directories.size() ; i++)
+    for ( auto preset : presets)
     {
-        PopupMenu subM;
-//        DBG(directories[i].getFullPathName());
-        presetFiles = directories[i].findChildFiles (File::TypesOfFileToFind::findFiles, false, fileType);
-        for ( int x = 0 ; x < presetFiles.size() ; x++)
+        String workingDir = (preset == "User" ? user.folder : factory.folder);
+        if(workingDir != "undefined")
         {
-            subM.addItem(numPresetFiles, presetFiles[x].getFileNameWithoutExtension());
-            fullPresetList.add(presetFiles[x].getFullPathName());
-            numPresetFiles++;
+            m.addSeparator();
+            String fileType = (preset == "User" ? user.extension : factory.extension);
+            
+            Array<File> directories;
+            Array<File> presetFiles;
+
+            File dirToSearch = File::getCurrentWorkingDirectory().getChildFile(workingDir);
+            directories = dirToSearch.findChildFiles (File::TypesOfFileToFind::findDirectories, true);
+            directories.sort();
+            presetFiles = File(workingDir).findChildFiles (File::TypesOfFileToFind::findFiles, false, fileType);
+            presetFiles.sort();
+            for ( int x = 0 ; x < presetFiles.size() ; x++)
+            {
+                m.addItem(numPresetFiles, presetFiles[x].getFileNameWithoutExtension());
+                fullPresetList.add(presetFiles[x].getFullPathName());
+                numPresetFiles++;
+            }
+
+            
+            for ( int i = 0 ; i < directories.size() ; i++)
+            {
+                PopupMenu subM;
+                presetFiles = directories[i].findChildFiles (File::TypesOfFileToFind::findFiles, false, fileType);
+                presetFiles.sort();
+                for ( int x = 0 ; x < presetFiles.size() ; x++)
+                {
+                    subM.addItem(numPresetFiles, presetFiles[x].getFileNameWithoutExtension());
+                    fullPresetList.add(presetFiles[x].getFullPathName());
+                    numPresetFiles++;
+                }
+                if(presetFiles.size()>0)
+                    m.addSubMenu(directories[i].getFileNameWithoutExtension(), subM);
+            }
         }
-    
-        m.addSubMenu(directories[i].getFileNameWithoutExtension(), subM);
-        
     }
     
     return m;

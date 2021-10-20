@@ -68,6 +68,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
 
         currentValueAsText = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::value).toString();
         workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::currentdir);
+        workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
         
         int index = 0;
         if (workingDir.isNotEmpty())
@@ -298,7 +299,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     {
         
         workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::currentdir);
-       
+        workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
         
         if (workingDir.isNotEmpty())
             pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
@@ -420,6 +421,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 
              
                 workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
+                workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
                 int index = 0;
                 if (workingDir.isNotEmpty())
                     pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
@@ -476,6 +478,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         {
             addItemsToCombobox (valueTree);
             workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
+            workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
         }
 
         if((prop == CabbageIdentifierIds::text && isStringCombo == true) || CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::automatable) == 0)

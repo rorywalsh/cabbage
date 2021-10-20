@@ -569,6 +569,27 @@ public:
 
     }
 
+    static String expandDirectoryMacro(String dir)
+    {
+        StringPairArray folderMacros;
+        folderMacros.set("#USER_HOME_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::userHomeDirectory).getFullPathName());
+        folderMacros.set("#USER_DESKTOP_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::userDesktopDirectory).getFullPathName());
+        folderMacros.set("#USER_MUSIC_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::userMusicDirectory).getFullPathName());
+        folderMacros.set("#USER_APPLICATION_DATA_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName());
+        folderMacros.set("#USER_DOCUMENTS_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::userDocumentsDirectory).getFullPathName());
+        
+        const auto keys = folderMacros.getAllKeys();
+        for ( auto key : keys)
+        {
+            if ( dir.contains(key))
+            {
+                return dir.replace(key, folderMacros.getValue(key, ""));
+            }
+        }
+        
+        return dir;
+    }
+    
     static PropertiesFile::Options getStorageProps()
     {
         PropertiesFile::Options options;
