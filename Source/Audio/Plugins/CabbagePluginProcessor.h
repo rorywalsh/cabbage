@@ -210,7 +210,6 @@ class CabbagePluginParameter
 public:
     CabbagePluginParameter(CabbagePluginProcessor* thisOwner,
                           ValueTree wData,
-                          Csound& csound,
                           const String& channelToUse,
                           const String& name,
                           float minValue,
@@ -222,7 +221,7 @@ public:
                           const String& prefix  = String(),
                           const String& postfix = String(),
                           bool isCombo = false)
-    : parameter(new CabbageHostParameter(*this, thisOwner, wData, csound, channelToUse, name, prefix, postfix, minValue, maxValue, def, incr, skew, isCombo)),
+    : parameter(new CabbageHostParameter(*this, thisOwner, wData, channelToUse, name, prefix, postfix, minValue, maxValue, def, incr, skew, isCombo)),
     widgetName(name),
     isAutomatable(automatable)
     {
@@ -354,7 +353,6 @@ private:
         CabbageHostParameter(CabbagePluginParameter& thisOwner,
                              CabbagePluginProcessor* proc,
                              ValueTree wData,
-                             Csound& csound,
                              const String& channelToUse,
                              const String& thisName,
                              const String& prefixToUse,
@@ -375,7 +373,6 @@ private:
         valueTree(wData)
         {
             ignoreUnused(thisOwner);
-            ignoreUnused(csound);
         }
         
         String channel;
