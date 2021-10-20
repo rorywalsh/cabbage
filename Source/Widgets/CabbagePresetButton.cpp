@@ -143,12 +143,14 @@ void CabbagePresetButton::buttonClicked (Button* button)
             if (fc.browseForFileToSave(true))
             {
                 owner->savePluginStateToFile (fc.getResult().getFileNameWithoutExtension(), fc.getResult().getFullPathName(), false);
+                owner->sendChannelStringDataToCsound(this->getChannel(), fc.getResult().getFullPathName());
             }
         }
         else
         {
             DBG(File(this->fullPresetList[choice-3]).getFileNameWithoutExtension());
             DBG(File(this->fullPresetList[choice-3]).getFullPathName());
+            owner->sendChannelStringDataToCsound(this->getChannel(), File(this->fullPresetList[choice-3]).getFullPathName());
             owner->restorePluginStateFrom (File(this->fullPresetList[choice-3]).getFileNameWithoutExtension(), this->fullPresetList[choice-3]);
         }
     });
@@ -230,10 +232,24 @@ void CabbagePresetButton::setLookAndFeelColours (ValueTree wData)
 //===============================================================================
 void CabbagePresetButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    setLookAndFeelColours (valueTree);
-    setButtonText (getText());
-    setTooltip(getCurrentPopupText(valueTree));
+    if(prop == CabbageIdentifierIds::value)
+    {
+        
+        const auto file = File(CabbageWidgetData::getStringProp(valueTree, prop));
+        if(file.existsAsFile())
+        {
+            owner->restorePluginStateFrom (file.getFileNameWithoutExtension(), file.getFullPathName());
+        }
+//        owner->sendChannelStringDataToCsound(this->getChannel(), File(this->fullPresetList[choice-3]).getFullPathName());
+//        owner->restorePluginStateFrom (File(this->fullPresetList[choice-3]).getFileNameWithoutExtension(), this->fullPresetList[choice-3]);
+    }
+    else
+    {
+        setLookAndFeelColours (valueTree);
+        setButtonText (getText());
+        setTooltip(getCurrentPopupText(valueTree));
 
-	handleCommonUpdates(this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+        handleCommonUpdates(this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    }
 
 }

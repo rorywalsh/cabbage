@@ -5,7 +5,9 @@ rslider bounds(16, 40, 85, 79), channel("att"), range(0, 1, 0.01), text("Att.")
 rslider bounds(102, 40, 85, 79), channel("dec"), range(0, 1, 0.4), text("Dec.")
 rslider bounds(188, 40, 85, 79), channel("sus"), range(0, 1, 0.7), text("Sus.")
 rslider bounds(274, 40, 85, 79), channel("rel"), range(0, 1, 0.7, 1, 0.001), text("Rel.")
-presetbutton bounds(16, 6, 86, 27), corners(5) channel("test"), userFolder("Presets", "*.psts"), textColour(250), highlightedItemColour(10, 147, 210) highlightedTextColour(255, 255, 255)
+presetbutton bounds(16, 6, 86, 27), corners(5)  channel("presetChannel"), textColour(200), fontColour:0(47, 210, 10), userFolder("Presets", "*.psts"), highlightedItemColour(10, 147, 210) highlightedTextColour(255, 255, 255)
+label bounds(16, 224, 343, 26) channel("presetLabel"), colour(10, 10, 10, 255), text("Preset: No preset selected"), ,fontSize(18), fontColour(255, 255, 255, 255)
+button bounds(270, 6, 89, 29) channel("setPreset"), text("Set Preset"), corners(5)
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -20,7 +22,14 @@ nchnls = 2
 
 ;instrument will be triggered by keyboard widget
 instr 1
-
+    ;update label with preset name
+    SPresetFile, kTrig cabbageGetValue "presetChannel"
+    printf "Updating preset", kTrig
+    cabbageSet kTrig, "presetLabel", sprintfk("text(\"Preset: %s\")", cabbageGetFileNoExtension(SPresetFile))
+    
+    kVal, kUpdate cabbageGetValue "setPreset"
+    SPresetPath strcat chnget:S("CSD_PATH"), "/Presets/Abc.psts"
+    cabbageSetValue "presetChannel", SPresetPath, kUpdate
 endin
 
 </CsInstruments>

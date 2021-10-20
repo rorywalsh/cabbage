@@ -1,0 +1,12 @@
+{
+    "D_Preset": {
+        "form": 0.0,
+        "keyboard2": 60.0,
+        "att": 1.0,
+        "dec": 1.0,
+        "sus": 0.0,
+        "rel": 1.0,
+        "presetLabel": 0.0,
+        "setPreset": 0.0
+    }
+}

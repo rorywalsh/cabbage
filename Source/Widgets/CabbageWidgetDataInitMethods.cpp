@@ -523,6 +523,7 @@ void CabbageWidgetData::setPresetButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::highlighteditemcolour, Colour(64, 64, 64).toString());
     setProperty (widgetData, CabbageIdentifierIds::type, "presetbutton");
     setProperty (widgetData, CabbageIdentifierIds::name, "presetbutton");
+    setProperty (widgetData, CabbageIdentifierIds::presetignore, 1);
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
     setProperty (widgetData, CabbageIdentifierIds::mode, "file");
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
