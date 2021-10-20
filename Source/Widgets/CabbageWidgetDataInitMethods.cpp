@@ -511,6 +511,7 @@ void CabbageWidgetData::setPresetButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::channel, channels);
     setProperty (widgetData, CabbageIdentifierIds::value, 0);
     setProperty (widgetData, CabbageIdentifierIds::text, array);
+    setProperty (widgetData, CabbageIdentifierIds::value, "");
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty(widgetData, CabbageIdentifierIds::popuptext, "");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::black.toString());

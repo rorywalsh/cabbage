@@ -35,11 +35,11 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
         setTooltip(tooltipText);
     
     const String valueText = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::value);
-    auto presetFile = File(valueText);
+
     if(valueText.isEmpty())
         setButtonText (getText());
-    else if(presetFile.existsAsFile())
-        setButtonText (presetFile.getFileNameWithoutExtension());
+    else if(File(valueText).existsAsFile())
+        setButtonText (File(valueText).getFileNameWithoutExtension());
     else
         setButtonText(valueText);
 
