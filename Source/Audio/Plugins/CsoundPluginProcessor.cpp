@@ -1057,7 +1057,7 @@ void CsoundPluginProcessor::performCsoundKsmps()
 
 
 template< typename Type >
-void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type* buffer, int samplePosition, int csndPosition)
+void CsoundPluginProcessor::processIOBuffers(int bufferType, Type* buffer, int samplePosition, int csndPosition)
 {
     //csdPos should go from 0 to (ksmps * number of channels)...
 	if (bufferType == BufferType::inputOutput)
@@ -1089,7 +1089,7 @@ void CsoundPluginProcessor::processCsoundIOBuffers(int bufferType, Type* buffer,
 }
 
 template< typename Type >
-void CsoundPluginProcessor::processCsoundIOSideChainBuffers(int bufferType, Type* buffer, int pos)
+void CsoundPluginProcessor::processIOSideChainBuffers(int bufferType, Type* buffer, int pos)
 {
     if (buffer != nullptr)
     {
