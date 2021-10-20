@@ -484,6 +484,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("zoom"):
             case HashStringToInt ("openGL"):
             case HashStringToInt ("showScrubber"):
+            case HashStringToInt ("presetNameAsText"):
                 if (getProperty (widgetData, CabbageIdentifierIds::channeltype).toString() == "string")
                     setProperty (widgetData, identifier, strTokens[0].trim());
                 else

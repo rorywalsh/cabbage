@@ -36,6 +36,7 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
     
     setButtonText (getText());
 
+    replaceTextWithPreset = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::presetnameastext) == 1 ? true : false;
     
     filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).replaceCharacters (" ", ";");
 
@@ -144,14 +145,19 @@ void CabbagePresetButton::buttonClicked (Button* button)
             {
                 owner->savePluginStateToFile (fc.getResult().getFileNameWithoutExtension(), fc.getResult().getFullPathName(), false);
                 owner->sendChannelStringDataToCsound(this->getChannel(), fc.getResult().getFullPathName());
+                
             }
         }
         else
         {
-            DBG(File(this->fullPresetList[choice-3]).getFileNameWithoutExtension());
-            DBG(File(this->fullPresetList[choice-3]).getFullPathName());
+//            DBG(File(this->fullPresetList[choice-3]).getFileNameWithoutExtension());
+//            DBG(File(this->fullPresetList[choice-3]).getFullPathName());
             owner->sendChannelStringDataToCsound(this->getChannel(), File(this->fullPresetList[choice-3]).getFullPathName());
             owner->restorePluginStateFrom (File(this->fullPresetList[choice-3]).getFileNameWithoutExtension(), this->fullPresetList[choice-3]);
+            if(replaceTextWithPreset)
+            {
+                setButtonText(File(this->fullPresetList[choice-3]).getFileNameWithoutExtension());
+            }
         }
     });
 

@@ -32,6 +32,7 @@ class CabbagePresetButton : public TextButton, public ValueTree::Listener, publi
     String mode, filetype, tooltipText;
     StringArray fullPresetList;
     String currentPresetDir;
+    bool replaceTextWithPreset = false;
 	
 
 	struct DirAndExt
