@@ -1207,7 +1207,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 
                 for (int channel = 0; channel < inputBus.getNumChannels(); channel++)
                 {
-                    processCsoundIOBuffers(BufferType::input, inputBuffer[channel], i, pos++);
+                    processIOBuffers(BufferType::input, inputBuffer[channel], i, pos++);
                 }
             }
 
@@ -1221,7 +1221,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 
                 for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
                 {
-                    processCsoundIOBuffers(BufferType::output, outputBuffer[channel], i, pos++);
+                    processIOBuffers(BufferType::output, outputBuffer[channel], i, pos++);
                 }
             }
 #else
@@ -1229,7 +1229,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
             pos = csndIndex * channelNum;
             for (int channel = 0; channel < outputChannelCount; channel++)
             {
-                processCsoundIOBuffers(BufferType::output, ioBuffer[channel], i, pos);
+                processIOBuffers(BufferType::output, ioBuffer[channel], i, pos);
                 pos++;
             }
 
