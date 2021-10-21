@@ -33,7 +33,8 @@ class CabbagePresetButton : public TextButton, public ValueTree::Listener, publi
     StringArray fullPresetList;
     String currentPresetDir;
     bool replaceTextWithPreset = false;
-	
+    File currentPreset;
+
 
 	struct DirAndExt
 	{

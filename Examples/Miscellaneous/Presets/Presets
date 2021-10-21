@@ -1,14 +1,13 @@
 {
-    "D-Preset": {
+    "Presets": {
         "form": 0.0,
-        "keyboard2": 60.0,
+        "csoundoutput2": 0.0,
+        "keyboard3": 60.0,
         "att": 0.0,
         "dec": 1.0,
         "sus": 0.0,
         "rel": 1.0,
         "presetLabel": 0.0,
-        "setPreset": 0.0,
-        "csoundoutput2": 0.0,
-        "keyboard3": 60.0
+        "setPreset": 0.0
     }
 }

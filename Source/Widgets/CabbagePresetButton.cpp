@@ -133,21 +133,18 @@ void CabbagePresetButton::buttonClicked (Button* button)
     laf.setColour(PopupMenu::ColourIds::highlightedBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::highlighteditemcolour)));
     
     m.setLookAndFeel(&laf);
-    
+
+    const int numDefaultMenuItems = 4;
+
     m.showMenuAsync(juce::PopupMenu::Options(), [this](int choice) {
         if(choice == 0)
             return;
-        
-        if(choice == 2){
-            FileChooser fc ("Choose preset folder", File(this->currentPresetDir), "", CabbageUtilities::shouldUseNativeBrowser());
-
-            if (fc.browseForDirectory())
-            {
-                this->currentPresetDir = fc.getResult().getFullPathName();
-            }
-        }
         else if(choice == 1){
-            FileChooser fc("Save preset", File(this->user.folder), this->user.extension, CabbageUtilities::shouldUseNativeBrowser());
+            owner->savePluginStateToFile (this->currentPreset.getFileNameWithoutExtension(), this->currentPreset.getFullPathName(), false);
+            owner->sendChannelStringDataToCsound(this->getChannel(), this->currentPreset.getFullPathName());
+        }
+        else if(choice == 2){
+            FileChooser fc("Save as", File(this->user.folder), this->user.extension, CabbageUtilities::shouldUseNativeBrowser());
 
             if (fc.browseForFileToSave(true))
             {
@@ -156,16 +153,22 @@ void CabbagePresetButton::buttonClicked (Button* button)
                 CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, fc.getResult().getFullPathName());
             }
         }
+        else if(choice == 3)
+        {
+            if(File(this->user.folder).exists())
+                File(this->user.folder).revealToUser();
+        }
         else
         {
 //            DBG(File(this->fullPresetList[choice-3]).getFileNameWithoutExtension());
 //            DBG(File(this->fullPresetList[choice-3]).getFullPathName());
-            owner->sendChannelStringDataToCsound(this->getChannel(), File(this->fullPresetList[choice-3]).getFullPathName());
-            owner->restorePluginStateFrom (File(this->fullPresetList[choice-3]).getFileNameWithoutExtension(), this->fullPresetList[choice-3]);
-            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, this->fullPresetList[choice-3]);
+            owner->sendChannelStringDataToCsound(this->getChannel(), File(this->fullPresetList[choice-numDefaultMenuItems]).getFullPathName());
+            owner->restorePluginStateFrom (File(this->fullPresetList[choice-numDefaultMenuItems]).getFileNameWithoutExtension(), this->fullPresetList[choice-numDefaultMenuItems]);
+            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, this->fullPresetList[choice-numDefaultMenuItems]);
+            currentPreset = File(this->fullPresetList[choice-numDefaultMenuItems]);
             if(replaceTextWithPreset)
             {
-                setButtonText(File(this->fullPresetList[choice-3]).getFileNameWithoutExtension());
+                setButtonText(File(this->fullPresetList[choice-numDefaultMenuItems]).getFileNameWithoutExtension());
             }
         }
     });
@@ -178,10 +181,11 @@ PopupMenu CabbagePresetButton::addPresetsToMenu(String custom)
     fullPresetList.clear();
     PopupMenu m;
     m.addItem(1, "Save");
-    m.addItem(2, "Load Preset Folder");
+    m.addItem(2, "Save As");
+    m.addItem(3, "Preset Folder");
 
     m.addSeparator();
-    int numPresetFiles = 3;
+    int numPresetFiles = 4;
     StringArray presets = {"User", "Factory"};
     
     for ( auto preset : presets)
