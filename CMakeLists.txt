@@ -15,7 +15,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION changing name of processCsoundIOBuffers//)
+	set(BUILD_VERSION fixing cmakelist issue)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
