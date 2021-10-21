@@ -194,6 +194,7 @@ public:
     void mouseUp (const MouseEvent& e) override;
     void handleMouseClicks (const MouseEvent& e, bool isMousePressed);
     void handleMouseMovement (const MouseEvent& e);
+    void mouseWheelMove(const MouseEvent &event, const MouseWheelDetails &wheel);
     //=============================================================================
 	bool keyPressed(const KeyPress& key, Component* originatingComponent) override
 	{

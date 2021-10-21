@@ -817,6 +817,8 @@ namespace CabbageIdentifierIds
     static const String mousedownright = "MOUSE_DOWN_RIGHT";
     static const String mousex = "MOUSE_X";
     static const String mousey = "MOUSE_Y";
+    static const String mousewheeldeltay = "MOUSEWHEEL_DELTA_Y";
+    static const String mousewheeldeltax = "MOUSEWHEEL_DELTA_X";
     static const String nsp = "namespace";
     static const String numberofsteps = "numberOfSteps";
     static const String showstepnumbers = "showStepNumbers";

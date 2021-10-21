@@ -177,6 +177,16 @@ void CabbagePluginEditor::mouseUp (const MouseEvent& e)
     handleMouseClicks (e, false);
 }
 
+void CabbagePluginEditor::mouseWheelMove(const MouseEvent &event, const MouseWheelDetails &wheel)
+{
+    ignoreUnused(event);
+    DBG(wheel.deltaY);
+    double scale = cabbageProcessor.currentPluginScale == -1 ? 1 : pluginSizes[cabbageProcessor.currentPluginScale-1];
+    sendChannelDataToCsound (CabbageIdentifierIds::mousewheeldeltax, wheel.deltaX/scale);
+    sendChannelDataToCsound (CabbageIdentifierIds::mousewheeldeltay, wheel.deltaY/scale);
+
+}
+
 void CabbagePluginEditor::handleMouseMovement (const MouseEvent& e)
 {
     if(e.eventComponent->getName().isNotEmpty())

@@ -44,6 +44,10 @@ Cabbage also reserved the following macros which can be used to expand system di
 
 **MOUSE_DOWN_RIGHT** Returns the current state of the right mouse button; 1 if pressed, and 0 if not. 
 
+**MOUSEWHEEL_DELTA_Y** Returns the amount the wheel has moved on the Y axis. 
+
+**MOUSEWHEEL_DELTA_X** Returns the amount the wheel has moved on the X axis. 
+
 **SCREEN_WIDTH** Returns the width of the plugin editor window
 
 **SCREEN_HEIGHT** Returns the height of the plugin editor window
