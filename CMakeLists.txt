@@ -15,7 +15,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION fixing cmakelist issue)
+	set(BUILD_VERSION 2.8.34)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
