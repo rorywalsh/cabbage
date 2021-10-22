@@ -136,7 +136,7 @@ void CabbagePresetButton::buttonClicked (Button* button)
 
     const int numDefaultMenuItems = 4;
 
-    m.showMenuAsync(juce::PopupMenu::Options(), [this](int choice) {
+    m.showMenuAsync(juce::PopupMenu::Options(), [this, numDefaultMenuItems](int choice) {
         if(choice == 0)
             return;
         else if(choice == 1){
