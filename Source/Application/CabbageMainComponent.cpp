@@ -866,11 +866,7 @@ void CabbageMainComponent::timerCallback()
     if (fileTabs.size() > 0)
     {
         AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-        
-        if (getFilterGraph()->graph.getNodeForId (nodeId) != nullptr && getFilterGraph()->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
-        {
-            stopCsoundForNode ("");
-        }
+
 
         if (getCurrentCsdFile().existsAsFile())
         {
@@ -1233,11 +1229,12 @@ void CabbageMainComponent::addCabbageSection()
 
 void CabbageMainComponent::enableEditMode()
 {
-	
+
 	const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
 	if (nodeId.uid == -99)
 		return;
 
+    stopCsoundForNode(fileTabs[currentFileIndex]->getFilename());
 	const bool isCabbageFile = CabbageUtilities::hasCabbageTags(getCurrentCsdFile());
 
 	//stopCsoundForNode(getCurrentCsdFile().getFullPathName());
@@ -1262,6 +1259,18 @@ void CabbageMainComponent::enableEditMode()
 		propertyPanel->setInterceptsMouseClicks(true, true);
 
 		//getCabbagePluginEditor()->refreshValueTreeListeners();
+//        saveDocument();
+//        runCsoundForNode(getCurrentCsdFile().getFullPathName());
+        
+//        if (getFilterGraph()->graph.getNodeForId(nodeId) != nullptr)
+//        {
+//            if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()))
+//            {
+//                cabbagePlugin->stopTimer();
+//                cabbagePlugin->suspendProcessing(true);
+//            }
+//        }
+        
 		getCabbagePluginEditor()->enableEditMode(true);
 		
 		isGUIEnabled = true;
@@ -2247,11 +2256,13 @@ void CabbageMainComponent::stopCsoundForNode (String file, int fileTabIndex)
     if (fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex] && File (file).existsAsFile())
     {
         AudioProcessorGraph::NodeID nodeId(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
+        runCsoundForNode(file);
         
         if (getFilterGraph()->graph.getNodeForId(nodeId) != nullptr)
         {
             if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()))
             {
+                
                 cabbagePlugin->stopTimer();
                 cabbagePlugin->suspendProcessing(true);
             }

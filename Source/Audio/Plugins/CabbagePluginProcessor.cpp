@@ -223,7 +223,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 
 	}
 
-	cabbageWidgets.removeAllChildren(0);
+	cabbageWidgets.removeAllChildren(nullptr);
 	String parentComponent, previousComponent;
 	StringArray parents;
 

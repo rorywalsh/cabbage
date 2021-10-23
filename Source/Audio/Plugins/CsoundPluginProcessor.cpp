@@ -1024,10 +1024,10 @@ void CsoundPluginProcessor::sendHostDataToCsound()
 
 void CsoundPluginProcessor::performCsoundKsmps()
 {
-	result = csound->PerformKsmps();
+    result = csound->PerformKsmps();
 
-	if (result == 0)
-	{
+    if (result == 0)
+    {
         //slow down calls to these functions, no need for them to be firing at k-rate
         if(polling != 0)
         {
@@ -1042,17 +1042,17 @@ void CsoundPluginProcessor::performCsoundKsmps()
         else{
             //triggerAsyncUpdate();
         }
-		//trigger any Csound score event on each k-boundary
-		//triggerCsoundEvents();
-		sendHostDataToCsound();
+        //trigger any Csound score event on each k-boundary
+        //triggerCsoundEvents();
+        sendHostDataToCsound();
 
-		disableLogging = false;
-	}
-	else
-	{
-		disableLogging = true;
-		return; //return as soon as Csound has stopped
-	}
+        disableLogging = false;
+    }
+    else
+    {
+        disableLogging = true;
+        return; //return as soon as Csound has stopped
+    }
 }
 
 
