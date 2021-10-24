@@ -302,7 +302,7 @@ elif platform.system() == "Windows":
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('asiosdk_2.3.3_2019-06-14.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("asiosdk_2.3.3_2019-06-14.zip", 'r') as zip_ref:
-            zip_ref.extractall('C:/SDKs/ASIOSDK2.3.2')
+            zip_ref.extractall('C:/SDKs/ASIOSDK2.3.3')
     else:
         print("Found ASIO SDK.....") 
 
