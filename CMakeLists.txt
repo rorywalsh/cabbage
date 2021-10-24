@@ -15,7 +15,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.37)
+	set(BUILD_VERSION 2.8.38)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -318,6 +318,7 @@ target_compile_definitions(${PROJECT_NAME}
         CabbagePro=${CabbagePro}
         PLUGIN_MANUFACTURER_CODE "${JucePlugin_ManufacturerCode}"
         Use_Native_File_Browser=1
+        JUCE_ASIO=1
         JUCE_VST3_CAN_REPLACE_VST2=0
         Cabbage_IDE_Build=${IS_IDE_Build}
         JUCE_DISPLAY_SPLASH_SCREEN=0)
