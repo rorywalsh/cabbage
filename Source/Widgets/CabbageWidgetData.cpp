@@ -1460,8 +1460,10 @@ Colour CabbageWidgetData::getColourFromText (String text)
     {
         if (strTokens[0].trim() == "0")
             colour = Colours::white.withAlpha (1.f);
-        else
+        else if(strTokens[0].getIntValue() > 0 && strTokens[0].getIntValue() <=255)
             colour = Colour(strTokens[0].trim().getIntValue(), strTokens[0].trim().getIntValue(), strTokens[0].trim().getIntValue());
+        else
+            colour = Colours::findColourForName (strTokens[0].trim(), Colours::white);
     }
     else if (strTokens.size() == 4)
         colour = Colour::fromRGBA (strTokens[0].getIntValue(),
