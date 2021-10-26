@@ -296,13 +296,15 @@ elif platform.system() == "Windows":
     else:
         print('Found Csound...')
 
-    if not os.path.exists("C:/SDKs/ASIOSDK2.3.2"):
+    if not os.path.exists("C:/SDKs/ASIOSDK2.3.3"):
         os.system('mkdir C:/SDKs')
         url = "https://download.steinberg.net/sdk_downloads/asiosdk_2.3.3_2019-06-14.zip"
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('asiosdk_2.3.3_2019-06-14.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("asiosdk_2.3.3_2019-06-14.zip", 'r') as zip_ref:
             zip_ref.extractall('C:/SDKs/ASIOSDK2.3.3')
+
+        os.system('ls C:/SDKs/ASIOSDK2.3.3')
     else:
         print("Found ASIO SDK.....") 
 
