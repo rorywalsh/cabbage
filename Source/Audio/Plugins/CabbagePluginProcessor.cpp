@@ -717,13 +717,16 @@ void CabbagePluginProcessor::expandMacroText(String& line, ValueTree wData) {
 }
 
 //rebuild the entire GUi each time something changes.
-void CabbagePluginProcessor::updateWidgets(String csdText) {
+void CabbagePluginProcessor::recreateWidgets(String csdText, bool editMode) {
 	CabbagePluginEditor* editor = static_cast<CabbagePluginEditor*> (this->getActiveEditor());
 	StringArray strings;
 	strings.addLines(csdText);
 	parseCsdFile(strings);
 	editor->createEditorInterface(cabbageWidgets);
-	editor->updateLayoutEditorFrames();
+	if(editMode)
+        editor->setEditMode(editMode);
+    
+    editor->updateLayoutEditorFrames();
 }
 
 void CabbagePluginProcessor::addCabbageParameter(std::unique_ptr<CabbagePluginParameter> parameter)

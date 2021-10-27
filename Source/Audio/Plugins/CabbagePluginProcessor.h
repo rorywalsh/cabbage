@@ -91,7 +91,7 @@ public:
     // use this instead of AudioProcessor::addParameter
     void addCabbageParameter(std::unique_ptr<CabbagePluginParameter> parameter);
     void createCabbageParameters();
-    void updateWidgets (String csdText);
+    void recreateWidgets (String csdText, bool editMode = false);
     void handleXmlImport (XmlElement* xml, StringArray& linesFromCsd);
     void getMacros (const StringArray& csdText);
     void generateCabbageCodeFromJS (PlantImportStruct& importData, String text);

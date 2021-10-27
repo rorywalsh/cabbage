@@ -276,6 +276,12 @@ public:
     {
         return editModeEnabled;
     }
+    
+    void setEditMode(bool enabled)
+    {
+        editModeEnabled = enabled;;
+    }
+    
     Colour backgroundColour;
     Colour titlebarColour;
     Colour fontColour;

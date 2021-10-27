@@ -866,7 +866,11 @@ void CabbageMainComponent::timerCallback()
     if (fileTabs.size() > 0)
     {
         AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
-
+        
+        if (getFilterGraph()->graph.getNodeForId (nodeId) != nullptr && getFilterGraph()->graph.getNodeForId (nodeId)->getProcessor()->isSuspended() == true)
+        {
+            stopCsoundForNode ("");
+        }
 
         if (getCurrentCsdFile().existsAsFile())
         {
@@ -1229,12 +1233,12 @@ void CabbageMainComponent::addCabbageSection()
 
 void CabbageMainComponent::enableEditMode()
 {
-
+	
 	const AudioProcessorGraph::NodeID nodeId(fileTabs[currentFileIndex]->uniqueFileId);
 	if (nodeId.uid == -99)
 		return;
 
-    stopCsoundForNode(fileTabs[currentFileIndex]->getFilename());
+    
 	const bool isCabbageFile = CabbageUtilities::hasCabbageTags(getCurrentCsdFile());
 
 	//stopCsoundForNode(getCurrentCsdFile().getFullPathName());
@@ -1246,10 +1250,17 @@ void CabbageMainComponent::enableEditMode()
         if (!getCabbagePluginEditor())
         {
             return;
-//            graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(nodeId, getCurrentCsdFile().getFullPathName()), { graphComponent->getWidth() / 2, graphComponent->getHeight() / 2 });
-//            juce::Point<int> pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(nodeId);
-//            createEditorForFilterGraphNode(pos);
         }
+        
+        if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()))
+        {
+            cabbagePlugin->recreateWidgets(getCurrentCsdFile().loadFileAsString(), true);
+        }
+        
+//        graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(nodeId, getCurrentCsdFile().getFullPathName()), { graphComponent->getWidth() / 2.f, graphComponent->getHeight() / 2.f });
+//        juce::Point<int> pos = getFilterGraph()->getPositionOfCurrentlyOpenWindow(nodeId);
+//        createEditorForFilterGraphNode(pos);
+//        }
 
 		getCabbagePluginEditor()->addChangeListener(this);
 		getCabbagePluginEditor()->addActionListener(this);
@@ -1259,18 +1270,6 @@ void CabbageMainComponent::enableEditMode()
 		propertyPanel->setInterceptsMouseClicks(true, true);
 
 		//getCabbagePluginEditor()->refreshValueTreeListeners();
-//        saveDocument();
-//        runCsoundForNode(getCurrentCsdFile().getFullPathName());
-        
-//        if (getFilterGraph()->graph.getNodeForId(nodeId) != nullptr)
-//        {
-//            if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()))
-//            {
-//                cabbagePlugin->stopTimer();
-//                cabbagePlugin->suspendProcessing(true);
-//            }
-//        }
-        
 		getCabbagePluginEditor()->enableEditMode(true);
 		
 		isGUIEnabled = true;
@@ -2256,19 +2255,19 @@ void CabbageMainComponent::stopCsoundForNode (String file, int fileTabIndex)
     if (fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex] && File (file).existsAsFile())
     {
         AudioProcessorGraph::NodeID nodeId(fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->uniqueFileId);
-        runCsoundForNode(file);
         
         if (getFilterGraph()->graph.getNodeForId(nodeId) != nullptr)
         {
             if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()))
             {
-                
+                cabbagePlugin->recreateWidgets(getCurrentCsdFile().loadFileAsString(), false);
                 cabbagePlugin->stopTimer();
                 cabbagePlugin->suspendProcessing(true);
+
             }
             else
             {
-                    getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
+                getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()->suspendProcessing(true);
             }
         }
         fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "off");
