@@ -529,7 +529,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
         {
             if (isGUIEnabled == false)
             {
-                this->saveDocument();
+                //this->saveDocument();
                 enableEditMode();
                 if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
                 {
