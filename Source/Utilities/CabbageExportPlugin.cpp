@@ -258,7 +258,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
                 if (bin.moveFileTo (pluginBinary) == false)
                     CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
                 
-//                setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
+                setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
                 
                 newPList = newPList.replace (pluginDesc, fc.getFileNameWithoutExtension());
             }
