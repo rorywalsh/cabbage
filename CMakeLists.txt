@@ -33,6 +33,8 @@ if(NOT DEFINED JucePlugin_ManufacturerCode)
     set(JucePlugin_ManufacturerCode Cabb)
 endif()
 
+set(JucePlugin_PluginCode RORY)
+
 if(NOT DEFINED JucePlugin_Desc)
     set(JucePlugin_Desc "CabbagePlugin")
 endif()
@@ -87,7 +89,7 @@ else()
         PLUGIN_NAME ${PROJECT_NAME}
         FORMATS VST VST3 Standalone AU
         PLUGIN_MANUFACTURER_CODE "${JucePlugin_ManufacturerCode}"
-        PLUGIN_CODE "RORY"
+        PLUGIN_CODE "${JucePlugin_PluginCode}"
         DESCRIPTION ${JucePlugin_Desc}
         NEEDS_MIDI_INPUT TRUE
         IS_SYNTH ${PLUGIN_IS_A_SYNTH}
