@@ -350,66 +350,66 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
                 }
             }
             
-            if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
-            {
-                String manufacturer(JucePlugin_Manufacturer);
-                //                mFile.seekg (0, ios::end);
-                //                String manuName;
-                //                if (manu.length() < 16)
-                //                    for (int y = manu.length(); y < manu.length(); y++)
-                //                        manu.append (String (" "), 1);
-                //set manufacturer do this a few times in case the plugin ID appear in more than one place.
-                for (int r = 0; r < 10; r++)
-                {
-                    mFile.seekg (0, std::ios::beg);
-                    mFile.read ((char*)&buffer[0], file_size);
-                    loc = cabbageFindPluginId (buffer, file_size, manufacturer.toUTF8());
-                    
-                    if (loc < 0)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        mFile.seekg (loc, std::ios::beg);
-                        mFile.write (manufacturer.toUTF8(), manufacturer.length());
-                    }
-                }
-            }
-            
-            
-            
-            
-//            //set plugin name based on .csd file
-            const char* pluginName = "CabbagePluginSynth";
-            String plugLibName = csdFile.getFileNameWithoutExtension();
-
-            if (plugLibName.length() < 18)
-                for (int y = plugLibName.length(); y < 18; y++)
-                    plugLibName.append (String (" "), 1);
-
-            mFile.seekg (0, std::ios::end);
-            //buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
-
-            for (int i = 0; i < 5; i++)
-            {
-
-                mFile.seekg (0, std::ios::beg);
-                mFile.read ((char*)&buffer[0], file_size);
-
-
-                loc = cabbageFindPluginId (buffer, file_size, pluginName);
-
-                if (loc < 0)
-                    break;
-                else
-                {
-                    mFile.seekg (loc, std::ios::beg);
-                    mFile.write (plugLibName.toUTF8(), 18);
-                }
-            }
-
-            loc = cabbageFindPluginId (buffer, file_size, pluginIDToReplace[i]);
+//            if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
+//            {
+//                String manufacturer(JucePlugin_Manufacturer);
+//                //                mFile.seekg (0, ios::end);
+//                //                String manuName;
+//                //                if (manu.length() < 16)
+//                //                    for (int y = manu.length(); y < manu.length(); y++)
+//                //                        manu.append (String (" "), 1);
+//                //set manufacturer do this a few times in case the plugin ID appear in more than one place.
+//                for (int r = 0; r < 10; r++)
+//                {
+//                    mFile.seekg (0, std::ios::beg);
+//                    mFile.read ((char*)&buffer[0], file_size);
+//                    loc = cabbageFindPluginId (buffer, file_size, manufacturer.toUTF8());
+//
+//                    if (loc < 0)
+//                    {
+//                        break;
+//                    }
+//                    else
+//                    {
+//                        mFile.seekg (loc, std::ios::beg);
+//                        mFile.write (manufacturer.toUTF8(), manufacturer.length());
+//                    }
+//                }
+//            }
+//
+//
+//
+//
+////            //set plugin name based on .csd file
+//            const char* pluginName = "CabbagePluginSynth";
+//            String plugLibName = csdFile.getFileNameWithoutExtension();
+//
+//            if (plugLibName.length() < 18)
+//                for (int y = plugLibName.length(); y < 18; y++)
+//                    plugLibName.append (String (" "), 1);
+//
+//            mFile.seekg (0, std::ios::end);
+//            //buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
+//
+//            for (int i = 0; i < 5; i++)
+//            {
+//
+//                mFile.seekg (0, std::ios::beg);
+//                mFile.read ((char*)&buffer[0], file_size);
+//
+//
+//                loc = cabbageFindPluginId (buffer, file_size, pluginName);
+//
+//                if (loc < 0)
+//                    break;
+//                else
+//                {
+//                    mFile.seekg (loc, std::ios::beg);
+//                    mFile.write (plugLibName.toUTF8(), 18);
+//                }
+//            }
+//
+//            loc = cabbageFindPluginId (buffer, file_size, pluginIDToReplace[i]);
             
             free (buffer);
             
