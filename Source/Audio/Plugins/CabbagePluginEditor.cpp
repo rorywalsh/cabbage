@@ -693,11 +693,8 @@ CabbagePluginParameter* CabbagePluginEditor::getParameterForComponent (const Str
 {
     for (auto param : cabbageProcessor.getCabbageParameters())
     {
-        if (CabbagePluginParameter* cabbageParam = dynamic_cast<CabbagePluginParameter*> (param))
-        {
-            if (name == cabbageParam->getWidgetName())
-                return cabbageParam;
-        }
+        if (name == param->getWidgetName())
+            return param;
     }
 
     return nullptr;
