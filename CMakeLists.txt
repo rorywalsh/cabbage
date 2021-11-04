@@ -15,7 +15,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.51)
+	set(BUILD_VERSION 2.8.52)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -88,8 +88,8 @@ else()
     juce_add_plugin(${PROJECT_NAME}
         PLUGIN_NAME ${PROJECT_NAME}
         FORMATS VST VST3 Standalone AU
-        PLUGIN_MANUFACTURER_CODE "${JucePlugin_ManufacturerCode}"
-        PLUGIN_CODE "${JucePlugin_PluginCode}"
+        PLUGIN_MANUFACTURER_CODE ${JucePlugin_ManufacturerCode}
+        PLUGIN_CODE RORY
         DESCRIPTION ${JucePlugin_Desc}
         NEEDS_MIDI_INPUT TRUE
         IS_SYNTH ${PLUGIN_IS_A_SYNTH}

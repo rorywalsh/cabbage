@@ -307,6 +307,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         else
             exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
 
+        setUniquePluginId(exportedPlugin, exportedCsdFile, pluginId);
         addFilesToPluginBundle(csdFile, exportedPlugin);
     }
             
