@@ -52,7 +52,7 @@ index 84df483a..24294df9 100644
          vstEffect.initialDelay = processor->getLatencySamples();
          vstEffect.object = this;
 -        vstEffect.uniqueID = JucePlugin_VSTUniqueID;
-+        vstEffect.uniqueID = getPluginId();
++        vstEffect.uniqueID = JucePlugin_VSTUniqueID;
  
         #ifdef JucePlugin_VSTChunkStructureVersion
          vstEffect.version = JucePlugin_VSTChunkStructureVersion;

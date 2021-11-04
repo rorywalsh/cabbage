@@ -8,7 +8,7 @@ index 28c48424..3d75a594 100644
          jassert (ByteOrder::bigEndianInt ("FBCh") == htonl ((uint32) bank->fxMagic));
          jassert (htonl ((uint32) bank->version) == 1 || htonl ((uint32) bank->version) == 2);
 -        jassert (JucePlugin_VSTUniqueID == htonl ((uint32) bank->fxID));
-+        jassert (getPluginId() == htonl ((uint32) bank->fxID));
++        jassert (JucePlugin_VSTUniqueID == htonl ((uint32) bank->fxID));
  
          setStateInformation (bank->content.data.chunk,
                               jmin ((int) (size - (bank->content.data.chunk - data)),
@@ -17,7 +17,7 @@ index 28c48424..3d75a594 100644
          bank.fxMagic            = (int32) htonl (ByteOrder::bigEndianInt ("FBCh"));
          bank.version            = (int32) htonl (2);
 -        bank.fxID               = (int32) htonl (JucePlugin_VSTUniqueID);
-+        bank.fxID               = (int32) htonl (getPluginId());
++        bank.fxID               = (int32) htonl (JucePlugin_VSTUniqueID);
          bank.fxVersion          = (int32) htonl (JucePlugin_VersionCode);
          bank.content.data.size  = (int32) htonl ((unsigned int) mem.getSize());
  
@@ -68,7 +68,7 @@ index 28c48424..3d75a594 100644
  JUCE_BEGIN_IGNORE_WARNINGS_GCC_LIKE ("-Wall")
  
 -DECLARE_CLASS_IID (JuceAudioProcessor, 0x0101ABAB, 0xABCDEF01, JucePlugin_ManufacturerCode, JucePlugin_PluginCode)
-+DECLARE_CLASS_IID (JuceAudioProcessor, 0x0101ABAB, 0xABCDEF01, JucePlugin_ManufacturerCode, getPluginId())
++DECLARE_CLASS_IID (JuceAudioProcessor, 0x0101ABAB, 0xABCDEF01, JucePlugin_ManufacturerCode, JucePlugin_PluginCode)
  DEF_CLASS_IID (JuceAudioProcessor)
  
  #if JUCE_VST3_CAN_REPLACE_VST2
@@ -77,11 +77,11 @@ index 28c48424..3d75a594 100644
   const Steinberg::FUID JuceVST3EditController::iid (getFUIDForVST2ID (true));
  #else
 - DECLARE_CLASS_IID (JuceVST3EditController, 0xABCDEF01, 0x1234ABCD, JucePlugin_ManufacturerCode, JucePlugin_PluginCode)
-+ DECLARE_CLASS_IID (JuceVST3EditController, 0xABCDEF01, 0x1234ABCD, JucePlugin_ManufacturerCode, getPluginId())
++ DECLARE_CLASS_IID (JuceVST3EditController, 0xABCDEF01, 0x1234ABCD, JucePlugin_ManufacturerCode, JucePlugin_PluginCode)
   DEF_CLASS_IID (JuceVST3EditController)
  
 - DECLARE_CLASS_IID (JuceVST3Component, 0xABCDEF01, 0x9182FAEB, JucePlugin_ManufacturerCode, JucePlugin_PluginCode)
-+ DECLARE_CLASS_IID (JuceVST3Component, 0xABCDEF01, 0x9182FAEB, JucePlugin_ManufacturerCode, getPluginId())
++ DECLARE_CLASS_IID (JuceVST3Component, 0xABCDEF01, 0x9182FAEB, JucePlugin_ManufacturerCode, JucePlugin_PluginCode)
   DEF_CLASS_IID (JuceVST3Component)
  #endif
  
