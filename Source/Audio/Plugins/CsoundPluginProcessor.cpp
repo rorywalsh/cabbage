@@ -26,7 +26,19 @@
 
 //==============================================================================
 CsoundPluginProcessor::CsoundPluginProcessor (File selectedCsdFile, const BusesProperties ioBuses)
-    : AudioProcessor (ioBuses),
+    :
+#if Stereo_Mono_Only
+    AudioProcessor (BusesProperties()
+                         #if ! JucePlugin_IsMidiEffect
+                          #if ! JucePlugin_IsSynth
+                           .withInput  ("Input",  juce::AudioChannelSet::stereo(), true)
+                          #endif
+                           .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
+                         #endif
+                           ),
+#else
+    AudioProcessor (ioBuses),
+#endif
 csdFile (selectedCsdFile)
 {
     hostInfo = {};  
