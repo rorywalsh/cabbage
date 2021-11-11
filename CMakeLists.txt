@@ -88,8 +88,8 @@ else()
     juce_add_plugin(${PROJECT_NAME}
         PLUGIN_NAME ${PROJECT_NAME}
         FORMATS VST VST3 Standalone AU
-        PLUGIN_MANUFACTURER_CODE "${JucePlugin_ManufacturerCode}"
-        PLUGIN_CODE "${JucePlugin_PluginCode}"
+        PLUGIN_MANUFACTURER_CODE ${JucePlugin_ManufacturerCode}
+        PLUGIN_CODE RORY
         DESCRIPTION ${JucePlugin_Desc}
         NEEDS_MIDI_INPUT TRUE
         IS_SYNTH ${PLUGIN_IS_A_SYNTH}
