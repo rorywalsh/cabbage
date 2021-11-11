@@ -63,7 +63,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
 // #if CabbagePro && JUCE_MAC
 //         const String pluginDesc = String(JucePlugin_Manufacturer);
 // #else
-        const String pluginDesc = String(JucePlugin_Desc);
+        const String pluginDesc = String(PluginDesc);
 // #endifs
         
         if (type == "VSTi" || type == "AUi" || type == "VST3i")
@@ -264,7 +264,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             }
             
             
-            String manu(JucePlugin_Manufacturer);
+            String manu(CabbageManufacturer);
             const String pluginName = "<string>" +manu + ": " + fc.getFileNameWithoutExtension() + "</string>";
             const String toReplace = "<string>"+manu+": "+VSTData.getFileNameWithoutExtension()+"</string>";
             DBG(toReplace);

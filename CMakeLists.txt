@@ -15,7 +15,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.52)
+	set(BUILD_VERSION 2.8.53)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -23,6 +23,9 @@ add_subdirectory(JUCE)                    # If you've put JUCE in a subdirectory
 
 if(NOT DEFINED JucePlugin_Manufacturer)
     set(JucePlugin_Manufacturer "CabbageAudio")
+    set(CabbageManufacturer "CabbageAudio")
+else()
+set(CabbageManufacturer ${JucePlugin_Manufacturer})
 endif()
 
 if(NOT DEFINED CabbagePro)
@@ -33,10 +36,12 @@ if(NOT DEFINED JucePlugin_ManufacturerCode)
     set(JucePlugin_ManufacturerCode Cabb)
 endif()
 
-set(JucePlugin_PluginCode RORY)
 
 if(NOT DEFINED JucePlugin_Desc)
     set(JucePlugin_Desc "CabbagePlugin")
+    set(PluginDesc "CabbagePlugin")
+else()
+    set(PluginDesc ${JucePlugin_Desc})
 endif()
 
 
@@ -315,10 +320,9 @@ target_compile_definitions(${PROJECT_NAME}
         JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
         JUCE_MODAL_LOOPS_PERMITTED=1
-        JucePlugin_Manufacturer="${JucePlugin_Manufacturer}"
-        JucePlugin_Desc="${JucePlugin_Desc}"
         CabbagePro=${CabbagePro}
-        PLUGIN_MANUFACTURER_CODE "${JucePlugin_ManufacturerCode}"
+        PluginDesc="${PluginDesc}"
+        CabbageManufacturer="${CabbageManufacturer}"
         Use_Native_File_Browser=1
         JUCE_ASIO=1
         JUCE_VST3_CAN_REPLACE_VST2=0
