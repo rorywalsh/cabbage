@@ -83,7 +83,6 @@ int CreateCabbageWidget::createWidget()
     CabbageControlWidgetStrings widgets;
     if(widgets.contains(typeOfWidget))
     {
-        MYFLT* value;
         const double widgetValue = CabbageWidgetData::getNumProp (newWidget, CabbageIdentifierIds::value);
         const String channel = CabbageWidgetData::getStringProp (newWidget, CabbageIdentifierIds::channel);
         if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channel.getCharPointer(),
@@ -576,7 +575,7 @@ int GetCabbageStringValueArrayWithTrigger::getAttribute()
     out.init(csound, (int)inputArgs.len());
     outTriggers.init(csound, (int)inputArgs.len());
     
-    for ( int i = 0 ; i < inputArgs.len() ; i++)
+    for ( int i = 0 ; i < int(inputArgs.len()) ; i++)
     {
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
@@ -643,7 +642,7 @@ int GetCabbageValueArrayWithTrigger::getAttribute()
     out.init(csound, (int)inputArgs.len());
     outTriggers.init(csound, (int)inputArgs.len());
     
-    for ( int i = 0 ; i < inputArgs.len() ; i++)
+    for ( int i = 0 ; i < int(inputArgs.len()) ; i++)
     {
         if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                 CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
@@ -677,14 +676,14 @@ int CabbageValueChanged::getAttribute()
         return NOTOK;
 
     if(in_count() == 3)
-        mode = inargs[2];
+        mode = int(inargs[2]);
     else
         mode = 2;
     
     csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
     bool foundAChange = false;
     
-    for ( int i = 0 ; i < inputArgs.len() ; i++)
+    for ( int i = 0 ; i < int(inputArgs.len()) ; i++)
     {
         if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                 CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
@@ -738,7 +737,7 @@ int CabbageValueChanged::getAttribute()
         else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                      CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
         {
-            if(currentStrings[i].size == 0){
+            if(int(currentStrings[i].size) == 0){
                 currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
                 currentStrings[i].size = ((STRINGDAT*)value)->size;
             }
@@ -768,14 +767,14 @@ int CabbageValueChangedIndex::getAttribute()
         return NOTOK;
     
     if(in_count() == 3)
-        mode = inargs[2];
+        mode = int(inargs[2]);
     else
         mode = 2;
     
     csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
     bool foundAChange = false;
     
-    for ( int i = 0 ; i < inputArgs.len() ; i++)
+    for ( int i = 0 ; i < int(inputArgs.len()) ; i++)
     {
         if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                 CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
@@ -856,9 +855,9 @@ int CabbageValueChangedIndex::getAttribute()
 
 //====================================================================================================
 // from cabbageSetValue
-int SetCabbageValueIdentifier::setAttribute(int rate)
+int SetCabbageValueIdentifier::setAttribute(int)
 {
-    int trigger = args[2];
+    int trigger = int(args[2]);
     
    // if (rate == I_RATE)
    //     trigger = 1;
@@ -921,7 +920,7 @@ int SetCabbageValueIdentifier::setAttribute(int rate)
     return OK;
 }
 
-int SetCabbageValueIdentifierITime::setAttribute(int rate)
+int SetCabbageValueIdentifierITime::setAttribute(int)
 {
 
     if(args.str_data(0).size == 0)
@@ -980,9 +979,9 @@ int SetCabbageValueIdentifierITime::setAttribute(int rate)
 }
 
 
-int SetCabbageValueIdentifierSArgs::setAttribute(int rate)
+int SetCabbageValueIdentifierSArgs::setAttribute(int)
 {
-    int trigger = args[2];
+    int trigger = int(args[2]);
     
     // if (rate == I_RATE)
     //     trigger = 1;
@@ -1050,7 +1049,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int rate)
     return OK;
 }
 
-int SetCabbageValueIdentifierSArgsITime::setAttribute(int rate)
+int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
 {
 
     if(args.str_data(0).size == 0)
@@ -1110,7 +1109,7 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int rate)
 //====================================================================================================
 int SetCabbageIdentifier::setAttribute()
 {
-    int trigger = args[0];
+    int trigger = int(args[0]);
     
     if(trigger == 0)
         return OK;
@@ -1187,7 +1186,7 @@ int SetCabbageIdentifier::setAttribute()
 
 int SetCabbageIdentifierArray::setAttribute()
 {
-    int trigger = args[0];
+    int trigger = int(args[0]);
     
     if(trigger == 0)
         return OK;
@@ -1225,7 +1224,7 @@ int SetCabbageIdentifierArray::setAttribute()
             varData->data.add(updateData1);
         }
         
-        for (int i = 0; i < inputArgs.len(); i++)
+        for (int i = 0; i < int(inputArgs.len()); i++)
         {
             data.args.append(inputArgs[i]);
         }
@@ -1259,7 +1258,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     //csnd::plugin<SetCabbageIdentifierSArgs>((csnd::Csound*) csound->getEngine(), "cabbageSet", "", "kSS", csnd::thread::k);
     
     CabbageWidgetIdentifiers::IdentifierData data;
-    int trigger = args[0];
+    int trigger = int(args[0]);
 
     if (rate == I_RATE)
         trigger = 1;
@@ -1308,7 +1307,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     }
     else
     {
-        for ( int i = 3 ; i < in_count(); i++)
+        for ( int i = 3 ; i < int(in_count()); i++)
         {
             data.args.append(String(args.str_data(i).data));
         }
@@ -1368,7 +1367,7 @@ int SetCabbageIdentifierITime::setAttribute()
     }
     else
     {
-        for ( int i = 2 ; i < in_count(); i++)
+        for ( int i = 2 ; i < int(in_count()); i++)
         {
             data.args.append(double(outargs[i]));
         }
@@ -1436,7 +1435,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
     }
     else
     {
-        for ( int i = 2 ; i < in_count(); i++)
+        for ( int i = 2 ; i < int(in_count()); i++)
         {
             data.args.append(String(outargs.str_data(i).data));
         }
@@ -1666,7 +1665,7 @@ int CabbageCopyFile::copyFiles()
     }
     
     
-    for ( int i = 1 ; i < in_count() ; i++)
+    for ( int i = 1 ; i < int(in_count()) ; i++)
     {
         File file(File::getCurrentWorkingDirectory().getChildFile(String(args.str_data(i).data)));
         File newFile(newFolder+"/"+ String(args.str_data(i).data));

@@ -50,7 +50,6 @@ struct SetCabbageValueIdentifier : csnd::InPlug<3>
     MYFLT* value;
     MYFLT lastValue = 0;
     String name, identifier;
-    CabbageWidgetIdentifiers::IdentifierData data;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(I_RATE); }
     int kperf(){ return setAttribute(K_RATE); }
@@ -62,7 +61,6 @@ struct SetCabbageValueIdentifierITime : csnd::InPlug<3>
     MYFLT* value;
     MYFLT lastValue = 0;
     String name, identifier;
-    CabbageWidgetIdentifiers::IdentifierData data;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(I_RATE); }
     int kperf(){ return setAttribute(K_RATE); }
@@ -74,7 +72,6 @@ struct SetCabbageValueIdentifierSArgs : csnd::InPlug<3>
     MYFLT* str;
     MYFLT lastValue = 0;
     String name, identifier;
-    CabbageWidgetIdentifiers::IdentifierData data;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(I_RATE); }
     int kperf(){ return setAttribute(K_RATE); }
@@ -86,7 +83,6 @@ struct SetCabbageValueIdentifierSArgsITime : csnd::InPlug<3>
     MYFLT* strInput;
     MYFLT lastValue = 0;
     String name, identifier;
-    CabbageWidgetIdentifiers::IdentifierData data;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(I_RATE); }
     int setAttribute(int rate);
@@ -182,7 +178,7 @@ struct CabbageValueChanged : csnd::Plugin<2, 3>
 {
     MYFLT* value;
     int mode = 2;
-    MYFLT oldValue[1024] ={0};
+    MYFLT oldValue[1024] = {0};
     std::vector<STRINGDAT> currentStrings;
     int init(){
         csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
@@ -263,7 +259,6 @@ struct CreateCabbageWidget : csnd::InPlug<2>
 //================================================================================================================
 struct GetCabbageIdentifierSingle : csnd::Plugin<1, 2>
 {
-    String name, identifier;
     MYFLT* value;
     CabbageWidgetsValueTree** vt = nullptr;
     int init(){ return getAttribute();  }
@@ -273,7 +268,6 @@ struct GetCabbageIdentifierSingle : csnd::Plugin<1, 2>
 
 struct GetCabbageIdentifierSingleITime : csnd::Plugin<1, 2>
 {
-    String name, identifier;
     MYFLT* value;
     CabbageWidgetsValueTree** vt = nullptr;
     int init(){ return getAttribute();  }
@@ -282,7 +276,6 @@ struct GetCabbageIdentifierSingleITime : csnd::Plugin<1, 2>
 
 struct GetCabbageIdentifierArray : csnd::Plugin<1, 2>
 {
-    String name, identifier;
     MYFLT* value;
     CabbageWidgetsValueTree** vt = nullptr;
     int init(){ return getAttribute();  }
@@ -292,7 +285,6 @@ struct GetCabbageIdentifierArray : csnd::Plugin<1, 2>
 
 struct GetCabbageStringIdentifierSingle : csnd::Plugin<1, 2>
 {
-    String name, identifier;
     MYFLT* value;
     CabbageWidgetsValueTree** vt = nullptr;
     int init(){ return getAttribute(); }
@@ -303,7 +295,6 @@ struct GetCabbageStringIdentifierSingle : csnd::Plugin<1, 2>
 struct GetCabbageStringIdentifierArray : csnd::Plugin<1, 2>
 {
     MYFLT* value;
-    String name, identifier;
     CabbageWidgetsValueTree** vt = nullptr;
     int init(){ return getAttribute(); }
     int kperf(){ return getAttribute(); }
@@ -397,11 +388,9 @@ struct CabbageFindFilesI : csnd::Plugin<1, 4>
 
 struct CabbageFindFilesK : csnd::Plugin<1, 4>
 {
-    Array<File> dirFiles;
     int init(){ return findFiles(); }
     int kperf(){ return findFiles(); }
     int deinit(){
-        dirFiles.clear();
         return OK;
     }
     int findFiles();
