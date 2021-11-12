@@ -1541,14 +1541,15 @@ int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type, std::string& current
         if(type == "noExtension")
             result = file.getFileNameWithoutExtension();
         
-    #ifdef JUCE_WINDOWS
+ #ifdef JUCE_WINDOWS
         opcodeData->outargs.str_data(0).size = strlen(result.replace("\\", "\\\\").toRawUTF8());
         opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.replace("\\", "\\\\").toUTF8().getAddress());
         return OK;
-    #endif
+#else
         
         opcodeData->outargs.str_data(0).size = result.length()+1;
         opcodeData->outargs.str_data(0).data = opcodeData->csound->strdup(result.toUTF8().getAddress());
+#endif
     }
     return OK;
     

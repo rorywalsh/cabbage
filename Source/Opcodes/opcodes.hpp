@@ -170,7 +170,6 @@ struct SetStateFloatData : csnd::InPlug<2>
             else
                 csound->init_error("Not enough input arguments:\n");
             return NOTOK;
-            return false;
         }
         
         

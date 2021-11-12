@@ -29,13 +29,13 @@ createPluginFilter() {
 	CabbageUtilities::debug("==========================================");
 	File csdFile;
 #ifdef JUCE_WINDOWS
-	CabbageUtilities::debug(CharPointer_UTF8(JucePlugin_Manufacturer));
+	CabbageUtilities::debug(CharPointer_UTF8(CabbageManufacturer));
 	csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
 	const String homeDrive = File::getSpecialLocation(File::windowsSystemDirectory).getParentDirectory().getParentDirectory().getFullPathName();
 	
 	if (csdFile.existsAsFile() == false)
 	{		
-		String filename = homeDrive+"/ProgramData/" + String(JucePlugin_Manufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
+		String filename = homeDrive+"/ProgramData/" + String(CabbageManufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
 		csdFile = File(filename);
 	}
 #elif JUCE_MAC
@@ -1247,11 +1247,11 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
     
     if (getEngine())
     {
-        CabbagePersistentData** pd = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
+        CabbagePersistentData** p = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
         
-        if (pd != nullptr)
+        if (p != nullptr)
         {
-            auto pdClass = *pd;
+            auto pdClass = *p;
             xml->setAttribute("cabbageJSONData", pdClass->data);
         }
     }
@@ -1369,11 +1369,11 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			//none of these are being updated in their respective valueTreeChanged listeners..
             if(e->getAttributeName(i) == "cabbageJSONData")
             {
-                CabbagePersistentData** pd = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
+                CabbagePersistentData** p = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
                 
-                if (pd != nullptr)
+                if (p != nullptr)
                 {
-                    auto pdClass = *pd;
+                    auto pdClass = *p;
                     pdClass->data = e->getStringAttribute("cabbageJSONData").toRawUTF8();
                 }
 
@@ -1570,7 +1570,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 	if (!getEngine())
 		return;
 
-    const int chnsetGestureMode = getChnsetGestureMode();
+    const int gestureMode = getChnsetGestureMode();
 	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++)
 	{
 		const var chanArray = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::channel);
@@ -1609,7 +1609,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
 						getEngine()->GetChannel(channels[0].toUTF8()));
 					//now update plugin parameters..
 					
-					if (chnsetGestureMode == 1) // by default, we don't call beginChangeGesture()...
+					if (gestureMode == 1) // by default, we don't call beginChangeGesture()...
 					{
 						for (auto cabbageParam : getCabbageParameters())
 						{
