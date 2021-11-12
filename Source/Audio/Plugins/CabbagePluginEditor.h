@@ -86,45 +86,45 @@ public:
 
     Component* getCabbageForm(){  return &cabbageForm;   }
     void resizePlugin(int sizeIndex);
-    void insertWidget (ValueTree cabbageWidgetData);
+    void insertWidget (const ValueTree& cabbageWidgetData);
     // the following methods instantiate controls that CAN
     // be automated in a host...
-    void insertSlider (ValueTree cabbageWidgetData);
-    void insertComboBox (ValueTree cabbageWidgetData);
-    void insertButton (ValueTree cabbageWidgetData);
-    void insertOptionButton (ValueTree cabbageWidgetData);
-    void insertCheckbox (ValueTree cabbageWidgetData);
-    void insertXYPad (ValueTree cabbageWidgetData);
-    void insertRangeSlider (ValueTree cabbageWidgetData);
-    void insertNumberSlider (ValueTree cabbageWidgetData);
-    void insertEncoder (ValueTree cabbageWidgetData);
+    void insertSlider (const ValueTree& cabbageWidgetData);
+    void insertComboBox (const ValueTree& cabbageWidgetData);
+    void insertButton (const ValueTree& cabbageWidgetData);
+    void insertOptionButton (const ValueTree& cabbageWidgetData);
+    void insertCheckbox (const ValueTree& cabbageWidgetData);
+    void insertXYPad (const ValueTree& cabbageWidgetData);
+    void insertRangeSlider (const ValueTree& cabbageWidgetData);
+    void insertNumberSlider (const ValueTree& cabbageWidgetData);
+    void insertEncoder (const ValueTree& cabbageWidgetData);
     //the following methods instantiate controls that CANNOT
     // be automated in a host...
-    void insertStringSequencer (ValueTree cabbageWidgetData);
-    void insertGroupBox (ValueTree cabbageWidgetData);
-    void insertSoundfiler (ValueTree cabbageWidgetData);
+    void insertStringSequencer (const ValueTree& cabbageWidgetData);
+    void insertGroupBox (const ValueTree& cabbageWidgetData);
+    void insertSoundfiler (const ValueTree& cabbageWidgetData);
     void insertSourceButton (ValueTree cabbageWidgetData) { ignoreUnused(cabbageWidgetData);}
-    void insertTextEditor (ValueTree cabbageWidgetData);
-    void insertCsoundOutputConsole (ValueTree cabbageWidgetData);
-    void insertKeyboard (ValueTree cabbageWidgetData);
-	void insertKeyboardDisplay(ValueTree cabbageWidgetData);
-    void insertFileButton (ValueTree cabbageWidgetData);
-    void insertPresetButton (ValueTree cabbageWidgetData);
-    void insertImage (ValueTree cabbageWidgetData);
-    void insertLine (ValueTree cabbageWidgetData);
-    void insertLabel (ValueTree cabbageWidgetData);
-    void insertListBox (ValueTree cabbageWidgetData);
+    void insertTextEditor (const ValueTree& cabbageWidgetData);
+    void insertCsoundOutputConsole (const ValueTree& cabbageWidgetData);
+    void insertKeyboard (const ValueTree& cabbageWidgetData);
+	void insertKeyboardDisplay(const ValueTree& cabbageWidgetData);
+    void insertFileButton (const ValueTree& cabbageWidgetData);
+    void insertPresetButton (const ValueTree& cabbageWidgetData);
+    void insertImage (const ValueTree& cabbageWidgetData);
+    void insertLine (const ValueTree& cabbageWidgetData);
+    void insertLabel (const ValueTree& cabbageWidgetData);
+    void insertListBox (const ValueTree& cabbageWidgetData);
     void insertTable (ValueTree cabbageWidgetData) { ignoreUnused(cabbageWidgetData);}
-    void insertInfoButton (ValueTree cabbageWidgetData);
-    void insertGenTable (ValueTree cabbageWidgetData);
-    void insertTextBox (ValueTree cabbageWidgetData);
-    void insertSignalDisplay (ValueTree cabbageWidgetData);
+    void insertInfoButton (const ValueTree& cabbageWidgetData);
+    void insertGenTable (const ValueTree& cabbageWidgetData);
+    void insertTextBox (const ValueTree& cabbageWidgetData);
+    void insertSignalDisplay (const ValueTree& cabbageWidgetData);
     void insertStepper (ValueTree cabbageWidgetData) {ignoreUnused(cabbageWidgetData);}
-    void insertMeter (ValueTree cabbageWidgetData);
-    void insertPath (ValueTree cabbageWidgetData);
-    void insertPort (ValueTree cabbageWidgetData);
-    void insertScrew (ValueTree cabbageWidgetData);
-    void insertLight (ValueTree cabbageWidgetData);
+    void insertMeter (const ValueTree& cabbageWidgetData);
+    void insertPath (const ValueTree& cabbageWidgetData);
+    void insertPort (const ValueTree& cabbageWidgetData);
+    void insertScrew (const ValueTree& cabbageWidgetData);
+    void insertLight (const ValueTree& cabbageWidgetData);
     
     void moveBehind(String thisComp, String otherComp);
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
@@ -133,23 +133,23 @@ public:
 
 	//=============================================================================
     // all these methods expose public methods in CabagePluginProcessor
-    void sendChannelDataToCsound (String channel, float value);
-    void sendChannelStringDataToCsound (String channel, String value);
-    float getChannelDataFromCsound (String channel);
-    void sendScoreEventToCsound (String scoreEvent);
+    void sendChannelDataToCsound (const String& channel, float value);
+    void sendChannelStringDataToCsound (const String& channel, String value);
+    float getChannelDataFromCsound (const String& channel);
+    void sendScoreEventToCsound (const String& scoreEvent);
     void createEventMatrix(int cols, int rows, String channel);
-    void setEventMatrixData(int cols, int rows, String channel, String data);
+    void setEventMatrixData(int cols, int rows, const String& channel, String data);
     void setEventMatrixCurrentPosition(int cols, int rows, String channel, int position);
 
     bool shouldUpdateSignalDisplay(String variableName);
     
     void setCurrentPreset(String preset);
-    String getCurrentPreset();
+    String getCurrentPreset() const;
     
-    void savePluginStateToFile (String presetName, String filename, bool remove = false);
+    void savePluginStateToFile (String presetName, const String& filename, bool remove = false);
     void restorePluginStateFrom (String childPreset, String filename);
-    const Array<float, CriticalSection> getArrayForSignalDisplay (const String signalVariable, const String displayType);
-    const String getCsoundOutputFromProcessor();
+    Array<float, CriticalSection> getArrayForSignalDisplay (const String signalVariable, const String displayType);
+    String getCsoundOutputFromProcessor();
     StringArray getTableStatement (int tableNumber);
     bool csdCompiledWithoutError();
     const Array<float, CriticalSection> getTableFloats (int tableNum);
@@ -229,11 +229,10 @@ public:
 
 	//=============================================================================
 
-    
-    String createNewGenericNameForPresetFile();
+
     void addNewWidget (String widgetType, juce::Point<int> point, bool isPlant = false);
     //=============================================================================
-    void refreshComboListBoxContents(String presetName = "");
+    void refreshComboListBoxContents(const String& presetName = "");
     void enableEditMode (bool enable);
     void setCurrentlySelectedComponents (StringArray componentNames);  
     void resetCurrentlySelectedComponents();
@@ -242,7 +241,7 @@ public:
     Component* getComponentFromName (String& name);
     void addToEditorAndMakeVisible (Component* comp, ValueTree widgetData);
     void updateLayoutEditorFrames();
-    void addPlantToPopupPlantsArray (ValueTree wData, Component* plant);
+    void addPlantToPopupPlantsArray (const ValueTree& wData, Component* plant);
     //=============================================================================
     void buttonClicked (Button* button) override;
     void buttonStateChanged (Button* button) override;
@@ -252,7 +251,7 @@ public:
     void sliderDragStarted(Slider* slider) override;
     void sliderDragEnded(Slider* slider) override;
     //=============================================================================
-    CabbagePluginParameter* getParameterForComponent (const String name);
+    CabbagePluginParameter* getParameterForComponent (const String& name);
     //=============================================================================
     void setLastOpenedDirectory (const String lastDirectory)
     {
@@ -287,7 +286,7 @@ public:
     Colour fontColour;
     String globalStyle = "";
     bool defaultFontColour = true;
-    float titlebarGradientAmount;
+    float titlebarGradientAmount{};
     NamedValueSet radioGroups;
 
     //---- popup plant window ----

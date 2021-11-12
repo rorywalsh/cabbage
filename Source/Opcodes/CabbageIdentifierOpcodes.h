@@ -21,7 +21,7 @@
 class CabbageWidgetsValueTree
 {
 public:
-   CabbageWidgetsValueTree(){}
+   CabbageWidgetsValueTree()= default;
    ~CabbageWidgetsValueTree(){}
 
    ValueTree data;
@@ -70,7 +70,6 @@ struct SetCabbageValueIdentifierITime : csnd::InPlug<3>
 struct SetCabbageValueIdentifierSArgs : csnd::InPlug<3>
 {
     MYFLT* str;
-    MYFLT lastValue = 0;
     String name, identifier;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(I_RATE); }
@@ -81,7 +80,6 @@ struct SetCabbageValueIdentifierSArgs : csnd::InPlug<3>
 struct SetCabbageValueIdentifierSArgsITime : csnd::InPlug<3>
 {
     MYFLT* strInput;
-    MYFLT lastValue = 0;
     String name, identifier;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(I_RATE); }

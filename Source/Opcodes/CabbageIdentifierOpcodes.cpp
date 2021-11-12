@@ -575,7 +575,7 @@ int GetCabbageStringValueArrayWithTrigger::getAttribute()
     out.init(csound, (int)inputArgs.len());
     outTriggers.init(csound, (int)inputArgs.len());
     
-    for ( int i = 0 ; i < int(inputArgs.len()) ; i++)
+    for (unsigned long i = 0 ; i < int(inputArgs.len()) ; i++)
     {
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
@@ -614,7 +614,7 @@ int GetCabbageValueWithTrigger::getAttribute()
         if(*value != currentValue)
         {
             currentValue = *value;
-            if(firstRun == true)
+            if(firstRun)
             {
                 firstRun = false;
                 outargs[1] = 0;
@@ -651,7 +651,7 @@ int GetCabbageValueArrayWithTrigger::getAttribute()
             if(*value != currentValue[i])
             {
                 currentValue[i] = *value;
-                if(firstRun == true)
+                if(firstRun)
                 {
                     firstRun = false;
                     outTriggers[i] = 0;
@@ -683,7 +683,7 @@ int CabbageValueChanged::getAttribute()
     csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
     bool foundAChange = false;
     
-    for ( int i = 0 ; i < int(inputArgs.len()) ; i++)
+    for (unsigned long i = 0 ; i < int(inputArgs.len()) ; i++)
     {
         if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                 CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
@@ -737,7 +737,7 @@ int CabbageValueChanged::getAttribute()
         else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                      CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
         {
-            if(int(currentStrings[i].size) == 0){
+            if(int(currentStrings[static_cast<unsigned long>(i)].size) == 0){
                 currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
                 currentStrings[i].size = ((STRINGDAT*)value)->size;
             }
@@ -753,7 +753,7 @@ int CabbageValueChanged::getAttribute()
         }
     }
     
-    if(foundAChange == true)
+    if(foundAChange)
         outargs[1] = 1;
     else
         outargs[1] = 0;
@@ -774,7 +774,7 @@ int CabbageValueChangedIndex::getAttribute()
     csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
     bool foundAChange = false;
     
-    for ( int i = 0 ; i < int(inputArgs.len()) ; i++)
+    for ( unsigned long i = 0 ; i < int(inputArgs.len()) ; i++)
     {
         if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                 CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
@@ -960,7 +960,7 @@ int SetCabbageValueIdentifierITime::setAttribute(int)
     
     for( auto& el : varData->data)
     {
-        if(el.isValid == true)
+        if(el.isValid)
         {
             if(el.identifier == data.identifier && el.name == data.name)
             {
@@ -970,7 +970,7 @@ int SetCabbageValueIdentifierITime::setAttribute(int)
         }
     }
     
-    if(entryExists == false)
+    if(!entryExists)
         varData->data.add(data);
         
 
@@ -1020,7 +1020,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int)
         if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &str, args.str_data(0).data,
                                                CSOUND_STRING_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
         {
-            STRINGDAT* stringdat = (STRINGDAT*) str;
+            auto* stringdat = (STRINGDAT*) str;
             stringdat->data = csound->strdup(args.str_data(1).data);
             stringdat->size = strlen(args.str_data(1).data) + 1;
         }
@@ -1031,7 +1031,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int)
         
         for( auto& el : varData->data)
         {
-            if(el.isValid == true)
+            if(el.isValid)
             {
                 if(el.identifier == data.identifier && el.name == data.name)
                 {
@@ -1041,7 +1041,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int)
             }
         }
         
-        if(entryExists == false)
+        if(!entryExists)
             varData->data.add(data);
         
     }
@@ -1082,7 +1082,7 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
     
     for( auto& el : varData->data)
     {
-        if(el.isValid == true)
+        if(el.isValid)
         {
             if(el.identifier == data.identifier && el.name == data.name)
             {
@@ -1101,7 +1101,7 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
 //        stringdat->size = strlen(args.str_data(1).data) + 1;
     }
     
-    if(entryExists == false)
+    if(!entryExists)
         varData->data.add(data);
     
     return OK;
@@ -1522,7 +1522,7 @@ int getFileInfo(csnd::Plugin<1,1>* opcodeData, String type, std::string& current
     {
         currentPath = opcodeData->inargs.str_data(0).data;
         //String inputFile = String(opcodeData->inargs.str_data(0).data);
-        if(File::isAbsolutePath(opcodeData->inargs.str_data(0).data) == false)
+        if(!File::isAbsolutePath(opcodeData->inargs.str_data(0).data))
         {
             //opcodeData->csound->message(String(inputFile + " is not a valid path").toUTF8().getAddress());
             return OK;
@@ -1655,7 +1655,7 @@ int CabbageCopyFile::copyFiles()
     const String extension = File(newLocation).getFileExtension();
     String newFolder = File(newLocation).getParentDirectory().getFullPathName()+"/"+File(newLocation).getFileNameWithoutExtension();
     
-    if(File(newLocation).exists() == false)
+    if(!File(newLocation).exists())
     {
         ghc::filesystem::create_directory(newFolder.toStdString());
     }
@@ -1682,7 +1682,7 @@ int CabbageCopyFile::copyFiles()
         }
     }
     
-    if(folderAlreadyExists == false)
+    if(!folderAlreadyExists)
     {
         ghc::filesystem::rename(newFolder.toStdString(), newLocation.toStdString());
     }

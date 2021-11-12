@@ -20,6 +20,8 @@
 #ifndef CABBAGEPLUGINPROCESSOR_H_INCLUDED
 #define CABBAGEPLUGINPROCESSOR_H_INCLUDED
 
+#include <utility>
+
 #include "CsoundPluginProcessor.h"
 #include "../../Widgets/CabbageWidgetData.h"
 #include "../../CabbageIds.h"
@@ -48,7 +50,7 @@ public:
         static var print (const var::NativeFunctionArgs& args)
         {
             if (args.numArguments > 0)
-                if (CabbageJavaClass* thisObject = dynamic_cast<CabbageJavaClass*> (args.thisObject.getObject()))
+                if (auto* thisObject = dynamic_cast<CabbageJavaClass*> (args.thisObject.getObject()))
                     thisObject->owner->cabbageScriptGeneratedCode.add (args.arguments[0].toString());
 
             return var::undefined();
@@ -65,25 +67,24 @@ public:
         StringArray cabbageCode;
     };
 
-	CabbagePluginProcessor (File inputFile, BusesProperties IOBuses);
-	void createCsound(File inputFile, bool shouldCreateParameters = true);
+	CabbagePluginProcessor (const File& inputFile, BusesProperties IOBuses);
+	void createCsound(const File& inputFile, bool shouldCreateParameters = true);
     ~CabbagePluginProcessor() override;
 
     ValueTree cabbageWidgets;
     CachedValue<var> cachedValue;
     void getChannelDataFromCsound() override;
     void getIdentifierDataFromCsound() override;
-    void triggerCsoundEvents() override;
+
     void setWidthHeight();
-    int chnsetGestureMode = 1;
-    CabbageWidgetIdentifiers** pd;
-    CabbageWidgetIdentifiers* identData;
+    CabbageWidgetIdentifiers** pd{};
+    CabbageWidgetIdentifiers* identData{};
     int autoUpdateCount = 0;
     bool autoUpdateIsOn = false;
 
     
     //save and restore user plugin presets
-    void addPluginPreset(String presetName, String fileName, bool remove);
+    void addPluginPreset(String presetName, const String& fileName, bool remove);
     void restorePluginPreset(String presetName, String filename);
     
     bool addImportFiles (StringArray& lineFromCsd);
@@ -91,27 +92,27 @@ public:
     // use this instead of AudioProcessor::addParameter
     void addCabbageParameter(std::unique_ptr<CabbagePluginParameter> parameter);
     void createCabbageParameters();
-    void recreateWidgets (String csdText, bool editMode = false);
+    void recreateWidgets (const String& csdText, bool editMode = false);
     void handleXmlImport (XmlElement* xml, StringArray& linesFromCsd);
     void getMacros (const StringArray& csdText);
-    void generateCabbageCodeFromJS (PlantImportStruct& importData, String text);
-    void insertUDOCode (PlantImportStruct importData, StringArray& linesFromCsd);
+    void generateCabbageCodeFromJS (PlantImportStruct& importData, const String& text);
+    static void insertUDOCode (const PlantImportStruct& importData, StringArray& linesFromCsd);
     void insertPlantCode (StringArray& linesFromCsd);
-    bool isWidgetPlantParent (StringArray& linesFromCsd, int lineNumber);
-    bool shouldClosePlant (StringArray& linesFromCsd, int lineNumber);
-    void setPluginName (String name) {    pluginName = name;  }
+    static bool isWidgetPlantParent (StringArray& linesFromCsd, int lineNumber);
+    static bool shouldClosePlant (StringArray& linesFromCsd, int lineNumber);
+    void setPluginName (String name) {    pluginName = std::move(name);  }
     String getPluginName() { return pluginName;  }
-    void expandMacroText (String &line, ValueTree wData);
+    void expandMacroText (String &line);
 	void prepareToPlay(double sampleRate, int samplesPerBlock) override;
 	void setCabbageParameter(String& channel, float value, ValueTree& wData);
-    CabbagePluginParameter* getParameterForXYPad (StringRef name);
+    CabbagePluginParameter* getParameterForXYPad (StringRef name) const;
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool editorIsOpen = false;
     void releaseResources() override;
     bool hasEditor() const override;
     //===== XYPad methods =========
-    void addXYAutomator (CabbageXYPad* xyPad, ValueTree wData);
+    void addXYAutomator (CabbageXYPad* xyPad, const ValueTree& wData);
     void enableXYAutomator (String name, bool enable, Line<float> dragLine);
     void disableXYAutomators();
     //==============================================================================
@@ -124,7 +125,7 @@ public:
     StringArray cabbageScriptGeneratedCode;
     Array<PlantImportStruct> plantStructs;
 
-    int64 csdLastModifiedAt;
+    int64 csdLastModifiedAt{};
     void timerCallback() override;
 	//uid needed for Cabbage host
 	AudioProcessorGraph::NodeID nodeId;
@@ -175,21 +176,17 @@ private:
 #if !Cabbage_IDE_Build
     PluginHostType pluginType;
 #endif
-    controlChannelInfo_s* csoundChanList;
-    int numberOfLinesInPlantCode = 0;
+    controlChannelInfo_s* csoundChanList{};
     String pluginName;
     File csdFile;
     int linesToSkip = 0;
     NamedValueSet macroText;
     var macroNames;
     var macroStrings;
-    bool xyAutosCreated = false;
     OwnedArray<XYPadAutomator> xyAutomators;
 	int samplingRate = 44100;
-    int samplesInBlock = 64;
-	int screenWidth, screenHeight;
-	bool isUnityPlugin = false;
-    int automationMode = 0;
+	int screenWidth{}, screenHeight{};
+
     OwnedArray<CabbagePluginParameter> parameters;
     Font customFont;
     File customFontFile;
@@ -284,8 +281,8 @@ public:
     
     const NormalisableRange<float>& getNormalisableRange() const { return parameter->getNormalisableRange(); }
     
-    const String getChannel() const { return parameter->getChannel(); }
-    const String getWidgetName() { return widgetName; }
+    String getChannel() const { return parameter->getChannel(); }
+    String getWidgetName() { return widgetName; }
     bool getIsAutomatable() const { return isAutomatable; }
     bool isPerformingGesture = false;
     
@@ -293,7 +290,7 @@ private:
     class CabbageHostParameter : public AudioParameterFloat
     {
     public:
-        virtual ~CabbageHostParameter() override { }
+        ~CabbageHostParameter() override = default;
         float getValue() const override { return range.convertTo0to1(currentValue); }
         
         void setValue(float newValue) override

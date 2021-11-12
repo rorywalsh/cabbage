@@ -18,14 +18,12 @@
 */
 
 #include "CsoundPluginProcessor.h"
+
+#include <memory>
 #include "CsoundPluginEditor.h"
-#include "../../Utilities/CabbageUtilities.h"
-#include "../../Widgets/CabbageWidgetData.h"
-
-
 
 //==============================================================================
-CsoundPluginProcessor::CsoundPluginProcessor (File selectedCsdFile, const BusesProperties ioBuses)
+CsoundPluginProcessor::CsoundPluginProcessor (File selectedCsdFile, const BusesProperties& ioBuses)
     :
 #if Stereo_Mono_Only
     AudioProcessor (BusesProperties()
@@ -42,7 +40,7 @@ CsoundPluginProcessor::CsoundPluginProcessor (File selectedCsdFile, const BusesP
 csdFile (selectedCsdFile)
 {
     hostInfo = {};  
-	matchingNumberOfIOChannels = getTotalNumInputChannels() == getTotalNumOutputChannels() ? true : false;
+	matchingNumberOfIOChannels = getTotalNumInputChannels()==getTotalNumOutputChannels();
 
 #if ! JucePlugin_IsSynth && ! Cabbage_IDE_Build
     numCsoundInputChannels = getTotalNumInputChannels();
@@ -86,25 +84,25 @@ void CsoundPluginProcessor::destroyCsoundGlobalVars()
 {
     if(getEngine())
     {
-        CabbagePersistentData** pd = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
+        auto** pd = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
         if (pd != nullptr)
             getEngine()->DestroyGlobalVariable("cabbageData");
 
-        CabbageWidgetIdentifiers** wi = (CabbageWidgetIdentifiers**)getEngine()->QueryGlobalVariable("cabbageWidgetData");
+        auto** wi = (CabbageWidgetIdentifiers**)getEngine()->QueryGlobalVariable("cabbageWidgetData");
         if (wi != nullptr)
             getEngine()->DestroyGlobalVariable("cabbageWidgetData");
 
 
-        CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getEngine()->QueryGlobalVariable("cabbageWidgetsValueTree");
+        auto** vt = (CabbageWidgetsValueTree**)getEngine()->QueryGlobalVariable("cabbageWidgetsValueTree");
         if (vt != nullptr) {
             getEngine()->DestroyGlobalVariable("cabbageWidgetsValueTree");
         }
     }
 }
 
-void CsoundPluginProcessor::createCsoundGlobalVars(ValueTree cabbageData)
+void CsoundPluginProcessor::createCsoundGlobalVars(const ValueTree& cabbageData)
 {
-    CabbagePersistentData** pd = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
+    auto** pd = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
     if (pd == nullptr) {
         getEngine()->CreateGlobalVariable("cabbageData", sizeof(CabbagePersistentData*));
         pd = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
@@ -113,12 +111,12 @@ void CsoundPluginProcessor::createCsoundGlobalVars(ValueTree cabbageData)
         pdClass->data = getInternalState().toStdString();
     }
 
-    CabbageWidgetIdentifiers** wi = (CabbageWidgetIdentifiers**)getEngine()->QueryGlobalVariable("cabbageData");
+    auto** wi = (CabbageWidgetIdentifiers**)getEngine()->QueryGlobalVariable("cabbageData");
     if (wi == nullptr) {
         getEngine()->CreateGlobalVariable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
     }
 
-    CabbageWidgetsValueTree** vt = (CabbageWidgetsValueTree**)getEngine()->QueryGlobalVariable("cabbageWidgetsValueTree");
+    auto** vt = (CabbageWidgetsValueTree**)getEngine()->QueryGlobalVariable("cabbageWidgetsValueTree");
     if (vt == nullptr) {
         getEngine()->CreateGlobalVariable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
         vt = (CabbageWidgetsValueTree**)getEngine()->QueryGlobalVariable("cabbageWidgetsValueTree");
@@ -208,7 +206,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
     //reset Csound in case it is hanging around from a previous run
     resetCsound();
-	csound.reset (new Csound());
+	csound = std::make_unique<Csound> ();
     
 	csdFilePath = filePath;
 	csdFilePath.setAsCurrentWorkingDirectory();
@@ -318,7 +316,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 	csound->SetExternalMidiOutOpenCallback(OpenMidiOutputDevice);
 	csound->SetExternalMidiWriteCallback(WriteMidiData);
 	csoundParams = nullptr;
-	csoundParams.reset (new CSOUND_PARAMS());
+	csoundParams = std::make_unique<CSOUND_PARAMS> ();
 
 	csoundParams->displays = 0;
 
@@ -609,7 +607,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     csound->SetChannel("HOST_BUFFER_SIZE", csdKsmps);
     csound->SetChannel("HOME_FOLDER_UID", File::getSpecialLocation (File::userHomeDirectory).getFileIdentifier());
 
-    time_t seconds_past_epoch = time(0);
+    time_t seconds_past_epoch = time(nullptr);
     csound->SetChannel("SECONDS_SINCE_EPOCH", (intmax_t)seconds_past_epoch);
     // convert now to string form
     char* dt = ctime(&seconds_past_epoch);
@@ -754,7 +752,7 @@ void CsoundPluginProcessor::addMacros (String& csdText)
 //==============================================================================
 void CsoundPluginProcessor::createMatrixEventSequencer(int rows, int cols, String channel)
 {
-    MatrixEventSequencer* matrix = new MatrixEventSequencer(channel);
+    auto* matrix = new MatrixEventSequencer(channel);
 
     for (int i = 0 ; i < cols ; i++)
     {
@@ -772,15 +770,15 @@ void CsoundPluginProcessor::createMatrixEventSequencer(int rows, int cols, Strin
 
 }
 
-void CsoundPluginProcessor::setMatrixEventSequencerCellData(int col, int row, String channel, String data)
+void CsoundPluginProcessor::setMatrixEventSequencerCellData(int col, int row, const String& channel, String data)
 {
 	if (numMatrixEventSequencers > 0)
 	{
-		for (int i = 0; i < matrixEventSequencers.size(); i++)
+		for (auto matrixEventSequencer : matrixEventSequencers)
 		{
-			if (matrixEventSequencers[i]->channel == channel)
+			if (matrixEventSequencer->channel == channel)
 			{
-				matrixEventSequencers[i]->setEventString(col, row, data);
+				matrixEventSequencer->setEventString(col, row, data);
 			}
 		}
 	}
@@ -824,7 +822,7 @@ const Array<float, CriticalSection> CsoundPluginProcessor::getTableFloats (int t
     if (csCompileResult == OK)
     {
 
-        const int tableSize = csound->TableLength (tableNum);;
+        const int tableSize = csound->TableLength (tableNum);
 
         if (tableSize < 0)
             return points;
@@ -840,14 +838,8 @@ const Array<float, CriticalSection> CsoundPluginProcessor::getTableFloats (int t
     return points;
 }
 
-int CsoundPluginProcessor::checkTable (int tableNum)
-{
-    return  csound->TableLength (tableNum);
-}
-
-
 //==============================================================================
-const String CsoundPluginProcessor::getCsoundOutput()
+String CsoundPluginProcessor::getCsoundOutput()
 {
     if (csound!=nullptr)
     {
@@ -867,7 +859,7 @@ const String CsoundPluginProcessor::getCsoundOutput()
 
         Logger::writeToLog (csoundOutput);
 
-        if (disableLogging == true)
+        if (disableLogging)
             this->suspendProcessing (true);
 
         return csoundOutput;
@@ -986,12 +978,6 @@ void CsoundPluginProcessor::releaseResources()
     // spare memory, etc.
 }
 
-//==========================================================================
-void CsoundPluginProcessor::triggerCsoundEvents()
-{
-
-}
-
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
     if(polling == 1)
@@ -1100,20 +1086,6 @@ void CsoundPluginProcessor::processIOBuffers(int bufferType, Type* buffer, int s
 	}
 }
 
-template< typename Type >
-void CsoundPluginProcessor::processIOSideChainBuffers(int bufferType, Type* buffer, int pos)
-{
-    if (buffer != nullptr)
-    {
-        Type* current_sample = buffer;
-        MYFLT newSamp = *current_sample * cs_scale;
-        CSspin[pos] = newSamp;
-        current_sample++;
-    }
-    else
-        CSspin[pos] = 0;
-}
-
 void CsoundPluginProcessor::processBlock(AudioBuffer< float >& buffer, MidiBuffer& midiMessages)
 {
 	processSamples(buffer, midiMessages);
@@ -1157,7 +1129,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 
 	keyboardState.processNextMidiBuffer(midiMessages, 0, numSamples, true);
     
-    if(isLMMS == true)
+    if(isLMMS)
 	    midiBuffer.addEvents(midiMessages, 0, numSamples, 0);
     
     int samplePos = 0;
@@ -1273,7 +1245,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 void CsoundPluginProcessor::breakpointCallback (CSOUND* csound, debug_bkpt_info_t* bkpt_info, void* userdata)
 {
 
-    CsoundPluginProcessor* ud = static_cast<CsoundPluginProcessor*>(userdata);
+    auto* ud = static_cast<CsoundPluginProcessor*>(userdata);
     const String instrument = "Instrument" + String (bkpt_info->breakpointInstr->p1);
     debug_variable_t* vp = bkpt_info->instrVarList;
 
@@ -1285,7 +1257,7 @@ void CsoundPluginProcessor::breakpointCallback (CSOUND* csound, debug_bkpt_info_
             if (strcmp (vp->typeName, "i") == 0
                 || strcmp (vp->typeName, "k") == 0)
             {
-                MYFLT* data = (MYFLT*) vp->data;
+                auto* data = (MYFLT*) vp->data;
                 ud->breakPointData.set (instrument, vp->name, data[0]);
             }
             else if (strcmp (vp->typeName, "S") == 0)
@@ -1294,7 +1266,7 @@ void CsoundPluginProcessor::breakpointCallback (CSOUND* csound, debug_bkpt_info_
             }
             else if (strcmp (vp->typeName, "a") == 0)
             {
-                MYFLT* data = (MYFLT*) vp->data;
+                auto* data = (MYFLT*) vp->data;
                 ud->breakPointData.set (instrument, vp->name, String (data[0]));
             }
             else
@@ -1312,28 +1284,28 @@ void CsoundPluginProcessor::breakpointCallback (CSOUND* csound, debug_bkpt_info_
 }
 
 //==============================================================================
-CsoundPluginProcessor::SignalDisplay* CsoundPluginProcessor::getSignalArray (String variableName, String displayType)
+CsoundPluginProcessor::SignalDisplay* CsoundPluginProcessor::getSignalArray (String variableName, String displayType) const
 {
-    for (int i = 0; i < signalArrays.size(); i++)
+    for (auto signalArray : signalArrays)
     {
-        const String test = signalArrays[i]->caption;
-        if (signalArrays[i]->caption.isNotEmpty() && signalArrays[i]->caption.contains (variableName))
+        const String test = signalArray->caption;
+        if (signalArray->caption.isNotEmpty() && signalArray->caption.contains (variableName))
         {
-            const String varName = signalArrays[i]->variableName;
+            const String varName = signalArray->variableName;
             if (displayType.isEmpty()){
-                return signalArrays[i];
+                return signalArray;
             }
 
-            else if (displayType == "waveform" && !signalArrays[i]->caption.contains ("fft")){
-                return signalArrays[i];
+            else if (displayType == "waveform" && !signalArray->caption.contains ("fft")){
+                return signalArray;
             }
 
-            else if (displayType == "lissajous" && !signalArrays[i]->caption.contains ("fft")){
-                return signalArrays[i];
+            else if (displayType == "lissajous" && !signalArray->caption.contains ("fft")){
+                return signalArray;
             }
 
-            else if (displayType != "waveform" && signalArrays[i]->caption.contains ("fft")){
-                return signalArrays[i];
+            else if (displayType != "waveform" && signalArray->caption.contains ("fft")){
+                return signalArray;
             }
         }
     }
@@ -1380,7 +1352,7 @@ int CsoundPluginProcessor::OpenMidiInputDevice (CSOUND* csound, void** userData,
 int CsoundPluginProcessor::ReadMidiData (CSOUND* /*csound*/, void* userData,
                                          unsigned char* mbuf, int nbytes)
 {
-    CsoundPluginProcessor* midiData = static_cast<CsoundPluginProcessor*>(userData);
+    auto* midiData = static_cast<CsoundPluginProcessor*>(userData);
 
     if (!userData)
     {
@@ -1442,7 +1414,7 @@ int CsoundPluginProcessor::OpenMidiOutputDevice (CSOUND* csound, void** userData
 int CsoundPluginProcessor::WriteMidiData (CSOUND* /*csound*/, void* _userData,
                                           const unsigned char* mbuf, int nbytes)
 {
-    CsoundPluginProcessor* userData = static_cast<CsoundPluginProcessor*>(_userData);
+    auto* userData = static_cast<CsoundPluginProcessor*>(_userData);
 
     if (!userData)
     {
@@ -1462,14 +1434,14 @@ int CsoundPluginProcessor::WriteMidiData (CSOUND* /*csound*/, void* _userData,
 void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, const char* name)
 {
     ignoreUnused(name);
-    CsoundPluginProcessor* ud = static_cast<CsoundPluginProcessor*>(csoundGetHostData (csound));
-    SignalDisplay* display = new SignalDisplay (String (windat->caption), (int)windat->windid, (float)windat->oabsmax, (int)windat->min, (int)windat->max, (int)windat->npts);
+    auto* ud = static_cast<CsoundPluginProcessor*>(csoundGetHostData (csound));
+    auto* display = new SignalDisplay (String (windat->caption), (int)windat->windid, (float)windat->oabsmax, (int)windat->min, (int)windat->max, (int)windat->npts);
 
     bool addDisplay = true;
 
-    for (int i = 0; i < ud->signalArrays.size(); i++)
+    for (auto signalArray : ud->signalArrays)
     {
-        if (ud->signalArrays[i]->caption == windat->caption)
+        if (signalArray->caption == windat->caption)
             addDisplay  = false;
     }
 
@@ -1493,7 +1465,7 @@ void CsoundPluginProcessor::makeGraphCallback (CSOUND* csound, WINDAT* windat, c
 void CsoundPluginProcessor::drawGraphCallback (CSOUND* csound, WINDAT* windat)
 {
     ignoreUnused(csound);
-    CsoundPluginProcessor* ud = static_cast<CsoundPluginProcessor*> (csoundGetHostData (csound));
+    auto* ud = static_cast<CsoundPluginProcessor*> (csoundGetHostData (csound));
     Array<float, CriticalSection> tablePoints;
     //only take all samples if dealing with fft, waveforms and lissajous curves can be drawn with less samples
     tablePoints = Array<float, CriticalSection> (&windat->fdata[0], windat->npts);

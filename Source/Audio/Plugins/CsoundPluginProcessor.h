@@ -41,11 +41,11 @@ class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater
 public:
     //==============================================================================
 	CsoundPluginProcessor(File csoundInputFile, 
-        const BusesProperties ioBuses);
+        const BusesProperties& ioBuses);
 	~CsoundPluginProcessor() override;
 
     void destroyCsoundGlobalVars();
-    void createCsoundGlobalVars(ValueTree cabbageData);
+    void createCsoundGlobalVars(const ValueTree& cabbageData);
 	bool supportsSidechain = false;
 	bool matchingNumberOfIOChannels = true;
 	void resetCsound();
@@ -137,11 +137,8 @@ public:
 
 	template< typename Type >
     void processIOBuffers(int bufferType, Type* buffer, int samplePos, int csdPos);
-    template< typename Type >
-    void processIOSideChainBuffers(int bufferType, Type* buffer, int pos);
 
-
-	int numSideChainChannels = 0;
+    int numSideChainChannels = 0;
     //==============================================================================
     virtual AudioProcessorEditor* createEditor() override;
     virtual bool hasEditor() const override;
@@ -204,7 +201,7 @@ public:
     
     StringArray getTableStatement (int tableNum);
     const Array<float, CriticalSection> getTableFloats (int tableNum);
-    int checkTable (int tableNum);
+
     AudioPlayHead::CurrentPositionInfo hostInfo = {};
 
     class MatrixEventSequencer
@@ -225,14 +222,8 @@ public:
 
 	int numMatrixEventSequencers = 0;
     void createMatrixEventSequencer(int rows, int cols, String channel);
-    void setMatrixEventSequencerCellData(int row, int col, String channel, String data);
-    //=============================================================================
-    //Implement these to init, send and receive channel data to Csound. Typically used when
-    //a component is updated and its value is sent to Csound, or when a Csound channel
-    //is updated in the Csound orchestra and we need to update the Cabbage components.
-    //Note that sendChannelDataToCsound() if we subclass the AudioprocessorParameter clas
-    //as is done in CabbagePluginprocessor.
-    virtual void triggerCsoundEvents();
+    void setMatrixEventSequencerCellData(int row, int col, const String& channel, String data);
+
     virtual void sendChannelDataToCsound() {}
     virtual void getIdentifierDataFromCsound() {}
     void sendHostDataToCsound();
@@ -240,7 +231,7 @@ public:
     virtual void initAllCsoundChannels (ValueTree cabbageData);
     //=============================================================================
     void addMacros (String& csdText);
-    const String getCsoundOutput();
+    String getCsoundOutput();
 
     void compileCsdFile (File csoundFile)
     {
@@ -322,7 +313,7 @@ public:
 
     OwnedArray<MatrixEventSequencer> matrixEventSequencers;
     OwnedArray <SignalDisplay, CriticalSection> signalArrays;   //holds values from FFT function table created using dispfft
-    CsoundPluginProcessor::SignalDisplay* getSignalArray (String variableName, String displayType = "");
+    CsoundPluginProcessor::SignalDisplay* getSignalArray (String variableName, String displayType = "") const;
 
     String getInternalState()
     {
