@@ -103,6 +103,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("searchCaseSensitive", 0);
     defaultPropSet->setValue ("SetAlwaysOnTopGraph", 0);
     defaultPropSet->setValue ("SetAlwaysOnTopPlugin", 1);
+    defaultPropSet->setValue ("performAdHocCodesign", 0);
     defaultPropSet->setValue ("ShowAutoComplete", 0);
     defaultPropSet->setValue ("ShowConsoleWithEditor", 1);
     defaultPropSet->setValue ("ShowEditorConsole", 1);

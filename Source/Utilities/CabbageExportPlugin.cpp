@@ -14,6 +14,8 @@
 //===============   methods for exporting plugins ==============================
 void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, String destination, bool promptForFilename, bool encrypt)
 {
+    
+    File outputFile;
     if(csdFile.hasFileExtension(".csd") == false)
         return;
     
@@ -136,6 +138,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
             
             if (fc.browseForFileToSave(false))
             {
+                outputFile = fc.getResult();
                 if (fc.getResult().existsAsFile())
                 {
                     const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?",
@@ -156,6 +159,22 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
             }
         }
     }
+    
+    if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
+    {
+        if(adhocSign == true)
+        {
+            String binaryFile = outputFile.getFullPathName()+"/Contents/MacOS/"+outputFile.getFileNameWithoutExtension();
+            
+            String command = "codesign -s - "+binaryFile+" --timestamp --deep --force";
+            childProcess.start (command);
+            StringArray output;
+            output.addLines (childProcess.readAllProcessOutput());
+            DBG(output.joinIntoString("\n"));
+        }
+    }
+    
+    
 }
 
 

@@ -307,6 +307,10 @@ void CabbageSettingsWindow::addMiscProperties()
     enableKioskMode.setValue (settings.getUserSettings()->getIntValue ("enableKioskMode"));
     enableKioskMode.addListener (this);
 
+    adhocSigningValue.addListener (this);
+    adhocSigningValue.setValue (settings.getUserSettings()->getIntValue ("performAdHocCodesign"));
+    
+    editorProps.add (new BooleanPropertyComponent (adhocSigningValue, "Codesign plugins", "Perform ad-hoc signing of exported plugins"));
     editorProps.add (new BooleanPropertyComponent (showLastOpenedFileValue, "Auto-load", "Auto-load last opened file"));
     editorProps.add (new BooleanPropertyComponent (alwaysOnTopPluginValue, "Plugin Window", "Always show plugin on top"));
     editorProps.add (new BooleanPropertyComponent (alwaysOnTopGraphValue, "Graph Window", "Always show graph on top"));
@@ -442,6 +446,8 @@ void CabbageSettingsWindow::valueChanged (Value& value)
         settings.getUserSettings()->setValue ("autoConnectNodes", value.getValue().toString());
     else if (value.refersToSameSourceAs (enableKioskMode))
         settings.getUserSettings()->setValue ("enableKioskMode", value.getValue().toString());
+    else if (value.refersToSameSourceAs (adhocSigningValue))
+        settings.getUserSettings()->setValue ("performAdHocCodesign", value.getValue().toString());
 }
 
 void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileComponent)

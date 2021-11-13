@@ -15,7 +15,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.56)
+	set(BUILD_VERSION 2.8.57)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -110,6 +110,8 @@ else()
         AU_SANDBOX_SAFE TRUE
         COPY_PLUGIN_AFTER_BUILD TRUE
         COMPANY_NAME ${JucePlugin_Manufacturer}
+        HARDENED_RUNTIME_ENABLED TRUE
+        HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" "com.apple.security.cs.allow-jit" "com.apple.security.cs.allow-unsigned-executable-memory" "com.apple.security.device.audio-input" "com.apple.security.automation.apple-events" "com.apple.security.get-task-allow"
         PRODUCT_NAME "${PROJECT_NAME}")   
 endif()
 
@@ -327,7 +329,8 @@ target_compile_definitions(${PROJECT_NAME}
         JUCE_ASIO=1
         JUCE_VST3_CAN_REPLACE_VST2=0
         Cabbage_IDE_Build=${IS_IDE_Build}
-        JUCE_DISPLAY_SPLASH_SCREEN=0)
+        JUCE_DISPLAY_SPLASH_SCREEN=0
+        )
 
 if(MSVC)
     # SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "C:/Program Files/Csound6_x64/include/csound")

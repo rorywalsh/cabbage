@@ -145,7 +145,7 @@ private:
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton, codeRepoButton;
 
     Value alwaysOnTopPluginValue, resetNotifications, autoConnectNodes, alwaysOnTopGraphValue,
-    showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue, enableKioskMode;
+    showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue, enableKioskMode, adhocSigningValue;
     Viewport viewport;
 
 };

@@ -29,6 +29,7 @@ class PluginExporter
 {
     CabbageIDELookAndFeel lookAndFeel;
     PropertiesFile* settings;
+    ChildProcess childProcess;
 public:
     PluginExporter():lookAndFeel(), settings(nullptr){}
     void settingsToUse(PropertiesFile* cabSettings){   settings = cabSettings; }
@@ -39,6 +40,8 @@ public:
     void addFilesToPluginBundle (File csdFile, File exportDir);
     void exportPlugin (String type, File csdFile, String pluginId, String destination="", bool promptForFilename = true, bool encrypt = false);
 
+    bool adhocSign = false;
+    
     String encodeString (File csdFile)
     {
 #if CabbagePro

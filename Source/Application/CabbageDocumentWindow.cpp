@@ -1068,6 +1068,8 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
     //String aboutInfo = commandLineArgs;
 #endif
     
+    pluginExporter.adhocSign = (cabbageSettings->getUserSettings()->getIntValue ("performAdHocCodesign") == 1 ? true : false);
+    
     CabbageIDELookAndFeel tempLookAndFeel;
     const File currentFile = getContentComponent()->getCurrentCsdFile();
     switch (info.commandID)
