@@ -45,7 +45,9 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
 
         filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype);
         currentValueAsText = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::value).toString();
-        owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
+        if(currentValueAsText != "-1")
+            owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
+        
         const int stringIndex = stringItems.indexOf (currentValueAsText);
 
         
@@ -65,6 +67,10 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
         {
             clicked(stringIndex);
             //listBox.selectRow(stringIndex, dontSendNotification);
+        }
+        else if(stringIndex == -1)
+        {
+            clicked(-1);
         }
         else if (fileIndex != -1)
         {
