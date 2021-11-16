@@ -15,7 +15,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.58)
+	set(BUILD_VERSION 2.8.59)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -314,7 +314,28 @@ set(JUCE_MODULES
     juce::juce_audio_plugin_client
     juce::juce_opengl)
 
-target_compile_definitions(${PROJECT_NAME}
+
+if("${PROJECT_NAME}" STREQUAL "Cabbage")  
+    target_compile_definitions(${PROJECT_NAME}
+        PRIVATE
+            # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
+            JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
+            JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
+            JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
+            JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
+            JUCE_MODAL_LOOPS_PERMITTED=1
+            CabbagePro=${CabbagePro}
+            PluginDesc="${PluginDesc}"
+            CabbageManufacturer="${CabbageManufacturer}"
+            Use_Native_File_Browser=1
+            JucePlugin_WantsMidiInput=1
+            JUCE_ASIO=1
+            JUCE_VST3_CAN_REPLACE_VST2=0
+            Cabbage_IDE_Build=${IS_IDE_Build}
+            JUCE_DISPLAY_SPLASH_SCREEN=0
+            )
+else()
+    target_compile_definitions(${PROJECT_NAME}
     PRIVATE
         # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
         JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
@@ -326,11 +347,11 @@ target_compile_definitions(${PROJECT_NAME}
         PluginDesc="${PluginDesc}"
         CabbageManufacturer="${CabbageManufacturer}"
         Use_Native_File_Browser=1
-        JUCE_ASIO=1
         JUCE_VST3_CAN_REPLACE_VST2=0
         Cabbage_IDE_Build=${IS_IDE_Build}
         JUCE_DISPLAY_SPLASH_SCREEN=0
         )
+endif()
 
 if(MSVC)
     # SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "C:/Program Files/Csound6_x64/include/csound")
