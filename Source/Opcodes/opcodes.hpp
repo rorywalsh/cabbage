@@ -207,27 +207,12 @@ struct SetStateFloatData : csnd::InPlug<2>
             csound->message("Creating new internal state object...\n");
             jsonData = "{}";
         }
-
-        std::string newData = "{ \"" + jsonKeyName + "\" : " + std::to_string(value) + "}";
-
-
-        
-        if (json::accept(newData) == false)
-        {
-            if(mode == K_RATE)
-                csound->perf_error("Invalid JSON data:" + newData + "\n", this);
-            else
-                csound->init_error("Invalid JSON data:" + newData + "\n");
-            return false;
-
-            return false;
-        }
-
-        
+            
         j = json::parse(jsonData.empty() ? "{}" : jsonData);
-        j2 = json::parse(newData);
-        j.update(j2);
+        j[jsonKeyName] = value;
         perData->data = j.dump();
+        DBG(j.dump());
+        
         return true;
     }
     
@@ -267,7 +252,6 @@ struct SetStateFloatArrayData : csnd::InPlug<2>
         std::string jsonData;
         csnd::Vector<MYFLT>& inputArgs = args.myfltvec_data(1);
 
-        json j;
 
         CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
         CabbagePersistentData* perData;
@@ -285,25 +269,16 @@ struct SetStateFloatArrayData : csnd::InPlug<2>
             csound->message("Creating new internal state object...\n");
             jsonData = "{}";
         }
+        
+        std::vector<MYFLT> arrayContents;
+        json j = json::parse(jsonData.empty() ? "{}" : jsonData);
 
-        std::string newData = "{ \"" + jsonKeyName + "\" : [";
-        for (int i = 0; i < int(inputArgs.len()); i++) {
-            newData += std::to_string(inputArgs[i]) + (i < int(inputArgs.len()) - 1 ? ", " : "");
+        for (auto& samp : inputArgs) {
+            arrayContents.push_back(samp);
         }
-        newData += "]}";
+        
+        j[jsonKeyName] = arrayContents;
 
-        if (json::accept(newData) == false)
-        {
-            if(mode == K_RATE)
-                csound->perf_error("Invalid JSON data:" + newData + "\n", this);
-            else
-                csound->init_error("Invalid JSON data:" + newData + "\n");
-            return false;
-        }
-
-        j = json::parse(jsonData.empty() ? "{}" : jsonData);
-        auto j2 = json::parse(newData);
-        j.update(j2);
         perData->data = j.dump();
         return true;
     }
@@ -364,22 +339,8 @@ struct SetStateStringData : csnd::InPlug<2>
             jsonData = "{}";
         }
 
-        std::string newData = "{ \"" + jsonKeyName + "\" : \"" + value + "\"}";
-
-        if (json::accept(newData) == false)
-        {
-            if(mode == K_RATE)
-                csound->perf_error("Invalid JSON data:" + newData + "\n", this);
-            else
-                csound->init_error("Invalid JSON data:" + newData + "\n");
-
-            return false;
-        }
-
         j = json::parse(jsonData.empty() ? "{}" : jsonData);
-        auto j2 = json::parse(newData);
-        j.update(j2);
-
+        j[jsonKeyName] = value;
         perData->data = j.dump();
         return true;
     }
@@ -437,26 +398,16 @@ struct SetStateStringArrayData : csnd::InPlug<2>
             jsonData = "{}";
         }
 
-        std::string newData = "{ \"" + jsonKeyName + "\" : [";
-        for (int i = 0; i < int(strs.len()); i++) {
-            newData += "\""+(strs[i].data + std::string(i < int(strs.len()) - 1 ? "\", " : ""));
-        }
-        newData += "\"]}";
-
-        if (json::accept(newData) == false)
-        {
-            if(mode == K_RATE)
-                csound->perf_error("Invalid JSON data:" + newData + "\n", this);
-            else
-                csound->init_error("Invalid JSON data:" + newData + "\n");
-
-            
-            return false;
-        }
-
         j = json::parse(jsonData.empty() ? "{}" : jsonData);
-        auto j2 = json::parse(newData);
-        j.update(j2);
+        std::vector<std::string> arrayContents;
+        
+        
+        std::string newData = "{ \"" + jsonKeyName + "\" : [";
+        for (auto& str : strs) {
+            arrayContents.push_back(str.data);
+        }
+        
+        j[jsonKeyName] = arrayContents;
 
         perData->data = j.dump();
         return true;
@@ -552,7 +503,6 @@ struct GetStateStringValueArray : csnd::Plugin<1, 1>
         std::string chString;
         json j;
 
-        bool firstTimeSuccess = false;
         std::string channelKey(inargs.str_data(0).data);
         std::string jsonData;
 
@@ -604,7 +554,7 @@ struct GetStateStringValueArray : csnd::Plugin<1, 1>
                     if (tt.value().is_string())
                         out[index++].data = csound->strdup((char*)tt.value().dump().c_str());
                 }
-                firstTimeSuccess = true;
+                return;
             }
         }
 
@@ -632,7 +582,6 @@ struct GetStateFloatValue : csnd::Plugin<1, 1>
     {
         std::string chString;
         json j;
-        bool firstTimeSuccess = false;
         std::string channelKey(inargs.str_data(0).data);
         
         if(channelKey.empty())
@@ -676,7 +625,7 @@ struct GetStateFloatValue : csnd::Plugin<1, 1>
             if (it.key() == channelKey && it.value().is_number_float())
             {
                 outargs[0] = it.value();
-                firstTimeSuccess = true;
+                return;
             }
         }
     }
@@ -700,7 +649,6 @@ struct GetStateFloatValueArray : csnd::Plugin<1, 1>
     {
         std::string chString;
         json j;
-        bool firstTimeSuccess = false;
         std::string channelKey(inargs.str_data(0).data);
         std::string jsonData;
 
@@ -749,7 +697,7 @@ struct GetStateFloatValueArray : csnd::Plugin<1, 1>
                 {
                     out[index++] = tt.value();
                 }
-                firstTimeSuccess = true;
+                return;
             }
         }
 
