@@ -1365,12 +1365,15 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			//none of these are being updated in their respective valueTreeChanged listeners..
             if(e->getAttributeName(i) == "cabbageJSONData")
             {
-                auto** p = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
-                
-                if (p != nullptr)
+                if(getEngine())
                 {
-                    auto pdClass = *p;
-                    pdClass->data = e->getStringAttribute("cabbageJSONData").toRawUTF8();
+                    auto** p = (CabbagePersistentData**)getEngine()->QueryGlobalVariable("cabbageData");
+                    
+                    if (p != nullptr)
+                    {
+                        auto pdClass = *p;
+                        pdClass->data = e->getStringAttribute("cabbageJSONData").toRawUTF8();
+                    }
                 }
 
             }

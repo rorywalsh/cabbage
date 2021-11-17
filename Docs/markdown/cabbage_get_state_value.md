@@ -6,12 +6,12 @@ Will retrieve a value from a plugin's internal state object. Can retrieve scalar
 
 ### Syntax
 
-<pre>iData <b>getStateValue</b> SKeyName</pre>
-<pre>kData <b>getStateValue</b> SKeyName</pre>
-<pre>SData <b>getStateValue</b> SKeyName</pre>
-<pre>iData[] <b>getStateValue</b> SKeyName</pre>
-<pre>kData[] <b>getStateValue</b> SKeyName</pre>
-<pre>SData[] <b>getStateValue</b> SKeyName</pre>
+<pre>iData <b>cabbageGetStateValue</b> SKeyName</pre>
+<pre>kData <b>cabbageGetStateValue</b> SKeyName</pre>
+<pre>SData <b>cabbageGetStateValue</b> SKeyName</pre>
+<pre>iData[] <b>cabbageGetStateValue</b> SKeyName</pre>
+<pre>kData[] <b>cabbageGetStateValue</b> SKeyName</pre>
+<pre>SData[] <b>cabbageGetStateValue</b> SKeyName</pre>
 
 #### Initialization
 

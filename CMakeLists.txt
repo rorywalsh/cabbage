@@ -15,7 +15,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.59)
+	set(BUILD_VERSION 2.8.60)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -90,6 +90,12 @@ else()
     SetIfSynth(PLUGIN_VST3_CATEGORIES "Instrument|Synth" "Fx")
     SetIfSynth(SYNTH_OR_EFFECT "Synth" "Effect")
 
+    if(${PLUGIN_IS_A_SYNTH})
+        set(MIDI_OUTPUT True)
+    else()
+        set(MIDI_OUTPUT False)
+    endif()
+
     juce_add_plugin(${PROJECT_NAME}
         PLUGIN_NAME ${PROJECT_NAME}
         FORMATS VST VST3 Standalone AU
@@ -97,6 +103,7 @@ else()
         PLUGIN_CODE RORY
         DESCRIPTION ${JucePlugin_Desc}
         NEEDS_MIDI_INPUT TRUE
+        NEEDS_MIDI_OUTPUT ${MIDI_OUTPUT}
         IS_SYNTH ${PLUGIN_IS_A_SYNTH}
         BUNDLE_ID com.CabbageAudio.plugin
         NEEDS_MIDI_OUTPUT ${PLUGIN_NEEDS_MIDI_OUTPUT}
@@ -331,6 +338,7 @@ if("${PROJECT_NAME}" STREQUAL "Cabbage")
             JucePlugin_WantsMidiInput=1
             JUCE_ASIO=1
             JUCE_VST3_CAN_REPLACE_VST2=0
+            JucePlugin_ProducesMidiOutput=1
             Cabbage_IDE_Build=${IS_IDE_Build}
             JUCE_DISPLAY_SPLASH_SCREEN=0
             )
