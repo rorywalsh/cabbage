@@ -83,6 +83,10 @@ if args.config is None:
 
 configType = args.config
 
+if args.configType is not None:
+    configType = args.configType
+else:
+    configType = "Debug"
 
 if args.generator is not None:
     generator = args.generator

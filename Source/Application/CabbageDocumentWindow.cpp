@@ -1062,7 +1062,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
 bool CabbageDocumentWindow::perform (const InvocationInfo& info)
 {
 #if CabbagePro
-    String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString)+"\nLicensed to: " + String(JucePlugin_Manufacturer);
+    String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString)+"\nLicensed to: " + String(CabbageManufacturer);
 #else
     String aboutInfo = "Copyright 2008\n\nVersion:"+String(ProjectInfo::versionString);
     //String aboutInfo = commandLineArgs;
