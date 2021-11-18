@@ -81,10 +81,9 @@ if args.config is None:
     print("You must pass a valid config, i.e, --config=Debug ")
     exit()
 
-configType = args.config
 
-if args.configType is not None:
-    configType = args.configType
+if args.config is not None:
+    configType = args.config
 else:
     configType = "Debug"
 
