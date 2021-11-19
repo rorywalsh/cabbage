@@ -217,6 +217,7 @@ void CabbagePluginEditor::handleMouseClicks (const MouseEvent& e, bool isMousePr
 void CabbagePluginEditor::createEditorInterface (ValueTree widgets)
 {
     components.clear();
+	keyboardCount = 0;
 
     for (int widget = 0; widget < widgets.getNumChildren(); widget++)
     {
