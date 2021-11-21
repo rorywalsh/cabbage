@@ -69,15 +69,15 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
 // #endifs
         
         if (type == "VSTi" || type == "AUi" || type == "VST3i")
-            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"Synth." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"Synth." + fileExtension);
         else  if (type == "VST" || type == "AU" || type == "VST3")
-            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"Effect." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"Effect." + fileExtension);
         else  if (type == "AUMIDIFx")
-            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"MIDIEffect." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"MIDIEffect." + fileExtension);
         else if (type.contains (String ("LV2-ins")))
-            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"SynthLV2." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"SynthLV2." + fileExtension);
         else if (type.contains (String ("LV2-fx")))
-            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"EffectLV2." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"EffectLV2." + fileExtension);
         else if (type == "VCVRack")
         {
             fileExtension = "";

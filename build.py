@@ -77,10 +77,6 @@ parser.add_argument('--generator', type=str,
 
 args = parser.parse_args()
 
-if args.config is None:
-    print("You must pass a valid config, i.e, --config=Debug ")
-    exit()
-
 
 if args.config is not None:
     configType = args.config
@@ -108,7 +104,7 @@ else:
     if manufacturer == "CabbageAudio":
         projects = ["Cabbage", "CabbagePluginEffect", "CabbagePluginSynth"]
     else:
-        projects = ["Cabbage", manufacturer+"Effect", manufacturer+"Synth"]
+        projects = ["Cabbage", manufacturer.replace(' ', '_')+"Effect", manufacturer.replace(' ', '_')+"Synth"]
 
 if args.packageType is not None:
     packageType = args.packageType
