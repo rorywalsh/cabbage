@@ -39,11 +39,13 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
     if (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channeltype) == "string")
     {
         isStringCombo = true;
+        filetype = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::filetype).toString();
+        
 
         if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isNotEmpty())
             CabbageWidgetData::setProperty (wData, CabbageIdentifierIds::text, "");
 
-        filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype);
+        
         currentValueAsText = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::value).toString();
         if(currentValueAsText != "-1")
             owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);

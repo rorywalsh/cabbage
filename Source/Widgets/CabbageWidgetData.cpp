@@ -284,7 +284,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
     //remove any text after a semicolon and take out tabs..
     String lineOfText = intputLineOfText.replace ("\t", " ");
 
-    if (lineOfText.indexOf (";") > -1 && !lineOfText.contains("svgElement"))
+    if (lineOfText.indexOf (";") > -1 && !lineOfText.contains("svgElement") && !lineOfText.contains("populate"))
         lineOfText = lineOfText.substring (0, lineOfText.indexOf (0, ";"));
 
     if (lineOfText.trim() == "<Cabbage>" || lineOfText.trim() == "</Cabbage>" || lineOfText.trim().isEmpty())
@@ -1219,9 +1219,9 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
         array.append (str.trim());
 
     setProperty (widgetData, CabbageIdentifierIds::populate, array);
-
+    
     setProperty (widgetData, CabbageIdentifierIds::filetype, strTokens[0].trim());
-
+    DBG(widgetData.getProperty(CabbageIdentifierIds::filetype).toString());
     if (strTokens.size() > 1)
         setProperty (widgetData, CabbageIdentifierIds::currentdir, strTokens[1].trim());
 

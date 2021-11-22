@@ -259,7 +259,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 		if (currentLineOfCabbageCode.contains("}"))
             CabbageWidgetData::setNumProp(tempWidget, CabbageIdentifierIds::containsClosingCurlyBracket, 1);
 
-		if (currentLineOfCabbageCode.indexOf(";") > -1)
+		if (currentLineOfCabbageCode.indexOf(";") > -1 && !currentLineOfCabbageCode.contains("svgElement") && !currentLineOfCabbageCode.contains("populate"))
 			currentLineOfCabbageCode = currentLineOfCabbageCode.substring(0, currentLineOfCabbageCode.indexOf(";"));
 
 		const String comments = currentLineOfCabbageCode.indexOf(";") == -1 ? "" : currentLineOfCabbageCode.substring(
@@ -325,7 +325,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 		CabbageWidgetData::setStringProp(newWidget, "precedingCharacters", precedingCharacters);
 
         const String mode = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::mode);
-        const String filetype = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::filetype);
+
         if(mode == "resize" && typeOfWidget == CabbageWidgetTypes::combobox)
         {
             CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, "PluginResizerCombBox");
