@@ -1271,17 +1271,21 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 				!CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 					CabbageIdentifierIds::filetype).contains("snaps"))
             {
-				const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-					CabbageIdentifierIds::file);
-
-                const int ignorelastdir = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                                                                        CabbageIdentifierIds::ignorelastdir);
-                if(ignorelastdir == 0)
+                if(CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                 CabbageIdentifierIds::presetignore) == 0)
                 {
-                    if (file.length() > 2)
+                    const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                        CabbageIdentifierIds::file);
+
+                    const int ignorelastdir = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                            CabbageIdentifierIds::ignorelastdir);
+                    if(ignorelastdir == 0)
                     {
-                        const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
-                        xml->setAttribute(channelName, relativePath.replaceCharacters("\\", "/"));
+                        if (file.length() > 2)
+                        {
+                            const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
+                            xml->setAttribute(channelName, relativePath.replaceCharacters("\\", "/"));
+                        }
                     }
                 }
 			}
