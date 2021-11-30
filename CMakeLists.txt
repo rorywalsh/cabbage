@@ -15,7 +15,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.68)
+	set(BUILD_VERSION 2.8.69)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -115,10 +115,10 @@ else()
         VST3_CATEGORIES "${PLUGIN_VST3_CATEGORIES}"
         AU_EXPORT_PREFIX "${PROJECT_NAME}AU"
         AU_SANDBOX_SAFE TRUE
-        COPY_PLUGIN_AFTER_BUILD TRUE
+        COPY_PLUGIN_AFTER_BUILD FALSE
         COMPANY_NAME ${JucePlugin_Manufacturer}
         HARDENED_RUNTIME_ENABLED TRUE
-        HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" "com.apple.security.cs.allow-jit" "com.apple.security.cs.allow-unsigned-executable-memory" "com.apple.security.device.audio-input" "com.apple.security.automation.apple-events" "com.apple.security.get-task-allow"
+        # HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" "com.apple.security.cs.allow-jit" "com.apple.security.cs.allow-unsigned-executable-memory" "com.apple.security.device.audio-input" "com.apple.security.automation.apple-events" "com.apple.security.get-task-allow"
         PRODUCT_NAME "${PROJECT_NAME}")   
 endif()
 
@@ -382,11 +382,19 @@ if(MSVC)
         juce::juce_recommended_warning_flags)
 
 elseif(APPLE)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version" FORCE)
-    SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
-    find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
-    "/Library/Frameworks/CsoundLib64.framework")  
-    include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
+    if(CabbagePro MATCHES 0)
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version" FORCE)
+        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
+        find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
+        "/Library/Frameworks/CsoundLib64.framework")  
+        include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
+    else()
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version" FORCE)
+        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csound/include")
+        set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csound/build/libCsoundLib64.a")  
+        include_directories("/Volumes/SSD_Drive/Mac/csound/include")
+        set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile/build/libsndfile.1.0.32.dylib")
+    endif()
 
     target_link_libraries(${PROJECT_NAME} 
     PRIVATE
