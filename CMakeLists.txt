@@ -15,7 +15,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.69)
+	set(BUILD_VERSION 2.8.70)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -393,7 +393,7 @@ elseif(APPLE)
         SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csound/include")
         set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csound/build/libCsoundLib64.a")  
         include_directories("/Volumes/SSD_Drive/Mac/csound/include")
-        set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile/build/libsndfile.1.0.32.dylib")
+        set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile/build/libsndfile.a")
     endif()
 
     target_link_libraries(${PROJECT_NAME} 
