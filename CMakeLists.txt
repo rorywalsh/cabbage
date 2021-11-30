@@ -15,7 +15,7 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.70)
+	set(BUILD_VERSION 2.8.71)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -400,6 +400,7 @@ elseif(APPLE)
     PRIVATE
         ${JUCE_MODULES}
         ${CSOUND_LIBRARY}
+        ${LIB_SNDFILE}
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
