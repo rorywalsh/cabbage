@@ -1355,7 +1355,6 @@ void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
 	if (xmlState != nullptr) {
 		//if dealing with session saved by host
         setParametersFromXml(xmlState);
-        xmlState->writeTo(juce::File("~/Desktop/test.txt"), XmlElement::TextFormat());
 		initAllCsoundChannels(cabbageWidgets);
 	}
 }

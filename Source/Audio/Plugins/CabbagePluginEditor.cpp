@@ -52,7 +52,8 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 	cabbageForm.addMouseListener(this, false);
     setSize (50, 50);
 	cabbageForm.addKeyListener(this);
-	cabbageForm.setWantsKeyboardFocus(true);
+	//cabbageForm.setWantsKeyboardFocus(true);
+    setWantsKeyboardFocus(false);
     createEditorInterface (cabbageProcessor.cabbageWidgets);
 
 #if Cabbage_IDE_Build
@@ -620,10 +621,10 @@ void CabbagePluginEditor::insertKeyboard (const ValueTree& cabbageWidgetData)
         components.add (midiKeyboard = new CabbageKeyboard (cabbageWidgetData, this, cabbageProcessor.keyboardState));
         //midiKeyboard->setKeyPressBaseOctave (3); // <-- now you can set this with 'keypressbaseoctave' identifier
         
-#if !Cabbage_IDE_Build
-        for(int i = 0 ; i < 128 ; i++)
-            midiKeyboard->removeKeyPressForNote(i);
-#endif
+//#if !Cabbage_IDE_Build
+//        for(int i = 0 ; i < 128 ; i++)
+//            midiKeyboard->removeKeyPressForNote(i);
+//#endif
         addToEditorAndMakeVisible (midiKeyboard, cabbageWidgetData);
         addMouseListenerAndSetVisibility (midiKeyboard, cabbageWidgetData);
         keyboardCount++;

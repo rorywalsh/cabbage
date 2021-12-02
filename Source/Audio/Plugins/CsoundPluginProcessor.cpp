@@ -71,7 +71,7 @@ void CsoundPluginProcessor::resetCsound()
 	{
         
         destroyCsoundGlobalVars();
-#if !defined(Cabbage_Lite)
+#if !defined(Cabbage_Lite) && !JucePlugin_Build_Standalone
 		csound = nullptr;
 #endif
 		csoundParams = nullptr;

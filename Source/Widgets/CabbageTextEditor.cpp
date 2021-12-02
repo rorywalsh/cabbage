@@ -83,7 +83,7 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     else
         textEditor.setText (getCurrentText(widgetData), dontSendNotification);
 
-    
+    setWantsKeyboardFocus(false);
 }
 
 void CabbageTextEditor::textEditorReturnKeyPressed (TextEditor&)

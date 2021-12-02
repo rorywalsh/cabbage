@@ -37,6 +37,7 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, 
     setKeyWidth (keyWidth);
     setScrollButtonsVisible (scrollbars == 1 ? true : false);
     setWantsKeyboardFocus (true);
+    setMouseClickGrabsKeyboardFocus (true);
     updateColours(wData);
 
 }
