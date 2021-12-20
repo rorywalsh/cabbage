@@ -14,8 +14,9 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
+
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.73)
+	set(BUILD_VERSION 2.8.74)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -26,6 +27,10 @@ if(NOT DEFINED JucePlugin_Manufacturer)
     set(CabbageManufacturer "CabbageAudio")
 else()
 set(CabbageManufacturer ${JucePlugin_Manufacturer})
+endif()
+
+if(NOT DEFINED BuildStatic)
+    set(BuildStatic 0)
 endif()
 
 if(NOT DEFINED CabbagePro)
@@ -70,7 +75,9 @@ endmacro()
 if("${PROJECT_NAME}" STREQUAL "Cabbage")
     juce_add_gui_app(${PROJECT_NAME}
         ICON_BIG ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png              
-        ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png  
+        ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png 
+        # HARDENED_RUNTIME_ENABLED TRUE
+        # HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" "com.apple.security.cs.allow-jit" "com.apple.security.cs.allow-unsigned-executable-memory" "com.apple.security.device.audio-input" "com.apple.security.automation.apple-events" "com.apple.security.get-task-allow" 
         DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
         COMPANY_NAME ${JucePlugin_Manufacturer}
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
@@ -118,7 +125,7 @@ else()
         COPY_PLUGIN_AFTER_BUILD FALSE
         COMPANY_NAME ${JucePlugin_Manufacturer}
         HARDENED_RUNTIME_ENABLED TRUE
-        # HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" "com.apple.security.cs.allow-jit" "com.apple.security.cs.allow-unsigned-executable-memory" "com.apple.security.device.audio-input" "com.apple.security.automation.apple-events" "com.apple.security.get-task-allow"
+        HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" "com.apple.security.cs.allow-jit" "com.apple.security.cs.allow-unsigned-executable-memory" "com.apple.security.device.audio-input" "com.apple.security.automation.apple-events" "com.apple.security.get-task-allow"
         PRODUCT_NAME "${PROJECT_NAME}")   
 endif()
 
@@ -305,6 +312,11 @@ else()
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${COMMON_SOURCES})
 endif()
 
+set_target_properties(${PROJECT_NAME} PROPERTIES 
+	XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES
+    XCODE_ATTRIBUTE_CODE_SIGN_ENTITLEMENTS "${CMAKE_CURRENT_SOURCE_DIR}/entitlements.xcent"
+)
+
 set(JUCE_MODULES
     juce::juce_core
     juce::juce_events
@@ -383,7 +395,7 @@ if(MSVC)
 
 elseif(APPLE)
     if(CabbagePro MATCHES 0)
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version" FORCE)
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "Minimum OS X deployment version" FORCE)
         SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
         find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
         "/Library/Frameworks/CsoundLib64.framework")  
@@ -391,9 +403,12 @@ elseif(APPLE)
     else()
         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version" FORCE)
         SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csound/include")
-        set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csound/build/libCsoundLib64.a")  
-        include_directories("/Volumes/SSD_Drive/Mac/csound/include")
-        set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile/build/libsndfile.a")
+        # set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csound/build/libCsoundLib64.a")  
+        set(CSOUND_LIBRARY "/Users/rwalsh/sourcecode/csound/build/libCsoundLib64.a")  
+        # include_directories("/Volumes/SSD_Drive/Mac/csound/include")
+        include_directories("/Users/rwalsh/sourcecode/csound/include")
+        # set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile/build/libsndfile.a")
+        set(LIB_SNDFILE "/Users/rwalsh/sourcecode/libsndfile/build/libsndfile.a")
     endif()
 
     target_link_libraries(${PROJECT_NAME} 

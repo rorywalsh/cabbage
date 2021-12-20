@@ -49,6 +49,7 @@ class CabbageSignalDisplay : public Component, public ValueTree::Listener, publi
     Image spectrogramImage, spectroscopeImage;
     FrequencyRangeDisplayComponent freqRangeDisplay;
     Range<int> freqRange;
+    float skew = 1;
 
     CabbagePluginEditor* owner;
 

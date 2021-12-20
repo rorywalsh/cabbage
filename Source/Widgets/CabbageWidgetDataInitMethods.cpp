@@ -329,6 +329,7 @@ void CabbageWidgetData::setSignalDisplayProperties (ValueTree widgetData, int ID
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::name, "signaldisplay");
     setProperty (widgetData, CabbageIdentifierIds::min, 0);
+    setProperty (widgetData, CabbageIdentifierIds::skew, 1);
     setProperty (widgetData, CabbageIdentifierIds::max, 2048);
     setProperty (widgetData, CabbageIdentifierIds::updaterate, 100);
     setProperty (widgetData, CabbageIdentifierIds::signalvariable, signalVariables);
