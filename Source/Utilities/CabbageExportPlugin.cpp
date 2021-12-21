@@ -264,22 +264,29 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             else
                 exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
             
+#if CabbagePro
+            File bin (exportedPlugin.getFullPathName() + String ("/Contents/MacOS/"+pluginDesc+"Synth"));
+#else
             File bin (exportedPlugin.getFullPathName() + String ("/Contents/MacOS/"+pluginDesc));
-            //if(bin.exists())showMessage("binary exists");
+#endif
             
             File pl (exportedPlugin.getFullPathName() + String ("/Contents/Info.plist"));
             String newPList = pl.loadFileAsString();
             
             if(fileExtension.containsIgnoreCase("vst") || fileExtension.containsIgnoreCase("app"))
             {
+                
                 File pluginBinary (exportedPlugin.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
                 
                 if (bin.moveFileTo (pluginBinary) == false)
                     CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
                 
                 setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
-                
+#if CabbagePro
+                newPList = newPList.replace (pluginDesc+"Synth", fc.getFileNameWithoutExtension());
+#else
                 newPList = newPList.replace (pluginDesc, fc.getFileNameWithoutExtension());
+#endif
             }
             
             
@@ -289,6 +296,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             DBG(toReplace);
             
 #if CabbagePro
+            
             //be sure to remove CabbageAudio from plugin plist..
             const String toReplace2 = "<string>CabbageAudio: CabbageEffectNam<string>";
             newPList = newPList.replace (toReplace2, pluginName);
@@ -307,6 +315,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             
             const String auId = "<string>" + pluginId + "</string>";
             newPList = newPList.replace ("<string>RORY</string>", auId);
+            
             
             pl.replaceWithText (newPList);
         }
