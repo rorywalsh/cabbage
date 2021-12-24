@@ -64,8 +64,6 @@ createPluginFilter() {
 
     return new CabbagePluginProcessor(csdFile, CabbagePluginProcessor::readBusesPropertiesFromXml(csdFile));
 
-
-
 }
 
 //============================================================================
