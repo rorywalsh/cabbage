@@ -139,6 +139,7 @@ void Soundfiler::setFile (const File& file)
 {
     if (! file.isDirectory())
     {
+        validFile = true;
         AudioFormatManager format;
         format.registerBasicFormats();
         //registers wav and aif format (just nescearry one time if you alays use the "getInstance()" method)
@@ -154,6 +155,10 @@ void Soundfiler::setFile (const File& file)
         }
 
         delete reader;
+    }
+    else
+    {
+        validFile = false;
     }
 
     repaint (0, 0, getWidth(), getHeight());
@@ -211,7 +216,7 @@ void Soundfiler::paint (Graphics& g)
     g.fillAll (bgColour);
     g.setColour (colour);
 
-    if (thumbnail->getTotalLength() != 0.0)
+    if (thumbnail->getTotalLength() != 0.0 && validFile)
     {
         //if(GEN01 then draw thumbnail)
         Rectangle<int> thumbArea (getLocalBounds());
