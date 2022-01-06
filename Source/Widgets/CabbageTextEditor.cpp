@@ -160,5 +160,8 @@ void CabbageTextEditor::valueTreePropertyChanged (ValueTree& valueTree, const Id
     else
         textEditor.setText (getCurrentText(valueTree), dontSendNotification);
 
+    const int readOnly = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::readonly);
+    textEditor.setReadOnly(readOnly == 1 ? true : false);
+    
     sendTextToCsound();
 }
