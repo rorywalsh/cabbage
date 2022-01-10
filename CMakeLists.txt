@@ -368,6 +368,7 @@ else()
         CabbageManufacturer="${CabbageManufacturer}"
         Use_Native_File_Browser=1
         JUCE_VST3_CAN_REPLACE_VST2=0
+        JUCE_ASIO=1
         Cabbage_IDE_Build=${IS_IDE_Build}
         JUCE_DISPLAY_SPLASH_SCREEN=0
         )
