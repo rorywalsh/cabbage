@@ -295,6 +295,8 @@ class CabbageIdentifierStrings : public StringArray
 public:
     CabbageIdentifierStrings()  // longest strings appear first otherwise identifiers will be missed in parsing
     {
+        add ("mouseOverKeyOutlineThickness");
+        add ("mouseOverKeyOutlineColour");
         add ("scrubberposition_sample");
         add ("doubleClickTogglesEdit");
         add ("scrubberposition_table");
@@ -688,6 +690,8 @@ namespace CabbageIdentifierIds
     static const Identifier numberofclicks = "numberOfClicks";
     static const Identifier mouseinteraction = "mouseInteraction";
     static const Identifier mouseoverkeycolour = "mouseOverKeyColour";
+    static const Identifier mouseoverkeyoutlinecolour = "mouseOverKeyOutlineColour";
+    static const Identifier mouseoverkeyoutlinethickness = "mouseOverKeyOutlineThickness";
     static const Identifier name = "name";
     static const Identifier keypressed = "keyPressed";
     static const Identifier keyreleased = "keyReleased";
@@ -993,7 +997,7 @@ static const char* const CsoundKeywords[] =
     "cossegb", "cossegr", "cpsmidinn", "cpumeter", "crossfm", "date", "dates", "dcblock2", "diskgrain", "distort", "doppler", "dust", "dust2", "ephasor", "eqfil", "evalstr", "expcurve", "exprandi",
     "expsegb", "expsegba", "faustaudio", "faustcompile", "faustctl", "faustgen", "fareylen", "fareyleni", "ficlose", "filebit", "filevalid", "array", "FLcloseButton", "FLexecButton", "FLgroup_end", "FLhvsBox",
     "FLhvsBoxSetValue", "FLkeyIn", "FLmouse", "flooper2", "FLpack_end", "FLsetSnapGroup", "FLslidBnk2", "FLslidBnkGetHandle", "FLslidBnkSet", "FLslidBnkSetk", "FLslidBnk2Set", "FLslidBnk2Setk", "fluidProgramSelect", "fluidSetInterpMethod", "FLvkeybd",
-    "FLvslidBnk", "FLvslidBnk2", "FLxyin", "fractalnoise", "ftcps", "ftgenonce", "gainslider", "gaussi", "gausstrig", "genarray", "genarray_i", "gendy", "gendyc", "gendyx", "getcfg", "harmon2", "hrtfearly", "hrtfmove", "mouseOverKeyColour",
+    "FLvslidBnk", "FLvslidBnk2", "FLxyin", "fractalnoise", "ftcps", "ftgenonce", "gainslider", "gaussi", "gausstrig", "genarray", "genarray_i", "gendy", "gendyc", "gendyx", "getcfg", "harmon2", "hrtfearly", "hrtfmove", "mouseOverKeyColour", "mouseOverKeyOutlineColour", "mouseOverKeyOutlineThickness",
     "hrtfmove2", "hrtfreverb", "hrtfstat", "hvs1", "hvs2", "hvs3", "i", "imagecreate", "imagefree", "imagegetpixel", "imageload", "imagesave", "imagesetpixel", "imagesize", "inleta", "inletk", "inletkid", "inletf", "inrg",
     "insremot", "insglobal", "instance", "JackoAudioIn", "JackoAudioInConnect", "JackoAudioOut", "JackoAudioOutConnect", "JackoFreewheel", "JackoInfo", "JackoInit", "JackoMidiInConnect", "JackoMidiOutConnect", "JackoMidiOut", "JackoNoteOut", "JackoOn", "JackoTransport",
     "jacktransport", "joystick", "k", "kill", "linsegb", "log2", "logcurve", "loop_ge", "loop_gt", "loop_le", "loop_lt", "looptseg", "loopxseg", "loscilx", "lposcila", "lposcilsa", "lposcilsa2", "lua_exec",

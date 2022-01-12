@@ -1675,7 +1675,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
                 CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChild(i), padded);
 
 				if (identifierText.contains("tableNumber")) //update even if table number has not changed
-					CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, 1);
+					CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, Random::getSystemRandom().nextInt());
 				else if (identifierText == CabbageIdentifierIds::tofront.toString() + "()") {
 					CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::tofront,
 						Random::getSystemRandom().nextInt());

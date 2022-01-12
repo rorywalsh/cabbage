@@ -376,6 +376,7 @@ void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID, boo
     setProperty (widgetData, CabbageIdentifierIds::height, 100);
     setProperty (widgetData, CabbageIdentifierIds::value, 60);
     setProperty (widgetData, CabbageIdentifierIds::middlec, 3);
+    setProperty (widgetData, CabbageIdentifierIds::linethickness, 1);
     setProperty (widgetData, CabbageIdentifierIds::keypressbaseoctave, 3);
     setProperty (widgetData, CabbageIdentifierIds::type, displayOnly == true ? "keyboarddisplay" : "keyboard");
     setProperty (widgetData, CabbageIdentifierIds::name, displayOnly == true ? "keyboarddisplay" : "keyboard");
@@ -392,7 +393,7 @@ void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID, boo
     setProperty (widgetData, CabbageIdentifierIds::blacknotecolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::keyseparatorcolour, Colour (0x66000000).toString());
     setProperty (widgetData, CabbageIdentifierIds::arrowbackgroundcolour, Colour (0xffd3d3d3).toString());
-    setProperty (widgetData, CabbageIdentifierIds::mouseoverkeycolour, Colour (0x80ffff00).toString());
+    setProperty (widgetData, CabbageIdentifierIds::mouseoverkeycolour, Colour (0x80ffff00).withAlpha(1.f).toString());
     setProperty (widgetData, CabbageIdentifierIds::keydowncolour, Colour (0x80ffff00).toString());
     setProperty (widgetData, CabbageIdentifierIds::arrowcolour, Colour (0xff000000).toString());
     setProperty (widgetData, CabbageIdentifierIds::keydowncolour, Colour (0x80ffff00).toString());

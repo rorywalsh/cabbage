@@ -32,7 +32,11 @@ class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener
     int scrollbars;
     float keyWidth;
     String kind;
+    float outlineThickness = 1.f;
+    float lineThickness = 1.f;
     CabbagePluginEditor* owner;
+    Colour mouseOverOutlineColour;
+    
 
 public:
 
@@ -41,6 +45,19 @@ public:
         widgetData.removeListener(this);
     }
 
+    void drawBlackNote (int midiNoteNumber,
+                                Graphics& g, Rectangle<float> area,
+                                bool isDown, bool isOver,
+                                Colour noteFillColour) override;
+    
+    void drawWhiteNote (int midiNoteNumber,
+                                Graphics& g, Rectangle<float> area,
+                                bool isDown, bool isOver,
+                                Colour lineColour, Colour textColour) override;
+    
+    void mouseUpOnKey (int midiNoteNumber, const MouseEvent &e) override;
+    bool mouseDraggedToKey (int midiNoteNumber, const MouseEvent &e) override;
+    
     //VlaueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {}

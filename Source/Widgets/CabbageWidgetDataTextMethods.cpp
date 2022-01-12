@@ -40,6 +40,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("lineThickness"):
         case HashStringToInt ("max"):
         case HashStringToInt ("min"):
+        case HashStringToInt ("keyWidth"):
         case HashStringToInt ("outlineThickness"):
         case HashStringToInt ("trackerThickness"):
         case HashStringToInt ("trackerOutsideRadius"):

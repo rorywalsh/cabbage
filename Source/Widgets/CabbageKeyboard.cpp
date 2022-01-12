@@ -23,6 +23,8 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, 
     : MidiKeyboardComponent (state, MidiKeyboardComponent::horizontalKeyboard),
     scrollbars (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrollbars)),
     keyWidth (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keywidth)),
+    outlineThickness(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
+    lineThickness(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linethickness)),
     widgetData (wData),
     CabbageWidgetBase(_owner)
 {
@@ -62,4 +64,98 @@ void CabbageKeyboard::updateColours(ValueTree& wData)
     setColour (MidiKeyboardComponent::keySeparatorLineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::keyseparatorcolour)));
     setColour (MidiKeyboardComponent::mouseOverKeyOverlayColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mouseoverkeycolour)));
     setColour (MidiKeyboardComponent::keyDownOverlayColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::keydowncolour)));
+    mouseOverOutlineColour = Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mouseoverkeyoutlinecolour));
+    
+}
+
+void CabbageKeyboard::mouseUpOnKey (int midiNoteNumber, const MouseEvent &e)
+{
+    repaint();
+}
+
+bool CabbageKeyboard::mouseDraggedToKey (int midiNoteNumber, const MouseEvent &e)
+{
+    repaint();
+    return true;
+}
+
+void CabbageKeyboard::drawWhiteNote (int midiNoteNumber, Graphics& g, Rectangle<float> area,
+                                           bool isDown, bool isOver, Colour lineColour, Colour textColour)
+{
+    auto c = Colours::transparentWhite;
+
+    if (isDown)  c = findColour (keyDownOverlayColourId);
+    if (isOver)  c = findColour (mouseOverKeyOverlayColourId);
+
+    g.setColour (c);
+    g.fillRect (area);
+    
+    if (isDown)
+    {
+        g.setColour(mouseOverOutlineColour);
+        g.drawRoundedRectangle(area, 0, outlineThickness);
+    }
+    
+
+    
+    auto text = getWhiteNoteText (midiNoteNumber);
+
+    if (text.isNotEmpty())
+    {
+        auto fontHeight = jmin (12.0f, keyWidth * 0.9f);
+
+        g.setColour (textColour);
+        g.setFont (Font (fontHeight).withHorizontalScale (0.8f));
+        g.drawText (text, area.withTrimmedLeft (1.0f).withTrimmedBottom (2.0f), Justification::centredBottom, false);
+    }
+
+    if (! lineColour.isTransparent())
+    {
+        g.setColour (lineColour);
+
+        g.fillRect (area.withWidth (lineThickness));
+
+        if (midiNoteNumber == 127)
+        {
+            g.fillRect (area.expanded (lineThickness, 0).removeFromRight (lineThickness));
+        }
+    }
+    
+
+}
+
+void CabbageKeyboard::drawBlackNote (int /*midiNoteNumber*/, Graphics& g, Rectangle<float> area,
+                                           bool isDown, bool isOver, Colour noteFillColour)
+{
+    auto c = noteFillColour;
+
+    if (isDown)  c = findColour (keyDownOverlayColourId);
+    if (isOver)  c = findColour (mouseOverKeyOverlayColourId);
+
+    if (isDown)
+    {
+        g.setColour(mouseOverOutlineColour);
+        g.drawRoundedRectangle(area, 0, outlineThickness);
+    }
+    
+    g.setColour(findColour (MidiKeyboardComponent::keySeparatorLineColourId));
+    g.drawRoundedRectangle(area, 0, lineThickness);
+    g.setColour (c);
+    g.fillRect (area);
+
+    if (isDown)
+    {
+        g.setColour (noteFillColour);
+        g.drawRect (area);
+    }
+    else
+    {
+        g.setColour (c);
+        auto sideIndent = 1.0f / 8.0f;
+        auto topIndent = 7.0f / 8.0f;
+        auto w = area.getWidth();
+        auto h = area.getHeight();
+
+        g.fillRect (area.reduced (w * sideIndent, 0).removeFromTop   (h * topIndent));
+    }
 }

@@ -167,6 +167,7 @@ void Soundfiler::setFile (const File& file)
 //==============================================================================
 void Soundfiler::setWaveform (AudioSampleBuffer buffer, int channels)
 {
+    validFile = true;
     thumbnail->clear();
     repaint();
     thumbnail->reset (channels, 44100, buffer.getNumSamples());

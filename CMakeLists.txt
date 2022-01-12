@@ -16,10 +16,15 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.79)
+	set(BUILD_VERSION 2.8.80)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
+
+#Adds all the module sources so they appear correctly in the IDE
+set_property(GLOBAL PROPERTY USE_FOLDERS YES)
+option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
+
 add_subdirectory(JUCE)                    # If you've put JUCE in a subdirectory called JUCE
 
 if(NOT DEFINED JucePlugin_Manufacturer)
@@ -71,6 +76,7 @@ macro(SetIfSynth var value1 value2)
         set(${var} "${value2}")
     endif()
 endmacro()
+
 
 if("${PROJECT_NAME}" STREQUAL "Cabbage")
     juce_add_gui_app(${PROJECT_NAME}

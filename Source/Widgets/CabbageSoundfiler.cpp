@@ -123,7 +123,34 @@ int CabbageSoundfiler::getLoopLength()
 
 void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    DBG(CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::identchannel));
+    if(prop == CabbageIdentifierIds::update)
+    {
+        if(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::tablenumber) != -1)
+        {
+//            var tables = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::tablenumber);
+//            
+//            for (int y = 0; y < tables.size(); y++)
+//            {
+//                int tableNumber = tables[y];
+//                tableValues.clear();
+//                tableValues = owner->getTableFloats (tableNumber);
+//                AudioBuffer<float> sampleBuffer;
+//                sampleBuffer.setSize(1, tableValues.size());
+//                //has to be a quicker way of doing this...
+//                for ( int i = 0 ; i < tableValues.size() ; i++){
+//                    sampleBuffer.setSample(0, i, tableValues[i]);
+//                }
+//
+//                setWaveform(sampleBuffer, 1);
+//            }
+        }
+        else
+        {
+            file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
+            const String fullPath = File (getCsdFile()).getParentDirectory().getChildFile (file).getFullPathName();
+            setFile (fullPath);
+        }
+    }
     
     if (file != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file))
     {

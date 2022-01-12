@@ -450,6 +450,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("markerEnd"):
             case HashStringToInt ("markerStart"):
             case HashStringToInt ("markerThickness"):
+            case HashStringToInt ("mouseOverKeyOutlineThickness"):
             case HashStringToInt ("numberOfClicks"):
             case HashStringToInt ("middleC"):
             case HashStringToInt ("mouseInteraction"):
@@ -624,6 +625,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("markerColour"):
             case HashStringToInt ("menuColour"):
             case HashStringToInt ("mouseOverKeyColour"):
+            case HashStringToInt ("mouseOverKeyOutlineColour"):
             case HashStringToInt ("outlineColour"):
             case HashStringToInt ("overlayColour"):
             case HashStringToInt ("tableBackgroundColour"):
