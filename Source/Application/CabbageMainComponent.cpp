@@ -269,34 +269,40 @@ void CabbageMainComponent::setLookAndFeelColours()
 void CabbageMainComponent::buttonClicked (Button* button)
 {
 	hideFindPanel();
-
+    
     if (FileTab* tabButton = dynamic_cast<FileTab*> (button))
     {
         handleFileTab (tabButton);
     }
-    else if (ToolbarButton* toolbarButton = dynamic_cast<ToolbarButton*> (button))
-        handleToolbarButtons (toolbarButton);
-    else if (DrawableButton* drawableButton = dynamic_cast<DrawableButton*> (button))
-        handleFileTabs (drawableButton);
-    else if (TextButton* textButton = dynamic_cast<TextButton*> (button))
+    else
     {
-        PopupMenu menu;
-
-        for ( int i = 0 ; i < fileTabs.size() ; i++)
-            if (fileTabs[i]->isVisible() == false)
-                menu.addItem (i + 1, fileTabs[i]->getName());
-
-        menu.showMenuAsync(juce::PopupMenu::Options(), [this](int result) {
-
-            if ( result > 0 )
+        if(fileTabs.size() > 0)
+        {
+            if (ToolbarButton* toolbarButton = dynamic_cast<ToolbarButton*> (button))
+                handleToolbarButtons (toolbarButton);
+            else if (DrawableButton* drawableButton = dynamic_cast<DrawableButton*> (button))
+                handleFileTabs (drawableButton);
+            else if (TextButton* textButton = dynamic_cast<TextButton*> (button))
             {
-                this->fileTabs.move (result - 1, this->fileTabs.size() - 1);
-                this->editorAndConsole.move (result - 1, this->fileTabs.size() - 1);
-                this->arrangeFileTabs();
-                this->fileTabs[this->fileTabs.size() - 1]->setToggleState (true, sendNotification);
-                this->setCurrentCsdFile (this->fileTabs[this->fileTabs.size() - 1]->getFile());
+                PopupMenu menu;
+
+                for ( int i = 0 ; i < fileTabs.size() ; i++)
+                    if (fileTabs[i]->isVisible() == false)
+                        menu.addItem (i + 1, fileTabs[i]->getName());
+
+                menu.showMenuAsync(juce::PopupMenu::Options(), [this](int result) {
+
+                    if ( result > 0 )
+                    {
+                        this->fileTabs.move (result - 1, this->fileTabs.size() - 1);
+                        this->editorAndConsole.move (result - 1, this->fileTabs.size() - 1);
+                        this->arrangeFileTabs();
+                        this->fileTabs[this->fileTabs.size() - 1]->setToggleState (true, sendNotification);
+                        this->setCurrentCsdFile (this->fileTabs[this->fileTabs.size() - 1]->getFile());
+                    }
+                });
             }
-        });
+        }
     }
     
     if(fileTree.isVisible())
