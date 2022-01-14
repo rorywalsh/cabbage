@@ -827,7 +827,7 @@ const Array<float, CriticalSection> CsoundPluginProcessor::getTableFloats (int t
         if (tableSize < 0)
             return points;
 
-        std::vector<double> temp (tableSize);
+        std::vector<MYFLT> temp (tableSize);
 
         csound->TableCopyOut (tableNum, &temp[0]);
 
