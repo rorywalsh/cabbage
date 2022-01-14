@@ -228,7 +228,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
                     subMenu.addItem(menuIndex, menus[i][x]);
                     menuIndex++;
                     if(x == int(menus[i].size() - 1)){
-                        const String subMenuName = menus[i][0].substring(6);
+                        const String subMenuName = menus[i][0].substring(5);
                         getRootMenu()->addSubMenu(subMenuName, subMenu);
                     }
                 }
