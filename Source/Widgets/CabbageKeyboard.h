@@ -30,13 +30,13 @@
 class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener, public CabbageWidgetBase
 {
     int scrollbars;
-    float keyWidth;
+    float keyWidth, corners;
     String kind;
     float outlineThickness = 1.f;
     float lineThickness = 1.f;
     CabbagePluginEditor* owner;
     Colour mouseOverOutlineColour;
-    
+    Rectangle<float> blackNoteArea;
 
 public:
 
@@ -54,6 +54,8 @@ public:
                                 Graphics& g, Rectangle<float> area,
                                 bool isDown, bool isOver,
                                 Colour lineColour, Colour textColour) override;
+
+    void drawWhiteNoteOutline(Graphics& g, int midiNote, Rectangle<float> area);
     
     void mouseUpOnKey (int midiNoteNumber, const MouseEvent &e) override;
     bool mouseDraggedToKey (int midiNoteNumber, const MouseEvent &e) override;

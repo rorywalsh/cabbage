@@ -637,8 +637,6 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("trackerBackgroundColour"):
             case HashStringToInt ("trackerColour"):
             case HashStringToInt ("whiteNoteColour"):
-            
-                
                 setProperty (widgetData, identifier, getColourFromText (strTokens.joinIntoString (",")).toString());
                 break;
                 

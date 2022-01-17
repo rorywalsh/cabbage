@@ -22,6 +22,7 @@
 CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, MidiKeyboardState& state)
     : MidiKeyboardComponent (state, MidiKeyboardComponent::horizontalKeyboard),
     scrollbars (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrollbars)),
+    corners (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners)),
     keyWidth (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keywidth)),
     outlineThickness(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
     lineThickness(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linethickness)),
@@ -79,6 +80,86 @@ bool CabbageKeyboard::mouseDraggedToKey (int midiNoteNumber, const MouseEvent &e
     return true;
 }
 
+void CabbageKeyboard::drawWhiteNoteOutline(Graphics& g, int midiNote, Rectangle<float> area)
+{
+
+    
+    const float w = area.getWidth();
+    const float h = area.getHeight();
+    const float x = area.getX()+outlineThickness/2.f;
+    const float y = area.getY();
+    
+    Path p;
+    p.startNewSubPath(x, y+area.getHeight()-outlineThickness/2.f);
+    switch(midiNote % 12)
+    {
+        case 0:
+            p.lineTo (x + w, y + h - outlineThickness/2.f);
+            p.lineTo (x + w, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x + w*.53f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x + w*.53f, y);
+            p.lineTo (x, y);
+            p.lineTo (x, y+area.getHeight());
+            break;
+        case 2:
+            p.lineTo (x + w, y + h - outlineThickness/2.f);
+            p.lineTo (x + w, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x + w*.63f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x + w*.63f, y);
+            p.lineTo (x + w*.31f, y);
+            p.lineTo (x + w*.31f, + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x, y+area.getHeight());
+            break;
+        case 4:
+            p.lineTo (x + w, y + h - outlineThickness/2.f);
+            p.lineTo (x + w, y);
+            p.lineTo (x + w*.44f, y);
+            p.lineTo (x + w*.44f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x, y + area.getHeight() - outlineThickness/2.f);
+            break;
+        case 5:
+            p.lineTo (x + w, y + h - outlineThickness/2.f);
+            p.lineTo (x + w, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x + w*.47f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x + w*.47f, y);
+            p.lineTo (x, y);
+            p.lineTo (x, y+area.getHeight() - outlineThickness/2.f);
+            break;
+        case 7:
+            p.lineTo (x + w, y + h - outlineThickness/2.f);
+            p.lineTo (x + w, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x + w*.59f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x + w*.59f, y);
+            p.lineTo (x + w*.21f, y);
+            p.lineTo (x + w*.21f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x, y + area.getHeight() - outlineThickness/2.f);
+            break;
+        case 9:
+            p.lineTo (x + w, y + h - outlineThickness/2.f);
+            p.lineTo (x + w, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x + w*.69f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x + w*.69f, y);
+            p.lineTo (x + w*.35f, y);
+            p.lineTo (x + w*.35f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x, y+area.getHeight() - outlineThickness/2.f);
+            break;
+        case 11:
+            p.lineTo (x + w, y + h - outlineThickness/2.f);
+            p.lineTo (x + w, y);
+            p.lineTo (x + w*.49f, y);
+            p.lineTo (x + w*.49f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x, y + blackNoteArea.getHeight()+outlineThickness/2.f);
+            p.lineTo (x, y+area.getHeight() - outlineThickness/2.f);
+            break;
+            
+    }
+    g.strokePath(p, PathStrokeType(outlineThickness));
+}
+
 void CabbageKeyboard::drawWhiteNote (int midiNoteNumber, Graphics& g, Rectangle<float> area,
                                            bool isDown, bool isOver, Colour lineColour, Colour textColour)
 {
@@ -93,7 +174,12 @@ void CabbageKeyboard::drawWhiteNote (int midiNoteNumber, Graphics& g, Rectangle<
     if (isDown)
     {
         g.setColour(mouseOverOutlineColour);
-        g.drawRoundedRectangle(area, 0, outlineThickness);
+        if(outlineThickness>0)
+            drawWhiteNoteOutline(g, midiNoteNumber, area);
+        else
+            g.drawRoundedRectangle(area, corners, outlineThickness);
+        //g.setColour(mouseOverOutlineColour);
+        //
     }
     
 
@@ -128,15 +214,11 @@ void CabbageKeyboard::drawBlackNote (int /*midiNoteNumber*/, Graphics& g, Rectan
                                            bool isDown, bool isOver, Colour noteFillColour)
 {
     auto c = noteFillColour;
+    blackNoteArea = area;
 
     if (isDown)  c = findColour (keyDownOverlayColourId);
     if (isOver)  c = findColour (mouseOverKeyOverlayColourId);
 
-    if (isDown)
-    {
-        g.setColour(mouseOverOutlineColour);
-        g.drawRoundedRectangle(area, 0, outlineThickness);
-    }
     
     g.setColour(findColour (MidiKeyboardComponent::keySeparatorLineColourId));
     g.drawRoundedRectangle(area, 0, lineThickness);
@@ -145,8 +227,8 @@ void CabbageKeyboard::drawBlackNote (int /*midiNoteNumber*/, Graphics& g, Rectan
 
     if (isDown)
     {
-        g.setColour (noteFillColour);
-        g.drawRect (area);
+        g.setColour(mouseOverOutlineColour);
+        g.drawRoundedRectangle (area, 0, outlineThickness);
     }
     else
     {
