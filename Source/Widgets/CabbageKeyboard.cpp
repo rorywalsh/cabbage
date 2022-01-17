@@ -26,6 +26,7 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, 
     keyWidth (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keywidth)),
     outlineThickness(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
     lineThickness(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linethickness)),
+    blackNoteHeight(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::blacknoteheight)),
     widgetData (wData),
     CabbageWidgetBase(_owner)
 {
@@ -214,30 +215,34 @@ void CabbageKeyboard::drawBlackNote (int /*midiNoteNumber*/, Graphics& g, Rectan
                                            bool isDown, bool isOver, Colour noteFillColour)
 {
     auto c = noteFillColour;
-    blackNoteArea = area;
-
+    
+    if(blackNoteHeight != 1)
+        blackNoteArea = area.removeFromTop(area.getHeight()*blackNoteHeight);
+    else
+        blackNoteArea = area;
+    
     if (isDown)  c = findColour (keyDownOverlayColourId);
     if (isOver)  c = findColour (mouseOverKeyOverlayColourId);
 
     
     g.setColour(findColour (MidiKeyboardComponent::keySeparatorLineColourId));
-    g.drawRoundedRectangle(area, 0, lineThickness);
+    g.drawRoundedRectangle(blackNoteArea, 0, lineThickness);
     g.setColour (c);
-    g.fillRect (area);
+    g.fillRect (blackNoteArea);
 
     if (isDown)
     {
         g.setColour(mouseOverOutlineColour);
-        g.drawRoundedRectangle (area, 0, outlineThickness);
+        g.drawRoundedRectangle (blackNoteArea, 0, outlineThickness);
     }
     else
     {
         g.setColour (c);
         auto sideIndent = 1.0f / 8.0f;
         auto topIndent = 7.0f / 8.0f;
-        auto w = area.getWidth();
-        auto h = area.getHeight();
+        auto w = blackNoteArea.getWidth();
+        auto h = blackNoteArea.getHeight();
 
-        g.fillRect (area.reduced (w * sideIndent, 0).removeFromTop   (h * topIndent));
+        g.fillRect (blackNoteArea.reduced (w * sideIndent, 0).removeFromTop   (h * topIndent));
     }
 }

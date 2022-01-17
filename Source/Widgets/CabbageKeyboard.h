@@ -37,6 +37,7 @@ class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener
     CabbagePluginEditor* owner;
     Colour mouseOverOutlineColour;
     Rectangle<float> blackNoteArea;
+    float blackNoteHeight = 1;
 
 public:
 

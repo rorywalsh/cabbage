@@ -443,6 +443,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("isparent"):
             case HashStringToInt ("keypressBaseOctave"):
             case HashStringToInt ("keyWidth"):
+            case HashStringToInt ("blackNoteHeight"):
             case HashStringToInt ("latched"):
             case HashStringToInt ("toFront"):
             case HashStringToInt ("lineThickness"):
