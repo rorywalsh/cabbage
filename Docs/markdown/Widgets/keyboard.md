@@ -16,6 +16,12 @@ keyboard WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/mouseOverKeyColour.md !}  
 
+{! ./markdown/Widgets/Properties/mouseDownKeyOutlineColour.md !}  
+
+{! ./markdown/Widgets/Properties/outlineThickness.md !}
+
+{! ./markdown/Widgets/Properties/lineThickness.md !}
+
 {! ./markdown/Widgets/Properties/keypressBaseOctave.md !}  
 
 {! ./markdown/Widgets/Properties/whiteNoteColour.md !}  

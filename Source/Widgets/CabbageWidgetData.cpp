@@ -626,7 +626,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("markerColour"):
             case HashStringToInt ("menuColour"):
             case HashStringToInt ("mouseOverKeyColour"):
-            case HashStringToInt ("mouseOverKeyOutlineColour"):
+            case HashStringToInt ("mouseDownKeyOutlineColour"):
             case HashStringToInt ("outlineColour"):
             case HashStringToInt ("overlayColour"):
             case HashStringToInt ("tableBackgroundColour"):
