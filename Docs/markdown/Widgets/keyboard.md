@@ -28,6 +28,8 @@ keyboard WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/blackNoteColour.md !} 
 
+{! ./markdown/Widgets/Properties/blackNoteLength.md !} 
+
 {! ./markdown/Widgets/Properties/arrowBackgroundColour.md !} 
 
 {! ./markdown/Widgets/Properties/keyDownColour.md !} 

@@ -26,7 +26,7 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, 
     keyWidth (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keywidth)),
     outlineThickness(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
     lineThickness(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linethickness)),
-    blackNoteHeight(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::blacknoteheight)),
+    blackNoteLength(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::blacknotelength)),
     widgetData (wData),
     CabbageWidgetBase(_owner)
 {
@@ -43,6 +43,8 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, 
     setWantsKeyboardFocus (true);
     setMouseClickGrabsKeyboardFocus (true);
     updateColours(wData);
+    
+    
 
 }
 
@@ -68,6 +70,7 @@ void CabbageKeyboard::updateColours(ValueTree& wData)
     setColour (MidiKeyboardComponent::keyDownOverlayColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::keydowncolour)));
     mouseOverOutlineColour = Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mousedownkeyoutlinecolour));
     
+    setBlackNoteLengthProportion(blackNoteLength);
 }
 
 void CabbageKeyboard::mouseUpOnKey (int midiNoteNumber, const MouseEvent &e)
@@ -216,8 +219,8 @@ void CabbageKeyboard::drawBlackNote (int /*midiNoteNumber*/, Graphics& g, Rectan
 {
     auto c = noteFillColour;
     
-    if(blackNoteHeight != 1)
-        blackNoteArea = area.removeFromTop(area.getHeight()*blackNoteHeight);
+    if(blackNoteLength != 1)
+        blackNoteArea = area.removeFromTop(area.getHeight()*blackNoteLength);
     else
         blackNoteArea = area;
     

@@ -25,6 +25,7 @@
 #include "CabbageWidgetBase.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
+
 // Add any new custom widgets here to avoid having to edit makefiles and projects
 // Each Cabbage widget should inherit from ValueTree listener, and CabbageWidgetBase
 class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener, public CabbageWidgetBase
@@ -37,7 +38,7 @@ class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener
     CabbagePluginEditor* owner;
     Colour mouseOverOutlineColour;
     Rectangle<float> blackNoteArea;
-    float blackNoteHeight = 1;
+    float blackNoteLength = 0.7f;
 
 public:
 
