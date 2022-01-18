@@ -221,8 +221,8 @@ void CabbageKeyboard::drawBlackNote (int /*midiNoteNumber*/, Graphics& g, Rectan
     else
         blackNoteArea = area;
     
-    if (isDown)  c = findColour (keyDownOverlayColourId);
-    if (isOver)  c = findColour (mouseOverKeyOverlayColourId);
+    if (isDown)  c = findColour (keyDownOverlayColourId).getAlpha() == 0.f ? noteFillColour : findColour (keyDownOverlayColourId);
+    if (isOver)  c = findColour (mouseOverKeyOverlayColourId).getAlpha() == 0.f ? noteFillColour : findColour (mouseOverKeyOverlayColourId);
 
     
     g.setColour(findColour (MidiKeyboardComponent::keySeparatorLineColourId));
