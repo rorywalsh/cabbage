@@ -27,6 +27,7 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, 
     outlineThickness(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::outlinethickness)),
     lineThickness(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::linethickness)),
     blackNoteLength(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::blacknotelength)),
+    blackNoteWidth(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::blacknotewidth)),
     widgetData (wData),
     CabbageWidgetBase(_owner)
 {
@@ -44,9 +45,109 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, 
     setMouseClickGrabsKeyboardFocus (true);
     updateColours(wData);
     
-    
-
 }
+
+CabbageKeyboard::Direction CabbageKeyboard::getNextDirection(std::vector<PathPoint> points, std::size_t segment)
+{
+    if ( points.size() < 2)
+        return Direction::undefined;
+    
+    if ( points[segment+1].x > points[segment].x)
+        return Direction::right;
+    
+    if ( points[segment+1].x < points[segment].x)
+        return Direction::left;
+    
+    if ( points[segment+1].y < points[segment].y)
+        return Direction::up;
+    
+    if ( points[segment+1].y > points[segment].y)
+        return Direction::down;
+    
+    return Direction::undefined;
+}
+
+void CabbageKeyboard::drawRoundedPath(Graphics& g, std::vector<PathPoint> points, float lineThickness)
+{
+    juce::Path p;
+    prevDirection = getNextDirection(points, 0);
+    p.startNewSubPath(points[0].x+points[0].corners, points[0].y);
+    for( std::size_t i = 1 ; i < points.size() ; i++)
+    {
+        if(getNextDirection(points, i) == Direction::down)
+        {
+            switch(prevDirection)
+            {
+                case Direction::right:
+                    p.lineTo(points[i].x-points[i].corners, points[i].y);
+                    p.cubicTo(points[i].x, points[i].y, points[i].x, points[i].y, points[i].x, points[i].y+points[i].corners);
+                    break;
+                case Direction::left:
+                    p.lineTo(points[i].x+points[i].corners, points[i].y);
+                    p.cubicTo(points[i].x, points[i].y, points[i].x, points[i].y, points[i].x, points[i].y+points[i].corners);
+                    break;
+                default:
+                    break;
+            }
+            prevDirection = Direction::down;
+        }
+        else if(getNextDirection(points, i) == Direction::up)
+        {
+            switch(prevDirection)
+            {
+                case Direction::right:
+                    p.lineTo(points[i].x-points[i].corners, points[i].y);
+                    p.cubicTo(points[i].x, points[i].y, points[i].x, points[i].y, points[i].x, points[i].y-points[i].corners);
+                    break;
+                case Direction::left:
+                    p.lineTo(points[i].x+points[i].corners, points[i].y);
+                    p.cubicTo(points[i].x, points[i].y, points[i].x, points[i].y, points[i].x, points[i].y-points[i].corners);
+                    break;
+                default:
+                    break;
+            }
+            prevDirection = Direction::up;
+        }
+        if(getNextDirection(points, i) == Direction::right)
+        {
+            switch(prevDirection)
+            {
+                case Direction::up:
+                    p.lineTo(points[i].x, points[i].y+points[i].corners);
+                    p.cubicTo(points[i].x, points[i].y, points[i].x, points[i].y, points[i].x+points[i].corners, points[i].y);
+                    break;
+                case Direction::down:
+                    p.lineTo(points[i].x, points[i].y-points[i].corners);
+                    p.cubicTo(points[i].x, points[i].y, points[i].x, points[i].y, points[i].x+points[i].corners, points[i].y);
+                    break;
+                default:
+                    break;
+            }
+            prevDirection = Direction::right;
+        }
+        if(getNextDirection(points, i) == Direction::left)//moving left
+        {
+            switch(prevDirection)
+            {
+                case Direction::down:
+                    p.lineTo(points[i].x, points[i].y-points[i].corners);
+                    p.cubicTo(points[i].x, points[i].y, points[i].x, points[i].y, points[i].x-points[i].corners, points[i].y);
+                    break;
+                case Direction::up:
+                    p.lineTo(points[i].x, points[i].y+points[i].corners);
+                    p.cubicTo(points[i].x, points[i].y, points[i].x, points[i].y, points[i].x-points[i].corners, points[i].y);
+                    break;
+                    
+                default:
+                    break;
+            }
+            prevDirection = Direction::left;
+        }
+    }
+
+    g.strokePath(p, juce::PathStrokeType(lineThickness));
+}
+
 
 void CabbageKeyboard::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
@@ -72,6 +173,7 @@ void CabbageKeyboard::updateColours(ValueTree& wData)
     mouseOverOutlineColour = Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mousedownkeyoutlinecolour));
     
     setBlackNoteLengthProportion(blackNoteLength);
+    
     //setBlackNoteWidthProportion(.5f);
 }
 
@@ -116,93 +218,69 @@ const String CabbageKeyboard::getNoteOutline(int midiNote, Rectangle<float> area
 
 void CabbageKeyboard::drawNoteOutline(Graphics& g, int midiNote, Rectangle<float> area)
 {
-    area = area.withX(area.getX()+(midiNote/29.f-1)*6.f);
-    if(getNoteOutline(midiNote, area).isNotEmpty())
+    std::vector<PathPoint> points;
+    auto blackNote = getRectangleForKey(midiNote + (midiNote % 12 == 11 ? -1 : 1));
+
+    //Rectangle<float> nextBlackNoteArea = getRectangleForKey(midiNote+1).withWidth(area.getWidth()*blackNoteWidth+(outlineThickness*2.f)).withCentre(blackNoteCentre);
+    DBG(getBlackNoteLength());
+    Rectangle<float> nextBlackNoteArea = area.withHeight(getBlackNoteLength()).withWidth(getKeyWidth()*blackNoteWidth).withCentre(blackNote.getCentre().withX(area.getX()+area.getWidth()));
+    
+    switch(midiNote % 12)
     {
-        std::unique_ptr<XmlElement> svgElement(XmlDocument::parse(getNoteOutline(midiNote, area)));
-        if(svgElement != nullptr)
-        {
-            g.fillAll(Colours::transparentBlack);
-            outlineDrawable = Drawable::createFromSVG(*svgElement);
-            outlineDrawable->setTransformToFit(area, RectanglePlacement::stretchToFit);
-            outlineDrawable->draw(g, 1.f, {});
-        }
+        case 2:
+        case 7:
+        case 9:
+            points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
+            points.push_back({nextBlackNoteArea.getX(), area.getY(), 0});
+            points.push_back({nextBlackNoteArea.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
+            points.push_back({area.getX()+area.getWidth(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
+            points.push_back({area.getX()+area.getWidth(), area.getY()+area.getHeight(), 0}); // bottom right
+            points.push_back({area.getX(), area.getY()+area.getHeight(), 0}); // bottom left
+            points.push_back({area.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
+            points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
+            points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
+            points.push_back({area.getX()+30, area.getY(), 0});
+            break;
+        case 4:
+        case 11:
+            points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
+            points.push_back({area.getWidth()+area.getX(), area.getY(), 0});
+            points.push_back({area.getWidth()+area.getX(), area.getY()+area.getHeight(), 0});
+            points.push_back({area.getX(), area.getY()+area.getHeight(), 0}); // bottom left
+            points.push_back({area.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
+            points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
+            points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
+            points.push_back({(area.getX()+nextBlackNoteArea.getWidth()/2.f) + 10, area.getY(), 0});
+            
+//            points.push_back({nextBlackNoteArea.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
+//            points.push_back({area.getX()+area.getWidth(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
+//            points.push_back({area.getX()+area.getWidth(), area.getY()+area.getHeight(), 0});
+//            points.push_back({area.getX(), area.getY()+area.getHeight(), 15});
+//            points.push_back({area.getX(), area.getY(), 15});
+//            points.push_back({area.getX()+20, area.getY(), 0});
+            break;
+        case 0:
+        case 5:
+            points.push_back({area.getX()+10, area.getY(), 0});
+            points.push_back({nextBlackNoteArea.getX(), area.getY(), 0});
+            points.push_back({nextBlackNoteArea.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
+            points.push_back({area.getX()+area.getWidth(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
+            points.push_back({area.getX()+area.getWidth(), area.getY()+area.getHeight(), 0});
+            points.push_back({area.getX(), area.getY()+area.getHeight(), 15});
+            points.push_back({area.getX(), area.getY(), 15});
+            points.push_back({area.getX()+20, area.getY(), 0});
+            break;
+            
+        default:
+            points.push_back({area.getX(), area.getY(), 0});
+            points.push_back({area.getX()+area.getWidth(), area.getY(), 0});
+            points.push_back({area.getX()+area.getWidth(), area.getY()+area.getHeight(), 10});
+            points.push_back({area.getX(), area.getY()+area.getHeight(), 10});
+            points.push_back({area.getX(), area.getY(), 0});
+            
     }
     
-//    const float w = area.getWidth();
-//    const float h = area.getHeight();
-//    const float x = area.getX()+outlineThickness/2.f;
-//    const float y = area.getY();
-//
-//    Path p;
-//    p.startNewSubPath(x, y+area.getHeight()-outlineThickness/2.f);
-//    switch(midiNote % 12)
-//    {
-//        case 0:
-//            p.lineTo (x + w, y + h - outlineThickness/2.f);
-//            p.lineTo (x + w, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x + w*.53f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x + w*.53f, y);
-//            p.lineTo (x, y);
-//            p.lineTo (x, y+area.getHeight());
-//            break;
-//        case 2:
-//            p.lineTo (x + w, y + h - outlineThickness/2.f);
-//            p.lineTo (x + w, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x + w*.63f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x + w*.63f, y);
-//            p.lineTo (x + w*.31f, y);
-//            p.lineTo (x + w*.31f, + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x, y+area.getHeight());
-//            break;
-//        case 4:
-//            p.lineTo (x + w, y + h - outlineThickness/2.f);
-//            p.lineTo (x + w, y);
-//            p.lineTo (x + w*.44f, y);
-//            p.lineTo (x + w*.44f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x, y + area.getHeight() - outlineThickness/2.f);
-//            break;
-//        case 5:
-//            p.lineTo (x + w, y + h - outlineThickness/2.f);
-//            p.lineTo (x + w, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x + w*.47f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x + w*.47f, y);
-//            p.lineTo (x, y);
-//            p.lineTo (x, y+area.getHeight() - outlineThickness/2.f);
-//            break;
-//        case 7:
-//            p.lineTo (x + w, y + h - outlineThickness/2.f);
-//            p.lineTo (x + w, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x + w*.59f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x + w*.59f, y);
-//            p.lineTo (x + w*.21f, y);
-//            p.lineTo (x + w*.21f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x, y + area.getHeight() - outlineThickness/2.f);
-//            break;
-//        case 9:
-//            p.lineTo (x + w, y + h - outlineThickness/2.f);
-//            p.lineTo (x + w, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x + w*.69f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x + w*.69f, y);
-//            p.lineTo (x + w*.35f, y);
-//            p.lineTo (x + w*.35f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x, y+area.getHeight() - outlineThickness/2.f);
-//            break;
-//        case 11:
-//            p.lineTo (x + w, y + h - outlineThickness/2.f);
-//            p.lineTo (x + w, y);
-//            p.lineTo (x + w*.49f, y);
-//            p.lineTo (x + w*.49f, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x, y + blackNoteArea.getHeight()+outlineThickness/2.f);
-//            p.lineTo (x, y+area.getHeight() - outlineThickness/2.f);
-//            break;
-//
-//    }
-//    g.strokePath(p, PathStrokeType(outlineThickness));
+    drawRoundedPath(g, points, 2);
 }
 
 
@@ -224,6 +302,7 @@ void CabbageKeyboard::drawWhiteNote (int midiNoteNumber, Graphics& g, Rectangle<
         if(outlineThickness>0)
         {
             drawNoteOutline(g, midiNoteNumber, area);
+            //g.drawRect(area);
         }
         else
             g.drawRoundedRectangle(area, corners, outlineThickness);
@@ -266,18 +345,6 @@ void CabbageKeyboard::drawBlackNote (int midiNoteNumber, Graphics& g, Rectangle<
     auto c = noteFillColour;
 
     
-    if (isDown)
-    {
-        c = findColour (keyDownOverlayColourId).getAlpha() == 0.f ? noteFillColour : findColour (keyDownOverlayColourId);
-        g.setColour(mouseOverOutlineColour);
-        if(outlineThickness>0)
-        {
-            Rectangle<float> nextWhiteNote = getRectangleForKey(midiNoteNumber+1);
-            
-            drawNoteOutline(g, midiNoteNumber, area.withWidth(nextWhiteNote.getWidth()*.4f).withX(nextWhiteNote.getX()-nextWhiteNote.getWidth()*.2f));
-        }
-    }
-    
     if (isOver)  c = findColour (mouseOverKeyOverlayColourId).getAlpha() == 0.f ? noteFillColour : findColour (mouseOverKeyOverlayColourId);
 
 
@@ -289,8 +356,19 @@ void CabbageKeyboard::drawBlackNote (int midiNoteNumber, Graphics& g, Rectangle<
 
     if (isDown)
     {
+        c = findColour (keyDownOverlayColourId).getAlpha() == 0.f ? noteFillColour : findColour (keyDownOverlayColourId);
         g.setColour(mouseOverOutlineColour);
-        g.drawRoundedRectangle (area, 0, outlineThickness);
+        if(outlineThickness>0)
+        {
+            auto nextNote = getRectangleForKey(midiNoteNumber+1);
+            Rectangle<float> nextBlackNoteArea = area.withWidth(getKeyWidth()*blackNoteWidth).withX(nextNote.getX() - (getKeyWidth()*blackNoteWidth)/2.f);
+            drawNoteOutline(g, midiNoteNumber, nextBlackNoteArea);
+        }
+        else
+        {
+            g.setColour(mouseOverOutlineColour);
+            g.drawRoundedRectangle (area, 0, outlineThickness);
+        }
     }
     else
     {

@@ -401,6 +401,7 @@ void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID, boo
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::keywidth, 16);
     setProperty (widgetData, CabbageIdentifierIds::blacknotelength, 0.7);
+    setProperty (widgetData, CabbageIdentifierIds::blacknotewidth, 0.7);
     setProperty (widgetData, CabbageIdentifierIds::scrollbars, 1);
     setProperty(widgetData, CabbageIdentifierIds::channel, getProperty(widgetData, CabbageIdentifierIds::type).toString() + String(ID));
     setProperty(widgetData, CabbageIdentifierIds::automatable, 0.0f);

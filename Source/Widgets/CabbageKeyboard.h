@@ -30,18 +30,27 @@
 // Each Cabbage widget should inherit from ValueTree listener, and CabbageWidgetBase
 class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener, public CabbageWidgetBase
 {
-    int scrollbars;
-    float keyWidth, corners;
-    String kind;
-    float outlineThickness = 1.f;
-    float lineThickness = 1.f;
-    CabbagePluginEditor* owner;
-    Colour mouseOverOutlineColour;
-    Rectangle<float> blackNoteArea;
-    float blackNoteLength = 0.7f;
-    std::unique_ptr<Drawable> outlineDrawable;
 public:
 
+    enum Direction
+    {
+        left,
+        right,
+        up,
+        down,
+        undefined
+    };
+    
+    struct PathPoint
+    {
+        PathPoint(float left, float top, float radius)
+        :x(left), y(top), corners(radius){}
+        float x;
+        float y;
+        float corners;
+    };
+    
+    
     CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, MidiKeyboardState& state);
     ~CabbageKeyboard() override {
         widgetData.removeListener(this);
@@ -59,7 +68,11 @@ public:
                                 bool isDown, bool isOver,
                                 Colour lineColour, Colour textColour) override;
 
+    
     void drawNoteOutline(Graphics& g, int midiNote, Rectangle<float> area);
+    
+    Direction getNextDirection(std::vector<PathPoint>, std::size_t segment);
+    void drawRoundedPath(Graphics& g, std::vector<PathPoint>, float lineThickness);
     
     void mouseUpOnKey (int midiNoteNumber, const MouseEvent &e) override;
     bool mouseDraggedToKey (int midiNoteNumber, const MouseEvent &e) override;
@@ -75,6 +88,21 @@ public:
 
     void updateColours(ValueTree& wData);
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageKeyboard)
+    
+private:
+    int scrollbars;
+    float keyWidth, corners;
+    String kind;
+    float outlineThickness = 1.f;
+    float lineThickness = 1.f;
+    CabbagePluginEditor* owner;
+    Colour mouseOverOutlineColour;
+    Rectangle<float> blackNoteArea;
+    float blackNoteLength = 0.7f;
+    float blackNoteWidth = 1.f;
+    std::unique_ptr<Drawable> outlineDrawable;
+    
+    Direction prevDirection;
 };
 
 
