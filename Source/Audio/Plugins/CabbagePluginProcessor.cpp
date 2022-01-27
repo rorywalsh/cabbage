@@ -935,7 +935,7 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor() {
 void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData) {
 	copyXmlToBinary(savePluginState("CABBAGE_PRESETS"), destData);
     //File file(csdFile.getParentDirectory().getFullPathName()+"/testSessionData.txt");
-    //savePluginState("CABBAGE_PRESETS").writeTo(file);
+    DBG(savePluginState("CABBAGE_PRESETS").toString());
 }
 
 void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInBytes) {
@@ -1485,6 +1485,9 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
     
     for(auto && i : identData->data)
     {
+        if(!i.isValid)
+            break;
+        
         const auto identifier = i.identifier;
         const auto name = i.name;
 

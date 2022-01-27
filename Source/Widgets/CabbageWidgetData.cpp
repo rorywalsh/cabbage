@@ -1222,9 +1222,12 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
     setProperty (widgetData, CabbageIdentifierIds::populate, array);
     
     setProperty (widgetData, CabbageIdentifierIds::filetype, strTokens[0].trim());
-    DBG(widgetData.getProperty(CabbageIdentifierIds::filetype).toString());
+    
     if (strTokens.size() > 1)
+    {
+        DBG(widgetData.getProperty(CabbageIdentifierIds::csdfile).toString());
         setProperty (widgetData, CabbageIdentifierIds::currentdir, strTokens[1].trim());
+    }
 
     if(strTokens.size() > 2)
         setProperty (widgetData, CabbageIdentifierIds::ignorelastdir, strTokens[2].trim().getIntValue());

@@ -39,14 +39,16 @@ class CabbageKeyboard : public MidiKeyboardComponent, public ValueTree::Listener
     Colour mouseOverOutlineColour;
     Rectangle<float> blackNoteArea;
     float blackNoteLength = 0.7f;
-
+    std::unique_ptr<Drawable> outlineDrawable;
 public:
 
     CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, MidiKeyboardState& state);
     ~CabbageKeyboard() override {
         widgetData.removeListener(this);
     }
-
+    
+    const String getNoteOutline(int midiNote, Rectangle<float> area);
+    
     void drawBlackNote (int midiNoteNumber,
                                 Graphics& g, Rectangle<float> area,
                                 bool isDown, bool isOver,
@@ -57,7 +59,7 @@ public:
                                 bool isDown, bool isOver,
                                 Colour lineColour, Colour textColour) override;
 
-    void drawWhiteNoteOutline(Graphics& g, int midiNote, Rectangle<float> area);
+    void drawNoteOutline(Graphics& g, int midiNote, Rectangle<float> area);
     
     void mouseUpOnKey (int midiNoteNumber, const MouseEvent &e) override;
     bool mouseDraggedToKey (int midiNoteNumber, const MouseEvent &e) override;
