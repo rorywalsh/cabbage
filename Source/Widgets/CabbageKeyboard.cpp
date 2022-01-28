@@ -188,98 +188,92 @@ bool CabbageKeyboard::mouseDraggedToKey (int midiNoteNumber, const MouseEvent &e
     return true;
 }
 
-const String CabbageKeyboard::getNoteOutline(int midiNote, Rectangle<float> area)
-{
-    String svgViewBox = "<svg viewBox=\"0 0 " + String(area.getWidth()) + " " + String(area.getHeight()) + "\">";
-    if(midiNote == 29)
-    {
-        return svgViewBox + "<path d=\"M14 1H48V168C48 170.8 51.3333 172.167 53 172.5H59.5L60 325.5H13.5C6.3 325.5 2.16667 317.833 1 314V11C1 4 7 1 14 1Z\" stroke=\"#F8FDFF\" fill-opacity=\"0.0\" stroke-width=\"2\"/>" + "</svg>";
-    }
-    
-    switch(midiNote % 12)
-    {
-        case 2:
-        case 7:
-        case 9:
-            return svgViewBox + "<path d=\"M12.5 167.5V1H47.5V166.5C47.5 169.3 50.1667 172 51.5 172.5H59.5V324.5H1V172.5H9C11.4 172.5 12.1667 168.833 12.5 167.5Z\" stroke=\"#F8FDFF\" fill-opacity=\"0.0\" stroke-width=\"2\"/>\n" + "</svg>";
-        case 4:
-        case 11:
-            return svgViewBox +  "<path d=\"M60 1H12.5V168C12.5 171.2 9.83333 172.333 8.5 172.5H1V325.5H60.5L60 1Z\" stroke=\"#F8FDFF\" fill-opacity=\"0.0\" stroke-width=\"2\"/>\n" + "</svg>";
-            
-        case 0:
-        case 5:
-            return svgViewBox + "<path d=\"M61 325.5H1.5V1H49V168C49 171.6 52.3333 172.333 54 172.5H61V325.5Z\" stroke=\"#F8FDFF\" fill-opacity=\"0.0\" stroke-width=\"2\"/>" + "</svg>";
-        default:
-            return svgViewBox + "<path d=\"M25 1H1.5V168C1.5 170.4 4.5 171.667 6 172H19C23 172 24.6667 169.333 25 168V1Z\" stroke=\"#F8FDFF\" fill-opacity=\"0.0\" stroke-width=\"2\"/>\n" + "</svg>";
-
-    }
-}
-
 
 void CabbageKeyboard::drawNoteOutline(Graphics& g, int midiNote, Rectangle<float> area)
 {
     std::vector<PathPoint> points;
     auto blackNote = getRectangleForKey(midiNote + (midiNote % 12 == 11 ? -1 : 1));
 
-    //Rectangle<float> nextBlackNoteArea = getRectangleForKey(midiNote+1).withWidth(area.getWidth()*blackNoteWidth+(outlineThickness*2.f)).withCentre(blackNoteCentre);
-    DBG(getBlackNoteLength());
     Rectangle<float> nextBlackNoteArea = area.withHeight(getBlackNoteLength()).withWidth(getKeyWidth()*blackNoteWidth).withCentre(blackNote.getCentre().withX(area.getX()+area.getWidth()));
     
-    switch(midiNote % 12)
+    //getLowestVisibleKey();
+
+    if(midiNote == 53)  //first note
     {
-        case 2:
-        case 7:
-        case 9:
-            points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
-            points.push_back({nextBlackNoteArea.getX(), area.getY(), 0});
-            points.push_back({nextBlackNoteArea.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
-            points.push_back({area.getX()+area.getWidth(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
-            points.push_back({area.getX()+area.getWidth(), area.getY()+area.getHeight(), 0}); // bottom right
-            points.push_back({area.getX(), area.getY()+area.getHeight(), 0}); // bottom left
-            points.push_back({area.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
-            points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
-            points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
-            points.push_back({area.getX()+30, area.getY(), 0});
-            break;
-        case 4:
-        case 11:
-            points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
-            points.push_back({area.getWidth()+area.getX(), area.getY(), 0});
-            points.push_back({area.getWidth()+area.getX(), area.getY()+area.getHeight(), 0});
-            points.push_back({area.getX(), area.getY()+area.getHeight(), 0}); // bottom left
-            points.push_back({area.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
-            points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
-            points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
-            points.push_back({(area.getX()+nextBlackNoteArea.getWidth()/2.f) + 10, area.getY(), 0});
-            
-//            points.push_back({nextBlackNoteArea.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
-//            points.push_back({area.getX()+area.getWidth(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
-//            points.push_back({area.getX()+area.getWidth(), area.getY()+area.getHeight(), 0});
-//            points.push_back({area.getX(), area.getY()+area.getHeight(), 15});
-//            points.push_back({area.getX(), area.getY(), 15});
-//            points.push_back({area.getX()+20, area.getY(), 0});
-            break;
-        case 0:
-        case 5:
-            points.push_back({area.getX()+10, area.getY(), 0});
-            points.push_back({nextBlackNoteArea.getX(), area.getY(), 0});
-            points.push_back({nextBlackNoteArea.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
-            points.push_back({area.getX()+area.getWidth(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
-            points.push_back({area.getX()+area.getWidth(), area.getY()+area.getHeight(), 0});
-            points.push_back({area.getX(), area.getY()+area.getHeight(), 15});
-            points.push_back({area.getX(), area.getY(), 15});
-            points.push_back({area.getX()+20, area.getY(), 0});
-            break;
-            
-        default:
-            points.push_back({area.getX(), area.getY(), 0});
-            points.push_back({area.getX()+area.getWidth(), area.getY(), 0});
-            points.push_back({area.getX()+area.getWidth(), area.getY()+area.getHeight(), 10});
-            points.push_back({area.getX(), area.getY()+area.getHeight(), 10});
-            points.push_back({area.getX(), area.getY(), 0});
-            
+        points.push_back({area.getX()+10, area.getY(), 0});
+        points.push_back({nextBlackNoteArea.getX(), area.getY(), 0});
+        points.push_back({nextBlackNoteArea.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
+        points.push_back({area.getX()+area.getWidth(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
+        points.push_back({area.getX()+area.getWidth(), area.getY()+area.getHeight(), 0});
+        points.push_back({area.getX(), area.getY()+area.getHeight(), 15});
+        points.push_back({area.getX(), area.getY(), 15});
+        points.push_back({area.getX()+20, area.getY(), 0});
     }
-    
+    else if(midiNote == 83)  //last note
+    {
+        blackNote = getRectangleForKey(midiNote - 1);
+        nextBlackNoteArea = area.withHeight(getBlackNoteLength()).withWidth(getKeyWidth()*blackNoteWidth).withCentre(blackNote.getCentre().withX(area.getX()+area.getWidth()));
+        points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
+        points.push_back({area.getWidth()+area.getX(), area.getY(), 15});
+        points.push_back({area.getWidth()+area.getX(), area.getY()+area.getHeight(), 15});
+        points.push_back({area.getX(), area.getY()+area.getHeight(), 0}); // bottom left
+        points.push_back({area.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
+        points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
+        points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
+        points.push_back({(area.getX()+nextBlackNoteArea.getWidth()/2.f) + 10, area.getY(), 0});
+    }
+    else
+    {
+        switch(midiNote % 12)
+        {
+            case 2:
+            case 7:
+            case 9:
+                points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
+                points.push_back({nextBlackNoteArea.getX(), area.getY(), 0});
+                points.push_back({nextBlackNoteArea.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
+                points.push_back({area.getX()+area.getWidth(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
+                points.push_back({area.getX()+area.getWidth(), area.getY()+area.getHeight(), 0}); // bottom right
+                points.push_back({area.getX(), area.getY()+area.getHeight(), 0}); // bottom left
+                points.push_back({area.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
+                points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
+                points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
+                points.push_back({area.getX()+30, area.getY(), 0});
+                break;
+            case 4:
+            case 11:
+                blackNote = getRectangleForKey(midiNote - 1);
+                nextBlackNoteArea = area.withHeight(getBlackNoteLength()).withWidth(getKeyWidth()*blackNoteWidth).withCentre(blackNote.getCentre().withX(area.getX()+area.getWidth()));
+                points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
+                points.push_back({area.getWidth()+area.getX(), area.getY(), 0});
+                points.push_back({area.getWidth()+area.getX(), area.getY()+area.getHeight(), 0});
+                points.push_back({area.getX(), area.getY()+area.getHeight(), 0}); // bottom left
+                points.push_back({area.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
+                points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
+                points.push_back({area.getX()+nextBlackNoteArea.getWidth()/2.f, area.getY(), 0});
+                points.push_back({(area.getX()+nextBlackNoteArea.getWidth()/2.f) + 10, area.getY(), 0});
+                break;
+            case 0:
+            case 5:
+                points.push_back({area.getX(), area.getY(), 0});
+                points.push_back({nextBlackNoteArea.getX(), area.getY(), 0});
+                points.push_back({nextBlackNoteArea.getX(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 10});
+                points.push_back({area.getX()+area.getWidth(), nextBlackNoteArea.getY()+nextBlackNoteArea.getHeight(), 0});
+                points.push_back({area.getX()+area.getWidth(), area.getY()+area.getHeight(), 0});
+                points.push_back({area.getX(), area.getY()+area.getHeight(), 0});
+                points.push_back({area.getX(), area.getY(), 0});
+                points.push_back({area.getX()+10, area.getY(), 0});
+                break;
+                
+            default:
+                points.push_back({area.getX(), area.getY(), 0});
+                points.push_back({area.getX()+area.getWidth(), area.getY(), 0});
+                points.push_back({area.getX()+area.getWidth(), area.getY()+area.getHeight(), 10});
+                points.push_back({area.getX(), area.getY()+area.getHeight(), 10});
+                points.push_back({area.getX(), area.getY(), 0});
+                
+        }
+    }
     drawRoundedPath(g, points, 2);
 }
 

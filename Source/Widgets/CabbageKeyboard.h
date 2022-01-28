@@ -56,7 +56,6 @@ public:
         widgetData.removeListener(this);
     }
     
-    const String getNoteOutline(int midiNote, Rectangle<float> area);
     
     void drawBlackNote (int midiNoteNumber,
                                 Graphics& g, Rectangle<float> area,
