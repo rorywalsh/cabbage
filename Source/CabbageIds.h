@@ -409,6 +409,7 @@ public:
         add ("cellHeight");
         add ("moveBehind");
         add ("trackerEnd");
+        add ("preCycles");
         add ("opcodeDir");
         add ("markerEnd");
         add ("menuColor");
@@ -634,6 +635,7 @@ namespace CabbageIdentifierIds
     static const Identifier fontsize = "fontSize";
     static const Identifier gradient = "gradient";
     static const Identifier guirefresh = "guiRefresh";
+    static const Identifier precycles = "preCycles";
     static const Identifier guimode = "guiMode";
     static const Identifier polling = "polling";
     static const Identifier queue = "queue";
@@ -1020,7 +1022,7 @@ static const char* const CsoundKeywords[] =
     "transegr", "trcross", "trfilter", "trhighest", "trlowest", "trmix", "trscale", "trshift", "trsplit", "urandom", "vadd_i", "vaddv_i", "vaget", "vaset", "vbap", "vbapmove", "vbapg", "vbapgmove", "vdivv_i",
     "vexp_i", "vexpv_i", "vmult_i", "vmultv_i", "vosim", "vphaseseg", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "writescratch", "encoder", "fftdisplay", "keyboard", "label",
     "listbox", "hrange", "vrange", "active", "align", "alpha", "ampRange", "bounds", "caption", "channel", "channelArray", "channelType", "child", "colour", "colour:0", "colour:1", "corners", "displayType", "file",
-    "fontColour", "fontStyle", "fontStyle", "guiRefresh", "highlightColour", "highlightedTextColour", "highlightedItemColour", "identChannel", "items", "latched", "line", "middleC", "max", "min", "mode", "outlineColour", "outlineThickness", "plant", "pluginId", "populate",
+    "fontColour", "fontStyle", "fontStyle", "guiRefresh", "preCycles", "highlightColour", "highlightedTextColour", "highlightedItemColour", "identChannel", "items", "latched", "line", "middleC", "max", "min", "mode", "outlineColour", "outlineThickness", "plant", "pluginId", "populate",
     "popup", "popupText", "popupPostfix", "popupPrefix", "range", "rangeX", "rangeY", "rotate", "sampleRange", "scrubberpos", "scrubberPosition", "shape", "show", "size", "sliderincr", "svgfile", "svgElement", "tableBackgroundColour", "tableColour",
     "tableGridColour", "tableNumber", "text", "textColour", "textBox", "trackerBackgroundColour", "trackerColour", "trackerEnd", "trackerStart", "trackerCentre", "trackerThickness", "trackerOuterRadius", "trackerInnerRadius", "typeface", "widgetArray", "wrap", "value", "velocity", "visible", "zoom", "zkwm", "maxarray", "fillarray", "lenarray",
     "od", "gentable", "texteditor", "textBox", "sprintfk", "strcpyk", "sprintf", "strcmpk", "strcmp", "a", "abetarand", "abexprnd", "infobutton", "groupbox", "do", "popupmenu", "filebutton", "presetbutton", "until",

@@ -438,6 +438,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("ffttableNumber"):
             case HashStringToInt ("fill"):
             case HashStringToInt ("guiRefresh"):
+            case HashStringToInt ("preCycles"):
             case HashStringToInt ("imgdebug"):
             case HashStringToInt ("increment"):
             case HashStringToInt ("isparent"):

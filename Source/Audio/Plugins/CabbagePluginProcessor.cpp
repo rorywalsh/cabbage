@@ -316,6 +316,8 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 				createFileLogger(this->csdFile);
 
 			setGUIRefreshRate(CabbageWidgetData::getNumProp(newWidget, CabbageIdentifierIds::guirefresh));
+            
+            setNumPreCycles(CabbageWidgetData::getNumProp(newWidget, CabbageIdentifierIds::precycles));
 		}
         
 		const String precedingCharacters = currentLineOfCabbageCode.substring(0, currentLineOfCabbageCode.indexOf(

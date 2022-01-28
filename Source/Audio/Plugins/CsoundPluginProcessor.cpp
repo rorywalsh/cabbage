@@ -696,7 +696,13 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     }
 
     //csound->Message("Running single k-cycle...\n");
+    
     csound->PerformKsmps();
+    
+    //run through a set of preCycles...
+    for( int i = 0 ; i < preCycles ; i++ )
+        csound->PerformKsmps();
+    
     //csound->Message("Rewinding...\n");
     //csound->SetChannel ("IS_EDITOR_OPEN", 0.0);
     csound->SetChannel ("MOUSE_DOWN_LEFT", 0.0);
