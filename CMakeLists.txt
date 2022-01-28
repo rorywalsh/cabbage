@@ -16,7 +16,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.92)
+	set(BUILD_VERSION 2.8.93)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -84,8 +84,10 @@ if("${PROJECT_NAME}" STREQUAL "Cabbage")
         ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png 
         # HARDENED_RUNTIME_ENABLED TRUE
         # HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" "com.apple.security.cs.allow-jit" "com.apple.security.cs.allow-unsigned-executable-memory" "com.apple.security.device.audio-input" "com.apple.security.automation.apple-events" "com.apple.security.get-task-allow" 
-        DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
+        # DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
         COMPANY_NAME ${JucePlugin_Manufacturer}
+        MICROPHONE_PERMISSION_ENABLED TRUE
+        MICROPHONE_PERMISSION_TEXT "Cabbage needs access to your audio interface" 
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
 else()
 # ============== This part of the CMake setup deals with plugins only.....
