@@ -1487,8 +1487,8 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
     
     for(auto && i : identData->data)
     {
-        if(!i.isValid)
-            break;
+//        if(!i.isValid)
+//            break;
         
         const auto identifier = i.identifier;
         const auto name = i.name;

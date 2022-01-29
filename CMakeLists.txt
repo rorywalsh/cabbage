@@ -16,7 +16,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.94)
+	set(BUILD_VERSION 2.8.95)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -83,7 +83,7 @@ if("${PROJECT_NAME}" STREQUAL "Cabbage")
         ICON_BIG ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png              
         ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png 
         HARDENED_RUNTIME_ENABLED TRUE
-        HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" "com.apple.security.cs.allow-jit" "com.apple.security.cs.allow-unsigned-executable-memory" "com.apple.security.device.audio-input" "com.apple.security.automation.apple-events" "com.apple.security.get-task-allow" 
+        HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input"  
         # DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
         COMPANY_NAME ${JucePlugin_Manufacturer}
         MICROPHONE_PERMISSION_ENABLED TRUE
@@ -320,10 +320,10 @@ else()
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${COMMON_SOURCES})
 endif()
 
-set_target_properties(${PROJECT_NAME} PROPERTIES 
-	XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES
-    XCODE_ATTRIBUTE_CODE_SIGN_ENTITLEMENTS "${CMAKE_CURRENT_SOURCE_DIR}/entitlements.xcent"
-)
+# set_target_properties(${PROJECT_NAME} PROPERTIES 
+# 	XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES
+#     //XCODE_ATTRIBUTE_CODE_SIGN_ENTITLEMENTS "${CMAKE_CURRENT_SOURCE_DIR}/entitlements.xcent"
+# )
 
 set(JUCE_MODULES
     juce::juce_core
