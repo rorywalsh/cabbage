@@ -91,6 +91,7 @@ else:
     elif platform.system() == "Linux":
         generator = "Ninja"
     elif platform.system() == "Darwin":
+        print("Creating XCode projects")
         generator = "Xcode"
 
 if args.manufacturer is not None:
@@ -526,11 +527,11 @@ for project in projects:
                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst')
                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3 ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst3')
                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.component')
-                if "Synth" in project:
+                if "Effect" in project:
                     if "Cabbage" in newProjectName:
                         os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/CabbagePlugin.app')
                     else:
-                        os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/'+newProjectName.replace("Synth", "")+'.app')
+                        os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/'+newProjectName.replace("Effect", "")+'.app')
 
         if platform.system() == "Windows":
             if project == "Cabbage":
