@@ -265,7 +265,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
                 exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
             
 
-            File bin (exportedPlugin.getFullPathName() + String ("/Contents/MacOS/"+pluginDesc+"Synth"));
+            File bin (exportedPlugin.getFullPathName() + String ("/Contents/MacOS/"+pluginDesc+"Effect"));
 
             
             File pl (exportedPlugin.getFullPathName() + String ("/Contents/Info.plist"));
@@ -281,7 +281,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
                 
                 setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
 #if CabbagePro
-                newPList = newPList.replace (pluginDesc+"Synth", fc.getFileNameWithoutExtension());
+                newPList = newPList.replace (pluginDesc+"Effect", fc.getFileNameWithoutExtension());
 #else
                 newPList = newPList.replace (pluginDesc, fc.getFileNameWithoutExtension());
 #endif

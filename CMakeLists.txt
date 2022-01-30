@@ -16,7 +16,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.96)
+	set(BUILD_VERSION 2.8.97)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -133,7 +133,7 @@ else()
         COPY_PLUGIN_AFTER_BUILD FALSE
         COMPANY_NAME ${JucePlugin_Manufacturer}
         HARDENED_RUNTIME_ENABLED TRUE
-        HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" "com.apple.security.cs.allow-jit" "com.apple.security.cs.allow-unsigned-executable-memory" "com.apple.security.device.audio-input" "com.apple.security.automation.apple-events" "com.apple.security.get-task-allow"
+        HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input"
         PRODUCT_NAME "${PROJECT_NAME}")   
 endif()
 
