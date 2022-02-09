@@ -264,9 +264,11 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             else
                 exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
             
-
-            File bin (exportedPlugin.getFullPathName() + String ("/Contents/MacOS/"+pluginDesc+"Effect"));
-
+            File bin;
+            if(fileExtension.containsIgnoreCase("app"))
+               bin = File(exportedPlugin.getFullPathName() + String ("/Contents/MacOS/"+pluginDesc+"Effect"));
+            else
+                  bin = File(exportedPlugin.getFullPathName() + String ("/Contents/MacOS/"+pluginDesc));
             
             File pl (exportedPlugin.getFullPathName() + String ("/Contents/Info.plist"));
             String newPList = pl.loadFileAsString();

@@ -125,7 +125,7 @@ int GetCabbageStringIdentifierSingle::getAttribute()
     }
     
     const auto child = varData->data.getChildWithName(name);
-    DBG(child.getProperty(identifier).toString());
+
     if(child.getProperty(identifier).size()>0)
     {
         const String data = child.getProperty(identifier)[0].toString();
@@ -336,9 +336,6 @@ int CabbageGetWidgetChannels::getChannels()
         String identifiers(inargs.str_data(0).data);
         CabbageWidgetData::IdentifiersAndParameters idents = CabbageWidgetData::getSetofIdentifiersAndParameters(identifiers);
         
-        DBG(idents.identifier.size());
-        
-
         for (int x = 0; x < varData->data.getNumChildren(); x++)
         {
             const String widgetTreeIdentifier = "TempWidget";
@@ -378,7 +375,6 @@ int CabbageGetWidgetChannels::getChannels()
                             {
                                 if(identMatches[x] == idents.identifier.size())
                                 {
-                                    DBG(chans[n].toString());
                                     channels.add(chans[n].toString());
                                 }
                             }
@@ -388,11 +384,9 @@ int CabbageGetWidgetChannels::getChannels()
                             if(identMatches[x] == idents.identifier.size()){
                                 if(chans.isArray())
                                 {
-                                    DBG(chans[0].toString());
                                     channels.add(chans[0].toString());
                                 }
                                 else{
-                                    DBG(chans.toString());
                                     channels.add(chans.toString());
                                 }
                             }
@@ -421,18 +415,15 @@ int CabbageGetWidgetChannels::getChannels()
             {
                 for (int n = 0; n < chans.size(); n++)
                 {
-                    DBG(chans[n].toString());
                     channels.add(chans[n].toString());
                 }
             }
             else{
                 if(chans.isArray())
                 {
-                    DBG(chans[0].toString());
                     channels.add(chans[0].toString());
                 }
                 else{
-                    DBG(chans.toString());
                     channels.add(chans.toString());
                 }
             }
@@ -711,8 +702,6 @@ int CabbageValueChanged::getAttribute()
                 }
                 else if(mode == 1)
                 {
-                    DBG("OldValue:"+String(oldValue[i]));
-                    DBG("CurrentValue:"+String(*value));
                     if (oldValue[i] >= inargs[1] && *value < inargs[1])
                     {
                         outargs.str_data(0).size = inputArgs[i].size;

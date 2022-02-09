@@ -488,7 +488,7 @@ void CabbageSlider::resized()
                 else
                 {
                     filmStripBounds.setBounds(0, 0, getWidth(), getHeight());
-                    getSlider().setBounds(0, getHeight() * .05f, getWidth(), getHeight() - getHeight() * remove2);
+                    getSlider().setBounds(0, getHeight() *  remove1, getWidth(), getHeight() - getHeight() * remove2);
                 }
             }
             else if (sliderThumbImage.isValid())

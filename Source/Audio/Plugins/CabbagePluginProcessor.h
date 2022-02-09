@@ -304,8 +304,6 @@ private:
         
         void setValue(float newValue) override
         {
-//            DBG(channel);
-            DBG(newValue);
             currentValue = isCombo ? juce::roundToInt(range.convertFrom0to1 (newValue)) : range.convertFrom0to1 (newValue);
             processor->setCabbageParameter(channel, currentValue, valueTree);
         }

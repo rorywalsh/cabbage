@@ -183,7 +183,6 @@ void CabbagePluginEditor::mouseUp (const MouseEvent& e)
 void CabbagePluginEditor::mouseWheelMove(const MouseEvent &event, const MouseWheelDetails &wheel)
 {
     ignoreUnused(event);
-    DBG(wheel.deltaY);
     double scale = cabbageProcessor.currentPluginScale == -1 ? 1 : pluginSizes[cabbageProcessor.currentPluginScale-1];
     sendChannelDataToCsound (CabbageIdentifierIds::mousewheeldeltax, wheel.deltaX/scale);
     sendChannelDataToCsound (CabbageIdentifierIds::mousewheeldeltay, wheel.deltaY/scale);
@@ -286,7 +285,6 @@ void CabbagePluginEditor::addNewWidget (String widgetType, juce::Point<int> posi
 
         cabbageProcessor.cabbageWidgets.addChild(newWidget, -1, nullptr);
 
-        DBG(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::channel));
         
         setCurrentlySelectedComponents(StringArray(CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::name)));
 

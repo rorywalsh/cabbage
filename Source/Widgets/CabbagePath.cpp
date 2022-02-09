@@ -65,7 +65,6 @@ void CabbagePath::valueTreePropertyChanged (ValueTree& valueTree, const Identifi
     //points = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::points);
     handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     points = CabbageWidgetData::getProperty(widgetData, CabbageIdentifierIds::points);
-    DBG(points.size());
     repaint();
     
 }

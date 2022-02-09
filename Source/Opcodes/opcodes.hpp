@@ -211,7 +211,6 @@ struct SetStateFloatData : csnd::InPlug<2>
         j = json::parse(jsonData.empty() ? "{}" : jsonData);
         j[jsonKeyName] = value;
         perData->data = j.dump();
-        DBG(j.dump());
         
         return true;
     }
@@ -886,7 +885,6 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
             for (int i = 0; i < int(in.len()); i++)
             {
                 ignoreStrings.push_back(std::string(in[i].data));
-                DBG(in[i].data);
             }
         }
 
@@ -934,7 +932,6 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
                     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
                         CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
                     {
-                        DBG(channelName);
                         *value = it.value();
                     }
                 }
@@ -943,7 +940,6 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
                     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, channelName.c_str(),
                         CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
                     {
-                        DBG(channelName);
                         std::string string = it.value();
                         ((STRINGDAT*)value)->size = int(strlen(string.c_str()));
                         ((STRINGDAT*)value)->data = csound->strdup((char*)string.c_str());

@@ -196,7 +196,6 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isEmpty())
     {
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
-        DBG(items.size());
         PopupMenu subMenu;
             stringItems.clear();
         clear (dontSendNotification);
