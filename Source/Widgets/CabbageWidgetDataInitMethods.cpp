@@ -379,6 +379,7 @@ void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID, boo
     setProperty (widgetData, CabbageIdentifierIds::middlec, 3);
     setProperty (widgetData, CabbageIdentifierIds::linethickness, 1);
     setProperty (widgetData, CabbageIdentifierIds::keypressbaseoctave, 3);
+    setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::type, displayOnly == true ? "keyboarddisplay" : "keyboard");
     setProperty (widgetData, CabbageIdentifierIds::name, displayOnly == true ? "keyboarddisplay" : "keyboard");
     if(displayOnly)

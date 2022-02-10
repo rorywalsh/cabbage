@@ -36,7 +36,10 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, 
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
-    setLowestVisibleKey (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value));
+
+    
+    
+
     setOctaveForMiddleC (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::middlec));
     setKeyPressBaseOctave (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keypressbaseoctave)); // octave num. in [0, 10]
     setKeyWidth (keyWidth);
@@ -45,6 +48,13 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, 
     setMouseClickGrabsKeyboardFocus (true);
     updateColours(wData);
     
+    if(scrollbars == 1)
+    setLowestVisibleKey (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value));
+    else
+        setAvailableRange(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value), 127);
+    
+//    if(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrollbars) == 0)
+//        setScrollButtonWidth(0);
 }
 
 CabbageKeyboard::Direction CabbageKeyboard::getNextDirection(std::vector<PathPoint> points, std::size_t segment)
@@ -171,6 +181,7 @@ void CabbageKeyboard::updateColours(ValueTree& wData)
     setColour (MidiKeyboardComponent::keyDownOverlayColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::keydowncolour)));
     setColour (MidiKeyboardComponent::shadowColourId, Colours::transparentBlack);
     mouseOverOutlineColour = Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::mousedownkeyoutlinecolour));
+    setColour (MidiKeyboardComponent::textLabelColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     
     setBlackNoteLengthProportion(blackNoteLength);
     

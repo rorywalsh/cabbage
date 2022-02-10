@@ -99,6 +99,7 @@ private:
     Rectangle<float> blackNoteArea;
     float blackNoteLength = 0.7f;
     float blackNoteWidth = 1.f;
+    bool scrollBars = true;
     std::unique_ptr<Drawable> outlineDrawable;
     
     Direction prevDirection;
