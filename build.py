@@ -244,8 +244,8 @@ if platform.system() == "Darwin":
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('Packages.dmg', 'wb').write(r.content)  
         os.system("hdiutil mount Packages.dmg")
-        os.system("sudo installer -pkg /Volumes/Packages\ 1.2.9/Install\ Packages.pkg -target /")
-        os.system("hdiutil detach /Volumes/Packages\ 1.2.9/")
+        os.system("sudo installer -pkg /Volumes/Packages\ 1.2.10/Install\ Packages.pkg -target /")
+        os.system("hdiutil detach /Volumes/Packages\ 1.2.10/")
     else:
         print("Found Packages.app...")
 
