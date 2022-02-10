@@ -582,7 +582,7 @@ namespace CabbageIdentifierIds
     static const Identifier blacknotecolour = "blackNoteColour";
     static const Identifier blacknotelength = "blackNoteLength";
     static const Identifier blacknotewidth = "blackNoteWidth";
-    static const Identifier keydowncolour = "keydownColour";
+    static const Identifier keydowncolour = "keyDownColour";
     static const Identifier bold = "bold";
     static const Identifier bounds = "bounds";
     static const Identifier bpm = "bpm";
