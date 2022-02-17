@@ -16,7 +16,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.100)
+	set(BUILD_VERSION adding keyWidthScale to keyboard component)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})

@@ -42,7 +42,14 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, 
 
     setOctaveForMiddleC (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::middlec));
     setKeyPressBaseOctave (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keypressbaseoctave)); // octave num. in [0, 10]
-    setKeyWidth (keyWidth);
+    
+    auto keyScale = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::keywidthscale);
+    auto w = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::width);
+    if(keyScale>0)
+        setKeyWidth(w*keyScale);
+    else
+        setKeyWidth (keyWidth);
+    
     setScrollButtonsVisible (scrollbars == 1 ? true : false);
     setWantsKeyboardFocus (true);
     setMouseClickGrabsKeyboardFocus (true);
