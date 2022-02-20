@@ -69,15 +69,15 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
 // #endifs
         
         if (type == "VSTi" || type == "AUi" || type == "VST3i")
-            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"Synth." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"Synth." + fileExtension);
         else  if (type == "VST" || type == "AU" || type == "VST3")
-            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"Effect." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"Effect." + fileExtension);
         else  if (type == "AUMIDIFx")
-            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"MIDIEffect." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"MIDIEffect." + fileExtension);
         else if (type.contains (String ("LV2-ins")))
-            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"SynthLV2." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"SynthLV2." + fileExtension);
         else if (type.contains (String ("LV2-fx")))
-            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc+"EffectLV2." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"EffectLV2." + fileExtension);
         else if (type == "VCVRack")
         {
             fileExtension = "";
@@ -264,22 +264,29 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             else
                 exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
             
-            File bin (exportedPlugin.getFullPathName() + String ("/Contents/MacOS/"+pluginDesc));
-            //if(bin.exists())showMessage("binary exists");
+            File bin;
+            if(fileExtension.containsIgnoreCase("app"))
+               bin = File(exportedPlugin.getFullPathName() + String ("/Contents/MacOS/"+pluginDesc+"Effect"));
+            else
+                  bin = File(exportedPlugin.getFullPathName() + String ("/Contents/MacOS/"+pluginDesc));
             
             File pl (exportedPlugin.getFullPathName() + String ("/Contents/Info.plist"));
             String newPList = pl.loadFileAsString();
             
             if(fileExtension.containsIgnoreCase("vst") || fileExtension.containsIgnoreCase("app"))
             {
+                
                 File pluginBinary (exportedPlugin.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
                 
                 if (bin.moveFileTo (pluginBinary) == false)
                     CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
                 
                 setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
-                
+#if CabbagePro
+                newPList = newPList.replace (pluginDesc+"Effect", fc.getFileNameWithoutExtension());
+#else
                 newPList = newPList.replace (pluginDesc, fc.getFileNameWithoutExtension());
+#endif
             }
             
             
@@ -289,6 +296,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             DBG(toReplace);
             
 #if CabbagePro
+            
             //be sure to remove CabbageAudio from plugin plist..
             const String toReplace2 = "<string>CabbageAudio: CabbageEffectNam<string>";
             newPList = newPList.replace (toReplace2, pluginName);
@@ -307,6 +315,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             
             const String auId = "<string>" + pluginId + "</string>";
             newPList = newPList.replace ("<string>RORY</string>", auId);
+            
             
             pl.replaceWithText (newPList);
         }

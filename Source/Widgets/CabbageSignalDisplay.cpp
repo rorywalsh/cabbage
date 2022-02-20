@@ -183,15 +183,36 @@ void CabbageSignalDisplay::drawSonogram()
 //====================================================================================
 void CabbageSignalDisplay::drawSpectroscope (Graphics& g)
 {
-    for (int i = 0; i < vectorSize; i++)
+    const int offset = isScrollbarShowing == true ? scrollbarHeight : 0;
+    const int height = getHeight() - offset;
+    float prevY = height;
+    float prevX = leftPos;
+    int prevAmp = 0;
+    
+    
+    Path p;
+    p.startNewSubPath(leftPos, height);
+    for (int i = 0; i < vectorSize; i+=2)
     {
         const int position = jmap (i, 0, vectorSize, leftPos, scopeWidth);
-        const int offset = isScrollbarShowing == true ? scrollbarHeight : 0;
-        const int height = getHeight() - offset;
-        const int amp = (signalFloatArray[i] * 3 * height);
+        
+        
+        int index = (std::pow(float(i)/(float)vectorSize, skew)) * vectorSize;
+        const int amp = ((signalFloatArray[index] * 10 * height)) * 0.5f;
+        //const int amp = (signalFloatArray[i] * 5 * height);
+
         g.setColour (colour);
-        g.drawVerticalLine (position, height - amp, height);
+
+        p.addLineSegment(Line<float>(position, prevY, position, height - amp), .5f);
+        
+//        g.drawLine(position, prevY, position, height - amp);
+        prevX = position;
+        prevY = height-amp;
+        //g.drawVerticalLine (position, height - amp, height);
     }
+    
+    g.strokePath(p, PathStrokeType(1));
+    int test;
 }
 
 //====================================================================================
@@ -367,7 +388,7 @@ void CabbageSignalDisplay::valueTreePropertyChanged (ValueTree& valueTree, const
         }
         else if (displayType == "spectroscope")
         {
-            freqRangeDisplay.setVisible (true);
+            freqRangeDisplay.setVisible (false);
             zoomInButton.setVisible (true);
             zoomOutButton.setVisible (true);
         }
@@ -383,6 +404,11 @@ void CabbageSignalDisplay::valueTreePropertyChanged (ValueTree& valueTree, const
             zoomInButton.setVisible (false);
             zoomOutButton.setVisible (false);
         }
+    }
+    
+    if(skew != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::skew))
+    {
+        skew = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::skew);
     }
 
     if (freqRange != Range<int> (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::min),

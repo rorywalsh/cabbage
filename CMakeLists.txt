@@ -14,11 +14,17 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
+
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.64)
+	set(BUILD_VERSION 2.8.103)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
+
+#Adds all the module sources so they appear correctly in the IDE
+set_property(GLOBAL PROPERTY USE_FOLDERS YES)
+option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)
+
 add_subdirectory(JUCE)                    # If you've put JUCE in a subdirectory called JUCE
 
 if(NOT DEFINED JucePlugin_Manufacturer)
@@ -26,6 +32,10 @@ if(NOT DEFINED JucePlugin_Manufacturer)
     set(CabbageManufacturer "CabbageAudio")
 else()
 set(CabbageManufacturer ${JucePlugin_Manufacturer})
+endif()
+
+if(NOT DEFINED BuildStatic)
+    set(BuildStatic 0)
 endif()
 
 if(NOT DEFINED CabbagePro)
@@ -67,12 +77,17 @@ macro(SetIfSynth var value1 value2)
     endif()
 endmacro()
 
+
 if("${PROJECT_NAME}" STREQUAL "Cabbage")
     juce_add_gui_app(${PROJECT_NAME}
         ICON_BIG ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png              
-        ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png  
-        DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
+        ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png 
+        HARDENED_RUNTIME_ENABLED TRUE
+        HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" 
+        # DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
         COMPANY_NAME ${JucePlugin_Manufacturer}
+        MICROPHONE_PERMISSION_ENABLED TRUE
+        MICROPHONE_PERMISSION_TEXT "Cabbage needs access to your audio interface" 
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
 else()
 # ============== This part of the CMake setup deals with plugins only.....
@@ -107,17 +122,17 @@ else()
         IS_SYNTH ${PLUGIN_IS_A_SYNTH}
         BUNDLE_ID com.CabbageAudio.plugin
         IS_MIDI_EFFECT FALSE
-        EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+        EDITOR_WANTS_KEYBOARD_FOCUS TRUE
         VST_NUM_MIDI_INS 16
         VST_NUM_MIDI_OUTS 16
         VST2_CATEGORY "${PLUGIN_VST2_CATEGORY}"
         VST3_CATEGORIES "${PLUGIN_VST3_CATEGORIES}"
         AU_EXPORT_PREFIX "${PROJECT_NAME}AU"
         AU_SANDBOX_SAFE TRUE
-        COPY_PLUGIN_AFTER_BUILD TRUE
+        COPY_PLUGIN_AFTER_BUILD FALSE
         COMPANY_NAME ${JucePlugin_Manufacturer}
         HARDENED_RUNTIME_ENABLED TRUE
-        HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" "com.apple.security.cs.allow-jit" "com.apple.security.cs.allow-unsigned-executable-memory" "com.apple.security.device.audio-input" "com.apple.security.automation.apple-events" "com.apple.security.get-task-allow"
+        HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input"
         PRODUCT_NAME "${PROJECT_NAME}")   
 endif()
 
@@ -304,6 +319,11 @@ else()
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${COMMON_SOURCES})
 endif()
 
+# set_target_properties(${PROJECT_NAME} PROPERTIES 
+# 	XCODE_ATTRIBUTE_ENABLE_HARDENED_RUNTIME YES
+#     //XCODE_ATTRIBUTE_CODE_SIGN_ENTITLEMENTS "${CMAKE_CURRENT_SOURCE_DIR}/entitlements.xcent"
+# )
+
 set(JUCE_MODULES
     juce::juce_core
     juce::juce_events
@@ -355,6 +375,7 @@ else()
         CabbageManufacturer="${CabbageManufacturer}"
         Use_Native_File_Browser=1
         JUCE_VST3_CAN_REPLACE_VST2=0
+        JUCE_ASIO=1
         Cabbage_IDE_Build=${IS_IDE_Build}
         JUCE_DISPLAY_SPLASH_SCREEN=0
         )
@@ -381,16 +402,28 @@ if(MSVC)
         juce::juce_recommended_warning_flags)
 
 elseif(APPLE)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version" FORCE)
-    SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
-    find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
-    "/Library/Frameworks/CsoundLib64.framework")  
-    include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
+    if(CabbagePro MATCHES 0)
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "Minimum OS X deployment version" FORCE)
+        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
+        find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
+        "/Library/Frameworks/CsoundLib64.framework")  
+        include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
+    else()
+         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version" FORCE)
+         SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csound/include")
+         # set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csound/build/libCsoundLib64.a")  
+         set(CSOUND_LIBRARY "/Users/rwalsh/sourcecode/csound/build/libCsoundLib64.a")  
+         # include_directories("/Volumes/SSD_Drive/Mac/csound/include")
+         include_directories("/Users/rwalsh/sourcecode/csound/include")
+         # set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile/build/libsndfile.a")
+         set(LIB_SNDFILE "/Users/rwalsh/sourcecode/libsndfile/build/libsndfile.a")
+    endif()
 
     target_link_libraries(${PROJECT_NAME} 
     PRIVATE
         ${JUCE_MODULES}
         ${CSOUND_LIBRARY}
+        ${LIB_SNDFILE}
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags

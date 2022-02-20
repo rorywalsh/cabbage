@@ -264,7 +264,14 @@ public:
     {
         guiRefreshRate = rate;
     }
-		
+    
+    void setNumPreCycles (int num)
+    {
+        preCycles = num;
+    }
+    
+    
+    int preCycles = 0;
     MidiKeyboardState keyboardState;
     bool hostIsCubase = false;
 

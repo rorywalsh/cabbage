@@ -33,6 +33,7 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::name, "form");
     setProperty (widgetData, CabbageIdentifierIds::type, "form");
     setProperty (widgetData, CabbageIdentifierIds::guirefresh, 128);
+    setProperty (widgetData, CabbageIdentifierIds::precycles, 0);
     setProperty (widgetData, CabbageIdentifierIds::channel, "form");
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty(widgetData, CabbageIdentifierIds::automatable, 0.0f);
@@ -329,6 +330,7 @@ void CabbageWidgetData::setSignalDisplayProperties (ValueTree widgetData, int ID
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::name, "signaldisplay");
     setProperty (widgetData, CabbageIdentifierIds::min, 0);
+    setProperty (widgetData, CabbageIdentifierIds::skew, 1);
     setProperty (widgetData, CabbageIdentifierIds::max, 2048);
     setProperty (widgetData, CabbageIdentifierIds::updaterate, 100);
     setProperty (widgetData, CabbageIdentifierIds::signalvariable, signalVariables);
@@ -375,7 +377,9 @@ void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID, boo
     setProperty (widgetData, CabbageIdentifierIds::height, 100);
     setProperty (widgetData, CabbageIdentifierIds::value, 60);
     setProperty (widgetData, CabbageIdentifierIds::middlec, 3);
+    setProperty (widgetData, CabbageIdentifierIds::linethickness, 1);
     setProperty (widgetData, CabbageIdentifierIds::keypressbaseoctave, 3);
+    setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::type, displayOnly == true ? "keyboarddisplay" : "keyboard");
     setProperty (widgetData, CabbageIdentifierIds::name, displayOnly == true ? "keyboarddisplay" : "keyboard");
     if(displayOnly)
@@ -387,16 +391,20 @@ void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID, boo
     setProperty (widgetData, CabbageIdentifierIds::kind, "horizontal");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::whitenotecolour, Colours::whitesmoke.toString());
+    
     setProperty (widgetData, CabbageIdentifierIds::blacknotecolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::keyseparatorcolour, Colour (0x66000000).toString());
     setProperty (widgetData, CabbageIdentifierIds::arrowbackgroundcolour, Colour (0xffd3d3d3).toString());
-    setProperty (widgetData, CabbageIdentifierIds::mouseoverkeycolour, Colour (0x80ffff00).toString());
+    setProperty (widgetData, CabbageIdentifierIds::mouseoverkeycolour, Colour (0x80ffff00).withAlpha(1.f).toString());
     setProperty (widgetData, CabbageIdentifierIds::keydowncolour, Colour (0x80ffff00).toString());
     setProperty (widgetData, CabbageIdentifierIds::arrowcolour, Colour (0xff000000).toString());
     setProperty (widgetData, CabbageIdentifierIds::keydowncolour, Colour (0x80ffff00).toString());
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::keywidth, 16);
+    setProperty (widgetData, CabbageIdentifierIds::keywidth, -1);
+    setProperty (widgetData, CabbageIdentifierIds::blacknotelength, 0.7);
+    setProperty (widgetData, CabbageIdentifierIds::blacknotewidth, 0.7);
     setProperty (widgetData, CabbageIdentifierIds::scrollbars, 1);
     setProperty(widgetData, CabbageIdentifierIds::channel, getProperty(widgetData, CabbageIdentifierIds::type).toString() + String(ID));
     setProperty(widgetData, CabbageIdentifierIds::automatable, 0.0f);

@@ -135,6 +135,15 @@ public:
 		return csdFile;
 	}
 
+    void scaleWidget(ValueTree& vt, Point<float> scale)
+    {
+        auto rect = CabbageWidgetData::getBounds(vt);
+        CabbageWidgetData::setNumProp(vt, CabbageIdentifierIds::left, rect.getX()*scale.x);
+        CabbageWidgetData::setNumProp(vt, CabbageIdentifierIds::top, rect.getY()*scale.y);
+        CabbageWidgetData::setNumProp(vt, CabbageIdentifierIds::width, rect.getWidth()*scale.x);
+        CabbageWidgetData::setNumProp(vt, CabbageIdentifierIds::height, rect.getHeight()*scale.y);
+    }
+    
     static BusesProperties readBusesPropertiesFromXml(File csdFile)
     {
         BusesProperties buses;
@@ -295,8 +304,6 @@ private:
         
         void setValue(float newValue) override
         {
-//            DBG(channel);
-            DBG(newValue);
             currentValue = isCombo ? juce::roundToInt(range.convertFrom0to1 (newValue)) : range.convertFrom0to1 (newValue);
             processor->setCabbageParameter(channel, currentValue, valueTree);
         }

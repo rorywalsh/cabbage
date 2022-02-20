@@ -93,7 +93,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
             setSelectedItemIndex (0, dontSendNotification);
         
         if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
-            owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().getCharPointer());
+            owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFileName());
         else
             owner->sendChannelStringDataToCsound(getChannel(), stringItems[index]);
     }
@@ -196,7 +196,6 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isEmpty())
     {
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
-        DBG(items.size());
         PopupMenu subMenu;
             stringItems.clear();
         clear (dontSendNotification);
@@ -389,7 +388,7 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
 		{
 			String test = folderFiles[index].getFullPathName();
 			//owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index-1].getFullPathName().replaceCharacters("\\", "/"));
-            CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, folderFiles[index].getFullPathName().replaceCharacters("\\", "/"));
+            CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, folderFiles[index].getFileName());
 		}
         else
         {
@@ -430,7 +429,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 
                 if(pluginDir.getChildFile(currentValueAsText).existsAsFile())
                 {
-                    currentValueAsText = pluginDir.getChildFile(currentValueAsText).getFileNameWithoutExtension();
+                    currentValueAsText = pluginDir.getChildFile(currentValueAsText).getFileName();
                     index = stringItems.indexOf (currentValueAsText);
                 }
                 else

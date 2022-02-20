@@ -284,7 +284,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
     //remove any text after a semicolon and take out tabs..
     String lineOfText = intputLineOfText.replace ("\t", " ");
 
-    if (lineOfText.indexOf (";") > -1 && !lineOfText.contains("svgElement"))
+    if (lineOfText.indexOf (";") > -1 && !lineOfText.contains("svgElement") && !lineOfText.contains("populate"))
         lineOfText = lineOfText.substring (0, lineOfText.indexOf (0, ";"));
 
     if (lineOfText.trim() == "<Cabbage>" || lineOfText.trim() == "</Cabbage>" || lineOfText.trim().isEmpty())
@@ -438,11 +438,15 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("ffttableNumber"):
             case HashStringToInt ("fill"):
             case HashStringToInt ("guiRefresh"):
+            case HashStringToInt ("preCycles"):
             case HashStringToInt ("imgdebug"):
             case HashStringToInt ("increment"):
             case HashStringToInt ("isparent"):
             case HashStringToInt ("keypressBaseOctave"):
             case HashStringToInt ("keyWidth"):
+            case HashStringToInt ("keyWidthScale"):
+            case HashStringToInt ("blackNoteLength"):
+            case HashStringToInt ("blackNoteWidth"):
             case HashStringToInt ("latched"):
             case HashStringToInt ("toFront"):
             case HashStringToInt ("lineThickness"):
@@ -450,6 +454,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("markerEnd"):
             case HashStringToInt ("markerStart"):
             case HashStringToInt ("markerThickness"):
+            case HashStringToInt ("mouseOverKeyOutlineThickness"):
             case HashStringToInt ("numberOfClicks"):
             case HashStringToInt ("middleC"):
             case HashStringToInt ("mouseInteraction"):
@@ -624,6 +629,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("markerColour"):
             case HashStringToInt ("menuColour"):
             case HashStringToInt ("mouseOverKeyColour"):
+            case HashStringToInt ("mouseDownKeyOutlineColour"):
             case HashStringToInt ("outlineColour"):
             case HashStringToInt ("overlayColour"):
             case HashStringToInt ("tableBackgroundColour"):
@@ -635,8 +641,6 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("trackerBackgroundColour"):
             case HashStringToInt ("trackerColour"):
             case HashStringToInt ("whiteNoteColour"):
-            
-                
                 setProperty (widgetData, identifier, getColourFromText (strTokens.joinIntoString (",")).toString());
                 break;
                 
@@ -1219,11 +1223,14 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
         array.append (str.trim());
 
     setProperty (widgetData, CabbageIdentifierIds::populate, array);
-
+    
     setProperty (widgetData, CabbageIdentifierIds::filetype, strTokens[0].trim());
-
+    
     if (strTokens.size() > 1)
+    {
+        DBG(widgetData.getProperty(CabbageIdentifierIds::csdfile).toString());
         setProperty (widgetData, CabbageIdentifierIds::currentdir, strTokens[1].trim());
+    }
 
     if(strTokens.size() > 2)
         setProperty (widgetData, CabbageIdentifierIds::ignorelastdir, strTokens[2].trim().getIntValue());

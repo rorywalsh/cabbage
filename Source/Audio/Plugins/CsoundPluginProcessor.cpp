@@ -71,7 +71,7 @@ void CsoundPluginProcessor::resetCsound()
 	{
         
         destroyCsoundGlobalVars();
-#if !defined(Cabbage_Lite)
+#if !defined(Cabbage_Lite) && !JucePlugin_Build_Standalone
 		csound = nullptr;
 #endif
 		csoundParams = nullptr;
@@ -696,7 +696,13 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     }
 
     //csound->Message("Running single k-cycle...\n");
+    
     csound->PerformKsmps();
+    
+    //run through a set of preCycles...
+    for( int i = 0 ; i < preCycles ; i++ )
+        csound->PerformKsmps();
+    
     //csound->Message("Rewinding...\n");
     //csound->SetChannel ("IS_EDITOR_OPEN", 0.0);
     csound->SetChannel ("MOUSE_DOWN_LEFT", 0.0);
@@ -827,7 +833,7 @@ const Array<float, CriticalSection> CsoundPluginProcessor::getTableFloats (int t
         if (tableSize < 0)
             return points;
 
-        std::vector<double> temp (tableSize);
+        std::vector<MYFLT> temp (tableSize);
 
         csound->TableCopyOut (tableNum, &temp[0]);
 
@@ -851,7 +857,7 @@ String CsoundPluginProcessor::getCsoundOutput()
 
         while (csound->GetMessageCnt() > 0)
         {
-            String message = csound->GetFirstMessage();
+            String message = CharPointer_UTF8(csound->GetFirstMessage());
             if(!message.contains("midi channel") && !message.contains("is muted") && !message.contains("Score finished in csoundPerformKsmps()"))
                 csoundOutput += message;
             csound->PopFirstMessage();

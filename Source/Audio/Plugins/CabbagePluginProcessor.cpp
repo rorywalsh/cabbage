@@ -64,8 +64,6 @@ createPluginFilter() {
 
     return new CabbagePluginProcessor(csdFile, CabbagePluginProcessor::readBusesPropertiesFromXml(csdFile));
 
-
-
 }
 
 //============================================================================
@@ -259,7 +257,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 		if (currentLineOfCabbageCode.contains("}"))
             CabbageWidgetData::setNumProp(tempWidget, CabbageIdentifierIds::containsClosingCurlyBracket, 1);
 
-		if (currentLineOfCabbageCode.indexOf(";") > -1)
+		if (currentLineOfCabbageCode.indexOf(";") > -1 && !currentLineOfCabbageCode.contains("svgElement") && !currentLineOfCabbageCode.contains("populate"))
 			currentLineOfCabbageCode = currentLineOfCabbageCode.substring(0, currentLineOfCabbageCode.indexOf(";"));
 
 		const String comments = currentLineOfCabbageCode.indexOf(";") == -1 ? "" : currentLineOfCabbageCode.substring(
@@ -318,6 +316,8 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 				createFileLogger(this->csdFile);
 
 			setGUIRefreshRate(CabbageWidgetData::getNumProp(newWidget, CabbageIdentifierIds::guirefresh));
+            
+            setNumPreCycles(CabbageWidgetData::getNumProp(newWidget, CabbageIdentifierIds::precycles));
 		}
         
 		const String precedingCharacters = currentLineOfCabbageCode.substring(0, currentLineOfCabbageCode.indexOf(
@@ -325,7 +325,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 		CabbageWidgetData::setStringProp(newWidget, "precedingCharacters", precedingCharacters);
 
         const String mode = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::mode);
-        const String filetype = CabbageWidgetData::getStringProp(newWidget, CabbageIdentifierIds::filetype);
+
         if(mode == "resize" && typeOfWidget == CabbageWidgetTypes::combobox)
         {
             CabbageWidgetData::setStringProp(newWidget, CabbageIdentifierIds::channel, "PluginResizerCombBox");
@@ -937,7 +937,6 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor() {
 void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData) {
 	copyXmlToBinary(savePluginState("CABBAGE_PRESETS"), destData);
     //File file(csdFile.getParentDirectory().getFullPathName()+"/testSessionData.txt");
-    //savePluginState("CABBAGE_PRESETS").writeTo(file);
 }
 
 void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInBytes) {
@@ -1271,17 +1270,21 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 				!CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 					CabbageIdentifierIds::filetype).contains("snaps"))
             {
-				const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-					CabbageIdentifierIds::file);
-
-                const int ignorelastdir = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                                                                        CabbageIdentifierIds::ignorelastdir);
-                if(ignorelastdir == 0)
+                if(CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                 CabbageIdentifierIds::presetignore) == 0)
                 {
-                    if (file.length() > 2)
+                    const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+                        CabbageIdentifierIds::file);
+
+                    const int ignorelastdir = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+                                                                            CabbageIdentifierIds::ignorelastdir);
+                    if(ignorelastdir == 0)
                     {
-                        const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
-                        xml->setAttribute(channelName, relativePath.replaceCharacters("\\", "/"));
+                        if (file.length() > 2)
+                        {
+                            const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
+                            xml->setAttribute(channelName, relativePath.replaceCharacters("\\", "/"));
+                        }
                     }
                 }
 			}
@@ -1351,7 +1354,6 @@ void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
 	if (xmlState != nullptr) {
 		//if dealing with session saved by host
         setParametersFromXml(xmlState);
-        xmlState->writeTo(juce::File("~/Desktop/test.txt"), XmlElement::TextFormat());
 		initAllCsoundChannels(cabbageWidgets);
 	}
 }
@@ -1484,6 +1486,9 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
     
     for(auto && i : identData->data)
     {
+//        if(!i.isValid)
+//            break;
+        
         const auto identifier = i.identifier;
         const auto name = i.name;
 
@@ -1674,7 +1679,7 @@ void CabbagePluginProcessor::getChannelDataFromCsound()
                 CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChild(i), padded);
 
 				if (identifierText.contains("tableNumber")) //update even if table number has not changed
-					CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, 1);
+					CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::update, Random::getSystemRandom().nextInt());
 				else if (identifierText == CabbageIdentifierIds::tofront.toString() + "()") {
 					CabbageWidgetData::setProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::tofront,
 						Random::getSystemRandom().nextInt());

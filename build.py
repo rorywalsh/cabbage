@@ -77,10 +77,6 @@ parser.add_argument('--generator', type=str,
 
 args = parser.parse_args()
 
-if args.config is None:
-    print("You must pass a valid config, i.e, --config=Debug ")
-    exit()
-
 
 if args.config is not None:
     configType = args.config
@@ -95,6 +91,7 @@ else:
     elif platform.system() == "Linux":
         generator = "Ninja"
     elif platform.system() == "Darwin":
+        print("Creating XCode projects")
         generator = "Xcode"
 
 if args.manufacturer is not None:
@@ -108,7 +105,7 @@ else:
     if manufacturer == "CabbageAudio":
         projects = ["Cabbage", "CabbagePluginEffect", "CabbagePluginSynth"]
     else:
-        projects = ["Cabbage", manufacturer+"Effect", manufacturer+"Synth"]
+        projects = ["Cabbage", manufacturer.replace(' ', '_')+"Effect", manufacturer.replace(' ', '_')+"Synth"]
 
 if args.packageType is not None:
     packageType = args.packageType
@@ -247,12 +244,12 @@ if platform.system() == "Darwin":
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('Packages.dmg', 'wb').write(r.content)  
         os.system("hdiutil mount Packages.dmg")
-        os.system("sudo installer -pkg /Volumes/Packages\ 1.2.9/Install\ Packages.pkg -target /")
-        os.system("hdiutil detach /Volumes/Packages\ 1.2.9/")
+        os.system("sudo installer -pkg /Volumes/Packages\ 1.2.10/Install\ Packages.pkg -target /")
+        os.system("hdiutil detach /Volumes/Packages\ 1.2.10/")
     else:
         print("Found Packages.app...")
 
-    if not os.path.exists('/Library/Frameworks/CsoundLib64.framework'):
+    if not os.path.exists('/Library/Frameworks/CsoundLib64.framework') and buildPro==0:
         print("================== Installing Csound ========================")
         url = 'https://github.com/csound/csound/releases/download/6.16.2/csound-MacOS_x86_64-6.16.2.dmg'
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
@@ -484,8 +481,10 @@ for project in projects:
 
     if platform.system() == "Darwin" and 'arm64' in platformArch: 
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
+        print('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     elif platform.system() == "Darwin":
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
+        print('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     elif platform.system() == "Linux":        
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G "'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     elif platform.system() == "Windows": 
@@ -528,11 +527,11 @@ for project in projects:
                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst')
                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3 ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst3')
                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.component')
-                if "Synth" in project:
+                if "Effect" in project:
                     if "Cabbage" in newProjectName:
                         os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/CabbagePlugin.app')
                     else:
-                        os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.app')
+                        os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/'+newProjectName.replace("Effect", "")+'.app')
 
         if platform.system() == "Windows":
             if project == "Cabbage":

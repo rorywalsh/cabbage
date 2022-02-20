@@ -39,11 +39,13 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
     if (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channeltype) == "string")
     {
         isStringCombo = true;
+        filetype = CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::filetype).toString();
+        
 
         if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isNotEmpty())
             CabbageWidgetData::setProperty (wData, CabbageIdentifierIds::text, "");
 
-        filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype);
+        
         currentValueAsText = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::value).toString();
         if(currentValueAsText != "-1")
             owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
@@ -99,12 +101,12 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
         }
     }
 
-	const Colour backgroundColour = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour));
-	
+    const Colour backgroundColour = Colour::fromString(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::colour));
+    
     listBox.getVerticalScrollBar().getLookAndFeel().setColour(ScrollBar::backgroundColourId, Colours::red);
-	listBox.setColour(ListBox::backgroundColourId, backgroundColour);
-	listBox.lookAndFeelChanged();
-	resized();
+    listBox.setColour(ListBox::backgroundColourId, backgroundColour);
+    listBox.lookAndFeelChanged();
+    resized();
     
     if(owner->getCustomFontFile().existsAsFile())
     {
@@ -179,12 +181,12 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
     {
         workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::currentdir);
         workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
-		if (File::getCurrentWorkingDirectory().getChildFile(workingDir).exists())
-			listboxDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
-		else if(workingDir.isNotEmpty())
-			listboxDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDir);
+        if (File::getCurrentWorkingDirectory().getChildFile(workingDir).exists())
+            listboxDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
+        else if(workingDir.isNotEmpty())
+            listboxDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDir);
         else
-			listboxDir = File(getCsdFile()).getParentDirectory();
+            listboxDir = File(getCsdFile()).getParentDirectory();
 
         filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype);
         listboxDir.findChildFiles (dirFiles, File::TypesOfFileToFind::findFilesAndDirectories, false, filetype);
@@ -229,7 +231,12 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                 currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
                 if (currentValueAsText.isEmpty())
                     return;
-
+                
+                if(currentValueAsText == "-1")
+                {
+                    listBox.selectRow(-1);
+                    return;
+                }
                 File pluginDir;
                 String workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
                 workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);

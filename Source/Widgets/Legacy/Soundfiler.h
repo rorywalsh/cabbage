@@ -103,7 +103,7 @@ private:
     double zoom;
     std::unique_ptr<DrawableRectangle> currentPositionMarker;
     std::unique_ptr<ScrollBar> scrollbar;
-    
+    bool validFile = false;
     void resized() override;
     void paint (Graphics& g) override;
     void mouseDown (const MouseEvent& e) override;

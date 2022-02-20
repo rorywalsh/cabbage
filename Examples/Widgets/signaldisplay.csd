@@ -5,6 +5,7 @@ combobox bounds(254, 274, 120, 28), align("centre"), channel("displayCombo"), te
 keyboard bounds(8, 204, 368, 60)
 combobox bounds(10, 272, 100, 30), align("centre"), channel("waveshape"), items("Sine", "Saw", "Square")
 texteditor bounds(12, 314, 361, 163) channel("infoText"), wrap(1), text("A signaldisplay widget will display an audio signal in either the time/pressure, or time/frequency domain. In this example it will display a variety of different waveforms. This widget is works with the 'display' and 'dispfft' opcodes in Csound, and as such you must include the '--displays' flag in your CsOptions.", "", "You must also pass the names of the audio variables you wish to display to the signalVariable() identifier. In this example variables a1 and a2 are displayed.")
+hslider bounds(116, 270, 132, 37) channel("skew") range(1, 3, 1, 1, 0.001), style("legacy")
 </Cabbage>
 <CsoundSynthesizer> 
 <CsOptions>
@@ -21,11 +22,11 @@ instr 1
 a1, a2 init 0
 
 if chnget:k("waveshape") == 1 then
-	a1 oscili .5, p4
+	a1 oscili .75, p4
 elseif chnget:k("waveshape") == 2 then
-	a1 vco2 .5, p4
+	a1 vco2 .75, p4
 elseif chnget:k("waveshape") == 3 then
-	a1 vco2 .51, p4, 10
+	a1 vco2 .75, p4, 10
 endif
 outs a1, a1
 
@@ -44,6 +45,8 @@ instr 2
     SText  = "A signaldisplay widget will display an audio signal in either the time/pressure, or time/frequency domain. In this example it will display a variety of different waveforms. This widget is works with the 'display' and 'dispfft' opcodes in Csound, and as such you must include the '--displays' flag in your CsOptions.\n\nYou must also pass the names of the audio variables you wish to display to the signalVariable() identifier. In this example variables a1 and a2 are displayed."
     cabbageSet "infoText", "text", SText
     
+    kSkew, kSkewTrig cabbageGetValue "skew"
+    cabbageSet kSkewTrig, "display", "skew", kSkew
 
     kDisplayType, kTrig cabbageGetValue "displayCombo"
     STypes[] init 4
