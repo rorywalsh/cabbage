@@ -402,7 +402,7 @@ void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID, boo
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::keywidth, 16);
-    setProperty (widgetData, CabbageIdentifierIds::keywidth, -1);
+    setProperty (widgetData, CabbageIdentifierIds::keywidthscale, -1);
     setProperty (widgetData, CabbageIdentifierIds::blacknotelength, 0.7);
     setProperty (widgetData, CabbageIdentifierIds::blacknotewidth, 0.7);
     setProperty (widgetData, CabbageIdentifierIds::scrollbars, 1);
