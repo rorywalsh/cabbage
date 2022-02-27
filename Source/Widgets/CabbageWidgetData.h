@@ -67,6 +67,7 @@ public:
     static void setSoundfilerProperties (ValueTree widgetData, int ID);
     static void setOptionButtonProperties (ValueTree widgetData, int ID);
     static void setButtonProperties (ValueTree widgetData, int ID);
+	static void setUnlockButtonProperties(ValueTree widgetData, int ID);
     static void setFileButtonProperties (ValueTree widgetData, int ID);
     static void setPresetButtonProperties (ValueTree widgetData, int ID);
     static void setInfoButtonProperties (ValueTree widgetData, int ID);

@@ -430,6 +430,43 @@ void CabbageWidgetData::setCsoundOutputProperties (ValueTree widgetData, int ID)
     setProperty(widgetData, CabbageIdentifierIds::automatable, 0.0f);
 }
 
+void CabbageWidgetData::setUnlockButtonProperties(ValueTree widgetData, int ID)
+{
+	var array;
+	array.append("Push me");
+	array.append("Push me");
+	setProperty(widgetData, CabbageIdentifierIds::top, 10);
+	setProperty(widgetData, CabbageIdentifierIds::left, 10);
+	setProperty(widgetData, CabbageIdentifierIds::width, 80);
+	setProperty(widgetData, CabbageIdentifierIds::height, 40);
+	var channels;
+	channels.append("unlockbutton" + String(ID));
+	setProperty(widgetData, CabbageIdentifierIds::channel, channels);
+	setProperty(widgetData, CabbageIdentifierIds::value, 0);
+	setProperty(widgetData, CabbageIdentifierIds::min, 0);
+	setProperty(widgetData, CabbageIdentifierIds::max, 1);
+	setProperty(widgetData, CabbageIdentifierIds::text, array);
+	setProperty(widgetData, CabbageIdentifierIds::caption, "");
+	setProperty(widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
+	setProperty(widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
+	setProperty(widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
+	setProperty(widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+	setProperty(widgetData, CabbageIdentifierIds::latched, 1);
+	setProperty(widgetData, CabbageIdentifierIds::type, "unlockbutton");
+	setProperty(widgetData, CabbageIdentifierIds::popuptext, "");
+	setProperty(widgetData, CabbageIdentifierIds::name, "unlockbutton");
+	setProperty(widgetData, CabbageIdentifierIds::channeltype, "number");
+	setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString() + String(ID));
+	setProperty(widgetData, CabbageIdentifierIds::identchannel, "");
+	setProperty(widgetData, CabbageIdentifierIds::radiogroup, "");
+	setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+	setProperty(widgetData, CabbageIdentifierIds::imgbuttonon, "");
+	setProperty(widgetData, CabbageIdentifierIds::imgbuttonoff, "");
+	setProperty(widgetData, CabbageIdentifierIds::style, "flat");
+	setProperty(widgetData, CabbageIdentifierIds::automatable, 1.0f);
+	setProperty(widgetData, CabbageIdentifierIds::corners, 2.0f);
+}
+
 void CabbageWidgetData::setButtonProperties (ValueTree widgetData, int ID)
 {
     var array;

@@ -357,6 +357,9 @@ void CabbagePluginEditor::insertWidget (const ValueTree& cabbageWidgetData)
     else if (widgetType == CabbageWidgetTypes::button)
         insertButton (cabbageWidgetData);
 
+	else if (widgetType == CabbageWidgetTypes::unlockbutton)
+		insertUnlockButton(cabbageWidgetData);
+
     else if (widgetType == CabbageWidgetTypes::filebutton)
         insertFileButton (cabbageWidgetData);
 
@@ -574,6 +577,14 @@ void CabbagePluginEditor::insertButton (const ValueTree& cabbageWidgetData)
     addMouseListenerAndSetVisibility (button, cabbageWidgetData);
 }
 
+void CabbagePluginEditor::insertUnlockButton(const ValueTree& cabbageWidgetData)
+{
+	CabbageUnlockButton* button;
+	components.add(button = new CabbageUnlockButton(cabbageWidgetData, this));
+	button->addListener(this);
+	addToEditorAndMakeVisible(button, cabbageWidgetData);
+	addMouseListenerAndSetVisibility(button, cabbageWidgetData);
+}
 void CabbagePluginEditor::insertNumberSlider (const ValueTree& cabbageWidgetData)
 {
     CabbageNumberSlider* numberBox;
@@ -598,6 +609,8 @@ void CabbagePluginEditor::insertTextBox (const ValueTree& cabbageWidgetData)
     addToEditorAndMakeVisible (textBox, cabbageWidgetData);
     addMouseListenerAndSetVisibility (textBox, cabbageWidgetData);
 }
+
+
 
 void CabbagePluginEditor::insertCsoundOutputConsole (const ValueTree& cabbageWidgetData)
 {

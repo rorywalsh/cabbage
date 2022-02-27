@@ -56,9 +56,9 @@
 #include "../../Widgets/CabbageRangeSlider.h"
 #include "../../Widgets/CabbageCustomWidgets.h"
 #include "../../Widgets/CabbageEventSequencer.h"
+#include "../../Widgets/CabbageUnlockButton.h"
 
 class CabbagePluginEditor;
-
 
 //==============================================================================
 class CabbagePluginEditor
@@ -125,6 +125,7 @@ public:
     void insertPort (const ValueTree& cabbageWidgetData);
     void insertScrew (const ValueTree& cabbageWidgetData);
     void insertLight (const ValueTree& cabbageWidgetData);
+	void insertUnlockButton(const ValueTree& cabbageWidgetData);
     
     void moveBehind(String thisComp, String otherComp);
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);

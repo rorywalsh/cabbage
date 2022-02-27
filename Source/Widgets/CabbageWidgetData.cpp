@@ -145,6 +145,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, const String lineF
     else if (widgetType == CabbageWidgetTypes::button)
         setButtonProperties (widgetData, ID);
 
+	else if (widgetType == CabbageWidgetTypes::unlockbutton)
+		setUnlockButtonProperties(widgetData, ID);
+
     else if (widgetType == CabbageWidgetTypes::optionbutton)
         setOptionButtonProperties (widgetData, ID);
     

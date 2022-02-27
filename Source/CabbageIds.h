@@ -538,6 +538,7 @@ namespace CabbageWidgetTypes
 	static const String line = "line";
 	static const String listbox = "listbox";
 	static const String loadbutton = "loadbutton";
+	static const String unlockbutton = "unlockbutton";
 	static const String nslider = "nslider";
 	static const String oscserver = "oscserver";
 	static const String popupmenu = "popupmenu";
