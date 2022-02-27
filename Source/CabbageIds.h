@@ -753,6 +753,8 @@ namespace CabbageIdentifierIds
     static const Identifier scrubberposition_table = "scrubberposition_table";
     static const Identifier shape = "shape";
     static const Identifier show = "show";
+	static const Identifier shopURL = "shopURL";
+	static const Identifier serverURL = "serverURL";
     static const Identifier sort = "sort";
     static const Identifier sidechain = "sidechain";
     static const Identifier signalvariable = "signalVariable";

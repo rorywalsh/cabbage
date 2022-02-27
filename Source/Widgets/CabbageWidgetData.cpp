@@ -352,6 +352,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("caption"):
             case HashStringToInt ("plant"):
             case HashStringToInt ("show"):
+			case HashStringToInt ("serverURL"):
+			case HashStringToInt ("shopURL"):
             case HashStringToInt ("type"):
             case HashStringToInt ("child"):
             case HashStringToInt ("typeface"):

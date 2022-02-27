@@ -16,7 +16,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.105)
+	set(BUILD_VERSION 2.8.106)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -338,6 +338,7 @@ set(JUCE_MODULES
     juce::juce_audio_devices
     juce::juce_audio_formats
     juce::juce_audio_processors
+    juce::juce_product_unlocking
     juce::juce_audio_utils
     juce::juce_audio_plugin_client
     juce::juce_opengl)
