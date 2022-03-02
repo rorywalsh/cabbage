@@ -16,7 +16,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.103)
+	set(BUILD_VERSION 2.8.106)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -230,6 +230,8 @@ Source/Widgets/CabbageKeyboard.cpp
 Source/Widgets/CabbageKeyboard.h
 Source/Widgets/CabbageLabel.cpp
 Source/Widgets/CabbageLabel.h
+Source/Widgets/CabbageUnlockButton.cpp
+Source/Widgets/CabbageUnlockButton.h
 Source/Widgets/CabbageRangeSlider.cpp
 Source/Widgets/CabbageRangeSlider.h
 Source/Widgets/CabbageSignalDisplay.cpp
@@ -336,6 +338,7 @@ set(JUCE_MODULES
     juce::juce_audio_devices
     juce::juce_audio_formats
     juce::juce_audio_processors
+    juce::juce_product_unlocking
     juce::juce_audio_utils
     juce::juce_audio_plugin_client
     juce::juce_opengl)

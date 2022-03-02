@@ -145,6 +145,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, const String lineF
     else if (widgetType == CabbageWidgetTypes::button)
         setButtonProperties (widgetData, ID);
 
+	else if (widgetType == CabbageWidgetTypes::unlockbutton)
+		setUnlockButtonProperties(widgetData, ID);
+
     else if (widgetType == CabbageWidgetTypes::optionbutton)
         setOptionButtonProperties (widgetData, ID);
     
@@ -349,6 +352,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("caption"):
             case HashStringToInt ("plant"):
             case HashStringToInt ("show"):
+			case HashStringToInt ("serverURL"):
+			case HashStringToInt ("shopURL"):
             case HashStringToInt ("type"):
             case HashStringToInt ("child"):
             case HashStringToInt ("typeface"):

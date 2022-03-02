@@ -538,6 +538,7 @@ namespace CabbageWidgetTypes
 	static const String line = "line";
 	static const String listbox = "listbox";
 	static const String loadbutton = "loadbutton";
+	static const String unlockbutton = "unlockbutton";
 	static const String nslider = "nslider";
 	static const String oscserver = "oscserver";
 	static const String popupmenu = "popupmenu";
@@ -752,6 +753,8 @@ namespace CabbageIdentifierIds
     static const Identifier scrubberposition_table = "scrubberposition_table";
     static const Identifier shape = "shape";
     static const Identifier show = "show";
+	static const Identifier shopURL = "shopURL";
+	static const Identifier serverURL = "serverURL";
     static const Identifier sort = "sort";
     static const Identifier sidechain = "sidechain";
     static const Identifier signalvariable = "signalVariable";
