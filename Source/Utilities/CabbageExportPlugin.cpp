@@ -270,6 +270,8 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             else
                   bin = File(exportedPlugin.getFullPathName() + String ("/Contents/MacOS/"+pluginDesc));
             
+            setUniquePluginId (bin, exportedCsdFile, pluginId);
+            
             File pl (exportedPlugin.getFullPathName() + String ("/Contents/Info.plist"));
             String newPList = pl.loadFileAsString();
             
@@ -277,13 +279,13 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             {
                 
                 File pluginBinary (exportedPlugin.getFullPathName() + String ("/Contents/MacOS/") + fc.getFileNameWithoutExtension());
-                
+
                 if (bin.moveFileTo (pluginBinary) == false)
                     CabbageUtilities::showMessage ("Error", "Could not copy library binary file. Make sure the two Cabbage .vst files are located in the Cabbage.app folder", &lookAndFeel);
-                
-                setUniquePluginId (pluginBinary, exportedCsdFile, pluginId);
+
 #if CabbagePro
                 newPList = newPList.replace (pluginDesc+"Effect", fc.getFileNameWithoutExtension());
+                newPList = newPList.replace (pluginDesc, fc.getFileNameWithoutExtension());
 #else
                 newPList = newPList.replace (pluginDesc, fc.getFileNameWithoutExtension());
 #endif

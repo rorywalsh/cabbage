@@ -45,7 +45,6 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
 
 
     replaceTextWithPreset = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::presetnameastext) == 1 ? true : false;
-    
     filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).replaceCharacters (" ", ";");
 
     setImgProperties (*this, wData, "buttonon");
@@ -89,7 +88,7 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
     
 	var userFolder = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::userFolder);
 	var factoryFolder = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::factoryFolder);
-    DBG(factoryFolder.toString());
+
 
 	if (userFolder.size() == 0)
 	{
