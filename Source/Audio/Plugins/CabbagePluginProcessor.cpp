@@ -229,9 +229,18 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 
 	for (int lineNumber = 0; lineNumber < linesFromCsd.size(); lineNumber++)
     {
+        if(linesFromCsd[lineNumber].trimStart().substring(0, 1) == ";")
+            continue;
+        
 		if (linesFromCsd[lineNumber].equalsIgnoreCase("</Cabbage>"))
+        {
+            for( int i = 0 ; i < cabbageWidgets.getNumChildren(); i++)
+            {
+                DBG(cabbageWidgets.getChild(i).getType());
+            }
+            
 			return;
-
+        }
         ValueTree tempWidget(Identifier("WidgetFromLine_" + std::to_string(lineNumber)));
 
 		String currentLineOfCabbageCode = linesFromCsd[lineNumber].replace("\t", " ");
@@ -258,7 +267,8 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
             CabbageWidgetData::setNumProp(tempWidget, CabbageIdentifierIds::containsClosingCurlyBracket, 1);
 
 		if (currentLineOfCabbageCode.indexOf(";") > -1 && !currentLineOfCabbageCode.contains("svgElement") && !currentLineOfCabbageCode.contains("populate"))
-			currentLineOfCabbageCode = currentLineOfCabbageCode.substring(0, currentLineOfCabbageCode.indexOf(";"));
+            break;
+//			currentLineOfCabbageCode = currentLineOfCabbageCode.substring(0, currentLineOfCabbageCode.indexOf(";"));
 
 		const String comments = currentLineOfCabbageCode.indexOf(";") == -1 ? "" : currentLineOfCabbageCode.substring(
 			currentLineOfCabbageCode.indexOf(";"));
@@ -371,6 +381,9 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 			}
 		}
 	}
+    
+
+    
 }
 
 bool CabbagePluginProcessor::isWidgetPlantParent(StringArray& linesFromCsd, int lineNumber) {

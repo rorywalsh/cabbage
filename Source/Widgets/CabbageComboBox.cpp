@@ -413,6 +413,8 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                     setSelectedItemIndex (comboValue - 1, sendNotification);
                 else
                     setSelectedItemIndex (comboValue - 1, dontSendNotification);
+                
+                currentItemIndex = comboValue - 1;
             }
             else
             {
@@ -443,6 +445,8 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 //can't update the channel value from here as it might update on the same cycle as a cabbageSetValue
                 //this in turn will update the string channel pointer and mess up further called to cabbageSetValue...
                 owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
+                
+                currentItemIndex = index;
                 //CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }
@@ -459,6 +463,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 owner->setCurrentPreset(presetName);
                 owner->sendChannelStringDataToCsound(getChannel(), presetName);
                 setSelectedItemIndex((index - 1 >= 0 ? index : 0), dontSendNotification);
+                currentItemIndex = index;
             }
 		}
 
@@ -466,7 +471,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
     else
     {
-        handleCommonUpdates (this, valueTree, false, prop);
+        //handleCommonUpdates (this, valueTree, false, prop);
         setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
         setColour (ComboBox::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
         setColour (PopupMenu::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::menucolour)));
@@ -480,7 +485,8 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
         }
 
-        if((prop == CabbageIdentifierIds::text && isStringCombo == true) || CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::automatable) == 0)
+        if((prop == CabbageIdentifierIds::text && isStringCombo == true) ||
+           (CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::automatable) == 0 && (prop == CabbageIdentifierIds::text)))
         {
                 addItemsToCombobox(valueTree);
         }

@@ -1100,7 +1100,7 @@ void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::text, array);
     setProperty (widgetData, CabbageIdentifierIds::align, "left");
-    setProperty (widgetData, CabbageIdentifierIds::value, 1);
+    setProperty (widgetData, CabbageIdentifierIds::value, 0);
     setProperty (widgetData, CabbageIdentifierIds::update, 1);
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::currenttext, "");
