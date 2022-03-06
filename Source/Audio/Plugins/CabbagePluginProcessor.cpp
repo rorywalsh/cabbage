@@ -229,9 +229,18 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 
 	for (int lineNumber = 0; lineNumber < linesFromCsd.size(); lineNumber++)
     {
+        if(linesFromCsd[lineNumber].trimStart().substring(0, 1) == ";")
+            continue;
+        
 		if (linesFromCsd[lineNumber].equalsIgnoreCase("</Cabbage>"))
+        {
+            for( int i = 0 ; i < cabbageWidgets.getNumChildren(); i++)
+            {
+                DBG(cabbageWidgets.getChild(i).getType());
+            }
+            
 			return;
-
+        }
         ValueTree tempWidget(Identifier("WidgetFromLine_" + std::to_string(lineNumber)));
 
 		String currentLineOfCabbageCode = linesFromCsd[lineNumber].replace("\t", " ");
@@ -371,6 +380,9 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
 			}
 		}
 	}
+    
+
+    
 }
 
 bool CabbagePluginProcessor::isWidgetPlantParent(StringArray& linesFromCsd, int lineNumber) {
