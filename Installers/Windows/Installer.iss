@@ -32,7 +32,7 @@ ChangesEnvironment=yes
 
 [Components]
 Name: "core"; Description: "Cabbage Installation"; Types: full custom; Flags: fixed
-Name: "csound"; Description: "Installs Csound (skip if you already have Csound 6.15 or later already installed)"; Types: full;
+Name: "csound"; Description: "Installs Csound (skip if you already have Csound 6.17 or later already installed)"; Types: full;
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
