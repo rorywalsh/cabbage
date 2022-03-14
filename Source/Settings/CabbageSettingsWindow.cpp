@@ -525,7 +525,7 @@ void CabbageSettingsWindow::buttonClicked (Button* button)
         selectPanel (button->getName());
 }
 
-void CabbageSettingsWindow::mouseEnter (const MouseEvent& e)
+void CabbageSettingsWindow::mouseDown (const MouseEvent& e)
 {
     selectPanel (e.eventComponent->getName());
 }

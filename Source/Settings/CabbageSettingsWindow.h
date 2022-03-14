@@ -61,7 +61,7 @@ public:
     void paint (Graphics& g)  override;
     void valueChanged (Value& value) override;
     void updateColourScheme();
-    void mouseEnter (const MouseEvent& e) override;
+    void mouseDown (const MouseEvent& e) override;
     void selectPanel (String button);
     void filenameComponentChanged (FilenameComponent*) override;
     void textPropertyComponentChanged (TextPropertyComponent* comp) override;
