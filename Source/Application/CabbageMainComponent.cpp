@@ -276,8 +276,7 @@ void CabbageMainComponent::buttonClicked (Button* button)
     }
     else
     {
-        if(fileTabs.size() > 0)
-        {
+
             if (ToolbarButton* toolbarButton = dynamic_cast<ToolbarButton*> (button))
                 handleToolbarButtons (toolbarButton);
             else if (DrawableButton* drawableButton = dynamic_cast<DrawableButton*> (button))
@@ -302,7 +301,6 @@ void CabbageMainComponent::buttonClicked (Button* button)
                     }
                 });
             }
-        }
     }
     
     if(fileTree.isVisible())
@@ -467,14 +465,39 @@ void CabbageMainComponent::bringCodeEditorToFront (FileTab* tab)
 
 void CabbageMainComponent::handleToolbarButtons (ToolbarButton* toolbarButton)
 {
+    DBG(toolbarButton->getName());
+    
     if (toolbarButton->getName() == "new")             createNewProject();
     else if (toolbarButton->getName() == "open")       openFile();
-    else if (toolbarButton->getName() == "save")       saveDocument (false);
-    else if (toolbarButton->getName() == "save as")    saveDocument (true);
-    else if (toolbarButton->getName() == "settings")   showSettingsDialog();
-    else if (toolbarButton->getName() == "cut")        getCurrentCodeEditor()->cut();
-    else if (toolbarButton->getName() == "copy")       getCurrentCodeEditor()->copy();
-    else if (toolbarButton->getName() == "paste")      getCurrentCodeEditor()->paste();
+    else if (toolbarButton->getName() == "save")
+    {
+        if(fileTabs.size() > 0)
+            saveDocument (false);
+    }
+    else if (toolbarButton->getName() == "save as")
+    {
+        if(fileTabs.size() > 0)
+            saveDocument (true);
+    }
+    else if (toolbarButton->getName() == "settings")
+    {
+        showSettingsDialog();
+    }
+    else if (toolbarButton->getName() == "cut")
+    {
+        if(fileTabs.size() > 0)
+            getCurrentCodeEditor()->cut();
+    }
+    else if (toolbarButton->getName() == "copy")
+    {
+        if(fileTabs.size() > 0)
+            getCurrentCodeEditor()->copy();
+    }
+    else if (toolbarButton->getName() == "paste")
+    {
+        if(fileTabs.size() > 0)
+            getCurrentCodeEditor()->paste();
+    }
     else if (toolbarButton->getName() == "togglePlay")
     {
         if (toolbarButton->getToggleState())
