@@ -1081,37 +1081,6 @@
 										<key>LANGUAGE</key>
 										<string>English</string>
 										<key>VALUE</key>
-<<<<<<< HEAD:Installers/MacOS/Installer.pkgproj
-=======
-										<string>Installs a minimal, barebones version of Cabbage. Useful for use with 3rd party text editors. CabbageLite does not provide any GUI editor for developing interfaces. It's strictly code only.</string>
-									</dict>
-								</array>
-								<key>OPTIONS</key>
-								<dict>
-									<key>HIDDEN</key>
-									<false/>
-									<key>STATE</key>
-									<integer>1</integer>
-								</dict>
-								<key>PACKAGE_UUID</key>
-								<string>DE74D7E6-CB28-4092-BE73-C084B3D8B00B</string>
-								<key>TITLE</key>
-								<array/>
-								<key>TYPE</key>
-								<integer>0</integer>
-								<key>UUID</key>
-								<string>34F099ED-4EE2-4653-8279-0E249672D9B6</string>
-							</dict>
-							<dict>
-								<key>CHILDREN</key>
-								<array/>
-								<key>DESCRIPTION</key>
-								<array>
-									<dict>
-										<key>LANGUAGE</key>
-										<string>English</string>
-										<key>VALUE</key>
->>>>>>> c9648a1685413eaa82e2d6d9d5fb9647f919e3c5:Builds/MacOSX/InstallerAzure.pkgproj
 										<string>Select this checkbox to install the latest version of Csound (v6.16). This installs Csound64Lib.framework to your System/Library/Frameworks folder and will overwrite any previous version of Csound.</string>
 									</dict>
 								</array>
