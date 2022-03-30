@@ -330,8 +330,8 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
             addItem (folderFiles[i].getFileNameWithoutExtension(), i + 1);
         }
 
-
-        //setSelectedItemIndex(getNumItems()-1, dontSendNotification);
+        if(currentValueAsText.isNotEmpty())
+            setText(File::getCurrentWorkingDirectory().getChildFile(currentValueAsText).getFileNameWithoutExtension());
 
     }
 
@@ -419,6 +419,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             else
             {
                 currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
+                currentValueAsText = File::getCurrentWorkingDirectory().getChildFile (currentValueAsText).getFileNameWithoutExtension();
                 
              
                 workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
