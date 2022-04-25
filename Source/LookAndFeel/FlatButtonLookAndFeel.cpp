@@ -76,10 +76,14 @@ void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, co
 	const Colour outlineColour(Colour::fromString(button.getProperties().getWithDefault("outlinecolour", Colours::white.toString()).toString()));
 	const int outlineThickness = button.getProperties().getWithDefault("outlinethickness", 0);
 	const int offset = outlineThickness == 0 ? 0 : outlineThickness * .5;
-	g.setColour(outlineColour);
-	g.fillRoundedRectangle(0, 0, width, height, corners);
-	g.setColour(bg);
-	g.fillRoundedRectangle(offset, offset, width - outlineThickness, height - outlineThickness, corners);
+	Path p;
+    g.setColour(bg);
+    p.addRoundedRectangle(outlineThickness/2.f, outlineThickness/2.f, width-outlineThickness, height-outlineThickness, corners);
+    g.fillPath(p);
+    g.setColour(outlineColour);
+    g.strokePath(p, PathStrokeType(outlineThickness));
+//	g.fillRoundedRectangle(0, 0, width, height, corners);
+//	g.fillRoundedRectangle(offset, offset, width - outlineThickness, height - outlineThickness, corners);
 	
 }
 
