@@ -2,6 +2,8 @@
 
 bin_path_default='/usr/bin'
 cabbage_rack_path_default='/usr/bin/CabbageRack'
+cabbage_vst3_synth_path_default='/usr/bin/CabbagePluginSynth.vst3'
+cabbage_vst3_effect_path_default='/usr/bin/CabbagePluginEffect.vst3'
 icon_path_default='/usr/share/icons/hicolor/512x512/apps'
 doc_path_default='/usr/share/doc/cabbage'
 theme_path_default='/usr/share/cabbage'
@@ -64,11 +66,22 @@ for file in "$build_path"/bin/*; do
   echo "installing $file to $bin_path"
 done
 
+
 install -d "$desktop_path"
 for file in "$build_path"/desktop/*; do
   install -m644 "$file" "$desktop_path"
   echo "installing $file to $desktop_path"
 done
+
+echo "installing VST3 effect interface to $cabbage_vst3_effect_path_default"
+install -d "$cabbage_vst3_effect_path_default"
+cp -r "${build_path}/bin/CabbagePluginEffect.vst3" "$bin_path"
+chmod -R 755 "$cabbage_vst3_effect_path_default"
+
+echo "installing VST3 effect interface to $cabbage_vst3_synth_path_default"
+install -d "$cabbage_vst3_synth_path_default"
+cp -r "${build_path}/bin/CabbagePluginSynth.vst3" "$bin_path"
+chmod -R 755 "$cabbage_vst3_synth_path_default"
 
 echo "installing Examples to $doc_path/Examples"
 install -d "$doc_path"
