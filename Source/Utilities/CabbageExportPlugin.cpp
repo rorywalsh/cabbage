@@ -67,7 +67,14 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
 // #else
         const String pluginDesc = String(PluginDesc);
 // #endifs
-        
+
+#ifdef JUCE_LINUX
+    if(type == "VST3i")
+        currentApplicationDirectory = currentApplicationDirectory+"/CabbagePluginSynth.vst3/Contents/x86_64-linux";
+    else if(type == "VST3")
+        currentApplicationDirectory = currentApplicationDirectory+"/CabbagePluginEffect.vst3/Contents/x86_64-linux";
+#endif
+
         if (type == "VSTi" || type == "AUi" || type == "VST3i")
             pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"Synth." + fileExtension);
         else  if (type == "VST" || type == "AU" || type == "VST3")
