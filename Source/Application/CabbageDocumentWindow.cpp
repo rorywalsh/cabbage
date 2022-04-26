@@ -403,8 +403,10 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         PopupMenu subMenu1;
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffect);
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTSynth);
+#ifndef JUCE_LINUX
         subMenu1.addCommandItem(&commandManager, CommandIDs::exportAsVST3Effect);
         subMenu1.addCommandItem(&commandManager, CommandIDs::exportAsVST3Synth);
+#endif
         menu.addSubMenu("Export plugin", subMenu1);
         
 #if CabbagePro
