@@ -103,7 +103,7 @@ if args.project is not None:
     projects = [args.project]
 else:
     if manufacturer == "CabbageAudio":
-        projects = ["Cabbage", "CabbagePluginEffect", "CabbagePluginSynth"]
+        projects = ["Cabbage", "CabbagePluginEffect", "CabbagePluginSynth", "CabbagePluginMidiEffect"]
     else:
         projects = ["Cabbage", manufacturer.replace(' ', '_')+"Effect", manufacturer.replace(' ', '_')+"Synth"]
 
@@ -411,6 +411,7 @@ elif platform.system() == "Linux":
         print('Did not find Csound. Downloading and installing to....')
         sys.stdout.write(RESET)
         os.system('git clone https://github.com/csound/csound.git')
+        os.system('git checkout master')
         # os.system("sudo sed -i -- 's/#deb-src/deb-src/g' /etc/apt/sources.list && sudo sed -i -- 's/# deb-src/deb-src/g' /etc/apt/sources.list")
         # os.system('sudo apt-get update')
         os.system('sudo apt-get build-dep csound')
@@ -518,6 +519,14 @@ for project in projects:
                 os.system('cp ../fmod_csound_fx.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound_fx.dylib')
                 os.system('cp ../fmod_csound.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound.dylib')
 
+            elif "MidiEffect" in project:
+                newProjectName = project.replace("CabbagePlugin", pluginDescription)
+                # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+project+' ' +rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+newProjectName) 
+                # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3/Contents/MacOS/'+newProjectName) 
+                # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+newProjectName) 
+                os.system('cp -Rf '+project+'_artefacts/'+configType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.component')
+                os.system( 'codesign -s - ' + rootDir+'/Cabbage.app/Contents/'+newProjectName+'.component --timestamp --deep --force --preserve-metadata=identifier,entitlements')
+
             elif "Effect" in project or "Synth" in project:
                 newProjectName = project.replace("CabbagePlugin", pluginDescription)
                 # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+project+' ' +rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+newProjectName) 
@@ -525,11 +534,11 @@ for project in projects:
                 # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+newProjectName) 
                 
                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST/'+project+'.vst ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst')
-                os.system( 'codesign -s - ' + newProjectName+'.vst --timestamp --deep --force --preserve-metadata=identifier,entitlements')
+                os.system( 'codesign -s - ' + rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst --timestamp --deep --force --preserve-metadata=identifier,entitlements')
                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/VST3/'+project+'.vst3 ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst3')
-                os.system( 'codesign -s - ' + newProjectName+'.vst3 --timestamp --deep --force --preserve-metadata=identifier,entitlements')
+                os.system( 'codesign -s - ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.vst3 --timestamp --deep --force --preserve-metadata=identifier,entitlements')
                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.component')
-                os.system( 'codesign -s - ' + newProjectName+'.component --timestamp --deep --force --preserve-metadata=identifier,entitlements')
+                os.system( 'codesign -s - ' + rootDir+'/Cabbage.app/Contents/'+newProjectName+'.component --timestamp --deep --force --preserve-metadata=identifier,entitlements')
                 if "Effect" in project:
                     if "Cabbage" in newProjectName:
                         os.system('cp -Rf '+project+'_artefacts/'+configType+'/Standalone/'+project+'.app ' +rootDir+'/Cabbage.app/Contents/CabbagePlugin.app')
