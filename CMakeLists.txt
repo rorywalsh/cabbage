@@ -58,6 +58,7 @@ endif()
 # ==== Find out what kind of project this is
 string(FIND ${PROJECT_NAME} "Synth" synthProject)
 string(FIND ${PROJECT_NAME} "Effect" effectProject)
+string(FIND ${PROJECT_NAME} "MididEffect" midiEffectProject)
 
 IF(${synthProject} GREATER 0)
     set(PLUGIN_IS_A_SYNTH ON)
@@ -109,6 +110,10 @@ else()
         set(MIDI_OUTPUT True)
     else()
         set(MIDI_OUTPUT False)
+    endif()
+
+    if(${midiEffectProject})
+        set(PLUGIN_AU_MAIN_TYPE "kAudioUnitType_MIDIProcessor")
     endif()
 
     juce_add_plugin(${PROJECT_NAME}
