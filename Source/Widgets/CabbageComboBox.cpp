@@ -497,6 +497,8 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::refreshfiles, 0);
             addItemsToCombobox (valueTree);
         }
+        
+        handleCommonUpdates(this, valueTree, false, prop);
     }
 
     repaint();
