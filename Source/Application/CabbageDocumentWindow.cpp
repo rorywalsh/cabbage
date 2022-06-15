@@ -393,6 +393,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
         subMenu6.addSubMenu("VST Export", subMenu4);
         subMenu5.addCommandItem (&commandManager, CommandIDs::exportAsAUEffectEncrypted);
         subMenu5.addCommandItem (&commandManager, CommandIDs::exportAsAUSynthEncrypted);
+        subMenu5.addCommandItem (&commandManager, CommandIDs::exportAsAUMIDIFxEncrypted);
         subMenu6.addSubMenu("AU Export", subMenu5);
         menu.addSubMenu("Export Plugin (Encrypt CSD)", subMenu6);
 #endif
@@ -600,6 +601,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::exportAsAUEffect,
         CommandIDs::exportAsAUSynth,
         CommandIDs::exportAsAUSynthEncrypted,
+        CommandIDs::exportAsAUMIDIFxEncrypted,
         CommandIDs::exportAsAUEffectEncrypted,
         CommandIDs::exportAsVSTSynthEncrypted,
         CommandIDs::exportAsVSTEffectEncrypted,
@@ -824,6 +826,10 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             
         case CommandIDs::exportAsAUSynthEncrypted:
             result.setInfo ("Export as AU Plugin Synth", "Exports as plugin", CommandCategories::general, 0);
+            break;
+
+        case CommandIDs::exportAsAUMIDIFxEncrypted:
+            result.setInfo ("Export as AU MIDI Effect Plugin", "Exports as plugin", CommandCategories::general, 0);
             break;
             
         case CommandIDs::exportAsAUEffectEncrypted:
@@ -1216,6 +1222,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             
         case CommandIDs::exportAsAUSynthEncrypted:
             pluginExporter.exportPlugin ("AUi", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
+            return true;
+
+        case CommandIDs::exportAsAUMIDIFxEncrypted:
+            pluginExporter.exportPlugin ("AUMIDIFx", getContentComponent()->getCurrentCsdFile(),  getPluginInfo (currentFile, "id"), "", true, true);
             return true;
             
         case CommandIDs::exportAsFMODSoundPlugin:
