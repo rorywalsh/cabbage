@@ -105,7 +105,7 @@ else:
     if manufacturer == "CabbageAudio":
         projects = ["Cabbage", "CabbagePluginEffect", "CabbagePluginSynth", "CabbagePluginMidiEffect"]
     else:
-        projects = ["Cabbage", manufacturer.replace(' ', '_')+"Effect", manufacturer.replace(' ', '_')+"Synth"]
+        projects = ["Cabbage", manufacturer.replace(' ', '_')+"Effect", manufacturer.replace(' ', '_')+"Synth", manufacturer.replace(' ', '_')+"MidiEffect"]
 
 if args.packageType is not None:
     packageType = args.packageType
