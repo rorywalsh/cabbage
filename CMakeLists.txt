@@ -16,7 +16,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.119)
+	set(BUILD_VERSION 2.8.120)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -114,6 +114,9 @@ else()
 
     if(${midiEffectProject})
         set(PLUGIN_AU_MAIN_TYPE "kAudioUnitType_MIDIProcessor")
+        set(MIDI_EFFECT True)
+    else()
+        set(MIDI_EFFECT False)
     endif()
 
     juce_add_plugin(${PROJECT_NAME}
@@ -126,7 +129,7 @@ else()
         NEEDS_MIDI_OUTPUT TRUE
         IS_SYNTH ${PLUGIN_IS_A_SYNTH}
         BUNDLE_ID com.CabbageAudio.plugin
-        IS_MIDI_EFFECT FALSE
+        IS_MIDI_EFFECT ${MIDI_EFFECT}
         EDITOR_WANTS_KEYBOARD_FOCUS TRUE
         VST_NUM_MIDI_INS 16
         VST_NUM_MIDI_OUTS 16
