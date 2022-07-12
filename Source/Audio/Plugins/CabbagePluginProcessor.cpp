@@ -1426,8 +1426,10 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 				const String stringComboItem = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).existsAsFile() ?
 					csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).getFileNameWithoutExtension() : e->getAttributeValue(i);
 
-                if(type != CabbageWidgetTypes::listbox)
-                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
+                
+               // if(type != CabbageWidgetTypes::listbox)
+               //     CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
+                
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
                 
 

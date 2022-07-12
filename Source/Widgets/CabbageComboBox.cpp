@@ -34,6 +34,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     owner (_owner),
     widgetData (wData),
     lookAndFeel(),
+    isStringCombo(CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::channeltype) == "string"    ),
     CabbageWidgetBase(_owner)
 {
     widgetData.addListener (this);
@@ -61,7 +62,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     if (CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::channeltype) == "string" &&
 		!CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::filetype).contains("snaps"))
     {
-        isStringCombo = true;
+
 
         if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
@@ -196,8 +197,9 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
     else if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).isEmpty())
     {
         var items = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::text);
+        
         PopupMenu subMenu;
-            stringItems.clear();
+        stringItems.clear();
         clear (dontSendNotification);
         std::vector<StringArray> menus;
         int menuIndex = -1;
