@@ -465,7 +465,7 @@ if not os.path.exists("JUCE/modules"):
 if platform.system() == "Darwin" and os.path.exists("Cabbage.app"):
     os.system('rm -rf Cabbage.app')
 
-if platform.system() == "Windows":
+if platform.system() == "Windows:
     print("##vso[task.setvariable variable=CABBAGE_VERSION_NUMBER]" + getVersionNumber())
     
 for project in projects:
