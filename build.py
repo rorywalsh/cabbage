@@ -439,7 +439,6 @@ sys.stdout.write(GREEN)
 if not os.path.exists("JUCE/modules"):
     print('Cloning JUCE and applying patches....')
     os.system('git clone --depth 1 --branch 6.1.6 https://github.com/juce-framework/JUCE && cd JUCE')
-    os.system('git checkout 6.1.6')
     os.system('cd ..')
     os.system('git apply ./patches/StandaloneWrapper.patch')
     os.system('git apply ./patches/AUWrapper.patch')
