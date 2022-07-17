@@ -1066,7 +1066,7 @@ struct StrToArray : csnd::Plugin<1, 2>
 
         for (int i = 0; i < tokens.size(); i++)
         {
-            out[i].size = strlen(tokens[i].c_str());
+            out[i].size = strlen(tokens[i].c_str())+1;
             out[i].data = csound->strdup((char*)tokens[i].c_str());
         }
 
