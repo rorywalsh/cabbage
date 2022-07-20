@@ -112,12 +112,12 @@ else()
         set(MIDI_OUTPUT False)
     endif()
 
-    if(${midiEffectProject})
-        set(PLUGIN_AU_MAIN_TYPE "kAudioUnitType_MIDIProcessor")
-        set(MIDI_EFFECT True)
-    else()
-        set(MIDI_EFFECT False)
-    endif()
+    # if(${midiEffectProject})
+    #     set(PLUGIN_AU_MAIN_TYPE "kAudioUnitType_MIDIProcessor")
+    #     set(MIDI_EFFECT True)
+    # else()
+    #     set(MIDI_EFFECT False)
+    # endif()
 
     juce_add_plugin(${PROJECT_NAME}
         PLUGIN_NAME ${PROJECT_NAME}
