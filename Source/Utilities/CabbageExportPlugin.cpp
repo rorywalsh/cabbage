@@ -311,7 +311,10 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             const String toReplace2 = "<string>CabbageAudio: CabbageEffectNam<string>";
             newPList = newPList.replace (toReplace2, pluginName);
             if(fileExtension.containsIgnoreCase("component"))
+            {
                 newPList = newPList.replace ("<string>CabbagePlugin</string>", "<string>" + pluginDesc + "</string>");
+                newPList = newPList.replace (pluginDesc+"MidiEffect", fc.getFileNameWithoutExtension());
+            }
             else
                 newPList = newPList.replace ("<string>CabbagePlugin</string>", "<string>" + fc.getFileNameWithoutExtension() + "</string>");
             
