@@ -80,7 +80,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         else  if (type == "VST" || type == "AU" || type == "VST3")
             pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"Effect." + fileExtension);
         else  if (type == "AUMIDIFx")
-            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"MIDIEffect." + fileExtension);
+            pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"MidiEffect." + fileExtension);
         else if (type.contains (String ("LV2-ins")))
             pluginFilename = currentApplicationDirectory + String ("/"+pluginDesc.replace(" ", "_")+"SynthLV2." + fileExtension);
         else if (type.contains (String ("LV2-fx")))
@@ -311,8 +311,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             //be sure to remove CabbageAudio from plugin plist..
             const String toReplace2 = "<string>CabbageAudio: CabbageEffectNam<string>";
             newPList = newPList.replace (toReplace2, pluginName);
-            const String toReplace3 = "<string>"+pluginDesc+": "+pluginDesc+"MidiEffect<string>";
-            newPList = newPList.replace (toReplace2, pluginName);
+
             
             if(fileExtension.containsIgnoreCase("component"))
             {
