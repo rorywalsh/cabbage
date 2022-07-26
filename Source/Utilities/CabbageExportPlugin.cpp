@@ -292,6 +292,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
 
 #if CabbagePro
                 newPList = newPList.replace (pluginDesc+"Effect", fc.getFileNameWithoutExtension());
+                newPList = newPList.replace (pluginDesc+"MidiEffect", fc.getFileNameWithoutExtension());
                 newPList = newPList.replace (pluginDesc, fc.getFileNameWithoutExtension());
 #else
                 newPList = newPList.replace (pluginDesc, fc.getFileNameWithoutExtension());
