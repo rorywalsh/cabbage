@@ -16,7 +16,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.132)
+	set(BUILD_VERSION 2.8.133)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -58,7 +58,7 @@ endif()
 # ==== Find out what kind of project this is
 string(FIND ${PROJECT_NAME} "Synth" synthProject)
 string(FIND ${PROJECT_NAME} "Effect" effectProject)
-string(FIND ${PROJECT_NAME} "MididEffect" midiEffectProject)
+string(FIND ${PROJECT_NAME} "MidiEffect" midiEffectProject)
 
 IF(${synthProject} GREATER 0)
     set(PLUGIN_IS_A_SYNTH ON)
