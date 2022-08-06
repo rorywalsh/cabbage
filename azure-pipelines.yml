@@ -60,7 +60,6 @@ jobs:
     vmImage: 'ubuntu-latest'
   steps:
   - script: |
-     git checkout develop
      sudo apt-get install ninja-build
      pip install requests
      python --version
