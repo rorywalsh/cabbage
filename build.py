@@ -432,8 +432,9 @@ elif platform.system() == "Linux":
 sys.stdout.write(RESET)
 print('')      
 os.chdir(rootDir)
-
-
+print('=====================================')
+os.system('ls')
+print('=====================================')
 sys.stdout.write(GREEN)
 
 if not os.path.exists("JUCE/modules"):
