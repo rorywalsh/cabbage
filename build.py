@@ -407,7 +407,6 @@ elif platform.system() == "Linux":
 
     if not os.path.exists('/usr/local/bin/csound'):
         os.chdir(rootDir)
-        os.system('git checkout develop')
         sys.stdout.write(RED)
         print('Did not find Csound. Downloading and installing to....')
         sys.stdout.write(RESET)
@@ -434,6 +433,8 @@ sys.stdout.write(RESET)
 print('')      
 os.chdir(rootDir)
 print('=====================================')
+if platform.system() == "Linux": 
+    os.system('git checkout develop')
 os.system('ls')
 print('=====================================')
 sys.stdout.write(GREEN)
