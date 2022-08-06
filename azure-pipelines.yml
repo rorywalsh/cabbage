@@ -59,8 +59,8 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-  - checkout: self
   - script: |
+     git checkout develop
      sudo apt-get install ninja-build
      pip install requests
      python --version
