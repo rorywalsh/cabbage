@@ -59,7 +59,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-  - checkout: develop
+  - checkout: self
   - script: |
      sudo apt-get install ninja-build
      pip install requests
