@@ -103,9 +103,9 @@ if args.project is not None:
     projects = [args.project]
 else:
     if manufacturer == "CabbageAudio":
-        projects = ["Cabbage", "CabbagePluginEffect", "CabbagePluginSynth", "CabbagePluginMidiEffect"]
+        projects = ["Cabbage", "CabbagePluginEffect", "CabbagePluginSynth", "CabbagePluginMidiEffect", "CLIConverter"]
     else:
-        projects = ["Cabbage", manufacturer.replace(' ', '_')+"Effect", manufacturer.replace(' ', '_')+"Synth", manufacturer.replace(' ', '_')+"MidiEffect"]
+        projects = ["Cabbage", manufacturer.replace(' ', '_')+"Effect", manufacturer.replace(' ', '_')+"Synth", manufacturer.replace(' ', '_')+"MidiEffect", "CLIConverter"]
 
 if args.packageType is not None:
     packageType = args.packageType
@@ -521,7 +521,6 @@ for project in projects:
                 os.system('cp -Rf ../CabbageRack '+rootDir+'/Cabbage.app/Contents/CabbageRack')
                 os.system('cp ../fmod_csound_fx.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound_fx.dylib')
                 os.system('cp ../fmod_csound.dylib '+rootDir+'/Cabbage.app/Contents/fmod_csound.dylib')
-
             elif "MidiEffect" in project:
                 newProjectName = project.replace("CabbagePlugin", pluginDescription)
                 # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+project+' ' +rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+newProjectName) 
@@ -529,7 +528,11 @@ for project in projects:
                 # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+project+' '+rootDir+'/build/'+project+'_artefacts/'+configType+'/AU/'+project+'.component/Contents/MacOS/'+newProjectName) 
                 os.system('cp -Rf '+project+'_artefacts/'+configType+'/AU/'+project+'.component ' +rootDir+'/Cabbage.app/Contents/'+newProjectName+'.component')
                 os.system( 'codesign -s - ' + rootDir+'/Cabbage.app/Contents/'+newProjectName+'.component --timestamp --deep --force --preserve-metadata=identifier,entitlements')
-
+            elif "CLIConverter" in project:
+                os.system('cp -Rf CLIConverter_artefacts/'+configType+'/CLIConverter '+rootDir+'/Cabbage.app/Contents/CLIConverter')
+                print('=============================================================================')
+                print('cp -Rf CLIConverter_artefacts/'+configType+'/CLIConverter '+rootDir+'/Cabbage.app/Contents/CLIConverter')
+                print('=============================================================================')
             elif "Effect" in project or "Synth" in project:
                 newProjectName = project.replace("CabbagePlugin", pluginDescription)
                 # os.system('mv '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+project+' ' +rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.vst/Contents/MacOS/'+newProjectName) 
@@ -554,6 +557,8 @@ for project in projects:
                 os.system('cp -Rf ../Examples '+rootDir+'/CabbageInstall/Examples')
                 os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
                 os.system('cp -Rf ../Icons '+rootDir+'/CabbageInstall/Icons')
+            elif "CLIConverter" in project:
+                os.system('cp -Rf CLIConverter_artefacts/'+configType+'/CLIConverter '+rootDir+'/Cabbage.app/Contents/CLIConverter')
             elif "Effect" in project or "Synth" in project:
                 newProjectName = project.replace("CabbagePlugin", pluginDescription)
                 os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+newProjectName+'.dll')
@@ -568,6 +573,8 @@ for project in projects:
                 os.system('cp -rf ../Examples '+rootDir+'/CabbageInstall/Examples')
                 os.system('cp -rf ../Themes '+rootDir+'/CabbageInstall/Themes')
                 os.system('cp -rf ../Icons '+rootDir+'/CabbageInstall/Icons')
+            elif "CLIConverter" in project:
+                os.system('cp -Rf CLIConverter_artefacts/'+configType+'/CLIConverter '+rootDir+'/Cabbage.app/Contents/CLIConverter')
             elif "Effect" in project or "Synth" in project:
                 newProjectName = project.replace("CabbagePlugin", pluginDescription)
                 os.system('cp '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/lib'+project+'.so ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
