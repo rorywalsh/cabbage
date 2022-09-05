@@ -16,7 +16,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.133)
+	set(BUILD_VERSION 2.8.134)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -78,8 +78,11 @@ macro(SetIfSynth var value1 value2)
     endif()
 endmacro()
 
+if ("${PROJECT_NAME}" STREQUAL "CLIConverter")
+juce_add_console_app(${PROJECT_NAME}
+    PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
 
-if("${PROJECT_NAME}" STREQUAL "Cabbage")
+elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
     juce_add_gui_app(${PROJECT_NAME}
         ICON_BIG ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png              
         ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png 
@@ -264,6 +267,24 @@ Source/Widgets/CabbageXYPad.h
 Source/CabbageCommonHeaders.h
 Source/CabbageIds.h)
 
+set(BATCH_CONVERTER_SOURCES
+Source/Converter/Main.cpp
+Source/Utilities/CabbageExportPlugin.h
+Source/Utilities/CabbageExportPlugin.cpp
+Source/CabbageCommonHeaders.h
+Source/Widgets/CabbageWidgetBase.cpp
+Source/Widgets/CabbageWidgetBase.h
+Source/Widgets/CabbageWidgetData.cpp
+Source/Widgets/CabbageWidgetData.h
+Source/Widgets/CabbageWidgetDataInitMethods.cpp
+Source/LookAndFeel/CabbageIDELookAndFeel.cpp
+Source/LookAndFeel/CabbageIDELookAndFeel.h
+Source/Settings/CabbageSettings.cpp
+Source/Settings/CabbageSettings.h
+Source/BinaryData/CabbageBinaryData.cpp
+Source/BinaryData/CabbageBinaryData.h
+)
+
 set(IDE_SOURCES
     Source/Application/FileTab.h
     Source/Application/FileTab.cpp
@@ -319,8 +340,12 @@ set(IDE_SOURCES
     Source/Utilities/CabbageSSHFileBrowser.h
     Source/Cabbage.cpp
     Source/Cabbage.h )
+    
+if ("${PROJECT_NAME}" STREQUAL "CLIConverter")
+    target_sources(${PROJECT_NAME} PRIVATE  ${BATCH_CONVERTER_SOURCES} )
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${BATCH_CONVERTER_SOURCES})
 
-if("${PROJECT_NAME}" STREQUAL "Cabbage")
+elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
     target_sources(${PROJECT_NAME} PRIVATE ${COMMON_SOURCES} ${IDE_SOURCES} )
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${COMMON_SOURCES} ${IDE_SOURCES})
 else()
@@ -351,8 +376,21 @@ set(JUCE_MODULES
     juce::juce_audio_plugin_client
     juce::juce_opengl)
 
-
-if("${PROJECT_NAME}" STREQUAL "Cabbage")  
+if ("${PROJECT_NAME}" STREQUAL "CLIConverter")
+    target_compile_definitions(${PROJECT_NAME}
+        PRIVATE
+            CLIConverter=1
+            PluginDesc="${PluginDesc}"
+            JUCE_MODAL_LOOPS_PERMITTED=1
+            CabbageManufacturer="${CabbageManufacturer}"
+    )
+    target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+            juce::juce_core
+        PUBLIC
+            juce::juce_recommended_config_flags
+            juce::juce_recommended_warning_flags)
+elseif("${PROJECT_NAME}" STREQUAL "Cabbage")  
     target_compile_definitions(${PROJECT_NAME}
         PRIVATE
             # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
@@ -420,13 +458,13 @@ elseif(APPLE)
         "/Library/Frameworks/CsoundLib64.framework")  
         include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
     else()
-         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version" FORCE)
-         SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
-         set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/build/libCsoundLib64.a")  
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE STRING "Minimum OS X deployment version" FORCE)
+        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
+        set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/build/libCsoundLib64.a")  
         #  set(CSOUND_LIBRARY "/Users/rwalsh/sourcecode/csound/build/libCsoundLib64.a")  
-         include_directories("/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
+        include_directories("/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
         #  include_directories("/Users/rwalsh/sourcecode/csound/include")
-         set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile/build/libsndfile.a")
+        set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile/build/libsndfile.a")
         #  set(LIB_SNDFILE "/Users/rwalsh/sourcecode/libsndfile/build/libsndfile.a")
     endif()
 

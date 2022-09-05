@@ -88,7 +88,9 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
         else if (CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::allowboundsupdate) == 1)
         {
             child->setBounds (CabbageWidgetData::getBounds (data));
-            editor->updateLayoutEditorFrames();
+#if !CLIConverter
+                editor->updateLayoutEditorFrames();
+#endif
         }
     }
 
@@ -141,8 +143,10 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
     if( behind != CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::movebehind))
     {
         behind = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::movebehind);
-        if(editor != nullptr)
-            editor->moveBehind(CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::channel), behind);
+#if !CLIConverter
+            if(editor != nullptr)
+                editor->moveBehind(CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::channel), behind);
+#endif
     }
     
     populateTextArrays (data);

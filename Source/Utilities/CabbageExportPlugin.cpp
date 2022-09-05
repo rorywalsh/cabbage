@@ -111,7 +111,11 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
                 pluginFilename = currentApplicationDirectory + "/" + pluginDesc + "." + fileExtension;
         }
         
+#if !CLIConverter
         File VSTData (pluginFilename);
+#else
+        File VSTData (pluginFilename.replace("/CLIConverter/Contents", ""));
+#endif
         
         if (!VSTData.exists())
         {
@@ -188,7 +192,12 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
 void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type,  bool encrypt)
 {
     
+//#if !CLIConverter
     File exportedPlugin (fc.withFileExtension (fileExtension).getFullPathName());
+//#else
+//    File exportedPlugin (fc.withFileExtension (fileExtension).getFullPathName().replace("/CLIConverter", ""));
+//#endif
+    
     
     //vcv rack export is the same on all platforms..
     if(type=="VCVRack")
