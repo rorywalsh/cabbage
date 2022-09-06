@@ -558,7 +558,7 @@ for project in projects:
                 os.system('cp -Rf ../Themes '+rootDir+'/CabbageInstall/Themes')
                 os.system('cp -Rf ../Icons '+rootDir+'/CabbageInstall/Icons')
             elif "CLIConverter" in project:
-                os.system('cp -Rf CLIConverter_artefacts/'+configType+'/CLIConverter '+rootDir+'/Cabbage.app/Contents/CLIConverter')
+                os.system('cp -Rf CLIConverter_artefacts/'+configType+'/CLIConverter.exe '+rootDir+'/CabbageInstall/CLIConverter.exe')
             elif "Effect" in project or "Synth" in project:
                 newProjectName = project.replace("CabbagePlugin", pluginDescription)
                 os.system('cp -Rf '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/'+project+'.dll ' +rootDir+'/CabbageInstall/'+newProjectName+'.dll')
@@ -574,7 +574,7 @@ for project in projects:
                 os.system('cp -rf ../Themes '+rootDir+'/CabbageInstall/Themes')
                 os.system('cp -rf ../Icons '+rootDir+'/CabbageInstall/Icons')
             elif "CLIConverter" in project:
-                os.system('cp -Rf CLIConverter_artefacts/'+configType+'/CLIConverter '+rootDir+'/Cabbage.app/Contents/CLIConverter')
+                os.system('cp -Rf CLIConverter_artefacts/'+configType+'/CLIConverter ' +rootDir+'/CabbageInstall/bin/CLIConverter')
             elif "Effect" in project or "Synth" in project:
                 newProjectName = project.replace("CabbagePlugin", pluginDescription)
                 os.system('cp '+rootDir+'/build/'+project+'_artefacts/'+configType+'/VST/lib'+project+'.so ' +rootDir+'/CabbageInstall/bin/'+newProjectName+'.so')
