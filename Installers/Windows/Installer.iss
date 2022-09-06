@@ -48,6 +48,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Source: "{#BuildDir}/Cabbage.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/fmod_csound64.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/fmod_csound64_fx.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
+Source: "{#BuildDir}/CLIConverter.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 ;Source: "{#BuildDir}/CabbageCsoundCLI.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginEffect.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
 Source: "{#BuildDir}/CabbagePluginSynth.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: core; Permissions: users-full;
