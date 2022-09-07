@@ -31,7 +31,7 @@ if(NOT DEFINED JucePlugin_Manufacturer)
     set(JucePlugin_Manufacturer "CabbageAudio")
     set(CabbageManufacturer "CabbageAudio")
 else()
-set(CabbageManufacturer ${JucePlugin_Manufacturer})
+    set(CabbageManufacturer ${JucePlugin_Manufacturer})
 endif()
 
 if(NOT DEFINED BuildStatic)
@@ -381,7 +381,10 @@ if ("${PROJECT_NAME}" STREQUAL "CLIConverter")
         PRIVATE
             CLIConverter=1
             PluginDesc="${PluginDesc}"
+            JUCE_WEB_BROWSER=0
             JUCE_MODAL_LOOPS_PERMITTED=1
+            JUCE_USE_CURL=0
+            CabbagePro=${CabbagePro}
             CabbageManufacturer="${CabbageManufacturer}"
     )
     target_link_libraries(${PROJECT_NAME}
