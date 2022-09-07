@@ -381,7 +381,9 @@ if ("${PROJECT_NAME}" STREQUAL "CLIConverter")
         PRIVATE
             CLIConverter=1
             PluginDesc="${PluginDesc}"
+            JUCE_WEB_BROWSER=0
             JUCE_MODAL_LOOPS_PERMITTED=1
+            JUCE_USE_CURL=0
             CabbageManufacturer="${CabbageManufacturer}"
     )
     target_link_libraries(${PROJECT_NAME}
