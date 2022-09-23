@@ -16,7 +16,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.8.137)
+	set(BUILD_VERSION 2.8.138)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -31,7 +31,7 @@ if(NOT DEFINED JucePlugin_Manufacturer)
     set(JucePlugin_Manufacturer "CabbageAudio")
     set(CabbageManufacturer "CabbageAudio")
 else()
-set(CabbageManufacturer ${JucePlugin_Manufacturer})
+    set(CabbageManufacturer ${JucePlugin_Manufacturer})
 endif()
 
 if(NOT DEFINED BuildStatic)
@@ -384,6 +384,7 @@ if ("${PROJECT_NAME}" STREQUAL "CLIConverter")
             JUCE_WEB_BROWSER=0
             JUCE_MODAL_LOOPS_PERMITTED=1
             JUCE_USE_CURL=0
+            CabbagePro=${CabbagePro}
             CabbageManufacturer="${CabbageManufacturer}"
     )
     target_link_libraries(${PROJECT_NAME}
