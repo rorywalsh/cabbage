@@ -203,7 +203,7 @@ shouldVerifyDownload = True
 # ================================================================================================
 sys.stdout.write(YELLOW)
 if platform.system() == "Darwin":
-    if not os.path.exists("CabbageManual"):
+    if not os.path.exists("CabbageManual") and "Minimal" not in packageType:
         url = "http://cabbageaudio.com/beta/CabbageManual.zip"
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('CabbageManual.zip', 'wb').write(r.content)       
@@ -346,7 +346,7 @@ elif platform.system() == "Windows":
     else:
         print('Found fmod_csound64...')
 
-    if not os.path.exists("CabbageManual"):
+    if not os.path.exists("CabbageManual") and "Minimal" not in packageType:
         url = "http://cabbageaudio.com/beta/CabbageManual.zip"
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('CabbageManual.zip', 'wb').write(r.content)       
