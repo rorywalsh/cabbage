@@ -203,8 +203,8 @@ shouldVerifyDownload = True
 # ================================================================================================
 sys.stdout.write(YELLOW)
 if platform.system() == "Darwin":
-    if not os.path.exists("CabbageManual") and "Minimal" not in packageType:
-        url = "http://cabbageaudio.com/beta/CabbageManual.zip"
+    if not os.path.exists("CabbageManual"):
+        url = "https://cabbageaudio.com/beta/CabbageManual.zip"
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('CabbageManual.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
@@ -346,8 +346,8 @@ elif platform.system() == "Windows":
     else:
         print('Found fmod_csound64...')
 
-    if not os.path.exists("CabbageManual") and "Minimal" not in packageType:
-        url = "http://cabbageaudio.com/beta/CabbageManual.zip"
+    if not os.path.exists("CabbageManual"):
+        url = "https://cabbageaudio.com/beta/CabbageManual.zip"
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('CabbageManual.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
@@ -379,7 +379,7 @@ elif platform.system() == "Linux":
         print('Did not find CabbageManual.zip. Downloading....')
         sys.stdout.write(RESET)
         print('')
-        url = "http://cabbageaudio.com/beta/CabbageManual.zip"
+        url = "https://cabbageaudio.com/beta/CabbageManual.zip"
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open(rootDir+'/CabbageManual.zip', 'wb').write(r.content)       
     else:
