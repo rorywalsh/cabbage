@@ -250,7 +250,6 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<SetStateStringArrayData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "SS[]", csnd::thread::i);
     csnd::plugin<SetStateStringArrayData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "SS[]", csnd::thread::ik);
 
-    
    
     csnd::plugin<SetCabbageIdentifierITimeSArgs>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSet", "", "SW", csnd::thread::i);
     csnd::plugin<SetCabbageIdentifierITime>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSet", "", "SSN", csnd::thread::i);
@@ -449,6 +448,8 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     for (int i = 0; i < cabbageData.getNumChildren(); i++)
     {
         const String typeOfWidget = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::type);
+        const String identChannel = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::identchannel);
+        
         if(typeOfWidget == CabbageWidgetTypes::form)
         {
             const int latency = int(CabbageWidgetData::getNumProp (cabbageData.getChild (i), CabbageIdentifierIds::latency));

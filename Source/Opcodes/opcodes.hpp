@@ -958,6 +958,35 @@ struct ChannelStateRecall : csnd::Plugin<1, 2>
 //===========================================================================
 // FileToStr
 //===========================================================================
+struct AudioArray : csnd::Plugin<1, 1>
+{
+    // only working on a-rate
+    int aperf()
+    {
+        csnd::Vector<csnd::AudioSig> &in = inargs.vector_data<csnd::AudioSig>(0);
+        csnd::Vector<csnd::AudioSig> &out = outargs.vector_data<csnd::AudioSig>(0);
+
+        //set the size of the output array
+        out.init(csound, (int)in.len());
+
+        //iterate over input signals
+        for ( int i = 0 ; i < in.len() ; i++)
+        {
+            //do you assignment here, I'm not sure, but maybe you can do:
+            auto t =  in[i];
+            out.data_array()[i] = in.data_array()[i];
+           
+           //if that doesn't work you probably need to assign the size and data member individually:
+           //out[i]. = in[i];
+           //out[i].data = in[i].data;
+        }
+        return OK;
+    }
+};
+
+//===========================================================================
+// FileToStr
+//===========================================================================
 struct FileToStr : csnd::Plugin<1, 1>
 {
     int init()
