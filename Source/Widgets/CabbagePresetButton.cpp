@@ -86,6 +86,8 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
         setLookAndFeel(&flatLookAndFeel);
     }
     
+	readonly = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::readonly);
+
 	var userFolder = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::userFolder);
 	var factoryFolder = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::factoryFolder);
 
@@ -138,8 +140,12 @@ void CabbagePresetButton::buttonClicked (Button* button)
     m.showMenuAsync(juce::PopupMenu::Options(), [this, numDefaultMenuItems](int choice) {
         if(choice == 0)
             return;
-        else if(choice == 1){
-            owner->savePluginStateToFile (this->currentPreset.getFileNameWithoutExtension(), this->currentPreset.getFullPathName(), false);
+
+		if (choice == 1 && !currentPreset.existsAsFile())
+			choice = 2;
+
+        if(choice == 1){
+			owner->savePluginStateToFile (this->currentPreset.getFileNameWithoutExtension(), this->currentPreset.getFullPathName(), false);
             owner->sendChannelStringDataToCsound(this->getChannel(), this->currentPreset.getFullPathName());
         }
         else if(choice == 2){
@@ -177,11 +183,16 @@ void CabbagePresetButton::buttonClicked (Button* button)
 
 PopupMenu CabbagePresetButton::addPresetsToMenu(String custom)
 {
+
+
     fullPresetList.clear();
     PopupMenu m;
-    m.addItem(1, "Save");
-    m.addItem(2, "Save As");
-    m.addItem(3, "Preset Folder");
+	if (readonly == 0)
+	{
+		m.addItem(1, "Save");
+		m.addItem(2, "Save As");
+		m.addItem(3, "Preset Folder");
+	}
 
     m.addSeparator();
     int numPresetFiles = 4;

@@ -34,6 +34,7 @@ class CabbagePresetButton : public TextButton, public ValueTree::Listener, publi
     String currentPresetDir;
     bool replaceTextWithPreset = false;
     File currentPreset;
+	int readonly = 0;
 
 
 	struct DirAndExt
