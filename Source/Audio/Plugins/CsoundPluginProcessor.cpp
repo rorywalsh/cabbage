@@ -231,7 +231,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<WriteStateData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageWriteStateData.ss", "", "iS", csnd::thread::i);
     csnd::plugin<ReadStateData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageReadStateData.i", "S", "", csnd::thread::ik);
 
-    csnd::plugin<StateDataIsValid>((csnd::Csound*)getEngine()->GetCsound(), "cabbageHasStateData.i", "i", "", csnd::thread::i);
+    csnd::plugin<StateDataIsValid>((csnd::Csound*)getEngine()->GetCsound(), "cabbageHasStateData.k", "k", "", csnd::thread::k);
     
 
     csnd::plugin<GetStateFloatValue>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "i", "S", csnd::thread::i);

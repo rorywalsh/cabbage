@@ -42,27 +42,44 @@ public:
 //====================================================================================================
 struct StateDataIsValid : csnd::Plugin<1, 0>
 {
-    int init()
-    {
-        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
-        if (pd != nullptr)
-        {
-            auto perData = *pd;
-            //csound->message(perData->data);
-            if (perData->data.empty())
-            {
-                outargs[0] = 0;
-            }
-            else
-                outargs[0] = 1;
 
-          
-            return OK;
-        }
+	int perf()
+	{
+		CabbagePersistentData** pd = (CabbagePersistentData * *)csound->query_global_variable("cabbageData");
+		auto perData = *pd;
+		if (perData != nullptr)
+		{
+			std::string jsonData;
+			if (json::accept(jsonData) == false)
+				outargs[0] = 0;
+			else
+				outargs[0] = 1;
+		}
 
-        csound->message("There was a problem reading internal state data\n");
-        return OK;
-    }
+		return OK;
+	}
+
+	int checkStsate()
+	{
+		CabbagePersistentData** pd = (CabbagePersistentData * *)csound->query_global_variable("cabbageData");
+		if (pd != nullptr)
+		{
+			auto perData = *pd;
+			//csound->message(perData->data);
+			if (perData->data.empty())
+			{
+				outargs[0] = 0;
+			}
+			else
+				outargs[0] = 1;
+
+
+			return OK;
+		}
+
+		csound->message("There was a problem reading internal state data\n");
+		return OK;
+	}
 };
 
 //====================================================================================================
