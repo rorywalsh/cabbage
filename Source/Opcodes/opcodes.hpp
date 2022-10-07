@@ -69,7 +69,7 @@ struct StateDataIsValid : csnd::Plugin<1, 0>
 
         if (json::accept(jsonData) == false)
         {
-            outargs[0] = -1;
+            outargs[0] = 0;
         }
         else
             outargs[0] = 1;

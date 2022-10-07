@@ -221,8 +221,8 @@ struct GetCabbageStringValueArrayWithTrigger : csnd::Plugin<2, 1>
 struct GetCabbageValueWithTrigger : csnd::Plugin<2, 1>
 {
     MYFLT* value;
-    MYFLT currentValue;
-    bool firstRun;
+    MYFLT currentValue = 0;
+    bool firstRun = true;
     int init(){
         firstRun = true;
         return getAttribute();        

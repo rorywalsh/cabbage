@@ -109,6 +109,7 @@ void CsoundPluginProcessor::createCsoundGlobalVars(const ValueTree& cabbageData)
         *pd = new CabbagePersistentData();
         auto pdClass = *pd;
         pdClass->data = getInternalState().toStdString();
+        DBG(pdClass->data);
     }
 
     auto** wi = (CabbageWidgetIdentifiers**)getEngine()->QueryGlobalVariable("cabbageData");
@@ -231,28 +232,28 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<WriteStateData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageWriteStateData.ss", "", "iS", csnd::thread::i);
     csnd::plugin<ReadStateData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageReadStateData.i", "S", "", csnd::thread::ik);
 
-    csnd::plugin<StateDataIsValid>((csnd::Csound*)getEngine()->GetCsound(), "cabbageHasStateData.k", "i", "", csnd::thread::i);
-    csnd::plugin<StateDataIsValid>((csnd::Csound*)getEngine()->GetCsound(), "cabbageHasStateData.k", "k", "", csnd::thread::ik);
+//    csnd::plugin<StateDataIsValid>((csnd::Csound*)getEngine()->GetCsound(), "cabbageHasStateData.k", "i", "", csnd::thread::i);
+    csnd::plugin<StateDataIsValid>((csnd::Csound*)getEngine()->GetCsound(), "cabbageHasStateData.k", "k", "", csnd::thread::k);
     
 
-    csnd::plugin<GetStateFloatValue>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "i", "S", csnd::thread::i);
-    csnd::plugin<GetStateFloatValue>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "k", "S", csnd::thread::ik);
-    csnd::plugin<GetStateFloatValueArray>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "k[]", "S", csnd::thread::ik);
-    csnd::plugin<GetStateFloatValueArray>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "i[]", "S", csnd::thread::i);
-    csnd::plugin<GetStateStringValue>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "S", "S", csnd::thread::i);
-    csnd::plugin<GetStateStringValueArray>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "S[]", "S", csnd::thread::ik);
+//    csnd::plugin<GetStateFloatValue>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "i", "S", csnd::thread::i);
+    csnd::plugin<GetStateFloatValue>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "k", "S", csnd::thread::k);
+    csnd::plugin<GetStateFloatValueArray>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "k[]", "S", csnd::thread::k);
+//    csnd::plugin<GetStateFloatValueArray>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "i[]", "S", csnd::thread::i);
+//    csnd::plugin<GetStateStringValue>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "S", "S", csnd::thread::i);
+    csnd::plugin<GetStateStringValueArray>((csnd::Csound*) getEngine()->GetCsound(), "cabbageGetStateValue.s", "S[]", "S", csnd::thread::k);
 
-    csnd::plugin<SetStateFloatData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "Sk", csnd::thread::ik);
-    csnd::plugin<SetStateFloatData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "Si", csnd::thread::i);
+    csnd::plugin<SetStateFloatData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "Sk", csnd::thread::k);
+//    csnd::plugin<SetStateFloatData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "Si", csnd::thread::i);
 
-    csnd::plugin<SetStateFloatArrayData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "Si[]", csnd::thread::i);
-    csnd::plugin<SetStateFloatArrayData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "Sk[]", csnd::thread::ik);
+//    csnd::plugin<SetStateFloatArrayData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "Si[]", csnd::thread::i);
+    csnd::plugin<SetStateFloatArrayData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "Sk[]", csnd::thread::k);
 
-    csnd::plugin<SetStateStringData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "SS", csnd::thread::i);
-    csnd::plugin<SetStateStringData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "SS", csnd::thread::ik);
+//    csnd::plugin<SetStateStringData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "SS", csnd::thread::i);
+    csnd::plugin<SetStateStringData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "SS", csnd::thread::k);
 
-    csnd::plugin<SetStateStringArrayData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "SS[]", csnd::thread::i);
-    csnd::plugin<SetStateStringArrayData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "SS[]", csnd::thread::ik);
+//    csnd::plugin<SetStateStringArrayData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "SS[]", csnd::thread::i);
+    csnd::plugin<SetStateStringArrayData>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSetStateValue.s", "", "SS[]", csnd::thread::k);
 
    
     csnd::plugin<SetCabbageIdentifierITimeSArgs>((csnd::Csound*) getEngine()->GetCsound(), "cabbageSet", "", "SW", csnd::thread::i);

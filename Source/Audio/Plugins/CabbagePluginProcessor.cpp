@@ -1259,7 +1259,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
         
         if (p != nullptr)
         {
-            auto pdClass = *p;
+            auto pdClass = *p;	
             xml->setAttribute("cabbageJSONData", pdClass->data);
         }
     }
@@ -1390,7 +1390,6 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
                         pdClass->data = e->getStringAttribute("cabbageJSONData").toRawUTF8();
                     }
                 }
-
             }
             
             
