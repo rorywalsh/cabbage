@@ -42,44 +42,40 @@ public:
 //====================================================================================================
 struct StateDataIsValid : csnd::Plugin<1, 0>
 {
+    int init()
+    {
+        return checkData();
+    }
 
-	int perf()
+	int kperf()
 	{
-		CabbagePersistentData** pd = (CabbagePersistentData * *)csound->query_global_variable("cabbageData");
-		auto perData = *pd;
-		if (perData != nullptr)
-		{
-			std::string jsonData;
-			if (json::accept(jsonData) == false)
-				outargs[0] = 0;
-			else
-				outargs[0] = 1;
-		}
-
-		return OK;
+        return checkData();
 	}
 
-	int checkStsate()
-	{
-		CabbagePersistentData** pd = (CabbagePersistentData * *)csound->query_global_variable("cabbageData");
-		if (pd != nullptr)
-		{
-			auto perData = *pd;
-			//csound->message(perData->data);
-			if (perData->data.empty())
-			{
-				outargs[0] = 0;
-			}
-			else
-				outargs[0] = 1;
+    int checkData()
+    {
+        std::string jsonData;
+        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+        auto perData = *pd;
+        if (perData != nullptr)
+        {
+            jsonData = perData->data;
+        }
+        else
+        {
+            csound->message("Internal JSON global var is not valid.\n");
+        }
 
 
-			return OK;
-		}
+        if (json::accept(jsonData) == false)
+        {
+            outargs[0] = -1;
+        }
+        else
+            outargs[0] = 1;
 
-		csound->message("There was a problem reading internal state data\n");
-		return OK;
-	}
+        return OK;
+    }
 };
 
 //====================================================================================================
@@ -92,7 +88,7 @@ struct ReadStateData : csnd::Plugin<1, 0>
         return dumpData();
     }
     
-    int perf()
+    int kperf()
     {
         return dumpData();
     }
