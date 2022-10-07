@@ -40,6 +40,34 @@ public:
 //====================================================================================================
 // ReadStateData
 //====================================================================================================
+struct StateDataIsValid : csnd::Plugin<1, 0>
+{
+    int init()
+    {
+        CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
+        if (pd != nullptr)
+        {
+            auto perData = *pd;
+            //csound->message(perData->data);
+            if (perData->data.empty())
+            {
+                outargs[0] = 0;
+            }
+            else
+                outargs[0] = 1;
+
+          
+            return OK;
+        }
+
+        csound->message("There was a problem reading internal state data\n");
+        return OK;
+    }
+};
+
+//====================================================================================================
+// ReadStateData
+//====================================================================================================
 struct ReadStateData : csnd::Plugin<1, 0>
 {
     int init()
@@ -61,7 +89,7 @@ struct ReadStateData : csnd::Plugin<1, 0>
             //csound->message(perData->data);
             if (perData->data.empty())
             {
-                csound->message("No data, temporary or persistent, has been written to internal state...\n");
+                //csound->message("No data, temporary or persistent, has been written to internal state...\n");
             }
             
             outargs.str_data(0).size = int(strlen(perData->data.c_str()));
