@@ -9,15 +9,12 @@ Sets a value in the plugin's internal state object. Can set scalars or arrays. E
 
 <pre><b>cabbageSetStateValue</b> SKeyName, SData</pre>
 <pre><b>cabbageSetStateValue</b> SKeyName, kData</pre>
-<pre><b>cabbageSetStateValue</b> SKeyName, iData</pre>
 <pre><b>cabbageSetStateValue</b> SKeyName, SData[]</pre>
 <pre><b>cabbageSetStateValue</b> SKeyName, kData[]</pre>
 
 #### Initialization
 
-* `iRes` -- -1 on fail, 1 on success
 * `SKeyName` -- JSON key name 
-* `iData` -- scalar data
 * `SData` --- string data
 
 #### Performance
@@ -26,6 +23,8 @@ Sets a value in the plugin's internal state object. Can set scalars or arrays. E
 * `kData` -- scalar data
 * `SData[]` -- string array data
 * `kData[]` -- scalar array data
+
+<blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> These opcodes work at perf-time (k-rate) only due to how and when hosts load saved session data.</blockquote>
 
 ### Example
 
@@ -98,10 +97,6 @@ instr GetStringArrayValue
     printarray SVal, 1, "%s"
 endin
 
-instr SetFloatValue
-    iRes cabbageSetStateValue "pi", chnget:i("sliderValue")
-endin
-
 instr SetFloatArrayValue
     kArr[] fillarray 1, 2, 3, 4
     kRes cabbageSetStateValue "list", kArr
@@ -125,7 +120,6 @@ i"UpdateData" 0 1
 ;i"GetFloatArrayValue" 4 1
 ;i"GetStringValue" 5 1
 ;i"GetStringArrayValue" 6 1
-;i"SetFloatValue" 2 1
 i"SetStringArrayValue" 1 1
 i"ShowData" 3 1
 i"GetStringArrayValue" 4 1
