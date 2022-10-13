@@ -67,7 +67,7 @@ struct StateDataIsValid : csnd::Plugin<1, 0>
         }
 
 
-        if (json::accept(jsonData) == false)
+        if (jsonData.empty())
         {
             outargs[0] = 0;
         }
@@ -157,7 +157,7 @@ struct WriteStateData : csnd::InPlug<2>
             return;
         }
 
-        if (json::accept(jsonString) == false)
+        if (jsonString.empty())
         {
             csound->init_error("Invalid JSON data:" + jsonString + "\n");
             return;
@@ -496,7 +496,7 @@ struct GetStateStringValue : csnd::Plugin<1, 1>
             return;
         }
 
-        if (json::accept(jsonData) == false)
+        if (jsonData.empty())
         {
             outargs.str_data(0).size = 0;
             outargs.str_data(0).data = (char *)("");
@@ -573,7 +573,7 @@ struct GetStateStringValueArray : csnd::Plugin<1, 1>
         }
 
 
-        if (json::accept(jsonData) == false)
+        if (jsonData.empty())
         {
             csound->message("Invalid JSON data:" + jsonData + "\n");
             out.init(csound, 1);
@@ -651,7 +651,7 @@ struct GetStateFloatValue : csnd::Plugin<1, 1>
         }
 
         
-        if (json::accept(jsonData) == false)
+        if (jsonData.empty())
         {
             csound->message("Invalid JSON data:" + jsonData + "\n");
             outargs[0] = -1;
@@ -717,7 +717,7 @@ struct GetStateFloatValueArray : csnd::Plugin<1, 1>
         }
 
 
-        if (json::accept(jsonData) == false)
+        if (jsonData.empty())
         {
             //csound->message("Invalid JSON data (might be caused by precompile..:" + jsonData + "\n");
             out.init(csound, 1);
