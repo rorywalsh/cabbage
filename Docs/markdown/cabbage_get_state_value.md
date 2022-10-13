@@ -6,17 +6,17 @@ Will retrieve a value from a plugin's internal state object. Can retrieve scalar
 
 ### Syntax
 
-<pre>iData <b>cabbageGetStateValue</b> SKeyName</pre>
 <pre>kData <b>cabbageGetStateValue</b> SKeyName</pre>
 <pre>SData <b>cabbageGetStateValue</b> SKeyName</pre>
-<pre>iData[] <b>cabbageGetStateValue</b> SKeyName</pre>
 <pre>kData[] <b>cabbageGetStateValue</b> SKeyName</pre>
 <pre>SData[] <b>cabbageGetStateValue</b> SKeyName</pre>
 
 #### Initialization
 
+
+<blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> These opcodes work at perf-time (k-rate) only due to how and when hosts load saved session data. This means the state data might not be available in the first k-cycle. </blockquote>
+
 * `SKeyName` -- JSON key name 
-* `iData` -- scalar data
 * `SData` --- string data
 
 #### Performance

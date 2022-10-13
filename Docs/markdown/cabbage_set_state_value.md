@@ -14,6 +14,8 @@ Sets a value in the plugin's internal state object. Can set scalars or arrays. E
 
 #### Initialization
 
+<blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> These opcodes work at perf-time (k-rate) only due to how and when hosts load saved session data. This means the state data might not be available in the first k-cycle. </blockquote>
+
 * `SKeyName` -- JSON key name 
 * `SData` --- string data
 
@@ -24,7 +26,6 @@ Sets a value in the plugin's internal state object. Can set scalars or arrays. E
 * `SData[]` -- string array data
 * `kData[]` -- scalar array data
 
-<blockquote style="font-style:italic;border-left:10px solid #93d200;color:rgb(3, 147, 210);padding:1px;padding-left:10px;margin-top:0px;margin-bottom:1px;border-left-width:0.25rem"> These opcodes work at perf-time (k-rate) only due to how and when hosts load saved session data.</blockquote>
 
 ### Example
 
@@ -64,7 +65,7 @@ instr 2
 endin
 
 instr UpdateData
-    iRes cabbageWriteStateData 1, "{\"happy\": true, \"pi\": 1.141, \"test\": \"hello\", \"list\":[1, 0, 2, 3, 4, 5, 2, 3, 6],\"stringList\":[\"hi\", \"who\", \"goes\", \"there\"]"
+    cabbageWriteStateData 1, "{\"happy\": true, \"pi\": 1.141, \"test\": \"hello\", \"list\":[1, 0, 2, 3, 4, 5, 2, 3, 6],\"stringList\":[\"hi\", \"who\", \"goes\", \"there\"]"
     if iRes == -1 then
         prints "Couldn't write JSON data"
     endif
