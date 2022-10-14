@@ -25,8 +25,8 @@
 //===========================================================================================
 void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
 {
-    setProperty (widgetData, CabbageIdentifierIds::top, 10);
-    setProperty (widgetData, CabbageIdentifierIds::left, 10);
+    setProperty (widgetData, CabbageIdentifierIds::top, 0);
+    setProperty (widgetData, CabbageIdentifierIds::left, 0);
     setProperty (widgetData, CabbageIdentifierIds::width, 600);
     setProperty (widgetData, CabbageIdentifierIds::height, 300);
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
