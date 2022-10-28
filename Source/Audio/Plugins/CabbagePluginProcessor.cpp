@@ -44,6 +44,12 @@ createPluginFilter() {
 	const String dir = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName();
 	const String filename(File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName());
 	csdFile = File(dir + "/" + filename);
+    if(csdFile.existsAsFile() == false)
+    {
+        csdFile = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension()+"/"+filename;
+        if(!csdFile.existsAsFile())
+            jassertfalse;
+    }
 #else
 	CabbageUtilities::debug(CabbageManufacturer);
 	csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
