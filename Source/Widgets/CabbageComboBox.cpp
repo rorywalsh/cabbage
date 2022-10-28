@@ -267,7 +267,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
             
                 if(!File(path).existsAsFile())
                 {
-                    csdFile = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + pluginBundleName + "/"+pluginBundleName+".snaps";
+                    path = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + pluginBundleName + "/"+pluginBundleName+".snaps";
                 }
             }
 #else
