@@ -42,11 +42,18 @@ createPluginFilter() {
 #elif JUCE_MAC
 	//read .csd file from the correct location within the .vst bundle.
 	const String dir = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName();
+    const String pluginBundleName = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getParentDirectory().getFileNameWithoutExtension();
 	const String filename(File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName());
 	csdFile = File(dir + "/" + filename);
     if(csdFile.existsAsFile() == false)
     {
         csdFile = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension()+"/"+filename;
+        
+        if(!csdFile.existsAsFile() && (PluginHostType::getPluginLoadedAs() == AudioProcessor::wrapperType_AudioUnit))
+        {
+            csdFile = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + pluginBundleName + "/"+filename;
+        }
+        
         if(!csdFile.existsAsFile())
             jassertfalse;
     }

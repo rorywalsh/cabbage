@@ -260,6 +260,16 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         {
 #ifdef JUCE_MAC
             String path = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + File(getCsdFile()).getParentDirectory().getParentDirectory().getFileNameWithoutExtension() + "/" + fileName.getFileName();
+            
+            if(File(path).existsAsFile() == false && PluginHostType::getPluginLoadedAs() == AudioProcessor::wrapperType_AudioUnit)
+            {
+                const String pluginBundleName = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getParentDirectory().getFileNameWithoutExtension();
+            
+                if(!File(path).existsAsFile())
+                {
+                    csdFile = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + pluginBundleName + "/"+pluginBundleName+".snaps";
+                }
+            }
 #else
             String path = File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName() + "/" + String(CabbageManufacturer) + "/" + File(getCsdFile()).getFileNameWithoutExtension() + "/" + fileName.getFileName();
 #endif
