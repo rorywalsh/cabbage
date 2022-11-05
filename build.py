@@ -251,14 +251,14 @@ if platform.system() == "Darwin":
 
     if not os.path.exists('/Library/Frameworks/CsoundLib64.framework') and buildPro==0:
         print("================== Installing Csound ========================")
-        url = 'https://github.com/csound/csound/releases/download/6.16.2/csound-MacOS_x86_64-6.16.2.dmg'
+        url = 'https://github.com/csound/csound/releases/download/6.18.0/Csound-MacOS-universal-6.18.0.dmg'
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
-        open('csound6.16.0-MacOS_x86_64.dmg', 'wb').write(r.content)  
-        os.system('hdiutil attach '+rootDir+'/csound6.16.0-MacOS_x86_64.dmg')
-        os.system('cp -R /Volumes/Csound6.16.2/ Csound')
-        os.system('hdiutil detach /Volumes/Csound6.16.2/')
+        open('Csound-MacOS-universal-6.18.0.dmg', 'wb').write(r.content)  
+        os.system('hdiutil attach '+rootDir+'/Csound-MacOS-universal-6.18.0.dmg')
+        os.system('cp -R /Volumes/Csound-universal-6.18.0/ Csound')
+        os.system('hdiutil detach /Volumes/Csound-universal-6.18.0')
         os.chdir(rootDir+'/Csound')
-        os.system('sudo installer -pkg csound-MacOS_x86_64-6.16.2.pkg -target /')
+        os.system('sudo installer -pkg csound-MacOS-universal-6.18.0.pkg -target /')
         os.system('sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64')
     else:
         print("Found Csound...")
