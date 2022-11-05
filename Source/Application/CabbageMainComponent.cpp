@@ -153,10 +153,13 @@ wildcardFilter(new WildcardFileFilter("*.csd;*.sco;*.orc;*.txt;*.js;*.html;*.sna
     resizerBar.addMouseListener(this, true);
 	setLookAndFeelColours();
     addAndMakeVisible(goUpButton);
+
+	socket = std::make_unique<DatagramSocket>(true);
 }
 
 CabbageMainComponent::~CabbageMainComponent()
 {
+	socket->shutdown();
     pluginListWindow = nullptr;
     fileTree.setLookAndFeel(nullptr);
     knownPluginList.removeChangeListener (this);
@@ -1947,6 +1950,17 @@ void CabbageMainComponent::replaceText (bool replaceAll)
     }
 }
 //==============================================================================
+int CabbageMainComponent::sendToPort()
+{
+	String code = getCurrentCodeEditor()->getSelectedText();
+	int port = cabbageSettings->getUserSettings()->getIntValue("UDP Port");
+	socket->write("127.0.0.1", 8009, code.toUTF8().getAddress(), code.toUTF8().sizeInBytes());
+
+	return 0;
+}
+
+//==================================================================================
+
 int CabbageMainComponent::testFileForErrors (String file)
 {
     //this method will start a Csound process and test it for i-time errors and possible infinite loops.

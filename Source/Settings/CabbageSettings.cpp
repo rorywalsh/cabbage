@@ -91,6 +91,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("FontSizeConsole", 14);
     defaultPropSet->setValue ("GridSize", 4);
     defaultPropSet->setValue ("IDE_LastKnownHeight", 800);
+	defaultPropSet->setValue ("UDP Port", 10000);
     defaultPropSet->setValue ("IDE_LastKnownWidth", 1200);
     defaultPropSet->setValue ("IDE_LastKnownX", 10);
     defaultPropSet->setValue ("IDE_LastKnownY", 10);

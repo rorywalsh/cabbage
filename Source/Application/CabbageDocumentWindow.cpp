@@ -487,6 +487,9 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::zoomIn);
     menu.addCommandItem (&commandManager, CommandIDs::zoomOut);
+	menu.addSeparator();
+	menu.addCommandItem(&commandManager, CommandIDs::sendToPort);
+	menu.addSeparator();
     
     subMenu.addCommandItem (&commandManager, CommandIDs::zoomInConsole);
     subMenu.addCommandItem (&commandManager, CommandIDs::zoomOutConsole);
@@ -643,7 +646,8 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::batchConvertExamplesVST,
         CommandIDs::toggleFileBrowser,
         CommandIDs::showPluginListEditor,
-        CommandIDs::autoReloadFromDisk
+        CommandIDs::autoReloadFromDisk,
+		CommandIDs::sendToPort
     };
     
     commands.addArray (ids, numElementsInArray (ids));
@@ -913,7 +917,11 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setActive ((shouldShowEditMenu ? true : false));
             break;
             
-            
+		case CommandIDs::sendToPort:
+			result.setInfo(String("Send to port"), String("Send to port"), CommandCategories::edit, 0);
+			result.addDefaultKeypress('.', ModifierKeys::commandModifier);
+			break;
+
         case CommandIDs::columnEdit:
             result.setInfo (String ("Column Edit mode"), String ("Column Edit"), CommandCategories::edit, 0);
             result.addDefaultKeypress ('l', ModifierKeys::commandModifier);
@@ -1288,6 +1296,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->getCurrentOutputConsole()->zoom (false);
             return true;
             
+		case CommandIDs::sendToPort:
+			getContentComponent()->sendToPort();
+			return true;
+
         case CommandIDs::findNext:
             getContentComponent()->findNext (true);
             return true;

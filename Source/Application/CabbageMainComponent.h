@@ -177,6 +177,8 @@ public:
 	int findNext(bool forward);
 	void replaceText(bool replaceAll);
 
+	int sendToPort();
+
 	//==============================================================================
 	AudioDeviceManager deviceManager;
 	AudioPluginFormatManager formatManager;
@@ -266,7 +268,7 @@ public:
 private:
 
 
-
+	std::unique_ptr<DatagramSocket> socket;
     int getTabFileIndex (int32 nodeId);
     int getTabFileIndex (File file);
     OwnedArray<FileTab> fileTabs;

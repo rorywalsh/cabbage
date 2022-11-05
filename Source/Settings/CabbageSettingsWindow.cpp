@@ -309,12 +309,16 @@ void CabbageSettingsWindow::addMiscProperties()
 
     adhocSigningValue.addListener (this);
     adhocSigningValue.setValue (settings.getUserSettings()->getIntValue ("performAdHocCodesign"));
-    
+	
     editorProps.add (new BooleanPropertyComponent (adhocSigningValue, "Codesign plugins", "Perform ad-hoc signing of exported plugins"));
     editorProps.add (new BooleanPropertyComponent (showLastOpenedFileValue, "Auto-load", "Auto-load last opened file"));
     editorProps.add (new BooleanPropertyComponent (alwaysOnTopPluginValue, "Plugin Window", "Always show plugin on top"));
     editorProps.add (new BooleanPropertyComponent (alwaysOnTopGraphValue, "Graph Window", "Always show graph on top"));
     editorProps.add (new BooleanPropertyComponent (autoConnectNodes, "Auto-connect nodes", "Automatically connect nodes to graph"));
+
+	UDPPortValue.addListener(this);
+	UDPPortValue.setValue(settings.getUserSettings()->getIntValue("UDP Port"));
+	editorProps.add(new TextPropertyComponent(Value(UDPPortValue), "UDP Port", 200, false));
 #if defined(MACOSX)
     editorProps.add (new BooleanPropertyComponent (enableKioskMode, "Support Kiosk Mode (Requires restart)", "Support Kiosk Mode on OSX"));
 #endif
@@ -382,6 +386,8 @@ void CabbageSettingsWindow::textPropertyComponentChanged (TextPropertyComponent*
         settings.getUserSettings()->setValue ("SpacesInTabs", comp->getValue().toString());
     else if (comp->getName() == "Csound Path (otool -L)")
         settings.getUserSettings()->setValue ("CsoundPath", comp->getValue().toString());
+	else if (comp->getName() == "UDP Port")
+		settings.getUserSettings()->setValue("UDP Port", comp->getValue().toString());
 }
 
 void CabbageSettingsWindow::resized()
@@ -448,6 +454,8 @@ void CabbageSettingsWindow::valueChanged (Value& value)
         settings.getUserSettings()->setValue ("enableKioskMode", value.getValue().toString());
     else if (value.refersToSameSourceAs (adhocSigningValue))
         settings.getUserSettings()->setValue ("performAdHocCodesign", value.getValue().toString());
+	else if (value.refersToSameSourceAs(UDPPortValue)) 
+		settings.getUserSettings()->setValue("UDP Port", value.getValue().toString());
 }
 
 void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileComponent)

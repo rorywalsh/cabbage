@@ -100,6 +100,7 @@ namespace CommandIDs
         deselectAll         = 0x512028,
         editMode            = 0x512029,
         toggleFileBrowser   = 0x512030,
+		sendToPort			= 0x512031,
 
         showGenericWidgetWindow = 0x612000,
         batchConvertExamplesAU    = 0x612001,
