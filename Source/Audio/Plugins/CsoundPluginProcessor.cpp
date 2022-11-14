@@ -210,7 +210,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 	csound = std::make_unique<Csound> ();
     
 	csdFilePath = filePath;
-	csdFilePath.setAsCurrentWorkingDirectory();
+	//csdFilePath.setAsCurrentWorkingDirectory();
 	csound->SetHostImplementedMIDIIO(true);
 	csound->SetHostImplementedAudioIO(1, 0);
 	csound->SetHostData(this);
@@ -609,7 +609,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     csound->SetStringChannel ("LAST_FILE_DROPPED", const_cast<char*> (""));
 
 
-    csdFilePath.setAsCurrentWorkingDirectory();
+    //csdFilePath.setAsCurrentWorkingDirectory();
     csound->SetChannel("HOST_BUFFER_SIZE", csdKsmps);
     csound->SetChannel("HOME_FOLDER_UID", File::getSpecialLocation (File::userHomeDirectory).getFileIdentifier());
 

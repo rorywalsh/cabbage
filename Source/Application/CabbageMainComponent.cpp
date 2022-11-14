@@ -2116,7 +2116,7 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
 
 
 
-            getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
+            //getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
             //this will create or update plugin...
             this->getCurrentOutputConsole()->setText("\n/*============================================================*/\n");
             graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pluginNodePos);
