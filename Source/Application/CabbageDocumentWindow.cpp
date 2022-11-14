@@ -371,7 +371,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::restartAudioDevice);
     menu.addSeparator();
-    if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
+	if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
     {
         PopupMenu subMenu1, subMenu2, subMenu3;
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffect);
@@ -426,8 +426,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 #if CabbagePro
     menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneEncrypted);
 #endif
-    
-    if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
+    if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Linux)
     {
         menu.addCommandItem(&commandManager, CommandIDs::exportAsFMODSoundPlugin);
         menu.addCommandItem(&commandManager, CommandIDs::exportAsFMODFxPlugin);
@@ -437,7 +436,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     
 #if !CabbagePro
-    if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
+    if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
     {
         PopupMenu batch;
         batch.addCommandItem(&commandManager, CommandIDs::batchConvertExamplesAU);
@@ -865,7 +864,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             break;
             
         case CommandIDs::batchConvertExamplesVST:
-            if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
+            if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
                 result.setInfo("As VST plugins", "Batch export folder as plugin", CommandCategories::general, 0);
             else
                 result.setInfo("Convert samples to VST plugins", "Batch export folder as plugin", CommandCategories::general, 0);

@@ -32,14 +32,14 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
 #endif
         
         
-        if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
+        if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Linux)
         {
             if(type == "Standalone")
                 fileExtension = "";
             else
                 fileExtension = "so";
         }
-        else if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
+        else if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
         {
             if(type == "Standalone")
                 fileExtension = "app";
@@ -94,18 +94,18 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         }
         else  if (type == "FMOD")
         {
-            fileExtension = ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("dylib") : String("dll");
-            pluginFilename = currentApplicationDirectory + (((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("/fmod_csound.dylib") : String("/fmod_csound64.dll"));
+            fileExtension = ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("dylib") : String("dll"));
+            pluginFilename = currentApplicationDirectory + ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("/fmod_csound.dylib") : String("/fmod_csound64.dll"));
         }
         else  if (type == "FMODFx")
         {
-            fileExtension = ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("dylib") : String("dll");
-            pluginFilename = currentApplicationDirectory + (((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0) ? String("/fmod_csound_fx.dylib") : String("/fmod_csound64_fx.dll"));
+            fileExtension = ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("dylib") : String("dll"));
+            pluginFilename = currentApplicationDirectory + ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("/fmod_csound_fx.dylib") : String("/fmod_csound64_fx.dll"));
             
         }
         else  if (type == "Standalone")
         {
-            if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux)
+            if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Linux)
                 pluginFilename = currentApplicationDirectory + "/" + pluginDesc;
             else
                 pluginFilename = currentApplicationDirectory + "/" + pluginDesc + "." + fileExtension;
@@ -171,7 +171,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         }
     }
     
-    if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
+    if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
     {
         if(adhocSign == true)
         {
@@ -234,7 +234,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     }
     
     //plugin files on OSX are bundles, so we need to recursively delete all files in bundle
-    if((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
+    if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
     {
         if(File(exportedPlugin).exists() )
         {
@@ -254,7 +254,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
     File exportedCsdFile;
     
     
-    if ((SystemStats::getOperatingSystemType() & SystemStats::MacOSX) != 0)
+    if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
     {
 
         const String pluginDesc = VSTData.getFileNameWithoutExtension();
@@ -403,67 +403,6 @@ int PluginExporter::setUniquePluginId (File binFile, File csdFile, String plugin
                     mFile.write (pluginId.toUTF8(), 4);
                 }
             }
-            
-//            if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
-//            {
-//                String manufacturer(JucePlugin_Manufacturer);
-//                //                mFile.seekg (0, ios::end);
-//                //                String manuName;
-//                //                if (manu.length() < 16)
-//                //                    for (int y = manu.length(); y < manu.length(); y++)
-//                //                        manu.append (String (" "), 1);
-//                //set manufacturer do this a few times in case the plugin ID appear in more than one place.
-//                for (int r = 0; r < 10; r++)
-//                {
-//                    mFile.seekg (0, std::ios::beg);
-//                    mFile.read ((char*)&buffer[0], file_size);
-//                    loc = cabbageFindPluginId (buffer, file_size, manufacturer.toUTF8());
-//
-//                    if (loc < 0)
-//                    {
-//                        break;
-//                    }
-//                    else
-//                    {
-//                        mFile.seekg (loc, std::ios::beg);
-//                        mFile.write (manufacturer.toUTF8(), manufacturer.length());
-//                    }
-//                }
-//            }
-//
-//
-//
-//
-////            //set plugin name based on .csd file
-//            const char* pluginName = "CabbagePluginSynth";
-//            String plugLibName = csdFile.getFileNameWithoutExtension();
-//
-//            if (plugLibName.length() < 18)
-//                for (int y = plugLibName.length(); y < 18; y++)
-//                    plugLibName.append (String (" "), 1);
-//
-//            mFile.seekg (0, std::ios::end);
-//            //buffer = (unsigned char*)malloc(sizeof(unsigned char)*file_size);
-//
-//            for (int i = 0; i < 5; i++)
-//            {
-//
-//                mFile.seekg (0, std::ios::beg);
-//                mFile.read ((char*)&buffer[0], file_size);
-//
-//
-//                loc = cabbageFindPluginId (buffer, file_size, pluginName);
-//
-//                if (loc < 0)
-//                    break;
-//                else
-//                {
-//                    mFile.seekg (loc, std::ios::beg);
-//                    mFile.write (plugLibName.toUTF8(), 18);
-//                }
-//            }
-//
-//            loc = cabbageFindPluginId (buffer, file_size, pluginIDToReplace[i]);
             
             free (buffer);
             
