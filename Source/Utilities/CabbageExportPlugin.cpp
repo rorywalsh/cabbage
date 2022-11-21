@@ -92,12 +92,17 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
             if(!File(pluginFilename).exists())
                 pluginFilename = File::getSpecialLocation (File::currentApplicationFile).getParentDirectory().getFullPathName()+"/CabbageRack/";
         }
-        else  if (type == "FMOD")
+		else if (type == "Unity")
+		{
+			fileExtension = ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("dylib") : String("dll"));
+			pluginFilename = currentApplicationDirectory + ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("/fmod_csound.dylib") : String("/fmod_csound64.dll"));
+		}
+        else if (type == "FMOD")
         {
-            fileExtension = ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("dylib") : String("dll"));
-            pluginFilename = currentApplicationDirectory + ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("/fmod_csound.dylib") : String("/fmod_csound64.dll"));
+            fileExtension = ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("bundle") : String("dll"));
+            pluginFilename = currentApplicationDirectory + ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("/CsoundUnityNative.bundle") : String("/CsoundUnityNative.dll"));
         }
-        else  if (type == "FMODFx")
+        else if (type == "FMODFx")
         {
             fileExtension = ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("dylib") : String("dll"));
             pluginFilename = currentApplicationDirectory + ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("/fmod_csound_fx.dylib") : String("/fmod_csound64_fx.dll"));
@@ -271,6 +276,11 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             exportedCsdFile = fc.withFileExtension (".csd").getFullPathName();
             exportedCsdFile.replaceWithText (csdFile.loadFileAsString());
         }
+		else if (fileExtension.contains("bundle"))
+		{
+			exportedCsdFile = fc.withFileExtension(".csd").getFullPathName();
+			exportedCsdFile.replaceWithText(csdFile.loadFileAsString());
+		}
         else
         {
             if(encrypt)
