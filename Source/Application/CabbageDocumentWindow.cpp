@@ -371,7 +371,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::restartAudioDevice);
     menu.addSeparator();
-    if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
+	if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
     {
         PopupMenu subMenu1, subMenu2, subMenu3;
         subMenu1.addCommandItem (&commandManager, CommandIDs::exportAsVSTEffect);
@@ -420,14 +420,14 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 #endif
     }
     menu.addSeparator();
-    menu.addCommandItem (&commandManager, CommandIDs::exportAsVCVRackModule);
-    menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneApp);
+	menu.addCommandItem(&commandManager, CommandIDs::exportNativeUnity);
+	menu.addCommandItem(&commandManager, CommandIDs::exportAsVCVRackModule);
+	menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneApp);
 
 #if CabbagePro
     menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneEncrypted);
 #endif
-    
-    if (SystemStats::getOperatingSystemType() != SystemStats::OperatingSystemType::Linux)
+    if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Linux)
     {
         menu.addCommandItem(&commandManager, CommandIDs::exportAsFMODSoundPlugin);
         menu.addCommandItem(&commandManager, CommandIDs::exportAsFMODFxPlugin);
@@ -437,7 +437,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
     menu.addSeparator();
     
 #if !CabbagePro
-    if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
+    if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
     {
         PopupMenu batch;
         batch.addCommandItem(&commandManager, CommandIDs::batchConvertExamplesAU);
@@ -647,7 +647,8 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::toggleFileBrowser,
         CommandIDs::showPluginListEditor,
         CommandIDs::autoReloadFromDisk,
-		CommandIDs::sendToPort
+		CommandIDs::sendToPort,
+		CommandIDs::exportNativeUnity
     };
     
     commands.addArray (ids, numElementsInArray (ids));
@@ -844,9 +845,13 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("Export as FMOD Sound Plugin", "Exports as plugin", CommandCategories::general, 0);
             break;
 
-        case CommandIDs::exportAsFMODFxPlugin:
-            result.setInfo("Export as FMOD Fx Plugin", "Exports as plugin", CommandCategories::general, 0);
-            break;
+		case CommandIDs::exportAsFMODFxPlugin:
+			result.setInfo("Export as FMOD Fx Plugin", "Exports as plugin", CommandCategories::general, 0);
+			break;
+
+		case CommandIDs::exportNativeUnity:
+			result.setInfo("Export as Native Unity Plugin", "Exports as plugin", CommandCategories::general, 0);
+			break;
             
         case CommandIDs::batchConvertExamplesAU:
             result.setInfo ("As AU plugins", "Batch export as plugin", CommandCategories::general, 0);
@@ -865,7 +870,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             break;
             
         case CommandIDs::batchConvertExamplesVST:
-            if (SystemStats::getOperatingSystemType() & SystemStats::MacOSX)
+            if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
                 result.setInfo("As VST plugins", "Batch export folder as plugin", CommandCategories::general, 0);
             else
                 result.setInfo("Convert samples to VST plugins", "Batch export folder as plugin", CommandCategories::general, 0);
@@ -1239,6 +1244,10 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
         case CommandIDs::exportAsFMODSoundPlugin:
             pluginExporter.exportPlugin("FMOD", getContentComponent()->getCurrentCsdFile(), getPluginInfo(currentFile, "id"));
             return true;
+
+		case CommandIDs::exportNativeUnity:
+			pluginExporter.exportPlugin("Unity", getContentComponent()->getCurrentCsdFile(), getPluginInfo(currentFile, "id"));
+			return true;
 
         case CommandIDs::exportAsFMODFxPlugin:
             pluginExporter.exportPlugin("FMODFx", getContentComponent()->getCurrentCsdFile(), getPluginInfo(currentFile, "id"));

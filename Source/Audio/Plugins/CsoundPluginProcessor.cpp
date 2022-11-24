@@ -587,7 +587,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
    createCsoundGlobalVars(cabbageData);
     
     
-    if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win32)
+    if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win)
     {
         csound->SetChannel ("CSD_PATH", csdFilePath.getParentDirectory().getFullPathName().replace ("\\", "\\\\").toUTF8().getAddress());
 		csound->SetStringChannel("USER_HOME_DIRECTORY", CabbageUtilities::getRealUserHomeDirectory().getFullPathName().replace("\\", "\\\\").toUTF8().getAddress());
@@ -621,19 +621,18 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     strStream << dt << std::endl;
     csound->SetStringChannel("CURRENT_DATE_TIME", String(strStream.str()).toUTF8().getAddress());
 
-
-	if((SystemStats::getOperatingSystemType() & SystemStats::OperatingSystemType::Linux) != 0)
+	if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Linux)
     {
 		csound->SetChannel ("LINUX", 1.0);
         csound->SetChannel ("Linux", 1.0);
     }
-	if((SystemStats::getOperatingSystemType() & SystemStats::OperatingSystemType::MacOSX) != 0)
+	if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
     {
 		csound->SetChannel ("MAC", 1.0);
         csound->SetChannel ("Macos", 1.0);
         csound->SetChannel ("MACOS", 1.0);
     }
-	if((SystemStats::getOperatingSystemType() & SystemStats::OperatingSystemType::Windows) != 0)
+	if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Win)
     {
 		csound->SetChannel ("Windows", 1.0);
         csound->SetChannel ("WINDOWS", 1.0);

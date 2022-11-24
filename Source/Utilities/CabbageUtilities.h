@@ -385,7 +385,7 @@ public:
 
     enum TargetPlatformTypes
     {
-        Win32 = 0,
+        Win = 0,
         Linux,
         OSX
     };
@@ -405,7 +405,7 @@ public:
     static int getTargetPlatform()
     {
 #ifdef WIN32
-        return TargetPlatformTypes::Win32;
+        return TargetPlatformTypes::Win;
 #elif LINUX
         return TargetPlatformTypes::Linux;
 #else
@@ -1064,8 +1064,8 @@ public:
 
     static String correctPathSlashes (String path)
     {
-        if (SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::Linux
-            || SystemStats::getOperatingSystemType() == SystemStats::OperatingSystemType::MacOSX)
+        if ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Linux)
+            || (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX))
         {
             path = path.replace ("\\", "/");
         }
