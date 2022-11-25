@@ -886,7 +886,7 @@ void CabbagePluginProcessor::createCabbageParameters()
 					if (CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::channeltype) == "string")
 					{
 						const String workingDir = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::currentdir);
-						const String fileType = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), "filetype");
+						const String fileType = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::filetype);
 						int numOfFiles;
 						Array<File> folderFiles;
 						StringArray comboItems;
@@ -1230,8 +1230,8 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
                 }
                 else
                 {
-                    if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
-                        && CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps" &&
+                    if (CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype) != "preset"
+                        && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype) != "*.snaps" &&
                         CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
                         CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
                                                       presetData.value().get<float>());
