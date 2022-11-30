@@ -51,6 +51,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     getProperties().set("isPresetCombo", false);
     initialiseCommonAttributes (this, widgetData);
 
+ 
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
         CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
 
@@ -73,9 +74,9 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         
         int index = 0;
         if (workingDir.isNotEmpty())
-            pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
+            pluginDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDir);
         else
-            pluginDir = File::getCurrentWorkingDirectory();
+            pluginDir = File(getCsdFile()).getParentDirectory();
         
         if(pluginDir.getChildFile(currentValueAsText).existsAsFile())
         {
@@ -129,7 +130,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
 
     lookAndFeel.customFont = owner->customFont;
     setLookAndFeel(&lookAndFeel);
-}
+    }
 //---------------------------------------------
 CabbageComboBox::~CabbageComboBox()
 {
@@ -313,9 +314,9 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
         
         if (workingDir.isNotEmpty())
-            pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
+            pluginDir = File(getCsdFile()).getParentDirectory().getChildFile(workingDir);
         else
-            pluginDir = File::getCurrentWorkingDirectory();
+            pluginDir = File(getCsdFile()).getParentDirectory();
 
         filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype);
         pluginDir.findChildFiles (dirFiles, File::TypesOfFileToFind::findFilesAndDirectories, false, filetype);
@@ -343,7 +344,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         }
 
         if(currentValueAsText.isNotEmpty())
-            setText(File::getCurrentWorkingDirectory().getChildFile(currentValueAsText).getFileNameWithoutExtension());
+            setText(File(getCsdFile()).getParentDirectory().getChildFile(currentValueAsText).getFileNameWithoutExtension());
 
     }
 
@@ -351,7 +352,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 
 void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only enabled when combo is loading presets or strings...
 {
-    
+
     if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::mode) == "resize")
         return;
     
@@ -399,12 +400,12 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
 		if (fileType.isNotEmpty())
 		{
 			String test = folderFiles[index].getFullPathName();
-			//owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index-1].getFullPathName().replaceCharacters("\\", "/"));
+			owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().replaceCharacters("\\", "/"));
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, folderFiles[index].getFileName());
 		}
         else
         {
-            //owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
+            owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, stringItems[index]);
         }
         
@@ -413,6 +414,7 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
 
 void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
+
     if (prop == CabbageIdentifierIds::value)
     {
         if (isPresetCombo == false)
@@ -431,16 +433,16 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             else
             {
                 currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
-                currentValueAsText = File::getCurrentWorkingDirectory().getChildFile (currentValueAsText).getFileNameWithoutExtension();
+                currentValueAsText = File(getCsdFile()).getParentDirectory().getChildFile (currentValueAsText).getFileNameWithoutExtension();
                 
              
                 workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
                 workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
                 int index = 0;
                 if (workingDir.isNotEmpty())
-                    pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
+                    pluginDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDir);
                 else
-                    pluginDir = File::getCurrentWorkingDirectory();
+                    pluginDir = File(getCsdFile()).getParentDirectory();
                 
                 if(pluginDir.getChildFile(currentValueAsText).existsAsFile())
                 {
@@ -453,14 +455,14 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
                 //this index if different for strings and files?
                 if (index >= 0)
-                    setSelectedItemIndex (index, dontSendNotification);
+                    setSelectedItemIndex (index, sendNotification);
     
                 //can't update the channel value from here as it might update on the same cycle as a cabbageSetValue
                 //this in turn will update the string channel pointer and mess up further called to cabbageSetValue...
                 owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
                 
                 currentItemIndex = index;
-                //CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
+                CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }
 		else
@@ -513,5 +515,5 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         handleCommonUpdates(this, valueTree, false, prop);
     }
 
-    repaint();
+    repaint(); 
 }
