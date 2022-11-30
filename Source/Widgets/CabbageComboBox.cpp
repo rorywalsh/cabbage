@@ -51,7 +51,6 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     getProperties().set("isPresetCombo", false);
     initialiseCommonAttributes (this, widgetData);
 
- 
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
         CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
 
@@ -130,7 +129,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
 
     lookAndFeel.customFont = owner->customFont;
     setLookAndFeel(&lookAndFeel);
-    }
+}
 //---------------------------------------------
 CabbageComboBox::~CabbageComboBox()
 {
@@ -352,7 +351,6 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
 
 void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only enabled when combo is loading presets or strings...
 {
-
     if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::mode) == "resize")
         return;
     
@@ -414,7 +412,6 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
 
 void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-
     if (prop == CabbageIdentifierIds::value)
     {
         if (isPresetCombo == false)
@@ -515,5 +512,5 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         handleCommonUpdates(this, valueTree, false, prop);
     }
 
-    repaint(); 
+    repaint();
 }
