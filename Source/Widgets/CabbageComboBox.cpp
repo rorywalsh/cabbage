@@ -398,7 +398,7 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
 		if (fileType.isNotEmpty())
 		{
 			String test = folderFiles[index].getFullPathName();
-			owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFullPathName().replaceCharacters("\\", "/"));
+			owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFileNameWithoutExtension());
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, folderFiles[index].getFileName());
 		}
         else
