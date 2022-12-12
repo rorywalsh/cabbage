@@ -481,7 +481,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                 if (typeOfWidget == CabbageWidgetTypes::combobox || typeOfWidget == CabbageWidgetTypes::listbox)
                 {
                     const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype);
-                    const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype);
+                    
                     //if we are dealing with a combobox that reads files from a directory, we need to load them before the GUI opens...
                     if (!CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype).contains("preset")
                         && !CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype).contains("*.snaps")
