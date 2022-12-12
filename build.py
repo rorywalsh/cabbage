@@ -256,7 +256,7 @@ if platform.system() == "Darwin":
         open('Csound-MacOS-universal-6.18.0.dmg', 'wb').write(r.content)  
         os.system('hdiutil attach '+rootDir+'/Csound-MacOS-universal-6.18.0.dmg')
         os.system('cp -R /Volumes/Csound-universal-6.18.0/ Csound')
-        os.system('hdiutil detach /Volumes/Csound-universal-6.18.0')
+        os.system('hdiutil detach /Volumes/Csound-universal-6.18.0/')
         os.chdir(rootDir+'/Csound')
         os.system('sudo installer -pkg csound-MacOS-universal-6.18.0.pkg -target /')
         os.system('sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64')
@@ -483,12 +483,12 @@ for project in projects:
     sys.stdout.write(RESET)
     print('')
 
-    if platform.system() == "Darwin" and 'arm64' in platformArch: 
+    if platform.system() == "Darwin": # and 'arm64' in platformArch: 
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
         print('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
-    elif platform.system() == "Darwin":
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
-        print('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
+    # elif platform.system() == "Darwin":
+    #     os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
+    #     print('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     elif platform.system() == "Linux":        
         os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G "'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     elif platform.system() == "Windows": 
