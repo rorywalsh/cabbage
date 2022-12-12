@@ -14,6 +14,8 @@ YELLOW = "\033[0;93m"
 RESET = "\033[0;0m"
 BOLD    = "\033[;1m"
 
+print('Building staging dir...')
+print(os.popen('echo $BUILD_ARTIFACTSTAGINGDIRECTORY').read());
 
 sys.stdout.write(BOLD)
 info = """
