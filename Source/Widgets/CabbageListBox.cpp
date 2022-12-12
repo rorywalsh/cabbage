@@ -60,7 +60,7 @@ CabbageListBox::CabbageListBox(ValueTree wData, CabbagePluginEditor* _owner):
         }
         
         int fileIndex = -1;
-        if(File::getCurrentWorkingDirectory().getChildFile(currentValueAsText).exists())
+        if(File(getCsdFile()).getParentDirectory().getChildFile(currentValueAsText).exists())
             fileIndex = files.indexOf (File(currentValueAsText).getFileNameWithoutExtension());
         else
             fileIndex = files.indexOf (currentValueAsText);
@@ -181,8 +181,8 @@ void CabbageListBox::addItemsToListbox (ValueTree wData)
     {
         workingDir = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::currentdir);
         workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
-        if (File::getCurrentWorkingDirectory().getChildFile(workingDir).exists())
-            listboxDir = File::getCurrentWorkingDirectory().getChildFile(workingDir);
+        if (File(getCsdFile()).getParentDirectory().getChildFile(workingDir).exists())
+            listboxDir = File(getCsdFile()).getParentDirectory().getChildFile(workingDir);
         else if(workingDir.isNotEmpty())
             listboxDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDir);
         else
@@ -241,9 +241,9 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                 String workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
                 workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
                 
-                if(workingDir.isNotEmpty() && File::getCurrentWorkingDirectory().getChildFile (currentValueAsText).exists())
+                if(workingDir.isNotEmpty() && File(getCsdFile()).getParentDirectory().getChildFile (currentValueAsText).exists())
                 {
-                    currentValueAsText = File::getCurrentWorkingDirectory().getChildFile (currentValueAsText).getFullPathName();
+                    currentValueAsText = File(getCsdFile()).getParentDirectory().getChildFile (currentValueAsText).getFullPathName();
                     CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::currentdir, File(currentValueAsText).getParentDirectory().getFullPathName());
                     addItemsToListbox(valueTree);
                 }
@@ -251,9 +251,9 @@ void CabbageListBox::valueTreePropertyChanged (ValueTree& valueTree, const Ident
                 
                 int index = 0;
                 if (workingDir.isNotEmpty())
-                    pluginDir = File::getCurrentWorkingDirectory().getChildFile (workingDir);
+                    pluginDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDir);
                 else
-                    pluginDir = File::getCurrentWorkingDirectory();
+                    pluginDir = File(getCsdFile()).getParentDirectory();
                 
                 if(workingDir.isNotEmpty() && pluginDir.getChildFile(currentValueAsText).exists())
                 {
