@@ -480,7 +480,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
             {
                 if (typeOfWidget == CabbageWidgetTypes::combobox || typeOfWidget == CabbageWidgetTypes::listbox)
                 {
-                    const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), "filetype");
+                    const String fileType = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype);
                     //if we are dealing with a combobox that reads files from a directory, we need to load them before the GUI opens...
                     if (!CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype).contains("preset")
                         && !CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::filetype).contains("*.snaps")
@@ -497,7 +497,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                             CabbageUtilities::searchDirectoryForFiles(workingDir, fileType, folderFiles, comboItems, numOfFiles);
                             const String currentValue = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::value);
 
-                            const int index = comboItems.indexOf(currentValue) + 1;
+                            const int index = comboItems.indexOf(currentValue);
                             const String test = folderFiles[index].getFullPathName();
                             const String channel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel);
 
