@@ -38,7 +38,7 @@
 									<key>GID</key>
 									<integer>80</integer>
 									<key>PATH</key>
-									<string>/Users/rwalsh/sourcecode/cabbage/Cabbage.app</string>
+									<string>SOURCE_PATH/Cabbage.app</string>
 									<key>PATH_TYPE</key>
 									<integer>0</integer>
 									<key>PERMISSIONS</key>
@@ -990,7 +990,7 @@
 						<key>BACKGROUND_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>/Users/rwalsh/sourcecode/cabbage/Images/CabbageOSXInstallerBackground.png</string>
+							<string>SOURCE_PATH/Images/CabbageOSXInstallerBackground.png</string>
 							<key>PATH_TYPE</key>
 							<integer>0</integer>
 						</dict>
@@ -1008,7 +1008,7 @@
 						<key>BACKGROUND_PATH</key>
 						<dict>
 							<key>PATH</key>
-							<string>/Users/rwalsh/sourcecode/cabbage/Images/CabbageOSXInstallerBackground.png</string>
+							<string>SOURCE_PATH/Images/CabbageOSXInstallerBackground.png</string>
 							<key>PATH_TYPE</key>
 							<integer>0</integer>
 						</dict>
@@ -1023,7 +1023,7 @@
 				<key>BACKGROUND_PATH</key>
 				<dict>
 					<key>PATH</key>
-					<string>/Users/rwalsh/sourcecode/cabbage/Images/CabbageOSXInstallerBackground.png</string>
+					<string>SOURCE_PATH/Images/CabbageOSXInstallerBackground.png</string>
 					<key>PATH_TYPE</key>
 					<integer>0</integer>
 				</dict>
@@ -1386,7 +1386,7 @@
 				</dict>
 			</array>
 			<key>NAME</key>
-			<string>CabbageOSXInstaller-2.8.154</string>
+			<string>CABBAGE_INSTALLER_NAME</string>
 			<key>PAYLOAD_ONLY</key>
 			<false/>
 			<key>TREAT_MISSING_PRESENTATION_DOCUMENTS_AS_WARNING</key>
