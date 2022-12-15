@@ -2,7 +2,7 @@
 
 Combobox creates a drop-down list of items which users can choose from. Once the user selects an item, the index of their selection will be sent to Csound on a channel named by the channel string. The default value is 0. The first item in the combobox will be seen as a 1, while 0 refers to no current selection.
 
-A combobox can also be set up a work with strings. In this case Csound will receive the currently selected string instead of the current index. Note that using a combobox in this way renders it useless in terms of host automation. Host automation can only be achieved when a combobox is sending the current index, rather than the current string.  
+A combobox can also be set up a work with strings. In this case Csound will receive the currently selected string instead of the current index. Note that using a combobox in this way renders it useless in terms of host automation. Host automation can only be achieved when a combobox is sending the **current** index, rather than the current string.  
 
 A combobox can also be used to resize a plugin's UI by setting `mode("resize")`. Set `value(3)` to have the UI appear at 100%. User will be given the option of resizing from 25% to 200%.
 
