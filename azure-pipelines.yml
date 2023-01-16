@@ -38,7 +38,7 @@ jobs:
 - job: macOS
   timeoutInMinutes: 100
   pool:
-    vmImage: 'macOS-latest'
+    vmImage: 'macOS-12'
   steps:
   - script: |
      pip install requests
