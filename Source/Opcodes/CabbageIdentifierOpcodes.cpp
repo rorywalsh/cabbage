@@ -178,7 +178,7 @@ int GetCabbageIdentifierArray::getAttribute()
         out[2] = child.getProperty(CabbageIdentifierIds::width);
         out[3] = child.getProperty(CabbageIdentifierIds::height);
     }
-    if(Identifier(identifier) == CabbageIdentifierIds::range)
+    else if(Identifier(identifier) == CabbageIdentifierIds::range)
     {
         out.init(csound, 5);
         out[0] = child.getProperty(CabbageIdentifierIds::min);

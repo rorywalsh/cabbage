@@ -94,6 +94,16 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
         }
     }
 
+    if (pivotx != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivotx) || calledFromConstructor)
+    {
+        pivotx = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivotx);
+    }
+    
+    if (pivoty != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty) || calledFromConstructor)
+    {
+        pivoty = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty);
+    }
+
     if ( rotate != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::rotate) || calledFromConstructor)
     {
         rotate = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::rotate);
