@@ -42,7 +42,7 @@ public:
 
     int getCurrentPlayPosInSamples()
     {
-        return (int)currentPlayPosition * sampleRate;
+        return (int) (currentPlayPosition * sampleRate);
     }
 
     int getLoopLengthInSamples()

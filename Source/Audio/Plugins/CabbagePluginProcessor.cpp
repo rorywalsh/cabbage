@@ -1549,6 +1549,12 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                                                                                                            i.args[2],
                                                                                                            i.args[3]));
                     }
+					else if (identifier == CabbageIdentifierIds::rotate)
+					{
+						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::rotate, i.args[0], nullptr);
+						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::pivotx, i.args[1], nullptr);
+						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::pivoty, i.args[2], nullptr);
+					}
                     else
                     {
                         //DBG(identData->data[i].args.toString());
