@@ -33,8 +33,7 @@ GenericCabbagePluginProcessor::GenericCabbagePluginProcessor (File inputFile, co
 
 GenericCabbagePluginProcessor::~GenericCabbagePluginProcessor()
 {
-    if(csoundChanList)
-        getEngine()->DeleteChannelList (csoundChanList);
+   
 }
 
 //==============================================================================
@@ -55,7 +54,7 @@ void GenericCabbagePluginProcessor::sendChannelDataToCsound()
     for (int i = 0; i < params.size(); i++)
     {
         if (AudioParameterFloat* param = dynamic_cast<AudioParameterFloat*> (params[i]))
-            getEngine()->SetChannel (param->name.toUTF8(), *param);
+            getCsound()->SetChannel (param->name.toUTF8(), *param);
     }
 }
 

@@ -200,13 +200,13 @@ public:
 	bool keyPressed(const KeyPress& key, Component* originatingComponent) override
 	{
         ignoreUnused(originatingComponent);
-        cabbageProcessor.getEngine()->SetChannel("KEY_PRESSED", key.getKeyCode());
+        cabbageProcessor.getCsound()->SetChannel("KEY_PRESSED", key.getKeyCode());
 		return false;
 	}
 
 	bool keyStateChanged(bool isKeyDown, Component* originatingComponent) override
 	{
-        cabbageProcessor.getEngine()->SetChannel ("KEY_DOWN", isKeyDown);
+        cabbageProcessor.getCsound()->SetChannel ("KEY_DOWN", isKeyDown);
 		return false;
 	}
     
@@ -225,7 +225,7 @@ public:
                 mods.add("Alt");
         }
         
-        cabbageProcessor.getEngine()->SetChannel("KEY_MODIFIERS", mods.joinIntoString(" ").toUTF8().getAddress());
+        cabbageProcessor.getCsound()->SetChannel("KEY_MODIFIERS", mods.joinIntoString(" ").toUTF8().getAddress());
     }
 
 	//=============================================================================
