@@ -1557,7 +1557,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
 					}
                     else
                     {
-                        //DBG(identData->data[i].args.toString());
+                        DBG(i.args.toString());
                         cabbageWidgets.getChildWithName(name).setProperty(identifier,i.args, nullptr);
                     }
                     if(identifier == CabbageIdentifierIds::value && getChnsetGestureMode() == 1)

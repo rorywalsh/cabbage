@@ -345,6 +345,11 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         if(currentValueAsText.isNotEmpty())
             setText(File(getCsdFile()).getParentDirectory().getChildFile(currentValueAsText).getFileNameWithoutExtension());
 
+        var items;
+        for(auto& s : folderFiles)
+            items.append(s.getFileNameWithoutExtension());
+        
+        CabbageWidgetData::setProperty(wData, CabbageIdentifierIds::text, items, this);
     }
 
 }

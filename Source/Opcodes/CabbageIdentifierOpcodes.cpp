@@ -268,6 +268,7 @@ int GetCabbageIdentifierSingleITime::getAttribute()
     return OK;
 }
 
+//this is used for lines lie SItems[] cabbageGet "combo1", "items"
 int GetCabbageStringIdentifierArray::getAttribute()
 {
     csnd::Vector<STRINGDAT>& out = outargs.vector_data<STRINGDAT>(0);
@@ -292,15 +293,29 @@ int GetCabbageStringIdentifierArray::getAttribute()
     const auto child = varData->data.getChildWithName(name);
     
     var args = child.getProperty(identifier);
+    const auto test = child.getProperty(CabbageIdentifierIds::colour).toString();
     
     if(Identifier(identifier) == CabbageIdentifierIds::text || Identifier(identifier) == CabbageIdentifierIds::items)
     {
-        const int size = args.size();
-        out.init(csound, size);
-        for ( int i = 0 ; i < size ; i++)
+        if(args.isArray())
         {
-            out[i].size = args[i].toString().length()+1;
-            out[i].data = csound->strdup(args[i].toString().toUTF8().getAddress());
+            const int size = args.size();
+            out.init(csound, size);
+            for ( int i = 0 ; i < size ; i++)
+            {
+                out[i].size = args[i].toString().length()+1;
+                out[i].data = csound->strdup(args[i].toString().toUTF8().getAddress());
+            }
+        }
+        else
+        {
+            const int size = args.size();
+            out.init(csound, size);
+            for ( int i = 0 ; i < size ; i++)
+            {
+                out[i].size = args[i].toString().length()+1;
+                out[i].data = csound->strdup(args[i].toString().toUTF8().getAddress());
+            }
         }
         
     }
