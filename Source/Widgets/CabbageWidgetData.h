@@ -91,7 +91,7 @@ public:
     static String getStringProp (ValueTree widgetData, Identifier prop);
     static Rectangle<int> getBounds (ValueTree widgetData);
     static void setBounds (ValueTree widgetData, Rectangle<int> rect);
-    static void setProperty (ValueTree widgetData, Identifier name, const var& value);
+    static void setProperty (ValueTree widgetData, Identifier name, const var& value, ValueTree::Listener *listenerToExclude = nullptr);
     static var getProperty (ValueTree widgetData, Identifier name);
     //============================================================================
     static IdentifiersAndParameters getSetofIdentifiersAndParameters (String lineOfText);

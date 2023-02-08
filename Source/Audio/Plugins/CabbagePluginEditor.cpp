@@ -67,8 +67,8 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     resized();
 
     tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
-    if(cabbageProcessor.getEngine())
-        cabbageProcessor.getEngine()->SetControlChannel ("IS_EDITOR_OPEN", 1.0);
+    if(cabbageProcessor.getCsound())
+        cabbageProcessor.getCsound()->SetControlChannel ("IS_EDITOR_OPEN", 1.0);
 
     if(cabbageProcessor.currentPluginScale != -1)
         resizePlugin(cabbageProcessor.currentPluginScale);
@@ -87,8 +87,8 @@ CabbagePluginEditor::~CabbagePluginEditor()
     detachOpenGL();
 
     
-    if(cabbageProcessor.getEngine())
-    	cabbageProcessor.getEngine()->SetChannel ("IS_EDITOR_OPEN", 0.0);
+    if(cabbageProcessor.getCsound())
+    	cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 0.0);
 }
 
 void CabbagePluginEditor::refreshValueTreeListeners()
@@ -903,7 +903,7 @@ void CabbagePluginEditor::sliderDragStarted(Slider* slider)
 void CabbagePluginEditor::sliderDragEnded(Slider* slider)
 {
     // If the Csound pointer is null then the given slider is invalid and should not be used (its private pimpl pointer is null and will cause a crash).
-    if (!cabbageProcessor.getEngine())
+    if (!cabbageProcessor.getCsound())
         return;
     
     if (slider->getSliderStyle() != Slider::TwoValueHorizontal && slider->getSliderStyle() != Slider::TwoValueVertical)
@@ -1047,7 +1047,7 @@ void CabbagePluginEditor::addPlantToPopupPlantsArray (const ValueTree& wData, Co
 //======================================================================================================
 void CabbagePluginEditor::updatefTableData (GenTable* table)
 {
-    if (!cabbageProcessor.getEngine())
+    if (!cabbageProcessor.getCsound())
         return;
     
     Array<double> pFields = table->getPfields();
@@ -1106,14 +1106,14 @@ void CabbagePluginEditor::updatefTableData (GenTable* table)
         fStatement.set (1, String (table->tableNumber));
         fStatement.set (0, "f");
 
-        cabbageProcessor.getEngine()->GetCsound()->hfgens (cabbageProcessor.getEngine()->GetCsound(), &ftpp, &evt, 1);
+        cabbageProcessor.getCsound()->GetCsound()->hfgens (cabbageProcessor.getCsound()->GetCsound(), &ftpp, &evt, 1);
         Array<float, CriticalSection> points;
 
         points = Array<float, CriticalSection> (ftpp->ftable, static_cast<int>(ftpp->flen));
         table->setWaveform (points, false);
         //table->enableEditMode(fStatement);
 
-        cabbageProcessor.getEngine()->InputMessage (fStatement.joinIntoString (" ").toUTF8());
+        cabbageProcessor.getCsound()->InputMessage (fStatement.joinIntoString (" ").toUTF8());
     }
 
 }
@@ -1121,28 +1121,28 @@ void CabbagePluginEditor::updatefTableData (GenTable* table)
 //======================================================================================================
 void CabbagePluginEditor::sendChannelDataToCsound (const String& channel, float value)
 {
-    if (csdCompiledWithoutError() && cabbageProcessor.getEngine())
-        cabbageProcessor.getEngine()->SetChannel (channel.getCharPointer(), value);
+    if (csdCompiledWithoutError() && cabbageProcessor.getCsound())
+        cabbageProcessor.getCsound()->SetChannel (channel.getCharPointer(), value);
 }
 
 float CabbagePluginEditor::getChannelDataFromCsound (const String& channel)
 {
-    if (csdCompiledWithoutError() && cabbageProcessor.getEngine())
-        return cabbageProcessor.getEngine()->GetChannel (channel.getCharPointer());
+    if (csdCompiledWithoutError() && cabbageProcessor.getCsound())
+        return cabbageProcessor.getCsound()->GetChannel (channel.getCharPointer());
     
     return 0;
 }
 
 void CabbagePluginEditor::sendChannelStringDataToCsound (const String& channel, String value)
 {
-    if (cabbageProcessor.csdCompiledWithoutError() && cabbageProcessor.getEngine())
-        cabbageProcessor.getEngine()->SetStringChannel (channel.getCharPointer(), value.toUTF8().getAddress());
+    if (cabbageProcessor.csdCompiledWithoutError() && cabbageProcessor.getCsound())
+        cabbageProcessor.getCsound()->SetStringChannel (channel.getCharPointer(), value.toUTF8().getAddress());
 }
 
 void CabbagePluginEditor::sendScoreEventToCsound (const String& scoreEvent)
 {
-    if (cabbageProcessor.csdCompiledWithoutError() && cabbageProcessor.getEngine())
-        cabbageProcessor.getEngine()->InputMessage(scoreEvent.toUTF8());
+    if (cabbageProcessor.csdCompiledWithoutError() && cabbageProcessor.getCsound())
+        cabbageProcessor.getCsound()->InputMessage(scoreEvent.toUTF8());
 }
 
 void CabbagePluginEditor::createEventMatrix(int cols, int rows, String channel)

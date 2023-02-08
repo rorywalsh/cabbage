@@ -1379,7 +1379,7 @@ void CabbageWidgetData::setStringProp (ValueTree widgetData, Identifier name, co
     widgetData.setProperty (name, value, 0);
 }
 
-void CabbageWidgetData::setProperty (ValueTree widgetData, Identifier name, const var& value)
+void CabbageWidgetData::setProperty (ValueTree widgetData, Identifier name, const var& value, ValueTree::Listener *listenerToExclude)
 {
     Array<var>* array = value.getArray();
 
@@ -1390,11 +1390,17 @@ void CabbageWidgetData::setProperty (ValueTree widgetData, Identifier name, cons
         for ( int i = 0 ; i < array->size() ; i++)
             elements.append (array->getReference (i));
 
-        widgetData.setProperty (name, elements, 0);
+        if(listenerToExclude!=nullptr)
+            widgetData.setPropertyExcludingListener(listenerToExclude, name, elements, nullptr);
+        else
+            widgetData.setProperty (name, elements, 0);
         return;
     }
 
-    widgetData.setProperty (name, value, 0);
+    if(listenerToExclude!=nullptr)
+        widgetData.setPropertyExcludingListener(listenerToExclude, name, value, nullptr);
+    else
+        widgetData.setProperty (name, value, 0);
 }
 
 var CabbageWidgetData::getProperty (ValueTree widgetData, Identifier name)

@@ -250,7 +250,7 @@ public:
 
 
 
-    Csound* getEngine()
+    Csound* getCsound()
     {
         return csound.get();
     }
