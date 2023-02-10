@@ -427,7 +427,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 #if CabbagePro
     menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneEncrypted);
 #endif
-    if(CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Linux)
+    if(CabbageUtilities::getTargetPlatform() != CabbageUtilities::TargetPlatformTypes::Linux)
     {
         menu.addCommandItem(&commandManager, CommandIDs::exportAsFMODSoundPlugin);
         menu.addCommandItem(&commandManager, CommandIDs::exportAsFMODFxPlugin);
