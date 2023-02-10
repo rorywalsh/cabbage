@@ -16,7 +16,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.1)
+	set(BUILD_VERSION 2.9.2)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -163,6 +163,8 @@ target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 set(COMMON_SOURCES
 Source/Opcodes/CabbageIdentifierOpcodes.cpp
 Source/Opcodes/CabbageIdentifierOpcodes.h
+Source/Opcodes/CabbageMidiOpcodes.cpp
+Source/Opcodes/CabbageMidiOpcodes.h
 Source/Opcodes/opcodes.hpp
 Source/Audio/Plugins/CabbageCsoundBreakpointData.h
 Source/Audio/Plugins/CabbagePluginEditor.cpp

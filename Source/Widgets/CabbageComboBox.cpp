@@ -244,6 +244,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
                 stringItems.add (item);
             }
         }
+
     }
     //if dealing with preset files...
     else if ( CabbageWidgetData::getStringProp (wData, "fileType").contains(".snaps")) //load items from directory
