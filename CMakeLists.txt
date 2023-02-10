@@ -17,9 +17,9 @@ endif()
 
 if(NOT DEFINED BUILD_VERSION)
 <<<<<<< HEAD
-	set(BUILD_VERSION 2.9.3)
+	set(BUILD_VERSION 2.9.4)
 =======
-	set(BUILD_VERSION 2.9.3)
+	set(BUILD_VERSION 2.9.4)
 >>>>>>> fdfe0545fcabb95e589beca8c4c90edcfc80b020
 endif()
 
