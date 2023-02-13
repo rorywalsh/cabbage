@@ -111,14 +111,17 @@ int CabbageMidiReader::kperf()
         //if user can stopped reading, destroy all notes
         if(hasStopped==false)
         {
-            for(int i = 0 ; i < 128 ; i++)
+            for(int e = 0 ; e < 1024 ; e++)
             {
-                for( int c = 0 ; c < 16 ; c++)
+                for(int i = 0 ; i < 128 ; i++)
                 {
-                    status[i] = (128);
-                    channel[i] = c;
-                    noteNumber[i] = i;
-                    velocity[i] = 0;
+                    for( int c = 0 ; c < 16 ; c++)
+                    {
+                        status[e] = (128);
+                        channel[e] = c;
+                        noteNumber[e] = i;
+                        velocity[e] = 0;
+                    }
                 }
             }
             hasStopped = true;
