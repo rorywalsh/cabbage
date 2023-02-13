@@ -14,7 +14,6 @@ ksmps = 128
 nchnls = 2
 0dbfs = 1
 
-
 instr 1
     SCsdPath chnget "CSD_PATH"
 
@@ -22,16 +21,16 @@ instr 1
     cabbageMidiInfo SMidifile
     kEventIndex = 0
     kNoteIndex init 0
-    kstatus[], kchan[], kNote[], kVel[], kNumEvents, kTrig cabbageMidiReader SMidifile, 1, cabbageGetValue("play"), cabbageGetValue("speed"), 0
+    kStatus[], kChan[], kNote[], kVel[], kNumEvents, kTrig cabbageMidiReader SMidifile, 1, cabbageGetValue("play"), cabbageGetValue("speed"), 0
     knotelength    init    0
     knoteontime    init    0
 
 
     if kTrig == 1 then
         while kEventIndex < kNumEvents do
-            if (kstatus[kEventIndex] == 128) then            //note off
+            if (kStatus[kEventIndex] == 128) then            //note off
                 turnoff2 2, 1, 1
-            elseif (kstatus[kEventIndex] == 144) then        //note on 
+            elseif (kStatus[kEventIndex] == 144) then        //note on 
                 event "i", 2, 0, 10, kNote[kEventIndex]+cabbageGetValue:k("transpose"), kVel[kEventIndex]/127       
             endif
             kEventIndex += 1
