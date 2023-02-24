@@ -50,6 +50,7 @@ public:
     void createViewMenu (PopupMenu&);
     void createHelpMenu (PopupMenu&);
     void createToolsMenu (PopupMenu&);
+    PopupMenu createFontMenu();
     void getAllCommands (Array<CommandID>&) override;
     void getCommandInfo (CommandID commandID, ApplicationCommandInfo&) override;
     bool perform (const InvocationInfo&) override;
@@ -73,6 +74,7 @@ public:
     }
     
 private:
+    Array<Font> fonts;
     //=======================================================
     ApplicationCommandManager commandManager;
     PopupMenu createExamplesMenu();

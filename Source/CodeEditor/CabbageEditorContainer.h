@@ -79,6 +79,8 @@ public:
     void mouseEnter (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
 
+	void setDefaultFont();
+
     int getStatusBarPosition();
     void hideOutputConsole();
     std::unique_ptr<CabbageCodeEditorComponent> editor;

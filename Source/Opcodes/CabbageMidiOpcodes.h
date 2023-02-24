@@ -10,18 +10,11 @@
 
 
 #include <plugin.h>
-#include <string>
- // #include <iomanip>
-#include <fstream>
-// #include <iostream>
-#include "json.hpp"
-// #include <algorithm>
 #include "../CabbageCommonHeaders.h"
-using json = nlohmann::json;
-
 #include "../Widgets/CabbageWidgetData.h"
 #include "JuceHeader.h"
-
+#include <string>
+#include <fstream>
 //====================================================================================================
 // ReadStateData
 //====================================================================================================
@@ -35,7 +28,7 @@ struct CabbageMidiReader : csnd::Plugin<6, 5>
     double nextStartTime = -1.0;
     double startTime;
     int getStatusType(juce::MidiMessage mess);
-    void stopAllNotes();
+
     bool hasStopped = false;
     int status[1024];
     int channel[1024];

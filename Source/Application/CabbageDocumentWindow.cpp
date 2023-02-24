@@ -333,6 +333,21 @@ PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const S
     
 }
 
+PopupMenu CabbageDocumentWindow::createFontMenu()
+{
+    PopupMenu menu;
+    fonts.clear();
+    Font::findFonts(fonts);
+    int i = -10000;
+    menu.addItem(i++, "Default font (Deja Vu)");
+    for (auto& f : fonts)
+    {
+        menu.addItem(i++, f.getTypefaceName());
+    }
+
+    return menu;
+}
+
 void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 {
     menu.addCommandItem (&commandManager, CommandIDs::newFile);
@@ -487,9 +502,12 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::zoomIn);
     menu.addCommandItem (&commandManager, CommandIDs::zoomOut);
-	menu.addSeparator();
+    PopupMenu m = createFontMenu();
+    menu.addSubMenu("Select Font", m);
+    menu.addSeparator();
 	menu.addCommandItem(&commandManager, CommandIDs::sendToPort);
 	menu.addSeparator();
+
     
     subMenu.addCommandItem (&commandManager, CommandIDs::zoomInConsole);
     subMenu.addCommandItem (&commandManager, CommandIDs::zoomOutConsole);
@@ -558,6 +576,20 @@ void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIn
     {
         getContentComponent()->openFile (exampleFiles[menuItemID - examplesMenuBaseID].getFullPathName());
     }
+    else if (menuItemID < 0)
+    {
+        if (menuItemID + 10000 == 0)
+        {
+            getContentComponent()->getCurrentEditorContainer()->setDefaultFont();
+            cabbageSettings->getUserSettings()->setValue("Font", "Default");
+        }
+        else
+        {
+            getContentComponent()->getCurrentCodeEditor()->setFont(fonts[menuItemID + 9999]);
+            cabbageSettings->getUserSettings()->setValue("Font", fonts[menuItemID + 9999].getTypefaceName());
+            DBG(fonts[menuItemID + 9999].getTypefaceName());
+        }
+    }
 }
 
 void CabbageDocumentWindow::focusGained (FocusChangeType cause) //grab focus when user clicks on editor
@@ -582,7 +614,7 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::closeDocument,
         CommandIDs::saveDocument,
         CommandIDs::buildNow,
-                              CommandIDs::buildNoConnect,
+        CommandIDs::buildNoConnect,
         CommandIDs::saveGraph,
         CommandIDs::saveGraphAs,
         CommandIDs::exportTheme,

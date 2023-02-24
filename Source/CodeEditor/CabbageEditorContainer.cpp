@@ -43,13 +43,10 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* cabbageSettings
 
     editor->setLineNumbersShown (true);
     editor->addMouseListener (this, true);
-    Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor (CabbageBinaryData::DejaVuSansMonoBold_ttf,  CabbageBinaryData::DejaVuSansMonoBold_ttfSize);
-    const int fontSize = settings->getUserSettings()->getIntValue ("FontSize", 17);
-    const int fontSizeConsole = settings->getUserSettings()->getIntValue ("FontSizeConsole", 14);
-    editor->setFont (Font (fontPtr).withHeight (fontSize));
-    editor->setFontSize (fontSize);
+    setDefaultFont();
     editor->setVisible (true);
     outputConsole->setVisible (true);
+    const int fontSizeConsole = settings->getUserSettings()->getIntValue("FontSizeConsole", 14);
     outputConsole->setFontSize (fontSizeConsole);
     statusBar.addMouseListener (this, true);
 
@@ -72,6 +69,23 @@ CabbageEditorContainer::~CabbageEditorContainer()
     outputConsole = nullptr;
 }
 
+void CabbageEditorContainer::setDefaultFont()
+{
+    const int fontSize = settings->getUserSettings()->getIntValue("FontSize", 17);
+    const String font = settings->getUserSettings()->getValue("Font");
+
+    if (font == "Default")
+    {
+        Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor(CabbageBinaryData::DejaVuSansMonoBold_ttf, CabbageBinaryData::DejaVuSansMonoBold_ttfSize);
+       
+        editor->setFont(Font(fontPtr).withHeight(fontSize));
+        editor->setFontSize(fontSize);
+    }
+    else
+    {
+        editor->setFont(Font(font, fontSize, 0));
+    }
+}
 void CabbageEditorContainer::hideOutputConsole()
 {
     statusBar.setBounds (0, getHeight() - statusBar.getHeight(), getWidth(), statusBar.getHeight());
