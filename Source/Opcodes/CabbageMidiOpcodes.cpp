@@ -7,6 +7,8 @@
 
 #include "CabbageMidiOpcodes.h"
 
+#ifndef WIN32
+
 int CabbageMidiReader::init()
 {
     currentTrack = 0;
@@ -206,6 +208,4 @@ int CabbageMidiInfo::init()
 
 }
        
-       
- 
-    
+#endif

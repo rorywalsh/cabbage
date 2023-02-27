@@ -26,7 +26,11 @@
 #include "csdl.h"
 #include <cwindow.h>
 #include "../../Opcodes/opcodes.hpp"
+
+#if !JUCE_WINDOWS
 #include "../../Opcodes/CabbageMidiOpcodes.h"
+#endif
+
 #include "../../Opcodes/CabbageIdentifierOpcodes.h"
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"

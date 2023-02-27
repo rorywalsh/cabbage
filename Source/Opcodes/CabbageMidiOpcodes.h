@@ -8,6 +8,7 @@
 #ifndef CabbageMIDIOpcode_h
 #define CabbageMIDIOpcode_h
 
+#ifndef WIN32
 
 #include <plugin.h>
 #include "../CabbageCommonHeaders.h"
@@ -18,6 +19,7 @@
 //====================================================================================================
 // ReadStateData
 //====================================================================================================
+
 struct CabbageMidiReader : csnd::Plugin<6, 5>
 {
     int init();
@@ -41,4 +43,6 @@ struct CabbageMidiInfo : csnd::InPlug<1>
 {
     int init();
 };
+#endif
+
 #endif /* CabbageMIDIOpcode_h */
