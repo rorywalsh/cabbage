@@ -89,7 +89,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("ExternalEditor", 0);
     defaultPropSet->setValue ("FontSize", 14);
     defaultPropSet->setValue ("FontSizeConsole", 14);
-    defaultPropSet->setValue ("Font", "");
+    defaultPropSet->setValue ("Font", "Default");
     defaultPropSet->setValue ("GridSize", 4);
     defaultPropSet->setValue ("IDE_LastKnownHeight", 800);
 	defaultPropSet->setValue ("UDP Port", 10000);
