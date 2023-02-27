@@ -74,7 +74,18 @@ void CabbageEditorContainer::setDefaultFont()
     const int fontSize = settings->getUserSettings()->getIntValue("FontSize", 17);
     const String font = settings->getUserSettings()->getValue("Font");
 
-    if (font == "Default")
+    Array<Font> fonts;
+    bool foundFont = false;
+    Font::findFonts(fonts);
+    for (auto& f : fonts)
+    {
+        if (f.getTypefaceName() == font)
+        {
+            foundFont = true;
+        }
+    }
+
+    if (font == "Default" && !foundFont)
     {
         Typeface::Ptr fontPtr = Typeface::createSystemTypefaceFor(CabbageBinaryData::DejaVuSansMonoBold_ttf, CabbageBinaryData::DejaVuSansMonoBold_ttfSize);
        
