@@ -224,7 +224,7 @@ void CabbageEncoder::paint (Graphics& g)
 
         g.fillPath (newPolygon);
 
-        g.setColour (Colour::fromString (trackercolour).withAlpha (isMouseOver ? 1.0f : 0.9f));
+        g.setColour (Colour::fromString (trackercolour));
 
         const float thickness = 0.7f;
         {
@@ -241,7 +241,7 @@ void CabbageEncoder::paint (Graphics& g)
         g.fillPath (p, AffineTransform::rotation (angle).translated (centreX, centreY));
 
         //if (slider.isEnabled())
-        g.setColour (Colour::fromString (trackercolour).withAlpha (isMouseOver ? 0.7f : 0.5f));
+        g.setColour (Colour::fromString (trackercolour));
         //else
         //    g.setColour (Colour (0x80808080));
 
