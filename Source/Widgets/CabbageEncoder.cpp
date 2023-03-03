@@ -192,7 +192,7 @@ void CabbageEncoder::paint (Graphics& g)
     const float ry = centreY - radius;
     const float rw = radius * 2.0f;
 
-    float angle = (currentEncValue / repeatInterval * 2 * PI) + PI;
+    float angle = (((currentEncValue / repeatInterval) - repeatInterval) * 2 * PI);
 
 
     if (radius > 12.0f)
