@@ -469,6 +469,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("presetIgnore"):
             case HashStringToInt ("protectedItems"):
             case HashStringToInt ("readOnly"):
+            case HashStringToInt ("repeatInterval"):
             case HashStringToInt ("scrollbars"):
             case HashStringToInt ("sidechain"):
             case HashStringToInt ("sliderSkew"):

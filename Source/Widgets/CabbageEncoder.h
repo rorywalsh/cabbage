@@ -48,6 +48,7 @@ class CabbageEncoder : public Component, public ValueTree::Listener, public Cabb
     int line = 1;
     int progress = 0;
     int decimalPlaces = 1;
+    float repeatInterval = 100;
     String outlinecolour, colour, trackercolour, text, textcolour, popupText;
     BubbleMessageComponent popupBubble;
     bool flatStyle = false;

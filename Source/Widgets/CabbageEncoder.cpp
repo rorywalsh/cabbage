@@ -14,6 +14,7 @@
 CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     :shouldShowValueTextBox (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuetextbox)),
     decimalPlaces (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces)),
+    repeatInterval(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::repeatInterval)),
     outlinecolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)),
     colour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)),
     trackercolour (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::trackercolour)),
@@ -190,7 +191,9 @@ void CabbageEncoder::paint (Graphics& g)
     const float rx = centreX - radius;
     const float ry = centreY - radius;
     const float rw = radius * 2.0f;
-    const float angle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
+
+    float angle = (currentEncValue / repeatInterval * 2 * PI) + PI;
+
 
     if (radius > 12.0f)
     {

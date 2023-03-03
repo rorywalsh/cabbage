@@ -873,6 +873,7 @@ void CabbageWidgetData::setEncoderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
     setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
     setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
+    setProperty(widgetData,  CabbageIdentifierIds::repeatInterval, 100);
 }
 
 void CabbageWidgetData::setGroupBoxProperties (ValueTree widgetData, int ID)
