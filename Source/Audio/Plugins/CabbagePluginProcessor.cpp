@@ -1522,6 +1522,9 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
 
         if(cabbageWidgets.getChildWithName(name).isValid())
         {
+			const auto child = cabbageWidgets.getChildWithName(name);
+			const String widgetType(CabbageWidgetData::getStringProp(child, "type"));
+
             if(!i.args.isUndefined())
             {
                 if(!i.identWithArgument)
@@ -1555,11 +1558,23 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
 						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::pivotx, i.args[1], nullptr);
 						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::pivoty, i.args[2], nullptr);
 					}
+					/*else if (widgetType == CabbageWidgetTypes::hrange || widgetType == CabbageWidgetTypes::hrange &&
+						identifier == CabbageIdentifierIds::value)
+					{
+						var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
+						const float min = getCsound()->GetChannel(channels[0].toString().toUTF8());
+						const float max = getCsound()->GetChannel(channels[1].toString().toUTF8());
+						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::minvalue, min, nullptr);
+						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::maxvalue, max, nullptr);
+
+					}*/
                     else
                     {
                         DBG(i.args.toString());
                         cabbageWidgets.getChildWithName(name).setProperty(identifier,i.args, nullptr);
                     }
+
+					
                     if(identifier == CabbageIdentifierIds::value && getChnsetGestureMode() == 1)
                     {
                         var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
@@ -1583,9 +1598,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                     }
                 }
                 else
-                {
-                    
-                        
+                {       
                     CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), i.args.toString().paddedLeft(' ',1));
                     if(i.args.toString().contains(CabbageIdentifierIds::populate))
                         CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::update, Random::getSystemRandom().nextInt());
