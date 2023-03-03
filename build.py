@@ -89,7 +89,7 @@ if args.generator is not None:
     generator = args.generator
 else:
     if platform.system() == "Windows":
-        generator = "Visual Studio 17 2022"
+        generator = "Visual Studio 16 2019"
     elif platform.system() == "Linux":
         generator = "Ninja"
     elif platform.system() == "Darwin":
