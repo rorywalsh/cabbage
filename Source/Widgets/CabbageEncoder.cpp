@@ -138,7 +138,7 @@ void CabbageEncoder::mouseDrag (const MouseEvent& e)
     {
         if (yAxis != e.getOffsetFromDragStart().getY())
         {
-            sliderPos = sliderPos + (e.getOffsetFromDragStart().getY() < yAxis ? -50 : 50);
+            sliderPos = sliderPos + (e.getOffsetFromDragStart().getY() < yAxis ? -150 : 150);
             currentEncValue = CabbageUtilities::roundToPrec (currentEncValue + (e.getOffsetFromDragStart().getY() < yAxis ? sliderIncr : -sliderIncr), 5);
 
             if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::minenabled) == 1)
