@@ -135,10 +135,10 @@ void CabbageEncoder::mouseDrag (const MouseEvent& e)
     if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::active) == 1)
     {
         //trying to regulate increments based on full cycle 
-        velocity = abs(yAxis - e.getOffsetFromDragStart().getY()) * (repeatInterval / sliderIncr)/50;
+        velocity = abs(yAxis - e.getOffsetFromDragStart().getY()) * (repeatInterval / sliderIncr)/75;
 
         if (e.mods.isCtrlDown() || e.mods.isAltDown())
-            velocity *= 0.05;
+            velocity *= 0.01;
         if (yAxis != e.getOffsetFromDragStart().getY())
         {
             currentEncValue = CabbageUtilities::roundToPrec(currentEncValue + ((e.getOffsetFromDragStart().getY() < yAxis) ? (sliderIncr * jmax(1.0, velocity)) : -(sliderIncr * jmax(1.0, velocity))), decimalPlaces);
