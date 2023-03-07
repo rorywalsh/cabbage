@@ -37,6 +37,7 @@ CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     
     skew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
     value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
+    startingValue = value;
     currentEncValue = value;
     
     prefix  = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valueprefix);
