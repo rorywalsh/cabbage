@@ -54,7 +54,7 @@ CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     addAndMakeVisible (textLabel);
     addAndMakeVisible (valueLabel);
     valueLabel.setVisible (true);
-    valueLabel.setText (createValueText(value, 3, "", postfix), dontSendNotification);
+    valueLabel.setText (createValueText(currentEncValue, decimalPlaces, "", postfix), dontSendNotification);
     textLabel.setVisible (true);
     createPopupBubble();
     valueLabel.setEditable (true);
