@@ -56,6 +56,8 @@ class CabbageEncoder : public Component, public ValueTree::Listener, public Cabb
     String postfix = "";
     String popupPrefix = "";
     String popupPostfix = "";
+    double velocity = 1;
+    bool firstDrag = true;
 
 public:
 
@@ -78,6 +80,11 @@ public:
     void mouseEnter (const MouseEvent& e) override;
     void mouseDrag (const MouseEvent& e) override;
     void mouseExit (const MouseEvent& e) override;
+    void mouseUp(const MouseEvent& e) override
+    {
+        yAxis = 0;
+    }
+
     void mouseWheelMove (const MouseEvent& event, const MouseWheelDetails& wheel) override;
     void paint (Graphics& g) override;
     void showPopup (int displayTime = 250);

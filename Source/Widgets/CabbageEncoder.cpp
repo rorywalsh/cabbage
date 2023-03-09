@@ -33,10 +33,11 @@ CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     min = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
     max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
     sliderIncr = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
-    decimalPlaces = String(sliderIncr).length();
+    decimalPlaces = String(sliderIncr).length()-1;
     
     skew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
     value = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value);
+    startingValue = value;
     currentEncValue = value;
     
     prefix  = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::valueprefix);
@@ -53,7 +54,7 @@ CabbageEncoder::CabbageEncoder (ValueTree wData, CabbagePluginEditor* _owner)
     addAndMakeVisible (textLabel);
     addAndMakeVisible (valueLabel);
     valueLabel.setVisible (true);
-    valueLabel.setText (createValueText(value, 3, "", postfix), dontSendNotification);
+    valueLabel.setText (createValueText(currentEncValue, decimalPlaces, "", postfix), dontSendNotification);
     textLabel.setVisible (true);
     createPopupBubble();
     valueLabel.setEditable (true);
@@ -80,7 +81,6 @@ void CabbageEncoder::createPopupBubble()
 void CabbageEncoder::labelTextChanged (Label* label)
 {
     float labelValue = jlimit (min, max, label->getText().getFloatValue());
-    sliderPos = 0;
     currentEncValue = value;
     valueLabel.setText (createValueText(labelValue, 3, "", postfix), dontSendNotification);
     owner->sendChannelDataToCsound (getChannel(), currentEncValue);
@@ -95,13 +95,11 @@ void CabbageEncoder::mouseWheelMove (const MouseEvent& event, const MouseWheelDe
         {
             currentEncValue -= sliderIncr;
             currentEncValue = jmax (min, currentEncValue);
-            sliderPos = sliderPos + 50;
         }
         else
         {
             currentEncValue += sliderIncr;
             currentEncValue = jmin (max, currentEncValue);
-            sliderPos = sliderPos - 50;
         }
 
 
@@ -117,11 +115,12 @@ void CabbageEncoder::mouseDown (const MouseEvent& e)
     {
         if (e.getNumberOfClicks() > 1)
         {
-            sliderPos = 0;
+            velocity = 1;
             currentEncValue = startingValue;
             repaint();
             owner->sendChannelDataToCsound (getChannel(), currentEncValue);
             showPopup();
+            firstDrag = true;
         }
     }
 }
@@ -136,10 +135,14 @@ void CabbageEncoder::mouseDrag (const MouseEvent& e)
 {
     if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::active) == 1)
     {
+        //trying to regulate increments based on full cycle 
+        velocity = abs(yAxis - e.getOffsetFromDragStart().getY()) * (repeatInterval / sliderIncr)/75;
+
+        if (e.mods.isCtrlDown() || e.mods.isAltDown())
+            velocity *= 0.01;
         if (yAxis != e.getOffsetFromDragStart().getY())
         {
-            sliderPos = sliderPos + (e.getOffsetFromDragStart().getY() < yAxis ? -150 : 150);
-            currentEncValue = CabbageUtilities::roundToPrec (currentEncValue + (e.getOffsetFromDragStart().getY() < yAxis ? sliderIncr : -sliderIncr), 5);
+            currentEncValue = CabbageUtilities::roundToPrec(currentEncValue + ((e.getOffsetFromDragStart().getY() < yAxis) ? (sliderIncr * jmax(1.0, velocity)) : -(sliderIncr * jmax(1.0, velocity))), decimalPlaces);
 
             if (CabbageWidgetData::getNumProp (widgetData, CabbageIdentifierIds::minenabled) == 1)
                 currentEncValue = jmax (min, currentEncValue);
@@ -148,13 +151,17 @@ void CabbageEncoder::mouseDrag (const MouseEvent& e)
                 currentEncValue = jmin (max, currentEncValue);
 
             yAxis = e.getOffsetFromDragStart().getY();
-            repaint();
-            valueLabel.setText (createValueText(currentEncValue, 3, "", postfix), dontSendNotification);
 
-            //  valueLabel.setText(String(currentEncValue, 2), dontSendNotification);
+            repaint();
+            valueLabel.setText (createValueText(currentEncValue, decimalPlaces, "", postfix), dontSendNotification);
+
+            firstDrag = false;
+
             owner->sendChannelDataToCsound (getChannel(), currentEncValue);
             showPopup();
         }
+
+        
     }
 }
 
@@ -192,7 +199,7 @@ void CabbageEncoder::paint (Graphics& g)
     const float ry = centreY - radius;
     const float rw = radius * 2.0f;
 
-    float angle = (((currentEncValue / repeatInterval) - repeatInterval) * 2 * PI);
+    float angle = (((currentEncValue / repeatInterval)) * 2 * PI);
 
 
     if (radius > 12.0f)
@@ -307,7 +314,6 @@ void CabbageEncoder::valueTreePropertyChanged (ValueTree& valueTree, const Ident
     {
         currentEncValue = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value);
         valueLabel.setText (createValueText(currentEncValue, 3, "", postfix), dontSendNotification);
-        //sliderPos = 1.f/currentEncValue;
         repaint();
     }
     else
