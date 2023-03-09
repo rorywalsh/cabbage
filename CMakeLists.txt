@@ -16,11 +16,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-<<<<<<< HEAD
-	set(BUILD_VERSION 2.9.20)
-=======
-	set(BUILD_VERSION 2.9.20)
->>>>>>> 1982fd3c2402e0acb222726823d79eb7628326b4
+	set(BUILD_VERSION 2.9.21)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
