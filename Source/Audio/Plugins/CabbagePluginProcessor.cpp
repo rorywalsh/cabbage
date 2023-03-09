@@ -85,15 +85,22 @@ CabbagePluginProcessor::CabbagePluginProcessor(const File& inputFile, BusesPrope
 	cabbageWidgets("CabbageWidgetData"),
 	csdFile(inputFile)
 {
+
 	CabbageUtilities::debug("Cabbage Processor Constructor - Requested input channels:", getTotalNumInputChannels());
 	CabbageUtilities::debug("Cabbage Processor Constructor - Requested output channels:", getTotalNumOutputChannels());
 	createCsound(inputFile);
     startTimer(20);
+
+	createFileLogger(inputFile);
+	Logger::writeToLog("CabbagePluginProcessor::CabbagePluginProcessor");
+
+	
 }
 
 void CabbagePluginProcessor::createCsound(const File& inputFile, bool shouldCreateParameters)
 {
 	if (inputFile.existsAsFile()) {
+		Logger::writeToLog("CabbagePluginProcessor::createCsound");
 		setWidthHeight();
 		StringArray linesFromCsd;
 		linesFromCsd.addLines(inputFile.loadFileAsString());
@@ -149,6 +156,8 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 
 	xyAutomators.clear();
 	cabbageWidgets.removeAllChildren(nullptr);
+
+	Logger::writeToLog("CabbagePluginProcessor::~CabbagePluginProcessor");
 }
 
 void test()
@@ -961,18 +970,19 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor() {
 //==============================================================================
 void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData) {
 	copyXmlToBinary(savePluginState("CABBAGE_PRESETS"), destData);
-    //File file(csdFile.getParentDirectory().getFullPathName()+"/testSessionData.txt");
+	Logger::writeToLog ("CabbagePluginProcessor::getStateInformation");
 }
 
 void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInBytes) {
 	std::unique_ptr <XmlElement> xmlElement(getXmlFromBinary(data, sizeInBytes));
 	restorePluginState(xmlElement.get());
+	xmlPluginState.reset(getXmlFromBinary(data, sizeInBytes).release());
+	Logger::writeToLog("CabbagePluginProcessor::setStateInformation");
 }
 
 //==============================================================================
 void CabbagePluginProcessor::addPluginPreset(String presetName,  const String& fileName, bool remove)
-{
-    
+{    
     nlohmann::ordered_json j;
     File presetFile(fileName);
     String presetFileContents = presetFile.loadFileAsString();
@@ -1379,13 +1389,15 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
 	if (xmlState != nullptr) {
 		//if dealing with session saved by host
-        setParametersFromXml(xmlState);
 		initAllCsoundChannels(cabbageWidgets);
+		setParametersFromXml(xmlState);
+
 	}
 }
 
 void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 {
+	Logger::writeToLog(" CabbagePluginProcessor::setParametersFromXml");
 	if (e)
 	{
 		for (int i = 0; i < e->getNumAttributes(); i++)
@@ -1393,6 +1405,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			//none of these are being updated in their respective valueTreeChanged listeners..
             if(e->getAttributeName(i) == "cabbageJSONData")
             {
+				
                 if(getCsound())
                 {
                     auto** p = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
@@ -1401,7 +1414,10 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
                     {
                         auto pdClass = *p;
                         pdClass->data = e->getStringAttribute("cabbageJSONData").toRawUTF8();
+						Logger::writeToLog(e->getStringAttribute("cabbageJSONData"));
                     }
+					else
+						Logger::writeToLog("cabbageJSONData is null");
                 }
             }
             
@@ -1881,6 +1897,20 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
 void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
 	bool csoundRecompiled = false;
+	String jsonStateData;
+
+	//grab the current state so we can reinstate it if Csound is recompiled due to channel/SR changes..
+	if (getCsound())
+	{
+		auto** p = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+
+		if (p != nullptr)
+		{
+			auto pdClass = *p;
+			jsonStateData = pdClass->data;
+		}
+	}
+
 #if !Cabbage_IDE_Build && !Cabbage_Lite
 	//if (this->getTotalNumOutputChannels() == 1)//mono
 	//	hostRequestedMono = true;
@@ -1890,7 +1920,6 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 	samplingRate = sampleRate;
 	CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
 	initAllCsoundChannels(cabbageWidgets);
-
 	csoundRecompiled = true;
 
 #endif
@@ -1901,6 +1930,18 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 		CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
 		initAllCsoundChannels(cabbageWidgets);
 	}
+
+	if (getCsound())
+	{
+		auto** p = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+
+		if (p != nullptr)
+		{
+			auto pdClass = *p;
+			pdClass->data = jsonStateData.toStdString();
+		}
+	}
+
 }
 
 
