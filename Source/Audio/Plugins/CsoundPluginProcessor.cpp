@@ -199,6 +199,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
 
     CabbageUtilities::debug("SetupAndCompile - Requested output channels:", numCsoundOutputChannels);
+    CabbageUtilities::debug("SetupAndCompile - Requested sampling rate:", samplingRate);
     //int test = csound->SetGlobalEnv("OPCODE6DIR64", );
     CabbageUtilities::debug("Env var set");
     //csoundSetOpcodedir("/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Opcodes64");
@@ -971,6 +972,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - outputs:", outputs);
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested output channels:", numCsoundOutputChannels);
 
+    CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Sampling rate:", samplingRate);
     if((samplingRate != sampleRate)
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
        || numCsoundInputChannels != inputs
@@ -1339,21 +1341,6 @@ AudioProcessorEditor* CsoundPluginProcessor::createEditor()
     return new CsoundPluginEditor (*this);
 }
 
-//==============================================================================
-void CsoundPluginProcessor::getStateInformation (MemoryBlock& destData)
-{
-    ignoreUnused(destData);
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
-}
-
-void CsoundPluginProcessor::setStateInformation (const void* data, int sizeInBytes)
-{
-    ignoreUnused(data, sizeInBytes);
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
-}
 
 //======================== CSOUND MIDI FUNCTIONS ================================
 int CsoundPluginProcessor::OpenMidiInputDevice (CSOUND* csound, void** userData, const char* /*devName*/)

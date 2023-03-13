@@ -67,6 +67,7 @@ public:
         StringArray cabbageCode;
     };
 
+    File output;
 	CabbagePluginProcessor (const File& inputFile, BusesProperties IOBuses);
 	void createCsound(const File& inputFile, bool shouldCreateParameters = true);
     ~CabbagePluginProcessor() override;
@@ -199,6 +200,8 @@ private:
     OwnedArray<CabbagePluginParameter> parameters;
     Font customFont;
     File customFontFile;
+
+    std::unique_ptr<XmlElement> xmlPluginState;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbagePluginProcessor)
 
