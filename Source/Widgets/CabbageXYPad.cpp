@@ -186,8 +186,8 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
         float yVal = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
         yVal = (yVal-minY)/(maxY-minY);
 
-        const int xPos = jmap (xVal, 0.f, 1.f, xyPadRect.getX(), xyPadRect.getWidth() - ball.getHeight() * .7f);
-        const int yPos = jmap (yVal, 1.f, 0.f, xyPadRect.getY(), xyPadRect.getHeight() - ball.getHeight() * .7f);
+        const float xPos = jmap (xVal, 0.f, 1.f, xyPadRect.getX(), xyPadRect.getWidth() - ball.getHeight() * .7f);
+        const float yPos = jmap (yVal, 1.f, 0.f, xyPadRect.getY(), xyPadRect.getHeight() - ball.getHeight() * .7f);
 
         ball.setTopLeftPosition (xPos, yPos);
         repaint();
