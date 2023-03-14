@@ -91,7 +91,6 @@ CabbagePluginProcessor::CabbagePluginProcessor(const File& inputFile, BusesPrope
 	createCsound(inputFile);
     startTimer(20);
 
-	createFileLogger(inputFile);
 	Logger::writeToLog("CabbagePluginProcessor::CabbagePluginProcessor");
 
 	
