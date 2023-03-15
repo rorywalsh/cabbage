@@ -201,7 +201,6 @@ private:
     Font customFont;
     File customFontFile;
 
-    std::unique_ptr<XmlElement> xmlPluginState;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbagePluginProcessor)
 

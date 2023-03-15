@@ -476,8 +476,10 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                 const String mode = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::mode);
                 if( mode == "file" || mode == "save" || mode == "directory")
                 {
-                    csound->SetStringChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
-                                          CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::file).toUTF8().getAddress());
+                    //if a SR change is made on startup, the channel will already have been set when Csound is recompiled, hence no 
+                    //trigger updates will take place with changed2 or cabbageGetValue opcodes. Commenting this out for now to resolve this.. 
+                    //csound->SetStringChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
+                                          //CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::file).toUTF8().getAddress());
                 }
             }
 
@@ -981,6 +983,8 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = (double)sampleRate;
+        //the problem here is channels have already been instantiated, so no change triggers will take place..
+        CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - calling setupAndCompileCsound()");
         setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
 

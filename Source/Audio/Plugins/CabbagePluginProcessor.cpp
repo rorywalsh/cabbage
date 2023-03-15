@@ -975,7 +975,6 @@ void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData) {
 void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInBytes) {
 	std::unique_ptr <XmlElement> xmlElement(getXmlFromBinary(data, sizeInBytes));
 	restorePluginState(xmlElement.get());
-	xmlPluginState.reset(getXmlFromBinary(data, sizeInBytes).release());
 	Logger::writeToLog("CabbagePluginProcessor::setStateInformation");
 }
 
@@ -1471,6 +1470,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
                 {
                     const String absolutePath = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i).replaceCharacters("\\", "/")).getFullPathName();
                     CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
+					Logger::writeToLog("CabbagePluginProcessor::setParametersFromXml:\n\tSetting file channel value to:" + absolutePath);
                 }
 			}
 			else if (type == CabbageWidgetTypes::hrange ||
@@ -1911,10 +1911,6 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 	}
 
 #if !Cabbage_IDE_Build && !Cabbage_Lite
-	//if (this->getTotalNumOutputChannels() == 1)//mono
-	//	hostRequestedMono = true;
-	//else
-	//	hostRequestedMono = false;
 
 	samplingRate = sampleRate;
 	CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
