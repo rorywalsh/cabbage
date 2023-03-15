@@ -1151,7 +1151,7 @@ int SetCabbageIdentifier::setAttribute()
     if(trigger == 1)
     {
         //hack to trigger table update even if table number hasn't changed
-        if(data.identifier == CabbageIdentifierIds::tablenumber)
+        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
         {
             CabbageWidgetIdentifiers::IdentifierData updateData1;
             updateData1.identifier = CabbageIdentifierIds::update;
@@ -1177,7 +1177,7 @@ int SetCabbageIdentifier::setAttribute()
         varData->data.add(data);
         
         //hack to trigger table update even if table number hasn't changed
-        if(data.identifier == CabbageIdentifierIds::tablenumber)
+        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
         {
             CabbageWidgetIdentifiers::IdentifierData updateData0;
             updateData0.identifier = CabbageIdentifierIds::update;
@@ -1229,7 +1229,7 @@ int SetCabbageIdentifierArray::setAttribute()
     if(trigger == 1)
     {
         //hack to trigger table update even if table number hasn't changed
-        if(data.identifier == CabbageIdentifierIds::tablenumber)
+        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
         {
             CabbageWidgetIdentifiers::IdentifierData updateData1;
             updateData1.identifier = CabbageIdentifierIds::update;
@@ -1246,7 +1246,7 @@ int SetCabbageIdentifierArray::setAttribute()
         varData->data.add(data);
         
         //hack to trigger table update even if table number hasn't changed
-        if(data.identifier == CabbageIdentifierIds::tablenumber)
+        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
         {
             CabbageWidgetIdentifiers::IdentifierData updateData0;
             updateData0.identifier = CabbageIdentifierIds::update;
@@ -1304,7 +1304,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     }
     
     //hack to trigger table update even if table number hasn't changed
-    if(data.identifier == CabbageIdentifierIds::tablenumber)
+    if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
     {
         CabbageWidgetIdentifiers::IdentifierData updateData1;
         updateData1.identifier = CabbageIdentifierIds::update;
@@ -1328,7 +1328,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     varData->data.add(data);
     
     //hack to trigger table update even if table number hasn't changed
-    if(data.identifier == CabbageIdentifierIds::tablenumber)
+    if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
     {
         CabbageWidgetIdentifiers::IdentifierData updateData0;
         updateData0.identifier = CabbageIdentifierIds::update;
@@ -1364,7 +1364,7 @@ int SetCabbageIdentifierITime::setAttribute()
     }
     
     //hack to trigger table update even if table number hasn't changed
-    if(data.identifier == CabbageIdentifierIds::tablenumber)
+    if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
     {
         CabbageWidgetIdentifiers::IdentifierData updateData1;
         updateData1.identifier = CabbageIdentifierIds::update;
@@ -1433,7 +1433,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
     }
     
     //hack to trigger table update even if table number hasn't changed
-    if(data.identifier == CabbageIdentifierIds::tablenumber)
+    if(data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
     {
         CabbageWidgetIdentifiers::IdentifierData updateData1;
         updateData1.identifier = CabbageIdentifierIds::update;

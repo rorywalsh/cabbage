@@ -47,7 +47,7 @@ public:
 
     int getLoopLengthInSamples()
     {
-        return (int)loopLength * sampleRate;
+        return (int)(loopLength * sampleRate);
     }
 
     void setIsRangeSelectable (bool isSelectable)
