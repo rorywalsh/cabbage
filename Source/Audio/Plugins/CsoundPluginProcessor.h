@@ -156,6 +156,8 @@ public:
     double getTailLengthSeconds() const override;
 
     //==============================================================================
+    void resetFilebuttons(ValueTree cabbageData);
+    //==============================================================================
     int getNumPrograms() override;
     int getCurrentProgram() override;
     void setCurrentProgram (int index) override;

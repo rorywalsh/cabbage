@@ -1893,11 +1893,14 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
     
 }
 
+
+
 void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
 	bool csoundRecompiled = false;
 	String jsonStateData;
 
+	
 	//grab the current state so we can reinstate it if Csound is recompiled due to channel/SR changes..
 	if (getCsound())
 	{
@@ -1910,16 +1913,28 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 		}
 	}
 
+
 #if !Cabbage_IDE_Build && !Cabbage_Lite
 
-	samplingRate = sampleRate;
+	//samplingRate = sampleRate;
 	CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
-	initAllCsoundChannels(cabbageWidgets);
-	csoundRecompiled = true;
 
+
+	
+	csoundRecompiled = true;
+	if (sampleRate != samplingRate)
+	{
+		//need to reset the filebutton to "" so that we trigger a channel change when users
+		//change the sampling rates because the channel is already set when the SR change takes place
+		resetFilebuttons(cabbageWidgets);
+		initAllCsoundChannels(cabbageWidgets);
+	}
+	else
+		initAllCsoundChannels(cabbageWidgets);
+	
 #endif
 
-
+	//DBG(cabbageWidgets.toXmlString());
 	if (sampleRate != samplingRate && csoundRecompiled == false) {
 		samplingRate = sampleRate;
 		CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);

@@ -434,6 +434,41 @@ void CsoundPluginProcessor::createFileLogger (File csoundFile)
     Logger::setCurrentLogger (fileLogger.get());
 }
 //==============================================================================
+void CsoundPluginProcessor::resetFilebuttons(ValueTree cabbageData)
+{
+
+    if (!csdCompiledWithoutError())
+    {
+        Logger::writeToLog("csound not compiled");
+        return;
+    }
+
+
+    for (int i = 0; i < cabbageData.getNumChildren(); i++)
+    {
+        const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::type);
+        const String identChannel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::identchannel);
+
+
+        if (CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channeltype) == "string")
+        {
+            if (typeOfWidget == CabbageWidgetTypes::filebutton)
+            {
+                const String mode = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::mode);
+                if (mode == "file" || mode == "save" || mode == "directory")
+                {
+                    //if a SR change is made on startup, the channel will already have been set when Csound is recompiled, hence no 
+                    //trigger updates will take place with changed2 or cabbageGetValue opcodes. Commenting this out for now to resolve this.. 
+                    csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
+                        "");
+                    csound->PerformKsmps();
+                }
+            }
+        }
+    }
+}
+
+//==============================================================================
 void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 {
     Logger::writeToLog("initAllCsoundChannels (ValueTree cabbageData) ...");
@@ -478,8 +513,8 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                 {
                     //if a SR change is made on startup, the channel will already have been set when Csound is recompiled, hence no 
                     //trigger updates will take place with changed2 or cabbageGetValue opcodes. Commenting this out for now to resolve this.. 
-                    //csound->SetStringChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
-                                          //CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::file).toUTF8().getAddress());
+                    csound->SetStringChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
+                                          CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::file).toUTF8().getAddress());
                 }
             }
 
