@@ -151,8 +151,16 @@ struct GetCabbageStringValue : csnd::Plugin<1, 1>
 {
     MYFLT* value;
     char* currentString;
-    int init(){ return getAttribute(); }
+    int init(){ 
+        currentString = "";
+        csound->plugin_deinit(this); 
+        return getAttribute(); 
+    }
     int kperf(){ return getAttribute(); }
+    int deinit() {
+        currentString = "";
+        return OK;
+    }
     int getAttribute();
 };
 

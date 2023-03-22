@@ -160,7 +160,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
                 csoundSetOpcodedir(opcodeDir.toUTF8().getAddress());
 #endif
             }
-#if !defined(Cabbage_IDE_Build)
+#if Cabbage_IDE_Build == 0
             if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcode6dir64).isNotEmpty())
             {
                 const String opcodeDir = csdFile.getParentDirectory().getChildFile(
@@ -199,6 +199,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
 
     CabbageUtilities::debug("SetupAndCompile - Requested output channels:", numCsoundOutputChannels);
+    CabbageUtilities::debug("SetupAndCompile - Requested sampling rate:", samplingRate);
     //int test = csound->SetGlobalEnv("OPCODE6DIR64", );
     CabbageUtilities::debug("Env var set");
     //csoundSetOpcodedir("/Library/Frameworks/CsoundLib64.framework/Versions/6.0/Resources/Opcodes64");
@@ -433,6 +434,41 @@ void CsoundPluginProcessor::createFileLogger (File csoundFile)
     Logger::setCurrentLogger (fileLogger.get());
 }
 //==============================================================================
+void CsoundPluginProcessor::resetFilebuttons(ValueTree cabbageData)
+{
+
+    if (!csdCompiledWithoutError())
+    {
+        Logger::writeToLog("csound not compiled");
+        return;
+    }
+
+
+    for (int i = 0; i < cabbageData.getNumChildren(); i++)
+    {
+        const String typeOfWidget = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::type);
+        const String identChannel = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::identchannel);
+
+
+        if (CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channeltype) == "string")
+        {
+            if (typeOfWidget == CabbageWidgetTypes::filebutton)
+            {
+                const String mode = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::mode);
+                if (mode == "file" || mode == "save" || mode == "directory")
+                {
+                    //if a SR change is made on startup, the channel will already have been set when Csound is recompiled, hence no 
+                    //trigger updates will take place with changed2 or cabbageGetValue opcodes. Commenting this out for now to resolve this.. 
+                    csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
+                        "");
+                    csound->PerformKsmps();
+                }
+            }
+        }
+    }
+}
+
+//==============================================================================
 void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 {
     Logger::writeToLog("initAllCsoundChannels (ValueTree cabbageData) ...");
@@ -475,6 +511,8 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                 const String mode = CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::mode);
                 if( mode == "file" || mode == "save" || mode == "directory")
                 {
+                    //if a SR change is made on startup, the channel will already have been set when Csound is recompiled, hence no 
+                    //trigger updates will take place with changed2 or cabbageGetValue opcodes. Commenting this out for now to resolve this.. 
                     csound->SetStringChannel (CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::channel).getCharPointer(),
                                           CabbageWidgetData::getStringProp (cabbageData.getChild (i), CabbageIdentifierIds::file).toUTF8().getAddress());
                 }
@@ -643,7 +681,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("WINDOWS", 1.0);
     }
 
-#if !defined(Cabbage_IDE_Build)
+#if Cabbage_IDE_Build == 0
     PluginHostType pluginType;
     if (pluginType.isFruityLoops())
         csound->SetChannel ("FLStudio", 1.0);
@@ -947,7 +985,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 {
     if(getCsound()!= nullptr)
         csound->SetChannel("HOST_BUFFER_SIZE", samplesPerBlock);
-#if !defined(Cabbage_IDE_Build)
+#if Cabbage_IDE_Build == 0
     PluginHostType pluginType;
     if (pluginType.isCubase())
         hostIsCubase = true;
@@ -971,6 +1009,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - outputs:", outputs);
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested output channels:", numCsoundOutputChannels);
 
+    CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Sampling rate:", samplingRate);
     if((samplingRate != sampleRate)
 #if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
        || numCsoundInputChannels != inputs
@@ -979,6 +1018,8 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     {
         //if sampling rate is other than default or has been changed, recompile..
         samplingRate = (double)sampleRate;
+        //the problem here is channels have already been instantiated, so no change triggers will take place..
+        CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - calling setupAndCompileCsound()");
         setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
     }
 
@@ -1339,21 +1380,6 @@ AudioProcessorEditor* CsoundPluginProcessor::createEditor()
     return new CsoundPluginEditor (*this);
 }
 
-//==============================================================================
-void CsoundPluginProcessor::getStateInformation (MemoryBlock& destData)
-{
-    ignoreUnused(destData);
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
-}
-
-void CsoundPluginProcessor::setStateInformation (const void* data, int sizeInBytes)
-{
-    ignoreUnused(data, sizeInBytes);
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
-}
 
 //======================== CSOUND MIDI FUNCTIONS ================================
 int CsoundPluginProcessor::OpenMidiInputDevice (CSOUND* csound, void** userData, const char* /*devName*/)

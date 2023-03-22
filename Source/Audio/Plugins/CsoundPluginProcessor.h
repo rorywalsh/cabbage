@@ -156,14 +156,16 @@ public:
     double getTailLengthSeconds() const override;
 
     //==============================================================================
+    void resetFilebuttons(ValueTree cabbageData);
+    //==============================================================================
     int getNumPrograms() override;
     int getCurrentProgram() override;
     void setCurrentProgram (int index) override;
     const String getProgramName (int index) override;
     void changeProgramName (int index, const String& newName) override;
     //==============================================================================
-    virtual void getStateInformation (MemoryBlock& destData) override;
-    virtual void setStateInformation (const void* data, int sizeInBytes) override;
+    virtual void getStateInformation(MemoryBlock& destData) override {};
+    virtual void setStateInformation(const void* data, int sizeInBytes) override {};
 
     //==============================================================================
     bool hostRequestedMono = false;

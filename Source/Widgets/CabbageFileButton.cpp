@@ -36,8 +36,7 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
         setTooltip(tooltipText);
     
     setButtonText (getText());
-
-    
+   
     filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).replaceCharacters (" ", ";");
 
     setImgProperties (*this, wData, "buttonon");
@@ -77,8 +76,6 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
         lookAndFeelChanged();
         setLookAndFeel(&flatLookAndFeel);
     }
-    
-
 }
 
 //===============================================================================
@@ -124,16 +121,17 @@ void CabbageFileButton::buttonClicked (Button* button)
             if(lastKnownDirectory.isNotEmpty())
                 currentDir = File(lastKnownDirectory);
         }
-        FileChooser fc ("Choose File", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser());
+        fc.reset(new FileChooser("Choose File", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser()));
 
-        if (fc.browseForFileToOpen())
+
+        fc->launchAsync(FileBrowserComponent::openMode | FileBrowserComponent::canSelectFiles,
+            [this](const FileChooser& fc) mutable
         {
-            owner->sendChannelStringDataToCsound (getChannel(), returnValidPath (fc.getResult()));
-            CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, returnValidPath (fc.getResult()));
+            owner->sendChannelStringDataToCsound(getChannel(), returnValidPath(fc.getResult()));
+            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, returnValidPath(fc.getResult()));
             //owner->refreshComboListBoxContents();
-        }
-
-        owner->setLastOpenedDirectory (fc.getResult().getParentDirectory().getFullPathName());
+            owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
+        });
     }
 
     else if (mode == "save")
@@ -145,18 +143,22 @@ void CabbageFileButton::buttonClicked (Button* button)
                 currentDir = File(lastKnownDirectory);
         }
         
-        FileChooser fc ("Choose File", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser());
+        //FileChooser fc ("Choose File", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser());
+        fc.reset(new FileChooser("Choose File", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser()));
 
-        if (fc.browseForFileToSave(true))
+        fc->launchAsync(FileBrowserComponent::saveMode | FileBrowserComponent::canSelectFiles,
+            [this](const FileChooser& fc) mutable
         {
-            owner->sendChannelStringDataToCsound (getChannel(), returnValidPath (fc.getResult()));
-            CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, returnValidPath (fc.getResult()));
-            //owner->refreshComboBoxContents();
-        }
+            owner->sendChannelStringDataToCsound(getChannel(), returnValidPath(fc.getResult()));
+            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, returnValidPath(fc.getResult()));
+            owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
+            owner->refreshComboListBoxContents();
+            startTimer(500);
+        });
 
-        owner->setLastOpenedDirectory (fc.getResult().getParentDirectory().getFullPathName());
-		owner->refreshComboListBoxContents();
-        startTimer(500);
+      
+
+       
     }
 
     else if (mode == "directory")
@@ -168,15 +170,17 @@ void CabbageFileButton::buttonClicked (Button* button)
                 currentDir = File(lastKnownDirectory);
         }
         
-        FileChooser fc ("Open Directory", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser());
+        fc.reset(new FileChooser("Open Directory", currentDir, filetype, CabbageUtilities::shouldUseNativeBrowser()));
 
-        if (fc.browseForDirectory())
+        fc->launchAsync(FileBrowserComponent::openMode | FileBrowserComponent::canSelectDirectories,
+            [this](const FileChooser& fc) mutable
         {
-            owner->sendChannelStringDataToCsound (getChannel(), returnValidPath (fc.getResult()));
-            CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::file, returnValidPath (fc.getResult()));
-        }
+            owner->sendChannelStringDataToCsound(getChannel(), returnValidPath(fc.getResult()));
+            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, returnValidPath(fc.getResult()));
+            owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
+        });
 
-        owner->setLastOpenedDirectory (fc.getResult().getParentDirectory().getFullPathName());
+        
         
     }
 

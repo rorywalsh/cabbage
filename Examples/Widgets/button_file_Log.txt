@@ -1,0 +1,24 @@
+
+**********************************************************
+Cabbage Log..
+Log started: 20 Mar 2023 4:22:31pm
+
+CabbagePluginProcessor::CabbagePluginProcessor
+Resetting csound ...
+csound = 0x000001DD37A420A0
+
+**********************************************************
+Cabbage Log..
+Log started: 20 Mar 2023 4:23:22pm
+
+CabbagePluginProcessor::CabbagePluginProcessor
+Resetting csound ...
+csound = 0x000002484CF35AD0
+
+**********************************************************
+Cabbage Log..
+Log started: 20 Mar 2023 4:26:33pm
+
+CabbagePluginProcessor::CabbagePluginProcessor
+Resetting csound ...
+csound = 0x000001F0DFA8BB20

@@ -30,6 +30,7 @@ class CabbageFileButton : public TextButton, public ValueTree::Listener, public 
 {
     CabbagePluginEditor* owner;
     String mode, filetype, tooltipText;
+    std::unique_ptr<FileChooser> fc;
 
 public:
 

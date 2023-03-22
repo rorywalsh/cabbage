@@ -48,6 +48,8 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
     if (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channel).size() == 0)
         soundfiler.setIsRangeSelectable (false);
 
+
+    Logger::writeToLog("CabbageSoundfiler::CabbageSoundfiler:\n\tCurrent file is:" + file);
     soundfiler.setFile (File::getCurrentWorkingDirectory().getChildFile(file));
     soundfiler.addChangeListener (this);
     
@@ -127,22 +129,22 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
     {
         if(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::tablenumber) != -1)
         {
-//            var tables = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::tablenumber);
-//            
-//            for (int y = 0; y < tables.size(); y++)
-//            {
-//                int tableNumber = tables[y];
-//                tableValues.clear();
-//                tableValues = owner->getTableFloats (tableNumber);
-//                AudioBuffer<float> sampleBuffer;
-//                sampleBuffer.setSize(1, tableValues.size());
-//                //has to be a quicker way of doing this...
-//                for ( int i = 0 ; i < tableValues.size() ; i++){
-//                    sampleBuffer.setSample(0, i, tableValues[i]);
-//                }
-//
-//                setWaveform(sampleBuffer, 1);
-//            }
+            var tables = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::tablenumber);
+            
+            for (int y = 0; y < tables.size(); y++)
+            {
+                int tableNumber = tables[y];
+                tableValues.clear();
+                tableValues = owner->getTableFloats (tableNumber);
+                AudioBuffer<float> sampleBuffer;
+                sampleBuffer.setSize(1, tableValues.size());
+                //has to be a quicker way of doing this...
+                for ( int i = 0 ; i < tableValues.size() ; i++){
+                    sampleBuffer.setSample(0, i, tableValues[i]);
+                }
+
+                setWaveform(sampleBuffer, 1);
+            }
         }
         else
         {
@@ -179,7 +181,7 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
     soundfiler.setScrubberPos (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition));
     soundfiler.setWaveformColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
     soundfiler.setBackgroundColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour));
-    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, false, prop);      //handle common updates such as bounds, alpha, rotation, visible, etc
     soundfiler.repaint();
     repaint();
 

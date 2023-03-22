@@ -206,6 +206,10 @@ void CabbageRangeSlider::valueTreePropertyChanged (ValueTree& valueTree, const I
     {
         setSliderValues (valueTree);
     }
+    else if (prop == CabbageIdentifierIds::minvalue)
+    {
+        setSliderValues(valueTree);
+    }
     else
     {
         textLabel.setText (getCurrentText (valueTree), dontSendNotification);

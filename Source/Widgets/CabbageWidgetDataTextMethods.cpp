@@ -69,6 +69,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("fontSize"):
         case HashStringToInt ("mouseInteraction"):
         case HashStringToInt ("automatable"):
+        case HashStringToInt ("repeatInterval"):
             return getNumericalValueTextAsCabbageCode (widgetData, identifier, "").trim();
             
         case HashStringToInt ("align"):

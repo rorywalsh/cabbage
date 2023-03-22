@@ -462,6 +462,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("mouseOverKeyOutlineThickness"):
             case HashStringToInt ("numberOfClicks"):
             case HashStringToInt ("middleC"):
+            case HashStringToInt ("maxValue"):
+            case HashStringToInt ("minValue"):
             case HashStringToInt ("mouseInteraction"):
             case HashStringToInt ("outlineThickness"):
             case HashStringToInt ("pivotX"):
@@ -469,6 +471,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("presetIgnore"):
             case HashStringToInt ("protectedItems"):
             case HashStringToInt ("readOnly"):
+            case HashStringToInt ("repeatInterval"):
             case HashStringToInt ("scrollbars"):
             case HashStringToInt ("sidechain"):
             case HashStringToInt ("sliderSkew"):
