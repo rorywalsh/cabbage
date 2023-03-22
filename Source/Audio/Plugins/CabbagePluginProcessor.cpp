@@ -22,6 +22,11 @@
 #include <memory>
 #include "CabbagePluginEditor.h"
 
+#if defined(_CR)
+#undef _CR
+#endif
+
+
 char tmp_string[4096] = { 0 };
 
 AudioProcessor* JUCE_CALLTYPE

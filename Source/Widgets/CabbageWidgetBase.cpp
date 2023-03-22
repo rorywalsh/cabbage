@@ -20,15 +20,15 @@
 #include "CabbageWidgetBase.h"
 #include "../CabbageCommonHeaders.h"
 #include "../Audio/Plugins/CabbagePluginEditor.h"
-
-//==============================================================================
-__attribute__((unused)) static CabbagePluginEditor* getPluginEditor(Component* child)
-{
-    if (CabbagePluginEditor* c = child->findParentComponentOfClass<CabbagePluginEditor>())
-        return c;
-    else
-        return nullptr;
-}
+//
+////==============================================================================
+//__attribute__((unused)) static CabbagePluginEditor* getPluginEditor(Component* child)
+//{
+//    if (CabbagePluginEditor* c = child->findParentComponentOfClass<CabbagePluginEditor>())
+//        return c;
+//    else
+//        return nullptr;
+//}
 
 CabbageWidgetBase::CabbageWidgetBase(CabbagePluginEditor* _owner): editor(_owner)
 {
