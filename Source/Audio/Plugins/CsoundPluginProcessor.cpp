@@ -160,7 +160,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
                 csoundSetOpcodedir(opcodeDir.toUTF8().getAddress());
 #endif
             }
-#if !defined(Cabbage_IDE_Build)
+#if Cabbage_IDE_Build == 0
             if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::opcode6dir64).isNotEmpty())
             {
                 const String opcodeDir = csdFile.getParentDirectory().getChildFile(
@@ -681,7 +681,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel ("WINDOWS", 1.0);
     }
 
-#if !defined(Cabbage_IDE_Build)
+#if Cabbage_IDE_Build == 0
     PluginHostType pluginType;
     if (pluginType.isFruityLoops())
         csound->SetChannel ("FLStudio", 1.0);
@@ -985,7 +985,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 {
     if(getCsound()!= nullptr)
         csound->SetChannel("HOST_BUFFER_SIZE", samplesPerBlock);
-#if !defined(Cabbage_IDE_Build)
+#if Cabbage_IDE_Build == 0
     PluginHostType pluginType;
     if (pluginType.isCubase())
         hostIsCubase = true;

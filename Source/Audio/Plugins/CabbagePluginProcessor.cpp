@@ -937,6 +937,20 @@ void CabbagePluginProcessor::createCabbageParameters()
 						min, max, value, increment, skew, automatable, prefix, postfix);
 					addCabbageParameter(std::move(param));
 				}
+				else if (typeOfWidget.contains("encoder") && channel.isNotEmpty())
+				{
+					const float increment = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::increment);
+					const float skew = 1;
+					const float min = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::min);
+					const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::max);
+
+					auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), channel, name,
+						min, max, value, increment, skew, automatable, prefix, postfix);
+					addCabbageParameter(std::move(param));
+				}
 				else
 				{
 					if (typeOfWidget.contains("button") || typeOfWidget.contains("checkbox"))
