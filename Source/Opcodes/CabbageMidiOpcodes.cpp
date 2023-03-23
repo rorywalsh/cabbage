@@ -7,7 +7,6 @@
 
 #include "CabbageMidiOpcodes.h"
 
-#ifndef WIN32
 
 int CabbageMidiReader::init()
 {
@@ -208,7 +207,7 @@ int CabbageMidiFileInfo::init()
 
 }
        
-#endif
+
 
 int CabbageMidiListener::init()
 {

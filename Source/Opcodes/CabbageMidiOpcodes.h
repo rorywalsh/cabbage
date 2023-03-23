@@ -1,21 +1,16 @@
-//
-//  CabbageMIDIOpcode.h
-//  Cabbage
-//
-//  Created by Rory on 09/02/2023.
-//
+#pragma once
 
-#ifndef CabbageMIDIOpcode_h
-#define CabbageMIDIOpcode_h
 
-#include <plugin.h>
 #include "../CabbageCommonHeaders.h"
 #include "../Widgets/CabbageWidgetData.h"
-#include "JuceHeader.h"
-#include <string>
-#include <fstream>
+#undef _CR
+#include <plugin.h>
 
-#ifndef WIN32
+#include "JuceHeader.h"
+
+
+
+
 
 
 //====================================================================================================
@@ -45,7 +40,7 @@ struct CabbageMidiFileInfo : csnd::InPlug<1>
 {
     int init();
 };
-#endif
+
 
 class MidiNotes
 {
@@ -78,4 +73,4 @@ struct CabbageMidiListener : csnd::Plugin<4, 1>
     MidiNotes** notes = nullptr;
 };
 
-#endif /* CabbageMIDIOpcode_h */
+
