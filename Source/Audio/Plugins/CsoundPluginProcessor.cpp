@@ -315,7 +315,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 
     csnd::plugin<CabbageGetWidgetChannels>((csnd::Csound*)getCsound()->GetCsound(), "cabbageGetWidgetChannels", "S[]", "W", csnd::thread::i);
 
-    csnd::plugin<CabbageMidiReader>((csnd::Csound*) getCsound()->GetCsound(), "cabbageMidiFilerReader", "k[]k[]k[]k[]kk", "Sikko", csnd::thread::ik);
+    csnd::plugin<CabbageMidiReader>((csnd::Csound*) getCsound()->GetCsound(), "cabbageMidiFileReader", "k[]k[]k[]k[]kk", "Sikko", csnd::thread::ik);
     csnd::plugin<CabbageMidiFileInfo>((csnd::Csound*) getCsound()->GetCsound(), "cabbageMidiFileInfo", "", "S", csnd::thread::i);
     csnd::plugin<CabbageMidiListener>((csnd::Csound*)getCsound()->GetCsound(), "cabbageMidiListener", "k[]k[]k[]k", "O", csnd::thread::ik);
     csnd::plugin<CabbageMidiSender>((csnd::Csound*)getCsound()->GetCsound(), "cabbageMidiSender", "", "", csnd::thread::i);
