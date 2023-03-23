@@ -166,7 +166,7 @@ int CabbageMidiReader::getStatusType(juce::MidiMessage mess)
     return 0;
 }
 
-int CabbageMidiInfo::init()
+int CabbageMidiFileInfo::init()
 {
     juce::MidiFile midiFile;
     
@@ -209,3 +209,202 @@ int CabbageMidiInfo::init()
 }
        
 #endif
+
+int CabbageMidiListener::init()
+{
+
+    csnd::Vector<MYFLT>& midiNotes = outargs.myfltvec_data(0);
+    csnd::Vector<MYFLT>& velocities = outargs.myfltvec_data(1);
+    csnd::Vector<MYFLT>& channels = outargs.myfltvec_data(2);
+    midiNotes.init(csound, 128);
+    velocities.init(csound, 128);
+    channels.init(csound, 128);
+
+    notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
+    MidiNotes* noteData;
+
+    if (notes != nullptr)
+    {
+        noteData = *notes;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageMidiNotes", sizeof(MidiNotes*));
+        notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
+        *notes = new MidiNotes();
+        noteData = *notes;
+    }
+
+    noteData->count = 0;
+
+    return OK;
+}
+
+int CabbageMidiListener::kperf()
+{
+    return getMidiInfo();
+}
+
+int CabbageMidiListener::getMidiInfo()
+{
+    int shouldSort = 0;
+
+    if (in_count() > 1)
+    {
+        csound->init_error("cabbageMidiInfo takes 1 parameter..\n");
+        return NOTOK;
+    }
+
+    if (in_count() == 1)
+    {
+        shouldSort = inargs[0];
+    }
+
+
+    notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
+    MidiNotes* noteData;
+
+    if (notes != nullptr)
+    {
+        noteData = *notes;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageMidiNotes", sizeof(MidiNotes*));
+        notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
+        *notes = new MidiNotes();
+        noteData = *notes;
+    }
+
+    outargs[3] = noteData->count;
+
+    csnd::Vector<MYFLT>& notes = outargs.myfltvec_data(0);
+    csnd::Vector<MYFLT>& velocities = outargs.myfltvec_data(1);
+    csnd::Vector<MYFLT>& channels = outargs.myfltvec_data(2);
+
+    if (shouldSort == 1)
+    {
+        //sorting
+        for (int j = 0; j < 128 - 1; j++)
+        {
+            if (noteData->notes[j].note > noteData->notes[j + 1].note)
+            {
+                auto temp = noteData->notes[j];
+                noteData->notes[j] = noteData->notes[j + 1];
+                noteData->notes[j + 1] = temp;
+                j = -1;
+            }
+        }
+
+        //push empty note slots to end
+        int cnt = 0;
+        for (int i = 0; i < 128; i++)
+            if (noteData->notes[i].note != 0)
+                noteData->notes[cnt++] = noteData->notes[i];
+
+        while (cnt < 128)
+        {
+            noteData->notes[cnt].note = 0;
+            noteData->notes[cnt].vel = 0;
+            noteData->notes[cnt].channel = -1;
+            cnt++;
+        }
+    }
+
+    //update output arrays with current events
+    for (size_t i = 0; i < 128; i++)
+    {
+        notes[i] = noteData->notes[i].note;
+        velocities[i] = noteData->notes[i].vel;
+        channels[i] = noteData->notes[i].channel;
+    }
+
+    
+    
+    return OK;
+}
+
+//=============================================================================================
+int CabbageMidiSender::init()
+{
+    if (in_count() > 0)
+    {
+        csound->init_error("cabbageMidiInfo takes no parameters..\n");
+        return NOTOK;
+    }
+
+    csound->plugin_deinit(this);
+
+    notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
+    MidiNotes* noteData;
+
+    if (notes != nullptr)
+    {
+        noteData = *notes;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageMidiNotes", sizeof(MidiNotes*));
+        notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
+        *notes = new MidiNotes();
+        noteData = *notes;
+    }
+
+    const int noteNumber = midi_note_num();
+    const int noteChannel = midi_channel();
+    const int noteVelocity = midi_note_vel();
+
+    bool noteAlreadyRegistered = false;
+    for (int i = 0; i < 128; i++)
+    {
+        if (noteNumber == noteData->notes[i].note)
+            noteAlreadyRegistered = true;
+    }
+
+    if (!noteAlreadyRegistered) {
+        noteData->notes[noteData->count].note = noteNumber;
+        noteData->notes[noteData->count].vel = noteVelocity;
+        noteData->notes[noteData->count].channel = noteChannel;
+        noteData->count++;
+    }
+
+    return OK;
+}
+
+
+int CabbageMidiSender::deinit()
+{
+    notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
+    MidiNotes* noteData;
+
+    if (notes != nullptr)
+    {
+        noteData = *notes;
+    }
+    else
+    {
+        csound->perf_error("Error - global pointer is not valid", nullptr);
+    }
+
+    int test = 0;
+
+    noteData->count = (noteData->count > 1 ? noteData->count - 1 : 0);
+    int index = -1;
+
+    for (int i = 0; i < 128; i++)
+    {
+        if (noteData->notes[i].note == midi_note_num())
+        {
+            index = i;
+            noteData->notes[i].note = 0;
+            noteData->notes[i].vel = 0;
+            noteData->notes[i].channel = -1;
+        }
+    }
+
+    //fill gap left in array
+    for (int i = index; i < 127; i++)
+        noteData->notes[i] = noteData->notes[i+1];
+
+    return OK;
+}
