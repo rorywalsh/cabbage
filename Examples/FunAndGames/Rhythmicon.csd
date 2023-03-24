@@ -43,7 +43,7 @@ label   bounds(110,  4, 18, 22), text("C"), fontColour(Tomato)
 label   bounds(125,  1, 18, 22), text("O"), fontColour(LightGreen)
 label   bounds(140,  3, 18, 22), text("N"), fontColour(violet)
 
-label   bounds( 81, 24,  78, 8), text("Iain McCurdy [2013]"), FontColour("white")
+label   bounds( 81, 24,  78, 8), text("Iain McCurdy [2013]"), fontColour("white")
 
 rslider bounds(  3, 45, 55, 55), channel("base"), textBox(1), valueTextBox(1), range(0, 127,36, 1,1),fontColour("white"),textColour("white"),colour(orange), trackerColour(orange)
 label   bounds( 19, 34, 30, 10), text("BASE"), fontColour(white)
@@ -206,7 +206,8 @@ kn         =          $N                                               ; layer n
 if ksync=1 && kn>1 then                                                ; if syncopation is on and this isn't the first layer (syncopation irrelevant for first layer)
  ktrig     vdelayk    ktrig, (1/(krate*$N))/$N, 1/0.1                  ; add a syncopation delay for the metronome trigger for this layer
 endif
-kenv       loopseg   $N/60, ktrig, 0, 0,0.125/krate, 1, 0.875/krate, 0,60, 0  ; retriggering envelope
+;kenv       loopseg   $N/60, ktrig, 0, 0,0.125/krate, 1, 0.875/krate, 0,60, 0  ; retriggering envelope
+kenv       loopseg   $N/60, ktrig, 0, 0,1/(32*krate), 1, 31/(32*krate), 0,60, 0  ; retriggering envelope
 ;kenv       pow       kenv, 0.25
 aenv       interp    kenv * kk$N                                       ; interpolate to a-rate (for better smoothness)
 kcps       =         kBaseFrq * $N                                     ; pitch for this layer (in cycles per second)

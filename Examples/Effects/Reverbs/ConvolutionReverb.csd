@@ -73,26 +73,26 @@ iTabLen         =               ftlen(ifn)
 iTableRev       ftgen           ifn + 100,0,-iTabLen,-2, 0
 icount          =               0
 loop:
-ival            table           iTabLen-icount-1, ifn
-                tableiw         ival,icount,iTableRev
-                loop_lt         icount,1,iTabLen,loop
-                xout               iTableRev
+ival            table           iTabLen - icount - 1, ifn
+                tableiw         ival, icount, iTableRev
+                loop_lt         icount, 1, iTabLen, loop
+                xout            iTableRev
 endop
 
 ; compress function table UDO
 opcode    tab_compress,i,iii
 ifn,iCompRat,iCurve    xin
 iTabLen         =               ftlen(ifn)
-iTabLenComp     =               int(ftlen(ifn)*iCompRat)
-iTableComp      ftgen           ifn+200,0,-iTabLenComp,-2, 0
-iAmpScaleTab    ftgen        ifn+300,0,-iTabLenComp,-16, 1,iTabLenComp,iCurve,0
+iTabLenComp     =               int(ftlen(ifn) * iCompRat)
+iTableComp      ftgen           ifn + 200, 0, -iTabLenComp, -2, 0
+iAmpScaleTab    ftgen           ifn + 300, 0, -iTabLenComp, -16, 1, iTabLenComp, iCurve, 0
 icount          =               0
 loop:
 ival            table           icount, ifn
-iAmpScale    table        icount, iAmpScaleTab
+iAmpScale       table           icount, iAmpScaleTab
                 tableiw         ival*iAmpScale,icount,iTableComp
                 loop_lt         icount,1,iTabLenComp,loop
-                xout               iTableComp
+                xout            iTableComp
 endop
 
 ; compress reverse function table UDO
@@ -101,69 +101,69 @@ ifn,iCompRat,iCurve    xin
 iTabLen         =               nsamp(ifn)
 iTabLenComp     =               int(nsamp(ifn)*iCompRat)
 iTableComp      ftgen           ifn+400,0,-iTabLenComp,-2, 0
-iAmpScaleTab    ftgen        ifn+500,0,-iTabLenComp,-16, 1,iTabLenComp,iCurve,0
+iAmpScaleTab    ftgen           ifn+500,0,-iTabLenComp,-16, 1,iTabLenComp,iCurve,0
 icount          =               0
 loop:
 ival            table           icount, ifn
-iAmpScale    table        icount, iAmpScaleTab
+iAmpScale       table           icount, iAmpScaleTab
                 tableiw         ival*iAmpScale, iTabLenComp-icount-1,iTableComp
                 loop_lt         icount,1,iTabLenComp,loop
-                xout               iTableComp
+                xout            iTableComp
 endop
 
-opcode FileNameFromPath,S,S        ; Extract a file name (as a string) from a full path (also as a string)
- Ssrc    xin                ; Read in the file path string
- icnt    strlen    Ssrc            ; Get the length of the file path string
- LOOP:                    ; Loop back to here when checking for a backslash
- iasc    strchar Ssrc, icnt        ; Read ascii value of current letter for checking
- if iasc==92 igoto ESCAPE        ; If it is a backslash, escape from loop
- loop_gt    icnt,1,0,LOOP        ; Loop back and decrement counter which is also used as an index into the string
- ESCAPE:                ; Escape point once the backslash has been found
- Sname    strsub Ssrc, icnt+1, -1        ; Create a new string of just the file name
-    xout    Sname            ; Send it back to the caller instrument
+opcode FileNameFromPath,S,S            ; Extract a file name (as a string) from a full path (also as a string)
+ Ssrc        xin                       ; Read in the file path string
+ icnt        strlen  Ssrc              ; Get the length of the file path string
+ LOOP:                                 ; Loop back to here when checking for a backslash
+ iasc        strchar Ssrc, icnt        ; Read ascii value of current letter for checking
+ if iasc==92 igoto   ESCAPE            ; If it is a backslash, escape from loop
+ loop_gt    icnt,1,0,LOOP              ; Loop back and decrement counter which is also used as an index into the string
+ ESCAPE:                               ; Escape point once the backslash has been found
+ Sname       strsub  Ssrc, icnt+1, -1  ; Create a new string of just the file name
+             xout    Sname             ; Send it back to the caller instrument
 endop
 
 instr    1
     gSfilepath    chnget    "filename"
-    kNewFileTrg    changed    gSfilepath        ; if a new file is loaded generate a trigger
+    kNewFileTrg    changed    gSfilepath  ; if a new file is loaded generate a trigger
     if kNewFileTrg==1 then                ; if a new file has been loaded...
-     event    "i",99,0,0                ; call instrument to update sample storage function table 
+     event    "i",99,0,0                  ; call instrument to update sample storage function table 
     endif
     
-    if trigger:k(gkReady,0.5,0)==1 then        ; when a file is loaded for the first time do this conditional branch...
-     event    "i",2,0,3600*24*7            ; start the convolution instrument
+    if trigger:k(gkReady,0.5,0)==1 then   ; when a file is loaded for the first time do this conditional branch...
+     event    "i",2,0,3600*24*7           ; start the convolution instrument
     endif
 endin
 
 instr    2    ;CONVOLUTION REVERB INSTRUMENT
     chnset    "visible(0)","InstructionID"        ; hide the instruction
 
-    kFwdBwd        chnget    "FwdBwd"
-    kresize        chnget    "resize"
-    kmix        chnget    "mix"
-    klevel        chnget    "level"
-    kCompRat    chnget    "CompRat"
-    kCurve        chnget    "Curve"
-    kskipsamples    chnget    "skipsamples"
-    kDelayOS    chnget    "DelayOS"
-    kCompRat       init    1             ;IF THIS IS LEFT UNINITIALISED A CRASH WILL OCCUR! 
+    kFwdBwd      chnget    "FwdBwd"
+    kresize      chnget    "resize"
+    kmix         chnget    "mix"
+    klevel       chnget    "level"
+    kCompRat     chnget    "CompRat"
+    kCurve       chnget    "Curve"
+    kskipsamples chnget    "skipsamples"
+    kDelayOS     chnget    "DelayOS"
+    kCompRat     init      1              ; IF THIS IS LEFT UNINITIALISED A CRASH WILL OCCUR! 
 
     
     ainL,ainR    ins                ;READ STEREO AUDIO INPUT
     ;ainL,ainR    diskin2    "808loop.wav",1,0,1    ;USE A SOUND FILE FOR TESTING
-    ainMix        sum    ainL,ainR
+    ainMix       sum       ainL,ainR
     
     ;CREATE REVERSED TABLES
     irev    tab_reverse    giImpulse
         
-        kSwitchStr    changed    gSfilepath
-    kSwitchStr    delayk    kSwitchStr,1
-    kSwitch    changed        kskipsamples,kFwdBwd,kDelayOS,kCompRat,kCurve,kresize    ;GENERATE A MOMENTARY '1' PULSE IN OUTPUT 'kSwitch' IF ANY OF THE SCANNED INPUT VARIABLES CHANGE. (OUTPUT 'kSwitch' IS NORMALLY ZERO)
-    kSwitch    +=    kSwitchStr
-    if    kSwitch=1    then            ;IF I-RATE VARIABLE IS CHANGED...
+    kSwitchStr   changed   gSfilepath
+    kSwitchStr   delayk    kSwitchStr,1
+    kSwitch      changed   kskipsamples, kFwdBwd, kDelayOS, kCompRat, kCurve, kresize    ;GENERATE A MOMENTARY '1' PULSE IN OUTPUT 'kSwitch' IF ANY OF THE SCANNED INPUT VARIABLES CHANGE. (OUTPUT 'kSwitch' IS NORMALLY ZERO)
+    kSwitch      +=        kSwitchStr
+    if    kSwitch=1    then             ;IF I-RATE VARIABLE IS CHANGED...
         reinit    UPDATE                ;BEGIN A REINITIALISATION PASS IN ORDER TO EFFECT THIS CHANGE. BEGIN THIS PASS AT LABEL ENTITLED 'UPDATE' AND CONTINUE UNTIL rireturn OPCODE 
-    endif                        ;END OF CONDITIONAL BRANCHING
-    UPDATE:                        ;LABEL
+    endif                               ;END OF CONDITIONAL BRANCHING
+    UPDATE:                             ;LABEL
     
     ;CREATE COMPRESSED TABLES
     icomp    tab_compress    giImpulse,i(kCompRat),i(kCurve)
@@ -171,28 +171,28 @@ instr    2    ;CONVOLUTION REVERB INSTRUMENT
     ;CREATE COMPRESSED REVERSED TABLES
     icomprev    tab_compress_rev    giImpulse,i(kCompRat),i(kCurve)
         
-    iplen        =    1024                ;BUFFER LENGTH (INCREASE IF EXPERIENCING PERFORMANCE PROBLEMS, REDUCE IN ORDER TO REDUCE LATENCY)
-    itab        =    giImpulse            ;DERIVE FUNCTION TABLE NUMBER OF CHOSEN TABLE FOR IMPULSE FILE
-    iirlen        =    nsamp(itab)*0.5            ;DERIVE THE LENGTH OF THE IMPULSE RESPONSE IN SAMPLES. DIVIDE BY 2 AS TABLE IS STEREO.
-    iskipsamples    =    nsamp(itab)*0.5*i(kskipsamples)    ;DERIVE INSKIP INTO IMPULSE FILE. DIVIDE BY 2 (MULTIPLY BY 0.5) AS ALL IMPULSE FILES ARE STEREO
+    iplen        =    1024                            ;BUFFER LENGTH (INCREASE IF EXPERIENCING PERFORMANCE PROBLEMS, REDUCE IN ORDER TO REDUCE LATENCY)
+    itab         =    giImpulse                       ;DERIVE FUNCTION TABLE NUMBER OF CHOSEN TABLE FOR IMPULSE FILE
+    iirlen       =    nsamp(itab)*0.5                 ;DERIVE THE LENGTH OF THE IMPULSE RESPONSE IN SAMPLES. DIVIDE BY 2 AS TABLE IS STEREO.
+    iskipsamples =    nsamp(itab)*0.5*i(kskipsamples) ;DERIVE INSKIP INTO IMPULSE FILE. DIVIDE BY 2 (MULTIPLY BY 0.5) AS ALL IMPULSE FILES ARE STEREO
     
-    ;FORWARDS REVERB
+        ;FORWARDS REVERB
     if kFwdBwd==0&&kresize==0 then
-     aL,aR    ftconv    ainMix, itab, iplen,iskipsamples, iirlen        ;CONVOLUTE INPUT SOUND
-     adelL    delay    ainL, abs((iplen/sr)+i(kDelayOS))     ;DELAY THE INPUT SOUND ACCORDING TO THE BUFFER SIZE
-     adelR    delay    ainR, abs((iplen/sr)+i(kDelayOS))     ;DELAY THE INPUT SOUND ACCORDING TO THE BUFFER SIZE
+     aL,aR    ftconv    ainMix, itab, iplen,iskipsamples, iirlen ;CONVOLUTE INPUT SOUND
+     adelL    delay    ainL, abs((iplen/sr)+i(kDelayOS))         ;DELAY THE INPUT SOUND ACCORDING TO THE BUFFER SIZE
+     adelR    delay    ainR, abs((iplen/sr)+i(kDelayOS))         ;DELAY THE INPUT SOUND ACCORDING TO THE BUFFER SIZE
         
         ;BACKWARDS REVERB
-        elseif kFwdBwd==1&&kresize==0 then
-     aL,aR    ftconv    ainMix, irev, iplen, iskipsamples, iirlen                ;CONVOLUTE INPUT SOUND
-     adelL    delay    ainL,abs((iplen/sr)+(iirlen/sr)-(iskipsamples/sr)+i(kDelayOS))    ;DELAY THE INPUT SOUND ACCORDING TO THE BUFFER SIZE AND THE DURATION OF THE IMPULSE FILE
-     adelR    delay    ainR,abs((iplen/sr)+(iirlen/sr)-(iskipsamples/sr)+i(kDelayOS))    ;DELAY THE INPUT SOUND ACCORDING TO THE BUFFER SIZE AND THE DURATION OF THE IMPULSE FILE
+    elseif kFwdBwd==1&&kresize==0 then
+     aL,aR    ftconv    ainMix, irev, iplen, iskipsamples, iirlen                      ;CONVOLUTE INPUT SOUND
+     adelL    delay    ainL,abs((iplen/sr)+(iirlen/sr)-(iskipsamples/sr)+i(kDelayOS))  ;DELAY THE INPUT SOUND ACCORDING TO THE BUFFER SIZE AND THE DURATION OF THE IMPULSE FILE
+     adelR    delay    ainR,abs((iplen/sr)+(iirlen/sr)-(iskipsamples/sr)+i(kDelayOS))  ;DELAY THE INPUT SOUND ACCORDING TO THE BUFFER SIZE AND THE DURATION OF THE IMPULSE FILE
         
         ;FORWARDS COMPRESSED
     elseif kFwdBwd==0&&kresize==1 then
-     aL,aR    ftconv    ainMix, icomp, iplen,iskipsamples, iirlen*i(kCompRat)        ;CONVOLUTE INPUT SOUND
-     adelL    delay    ainL, abs((iplen/sr)+i(kDelayOS))                 ;DELAY THE INPUT SOUND ACCORDING TO THE BUFFER SIZE
-     adelR    delay    ainR, abs((iplen/sr)+i(kDelayOS))                 ;DELAY THE INPUT SOUND ACCORDING TO THE BUFFER SIZE
+     aL,aR    ftconv   ainMix, icomp, iplen,iskipsamples, iirlen*i(kCompRat)  ;CONVOLUTE INPUT SOUND
+     adelL    delay    ainL, abs((iplen/sr)+i(kDelayOS))                      ;DELAY THE INPUT SOUND ACCORDING TO THE BUFFER SIZE
+     adelR    delay    ainR, abs((iplen/sr)+i(kDelayOS))                      ;DELAY THE INPUT SOUND ACCORDING TO THE BUFFER SIZE
         
         ;BACKWARDS COMPRESSED
     elseif kFwdBwd==1&&kresize==1 then

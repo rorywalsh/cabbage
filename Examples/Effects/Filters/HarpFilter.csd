@@ -8,36 +8,36 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; HarpFilter.csd
 
 ; Creates a stack of waveguides simulating a resonating bank of strings
-; ** WARNING **     THIS EFFECT CAN APPLY VAST AMOUNTS OF RESONATING FEEDBACK THEREFORE LARGE AMOUNTS OF GAIN ARE POSSIBLE.
-;                    TAKE PARTICULAR CARE WHEN USING A LIVE AUDIO INPUT.
-;                    IF IN DOUBT, REDUCE THE FEEDBACK VALUE.
+; ** WARNING **   THIS EFFECT CAN APPLY VAST AMOUNTS OF RESONATING FEEDBACK THEREFORE LARGE AMOUNTS OF GAIN ARE POSSIBLE.
+;                 TAKE PARTICULAR CARE WHEN USING A LIVE AUDIO INPUT.
+;                 IF IN DOUBT, REDUCE THE FEEDBACK VALUE.
 
 ; Tunings of strings are not controlled individually but are instead defined using several global controls.
 
-; Frequency        -    Base frequency of the stack of waveguide filters
-; Cutoff        -    Cutoff frequency of a 1st order lowpass filter within the feedback loop of each waveguide unit
-; Spacing        -    The spacing method used between adjacent waveguide filters: Geometric or Arithmetic
+; Frequency       -    Base frequency of the stack of waveguide filters
+; Cutoff          -    Cutoff frequency of a 1st order lowpass filter within the feedback loop of each waveguide unit
+; Spacing         -    The spacing method used between adjacent waveguide filters: Geometric or Arithmetic
 ; Interval        -    Interval factor between adjacent filters.
 ;                 If 'Spacing' is geometric then Interval is applied geometrically, each time multiplying it to the previous frequency to derive the next.
 ;                 In this mode the value Interval actually defines an interval in semitones so an interval of 12 will produce a ratio of 2
 ;                 e.g. if base frequency is 200 and interval is 12, the sequence is 200,400,800,1600 
 ;                 If 'Spacing' is 'Arithmetic' then this is applied arithmetically each time adding base_frequency to the frequency of the previous filter to derive the frequency of the next.
 ;                 e.g. if base frequency is 200, interval is 1, the sequence is 200,400,600,800 etc... i.e. harmonic
-; Number        -    The number of waveguides to be created
-; Lowest        -    The Lowest filter in the sequence. i.e. shift the stacks up in steps as this is increased.
-; Reflect        -    If activated, additional waveguide filters are created at frequencies reflected beneath the base frequency according to the geometric or arithmetric rules. Activating 'Reflect' will double the number of filters used.
+; Number          -    The number of waveguides to be created
+; Lowest          -    The Lowest filter in the sequence. i.e. shift the stacks up in steps as this is increased.
+; Reflect         -    If activated, additional waveguide filters are created at frequencies reflected beneath the base frequency according to the geometric or arithmetric rules. Activating 'Reflect' will double the number of filters used.
 ; Strength        -    number of series iterations of the filters (single/double/triple). Increasing numbers of iterations sharpens the filtering effect and increases the resonance.
-; Filter Type    -    choose between wguide1 and streson. streson will provide better tuning but wguide1 will provide smoother results when modulating its cutoff frequency.
-; Width            -    offsets the frequencies of the left and right channels to imbue added stereo width
-; Random        -    range of random offsets added to waveguide frequencies
-; Lowcut        -    Inserts a 24dB/oct highpass filter after each waveguide, the cutoff of which corresponds to the cutoff of that filter.
-; Port.            -    Portamento time applied to changes made to frequency for each waveguide (and by extension also changes made to 'Interval'). Large portamento times are possible thereby permitting slow morphs. 
+; Filter Type     -    choose between wguide1 and streson. streson will provide better tuning but wguide1 will provide smoother results when modulating its cutoff frequency.
+; Width           -    offsets the frequencies of the left and right channels to imbue added stereo width
+; Random          -    range of random offsets added to waveguide frequencies
+; Lowcut          -    Inserts a 24dB/oct highpass filter after each waveguide, the cutoff of which corresponds to the cutoff of that filter.
+; Port.           -    Portamento time applied to changes made to frequency for each waveguide (and by extension also changes made to 'Interval'). Large portamento times are possible thereby permitting slow morphs. 
 ; Feedback        -    feedback ratio of each waveguide unit.
-;                 negative feedback will shift the fundemental down one octave and only odd harmonics will be preset
-; Attack        -    Attack time of each new note played 
-; Decay            -    Decay time of the input sound once a note is released
-; Release        -    Release time of the outputs of the waveguides after a note is released
-; Level            -    Output amplitude control
+;                      negative feedback will shift the fundemental down one octave and only odd harmonics will be preset
+; Attack          -    Attack time of each new note played 
+; Decay           -    Decay time of the input sound once a note is released
+; Release         -    Release time of the outputs of the waveguides after a note is released
+; Level           -    Output amplitude control
 
 <Cabbage>
 form caption("Harp Filter") size(1080,205), pluginId("HaFi")
@@ -53,11 +53,11 @@ combobox  bounds(  7, 74, 80, 16), text("Live","Dust","P.Noise","W.Noise"), chan
 
 label     bounds( 92, 42, 66, 13), text("Frequency"), fontColour("black"), identChannel("freqID0")
 rslider   bounds(102, 58, 42, 42),  channel("freq"), fontColour("black"), textColour("black"), trackerColour("DarkSlateGrey"), range(1,5000,150,0.5,0.01), identChannel("freqID1")
-nslider bounds( 93,100, 60, 22),  channel("freq"), colour("white"), fontColour("black"), textColour("black"), trackerColour("DarkSlateGrey"), range(1,5000,150,0.5,0.01), identChannel("freqID2")
+nslider bounds( 93,100, 60, 22),  channel("freqD"), colour("white"), fontColour("black"), textColour("black"), trackerColour("DarkSlateGrey"), range(1,5000,150,0.5,0.01), identChannel("freqID2")
 
 label     bounds( 92, 42, 66, 13), text("Note Num."), fontColour("black"), identChannel("NNID0"), visible(0)
 rslider   bounds(102, 58, 42, 42),  channel("NoteNumber"), fontColour("black"), textColour("black"), trackerColour("DarkSlateGrey"), range(10,110,50,1,0.01), identChannel("NNID1"), visible(0)
-nslider bounds( 93,100, 60, 22),  channel("NoteNumber"), colour("white"), fontColour("black"), textColour("black"), trackerColour("DarkSlateGrey"), range(10,110,50,1,0.01), identChannel("NNID2"), visible(0)
+nslider bounds( 93,100, 60, 22),  channel("NoteNumberD"), colour("white"), fontColour("black"), textColour("black"), trackerColour("DarkSlateGrey"), range(10,110,50,1,0.01), identChannel("NNID2"), visible(0)
 
 image    bounds(160,  5, 75,115), outlineThickness(1), line(1), outlineColour("darkslategrey"), shape("sharp"), plant("cutoff") {
 label    bounds(  5,  3, 65, 11), text("LPF Cutoff"), fontColour("black")
@@ -71,11 +71,11 @@ label    bounds(260,  8, 80, 11), text("Spacing"), fontColour("black")
 combobox bounds(260, 20, 80, 16), text("Geometric","Arithmetic"), channel("type"), value(2)  
 checkbox bounds(360, 20, 55, 12), text("Reflect"),      channel("dual"), fontColour:0("black"), fontColour:1("black")
 label    bounds(440,  8,  80, 11), text("Strength"), fontColour("black")
-combobox bounds(440, 20, 80, 16), text("Single","Double","Triple","Quadruple"), channel("Iterations")
+combobox bounds(440, 20, 80, 16), text("Single","Double","Triple","Quadruple"), channel("Iterations"), value(1)
 label    bounds(545,  8,  80, 11), text("Filter Type"), fontColour("black")
 combobox bounds(545, 20, 80, 16), text("wguide1","streson"), channel("FilterType"), value(1)
 rslider   bounds(250, 40, 75, 75), text("Interval"),  channel("interval"),   valueTextBox(1), textBox(1), fontColour("black"), textColour("black"), trackerColour("DarkSlateGrey"), range(-12,12,0.25)
-nslider bounds(260, 97, 55, 22),                    channel("interval"),   range(-24,24,0.25,1,0.0001), colour("white"), fontColour("black")
+nslider bounds(260, 97, 55, 22),                    channel("intervalD"),   range(-24,24,0.25,1,0.0001), colour("white"), fontColour("black")
 rslider  bounds(320, 40, 75, 75), text("Number"),     channel("max"),         valueTextBox(1), textBox(1), fontColour("black"), textColour("black"), trackerColour("DarkSlateGrey"), range(1,100,11,1,1)
 rslider  bounds(380, 40, 75, 75), text("Lowest"),     channel("min"),      valueTextBox(1), textBox(1), fontColour("black"), textColour("black"), trackerColour("DarkSlateGrey"), range(1,100,1,1,1)
 rslider  bounds(440, 41, 75, 75), text("Width"),      channel("StWidth"),   range(-0.5, 0.5, 0, 1,0.001), valueTextBox(1), textBox(1), fontColour("black"), textColour("black"), trackerColour("DarkSlateGrey")
@@ -104,32 +104,32 @@ keyboard bounds(  0,125,1080, 80)
 <CsInstruments>
 
 ; sr is set by host
-ksmps         =     32    ;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
-nchnls         =     2    ;NUMBER OF CHANNELS (2=STEREO)
-0dbfs        =    1
-        seed    0
-        massign    0,2
+ksmps         =        32    ;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls        =        2    ;NUMBER OF CHANNELS (2=STEREO)
+0dbfs         =        1
+              seed     0
+              massign  0,2
 
-giTriDist    ftgen    0,0,1024,21,3,1
+giTriDist     ftgen    0,0,1024,21,3,1
 
-gkFilterType    init    1
+gkFilterType  init     1
 
 ;A RECURSIVE UDO IS USED TO CREATE THE STACK OF WGUIDE1S
 opcode    filterstack, a, akkkkkkkkii                    ;OPCODE DEFINITION
 ain,kfreq,kRndFactor,kcutoff,kLowCut,kfeedback,kint,kPortTime,ktype,icount,imax    xin        ;INPUT ARG NAMES
-    amix    =    0
-    iRnd    trirand    1
-    kRnd    =    iRnd * kRndFactor
+    amix      =    0
+    iRnd      trirand    1
+    kRnd      =    iRnd * kRndFactor
     if ktype==0 then                        ;IF GEOMETRIC MODE HAS BEEN CHOSEN...
-     kfreq2    =    kfreq*semitone(kint*(icount-1) + kRnd)            ;DEFINE FREQUENCY FOR THIS WGUIDE1 ACCORDING TO THE BASE FREQUENCY, INTERVAL AND THE COUNTER (LOCATION IN SERIES)
+     kfreq2   =    kfreq*semitone(kint*(icount-1) + kRnd)            ;DEFINE FREQUENCY FOR THIS WGUIDE1 ACCORDING TO THE BASE FREQUENCY, INTERVAL AND THE COUNTER (LOCATION IN SERIES)
     else                                ;OTHERWISE MUST BE ARITHMETIC MODE
-     kfreq2    =    (kfreq+(kfreq*(icount-1)*kint)) * semitone(kRnd)            ;DEFINE FREQUENCY FOR THIS WGUIDE1 ACCORDING TO THE BASE FREQUENCY, INTERVAL AND THE COUNTER (LOCATION IN SERIES)
+     kfreq2   =    (kfreq+(kfreq*(icount-1)*kint)) * semitone(kRnd)            ;DEFINE FREQUENCY FOR THIS WGUIDE1 ACCORDING TO THE BASE FREQUENCY, INTERVAL AND THE COUNTER (LOCATION IN SERIES)
     endif                                ;END OF CONDITIONAL
     if abs(kfreq2)>sr/3||abs(kfreq2)<20 then            ;IF FREQUENCY IS OUTSIDE OF A SENSIBLE RANGE JUMP THE CREATION OF THE WGUIDE1 ALTOGETHER
-     asig    =    0
+     asig     =    0
     else
      kramp    linseg    0,0.001,1
-     kfreq2    portk    kfreq2,kPortTime*kramp
+     kfreq2   portk    kfreq2,kPortTime*kramp
      if gkFilterType==1 then
       asig    wguide1 ain, kfreq2, kcutoff, kfeedback            ;CREATE THE WGUIDE1 SIGNAL
      else
@@ -148,6 +148,18 @@ ain,kfreq,kRndFactor,kcutoff,kLowCut,kfeedback,kint,kPortTime,ktype,icount,imax 
     skip:                                ;LABEL - SKIP TO HERE IF THE FREQUENCY WAS OUT OF RANGE
             xout        asig + amix            ;SEND MIX OF ALL AUDIO BACK TO CALLER INSTRUMENT
 endop                                    ;END OF UDO
+
+opcode ParallelWidgets, k, SS
+SStr1,SStr2 xin
+k1         chnget       SStr1
+k2         chnget       SStr2
+if changed:k(k1)==1 then
+           chnset       k1,SStr2
+elseif changed:k(k2)==1 then
+           chnset       k2,SStr1    
+endif
+           xout         k1
+endop
 
 
 instr    1
@@ -171,45 +183,48 @@ instr    1
     
     kporttime    linseg        0,0.001,0.03
     
-    gkfreq        chnget        "freq"
-    gkNoteNumber        chnget        "NoteNumber"
+    gkfreq        ParallelWidgets "freq","freqD"
+    
+    gkNoteNumber  ParallelWidgets "NoteNumber","NoteNumberD"
+
+    gkinterval    ParallelWidgets "interval","intervalD"
+    
     ;gkfreq        portk        gkfreq,kporttime
-    gkCutoffMode    chnget        "CutoffMode"
-    gkcutoff    chnget        "cutoff"
-    gkcutoff    portk        gkcutoff,kporttime
-    gkCutoffRatio    chnget        "CutoffRatio"
+    gkCutoffMode  chnget        "CutoffMode"
+    gkcutoff      chnget        "cutoff"
+    gkcutoff      portk        gkcutoff,kporttime
+    gkCutoffRatio chnget        "CutoffRatio"
     gkfeedback    chnget        "feedback"
     gkfeedback    portk        gkfeedback,kporttime
-    gkinterval    chnget        "interval"
     ;gkinterval    portk        gkinterval,kporttime
-    gkmax        chnget        "max"
-    gkmin        chnget        "min"
-    ktype        chnget        "type"
-    ktype        init        2
+    gkmax         chnget        "max"
+    gkmin         chnget        "min"
+    ktype         chnget        "type"
+    ktype         init        2
     gktype        =        ktype - 1    ; COMBOBOX TO 0-1
-    gkAtt        chnget        "Att"
-    gkDec        chnget        "Dec"
-    gkRel        chnget        "Rel"
-    gkMix        chnget        "Mix"
-    gkamp        chnget        "amp"
-    gkPortamento    chnget        "Portamento"
+    gkAtt         chnget        "Att"
+    gkDec         chnget        "Dec"
+    gkRel         chnget        "Rel"
+    gkMix         chnget        "Mix"
+    gkamp         chnget        "amp"
+    gkPortamento  chnget        "Portamento"
     gkdual        chnget        "dual"
-    gkLowCut    chnget        "LowCut"
-    gkStWidth    chnget        "StWidth"
-    gkRndFactor    chnget        "RndFactor"
+    gkLowCut      chnget        "LowCut"
+    gkStWidth     chnget        "StWidth"
+    gkRndFactor   chnget        "RndFactor"
     gkTune        chnget        "Tune"
-    gkTune        *=        0.01                ; CONVERT FROM CENTS TO SEMITONES
-    gkLDiff        =        semitone(-gkStWidth+gkTune)
-    gkRDiff        =        semitone(gkStWidth+gkTune)    
-    gkIterations    chnget    "Iterations"
-    gkFilterType    chnget    "FilterType"
+    gkTune        *=            0.01                ; CONVERT FROM CENTS TO SEMITONES
+    gkLDiff       =             semitone(-gkStWidth+gkTune)
+    gkRDiff       =             semitone(gkStWidth+gkTune)    
+    gkIterations  chnget        "Iterations"
+    gkFilterType  chnget        "FilterType"
     if changed(gkCutoffMode)==1 then
      if gkCutoffMode==1 then
-      chnset    "visible(1)","cutoff_ident"
-      chnset    "visible(0)","CutoffRatio_ident"
+                  chnset        "visible(1)","cutoff_ident"
+                  chnset        "visible(0)","CutoffRatio_ident"
      else
-      chnset    "visible(0)","cutoff_ident"
-      chnset    "visible(1)","CutoffRatio_ident"
+                  chnset        "visible(0)","cutoff_ident"
+                  chnset        "visible(1)","CutoffRatio_ident"
      endif   
     endif
 

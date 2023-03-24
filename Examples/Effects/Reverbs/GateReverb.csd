@@ -108,7 +108,7 @@ opcode    Taps,a,iiiiiikkkko
   iRndAmp    random    (1-iScatAmp),1                             ; CREATE A RANDOM AMPLITUDE VALUE
   iRndDel    random    -(iTotDel*iScatTim)/iTotNum, (iTotDel*iScatTim)/iTotNum        ; CREATE A RANDOM DELAY TAP OFFSET VALUE
  endif 
- iDel        limit    ((iTotDel/iTotNum)*iCount)+iRndDel,0.001,iTotDel        ; LIMIT DELAY TIMES SO THAT IT WON'T EXCEED BUFFER SIZE OR BE ZERO OR LESS
+ iDel        limit    ((iTotDel/iTotNum)*iCount)+iRndDel,ksmps/sr,iTotDel        ; LIMIT DELAY TIMES SO THAT IT WON'T EXCEED BUFFER SIZE OR BE ZERO OR LESS
  aOut        deltapi    iDel                                ; CREATE DELAY TAP
 
  /* FILTER */
@@ -130,7 +130,8 @@ opcode    Taps,a,iiiiiikkkko
  if iCount<iTotNum then                                    ; IF NUMBER OF REQUIRED TAPS IS NOT YET COMPLETED...
   aMix        Taps    iInOutMode,iTotDel,iScatAmp,iShape,iScatTim,iTotNum,kFiltSelect,kFiltMin,kFiltMax,kQ,iCount+1    ; CALL FURTHER LAYER(S) FOR ADDITIONAL TAPS AS REQUIRED (INCREMENT COUNTER)
  endif
-         xout    (aOut*(iRndAmp^2))+aMix                        ; ADD THIS TAP (AND APPLY RANDOM AMPLITUDE FOR THIS TAP) WITH ALL SUBSEQUENT TAPS
+ iPol    =       (round(random:i(0, 1)) * 2) -1
+         xout    (aOut*(iRndAmp^2)*iPol)+aMix                        ; ADD THIS TAP (AND APPLY RANDOM AMPLITUDE FOR THIS TAP) WITH ALL SUBSEQUENT TAPS
 endop
 
 instr    1

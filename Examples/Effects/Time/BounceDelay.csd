@@ -42,7 +42,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 #define LABEL_STYLE fontColour(200,240,250)
 #define COMBOBOX_STYLE colour(  10, 40, 50), textColour(200,240,250), textColour(200,240,250) 
  
-form caption("Bounce Delay"), size(490,360), pluginId("BnDl")
+form caption("Bounce Delay"), size(490,360), pluginId("BnDl"), colour("Black")
 rslider   bounds( 10, 10, 70, 70), channel("TotalTime"), text("Total Time"), range(0.01,6, 1.7, 0.5), $RSLIDER_STYLE1
 rslider   bounds( 90, 10, 70, 70), channel("Number"), text("Number"),        range(1, 128,12, 1,1), $RSLIDER_STYLE1
 rslider   bounds(170, 10, 70, 70), channel("Warp"), text("Time Curve"),      range(-1, 1, -0.1), $RSLIDER_STYLE2
@@ -59,8 +59,8 @@ combobox  bounds( 90, 45,120, 20),  channel("FiltType"),text("Bypass","Lowpass 6
 }
 
 ; display bars 
-image bounds( 18,218,454,124), colour(250,250,250), shape("sharp")
-gentable bounds( 20,220,450,120), tableNumber(1), identChannel("Table1"), ampRange(0,1,1), fill(0), tableColour(100,100,250,170), tableBackgroundColour(0,0,0,0), tableGridColour(0,0,0,0), outlineThickness(1)
+image bounds( 18,218,454,124), colour(250,250,250,0), shape("sharp"), outlineColour("Silver"), outlineThickness(1)
+gentable bounds( 20,220,450,120), tableNumber(1), identChannel("Table1"), ampRange(0,1,1), fill(0), tableColour(200,200,250,250), tableBackgroundColour(10,10,50,250), tableGridColour(0,0,0,0), outlineThickness(1)
 image bounds( 20,220,450,120), colour( 20, 20, 20, 0), shape("sharp"), plant("display") 
 {
 image bounds(-100,  0,  4,100), colour(250,250,250,200), shape(sharp), visible(1), widgetArray("Bars",128)

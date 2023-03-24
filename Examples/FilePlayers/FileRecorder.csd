@@ -17,11 +17,11 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 
 
 <Cabbage>
-form caption("File Recorder") size(230, 45), colour(0,0,0) pluginId("FRec")
-image               bounds(  0,  0,230, 45), colour(100,100,100), outlineColour("White"), line(3)
-checkbox bounds( 10, 10, 75, 25), channel("record"), text("Record"), colour("red"), fontColour("white")
-button   bounds( 90, 10, 65, 25), colour("red"), text("New File","New File"), channel("reset"), latched(0)
-checkbox bounds(165, 10, 75, 25), channel("play"), text("Play"), colour("green"), fontColour("white")
+form caption("File Recorder") size(230,100), colour(0,0,0) pluginId("FRec")
+image               bounds(  0,  0,230,100), colour(100,100,100), outlineColour("White"), line(3)
+checkbox bounds( 10, 35, 75, 25), channel("record"), text("Record"), colour("red"), fontColour:0("white"), fontColour:1("white")
+button   bounds( 90, 35, 65, 25), colour("red"), text("New File","New File"), channel("reset"), latched(0)
+checkbox bounds(165, 35, 75, 25), channel("play"), text("Play"), colour("green"), fontColour:0("white"), fontColour:1("white")
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -70,6 +70,7 @@ instr 9000    ; record file
              turnoff
  endif
  gkFileRecorded        init    1
+ 
  itim        date
  Stim        dates     itim
  itim        date
@@ -81,8 +82,8 @@ instr 9000    ; record file
  Shor        strsub    Stim, 11, 13
  Smin        strsub    Stim, 14, 16
  Ssec        strsub    Stim, 17, 19
- Sfilnam     sprintf   "%s_%s_%02d_%s_%s_%s.wav", Syear, Smonth, iday, Shor,Smin, Ssec
- gSname      sprintf   "FileRecorder_%s", Sfilnam
+ SDir        chnget    "USER_HOME_DIRECTORY"
+ gSname      sprintf   "%s/FileRecorder_%s_%s_%02d_%s_%s_%s.wav", SDir, Syear, Smonth, iday, Shor,Smin, Ssec
  if gkrecord==1 then            ; record
              fout      gSname, 8, gaL, gaR
  endif

@@ -25,31 +25,36 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; the five vertical sliders scale the amplitudes of all formants
 
 <Cabbage>
-form caption("FOF Choir") size(770, 425), pluginId("choi"), guiRefresh(16)
+form caption("FOF Choir") size(770, 465), pluginId("choi"), guiRefresh(16)
 
 ; main container
-image bounds(  0,  0,770, 425), colour(255,100,  0, 40), shape("rounded"), outlineColour("white"), outlineThickness(3)
+image bounds(  0,  0,770, 465), colour(15,20,20), shape("rounded"), outlineColour("white"), outlineThickness(3)
 
-xypad    bounds( 10, 10,250,210), channel("vowel", "oct"), text("X:Vowel Y:Oct.Div."), rangeX(0, 1, 0), rangeY(0, 4, 0)
-combobox bounds(265, 10,110, 25), channel("voice"), value(5), text("Bass", "Tenor", "Countertenor", "Alto", "Soprano")
-button   bounds(265, 40,110, 25), text("polyphonic","monophonic"), channel("monopoly"), value(1)
-rslider  bounds(385, 10, 60, 60), text("Leg.Time"),     channel("LegTim"),  range(0.005, 0.3, 0.025, 0.5, 0.005),colour("green"), trackerColour("white")
-rslider  bounds(445, 10, 60, 60), text("Vowel"),        channel("vowel"),   range(0, 1.00, 0),       colour("green"),    trackerColour("white"),midCtrl(1, 2)
-rslider  bounds(505, 10, 60, 60), text("Level"),        channel("lev"),     range(0, 5.00, 0.6),     colour("green"),    trackerColour("white")
-rslider  bounds(265, 80, 60, 60), text("Vib.Dep."),     channel("vibdep"),  range(0, 2.00, 0.35),    colour("tomato"),   trackerColour("white"),midCtrl(1, 1)
-rslider  bounds(325, 80, 60, 60), text("Trem.Dep."),    channel("trmdep"),  range(0, 1.00, 0.2),     colour("tomato"),   trackerColour("white"),midCtrl(1, 1)
-rslider  bounds(385, 80, 60, 60), text("Mod.Rate"),     channel("modrte"),  range(0.10,20, 5, 0.5),  colour("tomato"),   trackerColour("white")
-rslider  bounds(445, 80, 60, 60), text("Mod.Delay"),    channel("moddel"),  range(0, 2.00, 0.3, 0.5),colour("tomato"),   trackerColour("white")
-rslider  bounds(505, 80, 60, 60), text("Mod.Rise"),     channel("modris"),  range(0, 4.00, 2, 0.5),  colour("tomato"),   trackerColour("white")
-rslider  bounds(265,150, 60, 60), text("N.Voices"),     channel("nvoices"), range(1,  50, 6, 1, 1),  colour("yellow"),   trackerColour("white")
-rslider  bounds(325,150, 60, 60), text("Dtn.Dep."),     channel("DtnDep"),  range(0,    4.00, 1,0.5),colour("yellow"),   trackerColour("white")
-rslider  bounds(385,150, 60, 60), text("Dtn.Rate"),     channel("DtnRte"),  range(0.01,40, 0.2,0.25),colour("yellow"),   trackerColour("white")
-rslider  bounds(445,150, 60, 60), text("Rvb.Mix"),      channel("RvbMix"),  range(0, 1.00, 0.15),    colour("steelblue"),trackerColour("white")
-rslider  bounds(505,150, 60, 60), text("Rvb.Size"),     channel("RvbSize"), range(0.5, 1.00, 0.82,2),colour("steelblue"),trackerColour("white")
+xypad    bounds( 10, 10,250,250), channel("vowel", "oct"), text("X:Vowel Y:Oct.Div."), rangeX(0, 1, 0), rangeY(0, 4, 0)
+
+combobox bounds(265, 30,110, 25), channel("voice"), value(5), text("Bass", "Tenor", "Countertenor", "Alto", "Soprano")
+button   bounds(265, 60,110, 25), text("polyphonic","monophonic"), channel("monopoly"), value(1)
+
+rslider  bounds(385, 20, 60, 60), text("Leg.Time"),     channel("LegTim"),  range(0.005, 0.3, 0.025, 0.5, 0.005),colour("green"), trackerColour("white")
+rslider  bounds(445, 20, 60, 60), text("Vowel"),        channel("vowel"),   range(0, 1.00, 0),       colour("green"),    trackerColour("white"),midCtrl(1, 2)
+rslider  bounds(505, 20, 60, 60), text("Level"),        channel("lev"),     range(0, 5.00, 0.6),     colour("green"),    trackerColour("white")
+
+rslider  bounds(265,100, 60, 60), text("Vib.Dep."),     channel("vibdep"),  range(0, 2.00, 0.35),    colour("tomato"),   trackerColour("white"),midCtrl(1, 1)
+rslider  bounds(325,100, 60, 60), text("Trem.Dep."),    channel("trmdep"),  range(0, 1.00, 0.2),     colour("tomato"),   trackerColour("white"),midCtrl(1, 1)
+rslider  bounds(385,100, 60, 60), text("Mod.Rate"),     channel("modrte"),  range(0.10,20, 5, 0.5),  colour("tomato"),   trackerColour("white")
+rslider  bounds(445,100, 60, 60), text("Mod.Delay"),    channel("moddel"),  range(0, 2.00, 0.3, 0.5),colour("tomato"),   trackerColour("white")
+rslider  bounds(505,100, 60, 60), text("Mod.Rise"),     channel("modris"),  range(0, 4.00, 2, 0.5),  colour("tomato"),   trackerColour("white")
+
+rslider  bounds(265,180, 60, 60), text("N.Voices"),     channel("nvoices"), range(1,  50, 6, 1, 1),  colour("yellow"),   trackerColour("white")
+rslider  bounds(325,180, 60, 60), text("Dtn.Dep."),     channel("DtnDep"),  range(0,    4.00, 1,0.5),colour("yellow"),   trackerColour("white")
+rslider  bounds(385,180, 60, 60), text("Dtn.Rate"),     channel("DtnRte"),  range(0.01,40, 0.2,0.25),colour("yellow"),   trackerColour("white")
+rslider  bounds(445,180, 60, 60), text("Rvb.Mix"),      channel("RvbMix"),  range(0, 1.00, 0.15),    colour("steelblue"),trackerColour("white")
+rslider  bounds(505,180, 60, 60), text("Rvb.Size"),     channel("RvbSize"), range(0.5, 1.00, 0.82,2),colour("steelblue"),trackerColour("white")
+
 checkbox bounds(570, 10,190, 20), text("Filter On/Off") channel("FiltOnOff"), colour("lime")  value(0)
-xypad    bounds(570, 35,190,185), channel("cf", "bw"), text("x:c.off/y:b.width"), rangeX(5, 13, 8), rangeY(0.1, 5, 0.3)
+xypad    bounds(570, 35,190,250), channel("cf", "bw"), text("x:c.off/y:b.width"), rangeX(5, 13, 8), rangeY(0.1, 5, 0.3)
 
-image bounds(0,225,770,200), colour(0,0,0,0)
+image bounds(0,265,770,200), colour(0,0,0,0)
 {
 nslider  bounds( 10, 10, 60, 25), text("Freq.1"), channel("f1"), range(0, 20000, 0, 1,1), active(0)
 nslider  bounds( 10, 40, 60, 25), text("dB.1"), channel("dB1"), range(-120, 0, 0, 1,1), active(0)
@@ -71,14 +76,14 @@ nslider  bounds(290, 10, 60, 25), text("Freq.5"), channel("f5"), range(0, 20000,
 nslider  bounds(290, 40, 60, 25), text("dB.5"), channel("dB5"), range(-120, 0, 0, 1,1), active(0)
 nslider  bounds(290, 70, 60, 25), text("BW.5"), channel("BW5"), range(0, 1000, 0, 1,1), active(0)
 
-rslider  bounds(380, 10, 80, 80), text("Frequency Scale"),     channel("FormScale"), range(0.25, 4.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
-rslider  bounds(480, 10, 80, 80), text("Bandwidth Scale"),   channel("BWScale"), range(0.5, 8.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
+rslider  bounds(370, 10, 80, 80), text("Frequency Scale"),     channel("FormScale"), range(0.25, 4.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
+rslider  bounds(470, 10, 80, 80), text("Bandwidth Scale"),   channel("BWScale"), range(0.5, 8.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
 
-vslider  bounds(600, 10, 20, 85), channel("FAmp1"), range(0, 1.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
-vslider  bounds(630, 10, 20, 85), channel("FAmp2"), range(0, 1.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
-vslider  bounds(660, 10, 20, 85), channel("FAmp3"), range(0, 1.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
-vslider  bounds(690, 10, 20, 85), channel("FAmp4"), range(0, 1.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
-vslider  bounds(720, 10, 20, 85), channel("FAmp5"), range(0, 1.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
+vslider  bounds(600, 25, 20, 70), channel("FAmp1"), range(0, 1.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
+vslider  bounds(630, 25, 20, 70), channel("FAmp2"), range(0, 1.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
+vslider  bounds(660, 25, 20, 70), channel("FAmp3"), range(0, 1.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
+vslider  bounds(690, 25, 20, 70), channel("FAmp4"), range(0, 1.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
+vslider  bounds(720, 25, 20, 70), channel("FAmp5"), range(0, 1.00, 1, 0.5, 0.001), colour(200,200,150), trackerColour("white")
 
 label    bounds(600, 90, 20, 12), text("1"), align("centre")
 label    bounds(630, 90, 20, 12), text("2"), align("centre")
@@ -87,7 +92,7 @@ label    bounds(690, 90, 20, 12), text("4"), align("centre")
 label    bounds(720, 90, 20, 12), text("5"), align("centre")
 }
 
-keyboard pos(10, 335), size(750, 80)
+keyboard pos(10, 375), size(750, 80)
 </Cabbage>
 
 <CsoundSynthesizer>

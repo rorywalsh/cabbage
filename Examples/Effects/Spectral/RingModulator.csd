@@ -36,10 +36,10 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Level        -    output level
 
 <Cabbage>
-form caption("Ring Modulator") size(825,170), pluginId("rmod")
+form caption("Ring Modulator") size(825,170), pluginId("rmod"), guiMode("queue")
 image               pos(0, 0), size(825, 90), colour("black"), shape("rounded"), outlineColour("lime"), outlineThickness(5) 
 label    bounds( 10, 20, 65, 13), text("Input"), fontColour(white)
-combobox bounds( 10, 34, 65, 18), text("Knob","Keybd."), channel("input"), textColour(white)
+combobox bounds( 10, 34, 65, 18), text("Knob","Keybd."), channel("input"), textColour("white"), value(1)
 rslider bounds( 75, 12, 70, 70), text("Freq."),    channel("freq"),  range(0, 15000, 800, 0.25),   colour("yellow"),    trackerColour(white), textColour(white)
 
 vslider bounds(145, 12,  6, 70), text("1"),     channel("1"),   range(0, 1, 1, 0.5),   colour("yellow"),    trackerColour(white), textColour(white)
@@ -85,99 +85,99 @@ keyboard bounds(0,92,825,78)
 <CsInstruments>
 
 ; sr is set by host
-ksmps = 32
-nchnls = 2
-0dbfs = 1
-massign    0,2
+ksmps   = 32
+nchnls  = 2
+0dbfs   = 1
+massign 0,2
 
 ;Author: Iain McCurdy (2012)
 ;http://iainmccurdy.org/csound.html
 
 gisaw    ftgen    0,0,4096,7,1,4096,-1    ; source modulating waveform (unbandlimited sawtooth waveform) before harmonic filtering
-giAmps  ftgen  900, 0, 12, -2, 1
+giAmps   ftgen  900, 0, 12, -2, 1
 
 opcode    RingModulator,a,akkkkkkii
-    ain,kmix,kfreq,kshape,kenv,katt,kdec,ifn,iphs    xin            ;READ IN INPUT ARGUMENTS
-    iWet    ftgentmp    0,0,1024,-7,0,512,1,512,1        ;RESCALING FUNCTION FOR WET LEVEL CONTROL
-    iDry    ftgentmp    0,0,1024,-7,1,512,1,512,0        ;RESCALING FUNCTION FOR DRY LEVEL CONTROL
-    kWet    table    kmix, iWet, 1                    ;RESCALE WET LEVEL CONTROL ACCORDING TO FUNCTION TABLE iWet
-    kDry    table    kmix, iDry, 1                    ;RESCALE DRY LEVEL CONTROL ACCORDING TO FUNCTION TABLE iDry
-    aFollow    follow2        ain, katt, kdec                ;AMPLITUDE FOLLOWING kModFrq + (cpsoct(kFollow*kenv*30))         ;CREATE A LEFT CHANNEL MODULATING FREQUENCY BASE ON THE STATIC VALUE CREATED BY kfreq AND THE AMOUNT OF DYNAMIC ENVELOPE FOLLOWING GOVERNED BY kenv
-    kFollow    downsamp    aFollow
-    kFollow    logcurve    kFollow/0dbfs,2
-    kfreq    =    kfreq + (kFollow*kenv*8000)             ;CREATE A LEFT CHANNEL MODULATING FREQUENCY BASE ON THE STATIC VALUE CREATED BY kfreq AND THE AMOUNT OF DYNAMIC ENVELOPE FOLLOWING GOVERNED BY kenv
-    aMod    poscil    1, kfreq, ifn, iphs              ;CREATE RING MODULATING SIGNAL
-    aMod    powershape aMod, kshape
+    ain,kmix,kfreq,kshape,kenv,katt,kdec,ifn,iphs    xin ; READ IN INPUT ARGUMENTS
+    iWet     ftgentmp   0,0,1024,-7,0,512,1,512,1        ; RESCALING FUNCTION FOR WET LEVEL CONTROL
+    iDry     ftgentmp   0,0,1024,-7,1,512,1,512,0        ; RESCALING FUNCTION FOR DRY LEVEL CONTROL
+    kWet     table      kmix, iWet, 1                    ; RESCALE WET LEVEL CONTROL ACCORDING TO FUNCTION TABLE iWet
+    kDry     table      kmix, iDry, 1                    ; RESCALE DRY LEVEL CONTROL ACCORDING TO FUNCTION TABLE iDry
+    aFollow  follow2    ain, katt, kdec                  ; AMPLITUDE FOLLOWING kModFrq + (cpsoct(kFollow*kenv*30))         ;CREATE A LEFT CHANNEL MODULATING FREQUENCY BASE ON THE STATIC VALUE CREATED BY kfreq AND THE AMOUNT OF DYNAMIC ENVELOPE FOLLOWING GOVERNED BY kenv
+    kFollow  downsamp   aFollow
+    kFollow  logcurve   kFollow/0dbfs,2
+    kfreq    =          kfreq + (kFollow*kenv*8000)      ; CREATE A LEFT CHANNEL MODULATING FREQUENCY BASE ON THE STATIC VALUE CREATED BY kfreq AND THE AMOUNT OF DYNAMIC ENVELOPE FOLLOWING GOVERNED BY kenv
+    aMod     poscil     1, kfreq, ifn, iphs              ; CREATE RING MODULATING SIGNAL
+    aMod     powershape aMod, kshape
     
-    aout    sum    ain*kDry, ain*aMod*kWet                ;MIX DRY AND WET SIGNALS
-        xout    aout                        ;SEND AUDIO BACK TO CALLER INSTRUMENT
+    aout     sum        ain*kDry, ain*aMod*kWet          ; MIX DRY AND WET SIGNALS
+             xout       aout                             ; SEND AUDIO BACK TO CALLER INSTRUMENT
 endop
 
 instr    1
- kporttime    linseg    0,0.001,0.1
- gkfreq    chnget    "freq"
- gkfreq    portk    gkfreq,kporttime
- gkmix     chnget    "mix"
- gkwidth    chnget    "width"
- gkenv     chnget    "env"
- gkatt     chnget    "att"
- gkdec     chnget    "dec"
- gkthresh     chnget    "thresh"
- gkmin     chnget    "min"
- gkmax     chnget    "max"
- gklevel     chnget    "level"
- gkshape    chnget    "shape"
+ kporttime  linseg    0,0.001,0.1
+ gkfreq     cabbageGetValue    "freq"
+ gkfreq     portk     gkfreq,kporttime
+ gkmix      cabbageGetValue    "mix"
+ gkwidth    cabbageGetValue    "width"
+ gkenv      cabbageGetValue    "env"
+ gkatt      cabbageGetValue    "att"
+ gkdec      cabbageGetValue    "dec"
+ gkthresh   cabbageGetValue    "thresh"
+ gkmin      cabbageGetValue    "min"
+ gkmax      cabbageGetValue    "max"
+ gklevel    cabbageGetValue    "level"
+ gkshape    cabbageGetValue    "shape"
 
- gk1        chnget    "1"
- gk2        chnget    "2"
- gk3        chnget    "3"
- gk4        chnget    "4"
- gk5        chnget    "5"
- gk6        chnget    "6"
- gk7        chnget    "7"
- gk8        chnget    "8"
- gk9        chnget    "9"
- gk10       chnget    "10"
- gk11       chnget    "11"
- gk12       chnget    "12"
- gk13       chnget    "13"
- gk14       chnget    "14"
+ gk1        cabbageGetValue    "1"
+ gk2        cabbageGetValue    "2"
+ gk3        cabbageGetValue    "3"
+ gk4        cabbageGetValue    "4"
+ gk5        cabbageGetValue    "5"
+ gk6        cabbageGetValue    "6"
+ gk7        cabbageGetValue    "7"
+ gk8        cabbageGetValue    "8"
+ gk9        cabbageGetValue    "9"
+ gk10       cabbageGetValue    "10"
+ gk11       cabbageGetValue    "11"
+ gk12       cabbageGetValue    "12"
+ gk13       cabbageGetValue    "13"
+ gk14       cabbageGetValue    "14"
  
 
  ga1,ga2    ins
  ;ga1,ga2    diskin2    "808loop.wav",1,0,1
 
- gkinput    chnget    "input"
- gkinput    init    1
+ gkinput    cabbageGetValue    "input"
+ gkinput    init      1
  if changed(gkinput)==1&&gkinput==1 then
-  event    "i",2,0,-1
+            event     "i",2,0,-1
  endif
 endin
 
 instr    2
  /* MIDI AND GUI INTEROPERABILITY */
- iMIDIflag    =    0            ; IF MIDI ACTIVATED = 1, NON-MIDI = 0
- mididefault    1, iMIDIflag            ; IF NOTE IS MIDI ACTIVATED REPLACE iMIDIflag WITH '1'
+ iMIDIflag  =            0              ; IF MIDI ACTIVATED = 1, NON-MIDI = 0
+            mididefault  1, iMIDIflag   ; IF NOTE IS MIDI ACTIVATED REPLACE iMIDIflag WITH '1'
  
- if iMIDIflag==1 then                ; IF THIS IS A MIDI ACTIVATED NOTE...
-  icps    cpsmidi                    ; READ MIDI PITCH VALUES - THIS VALUE CAN BE MAPPED TO GRAIN DENSITY AND/OR PITCH DEPENDING ON THE SETTING OF THE MIDI MAPPING SWITCHES
-  kfreq    =        icps
+ if iMIDIflag==1 then                   ; IF THIS IS A MIDI ACTIVATED NOTE...
+  icps      cpsmidi                     ; READ MIDI PITCH VALUES - THIS VALUE CAN BE MAPPED TO GRAIN DENSITY AND/OR PITCH DEPENDING ON THE SETTING OF THE MIDI MAPPING SWITCHES
+  kfreq     =            icps
  else
-  kfreq     =    gkfreq
- endif                        ; END OF THIS CONDITIONAL BRANCH
+  kfreq     =            gkfreq
+ endif                                  ; END OF THIS CONDITIONAL BRANCH
 
  if gkinput!=1&&iMIDIflag!=1 then
-  turnoff
+            turnoff
  endif
  
  if gkthresh>0 then
-  a1,a2    init    0
-  krms    rms    a1+a2
-  kRTrig    init    1
-  kfreq    trandom    kRTrig,gkmin,gkmax
-  kfreq    =    cpsoct(kfreq)
+  a1,a2     init         0
+  krms      rms          a1+a2
+  kRTrig    init         1
+  kfreq     trandom      kRTrig,gkmin,gkmax
+  kfreq     =            cpsoct(kfreq)
   if changed(kfreq)==1 then
-   chnset    kfreq,"freq"
+            cabbageSetValue       "freq",kfreq
   endif
   kRTrig    trigger    krms,gkthresh,0
  endif
@@ -188,20 +188,20 @@ instr    2
   endif
   UPDATE:
  endif
- ifn    ftgen    1, 0, 4096, 10, i(gk1), i(gk2), i(gk3), i(gk4), i(gk5), i(gk6), i(gk7), i(gk8), i(gk9), i(gk10), i(gk11), i(gk12), i(gk13), i(gk14)
- a1    RingModulator    ga1,gkmix,kfreq,gkshape,gkenv,gkatt,gkdec,ifn,i(gkwidth)
- a2    RingModulator    ga2,gkmix,kfreq,gkshape,gkenv,gkatt,gkdec,ifn,0
+ ifn        ftgen            1, 0, 4096, 10, i(gk1), i(gk2), i(gk3), i(gk4), i(gk5), i(gk6), i(gk7), i(gk8), i(gk9), i(gk10), i(gk11), i(gk12), i(gk13), i(gk14)
+ a1         RingModulator    ga1,gkmix,kfreq,gkshape,gkenv,gkatt,gkdec,ifn,i(gkwidth)
+ a2         RingModulator    ga2,gkmix,kfreq,gkshape,gkenv,gkatt,gkdec,ifn,0
  rireturn
- aEnv    linsegr    0,0.01,1,0.01,0
- a1    =    a1 * gklevel * aEnv
- a2    =    a2 * gklevel * aEnv
-     outs    a1,a2
+ aEnv       linsegr          0,0.01,1,0.01,0
+ a1         =                a1 * gklevel * aEnv
+ a2         =                a2 * gklevel * aEnv
+            outs             a1,a2
 endin
 
 </CsInstruments>
 
 <CsScore>
-i 1 0 [60*60*24*7]
+i 1 0 z
 </CsScore>
 
 </CsoundSynthesizer>

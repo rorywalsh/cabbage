@@ -46,14 +46,14 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Level            -    output level (dry and wet signals)
 
 <Cabbage>
-form caption("Crossed Delays") size(815, 130), pluginId("CrDl")
+form caption("Crossed Delays") size(815, 130), pluginId("CrDl"), colour("Black")
 
 
 image   bounds(  5,  5,370,120), outlineThickness(1), outlineColour("white"), colour("black"), plant("Delays_Plant")
 {
 label    bounds(  0,  4,370, 12), text("D E L A Y S")
 label    bounds(  5, 20, 80, 12), text("Clock Source")
-combobox bounds(  5, 35, 80, 20), channel("ClockSource"), text("Cabbage","Host")
+combobox bounds(  5, 35, 80, 20), channel("ClockSource"), text("Cabbage","Host"), value(1)
 rslider  bounds( 75, 20, 90, 90), text("Tempo"), channel("Tempo"), valueTextBox(1), textBox(1), range(20,500,60,1,0.1)
 rslider  bounds(140, 20, 90, 90), text("Mix"), channel("Mix"), valueTextBox(1), textBox(1), range(0,1,0.5,1,0.01)
 rslider  bounds(205, 20, 90, 90), text("Feedback"), channel("Feedback"), valueTextBox(1), textBox(1), range(0,3,0.5,1,0.01)

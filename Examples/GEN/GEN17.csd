@@ -15,7 +15,9 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 <Cabbage>
 form caption("GEN17"), size(420, 395), pluginId("gn17"), colour(120,170,200, 50)
 
-gentable bounds(  5,  5, 410, 115), identChannel("table1"), tableNumber(1), tableColour("yellow"), ampRange(24,72,1), zoom(-1), fill(1), outlineThickness(2)
+gentable bounds(  5,  5, 410, 115), identChannel("table1"), tableNumber(1), tableColour("yellow"), outlineThickness(2), ampRange(24,72,1), zoom(-1), fill(0)
+image    bounds(  5,  5, 1, 115), identChannel("Scrubber"), alpha(0.5)
+
 
 groupbox bounds(0, 125,420,170), text("Histogram"), plant("histogram"), fontColour("white"){
 rslider bounds( 50, 25, 70, 70), channel("loc1"), text("Len. 1"), valueTextBox(1), textBox(1), range(1, 512, 24,1,1), colour(120,170,200,50), trackerColour("white")
@@ -129,7 +131,10 @@ giScal    ftgen    0,0,128, -27,  0, 0.9, 24, 0.9, 36, 0.85, 48, 0.75, 60, 0.65,
 
 
 instr    2
-    iNote table     rnd(1),gihist,1                    ; read a random value from the function table
+    iNdx      random       0, 1                                ; generate a random value
+    Smsg      sprintf      "pos(%d,5)",5+iNdx*410              ; create widget message for moving random index indicator 
+              chnset       Smsg, "Scrubber"                    ; send position message to widget
+    iNote table     iNdx,gihist,1                    ; read a random value from the function table
     aEnv  linsegr    0, 0.005, 1, p3-0.105, 1, 0.1, 0        ; amplitude envelope
     iPlk  random    0.1, 0.3                    ; point at which to pluck the string
     iDtn  random    -0.05, 0.05                    ; random detune

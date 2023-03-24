@@ -12,7 +12,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 
 <Cabbage>
 form caption("Filter Shaper") size(595, 200), pluginId("FlSh")
-image               bounds(  0, 0, 595, 200), colour("Chocolate"), outlineColour("white"), outlineThickness(2), shape("sharp")
+image               bounds(  0, 0, 595, 200), colour(10,30,10), outlineColour("white"), outlineThickness(2), shape("sharp")
 
 line     bounds( 15,  4,125, 15)
 label    bounds( 15,  5,125, 12), fontColour("white"), text("R A T E")

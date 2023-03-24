@@ -8,13 +8,13 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Grain3FilePlayer.csd
 ; Written by Iain McCurdy, 2015
 
-; File player based around the granualr synthesis opcode, 'grain3'.
+; File player based around the granular synthesis opcode, 'grain3'.
 ; A second voice can be activated (basically another parallel granular synthesiser) with parameter variations of density, transposition, pointer location (Phs) and delay.
 ; Two modes of playback are available: manual pointer and speed
-; The pointer and grain density can also be modulated by clicking and dragging on the waveform view.
+; The pointer and grain density can also be modulated by right-clicking and dragging on the waveform view.
 ;  * This will also start and stop the grain producing instrument.
 ;  * In click-and-drag mode mouse X position equates to pointer position and mouse Y position equates to grain density. 
-; If played from the MIDI keyboard, note number translates to 'Transposition' and key velocity translates to amplitude for the grain stream for that note.
+; If played from the MIDI keyboard, note number translates to 'Density' and key velocity translates to amplitude for the grain stream for that note.
 
 ; In 'Pointer' mode pointer position is controlled by the long 'Manual' slider with an optional amount of randomisation determined ny the 'Phs.Mod' slider.  
 
@@ -30,6 +30,9 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Density      -    grains per second
 ; Transpose    -    transposition in semitones
 ; Window       -    window shape that envelopes each individual grain
+; Lowpass      -    engages a lowpass filter, the cutoff frequency of which moves according to the setting for 'Transpose'. 
+;                    This can be useful in suppressing quantisation artefacts when Transpose is set to a low value.
+;                    It is operational both in MIDI keyboard and standard modes of operation.
 
 ; --Randomisation--
 ; Trans.Mod.    -    randomisation of transposition (in octaves)
@@ -61,11 +64,11 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 
 
 <Cabbage>
-form caption("grain3 File Player") size(1040,440), colour(0,0,0), pluginId("G3FP"), guiRefresh(16)    ; guiRefresh value adjusts how often the cabbage valuators are read. This can affect the usability of parameters used in realtime gesturing.
+form caption("grain3 File Player") size(1040,440), colour(0,0,0), pluginId("G3FP"), guiRefresh(16), guiMode("polling")
 
 #define RSliderStyle # trackerColour(170,135,130), textColour("white"), outlineColour( 50, 15, 10), colour( 90, 45, 50)#
 
-image       bounds(  0,  0,1040,440), colour( 70, 35, 30), outlineColour("White"), shape("sharp"), line(3)    ; main panel colouration    
+image       bounds(  0,  0,1040,440), file("DarkBrushedMetal.jpeg"), colour( 70, 35, 30), outlineColour("White"), shape("sharp"), line(3)
 soundfiler  bounds(  5,  5,1030,175), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
 label       bounds(7, 5, 560, 14), text(""), align(left), colour(0,0,0,0), fontColour(200,200,200), identChannel("stringbox")
 
@@ -79,17 +82,20 @@ label       bounds(  5,263, 145, 12), text("[or right-click and drag]"), fontCol
 label       bounds( 90,215, 75, 13), text("Ptr.Mode"), fontColour("white")
 combobox    bounds( 90,230, 75, 18), channel("PhsMode"), items("Manual", "Speed"), value(2),fontColour("white")
 
-rslider     bounds(170,215, 60, 60), channel("spd"),     range( -2.00, 2.00, 1), text("Speed"), identChannel("spdID"), visible(0), $RSliderStyle
-button      bounds(230,230, 60, 18), channel("freeze"),  colour(  0,  0,  0), text("Freeze","Freeze"), fontColour:0(70,70,70), fontColour:1(255,255,255), identChannel("freezeID"), visible(0)
-rslider     bounds(290,215, 60, 60), channel("range"),   range(0.01,  1,  1),              text("Range"),  identChannel("rangeID"), visible(0), $RSliderStyle
-label       bounds(350,215, 60, 13), text("Shape"), fontColour("white"), identChannel("shapelabelID")
-combobox    bounds(350,230, 60, 18), channel("shape"), items("phasor", "tri."), value(1),fontColour("white"), identChannel("shapeID"), visible(0)
+image       bounds(170,215,240, 60), colour(0,0,0,0), identChannel("speedControlsID"), {
+rslider     bounds(  0,  0, 60, 60), channel("spd"),     range( -2.00, 2.00, 1), text("Speed"), $RSliderStyle
+button      bounds( 60, 15, 60, 18), channel("freeze"),  colour(  0,  0,  0), text("Freeze","Freeze"), fontColour:0(70,70,70), fontColour:1(255,255,255)
+rslider     bounds(120,  0, 60, 60), channel("range"),   range(0.01,  1,  1),              text("Range"), $RSliderStyle
+label       bounds(180,  0, 60, 13), text("Shape"), fontColour("white")
+combobox    bounds(180, 15, 60, 18), channel("shape"), items("phasor", "tri."), value(1), fontColour("white")
+}
 
 rslider     bounds(410,215, 60, 60), channel("dur"),     range(0.01,5.00,0.15,0.5,0.001), text("Size"), $RSliderStyle
 rslider     bounds(470,215, 60, 60), channel("dens"),    range( 0.2, 500,  20, 0.5),     text("Density"), $RSliderStyle
 rslider     bounds(530,215, 60, 60), channel("pch"),     range(-2,2,1,1,0.001),              text("Transpose"), $RSliderStyle
 label       bounds(595,210, 75, 13), text("Window"), fontColour("white")
 combobox    bounds(595,225, 75, 18), channel("wfn"), items("Hanning","Perc. 1","Perc. 2","Perc. 3","Gate","Rev Perc. 1","Rev.Perc 2","Rev.Perc 3"), value(1),fontColour("white")
+checkbox    bounds(595,245, 75, 18), channel("LPF"), text("Lowpass"), fontColour:0("White"), fontColour:1("White")
 
 image       bounds(680,202,260,75), colour(0,0,0,0), outlineColour("grey"), outlineThickness(1), shape("sharp"), plant("randomise"), { 
 label       bounds(  0,  3,260, 8), text("R  A  N  D  O  M  I  S  E"), fontColour("white")
@@ -103,11 +109,11 @@ image      bounds(  5,282,505,75), colour(0,0,0,0), outlineColour("grey"), outli
 label      bounds(  0,  3,505, 8), text("V  O  I  C  E     2"), fontColour("white")
 checkbox   bounds( 10, 30, 70, 20), channel("DualOnOff"), text("On/Off"), fontColour:0("white"), fontColour:1("white")
 rslider    bounds( 80, 13, 60, 60), channel("DensRatio"),   range(0.5,2,1,0.64,0.00001), text("Dens.Ratio"), $RSliderStyle
-nslider    bounds(140, 25, 60, 20), channel("DensRatio"),   range(0.5,2,1,0.64,0.00001),  textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
+nslider    bounds(140, 25, 60, 20), channel("DensRatioN"),   range(0.5,2,1,0.64,0.00001),  textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
 rslider    bounds(200, 13, 60, 60), channel("PtrDiff"),   range(-1,1,0,1,0.00001), text("Ptr.Diff."), $RSliderStyle
-nslider    bounds(260, 25, 60, 20), channel("PtrDiff"),   range(-1,1,0,1,0.00001), textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
+nslider    bounds(260, 25, 60, 20), channel("PtrDiffN"),   range(-1,1,0,1,0.00001), textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
 rslider    bounds(320, 13, 60, 60), channel("TransDiff"),   range(-2,2,0,1,0.00001), text("Trans.Diff."), $RSliderStyle
-nslider    bounds(380, 25, 60, 20), channel("TransDiff"),   range(-2,2,0,1,0.00001), textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
+nslider    bounds(380, 25, 60, 20), channel("TransDiffN"),   range(-2,2,0,1,0.00001), textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
 rslider    bounds(440, 13, 60, 60), channel("Delay"),       range(0,1,0,1,0.00001), text("Delay"), $RSliderStyle
 }
 
@@ -236,7 +242,20 @@ opcode FileNameFromPath,S,S              ; Extract a file name (as a string) fro
           xout      Sname                ; Send it back to the caller instrument
 endop
 
+opcode ParallelWidgets, k, SS
+SStr1,SStr2 xin
+k1  chnget SStr1
+k2  chnget SStr2
+if changed:k(k1)==1 then
+ chnset k1,SStr2
+elseif changed:k(k2)==1 then
+ chnset k2,SStr1    
+endif
+xout k1
+endop
+
 instr    1
+ kPortTime    linseg    0, 0.01, 0.001
  gkloop       chnget    "loop"
  gkPlayStop   chnget    "PlayStop"
 
@@ -246,6 +265,8 @@ instr    1
  gklevel      port      gklevel, 0.05
  gkdur        chnget    "dur"
  gkpch        chnget    "pch"
+ gkpch        portk     gkpch, kPortTime
+ gkLPF        chnget    "LPF"
  
  gkwfn        chnget    "wfn"
  gkwfn        init    1
@@ -262,25 +283,17 @@ instr    1
  gkSizeLFODep chnget    "SizeLFODep"
  gkLFORte     chnget    "LFORte"
  gkDualOnOff  chnget    "DualOnOff"
- gkDensRatio  chnget    "DensRatio"
- gkPtrDiff    chnget    "PtrDiff"
- gkTransDiff  chnget    "TransDiff"
+ gkDensRatio  ParallelWidgets  "DensRatio","DensRatioN"
+ gkPtrDiff    ParallelWidgets  "PtrDiff","PtrDiffN"
+ gkTransDiff  ParallelWidgets  "TransDiff","TransDiffN"
  gkDelay      chnget    "Delay"
  gkDelay      port      gkDelay,0.1
  
  if changed(gkPhsMode)==1 then
   if gkPhsMode==1 then
-              chnset    "visible(0)", "spdID"
-              chnset    "visible(0)", "freezeID"
-              chnset    "visible(0)", "rangeID"
-              chnset    "visible(0)", "shapeID"
-              chnset    "visible(0)", "shapelabelID"
+              chnset    "visible(0)", "speedControlsID"
   elseif gkPhsMode==2 then
-              chnset    "visible(1)", "spdID"
-              chnset    "visible(1)", "freezeID"
-              chnset    "visible(1)", "rangeID"
-              chnset    "visible(1)", "shapeID"
-              chnset    "visible(1)", "shapelabelID"
+              chnset    "visible(1)", "speedControlsID"
   endif
  endif
  
@@ -337,6 +350,7 @@ instr    99    ; load sound file
 endin
 
 instr    2    ; triggered by 'play/stop' button
+
  if gkPlayStop==0&&gkMOUSE_DOWN_RIGHT==0 then
   turnoff
  endif
@@ -379,6 +393,10 @@ instr    2    ; triggered by 'play/stop' button
     endif
     a1    +=    a1b
    endif
+   if gkLPF==1 then  ; anti-quantisation filter
+    kcf        =             limit:k(abs(gkpch),0.001,1)^2
+    a1         butlp         a1, (sr/2) * a(kcf)
+   endif
               outs          a1 * aenv * klevel, a1 * aenv * klevel        ; send mono audio to both outputs 
   elseif gichans==2 then                        ; otherwise, if stereo...
    a1         Grain3b       gkpch, gkphs, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens, 600, 1, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
@@ -393,21 +411,25 @@ instr    2    ; triggered by 'play/stop' button
     a1        +=            a1b
     a2        +=            a2b
    endif
-              outs          a1 * aenv * klevel, a2 * aenv * klevel        ; send stereo signal to outputs
+   if gkLPF==1 then  ; anti-quantisation filter
+    kcf        =             limit:k(abs(gkpch),0.001,1)^2
+    a1         butlp         a1, (sr/2) * a(kcf)
+    a2         butlp         a2, (sr/2) * a(kcf)
+   endif
+               outs          a1 * aenv * klevel, a2 * aenv * klevel        ; send stereo signal to outputs
   endif
   rireturn
 
  endif
 endin
 
-instr    3
+instr    3 ; MIDI note triggered version
  icps         cpsmidi                                   ; read in midi note data as cycles per second
  iamp         ampmidi       1                           ; read in midi velocity (as a value within the range 0 - 1)
  kBend        pchbend       0, 12
  iAttTim      chnget        "AttTim"                    ; read in widgets
  iRelTim      chnget        "RelTim"
  iMidiRef     chnget        "MidiRef"
- iFrqRatio    =             icps/cpsmidinn(iMidiRef)    ; derive playback speed from note played in relation to a reference note (MIDI note 60 / middle C)
 
  if giReady = 1 then                                    ; i.e. if a file has been loaded
   iAttTim     chnget        "AttTim"                        ; read in widgets
@@ -421,7 +443,7 @@ instr    3
   kporttime   linseg        0, 0.001, 0.05              ; portamento time function. (Rises quickly from zero to a held value.)
 
   kBend       portk         kBend, kporttime
-  kFrqRatio   =             iFrqRatio * semitone(kBend)
+  kdens       =             icps * semitone(kBend) * (cpsmidinn(iMidiRef)/cpsmidinn(60))
   
   kSwitch     changed       gkPhsMode, gkwfn
   if    kSwitch==1    then                        ; IF I-RATE VARIABLE CHANGE TRIGGER IS '1'...
@@ -432,7 +454,7 @@ instr    3
 
   /* LFO */
   kDensLFO    poscil        gkDensLFODep, gkLFORte
-  kdens       =             gkdens * octave(kDensLFO)
+  kdens       =             kdens * octave(kDensLFO)
   kAmpLFO     poscil        gkAmpLFODep * 0.5, gkLFORte
   klevel      =             gklevel * (1 - ((kAmpLFO + (abs(gkAmpLFODep) * 0.5)) ^ 2))
   kSizeLFO    poscil        gkSizeLFODep, gkLFORte
@@ -441,27 +463,36 @@ instr    3
   iPhsMode    =             i(gkMOUSE_DOWN_RIGHT) == 1 ? 1 : i(gkPhsMode)
 
   if          gichans==1 then                            ; if mono...
-   a1         Grain3b       kFrqRatio, gkphs, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens, 600, 1, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
+   a1         Grain3b       gkpch, gkphs, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens, 600, 1, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
    if gkDualOnOff==1 then
-    a1b       Grain3b       kFrqRatio + gkTransDiff, gkphs + gkPtrDiff, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens*gkDensRatio, 600, 1, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
+    a1b       Grain3b       gkpch + gkTransDiff, gkphs + gkPtrDiff, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens*gkDensRatio, 600, 1, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
     if gkDelay>0 then
      a1b      vdelay        a1b, (gkDelay * 1000) / kdens, 5000
     endif
     a1        +=            a1b
    endif
               outs          a1 * aenv * klevel, a1 * aenv * klevel        ; send mono audio to both outputs 
+   if gkLPF==1 then  ; anti-quantisation filter
+    kcf        =             limit:k(abs(gkpch),0.001,1)^2
+    a1         butlp         a1, (sr/2) * a(kcf)
+   endif
   elseif gichans==2 then                                                  ; otherwise, if stereo...
-   a1         Grain3b        kFrqRatio, gkphs, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens, 600, 1, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
-   a2         Grain3b        kFrqRatio, gkphs, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens, 600, 2, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
+   a1         Grain3b        gkpch, gkphs, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens, 600, 1, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
+   a2         Grain3b        gkpch, gkphs, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens, 600, 2, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
    if gkDualOnOff==1 then
-    a1b       Grain3b        kFrqRatio+gkTransDiff, gkphs+gkPtrDiff, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens*gkDensRatio, 600, 1, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
-    a2b       Grain3b        kFrqRatio+gkTransDiff, gkphs+gkPtrDiff, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens*gkDensRatio, 600, 2, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
+    a1b       Grain3b        gkpch+gkTransDiff, gkphs+gkPtrDiff, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens*gkDensRatio, 600, 1, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
+    a2b       Grain3b        gkpch+gkTransDiff, gkphs+gkPtrDiff, gkspd, gkfreeze, gkrange, gkshape, gkfmd, gkpmd, kdur, kdens*gkDensRatio, 600, 2, iwfn, -2, -2 , rnd(1000), 8, iPhsMode, gkDensRnd, gkSizeRnd
     if gkDelay>0 then
      a1b      vdelay         a1b, (gkDelay * 1000) / kdens, 5000
      a2b      vdelay         a2b, (gkDelay * 1000) / kdens, 5000
     endif
     a1        +=             a1b
     a2        +=             a2b
+   endif
+   if gkLPF==1 then  ; anti-quantisation filter
+    kcf        =             limit:k(abs(gkpch),0.001,1)^2
+    a1         butlp         a1, (sr/2) * a(kcf)
+    a2         butlp         a2, (sr/2) * a(kcf)
    endif
               outs           a1 * aenv * klevel, a2 * aenv * klevel        ; send stereo signal to outputs
   endif

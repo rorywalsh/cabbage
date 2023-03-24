@@ -45,7 +45,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Level        -    amplitude scaling
 
 <Cabbage>
-form caption("wguide1") size(770,200), pluginId("WGu1"), scrollBars(0)
+form caption("wguide1") size(770,200), pluginId("WGu1"), colour("black")
 image           bounds(0, 0, 770,120), colour(125, 95, 55), shape("sharp"), outlineColour(225,195,155), outlineThickness(2)
 
 image    bounds( 10,  0,195,111), colour(0,0,0,0), plant("GUIcontrol"), visible(1) {
@@ -76,7 +76,7 @@ rslider  bounds(  0,  0, 70, 70),  text("Feedback"),   channel("feedback"),   tr
 }
 
 line     bounds(350,  5,  2,110)
-combobox bounds(365,  5,100, 16), text("Bandpass Off","Single Bandpass","Multiple Bandpass"), channel("BandpassMode")
+combobox bounds(365,  5,100, 16), text("Bandpass Off","Single Bandpass","Multiple Bandpass"), channel("BandpassMode"), value(1)
 checkbox bounds(365, 24,120, 12), text("Balance"),         channel("BalanceOnOff"), fontColour:0("white"), fontColour:1("white"), colour(yellow) value(0)
 rslider  bounds(355, 41, 70, 70),  text("Bandwidth"),      channel("Bandwidth"),   trackerColour(225,195,155), range(0.001,100.00,0.2,0.5,0.001),             colour( 85, 55,15), textColour(white), fontColour("silver")
 rslider  bounds(420, 41, 70, 70),  text("Harm."),          channel("HarmRatio"),trackerColour(225,195,155), range(1,48,1,1,1),             colour( 85, 55,15), textColour(white), fontColour("silver")

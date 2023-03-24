@@ -13,38 +13,30 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; The limit double slider is more just for display.
                                                                                    
 <Cabbage>                                                                                                                   
-form caption("Bandfilter II"), colour(20,20,20), size(510, 655), pluginId("BFII"), scrollBars(0)
+form caption("Bandfilter II"), colour(20,20,20), size(510, 655), pluginId("BFII"), guiMode("queue")
 
 checkbox bounds(9,3,90,15), channel("TestSound"), text("Test Sound"), value(0), fontColour(150,150,150)
 
 xypad bounds(5,20, 500, 500), channel("shift", "width"), rangeX(0, 1, 0.5), rangeY(0, 1, 0.5), text("x:cutoff y:bandwidth"), colour(20,20,30), fontColour("white")
 
-;hslider2 bounds(  5,513,500, 40), channel("Lim1","Lim2"), min(4), max(14), range(4, 14, 0, 1, 0.001)
 hrange   bounds(  5,513, 500, 40), channel("Lim1","Lim2"), range(4, 14, 4:14, 1, 0.001)
-;hslider   bounds(  5,513,500,15),   channel("Lim1"), range(4,14,4)
-;hslider   bounds(  5,528,500,15),   channel("Lim2"), range(4,14,14)
 
 label    bounds(  5,543,500, 13), text("L I M I T S"), fontColour(150,150,150)
 
-;image    bounds(  5,560,155, 90), shape("sharp"), outlineColour("black"), colour(0,0,0,0), outlineThickness(1)
 checkbox bounds( 15,570, 80, 11), channel("HPF_active"), text("HPF Active"), fontColour(150,150,150), value(1)
 label    bounds( 15,595, 80, 13), text("HPF Type"), fontColour(150,150,150)
 combobox bounds( 15,610, 80, 20), value(2), channel("HPF_type"),   text("6dB/oct","12dB/oct","24dB/oct","36dB/oct","48dB/oct","Resonant"), colour("black")
 rslider  bounds( 95,560, 60, 85), range(0,1,0),  channel("HPF_res"),  identChannel("HPF_resID"),   text("Res"),   textBox(1), colour("black"), fontColour(150,150,150), textColour("black"), fontColour(150,150,150)
 
-;image    bounds(165,560,155, 90), shape("sharp"), outlineColour("black"), colour(0,0,0,0), outlineThickness(1)
 checkbox bounds(175,570, 80, 11), channel("LPF_active"), text("LPF Active"), fontColour(150,150,150), value(1)
 label    bounds(175,595, 80, 13), text("LPF Type"), fontColour(150,150,150)
 combobox bounds(175,610, 80, 20), value(2), channel("LPF_type"),  text("6dB/oct","12dB/oct","24dB/oct","36dB/oct","48dB/oct","Resonant"), colour("black")
 rslider  bounds(255,560, 60, 85), range(0,1,0),  channel("LPF_res"),  identChannel("LPF_resID"),   text("Res"),   textBox(1), colour("black"), fontColour(150,150,150), textColour("black")
 
-;label    bounds(370,550, 95, 13), fontColour(150,150,150), text("Mode")
 combobox bounds(370,565, 95, 20), channel("PassRej"), text("Bandpass","Bandreject","Bypass"), value(1)
 
-;label   bounds(330,591,170,13), fontColour(150,150,150), text("Smoothing")
 hslider bounds(330,605,170,15), range(0,0.1,0.03,0.75,0.0001),  channel("Smoothing"), textColour("black")
 
-;label   bounds(330,621,170,13), fontColour(150,150,150), text("Gain")
 hslider bounds(330,635,170,15), range(0,1,1),  channel("Gain"), textColour("black")
 }
 </Cabbage>
@@ -137,45 +129,46 @@ opcode LowpassNetwork,aa,aakkk
 endop
 
 instr   1
- kshift       chnget           "shift"
- kwidth       chnget           "width"
- kgain        chnget           "Gain"
- kPassRej     chnget           "PassRej"
+ kshift       cabbageGetValue           "shift"
+ kwidth       cabbageGetValue           "width"
+ kgain        cabbageGetValue           "Gain"
+ kPassRej     cabbageGetValue           "PassRej"
  kPassRej     init             1
- kTestSound   chnget           "TestSound"
- kSmoothing   chnget           "Smoothing"
+ kTestSound   cabbageGetValue           "TestSound"
+ kSmoothing   cabbageGetValue           "Smoothing"
  
- kLPF_type    chnget           "LPF_type"
- kHPF_type    chnget           "HPF_type"
+ kLPF_type    cabbageGetValue           "LPF_type"
+ kHPF_type    cabbageGetValue           "HPF_type"
  kLPF_type    init             2
  kHPF_type    init             2
- kLPF_res     chnget           "LPF_res"
- kHPF_res     chnget           "HPF_res"
+ kLPF_res     cabbageGetValue           "LPF_res"
+ kHPF_res     cabbageGetValue           "HPF_res"
 
- kLPF_active  chnget           "LPF_active"
- kHPF_active  chnget           "HPF_active"
+ kLPF_active  cabbageGetValue           "LPF_active"
+ kHPF_active  cabbageGetValue           "HPF_active"
 
  if changed(kHPF_type)==1 then
   if kHPF_type==6 then
-              chnset           "visible(1)", "HPF_resID"
+              cabbageSet        k(1), "HPF_res", "visible", 1
   else
-              chnset           "visible(0)", "HPF_resID"
+              cabbageSet        k(1), "HPF_res", "visible", 0
   endif
  endif  
 
  if changed(kLPF_type)==1 then
   if kLPF_type==6 then
-              chnset           "visible(1)", "LPF_resID"
+              cabbageSet        k(1), "LPF_res", "visible", 1
   else
-              chnset           "visible(0)", "LPF_resID"
+              cabbageSet        k(1), "LPF_res", "visible", 0
   endif
  endif  
 
  kLim1        limit            scale:k(limit:k(kshift - (kwidth * kshift),0,1), 14, 4), 4, 14
  kLim2        limit            scale:k(limit:k(kshift + (kwidth * kshift),0,1), 14, 4), 4, 14
  
-              chnset           kLim1,"Lim1"
-              chnset           kLim2,"Lim2"
+       cabbageSet changed:k(kLim1), "Lim1", "minValue", kLim1  
+       cabbageSet changed:k(kLim2), "Lim1", "maxValue", kLim2
+
 
  if kTestSound==1 then
   aL          pinkish          0.5                      ; use for testing

@@ -10,54 +10,54 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; 
 ; An FM synthesis based instrument that specialises in creating percussive metallic 'clang'-like sounds.
 ; 
-; AMPLITUDE - controls pertaining to the control of each notes amplitude
-; Level        -    Global amplitude control
-; Attack        -    Attack time. Actually just a small range of control but increasing it can soften the attack subtly
+; AMPLITUDE   -    controls pertaining to the control of each notes amplitude
+; Level       -    Global amplitude control
+; Attack      -    Attack time. Actually just a small range of control but increasing it can soften the attack subtly
 ; Vel.Att.    -    Degree to which lower note velocities lengthen attack time.
 ; Duration    -    Duration of the overall amplitude decay. Note that depending on other settings notes may actually sound for a shorter time.
-; Sustain        -    Similar to the effect of a sustain pedal being depressed.
+; Sustain     -    Similar to the effect of a sustain pedal being depressed.
 ; 
-; MODULATOR - controls pertaining to the modulator in the FM algorithm
-; Ratio        -    Ratio of the modulator frequency to that of the carrier.
-; Vel.Index    -    Index of modulation. This is also always dependent upon note velocity.
-; Decay        -    Rate of decay of the index. This is heard as the rate of loss of spectral energy or damping.
+; MODULATO    -    controls pertaining to the modulator in the FM algorithm
+; Ratio       -    Ratio of the modulator frequency to that of the carrier.
+; Vel.Index   -    Index of modulation. This is also always dependent upon note velocity.
+; Decay       -    Rate of decay of the index. This is heard as the rate of loss of spectral energy or damping.
 ; 
-; CARRIER - controls pertaining to the carrier in the FM algorithm
-; Kyb.Scale    -    Keyboard scaling of the carrier frequency. Zero means that frequencies follow normal keyboard temperament. 
+; CARRIER     -    controls pertaining to the carrier in the FM algorithm
+; Kyb.Scale   -    Keyboard scaling of the carrier frequency. Zero means that frequencies follow normal keyboard temperament. 
 ;                                                                    Values less than zero mean that frequency intervals from note to note will be compressed.
 ;                                                                    Values greater than zero mean that frequency intervals from note to note will be expanded.
 ; 
-; DETUNE - Two FM carrier/modulator pairings can be created with a detuning offset between them to create beating effects. 
-;           Detuning will also be unique (and repeatable) from note to note to give the instrument character.
-; Mix        -    Amplitude of the second FM pair. This will control the amplitude of beating (amplitude modulation) effects resulting from the detuning.
-; Amount        -    Amplitude of the detuning intervals
+; DETUNE      -    Two FM carrier/modulator pairings can be created with a detuning offset between them to create beating effects. 
+;                  Detuning will also be unique (and repeatable) from note to note to give the instrument character.
+; Mix         -    Amplitude of the second FM pair. This will control the amplitude of beating (amplitude modulation) effects resulting from the detuning.
+; Amount      -    Amplitude of the detuning intervals
 ; 
-; STEREO - A stereo broadening effect by applying short delays to the left and right channels. The exact durations of the delays will be unique (and repeatable) from note to note to give the instrument character.
-; Dry/Wet        -    A dry/wet control of this effect
-; Width        -    A control of the durations of the delays which is heard as a control of the stereo width of the effect.
+; STEREO      -    A stereo broadening effect by applying short delays to the left and right channels. The exact durations of the delays will be unique (and repeatable) from note to note to give the instrument character.
+; Dry/Wet     -    A dry/wet control of this effect
+; Width       -    A control of the durations of the delays which is heard as a control of the stereo width of the effect.
 ; 
-; NOISE - Filtered gaussian noise can be added to the modulator ratio to add discordancy to the tone.
-; Amount    -    Amplitude of the gaussian noise signal
-; Filter    -    Narrowness of the bandpass filtering applied to the gaussian noise
+; NOISE       -    Filtered gaussian noise can be added to the modulator ratio to add discordancy to the tone.
+; Amount      -    Amplitude of the gaussian noise signal
+; Filter      -    Narrowness of the bandpass filtering applied to the gaussian noise
 ; Follow Modulator (checkbox)    -    Selects whether the bandpass filter follows the modulator frequency. If 'off' it simply follows the carrier frequency.
 ; 
-; LFO - A sine shaped LFO added to the modulator ratio of an auxilliary FM pair which is then mixed to an unmodulated pair. This can introduce spectral modulation, as in a bell swinging back and forth as it rings.
-; Mix    -    Amount of modulated signal mixed into the output.
-; Depth    -    Depth of the LFO modulation.
-; Rate    -    Rate of the LFO modulation.
-; Kybd.Follow    -    Extend to which the rate of LFO modulation follows keyboard notes - keyboard following means that lower notes will modulate at lower frequencies, higher notes will modulate at higher frequencies.
+; LFO         -    A sine shaped LFO added to the modulator ratio of an auxilliary FM pair which is then mixed to an unmodulated pair. This can introduce spectral modulation, as in a bell swinging back and forth as it rings.
+; Mix         -    Amount of modulated signal mixed into the output.
+; Depth       -    Depth of the LFO modulation.
+; Rate        -    Rate of the LFO modulation.
+; Kybd.Follow -    Extend to which the rate of LFO modulation follows keyboard notes - keyboard following means that lower notes will modulate at lower frequencies, higher notes will modulate at higher frequencies.
 ; 
-; FILTER - Filtering of the sound
-; LPF    -    A lowpass filter that follows the fundemental frequency of the FM pair
+; FILTER      -    Filtering of the sound
+; LPF         -    A lowpass filter that follows the fundemental frequency of the FM pair
 ; Filter Fundemental (checkbox)    -    If active, the fundemental will be filtered off.
 ; 
-; REVERB - a reverb effect using the freeverb opcode®
+; REVERB      -    a reverb effect using the freeverb opcode®
 
 <Cabbage>
-form caption("FM Clang") size(945, 320), pluginId("FMCl"), guiRefresh(256)
+form caption("FM Clang") size(945, 320), pluginId("FMCl"), guiRefresh(256), colour(40,40,40)
 
 #define RSliderStyle # colour("white"), trackerColour("silver"), fontColour("white"), textColour("white"), outlineColour(120,140,140)#
-®
+
 ;AMPLITUDE
 image    bounds(  5,  5,300,110), colour( 70, 90, 90), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("amplitude"){
 line     bounds( 90,  6,120, 14)
@@ -66,7 +66,7 @@ rslider  bounds(  0, 25, 75, 75), text("Level"),    channel("Amp"),    range(0,8
 rslider  bounds( 55, 25, 75, 75), text("Attack"),   channel("AttTim"), range(0,0.1,0,0.5,0.001),     valueTextBox(1), textBox(1), $RSliderStyle
 rslider  bounds(110, 25, 75, 75), text("Vel.Att."), channel("AttVel"), range(0,1,0),                 valueTextBox(1), textBox(1), $RSliderStyle
 rslider  bounds(165, 25, 75, 75), text("Duration"), channel("Dur"),    range(0.1, 24.00, 12, 0.5,),  valueTextBox(1), textBox(1), $RSliderStyle
-checkbox bounds(230, 53,180, 12), channel("Sustain"), value(1), text("Sustain"), textColour("white")
+checkbox bounds(230, 53,180, 12), channel("Sustain"), value(1), text("Sustain"), fontColour:0("white"), fontColour:1("white")
 }
 
 ;MODULATOR
@@ -98,7 +98,7 @@ image    bounds(740,  5,200,110), colour( 70, 90, 90), outlineColour("white"), o
 line     bounds( 60,  6, 80, 14)
 label    bounds( 60,  8, 80, 10), text("F  I  L  T  E  R"), textColour(white)
 rslider  bounds(  0, 25, 75, 75), text("LPF"), channel("LPF"), range(1, 16.00, 16),  valueTextBox(1), textBox(1), $RSliderStyle
-checkbox bounds( 65, 53,180, 12), channel("FiltFund"), value(1), text("Filter Fundamental"), fontColour("white")
+checkbox bounds( 65, 53,180, 12), channel("FiltFund"), value(1), text("Filter Fundamental"), fontColour:0("white"), fontColour:1("white")
 }
 
 ;NOISE
@@ -107,7 +107,7 @@ line     bounds( 78,  6, 69, 14)
 label    bounds( 78,  8, 69, 10), text("N  O  I  S  E"), textColour(white)
 rslider  bounds(  0, 25, 75, 75), text("Amount"),  channel("NseAmp"),   range(0,2000,1000,0.5,1),   valueTextBox(1), textBox(1), $RSliderStyle
 rslider  bounds( 55, 25, 75, 75), text("Filter"),     channel("NseBW"), range(0.0005,1,0.001,0.35), valueTextBox(1), textBox(1), $RSliderStyle
-checkbox bounds(120, 53,120, 12), channel("NseFllw"), value(0), text("Follow Modulator"), fontColour("white")
+checkbox bounds(120, 53,120, 12), channel("NseFllw"), value(0), text("Follow Modulator"), fontColour:0("white"), fontColour:1("white")
 }
 
 ;LFO
@@ -141,8 +141,8 @@ rslider  bounds( 55, 25, 75, 75), text("Size"),     channel("RvbSize"),   range(
 image    bounds(765,120,175,110), colour( 70, 90, 90), outlineColour("white"), outlineThickness(2), shape("sharp"), plant("presets"){
 line     bounds( 44,  6, 88, 14)
 label    bounds( 44,  8, 88, 10), text("P  R  E  S  E  T  S"), textColour(white)
-label    bounds( 68, 34, 40, 11), text("Select"), fontColour(white)
-combobox bounds( 68, 45, 40, 15), channel("preset"), value(1), text("1","2","3","4","5","6","7","8","9","10","11","12","13")
+label    bounds( 68, 32, 40, 13), text("Select"), fontColour(white)
+combobox bounds( 68, 45, 40, 19), channel("preset"), value(1), text("1","2","3","4","5","6","7","8","9","10","11","12","13")
 }
 
 keyboard bounds( 5, 235,935, 80)

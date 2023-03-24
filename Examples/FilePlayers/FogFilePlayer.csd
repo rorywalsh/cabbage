@@ -1,4 +1,3 @@
-
 /* Attribution-NonCommercial-ShareAlike 4.0 International
 Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
 NonCommercial - You may not use the material for commercial purposes.
@@ -9,7 +8,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Written by Iain McCurdy, 2015
 
 ; File player based around the granular synthesis opcode, 'fog'.
-; A second oice can be activated (basically another parallel granular synthesiser) with parameter ariations of density, transposition, pointer location (Phs) and delay.
+; A second voice can be activated (basically another parallel granular synthesiser) with parameter ariations of density, transposition, pointer location (Phs) and delay.
 ; Two modes of playback are available: manual pointer and speed
 ; The pointer and grain density can also be modulated by clicking and dragging on the waeform iew.
 ;  * This will also start and stop the grain producing instrument.
@@ -61,12 +60,12 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 
 
 <Cabbage>
-form caption("fog File Player") size(1130,445), colour(0,0,0), pluginId("FgFP"), guiRefresh(16)    ; guiRefresh vvalue adjusts how often the cabbage valuators are read. This can affect the usability of parameters used in realtime gesturing.
+form caption("fog File Player") size(1130,445), colour(0,0,0), pluginId("FgFP"), guiRefresh(16)
 
 #define RSliderStyle trackerColour(130,135,170), textColour("white"), outlineColour( 10, 15, 50), colour( 50, 45, 90)
 #define CheckboxStyle fontColour:0(255,255,255), fontColour:1(255,255,255)
 
-image        bounds(  0,  0,1130,445), colour( 30, 35, 70), outlineColour("White"), shape("sharp"), line(3)    ; main panel colouration    
+image        bounds(  0,  0,1130,445), file("darkBrushedMetal.jpeg"), colour( 30, 35, 70), outlineColour("White"), shape("sharp"), line(3)
 soundfiler   bounds(  5,  5,1120,175), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
 label        bounds(7, 5, 560, 14), text(""), align(left), colour(0,0,0,0), fontColour(200,200,200), identChannel("stringbox")
 
@@ -82,24 +81,24 @@ combobox    bounds( 90,230, 75, 18), channel("PhsMode"), items("Manual", "Speed"
 
 rslider     bounds(170,215, 60, 60), channel("port"),     range( 0, 30.00, 0.01,0.5,0.01), text("Port."), identChannel("portID"), visible(0), $RSliderStyle
 
-rslider     bounds(170,215, 60, 60), channel("spd"),     range( -2.00, 2.00, 1), text("Speed"), identChannel("spdID"), vvisible(0), $RSliderStyle
+rslider     bounds(170,215, 60, 60), channel("spd"),     range( -2.00, 2.00, 1), text("Speed"), identChannel("spdID"), visible(0), $RSliderStyle
 button      bounds(230,230, 60, 18), channel("freeze"),  colour:0(  0,  0,  0), colour:1(50,55,150), text("Freeze","Freeze"), fontColour:0(50,50,50), fontColour:1(200,200,255), identChannel("freezeID"), visible(0)
 rslider     bounds(290,215, 60, 60), channel("range"),   range(0.01,  1,  1),              text("Range"),  identChannel("rangeID"), vvisible(0), $RSliderStyle
 label       bounds(350,215, 60, 13), text("Shape"), fontColour("white"), identChannel("shapelabelID")
-combobox    bounds(350,230, 60, 18), channel("shape"), items("phasor","tri.","sine"), value(1),fontColour("white"), identChannel("shapeID"), visible(0)
+combobox    bounds(350,230, 60, 18), channel("shape"), items("phasor","tri.","sine"), value(1), fontColour("white"), identChannel("shapeID")
 
-rslider     bounds(410,215, 60, 60), channel("dens"),    range(  1,500,   30, 0.5),  text("Density"), $RSliderStyle
+rslider     bounds(410, 214, 60, 60), channel("dens"),    range(1, 500, 50, 0.5, 0.001),  text("Density"), $RSliderStyle colour(50, 45, 90, 255) outlineColour(10, 15, 50, 255) textColour(255, 255, 255, 255) trackerColour(130, 135, 170, 255)
 rslider     bounds(470,215, 60, 60), channel("OctDiv"),  range(  0,  8,    0, 0.5),  text("Oct.Div."), $RSliderStyle
-rslider     bounds(530,215, 60, 60), channel("pch"),     range(-2,2,1,1,0.001),              text("Transpose"), $RSliderStyle
+rslider     bounds(530, 214, 60, 60), channel("pch"),     range(-2, 2, 1, 1, 0.001),              text("Transpose"), $RSliderStyle colour(50, 45, 90, 255) outlineColour(10, 15, 50, 255) textColour(255, 255, 255, 255) trackerColour(130, 135, 170, 255)
 label       bounds(595,210,120, 13), text("Transposition Mode"), fontColour("white")
-combobox    bounds(595,225,120, 18), channel("TransMode"), items("Grain by Grain","Continuous"), value(1),fontColour("white")
+combobox    bounds(595,225,120, 18), channel("TransMode"), items("Grain by Grain","Continuous"), value(1), fontColour("white")
 
 image       bounds(730,202,260,75), colour(0,0,0,0), outlineColour("grey"), outlineThickness(1), shape("sharp"), plant("GrainEn"), { 
 label       bounds(  0,  3,260, 8), text("G  R  A  I  N     E  N  V  E  L  O  P  E"), fontColour("white")
-rslider     bounds( 10, 13, 60, 60), channel("dur"),     range(0.01, 2,    0.1, 0.5,0.0001),                    text("Duration"),  $RSliderStyle
+rslider     bounds( 10, 13, 60, 60), channel("dur"),     range(0.01, 2,    0.2, 0.5,0.0001),                    text("Duration"),  $RSliderStyle
 rslider     bounds( 70, 13, 60, 60), channel("ris"),     range(0.001,0.2,  0.01,0.5,0.0001),  text("Rise"),      $RSliderStyle
 rslider     bounds(130, 13, 60, 60), channel("dec"),     range(0.001,0.2,  0.01,0.5,0.0001),                    text("Decay"),     $RSliderStyle
-rslider     bounds(190, 13, 60, 60), channel("band"),    range(0,    100,  10,  0.5,0.0001),                    text("Bandwidth"), $RSliderStyle
+rslider     bounds(190, 13, 60, 60), channel("band"),    range(0,    100,  3,  0.5,0.0001),                    text("Bandwidth"), $RSliderStyle
 }
 
 image       bounds(995,202,130,75), colour(0,0,0,0), outlineColour("grey"), outlineThickness(1), shape("sharp"), plant("enelope"), { 
@@ -123,16 +122,16 @@ rslider     bounds( 65, 13, 60, 60), channel("AmpLFODep"),  range(-1, 1, 0, 1, 0
 rslider     bounds(125, 13, 60, 60), channel("LFORte"),     range(0.01, 8, 0.1, 0.5, 0.001),  text("Rate"),  $RSliderStyle
 }
                               
-image       bounds(455,282,485,75), colour(0,0,0,0), outlineColour("grey"), outlineThickness(1), shape("sharp"), plant("dual"), { 
-label       bounds(  0,  3,485, 8), text("V  O  I  C  E     2"), fontColour("white")
-checkbox    bounds( 10, 10, 70, 15), channel("DualOnOff"), text("On/Off"), $CheckboxStyle
-rslider     bounds( 60, 13, 60, 60), channel("DensRatio"),   range(0.5,2,1,0.64,0.00001), text("Dens.Ratio"), $RSliderStyle
-nslider     bounds(120, 25, 60, 20), channel("DensRatio"),   range(0.5,2,1,0.64,0.00001),  textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
-rslider     bounds(180, 13, 60, 60), channel("PtrDiff"),   range(-1,1,0,1,0.00001), text("Ptr.Diff."), $RSliderStyle
-nslider     bounds(240, 25, 60, 20), channel("PtrDiff"),   range(-1,1,0,1,0.00001), textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
-rslider     bounds(300, 13, 60, 60), channel("TransDiff"),   range(-2,2,0,1,0.00001), text("Trans.Diff."), $RSliderStyle
-nslider     bounds(360, 25, 60, 20), channel("TransDiff"),   range(-2,2,0,1,0.00001), textColour("white"), trackerColour(190,170,130), outlineColour(100,100,100)
-rslider     bounds(420, 13, 60, 60), channel("Delay"),       range(0,1,0,1,0.00001), text("Delay"), $RSliderStyle
+image       bounds(454, 282, 485, 75), colour(0, 0, 0, 0), outlineColour(128, 128, 128, 255), outlineThickness(1), , plant("dual"), { channel("image125")
+label       bounds(0, 3, 485, 8), text("V  O  I  C  E     2"), fontColour(255, 255, 255, 255) channel("label126")
+checkbox    bounds(10, 10, 70, 15), channel("DualOnOff"), text("On/Off"), $CheckboxStyle fontColour:0(255, 255, 255, 255) fontColour:1(255, 255, 255, 255)
+rslider     bounds(60, 13, 60, 60), channel("DensRatio"),   range(0.5, 2, 1, 0.64, 1e-05), text("Dens.Ratio"), $RSliderStyle colour(50, 45, 90, 255) outlineColour(10, 15, 50, 255) textColour(255, 255, 255, 255) trackerColour(130, 135, 170, 255)
+nslider     bounds(120, 25, 60, 20), channel("DensRatioN"),   range(0.5, 2, 1, 0.64, 1e-05),  textColour(255, 255, 255, 255), trackerColour(190, 170, 130, 255), outlineColour(100, 100, 100, 255)
+rslider     bounds(180, 13, 60, 60), channel("PtrDiff"),   range(-1, 1, 0, 1, 1e-05), text("Ptr.Diff."), $RSliderStyle colour(50, 45, 90, 255) outlineColour(10, 15, 50, 255) textColour(255, 255, 255, 255) trackerColour(130, 135, 170, 255)
+nslider     bounds(240, 25, 60, 20), channel("PtrDiffN"),   range(-1, 1, 0, 1, 1e-05), textColour(255, 255, 255, 255), trackerColour(190, 170, 130, 255), outlineColour(100, 100, 100, 255)
+rslider     bounds(300, 13, 60, 60), channel("TransDiff"),   range(-2, 2, 0, 1, 1e-05), text("Trans.Diff."), $RSliderStyle colour(50, 45, 90, 255) outlineColour(10, 15, 50, 255) textColour(255, 255, 255, 255) trackerColour(130, 135, 170, 255)
+nslider     bounds(360, 25, 60, 20), channel("TransDiffN"),   range(-2, 2, 0, 1, 1e-05), textColour(255, 255, 255, 255), trackerColour(190, 170, 130, 255), outlineColour(100, 100, 100, 255)
+rslider     bounds(420, 13, 60, 60), channel("Delay"),       range(0, 1, 0, 1, 1e-05), text("Delay"), $RSliderStyle colour(50, 45, 90, 255) outlineColour(10, 15, 50, 255) textColour(255, 255, 255, 255) trackerColour(130, 135, 170, 255)
 }
 
 image       bounds(945,282,130,75), colour(0,0,0,0), outlineColour("grey"), outlineThickness(1), shape("sharp"), plant("control"), { 
@@ -143,8 +142,7 @@ rslider     bounds( 65, 13, 60, 60), channel("level"),     range(  0,  3.00, 0.7
 
 button      bounds(1082,290, 40, 60), text("REC","REC"), channel("RecOut"), value(0), latched(1), fontColour:0(50,50,50), fontColour:1(255,205,205), colour:0(10,0,0), colour:1(150,0,0)
 
-keyboard    bounds(5,365,1120, 75)
-}
+keyboard    bounds(4, 364, 1120, 75)
 </Cabbage>
 
 <CsoundSynthesizer>
@@ -197,6 +195,18 @@ opcode FileNameFromPath, S, S             ; Extract a file name (as a string) fr
               xout      Sname             ; Send it back to the caller instrument
 endop
 
+opcode ParallelWidgets, k, SS
+SStr1,SStr2 xin
+k1  chnget SStr1
+k2  chnget SStr2
+if changed:k(k1)==1 then
+ chnset k1,SStr2
+elseif changed:k(k2)==1 then
+ chnset k2,SStr1    
+endif
+xout k1
+endop
+
 instr    1
  kRampUp      linseg    0, 0.001, 1
  gkport       chnget    "port"
@@ -207,6 +217,7 @@ instr    1
  gklevel      chnget    "level"
  gklevel      port      gklevel,0.05
  gkpch        chnget    "pch" 
+ gkpch        portk      gkpch,kRampUp * 1 ;0.1
  gkspd        chnget    "spd"
  gkfreeze     chnget    "freeze"
  gkrange      chnget    "range"
@@ -226,10 +237,10 @@ instr    1
  gkAmpLFODep  chnget    "AmpLFODep"
  gkLFORte     chnget    "LFORte"
  gkDualOnOff  chnget    "DualOnOff"
- gkDensRatio  chnget    "DensRatio"
- gkPtrDiff    chnget    "PtrDiff"
+ gkDensRatio  ParallelWidgets  "DensRatio","DensRatioN"
+ gkPtrDiff    ParallelWidgets  "PtrDiff","PtrDiffN"
+ gkTransDiff  ParallelWidgets  "TransDiff","TransDiffN"
  gkPtrDiff    port      gkPtrDiff,0.1
- gkTransDiff  chnget    "TransDiff"                                           
  gkDelay      chnget    "Delay"
  gkDelay      port      gkDelay,0.1
       
@@ -367,7 +378,7 @@ instr    2    ; triggered by 'play/stop' button
   
   kPchRnd    bexprnd    gkfmd                    ; random pitch
   kpch        =    gkpch * octave(kPchRnd)
-
+ 
   kRndTrig    init    1
   ;kdens        init    30                    ; set to initial widget value
   kDensRnd    bexprnd    gkDensRnd    ;randomh    -gkDensRnd, gkDensRnd, kdens
@@ -421,7 +432,7 @@ instr    3
  iAttTim    chnget    "AttTim"                ; read in widgets
  iRelTim    chnget    "RelTim"
  iMidiRef    chnget    "MidiRef"
- iFrqRatio        =    icps/cpsmidinn(iMidiRef)    ; derie playback speed from note played in relation to a reference note (MIDI note 60 / middle C)
+ iFrqRatio        =    icps/cpsmidinn(iMidiRef)    ; derive playback speed from note played in relation to a reference note (MIDI note 60 / middle C)
 
  if giReady = 1 then                        ; i.e. if a file has been loaded
   iAttTim    chnget    "AttTim"                ; read in widgets

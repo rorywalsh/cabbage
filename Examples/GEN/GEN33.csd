@@ -32,8 +32,8 @@ checkbox bounds( 10, 30,110, 20), channel("ManualOnOff"),  value(0), text("Test 
 label    bounds( 10, 50,140, 11), text("Source")
 combobox bounds( 10, 61,140, 20), channel("source"), value(1), text("Tubular Bell","Chladni Plates","Tibetan Bowl 180mm","Tibetan Bowl 152mm","Tibetan Bowl 140mm","Small Handbell","Spinel Sphere","Clarinet")
 
-label     bounds( 10, 82,100, 11), text("Maximum Harms:"), fontColour("white"), align(left)
-nslider bounds( 110, 81, 40, 15), text(""), fontColour(white), channel("NumPartials"), range(0, 100, 0,1,1)
+label    bounds( 10, 84,100, 13), text("Maximum Harms:"), fontColour("white"), align(left)
+nslider  bounds(110, 81, 40, 20), text(""), fontColour(white), channel("NumPartials"), range(0, 100, 0,1,1)
 
 rslider  bounds(150, 30, 80, 80), channel("nh"), text("Num.Harms."), valueTextBox(1), textBox(1), range(1,25,25,1,1), TrackerColour("yellow"), colour(200,200,200)
 rslider  bounds(220, 30, 80, 80), channel("amp"), text("Amp."), valueTextBox(1), textBox(1), range(0,1.000,0.1,0.5), TrackerColour("yellow"), colour(200,200,200)

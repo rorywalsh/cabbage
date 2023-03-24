@@ -23,7 +23,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; will be stretch, compressed and moved appropriately.
 
 <Cabbage>
-form caption("Mouse Chord") size(700, 500), pluginId("MChd"), scrollBars(0), guiRefresh(64)
+form caption("Mouse Chord") size(700, 500), pluginId("MChd"), guiRefresh(64), colour(40,40,40)
 image bounds(0,0,0,0),     colour(255,100,0),   shape("rounded"), outlineColour("white"), line(1), identChannel("1")         ; I
 image bounds(0,0,0,0),     colour("Blue"),      shape("rounded"), outlineColour("white"), line(1), identChannel("2")         ; II
 image bounds(0,0,0,0),     colour("Yellow"),    shape("rounded"), outlineColour("white"), line(1), identChannel("3")         ; III

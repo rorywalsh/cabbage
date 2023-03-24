@@ -45,15 +45,42 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ;               looping will become obvious.                          
 ; 
 ; When 'User Table' is selected the amplitudes of the harmonic partials are set using the mini vertical slider bars.
-; 
-; The filter envelope added to this example modulates a bandpass filter's bandwidth as opposed to its cutoff frequency. 
+
+
+; Amplitude Envelope - ADSR control of amplitude
+
+; Filter Bandwidth - an envelope that controls the bandwidth of a bandpass filter using an envelope - Level 1, Attack, Sustain, Rel.Time, Rel.Time, Rel.Level
+;  Position - the centre frequency of the bandpass filter as a partial number, related to fundamental frequency of the note played.
 ; The cutoff frequency is defined using the 'Pos' slider and defines a ratio above the base frequency. Therefore a value 
 ; of '3' here will emphasise the 3rd partial of any note when bandwidth is narrowed.
 
+; Reverb - Sean Costello reverb (screverb)
+; Send    - wet level
+; Size    - room size
+; Damping - low pass filter within the reverb
+
+; Highpass/Lowpass - series highpass-lowpass filter. Manually adjustable as well as from the keyboard's modulation wheel
+
+; Legato (portamento)
+; Activates monophonic mode with controllable glide time from note to note.
+; Shape of the legato glissando can be a straight line or a curve, slowing as it reaches the destination note.
+; Bend range for the keyboard's pitch bend wheel is set here.
+
+; Pitch Stack - single notes played on the MIDI keyboard can trigger multiple pitches, equidistantly offset by a user-specified interval. 
+; An additional stack separated by intervals can also be accessed.
+; Interval    - the interval (in semitones) that separates each note in the stack. Can be postive (a rising stack) or negative (a descending stack).
+; Nr. Layers  - number of pitches in the stack. A value of '1' essentially means this feature is disabled.
+; Gliss Time  - damping that is applied to changes made to the interval setting.
+; Nr. Octaves - number of layers in the additional octave stack. This is a 'parent' stack meaning that the 'child' stack discussed previously will be repeated at octave intervals.
+
 ; Layers - controls a number of additional dissonant layers added for each note played. This is a feature that is still under development
-                                                           
+
+; Detune - two padsynth oscillators are present and they can be detuned with respect to one another and their seperation into the left and right channels can also be controller.
+
+; Meter - master gain control and stereo meters  
+                                                                                                                                                                                 
 <Cabbage>
-form caption("Pad Synth"), size(1120, 475), pluginId("PdSy")
+form caption("Pad Synth"), size(1120, 475), pluginId("PdSy"), colour(0,0,0)
 
 #define PlantBoxAppearance # shape("sharp"), colour( 20, 20, 40), outlineColour("grey"), outlineThickness(2) #
 
@@ -208,7 +235,7 @@ rslider  bounds(140, 30, 80, 80), channel("PBRange"), text("Bend Range"),  range
 image    bounds(240,265,290,120), plant("Layers"), $PlantBoxAppearance 
 {
 label    bounds(  0,  4,290, 15), text("Pitch Stack")
-rslider  bounds(  0, 30, 80, 80), channel("Interval"), range(-12,12,5,1,0.1), valueTextBox(1), textBox(1), text("Interval")
+rslider  bounds(  0, 30, 80, 80), channel("Interval"), range(-24,24,5,1,0.1), valueTextBox(1), textBox(1), text("Interval")
 rslider  bounds( 70, 30, 80, 80), channel("Layers"),   range(1,20,1,1,1), valueTextBox(1), textBox(1), text("Nr. Layers")
 rslider  bounds(140, 30, 80, 80), channel("GTime"),     range(0, 5,0.1), valueTextBox(1), textBox(1), text("Gliss Time")
 rslider  bounds(210, 30, 80, 80), channel("Octaves"),  range(1, 8,1,1,1), valueTextBox(1), textBox(1), text("Nr. Octaves")
@@ -231,7 +258,7 @@ rslider  bounds( 70, 30, 80, 80), channel("ExciterFreq"), text("Freq."),  range(
 image    bounds(845,265,270,120), plant("OutputMeter"), $PlantBoxAppearance 
 {
 label    bounds(  0,  4,270, 15), text("Meter")
-rslider  bounds( 60, 30, 80, 80), channel("AGain"),text("Gain"),   range(0,  5,1,0.5,0.001), valueTextBox(1), textBox(1)
+rslider  bounds( 60, 30, 80, 80), channel("AGain"),text("Gain"),   range(0,  5,0.3,0.5,0.001), valueTextBox(1), textBox(1)
 vmeter   bounds(160, 30, 15, 65) channel("vMeter1") value(0) overlayColour(0, 0, 0, 255) meterColour:0(255, 255, 0) meterColour:1(255, 103, 171) meterColour:2(250,250, 0) outlineThickness(1)
 vmeter   bounds(180, 30, 15, 65) channel("vMeter2") value(0) overlayColour(0, 0, 0, 255) meterColour:0(255, 255, 0) meterColour:1(255, 103, 171) meterColour:2(250,250, 0) outlineThickness(1)
 label    bounds(160, 96, 15, 15), text("L")

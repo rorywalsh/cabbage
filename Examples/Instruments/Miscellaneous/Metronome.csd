@@ -15,17 +15,17 @@
 ; A simple Cabbage metronome
 
 <Cabbage>
-form caption("Metronome"), size(770,140), pluginId("mtro")
+form caption("Metronome"), size(770,140), pluginId("mtro"), colour("black")
 image            bounds(  0,  0,770,140), colour(160, 70,20,100), shape("rounded"), oulinecolour("white"), outlineThickness(4) 
-checkbox bounds( 15, 20,130, 40), text("Start/Stop") channel("OnOff"), FontColour("White"), colour(250,250,100)  value(0)
+checkbox bounds( 15, 20,130, 40), text("Start/Stop") channel("OnOff"), fontColour("White"), colour(250,250,100)  value(0)
 
-rslider  bounds(120, 13, 65, 65), text("Level 1"),     colour(160, 70,20,100), trackerColour(250,250,200), fontColour("White"), outlineColour(10,10,10), channel("level1"), range(0, 1.00, 0.4, 0.5, 0.001)
-rslider  bounds(180, 13, 65, 65), text("Level 2"),     colour(160, 70,20,100), trackerColour(250,250,200), fontColour("White"), outlineColour(10,10,10), channel("level2"), range(0, 1.00, 0.1, 0.5, 0.001)
-rslider  bounds(240, 13, 65, 65), text("Subdiv."),     colour(160, 70,20,100), trackerColour(250,250,200), fontColour("White"), outlineColour(10,10,10), channel("subdiv"), range(1, 16, 3, 1, 1)
-rslider  bounds(300, 13, 65, 65), text("Tone 1"),      colour(160, 70,20,100), trackerColour(250,250,200), fontColour("White"), outlineColour(10,10,10), channel("tone1"),  range(0, 4.00, 2.5)
-rslider  bounds(360, 13, 65, 65), text("Tone 2"),      colour(160, 70,20,100), trackerColour(250,250,200), fontColour("White"), outlineColour(10,10,10), channel("tone2"),  range(0, 4.00, 1.56)
-rslider  bounds(420, 13, 65, 65), text("Duration"),    colour(160, 70,20,100), trackerColour(250,250,200), fontColour("White"), outlineColour(10,10,10), channel("dur"),    range(0.003, 0.1, 0.012, 0.5, 0.00001)
-rslider  bounds(480, 13, 65, 65), text("Width"),       colour(160, 70,20,100), trackerColour(250,250,200), fontColour("White"), outlineColour(10,10,10), channel("width"),  range(0, 2.00, 0)
+rslider  bounds(120, 13, 65, 65), text("Level 1"),     colour(160, 70,20,100), trackerColour(250,250,200), textColour("White"), fontColour("White"), outlineColour(10,10,10), channel("level1"), range(0, 1.00, 0.4, 0.5, 0.001)
+rslider  bounds(180, 13, 65, 65), text("Level 2"),     colour(160, 70,20,100), trackerColour(250,250,200), textColour("White"), fontColour("White"), outlineColour(10,10,10), channel("level2"), range(0, 1.00, 0.1, 0.5, 0.001)
+rslider  bounds(240, 13, 65, 65), text("Subdiv."),     colour(160, 70,20,100), trackerColour(250,250,200), textColour("White"), fontColour("White"), outlineColour(10,10,10), channel("subdiv"), range(1, 16, 3, 1, 1)
+rslider  bounds(300, 13, 65, 65), text("Tone 1"),      colour(160, 70,20,100), trackerColour(250,250,200), textColour("White"), fontColour("White"), outlineColour(10,10,10), channel("tone1"),  range(0, 4.00, 2.5)
+rslider  bounds(360, 13, 65, 65), text("Tone 2"),      colour(160, 70,20,100), trackerColour(250,250,200), textColour("White"), fontColour("White"), outlineColour(10,10,10), channel("tone2"),  range(0, 4.00, 1.56)
+rslider  bounds(420, 13, 65, 65), text("Duration"),    colour(160, 70,20,100), trackerColour(250,250,200), textColour("White"), fontColour("White"), outlineColour(10,10,10), channel("dur"),    range(0.003, 0.1, 0.012, 0.5, 0.00001)
+rslider  bounds(480, 13, 65, 65), text("Width"),       colour(160, 70,20,100), trackerColour(250,250,200), textColour("White"), fontColour("White"), outlineColour(10,10,10), channel("width"),  range(0, 2.00, 0)
 checkbox bounds(550, 18, 45, 45) channel("indicator"), fontColour("White"), colour(255, 50, 50)  value(0), shape("ellipse")
 checkbox bounds(600, 18, 45, 45) channel("indicator2"), fontColour("White"), colour(100,255,100)  value(0), shape("ellipse")
 
@@ -36,11 +36,11 @@ label    bounds(325, 110, 80, 12), text("Tempo [BPM]"), fontColour("white")
 button   bounds(655, 25, 100, 30), channel("bigButton"), text("Large LEDs")
 groupbox bounds(655, 25,1030, 520), colour(160, 70,20,100), outlineThickness(0), popup(1), plant("Large LEDs"), identChannel("bigPlant")
 {
-checkbox bounds( 10, 10,500,500) channel("indicator"), FontColour("White"), colour(255, 50, 50)  value(0), shape("ellipse")
-checkbox bounds(520, 10,500,500) channel("indicator2"), FontColour("White"), colour(100,255,100)  value(0), shape("ellipse")
+checkbox bounds( 10, 10,500,500) channel("indicator"), fontColour("White"), colour(255, 50, 50)  value(0), shape("ellipse")
+checkbox bounds(520, 10,500,500) channel("indicator2"), fontColour("White"), colour(100,255,100)  value(0), shape("ellipse")
 }
 
-label   bounds( 10,120, 180, 12), text("Author: Iain McCurdy |2013|"), FontColour("silvers")
+label   bounds( 10,120, 180, 12), text("Author: Iain McCurdy |2013|"), fontColour("white")
 </Cabbage>
 
 <CsoundSynthesizer>

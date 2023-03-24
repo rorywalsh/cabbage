@@ -14,6 +14,9 @@ form caption("GEN42"), size(420,495), pluginId("gn42"), colour(210,110, 80,200)
 
 gentable bounds(  5,  5, 410, 145), identChannel("table1"), tableNumber(1), outlineThickness(2), tableColour("yellow"), ampRange(24,96,1), zoom(-1), fill(0)
 
+image    bounds(  5,  5, 1, 145), identChannel("Scrubber"), alpha(0.5)
+
+
 groupbox bounds(0, 155,420,240), text("Histogram"), plant("histogram"), fontColour("white"){
 rslider bounds(  0, 25, 70, 70), channel("prob1"), text("Prob. 1"), valueTextBox(1), textBox(1), range(0, 100, 24,1,1), colour(210,110, 80,200), trackerColour("white")
 rslider bounds( 50, 25, 70, 70), channel("prob2"), text("Prob. 2"), valueTextBox(1), textBox(1), range(0, 100, 64,1,1), colour(210,110, 80,200), trackerColour("white")
@@ -141,7 +144,10 @@ giScal    ftgen    0,0,128, -27,  0, 0.983, 24, 0.983, 36, 0.971, 48, 0.939, 60,
 gasendL,gasendR    init    0
 
 instr    2
-    iNote table     rnd(1),gihist,1                 ; read a random value from the function table
+    iNdx      random       0, 1                                ; generate a random value
+    Smsg      sprintf      "pos(%d,5)",5+iNdx*410              ; create widget message for moving random index indicator 
+              chnset       Smsg, "Scrubber"                    ; send position message to widget
+    iNote table     iNdx,gihist,1                     ; read a random value from the function table
     aEnv  linsegr    0, 0.005, 1, p3-0.105, 1, 0.1, 0 ; amplitude envelope
     iPlk  random    0.1, 0.3                         ; point at which to pluck the string
     iDtn  random    -0.05, 0.05                      ; random detune

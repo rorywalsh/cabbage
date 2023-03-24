@@ -5,39 +5,42 @@ NonCommercial - You may not use the material for commercial purposes.
 ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
 https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 
-TemposcalFilePlayer.csd
-Written by Iain McCurdy, 2014.
+; TemposcalFilePlayer.csd
+; Written by Iain McCurdy, 2014.
 
-Load a user selected sound file into a GEN 01 function table and plays it back using temposcal.
+; Load a user selected sound file into a GEN 01 function table and plays it back using temposcal.
 
-The sound file can be played back using the Play/Stop button (and the 'Transpose' and 'Speed' buttons to implement pitch abd speed changes independently.
-Playing back using the MIDI keyboard will implement pitch changes based on key played.
+; The sound file can be played back using the Play/Stop button (and the 'Transpose' and 'Speed' buttons to implement pitch abd speed changes independently.
+; Playing back using the MIDI keyboard will implement pitch changes based on key played.
+; The MIDI sustain pedal will also activate the freeze function
 
 <Cabbage>
-form caption("Temposcal File Player") size(570,340), colour(0,0,0) pluginId("TScl")
-image                       bounds(  0,  0,570,340), colour( 30, 70, 70), outlineColour("White"), shape("sharp"), line(3)
+form caption("Temposcal File Player") size(650,360), colour(0,0,0) pluginId("TScl")
+image                       bounds(  0,  0,650,360), colour( 30, 70, 70), outlineColour("White"), shape("sharp"), line(3)
 
-soundfiler bounds(  5,  5,560,175), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
+soundfiler                  bounds(  5,  5,640,175), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
 label bounds(6, 4, 560, 14), text(""), align(left), colour(0,0,0,0), fontColour(200,200,200), identChannel("stringbox")
 
-image    bounds(  0,180,570,160), colour(0,0,0,0), outlineColour("white"), line(2), shape("sharp"), plant("controls"){
-filebutton bounds(  5, 10, 80, 25), text("Open","Open"), fontColour("white") channel("filename"), shape("ellipse")
-checkbox   bounds(  5, 40, 95, 25), channel("PlayStop"), text("Play/Stop"), fontColour("white")
+image    bounds(  0,180,645,180), colour(0,0,0,0), outlineColour("white"), line(2), shape("sharp"), plant("controls")
+{
+filebutton bounds(  5, 15, 80, 25), text("Open","Open"), fontColour("white") channel("filename"), shape("ellipse")
+checkbox   bounds(  5, 50, 95, 25), channel("PlayStop"), text("Play/Stop"), fontColour:0("white"), fontColour:1("white")
 
-checkbox   bounds( 95, 43,100, 15), channel("lock"), text("Phase Lock"), colour("red"), fontColour("white"), value(1)
-checkbox   bounds( 95, 60,100, 15), channel("freeze"), text("Freeze"), colour("LightBlue"), fontColour("white")
+checkbox   bounds( 95, 50,100, 15), channel("lock"), text("Phase Lock"), colour("red"), fontColour:0("white"), fontColour:1("white"), value(1)
+checkbox   bounds( 95, 70,100, 15), channel("freeze"), text("Freeze"), colour("LightBlue"), fontColour:0("white"), fontColour:1("white")
 
 label      bounds(105,  8, 48, 12), text("FFT Size"), fontColour("white")
 combobox   bounds( 95, 20, 70, 20), channel("FFTSize"), items("32768", "16384", "8192", "4096", "2048", "1024", "512", "256", "128", "64", "32", "16", "8", "4"), value(4), fontColour("white")
 
-rslider    bounds(175,  5, 70, 70), channel("transpose"), range(-48, 48, 0,1,1),            colour( 50, 90, 90), trackerColour("silver"), text("Transpose"), textColour("white")
-rslider    bounds(240,  5, 70, 70), channel("speed"),     range( -2,  2.00, 1),             colour( 50, 90, 90),  trackerColour("silver"), text("Speed"),     textColour("white")
-rslider    bounds(305,  5, 70, 70), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       colour( 50, 90, 90),  trackerColour("silver"), text("Att.Tim"),   textColour("white")
-rslider    bounds(370,  5, 70, 70), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour( 50, 90, 90),  trackerColour("silver"), text("Rel.Tim"),   textColour("white")
-rslider    bounds(435,  5, 70, 70), channel("MidiRef"),   range(0,127,60, 1, 1),            colour( 50, 90, 90), trackerColour("silver"),  text("MIDI Ref."), textColour("white")
-rslider    bounds(500,  5, 70, 70), channel("level"),     range(  0,  3.00, 0.7, 0.5),        colour( 50, 90, 90),  trackerColour("silver"), text("Level"),     textColour("white")
+rslider    bounds(175,  5, 90, 90), channel("transpose"), range(-48, 48, 0,1,1),            colour( 50, 90, 90), trackerColour("silver"), text("Transpose"), textColour("white"), valueTextBox(1)
+rslider    bounds(240,  5, 90, 90), channel("speed"),     range( -2,  2.00, 1),             colour( 50, 90, 90),  trackerColour("silver"), text("Speed"),     textColour("white"), valueTextBox(1)
+rslider    bounds(305,  5, 90, 90), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       colour( 50, 90, 90),  trackerColour("silver"), text("Att.Tim"),   textColour("white"), valueTextBox(1)
+rslider    bounds(370,  5, 90, 90), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour( 50, 90, 90),  trackerColour("silver"), text("Rel.Tim"),   textColour("white"), valueTextBox(1)
+rslider    bounds(435,  5, 90, 90), channel("MidiRef"),   range(0,127,60, 1, 1),            colour( 50, 90, 90), trackerColour("silver"),  text("MIDI Ref."), textColour("white"), valueTextBox(1)
+rslider    bounds(500,  5, 90, 90), channel("PchBnd"),     range(  0,  24, 2, 1,0.1),        colour( 50, 90, 90),  trackerColour("silver"), text("Pch.Bend"),     textColour("white"), valueTextBox(1)
+rslider    bounds(565,  5, 90, 90), channel("level"),     range(  0,  3.00, 0.7, 0.5),        colour( 50, 90, 90),  trackerColour("silver"), text("Level"),     textColour("white"), valueTextBox(1)
 
-keyboard bounds( 5, 80, 560, 75)
+keyboard bounds( 5,100, 640, 75)
 }
 </Cabbage>
 
@@ -79,6 +82,7 @@ instr    1
 gkPlayStop    chnget    "PlayStop"
 gkloop        chnget    "loop"
 gktranspose    chnget    "transpose"
+gkPchBndRng    chnget     "PchBnd"
 gklevel        chnget    "level"
 gkspeed        chnget    "speed"
 gklock        chnget    "lock"
@@ -161,6 +165,13 @@ instr    3    ; midi triggered instrument
  if giReady = 1 then                        ; i.e. if a file has been loaded
   icps    cpsmidi                            ; read in midi note data as cycles per second
   iamp    ampmidi    1                        ; read in midi velocity (as a value within the range 0 - 1)
+ kPchBnd        pchbend     0, 1                     ; read in pitch bend
+ kPchBnd        *=          gkPchBndRng
+  kporttime     linseg      0,0.001,0.05             ; portamento time function. (Rises quickly from zero to a held value.)
+  kPchBnd       portk       kPchBnd, kporttime
+  kSus         midic7   64,0,1
+  cabbageSetValue "freeze",kSus,trigger:k(kSus,0.5,2)
+ 
   iMidiRef    chnget    "MidiRef"                ; MIDI unison reference note
   iFrqRatio        =    icps/cpsmidinn(iMidiRef)    ; derive playback speed from note played in relation to a reference note (MIDI note 60 / middle C)
  
@@ -180,11 +191,11 @@ instr    3    ; midi triggered instrument
   endif
   RESTART:
   if gichans=1 then
-   a1    temposcal    gkspeed*gkfreeze, gklevel*iamp, iFrqRatio, gitableL, gklock, giFFTSizes[i(gkFFTSize)-1]
+   a1    temposcal    gkspeed*gkfreeze, gklevel*iamp, iFrqRatio*semitone:k(kPchBnd), gitableL, gklock, giFFTSizes[i(gkFFTSize)-1]
       outs    a1*aenv,a1*aenv
   elseif gichans=2 then
-   a1    temposcal    gkspeed*gkfreeze, gklevel*iamp, iFrqRatio, gitableL, gklock, giFFTSizes[i(gkFFTSize)-1]
-   a2    temposcal    gkspeed*gkfreeze, gklevel*iamp, iFrqRatio, gitableR, gklock, giFFTSizes[i(gkFFTSize)-1]
+   a1    temposcal    gkspeed*gkfreeze, gklevel*iamp, iFrqRatio*semitone:k(kPchBnd), gitableL, gklock, giFFTSizes[i(gkFFTSize)-1]
+   a2    temposcal    gkspeed*gkfreeze, gklevel*iamp, iFrqRatio*semitone:k(kPchBnd), gitableR, gklock, giFFTSizes[i(gkFFTSize)-1]
       outs    a1*aenv,a2*aenv
   endif
  endif

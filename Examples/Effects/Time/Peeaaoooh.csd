@@ -61,7 +61,7 @@ rslider   bounds(220, 10, 70, 70),  channel("Shape"),text("Shape"), colour( 20, 
 rslider   bounds(290, 10, 70, 70),  channel("Scatter"),text("Scatter"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(0, 1, 0,0.5,0.0001)
 rslider   bounds(360, 10, 70, 70),  channel("Spread"),text("Spread"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(0, 1, 0)
 rslider   bounds(430, 10, 70, 70),  channel("Feedback"),text("Feedback"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(0, 1.5, 0.95), identChannel("FeedbackID")
-checkbox  bounds(430, 82, 80, 14),  channel("Overload"),text("Overload"), colour(255, 60, 60), textColour("white") shape("Ellipse"), active(0)
+checkbox  bounds(430, 82, 80, 14),  channel("Overload"),text("Overload"), colour(255, 60, 60), fontColour:0("white"), fontColour:1("white"), shape("Ellipse"), active(0)
 rslider   bounds(500, 10, 70, 70),  channel("HPF"),   text("HPF"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(20,20000,20,0.5,1)
 rslider   bounds(570, 10, 70, 70),  channel("LPF"),   text("LPF"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(20,20000,20000,0.5,1)
 
@@ -80,7 +80,7 @@ rslider   bounds(155, 22, 70, 70),  channel("PostLPF"),   text("LPF"), colour( 2
 ;rslider   bounds(155, 22, 70, 70),  channel("PostDlyFB"),    text("Feedback"), colour( 20, 60, 70), trackerColour(200,240,250), textColour("white"), range(20,20000,20000,0.5,1)
 ;}
 
-checkbox  bounds(360,112,110, 15), text("Test Clicks"), channel("TestNoise"), fontColour("white")
+checkbox  bounds(360,112,110, 15), text("Test Clicks"), channel("TestNoise"), fontColour:0("white"), fontColour:1("white")
 label     bounds(360,137,110, 12), text("Separation Mode"), fontColour("white") 
 combobox  bounds(360,150,110, 20),  channel("SepMode"),text("Linear","Exponential"), textColour("white"), value(1)
 

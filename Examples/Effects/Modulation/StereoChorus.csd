@@ -17,7 +17,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 form caption("Stereo Chorus") size(595, 100), pluginId("scho")
 image                 bounds(0, 0, 595, 100), colour("DarkSlateGrey"), shape("rounded"), outlineColour("white"), outlineThickness(6)
 label    bounds( 15, 22, 75, 12), text("LFO Type:"), fontColour("white")
-combobox bounds( 15, 35, 75, 20), text("Sine","RSpline"), channel("type"), textColour("white"), colour( 7,29,29), fontColour("white")
+combobox bounds( 15, 35, 75, 20), text("Sine","RSpline"), channel("type"), textColour("white"), colour( 7,29,29), fontColour("white"), value(1)
 rslider  bounds( 90, 13, 75, 75), text("Rate"), channel("rate"), range(0.001, 7, 0.5,0.5),  textColour("white"), colour(37,59,59), trackerColour("Silver")
 rslider  bounds(160, 13, 75, 75), text("Dereg"), channel("dereg"), range(0, 4, 0,0.5,0.01), textColour("white"), colour(37,59,59), trackerColour("Silver")
 rslider  bounds(230, 13, 75, 75), text("Depth"), channel("depth"), range(0, 1.00, 0.2),     textColour("white"), colour(37,59,59), trackerColour("Silver")

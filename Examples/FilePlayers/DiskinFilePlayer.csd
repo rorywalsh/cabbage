@@ -6,6 +6,7 @@ ShareAlike - If you remix, transform, or build upon the material, you must distr
 https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 
 ; DiskinFilePlayer.csd
+; Written by Iain McCurdy
 
 ; Plays a user selected sound file using diskin2 opcode. 
 ; This file player is best suited for the playback of very long sound files and is less well suited for polyphonic playback.
@@ -29,9 +30,9 @@ label bounds(6, 4, 560, 14), text(""), align(left), colour(0,0,0,0), fontColour(
 
 image bounds(0,150,1025,160), colour(0,0,0,0), plant("controls"){
 filebutton bounds(  5,  5, 80, 25), text("Open File","Open File"), fontColour("white") channel("filename"), shape("ellipse")
-checkbox   bounds(  5, 40, 95, 25), channel("PlayStop"), text("Play/Stop"), colour("lime"), fontColour("white")
-checkbox   bounds(105,  5,100, 15), channel("loop"), text("Loop On/Off"), colour("yellow"), fontColour("white")
-checkbox   bounds(105, 22,100, 15), channel("reverse"), text("Reverse"), colour("yellow"), fontColour("white")
+checkbox   bounds(  5, 40, 95, 25), channel("PlayStop"), text("Play/Stop"), colour("lime"), fontColour:0("white"), fontColour:1("white")
+checkbox   bounds(105,  5,100, 15), channel("loop"), text("Loop On/Off"), colour("yellow"), fontColour:0("white"), fontColour:1("white")
+checkbox   bounds(105, 22,100, 15), channel("reverse"), text("Reverse"), colour("yellow"), fontColour:0("white"), fontColour:1("white")
 label      bounds(118, 40, 75, 12), text("Interpolation"), fontColour("white")
 combobox   bounds(105, 53,100, 20), channel("interp"), items("No interp.", "Linear", "Cubic", "Point Sinc"), value(3), fontColour("white")
 rslider    bounds(215,  5, 70, 70), channel("transpose"), range(-48, 24, 0,1,1),            colour( 90, 50, 50), trackerColour("silver"), text("Transpose"), textColour("white")
@@ -64,7 +65,7 @@ keyboard bounds( 5,230,1015, 75)
 <CsoundSynthesizer>
 
 <CsOptions>
--n -+rtmidi=NULL -M0
+-n -+rtmidi=NULL -M0 -dm0
 </CsOptions>
 
 <CsInstruments>

@@ -64,7 +64,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; MONO/POLY    -    sets whether a single LFO is used for all notes played (MONO) or whether each note get its own LFO
 
 <Cabbage>
-form caption("Hard Sync Synth") size(1175, 325), pluginId("HdSy")
+form caption("Hard Sync Synth") size(1175, 325), pluginId("HdSy"), colour(30,30,30)
 
 ; main waveform
 image    bounds(  5,  0,135,115), plant("waveform"), colour(0,0,0,0), outlineColour("white"), outlineThickness(1), shape("sharp")

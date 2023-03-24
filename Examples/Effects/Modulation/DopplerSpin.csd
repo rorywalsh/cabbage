@@ -47,7 +47,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; The degree to which this is present can be scaled using the 'Reverb Scaling' slider.                                    
 
 <Cabbage>
-form caption("Doppler Spin"), size(700,265), pluginId("SDop")
+form caption("Doppler Spin"), size(700,265), pluginId("SDop"), colour("Black")
 
 label    bounds( 8 , 4, 70, 15), text("i  n  p  u  t"), fontColour("white")
 combobox bounds(10, 30, 60,20), channel("input"), value(1), text("left","right","mixed","test")

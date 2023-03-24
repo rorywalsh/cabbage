@@ -33,7 +33,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Amplitude -    amount of amplitude modulation
 
 <Cabbage>
-form caption("Leslie Speaker") size(260,120), pluginId("Lsli")  style("legacy"), guiRefresh(16)
+form caption("Leslie Speaker") size(260,120), pluginId("Lsli")  style("legacy"), guiRefresh(16), colour("Black")
 
 image     bounds(  0,  0,260,120), outlineThickness(4), outlineColour("white"), file("DarkWood.jpg");, colour(75,50,50)
 image     bounds(  0,  0,260,120), outlineThickness(4), outlineColour("silver"), colour(0,0,0,0)
@@ -45,10 +45,9 @@ image     bounds( 132,  7,16,16), identChannel("TweeterID"), shape("ellipse"), c
 image     bounds( 110, 30,40,40), identChannel("WooferID"),  shape("ellipse"), colour(170,150,150)
 
 button bounds(200,10,50, 18), channel("setup_Button"), text("Setup"), fontColour:0(200,200,200), fontColour:1(200,200,200), colour:0(80,55,55), colour:1(80,55,55)
-groupbox bounds(360,28,340,190), plant("Setup"), outlineThickness(0), popup(1), identChannel("setupPlant")
+groupbox bounds(360,28,340,190), plant("Setup"), outlineThickness(0), popup(1), identChannel("setupPlant"), colour("Black")
 {
 image     bounds(0,0,340,190), outlineThickness(4), outlineColour("silver"), colour(75,50,50), file("DarkWood.jpg")
-
 image     bounds(0,0,170,190), outlineThickness(4), outlineColour("silver"), colour(0,0,0,0)
 label     bounds(0,4,170, 14), text("Woofer"), fontColour(200,200,200)
 nslider bounds(10, 20,70,40), channel("CF_Low"), text("Cutoff"),     range(20,8000,800,1,1)

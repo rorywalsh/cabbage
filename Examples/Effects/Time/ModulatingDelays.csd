@@ -40,7 +40,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 
 
 <Cabbage>
-form size(960, 260), caption("Modulating Delays"), pluginId("mdel")
+form size(960, 260), caption("Modulating Delays"), pluginId("mdel"), colour("Black")
 
 label    bounds(200,  5, 80, 11), text("G A T E"), fontColour("white")
 checkbox bounds( 10, 35,100, 15), text("Gate On/Off") channel("GateActive"), FontColour("White"), colour("lime")  value(1)

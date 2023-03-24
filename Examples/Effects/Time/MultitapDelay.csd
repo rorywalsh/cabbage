@@ -31,7 +31,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 #define NSliderStyle colour(55,55,55), textColour(20,20,20), fontColour(255,255,220)
 #define RSliderStyle ,  colour( 174,170,165), trackerColour(234,240,230), textColour( 20, 20, 20)
 
-form caption("Multitap Delay") size(580,420), pluginId("MtDl")
+form caption("Multitap Delay") size(580,420), pluginId("MtDl"), colour("Black"), guiRefresh(16)
 image pos(0, 0),               size(580,420), colour( 214,210,205), shape("rounded"), outlineColour("white"), outlineThickness(4) 
 
 label     bounds( 10, 40, 70, 14), fontColour(20,20,20),text("%")
@@ -93,7 +93,7 @@ button    bounds(510,295, 50, 20), text("MUTE","MUTE"), channel("Mute8"), value(
 line      bounds( 10,330,560,2)
 
 label     bounds( 10,345, 60, 14), fontColour(20,20,20), text("Type")
-combobox  bounds( 10,370, 60, 20),  channel("Mode"),text("Mode 1","Mode 2","Mode 3"), colour(  0, 40, 50), textColour("white")
+combobox  bounds( 10,370, 60, 20),  channel("Mode"),text("Mode 1","Mode 2","Mode 3"), colour(  0, 40, 50), textColour("white"), value(1)
 rslider   bounds( 80,340, 70, 70),  channel("Mix"),text("Mix"), range(0, 1, 0.5), $RSliderStyle
 rslider   bounds(150,340, 70, 70),  channel("Feedback"),text("Feedback"), range(0, 1, 0.75), $RSliderStyle
 rslider   bounds(220,340, 70, 70),  channel("Level"),text("Level"), range(0, 1, 1), $RSliderStyle
@@ -105,13 +105,13 @@ gentable  bounds(310,340, 250, 70), identChannel("table1"),  tableNumber(1), tab
 <CsoundSynthesizer>
 
 <CsOptions>
--d -n
+-dm0 -n
 </CsOptions>
 
 <CsInstruments>
 
 ; sr set by host
-ksmps        =    32    ; NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+ksmps        =    16    ; NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
 nchnls       =    2     ; NUMBER OF CHANNELS (2=STEREO)
 0dbfs        =    1
 
@@ -120,6 +120,10 @@ nchnls       =    2     ; NUMBER OF CHANNELS (2=STEREO)
 giTimes  ftgen  1, 0, 8, 2,  0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7
 
 instr    1
+ aInL,aInR    ins
+; outs aInL,aInR
+; aInL *= 0
+; aInR *= 0
 
  iCnt = 1
  while iCnt<=8 do
@@ -129,7 +133,6 @@ instr    1
  chnset random:i(0,1),Snme
  iCnt += 1
  od
-
 
  kDelTim1    chnget    "DelTim1"
  kDelTim2    chnget    "DelTim2"
@@ -196,15 +199,10 @@ instr    1
  REFRESH_TABLE:
  giTimes  ftgen  1, 0, 8, 2,  i(kDelTim1)*0.01, i(kDelTim2)*0.01, i(kDelTim3)*0.01, i(kDelTim4)*0.01, i(kDelTim5)*0.01, i(kDelTim6)*0.01, i(kDelTim7)*0.01, 1
  chnset  "tableNumber(1)", "table1"
-
- aInL,aInR    ins
-; aInL *= 0
-; aInR *= 0
  
-
  if kMode==1 then
  
- /* left channel */
+ ; left channel
  abufL     delayr   30
  aTapL1    deltapi  aDelTim1 * aDelTim8
  aTapL1    tone     aTapL1, kTone1
@@ -224,7 +222,7 @@ instr    1
  aTapL8    tone     aTapL8, kTone8
            delayw   aInL + (aTapL8*kFeedback)
 
- /* right channel */
+ ; right channel
  abufR     delayr    30
  aTapR1    deltapi   aDelTim1 * aDelTim8
  aTapR1    tone      aTapR1, kTone1
@@ -246,7 +244,7 @@ instr    1
 
  elseif kMode==2 then
   
- /* left channel */
+ ; left channel
   abuf   delayr    30
  aTapL1  deltapi   aDelTim1 * aDelTim8
  aTapL1  tone      aTapL1, kTone1
@@ -280,7 +278,7 @@ instr    1
  aTapL8  tone      aTapL8, kTone8
          delayw    aInL + (aTapL8*kFeedback)    
 
- /* right channel */
+ ; right channel
  abuf    delayr    30
  aTapR1  deltapi   aDelTim1 * aDelTim8
  aTapR1  tone      aTapR1, kTone1

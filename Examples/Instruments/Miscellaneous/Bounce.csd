@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; Bounce.csd
 ; Written by Iain McCurdy, 2014
 
@@ -11,7 +18,7 @@
 ; x position controls panning position for both horizontals and verticals
 
 <Cabbage>
-form caption("Bounce") size(610, 360), pluginId("bnce")
+form caption("Bounce") size(610, 360), pluginId("bnce"), colour("Black")
 
 ; box 1 image    bounds(  0,  0,230,250), colour(200,100,100,200), 
 shape("rounded"), ouTlinecolour("white"), outlineThickness(0) 

@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; LorenzSynth.csd
 ; Iain McCurdy, 2015
 
@@ -28,7 +35,7 @@
 
 
 <Cabbage> 
-form size(1000,550), guiRefresh(32), text("Lorenz Synth"), colour(220,220,220), pluginId("Lore")
+form size(1000,550), guiRefresh(32), caption("Lorenz Synth"), colour(220,220,220), pluginId("Lore")
 
 image bounds(0,0,-30,-30), shape("ellipse"), identChannel("IndicatorBallRed"), colour("red"), visible(0), alpha(0.85)
 image bounds(0,0,-30,-30), shape("ellipse"), identChannel("IndicatorBallGreen"), colour("green"), visible(0), alpha(0.85)
@@ -60,7 +67,7 @@ label bounds(0,530,100,10), text("Iain McCurdy |2015|"), fontColour(50,50,50)
 <CsInstruments>
 
 ; sr set by host
-ksmps = 32
+ksmps = 4
 nchnls = 2
 0dbfs = 1
 

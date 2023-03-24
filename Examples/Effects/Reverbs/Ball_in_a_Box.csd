@@ -76,7 +76,7 @@ label   bounds(  5,245,390, 12), text("Pick-up Separation"), fontColour(200,200,
 <CsoundSynthesizer>
 
 <CsOptions>
--d -n
+-dm0 -n
 </CsOptions>
 
 <CsInstruments>
@@ -89,7 +89,7 @@ nchnls         =     2
 ;Author: Iain McCurdy (2015)
 
 instr    1    ; read widgets
- gkrx        chnget    "rx"        
+ gkrx           chnget    "rx"        
  gkry           chnget    "ry"        
  gkrz           chnget    "rz"        
  gksrcx         chnget    "srcx"      
@@ -109,23 +109,23 @@ instr    1    ; read widgets
 endin
 
 instr    2    ;REVERB
- aL,aR    ins    ; read 
- kSwitch        changed        gkrx, gkry, gkrz, gksrcx, gksrcy, gksrcz, gkdiff, gkdecay, gkrdistance, gkhydecay, gkdirect, gkearly_diff, gkrcvx, gkrcvy, gkrcvz    ;GENERATE A MOMENTARY '1' PULSE IN OUTPUT 'kSwitch' IF ANY OF THE SCANNED INPUT VARIABLES CHANGE. (OUTPUT 'kSwitch' IS NORMALLY ZERO)
- if    kSwitch=1    then    ;IF kSwitch=1 THEN
-     reinit    UPDATE        ;BEGIN A REINITIALIZATION PASS FROM LABEL 'UPDATE'
- endif                ;END OF CONDITIONAL BRANCHING
- UPDATE:                ;A LABEL
- irx        init    i(gkrx)    ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
- iry        init    i(gkry) ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
- irz        init    i(gkrz) ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
+ aL,aR    ins    ; read
+ if    changed:k(gkrx, gkry, gkrz, gksrcx, gksrcy, gksrcz, gkdiff, gkdecay, gkrdistance, gkhydecay, gkdirect, gkearly_diff, gkrcvx, gkrcvy, gkrcvz)==1 then
+     reinit    UPDATE       ; BEGIN A REINITIALIZATION PASS FROM LABEL 'UPDATE'
+ endif                      ; END OF CONDITIONAL BRANCHING
+ UPDATE:                    ; A LABEL
+ kRamp        linseg  0,0.05,0,0.05,1
+ irx          init    i(gkrx)    ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
+ iry          init    i(gkry) ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
+ irz          init    i(gkrz) ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
  ksrcx        init    i(gksrcx) * irx    ;THE ACTUAL LOCATION OF THE SOURCE SOUND IS DEFINED RELATIVE TO THE SIZE OF THE ROOM
  ksrcy        init    i(gksrcy) * iry    ;THE ACTUAL LOCATION OF THE SOURCE SOUND IS DEFINED RELATIVE TO THE SIZE OF THE ROOM
  ksrcz        init    i(gksrcz) * irz    ;THE ACTUAL LOCATION OF THE SOURCE SOUND IS DEFINED RELATIVE TO THE SIZE OF THE ROOM
  idiff        init    i(gkdiff) ;CREATE I-RATE VARIABLES FROM K-RATE VARIABLES
- giBaboVals    ftgen    1, 0, 8, -2, i(gkdecay), i(gkhydecay), i(gkrcvx), i(gkrcvy), i(gkrcvz), i(gkrdistance), i(gkdirect), i(gkearly_diff)
- aRvbL, aRvbR    babo    aL + aR, ksrcx, ksrcy, ksrcz, irx, iry, irz, idiff, giBaboVals    ;BABO REVERBERATOR
+ giBaboVals   ftgen   1, 0, 8, -2, i(gkdecay), i(gkhydecay), i(gkrcvx), i(gkrcvy), i(gkrcvz), i(gkrdistance), i(gkdirect), i(gkearly_diff)
+ aRvbL, aRvbR babo    aL + aR, ksrcx, ksrcy, ksrcz, irx, iry, irz, idiff, giBaboVals    ;BABO REVERBERATOR
  rireturn            ;RETURN TO PERFORMANCE TIME PASSES
-         outs    ((aRvbL*gkmix)+(aL*(1-gkmix)))*gklevel, ((aRvbR*gkmix)+(aR*(1-gkmix)))*gklevel
+         outs    ((aRvbL*gkmix)+(aL*(1-gkmix)))*gklevel*kRamp, ((aRvbR*gkmix)+(aR*(1-gkmix)))*gklevel*kRamp
 endin
 
         

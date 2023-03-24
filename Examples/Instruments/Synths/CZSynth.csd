@@ -71,7 +71,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 #define SLIDER_STYLE trackerColour(150,150,255)
 #define CHECKBOX_STYLE colour(255,255,100)
 
-form caption("CZ Synthesiser") size(1075,365), pluginId("RMSy")
+form caption("CZ Synthesiser") size(1075,365), pluginId("RMSy"), colour(40,40,40)
 
 ; PHASE DISTORTION
 image      bounds(  5,  5,500,130), colour(0,0,0,0), plant("ShapeAmount"), outlineColour("white"), outlineThickness(1), shape("sharp") {

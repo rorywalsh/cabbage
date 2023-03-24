@@ -17,7 +17,7 @@ rslider      bounds( 75, 11, 70, 70), text("Width"),  channel("width"),  range(0
 rslider      bounds(140, 11, 70, 70), text("Centre"), channel("center"), range(-1.00, 1.00, 0), textColour("white"), colour(5, 30,80), trackerColour(255,255,25), outlineColour(30,30,50)
 rslider      bounds(300, 11, 70, 70), text("Level"),  channel("level"),  range(0, 1.00, 0.7),   textColour("white"), colour(5, 30,80), trackerColour(255,255,25), outlineColour(30,30,50)
 combobox     bounds(215, 20, 80, 20), channel("bipolar"), value(2), text("Unipolar", "Bipolar")
-checkbox     bounds(215, 48,130, 12), channel("TestTone"), fontColour("white"),  value(0), text("Sine Tone"), colour(yellow)
+checkbox     bounds(215, 48,130, 12), channel("TestTone"), fontColour:0("white"), fontColour:1("white"),  value(0), text("Sine Tone"), colour(yellow)
 gentable bounds(375, 10,100, 70), tableNumber(1000), identChannel("TF"), ampRange(-1.1,1.1,1000), tableColour(160,160,220)
 label    bounds(375, 80,100, 10), text("Transfer Function"), fontColour(255,255,255)
 }

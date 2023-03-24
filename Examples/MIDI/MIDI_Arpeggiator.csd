@@ -8,10 +8,31 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; MIDI Arpeggiator.csd
 ; Written by Iain McCurdy, 2015. Based on the Arpeggiator (2012) example. 
 
-; Duration    -    ratio of the duration that will fill the gap until the next note. Therefore a value of '1' provides a legato arpeggio.
+; Interval   - interval (in semitones) between repeats of the arpeggio
+; Cycles     - number of repeats of the arpeggio
+; Cycle Mode - shifting mode for the cyclical repetitions (Up or Up/Down)
+; Arp Mode   - way in which held notes are repeated:
+;              1. Up, from low to high
+;              2. Down, from high to low
+;              3. Up-Down, first from low to high, then from high to low
+;              4. Random Dir., as in a Markov Chain or a Drunk Walk
+;              5. Random Pick., as in 'item heap', no repetitions until all have been selected within an arpeggio
+;              6. Seq. Play following the order in which the notes were added
+; Tempo      - tempo in BPM
+; Tempo Mlt. - tempo multiplier in order to make some metrical modulations easier
+; Swing      - straight or dotted rhythms between pairs of notes in the arpeggio
+; Octave     - transposition of all notes in octaves
+; Semitone   - transposition of all notes in semitone
+; Duration   - duration for which notes in the arpeggio are held (in seconds)
+; Clock Source - tempo taken from Tempo dial widget (INTERNAL) or host tempo (EXTERNAL)
+; On/Off     - start/stop the arpeggiator
+; Hold       - hold notes even when released (as in a sustain pedal)
+;              this is particularly useful if the GUI keyboard is used
+; Pause      - pause the arpeggio. It picks up again where it left off when this is deactivated again.
+
 
 <Cabbage>
-form caption("Arpeggiator") size(720, 100), pluginId("MArp")
+form caption("Arpeggiator") size(720, 180), pluginId("MArp"), colour("Black")
 
 #define RSliderStyle #trackerColour(0,255,255), colour(100,100,140), outlineColour(20,20,20)#
 
@@ -42,6 +63,8 @@ checkbox bounds(645, 35, 60, 15), colour("Cyan"),   channel("onoff"),  text("On/
 checkbox bounds(645, 55, 60, 15), colour("yellow"), channel("hold"),   text("Hold"),   value(1)
 checkbox bounds(645, 75, 60, 15), colour("red"),    channel("pause"),  text("Pause"),  value(0)
 }
+
+keyboard bounds(0,100,720,80)
 
 </Cabbage>
 

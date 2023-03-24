@@ -5,9 +5,13 @@ NonCommercial - You may not use the material for commercial purposes.
 ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
 https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 
+; Each pad triggers a different synthesised sound based on the Roland 808
+
+; Horizontal position across the pad controls the pan location. This is grabbed at the beginning of the note only.
+; Vertical position up the pad controls the velocity (amplitude). This is grabbed at the beginning of the note only.
 
 <Cabbage>
-form caption("Drum Pads") size(850, 430), pluginId("DPds")
+form caption("Drum Pads") size(850, 430), pluginId("DPds"), colour("Black")
 image bounds( 10, 10, 200, 200),     colour(150,150,170), shape("rounded"), outlineColour("white"), line(0)
 image bounds(220, 10, 200, 200),     colour(150,150,170), shape("rounded"), outlineColour("white"), line(0)
 image bounds(430, 10, 200, 200),     colour(150,150,170), shape("rounded"), outlineColour("white"), line(0)
@@ -39,7 +43,6 @@ instr    1
  gkMOUSE_X            chnget    "MOUSE_X"
  gkMOUSE_Y            chnget    "MOUSE_Y"
  gkMOUSE_DOWN_LEFT    chnget    "MOUSE_DOWN_LEFT"
-
 #define PAD(N'X'Y'INSTR)
  #
  ix$N       =           $X
@@ -67,7 +70,6 @@ $PAD(5'10'220'105)
 $PAD(6'220'220'106)
 $PAD(7'430'220'107)
 $PAD(8'640'220'108)
-
 endin
 
 

@@ -68,7 +68,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; ratio 2 controls the ratio of the frequency of the ring modulator to the fundemental (frequency of the first oscillator.)
 
 <Cabbage>
-form caption("Ring Modulation Synthesizer") size(875,267), pluginId("RMSy")
+form caption("Ring Modulation Synthesizer") size(875,267), pluginId("RMSy"), colour(40,40,40)
 
 image      bounds(  5,  5, 70,160), colour(0,0,0,0), outlineColour("white"), outlineThickness(4), shape("rounded"), plant("osc1") {
 label      bounds(  5,  5, 60, 14), text("OSC.1")
@@ -122,7 +122,7 @@ label      bounds(  5,  5,120, 14), text("GLOBAL")
 rslider    bounds(  5, 25, 60, 60), text("High Cut"),      channel("LPF"),    range(100,12000,12000,0.5,1)
 rslider    bounds(  5, 95, 60, 60), text("Sus.Lev."),      channel("SusLev"), range(  0,    1,  0,1,0.001)
 label      bounds( 75, 30, 40, 10), text("PRESET")
-combobox   bounds( 75, 40, 40, 20), text("1","2","3","4","5","6","7","8","9","10"), channel("preset")
+combobox   bounds( 75, 40, 40, 20), text("1","2","3","4","5","6","7","8","9","10"), channel("preset"), value(1)
 rslider    bounds( 65, 95, 60, 60), text("Level"),         channel("Level"),  range(  0,    1,  0.7,0.5,0.001)
 }
 
@@ -130,7 +130,6 @@ keyboard   bounds(  5,170,865, 85)
 
 label bounds(5,256,97,10), colour("black"), text("Iain McCurdy |2015|") align("right")
 </Cabbage>
-
 
 <CsoundSynthesizer>
 

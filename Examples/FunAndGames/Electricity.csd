@@ -17,7 +17,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ;   the loop times of which are linked to the mouse x and y positions.
 
 <Cabbage>
-form  size(1000,540), text("Electricity"), guiRefresh(32), colour(0,0,0), pluginId("Elec")
+form  size(1000,540), caption("Electricity"), guiRefresh(32), colour(0,0,0), pluginId("Elec")
 image bounds(0,0,0,0), shape("sharp"), visible(0), widgetArray("spark",10) ; widget array (10 image widgets with a single line of code)
 label bounds(0,530,100,10), text("Iain McCurdy |2015|")
 label bounds(  0,230,1000,70), text("Click and Drag..."), fontColour(255,255,255), identChannel("instructions")

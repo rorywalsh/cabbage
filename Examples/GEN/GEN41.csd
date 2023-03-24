@@ -19,6 +19,8 @@ form caption("GEN41"), size(420, 395), pluginId("gn41"), colour(120,70,170,150)
 
 gentable bounds(  5,  5, 410, 115), identChannel("table1"), tableNumber(1), tableColour("yellow"), outlineThickness(2), ampRange(36,84,1), zoom(-1), fill(0)
 
+image    bounds(  5,  5, 1, 115), identChannel("Scrubber"), alpha(0.5)
+
 groupbox bounds(0, 125,420,170), text("Histogram"), plant("histogram"), fontColour("white"){
 rslider bounds(  0, 25, 70, 70), channel("prob1"), text("Prob. 1"), valueTextBox(1), textBox(1), range(0, 100, 70,1,1), colour(160,110,210,200), trackerColour("white")
 rslider bounds( 50, 25, 70, 70), channel("prob2"), text("Prob. 2"), valueTextBox(1), textBox(1), range(0, 100,  5,1,1), colour(160,110,210,200), trackerColour("white")
@@ -115,7 +117,7 @@ instr    1
 
     ; TRIGGER SOME NOTES
     kNoteTrig    init    1
-    krhy    trandom    kNoteTrig,0,3
+    krhy         trandom  kNoteTrig,0,3
     kNoteTrig    metro    gkrate*(2^int(krhy))
     schedkwhen    kNoteTrig*gkSynthOnOff,0,0,2,0,gkdur
 endin
@@ -123,18 +125,20 @@ endin
 ; SCALE FOR REFLECTION DEPENDENT UPON MIDI NOTE NUMBER
 giScal    ftgen    0,0,128, -27,  0, 0.9, 24, 0.9, 36, 0.85, 48, 0.75, 60, 0.65, 72, 0.35, 84, 0.001, 96, 0.001, 127;, 0.001
 
-
 gisine    ftgen    0,0,4096,10,1
 
 instr    2
-    iNote     table         rnd(1),gihist,1                     ; read a random value from the function table
+    iNdx      random       0, 1                                ; generate a random value
+    Smsg      sprintf      "pos(%d,5)",5+iNdx*410              ; create widget message for moving random index indicator 
+              chnset       Smsg, "Scrubber"                    ; send position message to widget
+    iNote     table         iNdx,gihist,1                      ; read a random value from the function table
     aEnv      linsegr        0, 0.005, 1, p3-0.105, 1, 0.1, 0     ; amplitude envelope
     iPlk      random        0.1, 0.3                             ; point at which to pluck the string
     iDtn      random        -0.05, 0.05                          ; random detune
-    irefl    table        iNote, giScal
+    irefl     table        iNote, giScal
     aSig      wgpluck2      0.58, 0.5*gklev, cpsmidinn(iNote+iDtn), iPlk, irefl   
-    kcf        expon        cpsoct(rnd(6)+6),p3,50
-    aSig    clfilt        aSig, kcf, 0, 2                        ; butterworth lowpass filter    
+    kcf       expon        cpsoct(rnd(6)+6),p3,50
+    aSig      clfilt        aSig, kcf, 0, 2                        ; butterworth lowpass filter    
     aL,aR     pan2        aSig * aEnv, rnd(0.5)+0.5            ; random panning   
               outs        aL, aR
 endin

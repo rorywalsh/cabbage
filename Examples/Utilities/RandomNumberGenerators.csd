@@ -34,13 +34,13 @@ rslider   bounds(455,166,40,40), channel("SoundAmp"), range(0,1,0.3,0.5,0.001)
 
 image     bounds( 10,264,140,55), colour(0,0,0,0), outlineThickness(1), outlineColour(200,200,200), shape("sharp") {
 label     bounds( 5, 4,80,12), text("FILTER")
-combobox  bounds( 5, 16,80,20), text("none","port","lineto"), channel("Filter")
+combobox  bounds( 5, 16,80,20), text("none","port","lineto"), channel("Filter"), value(1)
 label     bounds( 98, 2, 30,11), text("Time"), align("centre")
 rslider   bounds( 95, 11,40,40), channel("Time"), range(0,1,0.1,0.5,0.001)
 }
 
 label     bounds( 10,208,80,12), text("OPCODE")
-combobox  bounds( 10,220,80,20), text("randomi","randomh","rspline","jspline","jitter","jitter2","vibr","vibrato","gaussi","trandom"), channel("Type")
+combobox  bounds( 10,220,80,20), text("randomi","randomh","rspline","jspline","jitter","jitter2","vibr","vibrato","gaussi","trandom"), channel("Type"), value(1)
 
 image     bounds( 95,210,300, 60), colour(0,0,0,0), plant("randomi"), identChannel("randomiPlant") {
 nslider bounds(  0,  0,90,30), text("Amp.1"),         channel("randomiAmp1"),    range(-1,1,-1,1,0.001)
@@ -242,6 +242,7 @@ instr    1
 
  if kType==1 then            ; randomi
   kRnd    randomi    krandomiAmp1, krandomiAmp2, krandomiFreq, 2
+  ;kRnd    randc    krandomiAmp1,  krandomiFreq
  elseif kType==2 then            ; randomh
   kRnd    randomh    krandomhAmp1, krandomhAmp2, krandomhFreq, 2
  elseif kType==3 then            ; rspline

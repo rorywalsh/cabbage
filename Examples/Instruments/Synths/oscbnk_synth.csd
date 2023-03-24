@@ -6,7 +6,7 @@ ShareAlike - If you remix, transform, or build upon the material, you must distr
 https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 
 ; oscbnk_synth.csd
-; Written by Iain McCurdy, 2012
+; Written by Iain McCurdy, 2012, 2022
 
 ; A synthesiser utilising the oscbnk opcode
 ; 
@@ -15,82 +15,97 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; 
 ; -Oscillators-
 ; Amp        --    output amplitude of the oscillators sections
-; N.Oscs    --    number of oscillators
-; Spread    --    pitch spread
-; SPeed        --    speed of pitch modulations
-; Waveform    --    (dropdown menu) wavefrom used by the oscillator. Trombone 2 is a multi-waveform wavetable instrument.
-; mono        --    activate monophonic mode
-; Time        --    portamento time (monophonic mode)
+; N.Oscs     --    number of oscillators
+; Spread     --    pitch spread
+;; SPREAD ENVELOPE
+;; Amt.       --    amount of influence of the envelope
+;; Att.       --    attack time of the envelope
+;; Dec.       --    decay time of the envelope
+;; Sus.       --    sustain time of the envelope
+;; Rel.       --    release time of the envelope
+; Speed      --    speed of pitch modulations
+; Waveform   --    (dropdown menu) wavefrom used by the oscillator.
+; mono       --    activate monophonic mode
+; Time       --    portamento time (monophonic mode)
 ; T.Shift    --    wavetable shift (will alter the tone if a multi-waveform wavetable instrument is chosen)
-; P.Bend    --    pitch bend. The is a GUI alternative to use if you don't have hardware pitch bend.
-; Bend Rng.    --    pitch bend range
-; 
-; -Filter Envelope-
-; Filter    --    filter cutoff global control
-; Env.        --    amount of influnce of the envelope
-; Att.        --    envelope attack time
-; Dec.        --    envelope decay time
-; Sus.        --    envelope sustain level
-; Rel.        --    envelope release time
-; 
+; P.Bend     --    pitch bend. The is a GUI alternative to use if you don't have hardware pitch bend.
+; Bend Rng.  --    pitch bend range
+; -Random Seed-
+; Mode for setting random seed for random number generators in oscbnk:
+; Clock M.   --    seeded from the system clock therefore each note (even if the same note is played) 
+;            will produced the same 'random' values. Left and right channels use the same value.
+; Clock St.  --    same as the above except that left and right channels will use different values.
+; Note M.    --    seeded by the note played therefore repeating a note will produce the same 'random' values.
+;            (Left and right channels use the same seed.) 
+; Note St.   --    Same as the above except that left and right channels will use different values.
+; Fixed    M. --    All notes use a fixed seed all of the time. Left and right channels use different fixed values.
+; Fixed    St.--    Same as the above except that left and right channels will use different values.
+;  N.B. You can most clearly hear the effects of different settings by setting 'Spread' to a large value and 
+;    by setting speed to zero.
+
+; -Filter-
+; two filters are available: tonex and diodeladder (Res=0, tonex is used; Res>0, diodeladder is used)
+; Manual     --    manual control of the filter cutoff
+; Env.       --    amount of influence of the envelope on top of the Manual control
+; Att.       --    attack time of the envelope
+; Dec.       --    decay time of the envelope
+; Sus.       --    sustain time of the envelope
+; Rel.       --    release time of the envelope
+; Layers     --    number of iterations of the filter and therefore controlling the cutoff slope steepness (tonex only)
+; Res.       --    resonance of the diodeladder filter. When this is zero, tonex is used.
+
+; -Filter LFO-
+; shape       --    (drop down menu) LFO shape
+; Rate        --    LFO rate
+; Depth       --    LFO depth / amplitude
+; Delay       --    delay time before LFO has any effect
+; Rise        --    time it take for LFO amplitude to rise from zero to 'Depth'
+
 ; -Amplitude Envelope-
 ; Att        --    envelope attack time  
 ; Dec        --    envelope decay time   
 ; Sus        --    envelope sustain level
 ; Rel        --    envelope release time 
 ; 
-; -Random Seed-
-; Mode for setting random seed for random number generators in oscbnk:
-; Clock M.    --    seeded from the system clock therefore each note (even if the same note is played) 
-;            will produced the same 'random' values. Left and right channels use the same value.
-; Clock St.    --    same as the above except that left and right channels will use different values.
-; Note M.    --    seeded by the note played therefore repeating a note will produce the same 'random' values.
-;            (Left and right channels use the same seed.) 
-; Note St.    --    Same as the above except that left and right channels will use different values.
-; Fixed    M.    --    All notes use a fixed seed all of the time. Left and right channels use different fixed values.
-; Fixed    St.    --    Same as the above except that left and right channels will use different values.
-;  N.B. You can most clearly hear the effects of different settings by setting 'Spread' to a large value and 
-;    by setting speed to zero.
-;
-; -Filter-
-; Layers        --    number of interations of tonex filter. Increasing this number will sharpen cutoff.
-; 
-; -Filter LFO-
-; shape        --    (drop down menu) LFO shape
-; Rate         --    LFO rate
-; Depth        --    LFO depth / amplitude
-; Delay        --    delay time before LFO has any effect
-; Rise        --    time it take for LFO amplitude to rise from zero to 'Depth'
-; 
 ; -Reverb-
-; Mix        --    dry/wet mix
+; Mix         --    dry/wet mix
 ; Size        --    room size
 
+; -Exciter- Adds brightness to the sound via waveshaping
+; Amount      --    amount of signal outputted by the exciter
+; Freq.       --    frequency above which the exciter has influence
 
 <Cabbage>
-form caption("Oscillator Bank Synth") size(595, 335), pluginId("oscb")
+form caption("Oscillator Bank Synth") size(765, 335), pluginId("oscb") colour("black")
 
-;OSCILLATOR
-groupbox bounds(  0,  0,595, 85), text("Oscillators"), fontColour("white") plant("oscillators"){
-rslider  bounds(  5, 25, 55, 55), text("Amp."),    channel("amp"),   range(0, 1.00, 0.4),                 trackerColour("white") colour(LightBlue)
-rslider  bounds( 55, 25, 55, 55), text("N.Oscs."), channel("NOscs"), range(1, 100, 10, 1, 1),             trackerColour("white") colour(LightBlue)
-rslider  bounds(105, 25, 55, 55), text("Spread"),  channel("fmd"),   range(0,10.00, 0.005,0.25,0.000001), trackerColour("white") colour(LightBlue)
-rslider  bounds(155, 25, 55, 55), text("Speed"),   channel("mvt"),   range(0,1000.000, 1, 0.25,0.0001),   trackerColour("white") colour(LightBlue)
-rslider  bounds(205, 25, 55, 55), text("Width"),   channel("width"), range(0, 1.000, 1, 1,0.001),         trackerColour("white") colour(LightBlue)
-combobox bounds(270, 25, 80, 20), channel("waveform"), value(1), text("saw", "square", "organ", "Clarinet","Bass Clarinet", "C.Bass Clarinet","Oboe","Bassoon","C.Bassoon","Violin","Cello","Piccolo","Flute","Alto Flute","Bass Flute", "Ahh", "Ooh", "Eee", "Horn P", "Horn F", "B.Tbn.Harmon", "B.Tbn.Straight", "B.Tbn.Open")
-checkbox bounds(270, 50, 85, 13), text("Legato"), colour("yellow"), channel("legato"),  value(0)
-checkbox bounds(270, 65, 85, 13), text("Mono"), colour("yellow"), channel("mono"),  value(0)
-rslider  bounds(322, 44, 38, 38), text("Time"),    channel("LegTim"),      range(0, 4.00, 0.09, 0.5, 0.01), trackerColour("white") colour(LightBlue)
-rslider  bounds(355, 25, 55, 55), text("T.Shift"), channel("WTableShift"), range(-36, 36, 0, 1,0.001),      trackerColour("white") colour(LightBlue)
-;PITCH BEND
-rslider  bounds(405, 25, 55, 55), text("P.Bend"),    channel("PBend"),    range(-1,1, 0), trackerColour("white") colour(LightBlue)
-rslider  bounds(455, 25, 55, 55), text("Bend Rng."), channel("BendRange"),   range(1, 24, 12, 1,1),   trackerColour("white") colour(LightBlue)
-label    bounds(505, 31, 80, 12), text("Random Seed")
-combobox bounds(505, 45, 80, 20), text("Clock M.","Clock St.","Note M.","Note St.","Fixed M","Fixed St"), value(2), channel("seed")
+;OSCILLATORS I
+groupbox bounds(0, 0, 765, 85), text("Oscillators"), fontColour(255, 255, 255, 255) plant("oscillators") {
+rslider  bounds(5, 25, 55, 55), text("Amp."),    channel("amp"),   range(0, 1, 0.2, 0.5, 0.001),                 trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+rslider  bounds(55, 25, 55, 55), text("N.Oscs."), channel("NOscs"), range(1, 100, 10, 1, 1),             trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+rslider  bounds(105, 25, 55, 55), text("Spread"),  channel("fmd"),   range(0, 10, 0.005, 0.25, 1e-06), trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+;SPREAD ENVELOPE
+label    bounds(155, 23,255, 10), text("S P R E A D      E N V E L O P E"), align("centre"), colour(255,255,255,155), fontColour("Black")
+rslider  bounds(155, 35, 45, 45), text("Amt."),  channel("SEAmt"),   range(0, 1, 0), trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+rslider  bounds(195, 35, 45, 45), text("Att."),  channel("SEAtt"),   range(0, 15, 0.5, 0.5), trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+rslider  bounds(235, 35, 45, 45), text("Dec."),  channel("SEDec"),   range(0, 15, 0.5, 0.5), trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+rslider  bounds(275, 35, 45, 45), text("Sus."),  channel("SESus"),   range(0, 1, 1), trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+rslider  bounds(315, 35, 45, 45), text("Rel."),  channel("SERel"),   range(0, 15, 0.5, 0.5), trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+checkbox   bounds(360, 45, 45, 15), text("Inv."), channel("SEInv"), value(0)
+;OSCILLATORS II
+rslider  bounds(410, 25, 55, 55), text("Speed"),   channel("mvt"),   range(0, 1000, 1, 0.25, 0.0001),   trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+rslider  bounds(455, 25, 55, 55), text("Width"),   channel("width"), range(0, 1, 1, 1, 0.001),         trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+combobox bounds(520, 25, 80, 20), channel("waveform"), value(1), text("saw", "square", "sine", "organ", "Clarinet", "Bass Clarinet", "C.Bass Clarinet", "Oboe", "Bassoon", "C.Bassoon", "Violin", "Cello", "Piccolo", "Flute", "Alto Flute", "Bass Flute", "Ahh", "Ooh", "Eee", "Horn P", "Horn F", "B.Tbn.Harmon", "B.Tbn.Straight", "B.Tbn.Open")
+checkbox bounds(515, 50, 85, 13), text("Legato"), , channel("legato"), colour:1(255, 255, 0, 255)
+checkbox bounds(515, 65, 85, 13), text("Mono"), , channel("mono"), colour:1(255, 255, 0, 255)
+rslider  bounds(572, 44, 35, 35), text("Time"),    channel("LegTim"),      range(0, 4, 0.09, 0.5, 0.01), trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+rslider  bounds(605, 25, 55, 55), text("T.Shift"), channel("WTableShift"), range(-36, 36, 0, 1, 0.001),      trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+
+label    bounds(665, 32, 80, 12), text("Random Seed") channel("label88")
+combobox bounds(665, 45, 80, 20), text("Clock M.", "Clock St.", "Note M.", "Note St.", "Fixed M", "Fixed St"), value(2), channel("seed")
 }
 
 ;FILTER ENVELOPE
-groupbox bounds(  0, 85,380, 85), text("Filter"), fontColour("white"), plant("FilterEnvelope") {
+groupbox bounds(  0, 85,445, 85), text("Filter"), fontColour("white"), plant("FilterEnvelope") {
 rslider  bounds(  5, 25, 55, 55), text("Manual"), channel("cf"), range(0, 10.00, 8),     trackerColour("white") colour(LightBlue)
 rslider  bounds( 55, 25, 55, 55), text("Env."), channel("FEnvAmt"), range(0, 10.00, 1.16), trackerColour("white") colour(LightBlue)
 rslider  bounds(105, 25, 55, 55), text("Att."), channel("FAtt"), range(0, 8.00, 0.1,0.5),  trackerColour("white") colour(LightBlue)
@@ -99,40 +114,48 @@ rslider  bounds(205, 25, 55, 55), text("Sus."), channel("FSus"), range(0, 1.00, 
 rslider  bounds(255, 25, 55, 55), text("Rel."), channel("FRel"), range(0.01, 8, 1.3, 0.5), trackerColour("white") colour(LightBlue)
 line     bounds(315, 30,  1, 45)
 rslider  bounds(320, 25, 55, 55), text("Layers"), channel("FiltLayers"), range(1, 10, 8,1,1), trackerColour("white") colour(LightBlue)
-}
-
-;AMPLITUDE ENVELOPE
-groupbox bounds(380,85, 215, 85), text("Amplitude Envelope"), plant("AmpEnv"), fontColour("white"){
-rslider bounds(  5, 25, 55, 55), text("Att."), channel("AAtt"), range(0, 8.00, 0.13,0.5),  trackerColour("white") colour(LightBlue)
-rslider bounds( 55, 25, 55, 55), text("Dec."), channel("ADec"), range(0, 8.00, 0.01,0.5),  trackerColour("white") colour(LightBlue)
-rslider bounds(105, 25, 55, 55), text("Sus."), channel("ASus"), range(0, 1.00, 1.00, 0.5), trackerColour("white") colour(LightBlue)
-rslider bounds(155, 25, 55, 55), text("Rel."), channel("ARel"), range(0.01, 8, 1.67, 0.5), trackerColour("white") colour(LightBlue)
+line     bounds(380, 30,  1, 45)
+rslider  bounds(385, 25, 55, 55), text("Res."), channel("FiltRes"), range(0, 1, 0), trackerColour("white") colour(LightBlue)
 }
 
 ;FILTER LFO
-groupbox bounds(  0,170,310, 85), text("Filter LFO"), plant("FilterLFO"), fontColour("white"){
-label    bounds( 15, 31, 80, 13), text("Shape")
-combobox bounds( 15, 45, 80, 20), channel("FlfoType"), value(2), text("sine", "splines", "S+H", "square")
+groupbox bounds(445, 85,320, 85), text("Filter LFO"), plant("FilterLFO"), fontColour("white"){
+label    bounds( 10, 31, 80, 13), text("Shape")
+combobox bounds( 10, 45, 80, 20), channel("FlfoType"), value(2), text("sine", "splines", "S+H", "square")
 rslider  bounds(100, 25, 55, 55), text("Rate"),  channel("FRte"), range(0, 16.00, 4),       trackerColour("white") colour(LightBlue)
 rslider  bounds(150, 25, 55, 55), text("Depth"), channel("FDep"), range(0, 4.00, 0),        trackerColour("white") colour(LightBlue)
 rslider  bounds(200, 25, 55, 55), text("Delay"), channel("FDel"), range(0, 2.00, 0, 0.5),   trackerColour("white") colour(LightBlue)
 rslider  bounds(250, 25, 55, 55), text("Rise"),  channel("FRis"), range(0, 2.00, 0.1, 0.5), trackerColour("white") colour(LightBlue)
 }
 
+;AMPLITUDE ENVELOPE
+groupbox bounds( 0,170,215, 85), text("Amplitude Envelope"), plant("AmpEnv"), fontColour("white"){
+rslider bounds(  5, 25, 55, 55), text("Att."), channel("AAtt"), range(0, 8.00, 0.13,0.5),  trackerColour("white") colour(LightBlue)
+rslider bounds( 55, 25, 55, 55), text("Dec."), channel("ADec"), range(0, 8.00, 0.01,0.5),  trackerColour("white") colour(LightBlue)
+rslider bounds(105, 25, 55, 55), text("Sus."), channel("ASus"), range(0, 1.00, 1.00, 0.5), trackerColour("white") colour(LightBlue)
+rslider bounds(155, 25, 55, 55), text("Rel."), channel("ARel"), range(0.01, 8, 1.67, 0.5), trackerColour("white") colour(LightBlue)
+}
+
+;PITCH BEND
+groupbox bounds(215,170,115, 85), text("Pitch Bend"), plant("PchBnd"), fontColour("white") {
+rslider  bounds(  5, 25, 55, 55), text("P.Bend"),    channel("PBend"),    range(-1, 1, 0, 1, 0.001), trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+rslider  bounds( 55, 25, 55, 55), text("Bend Rng."), channel("BendRange"),   range(1, 24, 12, 1, 1),   trackerColour(255, 255, 255, 255) colour(173, 216, 230, 255)
+}
+
 ;REVERB
-groupbox bounds(310,170,165, 85), text("Reverb"), plant("Reverb"), fontColour("white"){
+groupbox bounds(485,170,165, 85), text("Reverb"), plant("Reverb"), fontColour("white"){
 rslider  bounds(  5, 25, 55, 55), fontColour("white"), text("Send"),   channel("RvbMix"),  range(0, 1.00, 0.5),  trackerColour("white") colour(LightBlue)
 rslider  bounds( 55, 25, 55, 55), fontColour("white"), text("Size"),   channel("RvbSize"), range(0, 1.00, 0.77), trackerColour("white") colour(LightBlue)
 rslider  bounds(105, 25, 55, 55), fontColour("white"), text("Cutoff"), channel("RvbCF"),   range(50, 20000, 7000,0.5,1), trackerColour("white") colour(LightBlue)
 }
 
 ;EXCITER
-groupbox bounds(475,170,120, 85), text("Exciter"), plant("Exciter"), fontColour("white") , identChannel("ExciterID"){
+groupbox bounds(650,170,115, 85), text("Exciter"), plant("Exciter"), fontColour("white") , identChannel("ExciterID"){
 rslider  bounds(  5, 25, 55, 55), text("Amount"),    channel("ExciterAmount"),   range(0, 100, 0,1,0.1),  trackerColour("white") colour(LightBlue)
 rslider  bounds( 55, 25, 55, 55), text("Freq."),    channel("ExciterFreq"),   range(1000, 10000, 3000,1,1),  trackerColour("white") colour(LightBlue)
 }
 
-keyboard bounds(0, 255, 595, 80)
+keyboard bounds(0, 255, 795, 80)
 
 </Cabbage>
 
@@ -146,9 +169,9 @@ keyboard bounds(0, 255, 595, 80)
 
 ; sr set by host
 ksmps    =    64
-nchnls    =    2
+nchnls   =    2
 0dbfs    =    1
-massign    0,1
+massign  0, 1   ; assign all incoming MIDI to instrument 1
 
 ;Author: Iain McCurdy (2012)
 
@@ -167,7 +190,7 @@ giclar74 ftgen 0,0,4096,10,0.519536,0.062430,0.745521,0.055790,0.103856,0.097554
 giclar86 ftgen 0,0,4096,10,0.823209,0.201690,0.171118,0.161374,0.041951,0.004950,0.010889,0.001107,0.001365,0.003340,0.002259,0.001175,0.000442,0.001544,0.001259,0.000549,0.000455,0.000352,0.000345,0.000396,0.000477,0.000848,0.001199,0.001081,0.001081
 giwavemapClar    ftgen    0,0,128,-27, 0,0, 50,0,  62,1,  74,2,  86,3,   127,3
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfClar    ftgen    0,0,4,-2,giclar50,giclar62,giclar74,giclar86
+gitabs4morfClar  ftgen    0,0,4,-2,giclar50,giclar62,giclar74,giclar86
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;  BASS CLARINET
@@ -182,7 +205,7 @@ giBClar71 ftgen 0,0,4096,10,0.951349,0.052635,0.166289,0.036346,0.080225,0.10532
 giBClar77 ftgen 0,0,4096,10,0.679870,0.126072,0.031529,0.103885,0.017231,0.001781,0.005132,0.000787,0.003992,0.001819,0.002500,0.002660,0.001298,0.001834,0.001238,0.004273,0.001518,0.000670,0.000588,0.000395,0.000786,0.000400,0.000399,0.000471,0.000235,0.000212,0.000208,0.000169,0.000163,0.000146,0.000134
 giwavemapBClar    ftgen    0,0,128,-27, 0,0, 35,0, 41,1, 47,2, 53,3,  59,4,  65,5,  71,6,  77,7, 127,7
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfBClar    ftgen    0,0,8,-2,giBClar35,giBClar41,giBClar47,giBClar53,giBClar59,giBClar65,giBClar71,giBClar77
+gitabs4morfBClar  ftgen    0,0,8,-2,giBClar35,giBClar41,giBClar47,giBClar53,giBClar59,giBClar65,giBClar71,giBClar77
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;  CONTRA-BASS CLARINET
@@ -195,7 +218,7 @@ giCBClar50 ftgen 0,0,4096,10,0.880714,0.104962,0.497883,0.045337,0.172861,0.1092
 giCBClar54 ftgen 0,0,4096,10,0.889990,0.001348,0.087695,0.023926,0.066262,0.023447,0.075142,0.026596,0.020409,0.052699,0.027246,0.016811,0.017828,0.004566,0.005199,0.010830,0.003227,0.005838,0.001883,0.001580,0.004878,0.001870,0.000924,0.001648,0.002681,0.001616,0.003610,0.002587,0.002221,0.002332,0.001110,0.001616,0.002062,0.001241,0.000899,0.001174,0.001196,0.001105,0.001254,0.001253,0.001237,0.001093,0.001281,0.001260,0.001266,0.001255,0.001194,0.000995,0.001213,0.000908,0.000857,0.000902,0.000863,0.001171,0.001146,0.001074,0.000908,0.000908,0.000752,0.000618,0.000456,0.000395,0.000445,0.000503,0.000434,0.000353,0.000347,0.000373,0.000416,0.000392,0.000334,0.000271,0.000275,0.000314,0.000314,0.000317,0.000280,0.000275,0.000289,0.000253,0.000221,0.000203,0.000194,0.000194,0.000208,0.000221,0.000212,0.000185,0.000172,0.000176,0.000173,0.000178,0.000175,0.000159,0.000152,0.000150,0.000135,0.000120,0.000115,0.000119
 giwavemapCBClar    ftgen    0,0,128,-27, 0,0, 26,0, 32,1, 38,2, 44,3,  50,4,  54,5,  127,5
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfCBClar    ftgen    0,0,8,-2,giCBClar26,giCBClar32,giCBClar38,giCBClar44,giCBClar50,giCBClar54,giCBClar54,giCBClar54
+gitabs4morfCBClar  ftgen    0,0,8,-2,giCBClar26,giCBClar32,giCBClar38,giCBClar44,giCBClar50,giCBClar54,giCBClar54,giCBClar54
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ;  OBOE
@@ -207,7 +230,7 @@ gioboe81 ftgen 0,0,4096,10,0.875554,0.822621,0.094665,0.308960,0.046707,0.031827
 gioboe89 ftgen 0,0,4096,10,0.965505,0.344315,0.033044,0.068398,0.013147,0.008580,0.003609,0.001848,0.001060,0.001429,0.001832,0.001218,0.000703,0.000642,0.000646,0.000867,0.000550,0.000567,0.001386,0.001239,0.001416,0.001354,0.001710,0.003111,0.003111
 giwavemapOboe    ftgen    0,0,128,-27, 0,0, 59,0,  65,1,  73,2,  81,3,  89,4,  127,4
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfOboe    ftgen    0,0,8,-2,gioboe59,gioboe65,gioboe73,gioboe81,gioboe89,gioboe89,gioboe89,gioboe89
+gitabs4morfOboe  ftgen    0,0,8,-2,gioboe59,gioboe65,gioboe73,gioboe81,gioboe89,gioboe89,gioboe89,gioboe89
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; BASSOON
@@ -221,7 +244,7 @@ gibassoon62 ftgen 0,0,4096,10,0.802206,0.854305,0.242064,0.037491,0.024258,0.012
 gibassoon67 ftgen 0,0,4096,10,0.262539,0.973041,0.138354,0.113396,0.058172,0.030635,0.005565,0.001686,0.003483,0.001977,0.003774,0.002477,0.002439,0.001226,0.002781,0.002527,0.001020,0.000611,0.000658,0.000715,0.000728,0.000531,0.000442,0.000238,0.000414,0.000325,0.000560,0.000689,0.000445,0.000306,0.000301,0.000305,0.000296,0.000325,0.000252,0.000218,0.000248,0.000193,0.000174,0.000179,0.000143,0.000140,0.000140,0.000104,0.000096,0.000116,0.000128,0.000137,0.000144,0.000113,0.000112,0.000119,0.000140,0.000116,0.000107,0.000102
 giwavemapBassoon    ftgen    0,0,128,-27, 0,0, 34,0,  38,1,  43,2,  50,3,   56,4,  62,5,  67,6, 127,6
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfBassoon    ftgen    0,0,8,-2,gibassoon34,gibassoon38,gibassoon43,gibassoon50,gibassoon56,gibassoon62,gibassoon67,gibassoon67
+gitabs4morfBassoon  ftgen    0,0,8,-2,gibassoon34,gibassoon38,gibassoon43,gibassoon50,gibassoon56,gibassoon62,gibassoon67,gibassoon67
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; CONTRA-BASSOON
@@ -232,7 +255,7 @@ giCBassoon38 ftgen 0,0,4096,10,0.240531,0.304670,0.289169,0.727482,0.578083,0.16
 giCBassoon50 ftgen 0,0,4096,10,0.200451,0.511764,0.153876,0.491651,0.722151,0.174751,0.087283,0.068341,0.008971,0.040014,0.041083,0.015335,0.047809,0.037606,0.038259,0.020124,0.022425,0.024747,0.016480,0.008528,0.006892,0.004131,0.005947,0.005585,0.006842,0.008448,0.015885,0.005820,0.002834,0.004626,0.003886,0.003621,0.004837,0.005276,0.002715,0.002900,0.003817,0.005081,0.005598,0.006033,0.006164,0.004260,0.003944,0.004776,0.004223,0.004351,0.004769,0.004836,0.004959,0.005380,0.004538,0.003969,0.003860,0.003536,0.003521,0.003397,0.002823,0.002162,0.002001,0.001663,0.001430,0.001505,0.001566,0.001468,0.001406,0.001439,0.001225,0.001095,0.001134,0.001316,0.001630,0.001839,0.001964,0.001940,0.001824,0.001694,0.001617,0.001526,0.001348,0.001116,0.000972,0.000973,0.001011,0.001015,0.000944,0.000785,0.000650,0.000609,0.000675,0.000782,0.000839,0.000818,0.000755,0.000661,0.000566,0.000498,0.000471,0.000478,0.000486,0.000479
 giwavemapCBassoon    ftgen    0,0,128,-27, 0,0, 22,0,  26,1,  38,2,  50,3,  127,3
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfCBassoon    ftgen    0,0,4,-2,giCBassoon22,giCBassoon26,giCBassoon38,giCBassoon50
+gitabs4morfCBassoon  ftgen    0,0,4,-2,giCBassoon22,giCBassoon26,giCBassoon38,giCBassoon50
 
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -244,7 +267,7 @@ giviolin79 ftgen 0,0,4096,10,0.403041,0.281156,0.259204,0.392900,0.236559,0.1087
 giviolin91 ftgen 0,0,4096,10,0.231708,0.906742,0.215622,0.092709,0.057338,0.038101,0.030758,0.023439,0.009905,0.001298,0.002108,0.000516,0.000499,0.000123,0.000642,0.000732,0.004757,0.004547,0.017582,0.033035,0.098559,0.013616,0.017674,0.019601;,0.019601
 giwavemapViolin    ftgen    0,0,128,-27, 0,0, 55,0,  67,1,  79,2,  91,3,  127,3
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfViolin    ftgen    0,0,4,-2,giviolin55,giviolin67,giviolin79,giviolin91    ;
+gitabs4morfViolin  ftgen    0,0,4,-2,giviolin55,giviolin67,giviolin79,giviolin91    ;
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; CELLO
@@ -255,7 +278,7 @@ gicello60 ftgen 0,0,4096,10,0.762584,0.124687,0.088950,0.091324,0.058688,0.03406
 gicello72 ftgen 0,0,4096,10,0.601382,0.263076,0.197963,0.244245,0.217992,0.114034,0.025768,0.041518,0.011954,0.006391,0.012239,0.017818,0.016819,0.012798,0.007576,0.007376,0.002891,0.021377,0.005261,0.004421,0.009226,0.004333,0.001808,0.003989,0.002078,0.001344,0.001560,0.001240,0.001586,0.001307,0.000519,0.000761,0.001009,0.000632,0.000412,0.000414,0.000361,0.000406,0.000544,0.000741,0.000281,0.000164,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
 giwavemapCello    ftgen    0,0,128,-27, 0,0, 36,0,  48,1,  60,2,  72,3,  127,3
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfCello    ftgen    0,0,4,-2,gicello36,gicello48,gicello60,gicello72    ;
+gitabs4morfCello  ftgen    0,0,4,-2,gicello36,gicello48,gicello60,gicello72    ;
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; PICCOLO
@@ -267,7 +290,7 @@ gipiccolo92 ftgen 0,0,4096,10,0.883567,0.117309,0.144273,0.012664,0.016747,0.002
 gipiccolo98 ftgen 0,0,4096,10,0.922186,0.144948,0.042529,0.011837,0.006901,0.000900,0.001625,0.000686,0.000507 ; ,0.000305,0.000305,0.000730,0.000922,0.001408,0.001499,0.005116,0.021056,0.151393,0.034986,0.124701,0.024182,0.008037,0.002664,0.001934,0.001934
 gipiccolo106 ftgen 0,0,4096,10,0.501042,0.019695,0.008976,0.003473,0.006493,0.001700,0.002765,0.003224,0.006276 ; ,0.025062,0.036907,0.005386,0.046443,0.013720,0.005391,0.007819,0.019832,0.008441,0.006927,0.007528,0.018483,0.042516,0.057060,0.083779,0.083779
 giwavemapPiccolo    ftgen    0,0,128,-27, 0,0, 74,0,  80,1,  86,2,  92,3,  98,4, 106,5, 127,5
-gitabs4morfPiccolo    ftgen    0,0,8,-2,gipiccolo74,gipiccolo80,gipiccolo86,gipiccolo92,gipiccolo98,gipiccolo106,gipiccolo106,gipiccolo106    ;
+gitabs4morfPiccolo  ftgen    0,0,8,-2,gipiccolo74,gipiccolo80,gipiccolo86,gipiccolo92,gipiccolo98,gipiccolo106,gipiccolo106,gipiccolo106    ;
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; FLUTE
@@ -282,7 +305,7 @@ giflute95 ftgen 0,0,4096,10,0.927168,0.094811,0.014160,0.010743,0.004640,0.00254
 giflute98 ftgen 0,0,4096,10,0.793870,0.077609,0.047389,0.012277,0.005127,0.002760,0.002619,0.000390,0.000109,0.000105,0.000147,0.000425,0.000266,0.000201,0.000312,0.000210,0.001391,0.003570,0.001720,0.002746,0.001399,0.000749,0.000411,0.001156,0.001156
 giwavemapFlute    ftgen    0,0,128,-27, 0,0, 59,0, 65,1, 71,2, 77,3, 83,4, 89,5, 95,6, 98,7, 127,7
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfFlute    ftgen    0,0,8,-2,giflute59,giflute65,giflute71,giflute77,giflute83,giflute89,giflute95,giflute98
+gitabs4morfFlute  ftgen    0,0,8,-2,giflute59,giflute65,giflute71,giflute77,giflute83,giflute89,giflute95,giflute98
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; ALTO FLUTE
@@ -293,7 +316,7 @@ giAFlute67 ftgen 0,0,4096,10,0.734185,0.213440,0.086548,0.055143,0.004785,0.0018
 giAFlute76 ftgen 0,0,4096,10,0.868899,0.390848,0.052590,0.023839,0.033699,0.031143,0.013923,0.008881,0.003821,0.001797,0.003048,0.002506,0.002295,0.001878,0.001118,0.001109,0.001133,0.001732,0.002085,0.002020,0.001240,0.000963,0.000929,0.000456,0.000456
 giwavemapAFlute    ftgen    0,0,128,-27, 0,0, 55,0, 61,1, 67,2, 76,3, 127,3
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfAFlute    ftgen    0,0,4,-2,giAFlute55,giAFlute61,giAFlute67,giAFlute76
+gitabs4morfAFlute  ftgen    0,0,4,-2,giAFlute55,giAFlute61,giAFlute67,giAFlute76
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; BASS FLUTE
@@ -306,37 +329,7 @@ giBFlute72 ftgen 0,0,4096,10,0.741444,0.066744,0.018973,0.009713,0.002046,0.0107
 giBFlute76 ftgen 0,0,4096,10,0.745977,0.066489,0.014197,0.007352,0.002175,0.009766,0.002280,0.004362,0.001870,0.001375,0.001383,0.001328,0.001381,0.001194,0.001429,0.000949,0.000917,0.000802,0.000818,0.000932,0.000636,0.000646,0.000571,0.000575,0.000613,0.000679,0.000959,0.001343,0.001448,0.001365,0.001241,0.001091,0.001093,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
 giwavemapBFlute    ftgen    0,0,128,-27, 0,0, 48,0, 54,1, 60,2, 66,3, 72,4, 76,5, 127,5
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfBFlute    ftgen    0,0,8,-2,giBFlute48,giBFlute54,giBFlute60,giBFlute66,giBFlute72,giBFlute76,giBFlute76,giBFlute76
-
-;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-; AHH
-;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-giAhh24 ftgen 0,0,4096,10, 0.000412,0.000370,0.000337,0.000371,0.000555,0.000859,0.001305,0.001896,0.002601,0.003585,0.004729,0.006226,0.008387,0.010759,0.015604,0.021153,0.036276,0.057553,0.053066,0.030189,0.020360,0.014722,0.011349,0.009414,0.008036,0.007520,0.007518,0.008204,0.010188,0.013445,0.021468,0.024378,0.017218,0.010300,0.007574,0.005320,0.004125,0.003105,0.002351,0.001777,0.001280,0.000908,0.000603,0.000362,0.000194,0.000113,0.000107,0.000165,0.000269,0.000410,0.000591,0.000829,0.001124,0.001497,0.001964,0.002540,0.003281,0.004214,0.005465,0.007172,0.009487,0.012221,0.012290,0.008928,0.005554,0.004575,0.006297,0.009642,0.012002,0.011210,0.008864,0.007021,0.005649,0.004715,0.004092,0.003711,0.003540,0.003269,0.002720,0.002116,0.001696,0.001392,0.001163,0.000978,0.000817,0.000679,0.000554,0.000445,0.000349,0.000267,0.000201,0.000148,0.000112
-giAhh27 ftgen 0,0,4096,10, 0.000484,0.000423,0.000410,0.000587,0.001000,0.001640,0.002515,0.003647,0.005207,0.007188,0.010221,0.013861,0.021835,0.034169,0.065821,0.062536,0.031595,0.021762,0.014578,0.011706,0.009599,0.008934,0.009048,0.011008,0.014402,0.024811,0.028584,0.017346,0.010562,0.007037,0.005089,0.003642,0.002621,0.001845,0.001237,0.000781,0.000431,0.000198,0.000132,0.000128,0.000107,0.000154,0.000279,0.000469,0.000726,0.001077,0.001533,0.002136,0.002909,0.003944,0.005309,0.007297,0.010064,0.014010,0.014733,0.009883,0.005835,0.006234,0.010391,0.014244,0.013109,0.009848,0.007528,0.005944,0.004974,0.004420,0.004181,0.003659,0.002784,0.002107,0.001664,0.001346,0.001093,0.000881,0.000697,0.000538,0.000403,0.000292,0.000206,0.000145,0.000112
-giAhh30 ftgen 0,0,4096,10, 0.000560,0.000482,0.000562,0.001054,0.001899,0.003144,0.004913,0.007274,0.010934,0.015824,0.026652,0.050310,0.084386,0.048694,0.027304,0.017198,0.013209,0.010896,0.010619,0.012323,0.016925,0.031534,0.030303,0.014903,0.009410,0.006192,0.004171,0.002825,0.001804,0.001089,0.000559,0.000223,0.000135,0.000159,0.000132,0.000111,0.000205,0.000408,0.000717,0.001165,0.001784,0.002644,0.003807,0.005452,0.007846,0.011507,0.016933,0.016329,0.008970,0.006585,0.011345,0.016921,0.014673,0.010437,0.007690,0.006096,0.005243,0.004888,0.003982,0.002810,0.002096,0.001620,0.001264,0.000975,0.000730,0.000526,0.000361,0.000238,0.000159,0.000123,0.000113,0.000108
-giAhh33 ftgen 0,0,4096,10, 0.000645,0.000569,0.000955,0.001964,0.003652,0.006202,0.009824,0.015928,0.027700,0.054004,0.099838,0.045530,0.026122,0.017357,0.013212,0.012640,0.015734,0.025801,0.041244,0.020359,0.011360,0.006947,0.004321,0.002669,0.001503,0.000708,0.000231,0.000110,0.000186,0.000170,0.000130,0.000254,0.000564,0.001062,0.001820,0.002933,0.004538,0.006945,0.010838,0.017334,0.020883,0.011091,0.008199,0.016262,0.019876,0.013707,0.009453,0.007159,0.006126,0.005456,0.003786,0.002617,0.001920,0.001428,0.001039,0.000721,0.000469,0.000288,0.000180,0.000140,0.000132,0.000122,0.000102
-giAhh36 ftgen 0,0,4096,10, 0.000741,0.000742,0.001718,0.003793,0.007172,0.012458,0.021527,0.042327,0.115172,0.060415,0.029465,0.018842,0.015053,0.016424,0.026918,0.048812,0.020626,0.010654,0.006220,0.003560,0.001819,0.000726,0.000149,0.000187,0.000214,0.000156,0.000332,0.000822,0.001662,0.003004,0.005098,0.008459,0.014399,0.024542,0.017933,0.009191,0.019377,0.022533,0.014117,0.009483,0.007465,0.006578,0.004260,0.002803,0.001970,0.001367,0.000896,0.000539,0.000299,0.000185,0.000160,0.000148,0.000121
-giAhh39 ftgen 0,0,4096,10, 0.000846,0.001173,0.003275,0.007285,0.014357,0.027687,0.068261,0.124920,0.043474,0.023386,0.017847,0.021990,0.049566,0.034657,0.014061,0.007278,0.003688,0.001560,0.000396,0.000192,0.000256,0.000187,0.000558,0.001451,0.003062,0.005814,0.010610,0.020116,0.029454,0.011668,0.020774,0.026213,0.015055,0.009950,0.008362,0.005568,0.003330,0.002188,0.001396,0.000808,0.000411,0.000223,0.000189,0.000167,0.000123
-giAhh42 ftgen 0,0,4096,10, 0.000963,0.002108,0.006288,0.014551,0.031661,0.100695,0.097406,0.034417,0.021810,0.024675,0.063158,0.029838,0.012403,0.005661,0.002185,0.000448,0.000270,0.000265,0.000411,0.001440,0.003583,0.007649,0.015770,0.034040,0.018012,0.022841,0.029509,0.015471,0.010557,0.008019,0.004223,0.002548,0.001472,0.000730,0.000322,0.000229,0.000199,0.000135
-giAhh45 ftgen 0,0,4096,10, 0.001138,0.003929,0.012405,0.031859,0.108048,0.091053,0.034718,0.025288,0.051642,0.040725,0.013900,0.005342,0.001417,0.000220,0.000340,0.000509,0.002128,0.005880,0.013925,0.034767,0.022222,0.032638,0.027491,0.014365,0.010950,0.005254,0.002868,0.001449,0.000579,0.000282,0.000244,0.000156
-giAhh48 ftgen 0,0,4096,10, 0.001482,0.007584,0.024916,0.084669,0.120825,0.037691,0.032860,0.097651,0.021318,0.007128,0.001455,0.000373,0.000311,0.001646,0.006016,0.016943,0.049158,0.018410,0.045129,0.018996,0.013181,0.005616,0.002740,0.001081,0.000371,0.000296,0.000174,0.000109
-giAhh51 ftgen 0,0,4096,10, 0.002346,0.014577,0.055410,0.249952,0.046797,0.044016,0.069343,0.014565,0.003123,0.000384,0.000374,0.002906,0.011647,0.040309,0.023365,0.052509,0.019934,0.011156,0.004385,0.001619,0.000449,0.000335,0.000163,0.000126
-giAhh54 ftgen 0,0,4096,10, 0.004218,0.029108,0.201426,0.068825,0.049355,0.059660,0.011314,0.000892,0.000531,0.002882,0.015302,0.068104,0.045706,0.030943,0.016039,0.005097,0.001458,0.000457,0.000270,0.000155
-giAhh57 ftgen 0,0,4096,10, 0.007858,0.063721,0.182088,0.050577,0.081435,0.010683,0.000440,0.001018,0.011764,0.069560,0.065307,0.028732,0.010508,0.002898,0.000565,0.000313,0.000177
-giAhh60 ftgen 0,0,4096,10, 0.015174,0.169369,0.075380,0.195316,0.014245,0.000747,0.003294,0.033895,0.036836,0.037995,0.011232,0.002161,0.000593,0.000220,0.000121
-giAhh63 ftgen 0,0,4096,10, 0.029160,0.499980,0.088056,0.029134,0.000770,0.005816,0.080662,0.105049,0.022319,0.003239,0.000671,0.000252,0.000122
-giAhh66 ftgen 0,0,4096,10, 0.058218,0.137644,0.119309,0.001783,0.005763,0.136221,0.061878,0.010194,0.000915,0.000309,0.000144
-giAhh69 ftgen 0,0,4096,10, 0.127432,0.101146,0.021362,0.002037,0.139115,0.057450,0.005793,0.000626,0.000185
-giAhh72 ftgen 0,0,4096,10, 0.338719,0.390591,0.001495,0.067786,0.075975,0.004319,0.000439,0.000166
-giAhh75 ftgen 0,0,4096,10, 1.000000,0.058271,0.011635,0.210114,0.006478,0.000504,0.000138
-giAhh78 ftgen 0,0,4096,10, 0.275285,0.003566,0.272436,0.020387,0.000618,0.000157
-giAhh81 ftgen 0,0,4096,10, 0.202299,0.004074,0.114905,0.001251,0.000191
-giAhh84 ftgen 0,0,4096,10, 0.781181,0.135572,0.008638,0.000333
-giwavemapAhh    ftgen    0,0,128,-27, 0,0, 24,0,  27,1,  30,2,  33,3,  36,4,  39,5, 42,6, 45,7, 48,8, 51,9, 54,10, 57,11, 60,12, 63,13, 66,14, 69,15, 72,16, 75,17, 78,18, 81,19, 84,20, 127,20
-;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfAhh    ftgen    0,0,32,-2,giAhh24,giAhh27,giAhh30,giAhh33,giAhh36,giAhh39,giAhh42,giAhh45,giAhh48,giAhh51,giAhh54,giAhh57,giAhh60,giAhh63,giAhh66,giAhh69,giAhh72,giAhh75,giAhh78,giAhh81,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84
-*/
+gitabs4morfBFlute  ftgen    0,0,8,-2,giBFlute48,giBFlute54,giBFlute60,giBFlute66,giBFlute72,giBFlute76,giBFlute76,giBFlute76
 
 giAhh24 ftgen 0,0,4096,10,0.000412,0.000370,0.000337,0.000371,0.000555,0.000859,0.001305,0.001896,0.002601,0.003585,0.004729,0.006226,0.008387,0.010759,0.015604,0.021153,0.036276,0.057553,0.053066,0.030189,0.020360,0.014722,0.011349,0.009414,0.008036,0.007520,0.007518,0.008204,0.010188,0.013445,0.021468,0.024378,0.017218,0.010300,0.007574,0.005320,0.004125,0.003105,0.002351,0.001777,0.001280,0.000908,0.000603,0.000362,0.000194,0.000113,0.000107,0.000165,0.000269,0.000410,0.000591,0.000829,0.001124,0.001497,0.001964,0.002540,0.003281,0.004214,0.005465,0.007172,0.009487,0.012221,0.012290,0.008928,0.005554,0.004575,0.006297,0.009642,0.012002,0.011210,0.008864,0.007021,0.005649,0.004715,0.004092,0.003711,0.003540,0.003269,0.002720,0.002116,0.001696,0.001392,0.001163,0.000978,0.000817,0.000679,0.000554,0.000445,0.000349,0.000267,0.000201,0.000148,0.000112
 giAhh27 ftgen 0,0,4096,10,0.000484,0.000423,0.000410,0.000587,0.001000,0.001640,0.002515,0.003647,0.005207,0.007188,0.010221,0.013861,0.021835,0.034169,0.065821,0.062536,0.031595,0.021762,0.014578,0.011706,0.009599,0.008934,0.009048,0.011008,0.014402,0.024811,0.028584,0.017346,0.010562,0.007037,0.005089,0.003642,0.002621,0.001845,0.001237,0.000781,0.000431,0.000198,0.000132,0.000128,0.000107,0.000154,0.000279,0.000469,0.000726,0.001077,0.001533,0.002136,0.002909,0.003944,0.005309,0.007297,0.010064,0.014010,0.014733,0.009883,0.005835,0.006234,0.010391,0.014244,0.013109,0.009848,0.007528,0.005944,0.004974,0.004420,0.004181,0.003659,0.002784,0.002107,0.001664,0.001346,0.001093,0.000881,0.000697,0.000538,0.000403,0.000292,0.000206,0.000145,0.000112
@@ -361,38 +354,9 @@ giAhh81 ftgen 0,0,4096,10,1.000001,0.008470,0.005716,0.006895,0.001809,0.000528
 giAhh84 ftgen 0,0,4096,10,0.665845,0.002904,0.007927,0.022486,0.000897
 
 giwavemapAhh    ftgen    0,0,128,-27, 0,0, 24,0,  27,1,  30,2,  33,3,  36,4,  39,5, 42,6, 45,7, 48,8, 51,9, 54,10, 57,11, 60,12, 63,13, 66,14, 69,15, 72,16, 75,17, 78,18, 81,19, 84,20, 127,20
-gitabs4morfAhh    ftgen    0,0,32,-2,giAhh24,giAhh27,giAhh30,giAhh33,giAhh36,giAhh39,giAhh42,giAhh45,giAhh48,giAhh51,giAhh54,giAhh57,giAhh60,giAhh63,giAhh66,giAhh69,giAhh72,giAhh75,giAhh78,giAhh81,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84
+gitabs4morfAhh  ftgen    0,0,32,-2,giAhh24,giAhh27,giAhh30,giAhh33,giAhh36,giAhh39,giAhh42,giAhh45,giAhh48,giAhh51,giAhh54,giAhh57,giAhh60,giAhh63,giAhh66,giAhh69,giAhh72,giAhh75,giAhh78,giAhh81,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84,giAhh84
 
 
-;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-; OOH
-;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-giOoh24 ftgen 0,0,4096,10,0.006736,0.007744,0.009173,0.011625,0.015301,0.019467,0.030031,0.040022,0.083847,0.111438,0.078627,0.038797,0.030293,0.020098,0.016517,0.013075,0.010944,0.010263,0.009904,0.012389,0.016364,0.013953,0.007558,0.004976,0.003673,0.002791,0.002294,0.001798,0.001446,0.001130,0.000839,0.000619,0.000412,0.000255,0.000142,0.000113,0.000132,0.000128,0.000119,0.000126,0.000173,0.000228,0.000299,0.000385,0.000495,0.000633,0.000806,0.001004,0.001164,0.001174,0.001025,0.000827,0.000650,0.000509,0.000398,0.000310,0.000240,0.000183,0.000137
-giOoh27 ftgen 0,0,4096,10,0.008240,0.009736,0.012406,0.017177,0.022681,0.037033,0.060187,0.125058,0.110778,0.048765,0.035061,0.022345,0.017647,0.013782,0.012248,0.011790,0.016043,0.019429,0.011945,0.006214,0.004417,0.003235,0.002505,0.001898,0.001450,0.001023,0.000710,0.000427,0.000235,0.000103,0.000106,0.000137,0.000159,0.000148,0.000130,0.000131,0.000191,0.000267,0.000368,0.000496,0.000668,0.000893,0.001169,0.001399,0.001375,0.001123,0.000853,0.000637,0.000476,0.000354,0.000259,0.000186,0.000129,0.000104,0.000147,0.000202,0.000272,0.000362,0.000479,0.000623,0.000759,0.000789,0.000681,0.000530
-giOoh30 ftgen 0,0,4096,10,0.010095,0.012529,0.017608,0.024663,0.043315,0.081558,0.157661,0.088611,0.046106,0.027324,0.020478,0.015548,0.014372,0.016229,0.023376,0.013886,0.006978,0.004439,0.003346,0.002384,0.001737,0.001149,0.000718,0.000372,0.000154,0.000123,0.000167,0.000187,0.000168,0.000125,0.000135,0.000212,0.000319,0.000466,0.000663,0.000940,0.001310,0.001651,0.001590,0.001211,0.000862,0.000610,0.000429,0.000296,0.000198,0.000125,0.000140,0.000209,0.000299,0.000421,0.000586,0.000792,0.000937,0.000852,0.000643,0.000461,0.000327,0.000231,0.000160,0.000107
-giOoh33 ftgen 0,0,4096,10,0.012459,0.016728,0.025997,0.045900,0.091150,0.186461,0.074200,0.042360,0.026982,0.018939,0.017010,0.022371,0.024731,0.009432,0.005684,0.003945,0.002654,0.001756,0.001058,0.000513,0.000188,0.000154,0.000216,0.000210,0.000166,0.000171,0.000292,0.000464,0.000712,0.001081,0.001602,0.002011,0.001703,0.001162,0.000770,0.000507,0.000326,0.000198,0.000111,0.000102,0.000176,0.000278,0.000423,0.000631,0.000914,0.001124,0.000963,0.000669,0.000448,0.000297,0.000192,0.000119,0.000112
-giOoh36 ftgen 0,0,4096,10,0.015493,0.023256,0.038946,0.080072,0.222961,0.077625,0.040215,0.026163,0.020537,0.024794,0.027925,0.009959,0.005586,0.003599,0.002262,0.001239,0.000511,0.000154,0.000227,0.000257,0.000200,0.000105,0.000183,0.000348,0.000602,0.000995,0.001621,0.002342,0.002063,0.001309,0.000802,0.000483,0.000275,0.000140,0.000124,0.000233,0.000396,0.000642,0.001014,0.001340,0.001090,0.000692,0.000426,0.000257,0.000148,0.000123,0.000130
-giOoh39 ftgen 0,0,4096,10,0.019447,0.034315,0.073971,0.249826,0.097427,0.044636,0.027534,0.023553,0.038811,0.012411,0.006462,0.003791,0.002045,0.000853,0.000206,0.000273,0.000295,0.000187,0.000173,0.000381,0.000736,0.001334,0.002335,0.002747,0.001704,0.000952,0.000519,0.000258,0.000107,0.000208,0.000405,0.000725,0.001247,0.001582,0.001061,0.000602,0.000333,0.000173,0.000145,0.000152
-giOoh42 ftgen 0,0,4096,10,0.025063,0.049337,0.163181,0.177222,0.054661,0.031107,0.032482,0.027778,0.008882,0.004771,0.002299,0.000744,0.000246,0.000371,0.000246,0.000109,0.000162,0.000428,0.000938,0.001893,0.003326,0.002439,0.001229,0.000596,0.000251,0.000103,0.000284,0.000607,0.001190,0.001900,0.001302,0.000662,0.000323,0.000141,0.000101,0.000172,0.000168
-giOoh45 ftgen 0,0,4096,10,0.033454,0.091804,0.372905,0.084714,0.037879,0.044758,0.018864,0.007892,0.003513,0.001026,0.000308,0.000420,0.000196,0.000129,0.000187,0.000586,0.001429,0.003217,0.003417,0.001546,0.000653,0.000221,0.000103,0.000354,0.000853,0.001843,0.001938,0.000899,0.000386,0.000141,0.000147,0.000226,0.000135
-giOoh48 ftgen 0,0,4096,10,0.046516,0.160169,0.155245,0.052329,0.049605,0.019920,0.007198,0.002478,0.000308,0.000509,0.000201,0.000135,0.000127,0.000370,0.001207,0.003248,0.004134,0.001606,0.000550,0.000125,0.000106,0.000468,0.001290,0.002692,0.001390,0.000516,0.000158,0.000174,0.000259,0.000118
-giOoh51 ftgen 0,0,4096,10,0.068664,0.499897,0.089313,0.047133,0.024836,0.007586,0.001706,0.000547,0.000375,0.000132,0.000136,0.000347,0.001476,0.004681,0.003416,0.001040,0.000214,0.000172,0.000813,0.002504,0.002129,0.000667,0.000162,0.000186,0.000304,0.000115
-giOoh54 ftgen 0,0,4096,10,0.098674,0.354398,0.062213,0.055545,0.009543,0.001487,0.000749,0.000134,0.000212,0.000123,0.000856,0.003788,0.004876,0.001194,0.000166,0.000569,0.002379,0.002608,0.000649,0.000109,0.000205,0.000338
-giOoh57 ftgen 0,0,4096,10,0.183614,0.169417,0.089526,0.015785,0.002053,0.000839,0.000154,0.000122,0.000129,0.001172,0.006436,0.003091,0.000442,0.000113,0.000708,0.003688,0.001800,0.000283,0.000294,0.000271
-giOoh60 ftgen 0,0,4096,10,0.320378,0.104663,0.039843,0.004956,0.001029,0.000257,0.000735,0.006501,0.003212,0.000252,0.000215,0.002579,0.002779,0.000315,0.000143,0.000522
-giOoh63 ftgen 0,0,4096,10,1.000001,0.094284,0.015175,0.001094,0.000262,0.000162,0.002953,0.006834,0.000428,0.000345,0.005011,0.001335,0.000107,0.000114,0.000609
-giOoh66 ftgen 0,0,4096,10,0.708750,0.111076,0.002977,0.000267,0.000246,0.007577,0.002388,0.000170,0.004759,0.001298,0.000408,0.000196
-giOoh69 ftgen 0,0,4096,10,0.338803,0.031564,0.001678,0.000244,0.000258,0.012872,0.000885,0.001416,0.003598,0.000134,0.000588,0.000112
-giOoh72 ftgen 0,0,4096,10,0.209313,0.009909,0.000515,0.000104,0.013000,0.000503,0.005157,0.000630,0.000287,0.000189
-giOoh75 ftgen 0,0,4096,10,0.188584,0.002188,0.000154,0.005909,0.000855,0.010025,0.000214,0.001217
-giOoh78 ftgen 0,0,4096,10,0.222149,0.000533,0.000493,0.004776,0.009517,0.000194,0.000393
-giOoh81 ftgen 0,0,4096,10,0.063129,0.000488,0.025748,0.002834,0.000268,0.000223
-giOoh84 ftgen 0,0,4096,10,0.019817,0.000207,0.001007,0.001261,0.000379
-giwavemapOoh    ftgen    0,0,128,-27, 0,0, 24,0,  27,1,  30,2,  33,3,  36,4,  39,5, 42,6, 45,7, 48,8, 51,9, 54,10, 57,11, 60,12, 63,13, 66,14, 69,15, 72,16, 75,17, 78,18, 81,19, 84,20, 127,20
-;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfOoh    ftgen    0,0,32,-2,giOoh24,giOoh27,giOoh30,giOoh33,giOoh36,giOoh39,giOoh42,giOoh45,giOoh48,giOoh51,giOoh54,giOoh57,giOoh60,giOoh63,giOoh66,giOoh69,giOoh72,giOoh75,giOoh78,giOoh81,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84
-*/
 
 ; mixed voice types
 giOoh24 ftgen 0,0,4096,10,0.002656,0.003252,0.004105,0.005622,0.007160,0.009459,0.013108,0.015856,0.025894,0.031448,0.069195,0.117293,0.097983,0.042979,0.032065,0.021929,0.018078,0.015475,0.014066,0.014550,0.016289,0.021526,0.023582,0.017583,0.010850,0.007974,0.005821,0.004584,0.003615,0.002841,0.002234,0.001707,0.001268,0.000905,0.000600,0.000361,0.000186,0.000124,0.000163,0.000187,0.000186,0.000166,0.000139,0.000101,0.000100,0.000137,0.000189,0.000263,0.000361,0.000489,0.000654,0.000858,0.001117,0.001451,0.001869,0.002471,0.003247,0.004440,0.005393,0.004629,0.002917,0.002066,0.002532,0.003852,0.005391,0.005792,0.004814,0.003675,0.002842,0.002214,0.001763,0.001401,0.001091,0.000746,0.000345,0.000127,0.000165,0.000194,0.000194,0.000185,0.000171,0.000154,0.000137,0.000119,0.000101
@@ -418,38 +382,9 @@ giOoh81 ftgen 0,0,4096,10,0.212624,0.001375,0.025936,0.013708,0.001164,0.000397
 giOoh84 ftgen 0,0,4096,10,0.070310,0.000226,0.010293,0.005749,0.000690
 giwavemapOoh    ftgen    0,0,128,-27, 0,0, 24,0,  27,1,  30,2,  33,3,  36,4,  39,5, 42,6, 45,7, 48,8, 51,9, 54,10, 57,11, 60,12, 63,13, 66,14, 69,15, 72,16, 75,17, 78,18, 81,19, 84,20, 127,20
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfOoh    ftgen    0,0,32,-2,giOoh24,giOoh27,giOoh30,giOoh33,giOoh36,giOoh39,giOoh42,giOoh45,giOoh48,giOoh51,giOoh54,giOoh57,giOoh60,giOoh63,giOoh66,giOoh69,giOoh72,giOoh75,giOoh78,giOoh81,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84
+gitabs4morfOoh  ftgen    0,0,32,-2,giOoh24,giOoh27,giOoh30,giOoh33,giOoh36,giOoh39,giOoh42,giOoh45,giOoh48,giOoh51,giOoh54,giOoh57,giOoh60,giOoh63,giOoh66,giOoh69,giOoh72,giOoh75,giOoh78,giOoh81,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84,giOoh84
     
 
-;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-; Eee
-;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*
-giEee24 ftgen 0,0,4096,10, 0.010612,0.014495,0.019809,0.028477,0.041398,0.063942,0.114518,0.124942,0.078855,0.046228,0.033959,0.023394,0.018143,0.013375,0.010099,0.007577,0.005431,0.003901,0.002611,0.001632,0.000932,0.000386,0.000171,0.000289,0.000422,0.000452,0.000449,0.000398,0.000315,0.000237,0.000144,0.000104,0.000105,0.000153,0.000215,0.000290,0.000380,0.000487,0.000633,0.000816,0.001099,0.001507,0.002203,0.003126,0.003165,0.002277,0.001567,0.001153,0.000855,0.000658,0.000500,0.000378,0.000277,0.000186,0.000102,0.000154,0.000300,0.000490,0.000733,0.001033,0.001413,0.001885,0.002475,0.003256,0.004250,0.005714,0.007781,0.011083,0.015021,0.015148,0.011378,0.008165,0.006212,0.004895,0.004095,0.003568,0.003306,0.003268,0.003450,0.003938,0.004750,0.006020,0.007017,0.006500,0.005013,0.003837,0.003082,0.002641,0.002479,0.002562
-giEee27 ftgen 0,0,4096,10, 0.013361,0.019632,0.028170,0.046001,0.073446,0.142620,0.135320,0.067419,0.045253,0.028671,0.021074,0.014727,0.010611,0.007252,0.004920,0.003071,0.001747,0.000807,0.000249,0.000303,0.000500,0.000540,0.000520,0.000422,0.000309,0.000180,0.000119,0.000127,0.000103,0.000168,0.000256,0.000366,0.000497,0.000673,0.000915,0.001288,0.001877,0.003013,0.003942,0.003063,0.001933,0.001339,0.000949,0.000692,0.000498,0.000349,0.000219,0.000102,0.000105,0.000283,0.000531,0.000867,0.001300,0.001875,0.002609,0.003613,0.004968,0.007064,0.010239,0.015759,0.018744,0.014260,0.009604,0.006959,0.005391,0.004464,0.003989,0.003908,0.004207,0.005028,0.006490,0.008241,0.007854,0.005766,0.004257,0.003368,0.002997,0.003039,0.003534,0.003719,0.002952,0.002107,0.001565,0.001195,0.000929,0.000719,0.000551,0.000410,0.000295,0.000202,0.000133
-giEee30 ftgen 0,0,4096,10, 0.016942,0.026728,0.044993,0.073582,0.166083,0.150187,0.067471,0.042023,0.027730,0.018157,0.012270,0.007756,0.004771,0.002544,0.001124,0.000288,0.000418,0.000628,0.000639,0.000532,0.000370,0.000189,0.000133,0.000151,0.000118,0.000167,0.000288,0.000442,0.000634,0.000915,0.001325,0.002073,0.003575,0.004636,0.003020,0.001869,0.001215,0.000836,0.000565,0.000361,0.000186,0.000308,0.000658,0.001154,0.001829,0.002760,0.004060,0.005937,0.009069,0.014428,0.021876,0.018429,0.011479,0.007850,0.005939,0.004916,0.004612,0.004928,0.006092,0.008369,0.009952,0.007626,0.005224,0.003945,0.003510,0.003799,0.004447,0.003710,0.002491,0.001752,0.001285,0.000950,0.000696,0.000493,0.000332,0.000209,0.000125
-giEee33 ftgen 0,0,4096,10, 0.021903,0.037076,0.070524,0.170727,0.184856,0.075853,0.042006,0.026533,0.016384,0.009694,0.005423,0.002512,0.000745,0.000367,0.000734,0.000760,0.000589,0.000358,0.000113,0.000157,0.000177,0.000123,0.000164,0.000331,0.000549,0.000839,0.001298,0.002144,0.003934,0.005481,0.003133,0.001834,0.001150,0.000725,0.000430,0.000185,0.000178,0.000585,0.001216,0.002131,0.003468,0.005492,0.008727,0.014780,0.025548,0.021159,0.012320,0.008120,0.006189,0.005514,0.005907,0.007722,0.011241,0.010580,0.006710,0.004738,0.004184,0.004875,0.005074,0.003298,0.002150,0.001485,0.001035,0.000705,0.000453,0.000265,0.000143
-giEee36 ftgen 0,0,4096,10, 0.028999,0.056971,0.127925,0.249973,0.092491,0.046808,0.026763,0.015161,0.007806,0.003265,0.000772,0.000577,0.000905,0.000797,0.000474,0.000128,0.000118,0.000208,0.000175,0.000190,0.000430,0.000762,0.001269,0.002203,0.004418,0.006347,0.003143,0.001714,0.001003,0.000555,0.000205,0.000308,0.000984,0.002075,0.003788,0.006543,0.011486,0.022285,0.030464,0.016426,0.009849,0.007181,0.006579,0.007931,0.012129,0.013098,0.007735,0.005325,0.005167,0.006343,0.004251,0.002537,0.001641,0.001065,0.000654,0.000360,0.000176,0.000109,0.000108
-giEee39 ftgen 0,0,4096,10, 0.039208,0.091871,0.284850,0.134665,0.057264,0.029417,0.014487,0.006136,0.001614,0.000605,0.001080,0.000843,0.000360,0.000237,0.000205,0.000101,0.000336,0.000730,0.001345,0.002573,0.006021,0.006121,0.002677,0.001384,0.000697,0.000205,0.000565,0.001734,0.003749,0.007227,0.014133,0.031533,0.028537,0.013927,0.008934,0.007821,0.010066,0.016499,0.011547,0.006746,0.006088,0.007451,0.004223,0.002395,0.001442,0.000822,0.000405,0.000174,0.000127,0.000124
-giEee42 ftgen 0,0,4096,10, 0.053470,0.147208,0.300415,0.084059,0.036324,0.015517,0.005091,0.000576,0.001256,0.001064,0.000377,0.000160,0.000303,0.000150,0.000341,0.000891,0.001840,0.004161,0.009292,0.003746,0.001676,0.000724,0.000174,0.001325,0.003681,0.008171,0.018259,0.044043,0.023100,0.011960,0.009296,0.012291,0.020077,0.010540,0.007087,0.008984,0.005033,0.002599,0.001411,0.000675,0.000255,0.000150,0.000143
-giEee45 ftgen 0,0,4096,10, 0.074148,0.341465,0.151691,0.053062,0.019387,0.005023,0.000735,0.001519,0.000715,0.000141,0.000355,0.000141,0.000664,0.001681,0.004296,0.010976,0.003672,0.001452,0.000370,0.001174,0.004275,0.011021,0.029674,0.042441,0.016298,0.011074,0.015522,0.021253,0.009522,0.009803,0.006632,0.002990,0.001422,0.000537,0.000189,0.000178,0.000110
-giEee48 ftgen 0,0,4096,10, 0.113952,0.499961,0.093618,0.030324,0.006532,0.001153,0.001593,0.000254,0.000416,0.000182,0.000869,0.002549,0.008846,0.006282,0.002003,0.000401,0.001977,0.007592,0.023020,0.061020,0.019732,0.013187,0.024324,0.015505,0.010364,0.008518,0.003290,0.001312,0.000353,0.000214,0.000143
-giEee51 ftgen 0,0,4096,10, 0.183849,0.269450,0.058864,0.012277,0.001210,0.001686,0.000115,0.000411,0.000673,0.002694,0.012061,0.005358,0.001397,0.001131,0.007512,0.028323,0.057149,0.017903,0.020182,0.023136,0.012207,0.008465,0.002892,0.000813,0.000255,0.000186
-giEee54 ftgen 0,0,4096,10, 0.294425,0.168105,0.031031,0.001152,0.002129,0.000319,0.000295,0.001773,0.008324,0.007496,0.001451,0.002648,0.016348,0.088119,0.023921,0.024596,0.021078,0.017984,0.005195,0.001344,0.000303,0.000185,0.000105
-giEee57 ftgen 0,0,4096,10, 0.682961,0.106120,0.010046,0.003039,0.000281,0.000282,0.003363,0.021952,0.002902,0.002350,0.022051,0.084871,0.022153,0.042507,0.019617,0.005980,0.001075,0.000355,0.000117
-giEee60 ftgen 0,0,4096,10, 0.999999,0.060648,0.002312,0.000510,0.000354,0.005083,0.012579,0.000821,0.015185,0.122052,0.026381,0.031005,0.017044,0.002622,0.000436,0.000138
-giEee63 ftgen 0,0,4096,10, 0.538975,0.024555,0.003372,0.000823,0.005390,0.010718,0.002266,0.056680,0.035812,0.046282,0.016933,0.001625,0.000371,0.000151
-giEee66 ftgen 0,0,4096,10, 0.336196,0.002303,0.000636,0.003546,0.014990,0.005298,0.176248,0.049197,0.035968,0.002688,0.000369,0.000111
-giEee69 ftgen 0,0,4096,10, 0.212220,0.006076,0.000565,0.043897,0.004701,0.169692,0.084989,0.011954,0.000713,0.000170
-giEee72 ftgen 0,0,4096,10, 0.121291,0.001021,0.010166,0.001642,0.244060,0.061995,0.005244,0.000275,0.000113
-giEee75 ftgen 0,0,4096,10, 0.049112,0.001647,0.021440,0.113388,0.092568,0.003249,0.000304,0.000100
-giEee78 ftgen 0,0,4096,10, 0.004609,0.007093,0.010596,0.098393,0.005375,0.000222
-giEee81 ftgen 0,0,4096,10, 0.012152,0.087798,0.339376,0.023913,0.000340
-giEee84 ftgen 0,0,4096,10, 0.002039,0.003283,0.123990,0.000551,0.000112
-giwavemapEee    ftgen    0,0,128,-27, 0,0, 24,0,  27,1,  30,2,  33,3,  36,4,  39,5, 42,6, 45,7, 48,8, 51,9, 54,10, 57,11, 60,12, 63,13, 66,14, 69,15, 72,16, 75,17, 78,18, 81,19, 84,20, 127,20
-;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfEee    ftgen    0,0,32,-2,giEee24,giEee27,giEee30,giEee33,giEee36,giEee39,giEee42,giEee45,giEee48,giEee51,giEee54,giEee57,giEee60,giEee63,giEee66,giEee69,giEee72,giEee75,giEee78,giEee81,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84
-*/
 
 ; mixed voice types
 giEee24 ftgen 0,0,4096,10,0.010612,0.014495,0.019809,0.028477,0.041398,0.063942,0.114518,0.124942,0.078855,0.046228,0.033959,0.023394,0.018143,0.013375,0.010099,0.007577,0.005431,0.003901,0.002611,0.001632,0.000932,0.000386,0.000171,0.000289,0.000422,0.000452,0.000449,0.000398,0.000315,0.000237,0.000144,0.000104,0.000105,0.000153,0.000215,0.000290,0.000380,0.000487,0.000633,0.000816,0.001099,0.001507,0.002203,0.003126,0.003165,0.002277,0.001567,0.001153,0.000855,0.000658,0.000500,0.000378,0.000277,0.000186,0.000102,0.000154,0.000300,0.000490,0.000733,0.001033,0.001413,0.001885,0.002475,0.003256,0.004250,0.005714,0.007781,0.011083,0.015021,0.015148,0.011378,0.008165,0.006212,0.004895,0.004095,0.003568,0.003306,0.003268,0.003450,0.003938,0.004750,0.006020,0.007017,0.006500,0.005013,0.003837,0.003082,0.002641,0.002479,0.002562
@@ -475,8 +410,7 @@ giEee81 ftgen 0,0,4096,10,0.012164,0.019280,0.007395,0.003926,0.001069,0.001101
 giEee84 ftgen 0,0,4096,10,0.003212,0.576616,0.029989,0.014597,0.001991
 giwavemapEee    ftgen    0,0,128,-27, 0,0, 24,0,  27,1,  30,2,  33,3,  36,4,  39,5, 42,6, 45,7, 48,8, 51,9, 54,10, 57,11, 60,12, 63,13, 66,14, 69,15, 72,16, 75,17, 78,18, 81,19, 84,20, 127,20
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-gitabs4morfEee    ftgen    0,0,32,-2,giEee24,giEee27,giEee30,giEee33,giEee36,giEee39,giEee42,giEee45,giEee48,giEee51,giEee54,giEee57,giEee60,giEee63,giEee66,giEee69,giEee72,giEee75,giEee78,giEee81,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84
-
+gitabs4morfEee  ftgen    0,0,32,-2,giEee24,giEee27,giEee30,giEee33,giEee36,giEee39,giEee42,giEee45,giEee48,giEee51,giEee54,giEee57,giEee60,giEee63,giEee66,giEee69,giEee72,giEee75,giEee78,giEee81,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84,giEee84
 
 
 
@@ -489,7 +423,7 @@ giHornP62 ftgen 0,0,4096,10,0.495327,0.909763,0.613398,0.368832,0.202553,0.12464
 giHornP74 ftgen 0,0,4096,10,0.796534,0.226262,0.060526,0.013273,0.003161,0.001015,0.001071,0.000595,0.000191,0.000337,0.000199,0.000173,0.000183,0.000187,0.000105,0.000113,0.000156,0.000119,0.000098,0.000067,0.000066,0.000064,0.000054,0.000043,0.000043
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
 giwavemapHornP    ftgen    0,0,128,-27, 0,0, 38,0,  50,1,  62,2,  74,3,  127,3
-gitabs4morfHornP    ftgen    0,0,4,-2,giHornP38,giHornP50,giHornP62,giHornP74
+gitabs4morfHornP  ftgen    0,0,4,-2,giHornP38,giHornP50,giHornP62,giHornP74
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; HORN F
@@ -500,7 +434,7 @@ giHornF62 ftgen 0,0,4096,10,0.449507,0.544173,0.108516,0.300530,0.163030,0.35195
 giHornF74 ftgen 0,0,4096,10,0.923831,0.259141,0.262670,0.175552,0.089346,0.073056,0.055113,0.031968,0.027964,0.033656,0.035303,0.010920,0.019420,0.013447,0.012944,0.006111,0.007041,0.003864,0.005702,0.004615,0.003076,0.001589,0.002756,0.001234,0.001234
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
 giwavemapHornF    ftgen    0,0,128,-27, 0,0, 38,0,  50,1,  62,2,  74,3,  127,3
-gitabs4morfHornF    ftgen    0,0,4,-2,giHornF38,giHornF50,giHornF62,giHornF74
+gitabs4morfHornF  ftgen    0,0,4,-2,giHornF38,giHornF50,giHornF62,giHornF74
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ; BASS TROMBONE (HARMON MUTE)
@@ -526,7 +460,7 @@ giharmon62 ftgen 0,0,4096,10,0.969106,0.095726,0.196065,0.188016,0.005133,0.0103
 giharmon64 ftgen 0,0,4096,10,0.361663,0.582855,0.979701,0.215161,0.118878,0.052107,0.013704,0.009061,0.004379,0.007958,0.002817,0.003129,0.003908,0.003040,0.002896,0.002083,0.002113,0.004424,0.003621,0.002331,0.002616,0.002100,0.002293,0.001878,0.002282,0.002077,0.002490,0.002088,0.001811,0.001576,0.001425,0.001407,0.001400,0.001482,0.001847,0.001816,0.001426,0.001730,0.001541,0.001272,0.001398,0.001231,0.001332,0.001350,0.001199,0.001258,0.001149,0.001243,0.001247,0.001156,0.001074,0.001049,0.001142,0.001143,0.001058,0.000978,0.000854,0.000777,0.000688,0.000751,0.000914,0.001100,0.001101,0.001029,0.001044,0.001018,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
 giharmon65 ftgen 0,0,4096,10,0.314097,0.342771,0.973682,0.028876,0.015118,0.012713,0.002418,0.005174,0.003787,0.002218,0.002249,0.001625,0.002664,0.001830,0.002581,0.001180,0.001626,0.001619,0.001315,0.001513,0.001344,0.001175,0.000964,0.001112,0.001416,0.001129,0.001190,0.001045,0.001248,0.001029,0.000799,0.000750,0.000815,0.000965,0.000955,0.000725,0.000652,0.000709,0.000801,0.000717,0.000786,0.000648,0.000597,0.000630,0.000744,0.000667,0.000613,0.000496,0.000535,0.000596,0.000603,0.000583,0.000599,0.000593,0.000594,0.000603,0.000579,0.000588,0.000623,0.000624,0.000595,0.000573,0.000574,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-giwavemapharmon        ftgen    0,0,128,-27, 0,0, 33,0, 34,1, 36,2, 38,3, 39,3, 40,4, 41,5, 43,6, 45,7, 46,8, 48,9, 50,10,  52,11, 53,12, 55,13, 57,14, 60,15, 62,16, 64,17, 65,18, 127,18 
+giwavemapharmon      ftgen    0,0,128,-27, 0,0, 33,0, 34,1, 36,2, 38,3, 39,3, 40,4, 41,5, 43,6, 45,7, 46,8, 48,9, 50,10,  52,11, 53,12, 55,13, 57,14, 60,15, 62,16, 64,17, 65,18, 127,18 
 gitabs4morfharmon    ftgen    0,0,32,-2, giharmon33,giharmon34,giharmon36,giharmon38,giharmon39,giharmon40,giharmon41,giharmon43,giharmon45,giharmon46,giharmon48,giharmon50,giharmon52,giharmon53,giharmon55,giharmon57,giharmon60,giharmon62,giharmon64,giharmon65,giharmon65,giharmon65,giharmon65,giharmon65,giharmon65,giharmon65,giharmon65,giharmon65,giharmon65,giharmon65,giharmon65,giharmon65
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -570,7 +504,7 @@ giMute156 ftgen 0,0,4096,10,0.625565,0.965980,0.202403,0.024063,0.002481,0.00533
 giMute157 ftgen 0,0,4096,10,0.314475,0.959696,0.048444,0.004582,0.006574,0.012611,0.005426,0.002115,0.000604,0.000404,0.000356,0.000685,0.001096,0.000409,0.000072,0.000321,0.000329,0.000236,0.000403,0.000240,0.000158,0.000233,0.000268,0.000168,0.000154,0.000209,0.000165,0.000121,0.000111,0.000136,0.000085,0.000217,0.000086,0.000083,0.000149,0.000151,0.000115,0.000148,0.000123,0.000087,0.000095,0.000113,0.000089,0.000044,0.000137,0.000116,0.000130,0.000027,0.000101,0.000085,0.000121,0.000079,0.000106,0.000042,0.000011,0.000071,0.000080,0.000029,0.000039,0.000081,0.000041,0.000060,0.000040,0.000068,0.000066,0.000052,0.000050,0.000031,0.000056,0.000054,0.000039,0.000051,0.000037,0.000059,0.000054,0.000037,0.000046,0.000043,0.000038,0.000041,0.000031,0.000049,0.000033,0.000040,0.000038,0.000035,0.000050,0.000040,0.000043,0.000039,0.000051,0.000035,0.000045,0.000020,0.000038,0.000032,0.000026,0.000030,0.000031,0.000030
 giMute158 ftgen 0,0,4096,10,0.428817,0.965152,0.013016,0.001790,0.004347,0.004997,0.005604,0.002582,0.000836,0.000569,0.000599,0.000465,0.000517,0.000563,0.000538,0.000350,0.000281,0.000361,0.000460,0.000274,0.000209,0.000199,0.000249,0.000304,0.000340,0.000213,0.000240,0.000152,0.000238,0.000157,0.000200,0.000196,0.000164,0.000118,0.000156,0.000141,0.000124,0.000105,0.000108,0.000150,0.000140,0.000124,0.000109,0.000104,0.000111,0.000096,0.000120,0.000092,0.000094,0.000103,0.000077,0.000064,0.000066,0.000111,0.000094,0.000093,0.000082,0.000078,0.000073,0.000096,0.000082,0.000079,0.000075,0.000072,0.000085,0.000068,0.000072,0.000053,0.000069,0.000054,0.000057,0.000058,0.000058,0.000065,0.000055,0.000063,0.000066,0.000063,0.000063,0.000058,0.000053,0.000052,0.000046,0.000046,0.000050,0.000049,0.000047,0.000045,0.000043,0.000050,0.000047,0.000052,0.000050,0.000049,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
-giwavemapMute1        ftgen    0,0,128,-27, 0,0, 22,0, 23,1, 24,2, 25,3, 26,4, 27,5, 28,6, 29,7, 30,8, 31,9, 32,10, 33,11, 34,12, 35,13, 36,14, 37,15, 38,16, 39,17, 40,18, 41,19, 42,20, 43,21, 44,22, 45,23, 46,24, 47,25, 48,26, 49,27, 50,28, 51,29, 52,30, 53,31, 54,32, 55,33, 56,34, 57,35, 58,36, 127,36
+giwavemapMute1      ftgen    0,0,128,-27, 0,0, 22,0, 23,1, 24,2, 25,3, 26,4, 27,5, 28,6, 29,7, 30,8, 31,9, 32,10, 33,11, 34,12, 35,13, 36,14, 37,15, 38,16, 39,17, 40,18, 41,19, 42,20, 43,21, 44,22, 45,23, 46,24, 47,25, 48,26, 49,27, 50,28, 51,29, 52,30, 53,31, 54,32, 55,33, 56,34, 57,35, 58,36, 127,36
 gitabs4morfMute1    ftgen    0,0,64,-2, giMute122,giMute123,giMute124,giMute125,giMute126,giMute127,giMute128,giMute129,giMute130,giMute131,giMute132,giMute133,giMute134,giMute135,giMute136,giMute137,giMute138,giMute139,giMute140,giMute141,giMute142,giMute143,giMute144,giMute145,giMute146,giMute147,giMute148,giMute149,giMute150,giMute151,giMute152,giMute153,giMute154,giMute155,giMute156,giMute157,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158,giMute158
 
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -621,71 +555,81 @@ giUnmuted69 ftgen 0,0,4096,10,0.944934,0.293223,0.066919,0.017808,0.007234,0.002
 giUnmuted70 ftgen 0,0,4096,10,0.943312,0.441802,0.052080,0.022643,0.001043,0.002473,0.002554,0.002310,0.001720,0.000881,0.001191,0.001619,0.000857,0.000858,0.001539,0.000697,0.000554,0.000498,0.000409,0.000174,0.000105,0.000147,0.000252,0.000549,0.000348,0.000262,0.000426,0.000336,0.000226,0.000305,0.000193,0.000333,0.000263,0.000183,0.000164,0.000171,0.000202,0.000221,0.000188,0.000137,0.000129,0.000098,0.000100,0.000144,0.000071,0.000094,0.000086,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000,0.000000
 ;GEN02 TABLE CONTAINING THE FUNCTION TABLE NUMBERS OF THE TABLES BETWEEN WHICH MORPHING WILL TAKE PLACE
 giwavemapUnmuted    ftgen    0,0,128,-27, 0,0, 22,0, 23,1, 24,2, 25,3, 26,4, 27,5, 28,6, 30,7, 31,8, 32,9, 33,10, 34,11, 35,12, 37,13, 38,14, 39,15, 40,16, 41,17, 42,18, 43,19, 44,20, 45,21, 46,22, 48,23, 49,24, 50,25, 51,26, 52,27, 53,28, 55,29, 56,30, 57,31, 58,32, 59,33, 60,34, 61,35, 62,36, 63,37, 64,38, 65,39, 67,40, 69,41, 70,42, 127,42
-gitabs4morfUnmuted    ftgen    0,0,64,-2, giUnmuted22,giUnmuted23,giUnmuted24,giUnmuted25,giUnmuted26,giUnmuted27,giUnmuted28,giUnmuted30,giUnmuted31,giUnmuted32,giUnmuted33,giUnmuted34,giUnmuted35,giUnmuted37,giUnmuted38,giUnmuted39,giUnmuted40,giUnmuted41,giUnmuted42,giUnmuted43,giUnmuted44,giUnmuted45,giUnmuted46,giUnmuted48,giUnmuted49,giUnmuted50,giUnmuted51,giUnmuted52,giUnmuted53,giUnmuted55,giUnmuted56,giUnmuted57,giUnmuted58,giUnmuted59,giUnmuted60,giUnmuted61,giUnmuted62,giUnmuted63,giUnmuted64,giUnmuted65,giUnmuted67,giUnmuted69,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70
+gitabs4morfUnmuted  ftgen    0,0,64,-2, giUnmuted22,giUnmuted23,giUnmuted24,giUnmuted25,giUnmuted26,giUnmuted27,giUnmuted28,giUnmuted30,giUnmuted31,giUnmuted32,giUnmuted33,giUnmuted34,giUnmuted35,giUnmuted37,giUnmuted38,giUnmuted39,giUnmuted40,giUnmuted41,giUnmuted42,giUnmuted43,giUnmuted44,giUnmuted45,giUnmuted46,giUnmuted48,giUnmuted49,giUnmuted50,giUnmuted51,giUnmuted52,giUnmuted53,giUnmuted55,giUnmuted56,giUnmuted57,giUnmuted58,giUnmuted59,giUnmuted60,giUnmuted61,giUnmuted62,giUnmuted63,giUnmuted64,giUnmuted65,giUnmuted67,giUnmuted69,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70,giUnmuted70
 
-isaw    ftgen    0,0,4096,7,1,4096,-1
+isaw      ftgen   0,0,4096,7,1,4096,-1
 
-icount    =    0
+icount    =       0
 loop1:
-imaxh    =  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
-ifn    ftgen    1000+icount,0,4096,-30,isaw,1,imaxh
-    loop_le    icount,1,127,loop1
+imaxh     =       sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
+ifn       ftgen   1000+icount,0,4096,-30,isaw,1,imaxh
+          loop_le    icount,1,127,loop1
 
-;gisquare    ftgen    0,0,4096,10, 1,0, 1/3,0, 1/5,0, 1/7,0, 1/9,0, 1/11,0, 1/13,0, 1/15,0, 1/17,0, 1/19,0, 1/21,0, 1/23,0, 1/25,0, 1/27,0, 1/29,0, 1/31,0, 1/33,0, 1/35,0, 1/37,0, 1/39
+;gisquare  ftgen    0,0,4096,10, 1,0, 1/3,0, 1/5,0, 1/7,0, 1/9,0, 1/11,0, 1/13,0, 1/15,0, 1/17,0, 1/19,0, 1/21,0, 1/23,0, 1/25,0, 1/27,0, 1/29,0, 1/31,0, 1/33,0, 1/35,0, 1/37,0, 1/39
 
-isquare        ftgen    0,0,4096,7,1,2048,1,0,-1,2048,-1
+isquare   ftgen    0,0,4096,7,1,2048,1,0,-1,2048,-1
 
-icount    =    0
+icount    =        0
 loop2:
-imaxh    =  sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
-ifn    ftgen    2000+icount,0,4096,-30,isquare,1,imaxh
-    loop_le    icount,1,127,loop2
+imaxh     =        sr / (2 * 440.0 * exp(log(2.0) * (icount - 69) / 12))
+ifn       ftgen    2000+icount, 0, 4096, -30, isquare, 1, imaxh
+          loop_le  icount, 1, 127, loop2
 
-giorg        ftgen    0,0,4096,9, 1,1,rnd(1), 2,1/2,rnd(1), 4,1/4,rnd(1), 8,1/8,rnd(1), 16,1/16,rnd(1), 32,1/32,rnd(1), 64,1/64,rnd(1), 128,1/128,rnd(1)
+gisine    ftgen    3000,0,4096,10,1
 
-gicos        ftgen    0,0,4096,11,1        ;COSINE WAVE (USED BY THE LFOS)
-gieqffn        ftgen    0,0,4097,7,-1,4096,1
-gieqlfn        ftgen    0,0,4097,7,-1,4096,1
-gieqqfn        ftgen    0,0,4097,7,-1,4096,1
+giorg     ftgen    0,0,4096,9, 1,1,rnd(1), 2,1/2,rnd(1), 4,1/4,rnd(1), 8,1/8,rnd(1), 16,1/16,rnd(1), 32,1/32,rnd(1), 64,1/64,rnd(1), 128,1/128,rnd(1)
+
+gicos     ftgen    0,0,4096,11,1        ;COSINE WAVE (USED BY THE LFOS)
+gieqffn   ftgen    0,0,4097,7,-1,4096,1
+gieqlfn   ftgen    0,0,4097,7,-1,4096,1
+gieqqfn   ftgen    0,0,4097,7,-1,4096,1
 
 gasendL,gasendR    init    0
 
-gkactive    init    0    ; Will contain number of active instances of instr 3 when legato mode is chosen. NB. notes in release stage will not be regarded as active. 
+gkactive  init     0    ; Will contain number of active instances of instr 3 when legato mode is chosen. NB. notes in release stage will not be regarded as active. 
 
 opcode    sspline,k,Kiii
-    kdur,istart,iend,icurve    xin                                        ;READ IN INPUT ARGUMENTS
-    imid    =    istart+((iend-istart)/2)                                ;SPLINE MID POINT VALUE
-    isspline    ftgentmp    0,0,4096,-16,istart,4096*0.5,icurve,imid,(4096/2)-1,-icurve,iend    ;GENERATE 'S' SPLINE
-    kspd    =    i(kdur)/kdur                                        ;POINTER SPEED AS A RATIO (WITH REFERENCE TO THE ORIGINAL DURATION)
-    kptr    init    0                                            ;POINTER INITIAL VALUE    
-    kout    tablei    kptr,isspline                                        ;READ VALUE FROM TABLE
-    kptr    limit    kptr+((ftlen(isspline)/(i(kdur)*kr))*kspd), 0, ftlen(isspline)-1            ;INCREMENT THE POINTER BY THE REQUIRED NUMBER OF TABLE POINTS IN ONE CONTROL CYCLE AND LIMIT IT BETWEEN FIRST AND LAST TABLE POINT - FINAL VALUE WILL BE HELD IF POINTER ATTEMPTS TO EXCEED TABLE DURATION
-        xout    kout                                            ;SEND VALUE BACK TO CALLER INSTRUMENT
+    kdur,istart,iend,icurve    xin                                             ; READ IN INPUT ARGUMENTS
+    imid     =         istart+((iend-istart)/2)                                ; SPLINE MID POINT VALUE
+    isspline ftgentmp  0,0,4096,-16,istart,4096*0.5,icurve,imid,(4096/2)-1,-icurve,iend ; GENERATE 'S' SPLINE
+    kspd     =         i(kdur)/kdur                                            ; POINTER SPEED AS A RATIO (WITH REFERENCE TO THE ORIGINAL DURATION)
+    kptr     init      0                                                       ; POINTER INITIAL VALUE    
+    kout     tablei    kptr,isspline                                           ; READ VALUE FROM TABLE
+    kptr     limit     kptr+((ftlen(isspline)/(i(kdur)*kr))*kspd), 0, ftlen(isspline)-1 ; INCREMENT THE POINTER BY THE REQUIRED NUMBER OF TABLE POINTS IN ONE CONTROL CYCLE AND LIMIT IT BETWEEN FIRST AND LAST TABLE POINT - FINAL VALUE WILL BE HELD IF POINTER ATTEMPTS TO EXCEED TABLE DURATION
+             xout      kout                                                    ; SEND VALUE BACK TO CALLER INSTRUMENT
 endop
 
 instr    ReadWidgets
-    kporttime    linseg    0,0.001,0.1
+    kporttime    linseg    0, 0.001, 0.1
 
     ;OSCILLATOR
-    gkamp        chnget    "amp"
-    gkNOscs        chnget    "NOscs"
-    gkfmd        chnget    "fmd"
-    gkmvt        chnget    "mvt"
-    gkwaveform    chnget    "waveform"
-    gkwaveform    init    1
-    gkwidth        chnget    "width"
-    gkWTableShift    chnget    "WTableShift"
-    gkPBend        chnget    "PBend"
-     kMOUSE_DOWN_LEFT       chnget  "MOUSE_DOWN_LEFT"
-     kOff    init    0
-     if trigger(kMOUSE_DOWN_LEFT,0.5,1)==1 then
-       chnset    kOff,"PBend"
-     endif
-    gkBendRange    chnget    "BendRange"
-    gkPchBend    portk    (gkPBend)*gkBendRange, kporttime
+    gkamp         chnget    "amp"
+    gkNOscs       chnget    "NOscs"
+    gkfmd         chnget    "fmd"    ; spread
+    gkSEAmt       chnget    "SEAmt"
+    gkSEAtt       chnget    "SEAtt"
+    gkSEDec       chnget    "SEDec"
+    gkSESus       chnget    "SESus"
+    gkSERel       chnget    "SERel"
+    gkSEInv       chnget    "SEInv"
 
-    gkWTableShift    portk    gkWTableShift, kporttime
-    gkFiltLayers    chnget    "FiltLayers"
+    gkmvt         chnget    "mvt"
+    gkwaveform    chnget    "waveform"
+    gkwaveform    init      1
+    gkwidth       chnget    "width"
+    gkWTableShift chnget    "WTableShift"
+    gkPBend       chnget    "PBend"
+     kMOUSE_DOWN_LEFT       chnget  "MOUSE_DOWN_LEFT"
+     kOff         init      0
+     if trigger(kMOUSE_DOWN_LEFT,0.5,1)==1 then
+                  chnset    kOff, "PBend"
+     endif
+    gkBendRange   chnget    "BendRange"
+    gkPchBend     portk     (gkPBend)*gkBendRange, kporttime
+
+    gkWTableShift portk     gkWTableShift, kporttime
+    gkFiltLayers  chnget    "FiltLayers"
+    gkFiltRes     chnget    "FiltRes"
 
     gkFlfoType    chnget    "FlfoType"
     gkFRte        chnget    "FRte"
@@ -693,375 +637,381 @@ instr    ReadWidgets
     gkFDel        chnget    "FDel"
     gkFRis        chnget    "FRis"
 
-    gkcfoct        chnget    "cf"
-    gkFEnvAmt    chnget    "FEnvAmt"
+    gkcfoct       chnget    "cf"
+    gkFEnvAmt     chnget    "FEnvAmt"
     gkFAtt        chnget    "FAtt"
     gkFDec        chnget    "FDec"
     gkFSus        chnget    "FSus"
     gkFRel        chnget    "FRel"
 
-    gkRvbMix    chnget    "RvbMix"
+    gkRvbMix      chnget    "RvbMix"
 
     gkAAtt        chnget    "AAtt"
     gkADec        chnget    "ADec"
     gkASus        chnget    "ASus"
     gkARel        chnget    "ARel"
 
-    gklegato    chnget    "legato"
-    gkLegTim    chnget    "LegTim"
+    gklegato      chnget    "legato"
+    gkLegTim      chnget    "LegTim"
     gkmono        chnget    "mono"
 
-    gkExciterAmount    chnget    "ExciterAmount"    
+    gkExciterAmount chnget   "ExciterAmount"    
     if trigger:k(gkExciterAmount,0.1,2)==1 then
      reinit UPDATE_EXCITER
     endif
     UPDATE_EXCITER:
     if i(gkExciterAmount)>0 then
-     chnset    "alpha(1)", "ExciterID"
+                  chnset  "alpha(1)", "ExciterID"
     else
-     chnset    "alpha(.5)", "ExciterID"
+                  chnset  "alpha(.5)", "ExciterID"
     endif
-    gkExciterFreq    chnget    "ExciterFreq"
+    gkExciterFreq chnget  "ExciterFreq"
 endin
 
 instr    1    ; triggered via midi
-    gkNoteTrig    init    1    ;at the beginning of a new note set note trigger flag to '1'
+    gkNoteTrig  init      1      ; at the beginning of a new note set note trigger flag to '1'
     inum        notnum
-    gknum        =    inum
-    ivel        veloc    0,1    ;read in midi note velocity
+    gknum       =         inum
+    ivel        veloc     0,1    ; read in midi note velocity
 
-    if i(gklegato)==0 then        ;if we are *not* in legato mode...
+    if i(gklegato)==0 then       ; if we are *not* in legato mode...
 
-     ;aL,aR    subinstr    p1+1,inum    ;call voice instrument as a subinstrument. Audio will be fed back to this instrument before being sent to the outputs.
-     ;    outs    aL,aR        ;send audio to outputs
+                event_i   "i",p1+1+(inum*0.001),0,-1,inum,ivel    ; call sound producing instr
+     krel       release                     ; release flag (1 when note is released, 0 otherwise)
+     if krel==1 then                        ; when note is released...
+                turnoff2  p1+1+(inum*0.001),4,1            ; turn off the called instrument
+     endif                                  ; end of conditional          
      
-         event_i    "i",p1+1+(inum*0.001),0,-1,inum,ivel    ; call sound producing instr
-     krel    release                        ; release flag (1 when note is released, 0 otherwise)
-     if krel==1 then                    ; when note is released...
-      turnoff2    p1+1+(inum*0.001),4,1            ; turn off the called instrument
-     endif                            ; end of conditional          
-     
-    else                ;otherwise... (i.e. legato mode)
-     iactive    =    i(gkactive)            ;number of active notes of instr 3 (note in release are disregarded)
-     if iactive==0 then                    ;...if no notes are active
-      event_i    "i",p1+1,0,3600,inum,ivel        ;...start a new held note
+    else                                    ; otherwise... (i.e. legato mode)
+     iactive    =         i(gkactive)       ; number of active notes of instr 3 (note in release are disregarded)
+     if iactive==0 then                     ; ...if no notes are active
+                event_i   "i",p1+1,0,3600,inum,ivel  ;...start a new held note
      endif
     endif
 endin
 
-instr    2    ; triggered by instr 1
+instr    2                ;triggered by instr 1
     ;kporttime    linseg    0,0.001,1        ;portamento time function rises quickly from zero to a held value
-    kLegTime    =    gkLegTim;*kporttime    ;scale portamento time function with value from GUI knob widget
+    kLegTime    =       gkLegTim;*kporttime  ;scale portamento time function with value from GUI knob widget
     
-    if i(gklegato)==1 then                ;if we are in legato mode...
-     krel    release                    ;sense when  note has been released
-     gkactive    =    1-krel            ;if note is in release, gkactive=0, otherwise =1
+    if i(gklegato)==1 then                   ;if we are in legato mode...
+     krel       release                      ;sense when  note has been released
+     gkactive    =      1-krel               ;if note is in release, gkactive=0, otherwise =1
      if krel==0 then
-      ktrig    changed    gknum                        ;...GENERATE A TRIGGER IS A NEW NOTE NUMBER IS GENERATED (FROM INSTR. 1)
-      gkNoteTrig    =    0
+      ktrig     changed gknum                ;...GENERATE A TRIGGER IS A NEW NOTE NUMBER IS GENERATED (FROM INSTR. 1)
+      gkNoteTrig    =   0
      endif
-     gkOldNum    init    p4                                                ; OLD NOTE NUMBER = FIRST NOTE NUMBER UPON INITIAL NOTE BEING PLAYED 
-     if ktrig=1 then                                                    ; IF A NEW (LEGATO) NOTE HAS BEEN PRESSED
-      reinit    S_CURVE_2                                                ; BEGIN A REINITIALISATION PASS FROM LABEL
-     endif                                                                ; END OF CONDITIONAL BRANCH
-     S_CURVE_2:                                                            ; A LABEL. REINITIALISATION BEGINS FROM HERE.
-     idiff    =    1+abs(i(gknum)-i(gkOldNum))                                ; ABSOLUTE DIFFERENCE BETWEEN OLD NOTE AND NEW NOTE IN STEPS (+ 1)
-     knum    sspline    (kLegTime*idiff)+ksmps/sr,i(gkOldNum),i(gknum),1     ; CALL sspline UDO (PORTAMENTO TIME MULTIPLIED BY NOTE GAP (idiff))
-     rireturn                                                            ; RETURN FROM INITIALISATION PASS
-     gkOldNum    =    knum                                                ; SET OLD NUMBER CURRENT NUMBER
-     kactive    active    p1-1                                            ; ...check number of active midi notes (previous instrument)
-     if kactive==0 then                                                    ; if no midi notes are active...
-      turnoff                                                            ; ... turn this instrument off
+     gkOldNum   init    p4                   ; OLD NOTE NUMBER = FIRST NOTE NUMBER UPON INITIAL NOTE BEING PLAYED 
+     if ktrig=1 then                         ; IF A NEW (LEGATO) NOTE HAS BEEN PRESSED
+      reinit     S_CURVE_2                   ; BEGIN A REINITIALISATION PASS FROM LABEL
+     endif                                   ; END OF CONDITIONAL BRANCH
+     S_CURVE_2:                              ; A LABEL. REINITIALISATION BEGINS FROM HERE.
+     idiff       =       1+abs(i(gknum)-i(gkOldNum))                         ; ABSOLUTE DIFFERENCE BETWEEN OLD NOTE AND NEW NOTE IN STEPS (+ 1)
+     knum        sspline (kLegTime*idiff)+ksmps/sr,i(gkOldNum),i(gknum),1    ; CALL sspline UDO (PORTAMENTO TIME MULTIPLIED BY NOTE GAP (idiff))
+     rireturn                                                                ; RETURN FROM INITIALISATION PASS
+     gkOldNum    =      knum                                                 ; SET OLD NUMBER CURRENT NUMBER
+     kactive     active p1-1                                                 ; ...check number of active midi notes (previous instrument)
+     if kactive==0 then                                                      ; if no midi notes are active...
+      turnoff                                                                ; ... turn this instrument off
      endif
-    else                                                                ; otherwise... (polyphonic / non-legato mode)
-     knum    =    p4
+    else                                                                     ; otherwise... (polyphonic / non-legato mode)
+     knum        =       p4
     endif
 
-    knum    init    p4
-
-    knum    =    knum + gkPchBend        ;add pitch bend
+    knum         init    p4
+    knum         =       knum + gkPchBend        ; add pitch bend
+    
+    ;SPREAD ENVELOPE
+    kSEnv        cossegr 0,i(gkSEAtt)+ksmps/sr,1,i(gkSEDec)+ksmps/sr,i(gkSESus),i(gkSERel)+ksmps/sr,0  ; spread envelope
+    kSenv        =       gkSEInv==1?(1-kSEnv):kSEnv ; envelope invert function
+    kSEnv        ntrpol  k(1), kSEnv, gkSEAmt       ; envelope amount control
+    kfmd         =       gkfmd * kSEnv              ; multiple envelope with manual spread control
     
     ;AMPLITUDE ENVELOPE
-    aenv        linsegr    0.001,i(gkAAtt)+0.001,1,i(gkADec)+0.001,i(gkASus),i(gkARel)+0.001,0.001    ;AMPLITUDE ENVELOPE
-    aenv        =    aenv-0.001
+    aenv         linsegr 0.001,i(gkAAtt)+0.001,1,i(gkADec)+0.001,i(gkASus),i(gkARel)+0.001,0.001  ; AMPLITUDE ENVELOPE
+    aenv         =       aenv - 0.001
     
     ;FILTER AND FILTER ENVELOPE
-    kFEnv        linsegr    0,i(gkFAtt)+0.001,1,i(gkFDec)+0.001,i(gkFSus),i(gkFRel)+0.001,0
-    kFEnv        =    kFEnv * gkFEnvAmt
+    kFEnv        cossegr 0,i(gkFAtt)+0.001,1,i(gkFDec)+0.001,i(gkFSus),i(gkFRel)+0.001,0
+    kFEnv        =       kFEnv * gkFEnvAmt
 
     ;FILTER LFO
-    kdepth        linseg        0,i(gkFDel)+0.001,0,i(gkFRis)+0.001,1    ;DEPTH OF MODULATION ENVELOPE
+    kdepth       linseg  0,i(gkFDel)+0.001,0,i(gkFRis)+0.001,1                                    ; DEPTH OF MODULATION ENVELOPE
     
     if gkFlfoType==1 then
-     kFLFO        lfo        kdepth*gkFDep,gkFRte,0        ;LFO (sine)
+     kFLFO       lfo     kdepth*gkFDep,gkFRte,0  ; LFO (sine)
     elseif gkFlfoType==2 then
-     kFLFO        jspline        kdepth*gkFDep,gkFRte,gkFRte
+     kFLFO       jspline kdepth*gkFDep,gkFRte,gkFRte
     elseif gkFlfoType==3 then
-     kFLFO        randomh        -kdepth*gkFDep,kdepth*gkFDep,gkFRte
-     kFLFO        port        kFLFO,0.004            ;smooth out the clicks
+     kFLFO       randomh -kdepth*gkFDep,kdepth*gkFDep,gkFRte
+     kFLFO       port    kFLFO,0.004             ; smooth out the clicks
     else
-     kFLFO        lfo        kdepth*gkFDep,gkFRte,2        ;LFO (bi-square)
-     kFLFO        port        kFLFO,0.004            ;smooth out the clicks
+     kFLFO       lfo     kdepth*gkFDep,gkFRte,2  ; LFO (bi-square)
+     kFLFO       port    kFLFO,0.004             ; smooth out the clicks
     endif
 
-    kCFoct        limit    4+kFEnv+gkcfoct+kFLFO,4,14
-    kCF        =    cpsoct(kCFoct)
+    kCFoct       limit   4+kFEnv+gkcfoct+kFLFO,4,14
+    kCF          =       cpsoct(kCFoct)
       
-    if i(gkwaveform)==1 then
-     kwave    =    1000+knum
-    elseif i(gkwaveform)==2 then
-     kwave    =    2000+knum
-    elseif i(gkwaveform)==3 then
-     kwave    =    giorg
+    if i(gkwaveform)==1 then ; sawtooth
+     kwave       =       1000+knum
+    elseif i(gkwaveform)==2 then ; square
+     kwave       =       2000+knum
+    elseif i(gkwaveform)==3 then ; sine
+     kwave       =       3000
     elseif i(gkwaveform)==4 then
-     giwavemap    =    giwavemapClar
-     gitabs4morf    =    gitabs4morfClar
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     kwave       =       giorg
     elseif i(gkwaveform)==5 then
-     giwavemap    =    giwavemapBClar
-     gitabs4morf    =    gitabs4morfBClar
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap   =    giwavemapClar
+     gitabs4morf =    gitabs4morfClar
+     imorphtab   ftgentmp    0,0,4096,10,1
+     kndx        limit       knum+gkWTableShift,0,127
+     kftndx      tablei      kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                 ftmorf      kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==6 then
-     giwavemap    =    giwavemapCBClar
-     gitabs4morf    =    gitabs4morfCBClar
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapBClar
+     gitabs4morf  =    gitabs4morfBClar
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==7 then
-     giwavemap    =    giwavemapOboe
-     gitabs4morf    =    gitabs4morfOboe
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
-    elseif i(gkwaveform)==8 then
-     giwavemap    =    giwavemapBassoon
-     gitabs4morf    =    gitabs4morfBassoon
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapCBClar
+     gitabs4morf  =          gitabs4morfCBClar
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
+    elseif i(gkwaveform)==8  then
+     giwavemap    =          giwavemapOboe
+     gitabs4morf  =          gitabs4morfOboe
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==9 then
-     giwavemap    =    giwavemapCBassoon
-     gitabs4morf    =    gitabs4morfCBassoon
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapBassoon
+     gitabs4morf  =          gitabs4morfBassoon
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==10 then
-     giwavemap    =    giwavemapViolin
-     gitabs4morf    =    gitabs4morfViolin
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapCBassoon
+     gitabs4morf  =          gitabs4morfCBassoon
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==11 then
-     giwavemap    =    giwavemapCello
-     gitabs4morf    =    gitabs4morfCello
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapViolin
+     gitabs4morf  =          gitabs4morfViolin
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==12 then
-     giwavemap    =    giwavemapPiccolo
-     gitabs4morf    =    gitabs4morfPiccolo
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapCello
+     gitabs4morf  =          gitabs4morfCello
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==13 then
-     giwavemap    =    giwavemapFlute
-     gitabs4morf    =    gitabs4morfFlute
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapPiccolo
+     gitabs4morf  =          gitabs4morfPiccolo
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==14 then
-     giwavemap    =    giwavemapAFlute
-     gitabs4morf    =    gitabs4morfAFlute
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapFlute
+     gitabs4morf  =          gitabs4morfFlute
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==15 then
-     giwavemap    =    giwavemapBFlute
-     gitabs4morf    =    gitabs4morfBFlute
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapAFlute
+     gitabs4morf  =          gitabs4morfAFlute
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap                 ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==16 then
-     giwavemap    =    giwavemapAhh
-     gitabs4morf    =    gitabs4morfAhh
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapBFlute
+     gitabs4morf  =          gitabs4morfBFlute
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap                  ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab  ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==17 then
-     giwavemap    =    giwavemapOoh
-     gitabs4morf    =    gitabs4morfOoh
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapAhh
+     gitabs4morf  =          gitabs4morfAhh
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap                  ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab  ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==18 then
-     giwavemap    =    giwavemapEee
-     gitabs4morf    =    gitabs4morfEee
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapOoh
+     gitabs4morf  =          gitabs4morfOoh
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap                   ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab   ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==19 then
-     giwavemap    =    giwavemapHornP
-     gitabs4morf    =    gitabs4morfHornP
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapEee
+     gitabs4morf  =          gitabs4morfEee
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap                    ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==20 then
-     giwavemap    =    giwavemapHornF
-     gitabs4morf    =    gitabs4morfHornF
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapHornP
+     gitabs4morf  =          gitabs4morfHornP
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==21 then
-     giwavemap    =    giwavemapharmon
-     gitabs4morf    =    gitabs4morfharmon
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapHornF
+     gitabs4morf  =          gitabs4morfHornF
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==22 then
-     giwavemap    =    giwavemapMute1
-     gitabs4morf    =    gitabs4morfMute1
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapharmon
+     gitabs4morf  =          gitabs4morfharmon
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     elseif i(gkwaveform)==23 then
-     giwavemap    =    giwavemapUnmuted
-     gitabs4morf    =    gitabs4morfUnmuted
-     imorphtab    ftgentmp    0,0,4096,10,1
-     kndx        limit        knum+gkWTableShift,0,127
-     kftndx        tablei        kndx,giwavemap            ;ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
-            ftmorf        kftndx, gitabs4morf, imorphtab    ;CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
-     kwave        =        imorphtab
+     giwavemap    =          giwavemapMute1
+     gitabs4morf  =          gitabs4morfMute1
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap                   ; ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab   ; CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
+    elseif i(gkwaveform)==24 then
+     giwavemap    =          giwavemapUnmuted
+     gitabs4morf  =          gitabs4morfUnmuted
+     imorphtab    ftgentmp   0,0,4096,10,1
+     kndx         limit      knum+gkWTableShift,0,127
+     kftndx       tablei     kndx,giwavemap                  ; ftndx REMAPPED ACCORDING TO THE WAVETABLE MAP FOR THIS INSTRUMENT
+                  ftmorf     kftndx, gitabs4morf, imorphtab  ; CREATE THE MORPHED TABLE ACCORDING TO THE VALUE OF THE FUNCTION TABLE INDEX CREATED ABOVE
+     kwave        =          imorphtab
     endif
 
 
-    ktrig    changed    gkNOscs,gkmono                ;IF ANY OF THE CONTROLS WHICH MUST BE ENTERED AS I-RATE CONTROLLERS HAVE CHANGED GENERATE A TRIGGER IMPULSE AT THE OUTPUT
-    if ktrig==1 then                    ;IF ANY I-RATE CONTROL HAS CHANGED...
-      reinit    UPDATE                    ;BEGIN A RE-INITILISATION PASS FROM LABEL 'UPDATE'
+    ktrig         changed    gkNOscs,gkmono                  ; IF ANY OF THE CONTROLS WHICH MUST BE ENTERED AS I-RATE CONTROLLERS HAVE CHANGED GENERATE A TRIGGER IMPULSE AT THE OUTPUT
+    if ktrig==1 then                                         ; IF ANY I-RATE CONTROL HAS CHANGED...
+                  reinit     UPDATE                          ; BEGIN A RE-INITILISATION PASS FROM LABEL 'UPDATE'
     endif                            
-    UPDATE:                            ;BEGIN REINIT PASS FROM HERE
-    kmvt    jspline    gkmvt,gkmvt,gkmvt
-    kcps    =    cpsmidinn(knum)
+    UPDATE:                                                  ; BEGIN REINIT PASS FROM HERE
+    kmvt          jspline    gkmvt,gkmvt,gkmvt
+    kcps          =          cpsmidinn(knum)
 
     ; RANDOM SEED
-    iSeedMode    chnget    "seed"
-    if iSeedMode==1 then            ; clock mono
-     iseedL    =    times:i()
-     iseedR    =    iseedL
-    elseif iSeedMode==2 then        ; clock stereo
-     iseedL    =    times:i()
-     iseedR    =    iseedL + 1000
-    elseif iSeedMode==3 then        ; note mono
-     iseedL    =    p4
-     iseedR    =    iseedL
-    elseif iSeedMode==4 then        ; note stereo
-     iseedL    =    p4
-     iseedR    =    iseedL + 1000
-    elseif iSeedMode==5 then        ; fixed mono
-     iseedL    =    1
-     iseedR    =    iseedL
-    elseif iSeedMode==6 then        ; fixed stereo
-     iseedL    =    1
-     iseedR    =    iseedL + 1000
+    iSeedMode     chnget     "seed"
+    if iSeedMode==1 then                   ; clock mono
+     iseedL       =          times:i()
+     iseedR       =          iseedL
+    elseif iSeedMode==2 then               ; clock stereo
+     iseedL       =          times:i()
+     iseedR       =          iseedL + 1000
+    elseif iSeedMode==3 then               ; note mono
+     iseedL       =          p4
+     iseedR       =          iseedL
+    elseif iSeedMode==4 then               ; note stereo
+     iseedL       =          p4
+     iseedR       =          iseedL + 1000
+    elseif iSeedMode==5 then               ; fixed mono
+     iseedL       =          1
+     iseedR       =          iseedL
+    elseif iSeedMode==6 then               ; fixed stereo
+     iseedL       =          1
+     iseedR       =          iseedL + 1000
     endif
     
     if i(gkmono)==1 then
-    ;OUTPUT    OPCODE  CPS  | AMD  |    FMD     | PMD | OVERLAPS   | SEED | L1MINF  | L1MAXF  | L2MINF  | L2MAXF  | LFOMODE | EQMINF  | EQMAXF | EQMINL | EQMAXL | EQMINQ | EQMAXQ  | EQMODE | KFN  | L1FN | L2FN | EQFFN  | EQLF   |  EQQFN |  TABL  | OUTFN
-     aL    oscbnk    kcps,   0,    gkfmd*kcps,    0,  i(gkNOscs),  iseedL,    0,      kmvt,      0,        0,       238,      0,       8000,      1,       1,       1,       1,       -1,   kwave, gicos, gicos, gieqffn, gieqlfn, gieqqfn
-     aR    =    aL
+    ;OUTPUT       OPCODE     CPS  | AMD  |    FMD     | PMD | OVERLAPS   | SEED | L1MINF  | L1MAXF  | L2MINF  | L2MAXF  | LFOMODE | EQMINF  | EQMAXF | EQMINL | EQMAXL | EQMINQ | EQMAXQ  | EQMODE | KFN  | L1FN | L2FN | EQFFN  | EQLF   |  EQQFN |  TABL  | OUTFN
+     aL           oscbnk     kcps,   0,    kfmd*kcps,    0,  i(gkNOscs),  iseedL,    0,      kmvt,      0,        0,       238,      0,       8000,      1,       1,       1,       1,       -1,   kwave, gicos, gicos, gieqffn, gieqlfn, gieqqfn
+     aR           =          aL
     else
      ;TWO ITERATIONS OF oscbnk ARE CREATED, ONE FOR EACH OF THE STEREO AUDIO CHANNELS. THE OUTPUTS WILL BE DIFFERENT AS THE RANDOM NUMBER GENERATORS WILL BE SEEDED BY THE SYSTEM CLOCK
-     ;OUTPUT    OPCODE  CPS  | AMD  |    FMD     | PMD | OVERLAPS   | SEED  | L1MINF  | L1MAXF  | L2MINF  | L2MAXF  | LFOMODE | EQMINF  | EQMAXF | EQMINL | EQMAXL | EQMINQ | EQMAXQ  | EQMODE | KFN  | L1FN | L2FN | EQFFN  | EQLF   |  EQQFN |  TABL  | OUTFN
-     aL        oscbnk    kcps,   0,    gkfmd*kcps,   0,  i(gkNOscs),   iseedL,   0,       kmvt,      0,        0,       238,      0,       8000,      1,       1,       1,       1,       -1,   kwave, gicos, gicos, gieqffn, gieqlfn, gieqqfn
-     aR        oscbnk    kcps,   0,    gkfmd*kcps,   0,  i(gkNOscs),   iseedR,   0,      -kmvt,      0,        0,       238,      0,       8000,      1,       1,       1,       1,       -1,   kwave, gicos, gicos, gieqffn, gieqlfn, gieqqfn
-     aL    ntrpol    (aL+aR)*0.66,aL,gkwidth
-     aR    ntrpol    (aL+aR)*0.66,aR,gkwidth
+     ;OUTPUT      OPCODE     CPS  | AMD  |    FMD     | PMD | OVERLAPS   | SEED  | L1MINF  | L1MAXF  | L2MINF  | L2MAXF  | LFOMODE | EQMINF  | EQMAXF | EQMINL | EQMAXL | EQMINQ | EQMAXQ  | EQMODE | KFN  | L1FN | L2FN | EQFFN  | EQLF   |  EQQFN |  TABL  | OUTFN
+     aL           oscbnk     kcps,   0,    kfmd*kcps,   0,  i(gkNOscs),   iseedL,   0,       kmvt,      0,        0,       238,      0,       8000,      1,       1,       1,       1,       -1,   kwave, gicos, gicos, gieqffn, gieqlfn, gieqqfn
+     aR           oscbnk     kcps,   0,    kfmd*kcps,   0,  i(gkNOscs),   iseedR,   0,      -kmvt,      0,        0,       238,      0,       8000,      1,       1,       1,       1,       -1,   kwave, gicos, gicos, gieqffn, gieqlfn, gieqqfn
+     aL           ntrpol     (aL+aR)*0.66,aL,gkwidth
+     aR           ntrpol     (aL+aR)*0.66,aR,gkwidth
     endif
     rireturn                        ;RETURN FROM REINIT PASS
 
-    ;aL     clfilt         aL, kCF,0,2
-    ;aR     clfilt         aR, kCF,0,2
-    
     if gkExciterAmount>0 then
-     aEL     exciter     aL*gkExciterAmount, gkExciterFreq, 20000, 10, 10
-     aER     exciter     aR*gkExciterAmount, gkExciterFreq, 20000, 10, 10
-     aL        ntrpol        aL,aEL,0.5
-     aR        ntrpol        aR,aER,0.5
+     aEL          exciter    aL*gkExciterAmount, gkExciterFreq, 20000, 10, 10
+     aER          exciter    aR*gkExciterAmount, gkExciterFreq, 20000, 10, 10
+     aL           ntrpol     aL,aEL,0.5
+     aR           ntrpol     aR,aER,0.5
     endif
 
-    ktrig    changed    gkFiltLayers
-    if ktrig=1 then
-     reinit RESTART_TONEX
+    if gkFiltRes=0 then
+     ktrig        changed    gkFiltLayers
+     if ktrig=1 then
+      reinit RESTART_TONEX
+     endif
+     RESTART_TONEX:
+     aL           tonex      aL, kCF,i(gkFiltLayers)
+     aR           tonex      aR, kCF,i(gkFiltLayers)
+     rireturn
+    else
+     aL           diode_ladder  aL, kCF, gkFiltRes * 17
+     aR           diode_ladder  aR, kCF, gkFiltRes * 17
     endif
-    RESTART_TONEX:
-    aL     tonex         aL, kCF,i(gkFiltLayers)
-    aR     tonex         aR, kCF,i(gkFiltLayers)
-    rireturn
     
-    aL    =    aL*aenv*gkamp*p5*0.2
-    aR    =    aR*aenv*gkamp*p5*0.2
+    aL            =             aL*aenv*gkamp*p5*0.2
+    aR            =             aR*aenv*gkamp*p5*0.2
     
-        outs        aL, aR    ;SEND AUDIO TO THE OUTPUTS. RESCALE EACH CHANNEL WITH NOTE VELOCITY, AMPLITUDE ENVELOPE AND AMP CONTROL WIDGET.
-    gasendL    =    gasendL+(aL*gkRvbMix)
-    gasendR    =    gasendR+(aR*gkRvbMix)
+                  outs          aL, aR    ;SEND AUDIO TO THE OUTPUTS. RESCALE EACH CHANNEL WITH NOTE VELOCITY, AMPLITUDE ENVELOPE AND AMP CONTROL WIDGET.
+    gasendL       =             gasendL+(aL*gkRvbMix)
+    gasendR       =             gasendR+(aR*gkRvbMix)
 endin
 
 instr    4    ;reverb
-    gkRvbSize    chnget    "RvbSize"
-    gkRvbCF        chnget    "RvbCF"
+    gkRvbSize     chnget        "RvbSize"
+    gkRvbCF       chnget        "RvbCF"
     if gkRvbMix==0 goto SKIP_REVERB
-    aL,aR    reverbsc    gasendL,gasendR,gkRvbSize,gkRvbCF
-        outs    aL,aR
+    aL,aR         reverbsc      gasendL,gasendR,gkRvbSize,gkRvbCF
+                  outs          aL,aR
     SKIP_REVERB:
-        clear    gasendL,gasendR
+                  clear         gasendL,gasendR
 endin
 
 </CsInstruments>
 
 <CsScore>
-i "ReadWidgets" 0 [3600*24*7]
-i 4 0 [3600*24*7]
+i "ReadWidgets" 0 [3600*24*7]  ; read widgets
+i 4 0 [3600*24*7]              ; reverb
 </CsScore>
 
 </CsoundSynthesizer>

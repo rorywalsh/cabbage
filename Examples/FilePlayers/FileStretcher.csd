@@ -47,10 +47,12 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 
 <Cabbage>
 form caption("File Stretcher") size(700,315), colour(0,0,0) pluginId("FiSt"), guiRefresh(10) 
-image                bounds(  0,  0,700,315), colour(50,50,60), outlineColour("White"), line(3), shape("sharp")
+image      bounds(  0,  0,700,315), colour(50,50,60), outlineColour("White"), line(3), shape("sharp")
 
-soundfiler           bounds(  5,  5,690,150), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255)
-image                bounds(  5,  5,  1,150), colour(150,150,160), shape("sharp"), identChannel("Scrubber")
+soundfiler bounds(  5,  5,690,140), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255)
+image      bounds(  5,  5,  1,140), colour(150,150,160), shape("sharp"), identChannel("Scrubber")
+
+;hrange    bounds(  5,145,690,15), text(""), channel("Strt","End"), range(0, 1, 0.2:0.4), colour(30,30,40), trackerColour("white"), fontColour("white"), outlineColour(150,150,150)
 
 label bounds(6, 4, 560, 14), text(""), align(left), colour(0,0,0,0), fontColour(200,200,200), identChannel("stringbox")
 label      bounds( 6, 20,450, 13), text("Click and drag on waveform to select sound portion for time stretching..."), align(left), colour("black"), fontColour("white"), visible(0), identChannel("InstructionID")
@@ -68,9 +70,13 @@ rslider    bounds(241,160, 54, 54), text("Semitones"), channel("Semitones"), ran
 rslider    bounds(301,160, 54, 54), text("Cents"), channel("Cents"), range(-100, 100.00, 0,1, 1), colour(30,30,40), trackerColour("white"), fontColour("white"), outlineColour(150,150,150)
 button     bounds(251,215,100, 12), text("H A R M O N Y", "H A R M O N Y"), channel("Harmony"), fontColour:0(50,50,50), fontColour:1(205,255,205), colour:0(0,10,0), colour:1(0,150,0), value(0), latched(1)
 rslider    bounds(358,160, 60, 60), text("Rise"), channel("Rise"), range(0, 8, 0.02, 0.5, 0.001), colour(30,30,40), trackerColour("white"), fontColour("white"), outlineColour(150,150,150)
-label      bounds(420,160, 80, 13), text("FFT Size"), fontColour("white")
-combobox   bounds(420,177, 80, 17), channel("FFTSize"), items("32768", "16384", "8192", "4096", "2048", "1024", "512", "256", "128", "64", "32"), value(5), fontColour("white")
-checkbox   bounds(420,198, 95, 15), channel("lock"), text("Phase Lock"), fontColour("white"), colour(255,0,0)
+
+label      bounds(420,148, 80, 12), text("FFT Size"), fontColour("white")
+combobox   bounds(420,161, 80, 17), channel("FFTSize"), items("32768", "16384", "8192", "4096", "2048", "1024", "512", "256", "128", "64", "32"), value(5), fontColour("white")
+checkbox   bounds(420,181, 95, 15), channel("lock"), text("Phase Lock"), fontColour:0("white"), fontColour:1("white"), colour(255,0,0)
+label      bounds(420,199, 80, 12), text("Stretch/Freeze"), fontColour("white")
+combobox   bounds(420,212, 83, 20), channel("StrFr"), items("Stretch","Freeze"), value(1),fontColour("white")
+
 
 rslider    bounds(510,160, 60, 60), text("Level"),    channel("Level"),  range(0, 1.00, 0.9),       colour(30,30,40), trackerColour("white"), fontColour("white"), outlineColour(150,150,150)
 rslider    bounds(570,160, 60, 60), text("Jit.Dep."), channel("JitDep"), range(0, 1.00, 0.2),       colour(30,30,40), trackerColour("white"), fontColour("white"), outlineColour(150,150,150)
@@ -85,7 +91,6 @@ keyboard     bounds(  5,235,690, 75)
 
 <CsOptions>
 -dm0 -n -+rtmidi=NULL -M0
-; --midi-key=4
 </CsOptions>
 
 <CsInstruments>
@@ -101,11 +106,6 @@ gichans       init    0        ;
 giReady       init    0        ; flag to indicate function table readiness
 gSfilepath    init    ""
 giFFTSizes[]  array   32768, 16384, 8192, 4096, 2048, 1024, 512, 256, 128, 64, 32    ; an array is used to store FFT window sizes
-
-
-;			        FN_NUM | INIT_TIME | SIZE | GEN_ROUTINE | NUM_GRADES | REPEAT |  BASE_FREQ     | BASE_KEY_MIDI | TUNING_RATIOS:-0-|----1----|---2----|----3----|----4----|----5----|----6----|----7----|----8----|----9----|----10-----|---11----|---12---|---13----|----14---|----15---|---16----|----17---|---18----|---19---|----20----|---21----|---22----|---23---|----24----|----25----|----26----|----27----|----28----|----29----|----30----|----31----|----32----|----33----|----34----|----35----|----36----|
-;giTTable1	ftgen     1,         0,       64,        -2,         12,        2,       cpsmidinn(60),        60,                       1, 1.059463,1.1224619,1.1892069,1.2599207,1.33483924,1.414213,1.4983063,1.5874001,1.6817917,1.7817962, 1.8877471,     2	;STANDARD
-;giTTable1	ftgen     0,         0,       64,        -2,         12,        2,       cpsmidinn(60),        60,                       1, 1.059463,1.1224619,1.1892069,1.2599207,1.33483924,1.414213,1.4983063,1.5874001,1.6817917,1.7817962, 1.8877471,     2	;STANDARD
 
 ;			         FN_NUM | INIT_TIME | SIZE | GEN_ROUTINE | NUM_GRADES | REPEAT |  BASE_FREQ  | BASE_KEY_MIDI | TUNING_RATIOS:-0-|----1----|---2----|----3----|----4----|----5----|----6----|----7----|----8----|----9----|----10-----|---11----|---12---|---13----|----14---|----15---|---16----|----17---|---18----|---19---|----20----|---21----|---22----|---23---|----24----|----25----|----26----|----27----|----28----|----29----|----30----|----31----|----32----|----33----|----34----|----35----|----36----|
 giTTable1	ftgen      0,         0,       64,       -2,          12,          2,   cpsmidinn(60),      60,                       1, 1.059463,1.1224619,1.1892069,1.2599207,1.33483924,1.414213,1.4983063,1.5874001,1.6817917,1.7817962, 1.8877471,     2	;STANDARD
@@ -141,8 +141,6 @@ opcode FileNameFromPath,S,S        ; Extract a file name (as a string) from a fu
     xout    Sname                  ; Send it back to the caller instrument
 endop
 
-;opcode MincerVoice
-;endop
 
 instr    1
  gkPlayStr     chnget    "PlayStr"
@@ -157,20 +155,21 @@ instr    1
  kporttime     linseg    0,0.01,0.05
  gkTranspose   portk     semitone(gkTranspose),kporttime
  gklock        chnget    "lock"            ; Phase locking in mincer opcode
+ gkStrFr       chnget    "StrFr"
  gkAttack      chnget    "beg"
- gkLen         chnget    "len" 
+ gkLen         chnget    "len"
  gkRise        chnget    "Rise" 
  gkHarmony     chnget    "Harmony"
    
- if trigger(gkAttack,1,0)==1 then        ; Hide instruction once stretch area has been selected
+ if trigger(gkAttack,1,0)==1 then         ; Hide instruction once stretch area has been selected
                chnset    "visible(0)", "InstructionID" 
  endif
  
- if kNewFileTrg==1 then                ; if a new file has been loaded...
-               event     "i",99,0,0.01            ; call instrument to update sample storage function table 
+ if kNewFileTrg==1 then                   ; if a new file has been loaded...
+               event     "i",99,0,0.01    ; call instrument to update sample storage function table 
  endif   
  
- ktrig         trigger    gkPlayStr,0.5,0         ; Generate an impulse if PLAY STRETCH button is clicked
+ ktrig         trigger    gkPlayStr,0.5,0         ; Generate an impulse if PLAY STRETCHED button is clicked
                schedkwhen ktrig,0,0,2,0,0.01,60
 
  ktrig         trigger    gkPlayNorm,0.5,0        ; Generate an impulse if PLAY NORM. button is clicked
@@ -184,137 +183,117 @@ endin
 instr    99    ; load sound file
  
  /* write file selection to function tables */
- gichans    filenchnls    gSfilepath            ; derive the number of channels (mono=1,stereo=2) in the sound file
- gitableL    ftgen    1,0,0,1,gSfilepath,0,0,1
+ gichans       filenchnls gSfilepath            ; derive the number of channels (mono=1,stereo=2) in the sound file
+ gitableL      ftgen      1,0,0,1,gSfilepath,0,0,1
  if gichans==2 then
-  gitableR    ftgen    2,0,0,1,gSfilepath,0,0,2
+  gitableR     ftgen      2,0,0,1,gSfilepath,0,0,2
  endif
- giReady     =    1                    ; if no string has yet been loaded giReady will be zero
- Smessage sprintfk "file(%s)", gSfilepath            ; print sound file image to fileplayer
- chnset Smessage, "filer1"
+ giReady       =          1                    ; if no string has yet been loaded giReady will be zero
+ Smessage      sprintfk   "file(%s)", gSfilepath            ; print sound file image to fileplayer
+               chnset     Smessage, "filer1"
 
  /* write file name to GUI */
- Sname FileNameFromPath    gSfilepath            ; Call UDO to extract file name from the full path
- Smessage sprintfk "text(%s)",Sname              ; create string to update text() identifier for label widget
- chnset Smessage, "stringbox"                    ; send string to  widget
+ Sname FileNameFromPath   gSfilepath                    ; Call UDO to extract file name from the full path
+ Smessage      sprintfk   "text(%s)",Sname              ; create string to update text() identifier for label widget
+               chnset     Smessage, "stringbox"         ; send string to  widget
 
- if i(gkAttack)==0 then                          ; Reveal instruction when a file is opened for the first time
-  chnset "visible(1)", "InstructionID"
+ if i(gkAttack)==0 then                                 ; Reveal instruction when a file is opened for the first time
+               chnset     "visible(1)", "InstructionID"
  endif    
-
- /* write to pvx files */                    ; experimental
- ;#define    ANALYSISFILE_L    #"pvswriteFileL.pvx"#        ; experimental
- ;#define    ANALYSISFILE_R    #"pvswriteFileR.pvx"#        ; experimental
- ;kcount    =    0                    ; experimental
- ;loop:                                ; experimental
- ;acount    interp    kcount                    ; experimental
- ;asampL    table3    acount,1                ; experimental    
- ;asampR    table3    acount,2                                ; experimental
- ;fsigL    pvsanal        asampL, 1024, 256, 1024, 1          ; experimental
- ;fsigR    pvsanal        asampR, 1024, 256, 1024, 1          ; experimental
- ;pvsfwrite     fsigL, $ANALYSISFILE_L                ; experimental
- ;pvsfwrite     fsigR, $ANALYSISFILE_R                ; experimental
- ;loop_lt    kcount,1,ftlen(1),loop                ; experimental
- ;turnoff                            ; experimental
 
 endin
 
 instr    2    ; play stretched
+ 
  if p3==-1 then ; MIDI
-  iNum   notnum
-  iTuning chnget "Tuning"
-  iCPS   cpstmid  giTTable1 + iTuning - 1    
-  iMlt   =        iCPS/cpsmidinn(60)
+  iNum        notnum
+  iTuning     chnget    "Tuning"
+  iCPS        cpstmid   giTTable1 + iTuning - 1    
+  iMlt        =         iCPS/cpsmidinn(60)
  else
-  iMlt   =        1
+  iMlt        =         1
  endif
  
  if giReady = 1 then                ; i.e. if a file has been loaded
-    
-  kStop        chnget    "Stop"
-  ktrig        trigger    kStop,0.5,0        ; Generate an impulse if 'STOP' is clicked
+  kStop       chnget    "Stop"
+  ktrig       trigger   kStop,0.5,0        ; Generate an impulse if 'STOP' is clicked
   if ktrig==1 then
    chnset k(0),"PlayStr"
    turnoff
   endif
 
   iFileLen    =    ftlen(gitableL)/sr                                            ; File length in seconds
-  iAttPnt    =    (i(gkAttack) == 0 ? 0.01 : (i(gkAttack)/sr))                ; If stretch points haven't been set, replace with defaults. 
+  iAttPnt    =    (i(gkAttack) == 0 ? 0.01 : (i(gkAttack)/sr))                   ; If stretch points haven't been set, replace with defaults. 
   iRelPnt    =    (i(gkAttack) == 0 ? 0.01 : ((i(gkAttack) + i(gkLen))/sr))
+  ;iAttPnt     =    i(gkStrt)*iFileLen
+  ;iRelPnt     =    i(gkEnd)*iFileLen
   
-  iDuration    chnget    "Duration"
-  
-  p3        limit    iDuration, iFileLen, iDuration
-  
+  iDuration   chnget    "Duration"
+    
   iFFTSize    chnget    "FFTSize"
-  iFFTSize    =    giFFTSizes[iFFTSize-1]
+  iFFTSize    =         giFFTSizes[iFFTSize-1]
   
   ; File reading pointer main shape
-  aptr        linseg    0,iAttPnt,iAttPnt, p3-iAttPnt-(iFileLen-iRelPnt), iRelPnt, iFileLen-iRelPnt, iFileLen
-
+  aptr        linseg    0,iAttPnt,iAttPnt, iDuration-iAttPnt-(iFileLen-iRelPnt), iRelPnt, iFileLen-iRelPnt, iFileLen
+  p3          =         -1
+  if k(aptr)>=iFileLen then
+   turnoff
+  endif
+  
  ; print scrubber 
- Smsg  sprintfk  "pos(%d,5)", ((k(aptr)/iFileLen) * 690) + 5
- chnset Smsg, "Scrubber"  
+ Smsg         sprintfk  "pos(%d,5)", ((k(aptr)/iFileLen) * 690) + 5
+              chnset    Smsg, "Scrubber"  
 
   ; File reading pointer jitter
-  kJitDep    chnget    "JitDep"
-  kJitRte    chnget    "JitRte"
-  irise        =    0.01
-  kJitEnv    linseg    0,iAttPnt,0, irise, .1, p3-iAttPnt-(iFileLen-iRelPnt) - (2*irise), .1, irise, 0 
-  ajit        jspline    kJitDep*kJitEnv,kJitRte*0.5,kJitRte*2
-
-
+  kJitDep     chnget    "JitDep"
+  kJitRte     chnget    "JitRte"
+  irise       =         0.01
+  kJitEnv     linseg    0,iAttPnt,0, irise, .1, p3-iAttPnt-(iFileLen-iRelPnt) - (2*irise), .1, irise, 0 
+  ajit        jspline   kJitDep*kJitEnv,kJitRte*0.5,kJitRte*2
 
   if gichans=1 then                        ; Mono
-   a1    mincer        aptr+ajit, 1, gkTranspose*iMlt, gitableL, gklock, iFFTSize
-   a1h   mincer        aptr+ajit, 1, 1*iMlt, gitableL, gklock, iFFTSize
+   a1         mincer    aptr+ajit, 1, gkTranspose*iMlt, gitableL, gklock, iFFTSize
+   a1h        mincer    aptr+ajit, 1, 1*iMlt, gitableL, gklock, iFFTSize
    if gkHarmony==1 then
-    a1    +=            a1h
+    a1        +=        a1h
    endif
-   ;kptr    linseg    0,iAttPnt,iAttPnt, p3-iAttPnt-(iFileLen-iRelPnt), iRelPnt, iFileLen-iRelPnt, iFileLen    ; experimental
-   ;a1    pvoc        kptr, gkTranspose, $ANALYSISFILE_L                            ; experimental
    if i(gkRise)>0 then
-    aEnv   cossegr 0, i(gkRise), 1, i(gkRise)*2, 0
-    aCF    cossegr 4, i(gkRise), 14, i(gkRise)*2, 4
-    a1     tone    a1, cpsoct(aCF)
-    a1     *=      aEnv
+    aEnv      cossegr   0, i(gkRise), 1, i(gkRise)*2, 0
+    aCF       cossegr   4, i(gkRise), 14, i(gkRise)*2, 4
+    a1        tone      a1, cpsoct(aCF)
+    a1        *=        aEnv
    endif
-      outs    a1*gkLevel,a1*gkLevel
+              outs      a1*gkLevel,a1*gkLevel
 
   elseif gichans=2 then                        ; Stereo
-   a1    mincer        aptr+ajit, 1, gkTranspose*iMlt, gitableL, gklock, iFFTSize
-   a1h   mincer        aptr+ajit, 1, 1*iMlt, gitableL, gklock, iFFTSize
+   a1         mincer    aptr+ajit, 1, gkTranspose*iMlt, gitableL, gklock, iFFTSize
+   a1h        mincer    aptr+ajit, 1, 1*iMlt, gitableL, gklock, iFFTSize
    if gkHarmony==1 then
-    a1    +=            a1h
+    a1        +=        a1h
    endif
-   a2    mincer        aptr+ajit, 1, gkTranspose*iMlt, gitableR, gklock, iFFTSize
-   a2h   mincer        aptr+ajit, 1, 1*iMlt, gitableR, gklock, iFFTSize
+   a2         mincer    aptr+ajit, 1, gkTranspose*iMlt, gitableR, gklock, iFFTSize
+   a2h        mincer    aptr+ajit, 1, 1*iMlt, gitableR, gklock, iFFTSize
    if gkHarmony==1 then
-    a2    +=            a2h
+    a2        +=        a2h
    endif
-   ;kptr    linseg    0,iAttPnt,iAttPnt, p3-iAttPnt-(iFileLen-iRelPnt), iRelPnt, iFileLen-iRelPnt, iFileLen    ; experimental
-   ;a1    pvoc        kptr, gkTranspose, $ANALYSISFILE_L                            ; experimental
-   ;a2    pvoc        kptr, gkTranspose, $ANALYSISFILE_R                            ; experimental
    if i(gkRise)>0 then
-    aEnv   cossegr 0, i(gkRise), 1, i(gkRise)*2, 0
-    aCF    cossegr 4, i(gkRise), 14, i(gkRise)*2, 4
-    a1     tone    a1, cpsoct(aCF)
-    a1     *=      aEnv
-    a2     tone    a2, cpsoct(aCF)
-    a2     *=      aEnv
+    aEnv      cossegr   0, i(gkRise), 1, i(gkRise)*2, 0
+    aCF       cossegr   4, i(gkRise), 14, i(gkRise)*2, 4
+    a1        tone      a1, cpsoct(aCF)
+    a1        *=        aEnv
+    a2        tone      a2, cpsoct(aCF)
+    a2        *=        aEnv
    endif
-      outs    a1*gkLevel,a2*gkLevel
+              outs      a1*gkLevel,a2*gkLevel
   endif
  endif
- 
+
  if trigger:k(gkPlayStr,0.5,1)==1 then
-  turnoff
+              turnoff
  endif
- 
  if release:k()==1 then
-  chnset k(0),"PlayStr"
+              chnset    k(0),"PlayStr"
  endif
- 
 endin
 
 instr    3    ; normal speed playback
@@ -357,18 +336,20 @@ instr    4    ; record/render
   iFileLen    =    ftlen(gitableL)/sr                        ; File length in seconds
   iAttPnt    =    (i(gkAttack) == 0 ? 0.01 : (i(gkAttack)/sr))            ; If stretch points haven't been set, replace with defaults. 
   iRelPnt    =    (i(gkAttack) == 0 ? 0.01 : ((i(gkAttack) + i(gkLen))/sr))
+;  iAttPnt     =    i(gkStrt)*iFileLen
+;  iRelPnt     =    i(gkEnd)*iFileLen
   
   iDuration    chnget    "Duration"
   
   p3        =    iDuration
              
-  ilen        strlen    gSfilepath            ; Derive string length.
-  SOutputName    strsub    gSfilepath,0,ilen-4        ; Remove ".wav"
-  SOutputName    strcat    SOutputName,"_stretched"    ; Add suffix
+  ilen         strlen    gSfilepath                 ; Derive string length.
+  SOutputName  strsub    gSfilepath,0,ilen-4        ; Remove ".wav"
+  SOutputName  strcat    SOutputName,"_stretched"   ; Add suffix
   iDate        date
   SDate        sprintf    "%i",iDate
-  SOutputName    strcat    SOutputName,SDate        ; Add date
-  SOutputName    strcat    SOutputName,".wav"        ; Add extension
+  SOutputName  strcat    SOutputName,SDate          ; Add date
+  SOutputName  strcat    SOutputName,".wav"         ; Add extension
   
   
   iFFTSize    chnget    "FFTSize"
@@ -383,57 +364,55 @@ instr    4    ; record/render
   aptr        linseg    0,iAttPnt,iAttPnt, p3-iAttPnt-(iFileLen-iRelPnt), iRelPnt, iFileLen-iRelPnt, iFileLen
 
   ; File reading pointer jitter
-  kJitDep    chnget    "JitDep"
-  kJitRte    chnget    "JitRte"
-  irise        =    0.01
-  kJitEnv    linseg    0,iAttPnt,0, irise, .1, p3-iAttPnt-(iFileLen-iRelPnt) - (2*irise), .1, irise, 0 
-  ajit        jspline    kJitDep*kJitEnv,kJitRte*0.5,kJitRte*2
+  kJitDep     chnget    "JitDep"
+  kJitRte     chnget    "JitRte"
+  irise       =         0.01
+  kJitEnv     linseg    0,iAttPnt,0, irise, .1, p3-iAttPnt-(iFileLen-iRelPnt) - (2*irise), .1, irise, 0 
+  ajit        jspline   kJitDep*kJitEnv,kJitRte*0.5,kJitRte*2
 
   if gichans=1 then                        ; Mono
-   a1    mincer        aptr+ajit, 1, gkTranspose, gitableL, gklock, iFFTSize
-   a1h   mincer        aptr+ajit, 1, 1, gitableL, gklock, iFFTSize
+   a1         mincer    aptr+ajit, 1, gkTranspose, gitableL, gklock, iFFTSize
+   a1h        mincer    aptr+ajit, 1, 1, gitableL, gklock, iFFTSize
    if gkHarmony==1 then
     a1    +=            a1h
    endif
-   ;kptr    linseg    0,iAttPnt,iAttPnt, p3-iAttPnt-(iFileLen-iRelPnt), iRelPnt, iFileLen-iRelPnt, iFileLen    ; experimental
-   ;a1    pvoc        kptr, gkTranspose, $ANALYSISFILE_L                            ; experimental
    if i(gkRise)>0 then
-    aEnv   cossegr 0, i(gkRise), 1, i(gkRise)*2, 0
-    aCF    cossegr 4, i(gkRise), 14, i(gkRise)*2, 4
-    a1     tone    a1, cpsoct(aCF)
-    a1     *=      aEnv
+    aEnv      cossegr   0, i(gkRise), 1, i(gkRise)*2, 0
+    aCF       cossegr   4, i(gkRise), 14, i(gkRise)*2, 4
+    a1        tone      a1, cpsoct(aCF)
+    a1        *=        aEnv
    endif
       fout    SOutputName,8,a1
 
   elseif gichans=2 then                        ; Stereo
-   a1    mincer        aptr+ajit, 1, gkTranspose, gitableL, gklock, iFFTSize
-   a1h   mincer        aptr+ajit, 1, 1, gitableL, gklock, iFFTSize
+   a1         mincer    aptr+ajit, 1, gkTranspose, gitableL, gklock, iFFTSize
+   a1h        mincer    aptr+ajit, 1, 1, gitableL, gklock, iFFTSize
    if gkHarmony==1 then
     a1    +=            a1h
    endif
-   a2    mincer        aptr+ajit, 1, gkTranspose, gitableR, gklock, iFFTSize
-   a2h   mincer        aptr+ajit, 1, 1, gitableR, gklock, iFFTSize
+   a2         mincer    aptr+ajit, 1, gkTranspose, gitableR, gklock, iFFTSize
+   a2h        mincer    aptr+ajit, 1, 1, gitableR, gklock, iFFTSize
    if gkHarmony==1 then
-    a2    +=            a2h
+    a2        +=        a2h
    endif
    ;kptr    linseg    0,iAttPnt,iAttPnt, p3-iAttPnt-(iFileLen-iRelPnt), iRelPnt, iFileLen-iRelPnt, iFileLen    ; experimental
    ;a1    pvoc        kptr, gkTranspose, $ANALYSISFILE_L                            ; experimental
    ;a2    pvoc        kptr, gkTranspose, $ANALYSISFILE_R                            ; experimental
    if i(gkRise)>0 then
-    aEnv   cossegr 0, i(gkRise), 1, i(gkRise)*2, 0
-    aCF    cossegr 4, i(gkRise), 14, i(gkRise)*2, 4
-    a1     tone    a1, cpsoct(aCF)
-    a1     *=      aEnv
-    a2     tone    a2, cpsoct(aCF)
-    a2     *=      aEnv
+    aEnv      cossegr   0, i(gkRise), 1, i(gkRise)*2, 0
+    aCF       cossegr   4, i(gkRise), 14, i(gkRise)*2, 4
+    a1        tone      a1, cpsoct(aCF)
+    a1        *=        aEnv
+    a2        tone      a2, cpsoct(aCF)
+    a2        *=        aEnv
    endif
-      fout    SOutputName,8,a1,a2
+              fout      SOutputName,8,a1,a2
   endif
 
-    loop_lt    kCount, 1, iNKCycles, loop
-    printks    SOutputName,0
-    printks    "\nDone!\n",0
-    turnoff
+              loop_lt   kCount, 1, iNKCycles, loop
+              printks   SOutputName,0
+              printks   "\nDone!\n",0
+              turnoff
     
  endif
 endin

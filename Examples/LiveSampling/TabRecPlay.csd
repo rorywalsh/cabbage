@@ -9,7 +9,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Written by Iain McCurdy, 2012
 
 <Cabbage>
-form caption("Tab.Rec/Play") size(300, 360), pluginId("tbrp")
+form caption("Tab.Rec/Play") size(300, 360), pluginId("tbrp"), colour("Black")
 
 groupbox bounds(  0,  0,300, 95), text("Transport")
 
@@ -17,20 +17,20 @@ label    bounds( 10, 75, 70, 14), text("Record")
 label    bounds( 80, 75, 70, 14), text("Pause") 
 label    bounds(150, 75, 70, 14), text("Play Loop") 
 label    bounds(220, 75, 70, 14), text("Play Once") 
-checkbox bounds( 10, 25, 70, 50), channel("Record"), value(0), shape("square"), colour("red")
-checkbox bounds( 80, 25, 70, 50), channel("Pause"), value(0), shape("square"), colour("Blue")
-checkbox bounds(150, 25, 70, 50), channel("PlayLoop"), value(0), shape("square")
-checkbox bounds(220, 25, 70, 50), channel("PlayOnce"), value(0), shape("square"), colour("yellow")   
+checkbox bounds( 15, 25, 60, 50), channel("Record"), value(0), shape("square"), colour("red")
+checkbox bounds( 85, 25, 60, 50), channel("Pause"), value(0), shape("square"), colour("Blue")
+checkbox bounds(155, 25, 60, 50), channel("PlayLoop"), value(0), shape("square")
+checkbox bounds(225, 25, 60, 50), channel("PlayOnce"), value(0), shape("square"), colour("yellow")   
 
-hslider bounds(  0,  95, 300,50), channel("Speed"), range(0, 4, 1)    ;, text("Speed")
+hslider bounds( 10,  95, 280,50), channel("Speed"), range(0, 4, 1)    ;, text("Speed")
 label   bounds(100, 135, 100,13), text("Speed"), align(centre)
-hslider bounds(  0, 145, 300,50), channel("LoopBeg"), range(0, 1, 0)    ;, text("Loop Begin")
+hslider bounds( 10, 145, 280,50), channel("LoopBeg"), range(0, 1, 0)    ;, text("Loop Begin")
 label   bounds(100, 185, 100,13), text("Loop Begin"), align(centre)
-hslider bounds(  0, 195, 300,50), channel("LoopEnd"), range(0, 1, 1)    ;, text("Loop End")
+hslider bounds( 10, 195, 280,50), channel("LoopEnd"), range(0, 1, 1)    ;, text("Loop End")
 label   bounds(100, 235, 100,13), text("Loop End"), align(centre)
-hslider bounds(  0, 245, 300,50), channel("InGain"), range(0, 1, 1)    ;, text("Input Gain")
+hslider bounds( 10, 245, 280,50), channel("InGain"), range(0, 1, 1)    ;, text("Input Gain")
 label   bounds(100, 285, 100,13), text("Input Gain"), align(centre)
-hslider bounds(  0, 295, 300,50), channel("OutGain"), range(0, 1, 1)    ;, text("Output Gain")
+hslider bounds( 10, 295, 280,50), channel("OutGain"), range(0, 1, 1)    ;, text("Output Gain")
 label   bounds(100, 335, 100,13), text("Output Gain"), align(centre)
 
 </Cabbage>

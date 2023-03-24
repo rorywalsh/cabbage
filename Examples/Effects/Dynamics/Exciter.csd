@@ -22,7 +22,7 @@ rslider  bounds( 80, 13, 75, 75), text("Ceiling"), channel("ceil"), range(20,200
 rslider  bounds(150, 13, 75, 75), text("Harmonics"), channel("harms"), range(0.1,10.00,10), markerColour("white"),     textColour("white"), colour(37,59,59), trackerColour("Silver")
 rslider  bounds(220, 13, 75, 75), text("Blend"), channel("blend"), range(-10,10,10,0.5,0.0001), markerColour("white"),     textColour("white"), colour(37,59,59), trackerColour("Silver")
 rslider  bounds(290, 13, 75, 75), text("Mix"), channel("mix"), range(0, 1.00, 0.5), markerColour("white"),      textColour("white"), colour(37,59,59), trackerColour("Silver")
-rslider  bounds(360, 13, 75, 75), text("Level"), channel("level"), range(0, 1.00, 0.5), markerColour("white"),      textColour("white"), colour(37,59,59), trackerColour("Silver")
+rslider  bounds(360, 13, 75, 75), text("Level"), channel("level"), range(0,20.00, 0.5,0.5), markerColour("white"),      textColour("white"), colour(37,59,59), trackerColour("Silver")
 </Cabbage>
 
 <CsoundSynthesizer>

@@ -8,9 +8,21 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; File Vocoder
 ; Iain McCurdy 2021
 
-  
+; Performs cross-synthesis (vocoding) using frequency domain processing (pvscross opcode)
+
+; First load two contrasting sound files into the provided slots.
+; Click 'CROSS SYNTHESISE' to perform the cross-synthesis (vocoding)
+
+; Playback speeds and pitches (frequency scaling) for each contributing sound file can be adjusted using dials.
+; Check what each sound file sounds like by clicking on 'Audition' in the relevant slot.
+
+; Change the number of frequency channels (frequency resolution) using FFT size menu. Classic vocoder effects should use a low FFT Size.
+
+; The two 'Amp' dials vary the amplitude data contribution for each of the two sound files. Experimentation is recommended.
+
+
 <Cabbage>
-form caption("File Vocoder")    size(850,420), colour(0,0,0) pluginId("FiSt"), guiRefresh(10) 
+form caption("File Vocoder")    size(850,420), colour(0,0,0) pluginId("FiVo"), guiRefresh(10) 
 image                 bounds(  0,  0,850,420), colour(70,60,65), outlineColour("White"), line(3), shape("sharp")
 
 soundfiler            bounds(125,  5,720,148), channel("beg","len"), identChannel("filer1"),  colour(150, 150, 255), fontColour(160, 160, 160, 255)

@@ -18,43 +18,47 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ;  - flooper2 will take the values from the last control input moved.
 
 <Cabbage>
-form caption("Flooper2 File Player") size(805,340), colour(0,0,0) pluginId("FlFP")
-image                     bounds(  0,  0,805,340), colour(155, 50,  0), outlineColour("White"), line(3), shape("sharp")    ; main panel colouration    
+form caption("Flooper2 File Player") size(985,380), colour(0,0,0) pluginId("FlFP")
+image                      bounds(  0,  0,985,380), colour(155, 50,  0), outlineColour("White"), line(3), shape("sharp")    ; main panel colouration    
 
-soundfiler bounds(  5,  5,795,175), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
+soundfiler                 bounds(  5,  5,975,175), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255), 
 label bounds(6, 4, 560, 14), text(""), align(left), colour(0,0,0,0), fontColour(200,200,200), identChannel("stringbox")
 
-image    bounds(  0,180,805,160), colour(155,30,0,0), outlineColour("white"), line(2), shape("sharp"), plant("controls"){
-filebutton bounds(  5, 10, 80, 25), text("Open File","Open File"), fontColour("white") channel("filename"), shape("ellipse")
-checkbox   bounds(  5, 40, 95, 25), channel("PlayStop"), text("Play/Stop"), colour("yellow"), fontColour("white")
+image    bounds(  0,180,985,200), colour(155,30,0,0), outlineColour("white"), line(2), shape("sharp"), plant("controls")
+{
+filebutton bounds(  5, 15, 80, 25), text("Open File","Open File"), fontColour("white") channel("filename"), shape("ellipse")
+checkbox   bounds(  5, 50, 95, 25), channel("PlayStop"), text("Play/Stop"), colour("yellow"), fontColour:0("white"), fontColour:1("white")
 
 label      bounds(110, 12, 80, 12), text("Looping Mode"), fontColour("white")
 combobox   bounds(110, 25, 80, 20), channel("mode"), items("Forward", "Backward", "Fwd./Bwd."), value(1), fontColour("white")
 
 line       bounds(207, 10,  2, 65), colour("Grey")
                         
-label      bounds(302,  4, 43, 8), text("L   O   O   P"), fontColour("white")
-rslider    bounds(210, 15, 60, 60), channel("LoopStart"), range(0, 1, 0),                   colour(100, 30, 10), text("Start"),     textColour("white"), trackerColour(175,130,110)
-rslider    bounds(265, 15, 60, 60), channel("LoopEnd"),   range(0, 1, 1),                   colour(100, 30, 10), text("End"),       textColour("white"), trackerColour(175,130,110)
-rslider    bounds(320, 15, 60, 60), channel("crossfade"), range(0, 1.00, 0.01,0.5),         colour(100, 30, 10), text("Fade"),      textColour("white"), trackerColour(175,130,110)
-rslider    bounds(375, 15, 60, 60), channel("inskip"),    range(0, 1.00, 0),                colour(100, 30, 10), text("inskip"),    textColour("white"), trackerColour(175,130,110)
-line       bounds(440, 10,  2, 65), colour("Grey")
+label      bounds(211,  2,230, 11), text("L   O   O   P   [or click and drag on waveform]"), fontColour("white"), align("centre")
+rslider    bounds(210, 15, 90, 90), channel("LoopStart"), range(0, 1, 0),                   colour(100, 30, 10), text("Start"),     textColour("white"), trackerColour(175,130,110), valueTextBox(1), fontColour("white")
+rslider    bounds(275, 15, 90, 90), channel("LoopEnd"),   range(0, 1, 1),                   colour(100, 30, 10), text("End"),       textColour("white"), trackerColour(175,130,110), valueTextBox(1), fontColour("white")
+rslider    bounds(340, 15, 90, 90), channel("crossfade"), range(0, 1.00, 0.01,0.5),         colour(100, 30, 10), text("Fade"),      textColour("white"), trackerColour(175,130,110), valueTextBox(1), fontColour("white")
+rslider    bounds(405, 15, 90, 90), channel("inskip"),    range(0, 1.00, 0),                colour(100, 30, 10), text("inskip"),    textColour("white"), trackerColour(175,130,110), valueTextBox(1), fontColour("white")
 
-label      bounds(475,  4, 53, 8), text("S   P   E   E   D"), fontColour("white")
-rslider    bounds(445, 15, 60, 60), channel("transpose"), range(-24, 24, 0,1,1),            colour(100, 30, 10), text("Transpose"), textColour("white"), trackerColour(175,130,110)
-rslider    bounds(500, 15, 60, 60), channel("speed"),     range( 0, 4.00, 1, 0.5),          colour(100, 30, 10), text("Speed"),     textColour("white"), trackerColour(175,130,110)
-line       bounds(560, 10,  2, 65), colour("Grey")
+line       bounds(490, 10,  2, 95), colour("Grey")
 
-label      bounds(576,  4, 90, 8), text("E   N   V   E   L   O   P   E"), fontColour("white")
-rslider    bounds(565, 15, 60, 60), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       colour(100, 30, 10), text("Att.Tim"),   textColour("white"), trackerColour(175,130,110)
-rslider    bounds(620, 15, 60, 60), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour(100, 30, 10), text("Rel.Tim"),   textColour("white"), trackerColour(175,130,110)
-line       bounds(680, 10,  2, 65), colour("Grey")
+label      bounds(450,  2,100, 11), text("S   P   E   E   D"), fontColour("white"), align("centre")
+rslider    bounds(485, 15, 90, 90), channel("transpose"), range(-24, 24, 0,1,1),            colour(100, 30, 10), text("Transpose"), textColour("white"), trackerColour(175,130,110), valueTextBox(1), fontColour("white")
+rslider    bounds(550, 15, 90, 90), channel("speed"),     range( 0, 4.00, 1, 0.5),          colour(100, 30, 10), text("Speed"),     textColour("white"), trackerColour(175,130,110), valueTextBox(1), fontColour("white")
 
-label      bounds(702,  4, 80, 8), text("C   O   N   T   R   O   L"), fontColour("white")
-rslider    bounds(685, 15, 60, 60), channel("MidiRef"),   range(0,127,60, 1, 1),            colour(100, 30, 10), text("MIDI Ref."), textColour("white"), trackerColour(175,130,110)
-rslider    bounds(740, 15, 60, 60), channel("level"),     range(  0,  3.00, 1, 0.5),        colour(100, 30, 10), text("Level"),     textColour("white"), trackerColour(175,130,110)
+line       bounds(635, 10,  2, 65), colour("Grey")
 
-keyboard bounds(5, 80, 795, 75)
+label      bounds(670,  2,100, 11), text("E  N  V  E  L  O  P  E"), fontColour("white"), align("centre")
+rslider    bounds(630, 15, 90, 90), channel("AttTim"),    range(0, 5, 0, 0.5, 0.001),       colour(100, 30, 10), text("Att.Tim"),   textColour("white"), trackerColour(175,130,110), valueTextBox(1), fontColour("white")
+rslider    bounds(695, 15, 90, 90), channel("RelTim"),    range(0.01, 5, 0.05, 0.5, 0.001), colour(100, 30, 10), text("Rel.Tim"),   textColour("white"), trackerColour(175,130,110), valueTextBox(1), fontColour("white")
+line       bounds(780, 10,  2, 65), colour("Grey")
+
+label      bounds(785,  2,110, 11), text("C   O   N   T   R   O   L"), fontColour("white"), align("centre")
+rslider    bounds(775, 15, 90, 90), channel("MidiRef"),   range(0,127,60, 1, 1),            colour(100, 30, 10), text("MIDI Ref."), textColour("white"), trackerColour(175,130,110), valueTextBox(1), fontColour("white")
+rslider    bounds(840, 15, 90, 90), channel("PchBnd"),     range(  0,  24.00, 2, 1.0.1),    colour(100, 30, 10), text("Level"),     textColour("white"), trackerColour(175,130,110), valueTextBox(1), fontColour("white")
+rslider    bounds(905, 15, 90, 90), channel("level"),     range(  0,  3.00, 1, 0.5),        colour(100, 30, 10), text("Level"),     textColour("white"), trackerColour(175,130,110), valueTextBox(1), fontColour("white")
+
+keyboard bounds(5,115, 975, 80)
 }
 </Cabbage>
 
@@ -113,6 +117,7 @@ instr    1
  gkPlayStop    chnget    "PlayStop"
  gktranspose    chnget    "transpose"
  gkspeed    chnget    "speed"
+ gkPchBndRng   chnget     "PchBnd"
  gklevel    chnget    "level"
 
  gSfilepath    chnget    "filename"
@@ -132,7 +137,6 @@ instr    1
  elseif ktrig2==1 then        ; if speed control has been changed...
   chnset    log2(gkspeed)*12,"transpose"    ; set transpose control according to speed value
  endif
-
 endin
 
 
@@ -199,6 +203,8 @@ endin
 instr    3    ; sample triggered by midi note
  icps    cpsmidi                            ; read in midi note data as cycles per second
  iamp    ampmidi    1                        ; read in midi velocity (as a value within the range 0 - 1)
+ kPchBnd       pchbend   0, 1                     ; read in pitch bend
+ kPchBnd       *=        gkPchBndRng
  iMidiRef    chnget    "MidiRef"
 
  if giReady = 1 then                        ; i.e. if a file has been loaded
@@ -213,16 +219,17 @@ instr    3    ; sample triggered by midi note
   aenv    interp        kenv                    ; interpolate and create a-rate envelope
   kporttime    linseg    0,0.001,0.05                ; portamento time function. (Rises quickly from zero to a held value.)
   klevel    portk    gklevel,kporttime            ; apply portamento smoothing to changes in level
+  kPchBnd      portk      kPchBnd, kporttime
   kcrossfade    =    0.01
   istart    =    0
   ifenv        =    0
   iskip        =    0
   if gichans==1 then                        ; if mono...
-   a1    flooper2    klevel*iamp,icps/cpsmidinn(iMidiRef), gkLoopStart*giFileLen, gkLoopEnd*giFileLen, gkcrossfade, gitableL, i(gkinskip)*giFileLen, i(gkmode)-1, ifenv, iskip
+   a1    flooper2    klevel*iamp,(icps*semitone:k(kPchBnd))/cpsmidinn(iMidiRef), gkLoopStart*giFileLen, gkLoopEnd*giFileLen, gkcrossfade, gitableL, i(gkinskip)*giFileLen, i(gkmode)-1, ifenv, iskip
     outs    a1*aenv,a1*aenv            ; send mono audio to both outputs 
   elseif gichans==2 then                    ; otherwise, if stereo...
-   a1    flooper2    klevel*iamp,icps/cpsmidinn(iMidiRef), gkLoopStart*giFileLen, gkLoopEnd*giFileLen, gkcrossfade, gitableL, i(gkinskip)*giFileLen, i(gkmode)-1, ifenv, iskip
-   a2    flooper2    klevel*iamp,icps/cpsmidinn(iMidiRef), gkLoopStart*giFileLen, gkLoopEnd*giFileLen, gkcrossfade, gitableR, i(gkinskip)*giFileLen, i(gkmode)-1, ifenv, iskip
+   a1    flooper2    klevel*iamp,(icps*semitone:k(kPchBnd))/cpsmidinn(iMidiRef), gkLoopStart*giFileLen, gkLoopEnd*giFileLen, gkcrossfade, gitableL, i(gkinskip)*giFileLen, i(gkmode)-1, ifenv, iskip
+   a2    flooper2    klevel*iamp,(icps*semitone:k(kPchBnd))/cpsmidinn(iMidiRef), gkLoopStart*giFileLen, gkLoopEnd*giFileLen, gkcrossfade, gitableR, i(gkinskip)*giFileLen, i(gkmode)-1, ifenv, iskip
      outs    a1*aenv,a2*aenv            ; send stereo signal to outputs
   endif               
  endif

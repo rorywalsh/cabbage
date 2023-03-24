@@ -11,9 +11,9 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; CONTROLS
 ; Input          -    select input: either left channel, right channel, or a mix of both channels
 ; Shape          -    shape of the LFO moving the source: either sine, triangle, random spline OR manual
-                      note, if 'random' is chosen, 'speed' can take a little while to respond to changes
-                      made to the 'speed' control is the speed was previously slow
-                      If 'manual' is selected source position is controlled using the on screen slider
+;                     note, if 'random' is chosen, 'speed' can take a little while to respond to changes
+;                     made to the 'speed' control is the speed was previously slow
+;                     If 'manual' is selected source position is controlled using the on screen slider
 ; Room Size       -   effectively the dpeth of the doppler pitch modulating effect
 ; Speed           -   speed of the LFO moving the source with respect to the mic. position
 ; Depth           -   amplitude of the LFO moving the source
@@ -27,7 +27,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Source Position -   Location of the source (for display only unless 'manual' shape is chosen)
 
 <Cabbage>
-form caption("-oOo-"), size(610, 180), pluginId("dopp")  
+form caption("-oOo-"), size(610, 180), colour("Black"), pluginId("dopp")
 label    bounds(20, 10, 35,11), text("Input:")
 combobox bounds(10, 22, 60,18), channel("input"), value(4), text("left","right","mixed","test")
 label    bounds(20, 50, 35,11), text("Shape:")

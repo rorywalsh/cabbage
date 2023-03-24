@@ -42,8 +42,8 @@ rslider bounds(360, 10, 70, 90), channel("look"), text("Lookahead"), range(0,1,0
 rslider bounds(430, 10, 70, 90), channel("gain"), text("Out Gain"), range(-36,36,0,1,1), $SLIDER_APPEARANCE
 hrange  bounds( 10,103,560, 30), channel("LowKnee","HighKnee"), range(-90, 0, -36:-24), $SLIDER_APPEARANCE
 label   bounds( 10,131,560, 13), text("Knee break points"), fontColour("black")
-nslider bounds( 15,130, 40, 18), channel("LowKneeD"), range(-90,0,-36,1,1)
-nslider bounds( 55,130, 40, 18), channel("HighKneeD"), range(-90,0,-24,1,1)
+nslider bounds( 15,130, 40, 22), channel("LowKneeD"), range(-90,0,-36,1,1)
+nslider bounds( 55,130, 40, 22), channel("HighKneeD"), range(-90,0,-24,1,1)
 checkbox bounds(510, 35,80,15), text("Autogain"), channel("Autogain"), fontColour:0("black"), fontColour:1("black")
 
 gentable bounds(600, 10,130,130), tableNumber(2), tableColour:0(255,255,0), identChannel("table1"), tablebackgroundColour(0,0,0), outlineThickness(2), fill(0), tableGridColour(100,100,100,100), ampRange(0,1,2), zoom(-1), active(1)

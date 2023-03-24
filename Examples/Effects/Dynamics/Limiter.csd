@@ -46,6 +46,7 @@ instr 1
  aL,aR       ins                                 ; read live audio in
  kthresh     chnget      "thresh"                ; read in widgets
  ksmooth     chnget      "smooth"                ; this is needed as an i-time variable so will have to be cast as an i variable and a reinitialisation forced
+ ksmooth     init        0.1
  kthresh     =           ampdbfs(kthresh)        ; convert threshold to an amplitude value
  if changed(ksmooth)==1 then                     ; if Smoothing slider is moved...
   reinit REINIT                                  ; ... force a reinitialisation
@@ -59,7 +60,7 @@ instr 1
  kdelay      chnget      "delay"             
  if kdelay>0 then                                ; if Delay value is anything above zero ...
   aL         vdelay      aL, kdelay * 1000, 200  ; delay audio signals before limiting
-  aR         vdelay      aR, kdelay  *1000, 200
+  aR         vdelay      aR, kdelay * 1000, 200
  endif
 
  if krms>kthresh then                            ; if current RMS is above threshold; i.e. limiting required

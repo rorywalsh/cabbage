@@ -54,7 +54,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; the buffered audio. The feedback loop will also be deactivated when 'freeze' is active.
 
 <Cabbage>
-form caption("Live Sndwarp") size(530, 495), pluginId("lwrp")
+form caption("Live Sndwarp") size(530, 495), pluginId("lwrp"), colour("Black")
 
 groupbox bounds(  0,  0, 300,100), text("Master"), colour(30, 30, 40), fontColour(255,125,125), plant("Master")
 {

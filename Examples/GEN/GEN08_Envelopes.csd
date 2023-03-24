@@ -81,7 +81,7 @@ image bounds( 10,375,780,1), shape("ellipse")
 checkbox bounds( 10,350,100, 15), channel("norm"), text("Normalise")
 
 label    bounds(150,390, 90,15) text("Synth uses:"), align("right")
-combobox bounds(240,389,130,17), text("3 point envelope","4 point envelope"), channel("env")
+combobox bounds(240,389,130,17), text("3 point envelope","4 point envelope"), channel("env"), value(1)
 
 hslider  bounds(405,387,390,10), channel("dur"), range(0.2,10,1,0.5,0.001)
 label    bounds(405,399,380,12), text("Total Duration")
@@ -391,21 +391,21 @@ endin
 
 
 instr    2
- idur    chnget    "dur"            ; envelope duration
+ idur    chnget    "dur"          ; envelope duration
  
  if timeinsts()>=idur then        ; if full duration is achieved...
-  turnoff                ; turn instrument off
+  turnoff                         ; turn instrument off
  endif
  
- kphr    phasor    1/idur            ; phasor reads through once
- ienv    chnget    "env"            ; envelope type selection (1 or 2, 1 = 3_point, 2 = 4_point)
- kenv    tablei    kphr,ienv,1        ; read values from function table. Amplitude envelope.
- kenv    limit    kenv,0,1        ; limit to prevent amplitude values that might produce out of range samples
- kenv    expcurve    kenv,8        ; shape the dynamics of the envelope to be more musical
- aenv    interp        kenv        ; interpolate and create a-rate version of envelope. (Less 'zipper' noise)
- icps    cpsmidi                ; read in midi pitch in cps
- asig    vco2    0.2,icps,4,0.5        ; create a triangle wave oscillator
- aDeClick    linsegr    1,0.01,0    ; de-click envelope (if note is stopped before envelope has completed
+ kphr    phasor    1/idur         ; phasor reads through once
+ ienv    chnget    "env"          ; envelope type selection (1 or 2, 1 = 3_point, 2 = 4_point)
+ kenv    tablei    kphr,ienv,1    ; read values from function table. Amplitude envelope.
+ kenv    limit     kenv,0,1       ; limit to prevent amplitude values that might produce out of range samples
+ kenv    expcurve  kenv,8         ; shape the dynamics of the envelope to be more musical
+ aenv    interp    kenv           ; interpolate and create a-rate version of envelope. (Less 'zipper' noise)
+ icps    cpsmidi                  ; read in midi pitch in cps
+ asig    vco2      0.2,icps,4,0.5 ; create a triangle wave oscillator
+ aDeClick linsegr  1,0.01,0       ; de-click envelope (if note is stopped before envelope has completed
      outs    asig*aenv*aDeClick, asig*aenv*aDeClick    ; send audio to outputs, apply amplitude envelope and de-clicking envelope
 endin
 

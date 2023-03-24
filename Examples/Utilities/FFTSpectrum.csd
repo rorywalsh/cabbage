@@ -205,7 +205,7 @@ instr  1
    rireturn
  endif
   
- ; Hide osc. freq control of not an oscillator
+ ; Hide osc. freq control if not an oscillator
  if changed(kLive,kWhite,kPink)==1 then
   if kLive+kWhite+kPink == 0 then
    chnset  "visible(1)","OscFreqID"

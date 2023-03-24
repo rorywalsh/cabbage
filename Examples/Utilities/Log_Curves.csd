@@ -9,7 +9,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Iain McCurdy, 2015
 
 <Cabbage>
-form size(1015,510), text("Log Curves"), pluginId("LgCu")
+form size(1015,510), caption("Log Curves"), pluginId("LgCu"), colour("Black")
 gentable bounds( 15,  5,990,500), tableNumber(1,2,3), tableColour("red","green","blue"), , tableColour:0("red") tableColour:1("green") tableColour:2("silver"), identChannel("table"), ampRange(-5,5,-1), zoom(-1), fill(0), outlineThickness(2)
 label    bounds( 22,  6, 80, 15), align("left"), text("1. log"),   fontColour("red")
 label    bounds( 22, 22, 80, 15), align("left"), text("2. log2"),  fontColour("green")

@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; Tuner.csd
 ; Written by Iain McCurdy, 2017.
 
@@ -19,7 +26,7 @@ checkbox bounds(264, 16,  9,  9), colour(255,  5,  5), channel("Err50"),  shape(
 image    bounds( 91, 48,120, 34), colour(0,0,0), outlineThickness(2), outlineColour("silver")
 label    bounds(107, 50, 60, 30), text("---"), identChannel("NoteNameID"), fontColour("white")
 label    bounds(157, 58, 60, 20), text("---"), identChannel("ErrorID"), fontColour("yellow")
-checkbox bounds( 15, 58, 60, 14), text("mute"), colour( 55,255, 55), channel("mute"), value(1), fontColour("white")
+checkbox bounds( 15, 58, 60, 14), text("mute"), colour:0( 55,255, 55), colour:1( 55,255, 55), channel("mute"), value(1), fontColour("white")
 }
 </Cabbage>
 

@@ -286,6 +286,7 @@ instr    2
  kbf         *=        cent( (p1-2) * 15)
  gkbw        chnget    "bw"
  gkgain      chnget    "gain"
+ gkgain      portk     gkgain, kporttime
  gknum       chnget    "num"
  gksep       chnget    "sep"                 ; octaves
  
@@ -447,7 +448,7 @@ instr    2
     aresR ButbpIt aresR, kBFP_CF, kBFP_CF * gkBPFBW, i(gkBPFmode) - 1
     rireturn 
  endif
-            outs    aresL * gkgain * aEnv, aresR * gkgain * aEnv    ;SEND FILTER OUTPUT TO THE AUDIO OUTPUTS AND SCALE USING THE FLTK SLIDER VARIABLE gkgain
+            outs    dcblock2:a(aresL * gkgain * aEnv), dcblock2:a(aresR * gkgain * aEnv)    ;SEND FILTER OUTPUT TO THE AUDIO OUTPUTS AND SCALE USING THE FLTK SLIDER VARIABLE gkgain
 endin
 
 instr    UpdateWidgets

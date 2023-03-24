@@ -30,14 +30,16 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 <Cabbage>
 form caption("Vocoder"), size(540, 500), pluginId("voco") guiRefresh(10)
 
+image  bounds(0,0,540,500), colour(255,255,150), shape("rounded"), outlineColour("white"), line(1)
+
 soundfiler bounds( 80,  1,460,148), channel("beg","len"), identChannel("filer1"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255)
 line       bounds(  0,150,540,   1), colour("DarkSlateGrey")
 soundfiler bounds( 80,151,460,148), channel("beg","len"), identChannel("filer2"),  colour(0, 255, 255, 255), fontColour(160, 160, 160, 255)
 
-label      bounds(  3,  8, 72, 12), text("MODULATOR")
-label      bounds(  3, 22, 72, 12), text("(e.g. voice)")
-label      bounds(  3,158, 72, 12), text("CARRIER")
-label      bounds(  3,172, 72, 12), text("(e.g. synth)")
+label      bounds(  3,  8, 72, 12), text("MODULATOR"), fontColour("black")
+label      bounds(  3, 22, 72, 12), text("(e.g. voice)"), fontColour("black")
+label      bounds(  3,158, 72, 12), text("CARRIER"), fontColour("black")
+label      bounds(  3,172, 72, 12), text("(e.g. synth)"), fontColour("black")
 
 filebutton bounds(  3, 41, 72, 18), text("Open File","Open File"), fontColour("white") channel("filename1"), shape("ellipse"), colour:0(50,50,100)
 button     bounds(  3, 66, 72, 18), text("PLAY","PLAY"), channel("Play1"), value(0), latched(1), fontColour:0(70,120,70), fontColour:1(205,255,205), colour:0(20,40,20), colour:1(0,150,0)
@@ -47,8 +49,6 @@ button     bounds(  3,216, 72, 18), text("PLAY","PLAY"), channel("Play2"), value
 
 label      bounds( 82,  4,448,  9), text(""), align(left), colour(0,0,0,0), fontColour(200,200,200), identChannel("stringbox1")
 label      bounds( 82,154,448,  9), text(""), align(left), colour(0,0,0,0), fontColour(200,200,200), identChannel("stringbox2")
-
-image  bounds(0,300,540,200), colour(255,255,150), shape("rounded"), outlineColour("white"), line(1)
 
 image   bounds(145,304,180, 31), colour(0,0,0,0) { 
 image   bounds(  0,  2,180, 31), colour( 10,225, 90,100), shape("ellipse"), outlineColour(205,205, 70), line(1)
@@ -100,7 +100,7 @@ vmeter   bounds(174,  0, 12, 95) channel("vMeter1") value(0) overlayColour(0, 0,
 }
 
 
-keyboard bounds( 10,415, 520,80)
+keyboard bounds( 5,415, 530,80)
 
 
 </Cabbage>

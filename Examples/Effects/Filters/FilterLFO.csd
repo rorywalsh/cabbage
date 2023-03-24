@@ -106,7 +106,7 @@ rslider  bounds(515, 11, 70, 70), text("Amp"),      colour( 30, 30 ,30),    trac
 rslider  bounds(580, 11, 70, 70), text("Rate"),     colour( 30, 30 ,30),    trackerColour("white"), fontColour("white"), channel("LFOBPM"), range(0, 480, 60, 1, 1), markerColour("silver")
 rslider  bounds(645, 11, 70, 70), text("Rate Div."),colour( 30, 30 ,30),    trackerColour("white"), fontColour("white"), channel("LFOBPMDiv"), range(1, 64, 1, 1, 1), markerColour("silver")
 rslider  bounds(710, 11, 70, 70), text("Smoothing"),colour( 30, 30 ,30),    trackerColour("white"), fontColour("white"), channel("LFOport"), range(0, 0.1, 0.005, 0.25, 0.000001), markerColour("silver")
-checkbox bounds(405, 31, 80, 12), text("Link Rates"), channel("RateLink"),colour(yellow), fontColour("white"),  value(0)
+checkbox bounds(405, 31, 80, 12), text("Link Rates"), channel("RateLink"),colour(yellow), fontColour:0("white"), fontColour:1("white"),  value(0)
 
 ;LFO2
 label    bounds(405, 91, 45, 17), text("LFO 2"), fontColour("white")
@@ -115,7 +115,6 @@ rslider  bounds(515, 91, 70, 70), text("Amp"), colour( 30, 30 ,30),            t
 rslider  bounds(580, 91, 70, 70), text("Rate"),colour( 30, 30 ,30),            trackerColour("white"), fontColour("white"), channel("LFOBPM2"), range(0, 480,  1, 1, 1), markerColour("silver")
 rslider  bounds(645, 91, 70, 70), text("Rate Div."),colour( 30, 30 ,30),    trackerColour("white"), fontColour("white"), channel("LFOBPMDiv2"), range(1, 64, 1, 1, 1), markerColour("silver")
 rslider  bounds(710, 91, 70, 70), text("Smoothing"),colour( 30, 30 ,30),    trackerColour("white"), fontColour("white"), channel("LFOport2"), range(0, 0.1, 0.001, 0.25, 0.000001), markerColour("silver")
-checkbox bounds(405,111, 80, 12), text("Link Rates"), channel("RateLink"),colour(yellow), fontColour("white"),  value(0)
 
 label   bounds(220,150, 170, 12), text("Author: Iain McCurdy |2013|"), fontColour("grey")
 </Cabbage>

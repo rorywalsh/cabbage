@@ -11,20 +11,20 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; "Str.1-8"     sets the strengths for the 8 partials.
 ; "Mute 1-8"    allow the user to mute individual partials
 ; "Solo 1-8"    allow the user to solo individual partials (multiple solos can be employed)
-; "Ph.1-8"     sets the initial phases (in degrees) for the 8 partials.
-; "Base"     sets a base offset (integer) for all partial numbers. The oscillator frequency will also be divided by this value.
-; "Int."     defines an additional cumulative interval (integer) between partials. E.g. if "Int." is '2', partials 1 will be unaffected, an additional interval of '2' will be added to partial 2, an additional interval of '4' will be added to partial 3 and so on. 
+; "Ph.1-8"      sets the initial phases (in degrees) for the 8 partials.
+; "Base"        sets a base offset (integer) for all partial numbers. The oscillator frequency will also be divided by this value.
+; "Int."        defines an additional cumulative interval (integer) between partials. E.g. if "Int." is '2', partials 1 will be unaffected, an additional interval of '2' will be added to partial 2, an additional interval of '4' will be added to partial 3 and so on. 
 ; Table Size    size of the table used by the synthesizer.
-;        If table size is reduced quantisation artefacts will become more prevalent, particularly if partial numbers are high. This 'lo-fi' effect may be desirable. 
-;         In actual fact, separate tables are used for each table size but the table display widget only ever displays the ninth table.
+;               If table size is reduced quantisation artefacts will become more prevalent, particularly if partial numbers are high. This 'lo-fi' effect may be desirable. 
+;               In actual fact, separate tables are used for each table size but the table display widget only ever displays the ninth table.
 
-;         The frequency of the audio oscillator is always scaled down according to the lowest partial number defined. This is to ensure that an audible fundemental is always played, something that may not otherwise occur if all partial numbers are high.
-;         The user can choose between three opcodes for synthesis: oscil, oscili or poscil. 
-;        The interpolating opcodes oscili and poscil are less likely to produce quantisation artifacts when small table sizes are used.
-;        The waveform can be played back using oscbnk (if 'voices' is greater than 1), in which case 'spread' and 'speed' can be used to modify the texture of the tone cluster.
+;               The frequency of the audio oscillator is always scaled down according to the lowest partial number defined. This is to ensure that an audible fundemental is always played, something that may not otherwise occur if all partial numbers are high.
+;               The user can choose between three opcodes for synthesis: oscil, oscili or poscil. 
+;               The interpolating opcodes oscili and poscil are less likely to produce quantisation artifacts when small table sizes are used.
+;               The waveform can be played back using oscbnk (if 'voices' is greater than 1), in which case 'spread' and 'speed' can be used to modify the texture of the tone cluster.
 
 <Cabbage>
-form caption("GEN09"), size(420, 555), pluginId("gn09")
+form caption("GEN09"), size(420, 555), pluginId("gn09"), colour("Black")
 
 gentable bounds( 10,  5, 400, 120), tableNumber(8), tableColour("LightBlue"), identChannel("table"), zoom(-1)
 
@@ -134,35 +134,35 @@ keyboard bounds(  0,475,420, 80)
 <CsInstruments>
 
 ; sr set by host
-ksmps         =     32    ;NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
-nchnls         =     2    ;NUMBER OF CHANNELS (1=MONO)
-0dbfs        =    1    ;MAXIMUM AMPLITUDE
-        massign    0,3    ; send all midi notes to instr 3
+ksmps        =          32    ; NUMBER OF AUDIO SAMPLES IN EACH CONTROL CYCLE
+nchnls       =          2     ; NUMBER OF CHANNELS (1=MONO)
+0dbfs        =          1     ; MAXIMUM AMPLITUDE
+             massign    0,3   ; send all midi notes to instr 3
 
 gicos        ftgen    0,0,4096,11,1        ;COSINE WAVE (USED BY THE LFOS)
-gieqffn        ftgen    0,0,4097,7,-1,4096,1
-gieqlfn        ftgen    0,0,4097,7,-1,4096,1
-gieqqfn        ftgen    0,0,4097,7,-1,4096,1
+gieqffn      ftgen    0,0,4097,7,-1,4096,1
+gieqlfn      ftgen    0,0,4097,7,-1,4096,1
+gieqqfn      ftgen    0,0,4097,7,-1,4096,1
 
 instr    1
     ; read in widgets
-    gkpn1    chnget    "pn1"
-    gkpn2    chnget    "pn2"
-    gkpn3    chnget    "pn3"
-    gkpn4    chnget    "pn4"
-    gkpn5    chnget    "pn5"
-    gkpn6    chnget    "pn6"
-    gkpn7    chnget    "pn7"
-    gkpn8    chnget    "pn8"
+    gkpn1      chnget    "pn1"
+    gkpn2      chnget    "pn2"
+    gkpn3      chnget    "pn3"
+    gkpn4      chnget    "pn4"
+    gkpn5      chnget    "pn5"
+    gkpn6      chnget    "pn6"
+    gkpn7      chnget    "pn7"
+    gkpn8      chnget    "pn8"
 
-    gkstr1    chnget    "str1"
-    gkstr2    chnget    "str2"
-    gkstr3    chnget    "str3"
-    gkstr4    chnget    "str4"
-    gkstr5    chnget    "str5"
-    gkstr6    chnget    "str6"
-    gkstr7    chnget    "str7"
-    gkstr8    chnget    "str8"
+    gkstr1     chnget    "str1"
+    gkstr2     chnget    "str2"
+    gkstr3     chnget    "str3"
+    gkstr4     chnget    "str4"
+    gkstr5     chnget    "str5"
+    gkstr6     chnget    "str6"
+    gkstr7     chnget    "str7"
+    gkstr8     chnget    "str8"
 
     gkmute1    chnget    "mute1"
     gkmute2    chnget    "mute2"
@@ -182,7 +182,7 @@ instr    1
     gksolo7    chnget    "solo7"
     gksolo8    chnget    "solo8"
 
-    kSoloSum    =    gksolo1+gksolo2+gksolo3+gksolo4+gksolo5+gksolo6+gksolo7+gksolo8
+    kSoloSum   =         gksolo1+gksolo2+gksolo3+gksolo4+gksolo5+gksolo6+gksolo7+gksolo8
 
 #define    SOLO_MUTE_STATUS(N)    
     #
@@ -203,25 +203,25 @@ instr    1
     $SOLO_MUTE_STATUS(7)
     $SOLO_MUTE_STATUS(8)
 
-    gkph1    chnget    "ph1"
-    gkph2    chnget    "ph2"
-    gkph3    chnget    "ph3"
-    gkph4    chnget    "ph4"
-    gkph5    chnget    "ph5"
-    gkph6    chnget    "ph6"
-    gkph7    chnget    "ph7"
-    gkph8    chnget    "ph8"
+    gkph1     chnget    "ph1"
+    gkph2     chnget    "ph2"
+    gkph3     chnget    "ph3"
+    gkph4     chnget    "ph4"
+    gkph5     chnget    "ph5"
+    gkph6     chnget    "ph6"
+    gkph7     chnget    "ph7"
+    gkph8     chnget    "ph8"
 
     gkbase    chnget    "base"
-    gkint    chnget    "int"
-    gkopcode    chnget    "opcode"
-    gkopcode    init    3        ; init pass value for gkopcode
+    gkint     chnget    "int"
+    gkopcode  chnget    "opcode"
+    gkopcode  init      3        ; init pass value for gkopcode
     
     ; if any of the variables in the input list are changed, a momentary '1' trigger is generated at the output. This trigger is used to update function tables.
-    ktrig    changed    gkpn1,gkpn2,gkpn3,gkpn4,gkpn5,gkpn6,gkpn7,gkpn8,gkstr1,gkstr2,gkstr3,gkstr4,gkstr5,gkstr6,gkstr7,gkstr8,kstatus1,kstatus2,kstatus3,kstatus4,kstatus5,kstatus6,kstatus7,kstatus8,gkph1,gkph2,gkph3,gkph4,gkph5,gkph6,gkph7,gkph8,gkbase,gkint
+    ktrig     changed   gkpn1,gkpn2,gkpn3,gkpn4,gkpn5,gkpn6,gkpn7,gkpn8,gkstr1,gkstr2,gkstr3,gkstr4,gkstr5,gkstr6,gkstr7,gkstr8,kstatus1,kstatus2,kstatus3,kstatus4,kstatus5,kstatus6,kstatus7,kstatus8,gkph1,gkph2,gkph3,gkph4,gkph5,gkph6,gkph7,gkph8,gkbase,gkint
 
     if ktrig==1 then
-     reinit    UPDATE
+              reinit    UPDATE
     endif
     UPDATE:
     ; Update function tables.
@@ -302,9 +302,13 @@ instr    3    ; sound producing instrument
 endin
 
 instr    4
-    ifn    chnget    "tabsize"
-    isize    =    ftlen(ifn)
-    fprints    "GEN09Table.txt", "giGEN09wave ftgen 0,0,%d,9,%d,%f,%f,%d,%f,%f,%d,%f,%f,%d,%f,%f,%d,%f,%f,%d,%f,%f,%d,%f,%f,%d,%f,%f",isize, i(gkbase)+i(gkpn1), i(gkstr1), i(gkph1), i(gkbase)+i(gkpn2)+i(gkint), i(gkstr2), i(gkph2), i(gkbase)+i(gkpn3)+(i(gkint)*2), i(gkstr3), i(gkph3), i(gkbase)+i(gkpn4)+(i(gkint)*3), i(gkstr4), i(gkph4), i(gkbase)+i(gkpn5)+(i(gkint)*4), i(gkstr5), i(gkph5), i(gkbase)+i(gkpn6)+(i(gkint)*5), i(gkstr6), i(gkph6), i(gkbase)+i(gkpn7)+(i(gkint)*6), i(gkstr7), i(gkph7), i(gkbase)+i(gkpn8)+(i(gkint)*7), i(gkstr8), i(gkph8)
+    ifn         chnget    "tabsize"
+    isize       =         ftlen(ifn)
+    SFile       =         "/GEN09Table.txt"
+    SPath       chnget    "USER_HOME_DIRECTORY"
+    SFilePath   strcat    SPath,SFile
+    
+    fprints    SFilePath, "giGEN09wave ftgen 0,0,%d,9,%d,%f,%f,%d,%f,%f,%d,%f,%f,%d,%f,%f,%d,%f,%f,%d,%f,%f,%d,%f,%f,%d,%f,%f",isize, i(gkbase)+i(gkpn1), i(gkstr1), i(gkph1), i(gkbase)+i(gkpn2)+i(gkint), i(gkstr2), i(gkph2), i(gkbase)+i(gkpn3)+(i(gkint)*2), i(gkstr3), i(gkph3), i(gkbase)+i(gkpn4)+(i(gkint)*3), i(gkstr4), i(gkph4), i(gkbase)+i(gkpn5)+(i(gkint)*4), i(gkstr5), i(gkph5), i(gkbase)+i(gkpn6)+(i(gkint)*5), i(gkstr6), i(gkph6), i(gkbase)+i(gkpn7)+(i(gkint)*6), i(gkstr7), i(gkph7), i(gkbase)+i(gkpn8)+(i(gkint)*7), i(gkstr8), i(gkph8)
 
 endin
 

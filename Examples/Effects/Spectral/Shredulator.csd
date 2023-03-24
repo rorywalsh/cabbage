@@ -33,7 +33,7 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 
 
 <Cabbage>
-form  size(460,395), caption("_"),colour(225,230,255), pluginId("Shrd"), scrollBars(0)
+form  size(460,395), caption("_"),colour(225,230,255), pluginId("Shrd"), guiMode("queue")
 image   bounds(  0,-10,460, 45), colour(0,0,0,0), outlineThickness(0), plant("title")
 {
 label   bounds(  0,  1,460, 51), text("SHREDULATOR"), fontColour(155,155,155)
@@ -94,51 +94,48 @@ rslider  bounds(250, 15, 90,90), text("Level"), textBox(1), valueTextBox(1), cha
 <CsInstruments>
 
 ; sr is set by host
-ksmps = 16
+ksmps  = 16
 nchnls = 2
-0dbfs = 1
-
-
-
+0dbfs  = 1
 
 opcode SHREDULATOR_LAYER, a, kkkkkkkikkp
  kMaxDelay,kDepth,kRate,kGranulation,kTranspose,kTransRand,kTime,iHandle1,kFeedback,kPrePost,iCount xin
  kDly1                randomh        0,i(kMaxDelay)*kDepth, kRate, 1                ; delay time
  kAmp1                trandom        changed(kDly1),-kGranulation*60,0
  kTranspose1_2        trandom        changed(kDly1),kTranspose-(2*kTranspose*kTransRand),kTranspose
- fsigOut              pvsbufread     kTime-kDly1, iHandle1                        ; read from buffer
+ fsigOut              pvsbufread     kTime-kDly1, iHandle1                      ; read from buffer
  fsigGran             pvsgain        fsigOut,ampdbfs(kAmp1)
  fScale               pvscale        fsigGran,semitone(kTranspose1_2)
- fsigFB               pvsgain       fScale, kFeedback            ; create feedback signal for next pass
+ fsigFB               pvsgain        fScale, kFeedback                          ; create feedback signal for next pass
  if kPrePost==1 then
-  aDly                pvsynth       fsigGran                                     ; resynthesise read buffer output
+  aDly                pvsynth        fsigGran                                   ; resynthesise read buffer output
  else
-  aDly                pvsynth       fScale                                     ; resynthesise read buffer output
+  aDly                pvsynth        fScale                                     ; resynthesise read buffer output
  endif
  xout aDly
 endop
 
 instr    1
- kMaxDelay            chnget        "MaxDelay"
- kMaxDelay            init          1
- kSemitones           chnget        "Semitones"
- kCents               chnget        "Cents"
- kTransRand           chnget        "TransRand"
- kDepth               chnget        "Depth"
- kRate                chnget        "Rate"
- kTranspose           =             kSemitones + kCents*0.01
- kFeedback            chnget        "Feedback"
- kWidth               chnget        "Width"
- kDryWetMix           chnget        "DryWetMix"
- kLevel               chnget        "Level"
- kFFTindex            chnget        "FFTindex"
- kFFTindex            init          4
- kGranulation         chnget        "Granulation"
- kPrePost             chnget        "PrePost"
- kPrePost             init          1
- iFFTsizes[]          fillarray     128,256,512,1024,2048,4096    ; array of FFT size values
+ kMaxDelay            cabbageGetValue         "MaxDelay"
+ kMaxDelay            init           1
+ kSemitones           cabbageGetValue         "Semitones"
+ kCents               cabbageGetValue         "Cents"
+ kTransRand           cabbageGetValue         "TransRand"
+ kDepth               cabbageGetValue         "Depth"
+ kRate                cabbageGetValue         "Rate"
+ kTranspose           =              kSemitones + kCents*0.01
+ kFeedback            cabbageGetValue         "Feedback"
+ kWidth               cabbageGetValue         "Width"
+ kDryWetMix           cabbageGetValue         "DryWetMix"
+ kLevel               cabbageGetValue         "Level"
+ kFFTindex            cabbageGetValue         "FFTindex"
+ kFFTindex            init           4
+ kGranulation         cabbageGetValue         "Granulation"
+ kPrePost             cabbageGetValue         "PrePost"
+ kPrePost             init           1
+ iFFTsizes[]          fillarray      128,256,512,1024,2048,4096               ; array of FFT size values
  
- ;aL        diskin    "JAG.wav",1,0,1                                            ; read in sound file
+ ;aL        diskin    "JAG.wav",1,0,1                                         ; read in sound file
  ;aL        poscil    0.4,300
  ;aR        =        aL
  aL,aR        ins
@@ -148,26 +145,26 @@ instr    1
  endif
  RESTART:
 
- iFFTsize             =              iFFTsizes[i(kFFTindex)-1]    ; retrieve FFT size value from array
+ iFFTsize             =              iFFTsizes[i(kFFTindex)-1]                ; retrieve FFT size value from array
 
  fsigInL              pvsanal        aL, iFFTsize, iFFTsize/4, iFFTsize, 1    ; FFT analyse audio
  fsigInR              pvsanal        aR, iFFTsize, iFFTsize/4, iFFTsize, 1    ; FFT analyse audio
- fsigFB               pvsinit        iFFTsize                                    ; initialise feedback signal
- fsigMixL             pvsmix         fsigInL, fsigFB                                ; mix feedback with input
- fsigMixR             pvsmix         fsigInR, fsigFB                                ; mix feedback with input
+ fsigFB               pvsinit        iFFTsize                                 ; initialise feedback signal
+ fsigMixL             pvsmix         fsigInL, fsigFB                          ; mix feedback with input
+ fsigMixR             pvsmix         fsigInR, fsigFB                          ; mix feedback with input
 
- iHandle1, kTime      pvsbuffer      fsigMixL, i(kMaxDelay)                                ; create a circular fsig buffer
+ iHandle1, kTime      pvsbuffer      fsigMixL, i(kMaxDelay)                   ; create a circular fsig buffer
   
   kLayers  =   1
   
  aDly                 SHREDULATOR_LAYER kMaxDelay,kDepth,kRate,kGranulation,kTranspose,kTransRand,kTime,iHandle1,kFeedback,kPrePost,i(kLayers)
- aMix                 ntrpol        aL,aDly,kDryWetMix                         ; dry/wet audio mix
-                      outs          aMix*kLevel*(1-kWidth),aMix*kLevel
+ aMix                 ntrpol         aL,aDly,kDryWetMix                       ; dry/wet audio mix
+                      outs           aMix*kLevel,aMix*kLevel*(1-kWidth)
 
- iHandle2, kTime      pvsbuffer     fsigMixR, i(kMaxDelay)                                ; create a circular fsig buffer
+ iHandle2, kTime      pvsbuffer      fsigMixR, i(kMaxDelay)                   ; create a circular fsig buffer
  aDly                 SHREDULATOR_LAYER kMaxDelay,kDepth,kRate,kGranulation,kTranspose,kTransRand,kTime,iHandle2,kFeedback,kPrePost,i(kLayers)
- aMix                 ntrpol        aR,aDly,kDryWetMix                         ; dry/wet audio mix
-                      outs          aMix*kLevel,aMix*kLevel*(1-kWidth)
+ aMix                 ntrpol         aR,aDly,kDryWetMix                       ; dry/wet audio mix
+                      outs           aMix*kLevel*(1-kWidth),aMix*kLevel
 
 endin
 

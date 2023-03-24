@@ -1,3 +1,10 @@
+
+/* Attribution-NonCommercial-ShareAlike 4.0 International
+Attribution - You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+NonCommercial - You may not use the material for commercial purposes.
+ShareAlike - If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
+
 ; Micropolyphony.csd
 ; Written by Iain McCurdy, 2016
 
@@ -89,7 +96,7 @@
 #define COLOUR2 colour(60,40,40)
 #define TRACKER trackerColour("yellow")
 
-form caption("Micropolyphony") size(1110,335), pluginId("MPSy")
+form caption("Micropolyphony") size(1110,335), pluginId("MPSy"), colour("black")
 
 ;MONO/POLY
 image   bounds(  5,  6,210,115), colour(0,0,0,0), shape("rounded"), outlineColour("white"), outlineThickness(2), plant("polyphony") {
@@ -129,7 +136,7 @@ rslider bounds(125, 20, 80, 80), text("Amount"),    channel("AAmt"), range(0,1,0
 ;FILTER
 image   bounds(895,  6,210,115), colour(0,0,0,0), shape("rounded"), outlineColour("white"), outlineThickness(2), plant("Filter") {
 label   bounds(  0,  5,210, 15), text("FILTER"),  fontColour(white), identChannel("FilterID0")
-checkbox bounds( 10, 50, 65, 15), text("On/Off"), channel("FOnOff"), value(1), colour("yellow"), fontColour("white")
+checkbox bounds( 10, 50, 65, 15), text("On/Off"), channel("FOnOff"), value(1), colour("yellow"), fontColour:0("white"), fontColour:1("white")
 rslider bounds( 65, 20, 80, 80), text("Cutoff"),    channel("FCutoff"), range(0,1,0.66,1,0.001), valueTextBox(1), textBox(1), identChannel("FilterID1"), $TRACKER, fontColour("white"), textColour("white")
 rslider bounds(125, 20, 80, 80), text("Follow"),     channel("FFollow"), range(0,1,0,1,0.001), valueTextBox(1), textBox(1), identChannel("FilterID2"), $TRACKER, fontColour("white"), textColour("white")
 }

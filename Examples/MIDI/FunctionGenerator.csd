@@ -58,7 +58,7 @@ form caption("MIDI Function Generator"), size(560,115), pluginId("FnGn")
 
 image    bounds(  5,  5,150,105), colour("black"), shape("rounded"), outlineThickness("4"), outlineColour("white")
 label    bounds( 10,  9,140, 11), text("G E N E R A T O R"), fontColour("WHITE")
-combobox bounds( 30, 30,100, 20), channel("generator"), text("Sine","Triangle","Square","Pulse","Saw Up","Saw Down","Randomi","Randomh","Rspline","Gauss.Noise","Exp.Noise","Rand.Loop")
+combobox bounds( 30, 30,100, 20), channel("generator"), text("Sine","Triangle","Square","Pulse","Saw Up","Saw Down","Randomi","Randomh","Rspline","Gauss.Noise","Exp.Noise","Rand.Loop"), value(1)
 rslider  bounds( 10, 55, 50, 50), channel("frq"), text("Freq."), range(0.01,100,1,0.375,0.01), identChannel("frqID")
 rslider  bounds( 60, 55, 50, 50), channel("wid"), text("Width"), range(1,99,50,1,1), identChannel("widID"), visible(0)
 rslider  bounds( 60, 55, 50, 50), channel("DeReg"), text("Dereg."), range(0,4,0,1,0.001), identChannel("DeRegID"), visible(0)
@@ -71,7 +71,7 @@ button   bounds(108, 60, 42, 23), text("Reset","Reset"), channel("reset"), latch
 
 image    bounds(160,  5,130,105), colour("black"), shape("rounded"), outlineThickness("4"), outlineColour("white"), plant("transform") {
 label    bounds(  5,  9,120, 11), text("T R A N S F O R M"), fontColour("WHITE")
-combobox bounds( 15, 30,100, 20), channel("transform"), text("Bypass","Port","Lineto","Samp.Hold","Power Skew","Limit Skew","Gauss.Noise","Dual Port.","Quantise")
+combobox bounds( 15, 30,100, 20), channel("transform"), text("Bypass","Port","Lineto","Samp.Hold","Power Skew","Limit Skew","Gauss.Noise","Dual Port.","Quantise"), value(1)
 rslider  bounds( 40, 55, 50, 50), channel("time"), text("Time"), range(0.002,1,0.1,0.5,0.001), identChannel("timeID"), visible(0)
 rslider  bounds( 15, 55, 50, 50), channel("timeUp"), text("Time Up"), range(0.002,1,0.003,0.5,0.001), identChannel("timeUpID"), visible(0)
 rslider  bounds( 65, 55, 50, 50), channel("timeDn"), text("Time Dn."), range(0.002,1,0.1,0.5,0.001), identChannel("timeDnID"), visible(0)
@@ -379,10 +379,6 @@ instr    1
 ; printk 1, kfn
  
  gkfn    =    kfn            ; OUTPUT FUNCTION. GLOBAL VARIABLE FOR USE IN instr 3
-
-
-
-
 
 endin
 

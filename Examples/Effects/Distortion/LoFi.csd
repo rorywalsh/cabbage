@@ -9,7 +9,8 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Written by Iain McCurdy, 2012.
 
 <Cabbage>
-form size(230, 120), caption("Lo Fi"), pluginId("lofi"), scrollBars(0)
+form size(230, 120), caption("Lo Fi"), pluginId("lofi"), colour(57,70,75)
+checkbox bounds(  5,5,80,15), channel("TestTone"), text("Test Tone") fontColour("White")
 rslider bounds(  5, 31, 80, 80), text("Bits"),     channel("bits"),  range(1, 16, 16),        textColour("White"),    colour("orange"), trackerColour("brown"), outlineColour("grey")
 rslider bounds( 75,  7, 80, 80), text("Foldover"), channel("fold"),  range(1, 1024, 0, 0.25), textColour("White"),    colour("orange"), trackerColour("brown"), outlineColour("grey")
 rslider bounds(145, 31, 80, 80), text("Level"),    channel("level"), range(0, 1.00, 1),       textColour("White"),    colour("orange"), trackerColour("brown"), outlineColour("grey")
@@ -39,10 +40,16 @@ opcode  LoFi,a,akk
 endop
 
 instr 1 
+kTestTone chnget  "TestTone"
 kbits     chnget  "bits"
 kfold     chnget  "fold"
 klevel    chnget  "level"
-a1,a2     ins
+if kTestTone==0 then
+ a1,a2     ins
+else
+ a1       poscil  0.5,330
+ a2       =       a1
+endif
 kporttime linseg  0, 0.001, 0.01
 kfold     portk   kfold, kporttime
 a1        LoFi    a1, kbits * 0.6, kfold

@@ -20,10 +20,10 @@ form caption("GEN21"), size(410, 220), pluginId("gn21"), colour( 40,110, 80)
 gentable bounds(  5,  5, 400, 120), tableNumber(1), tableColour("lime"), identChannel("table1"), ampRange(-1,1,1), fill(0)
 
 combobox bounds( 10, 130, 200,20), channel("dist"), value(1), text("Uniform [pos.]","Linear [pos.]","Triangular [pos. and neg.]","Exponential [pos.]","Biexponential [pos. and neg.]","Gaussian [pos. and neg.]","Cauchy [pos. and neg.]","Cauchy [pos.]","Beta","Weibull","Poisson")
-checkbox bounds( 10, 160, 100,14), channel("AudOnOff"), text("Audio On/Off")
-rslider  bounds(210, 130, 80, 80), text("Level"), channel("level"), range(0, 1.00, 1,0.5,0.001), textBox(1), valueTextBox(1), colour(20, 90, 60), trackerColour("yellow"), fontColour("white")
-rslider  bounds(270, 130, 80, 80), text("Arg.1"), channel("arg1"),  range(0, 1.00, 1), textBox(1), valueTextBox(1), colour(20, 90, 60), trackerColour("yellow"), fontColour("white"), visible(0), identChannel("ident_arg1")
-rslider  bounds(330, 130, 80, 80), text("Arg.2"), channel("arg2"),  range(0, 1.00, 1), textBox(1), valueTextBox(1), colour(20, 90, 60), trackerColour("yellow"), fontColour("white"), visible(0), identChannel("ident_arg2")
+checkbox bounds( 10, 160, 100,14), channel("AudOnOff"), text("Audio On/Off"), fontColour:0("white"), fontColour:1("white")
+rslider  bounds(210, 130, 80, 80), text("Level"), channel("level"), range(0, 1.00, 1,0.5,0.001), textBox(1), valueTextBox(1), colour(20, 90, 60), trackerColour("yellow"), fontColour("white"), textColour("White")
+rslider  bounds(270, 130, 80, 80), text("Arg.1"), channel("arg1"),  range(0, 1.00, 1), textBox(1), valueTextBox(1), colour(20, 90, 60), trackerColour("yellow"), fontColour("white"), visible(0), identChannel("ident_arg1"), textColour("White")
+rslider  bounds(330, 130, 80, 80), text("Arg.2"), channel("arg2"),  range(0, 1.00, 1), textBox(1), valueTextBox(1), colour(20, 90, 60), trackerColour("yellow"), fontColour("white"), visible(0), identChannel("ident_arg2"), textColour("White")
 
 </Cabbage>
                     

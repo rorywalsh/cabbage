@@ -71,7 +71,6 @@ endin
 
 
 instr    2
-print p1
         kporttime    linseg    0,0.01,0.03                ;CREATE A VARIABLE THAT WILL BE USED FOR PORTAMENTO TIME
 
  ; MIDI AND GUI INTEROPERABILITY

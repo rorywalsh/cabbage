@@ -15,7 +15,7 @@ gentable bounds(  5,  5, 400, 120), tableNumber(1), identChannel("table1"), zoom
 
 combobox bounds(130, 130, 175,20), channel("window"), value(1), text("Hamming","Hanning","Bartlett [Triangle]","Blackman [3-term]","Blackman-Harris [4-term]","Gaussian","Kaiser","Rectangle","Sync.")
 
-hslider  bounds(  5,150,340, 30), text("Option"), channel("opt"), range(0, 10.00, 1, 0.5), valuetextBox(1), textBox(1), trackerColour("yellow"), fontColour("white")
+hslider  bounds(  5,150,340, 30), text("Option"), channel("opt"), range(0, 10.00, 1, 0.5), valueTextBox(1), textBox(1), trackerColour("yellow"), fontColour("white"), textColour("White")
 label    bounds(  3,172,110, 11), text("[Gaussian & Kaiser]"),  fontColour("white")
 checkbox bounds(345,158, 55, 13), text("x 100") channel("x100"), colour("yellow"), fontColour("white"),  value(0)
 

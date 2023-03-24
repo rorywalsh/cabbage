@@ -13,38 +13,37 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Hint: For instant gratification just click the 'Random' button.
 
 ; Note (16 mini rotary controls)    - set the note number of each step of the sequence. Notes can also be set by typing directly over the numbers beneath the knobs.
-; On/Off    -    On/Off status of each step of the sequence
-; Hold        -    If a hold button is active the filter envelope will not be retriggered for this step
-; Cutoff    -    Manual control of filter cutoff frequency (moogladder opcode)
+; On/Off         -    On/Off status of each step of the sequence
+; Hold           -    If a hold button is active the filter envelope will not be retriggered for this step
+; Cutoff         -    Manual control of filter cutoff frequency (moogladder opcode)
 ;            N.B. the filter follows the note being played so cutoff values set here are ratios of the current note
-; Env.Mod.    -    Amount of envelope modification of the filter cutoff frequency. 
+; Env.Mod.       -    Amount of envelope modification of the filter cutoff frequency. 
 ;            Note that this control can be set to negative values resulting in an inversion of the filter envelope.
-; Follow    -    Amount by which filter cutoff follows the note being played. I think the authentic TB303 method is not to use any key following.
-; Res.        -    Resonance of the filter
-; Decay        -    Decay time of the filter envelope
-; Dist.        -    Amount of waveshaping distortion (clip opcode)
-; Reset        -    Cancel all sequence button settings
-; Random    -    Set 'Note', 'On', 'Hold' and 'Accent' sequence control to random values
+; Follow         -    Amount by which filter cutoff follows the note being played. I think the authentic TB303 method is not to use any key following.
+; Res.           -    Resonance of the filter
+; Decay          -    Decay time of the filter envelope
+; Dist.          -    Amount of waveshaping distortion (clip opcode)
+; Reset          -    Cancel all sequence button settings
+; Random         -    Set 'Note', 'On', 'Hold' and 'Accent' sequence control to random values
 ; -semi/+semi    -    Increment all 'Note' controls up or down 1 semitone step 
-; -octave/+octave    -    Increment all 'Note' controls up or down 1 octave step
-; Gliss        -    glissando time from note to note (where two notes are tied with an active 'Hold' button)
+; -octave/+octave-    Increment all 'Note' controls up or down 1 octave step
+; Gliss          -    glissando time from note to note (where two notes are tied with an active 'Hold' button)
 ; -- A bandpass filter is used to EQ the overall sound and to fatten the bass response of the synth --
-; BPF.CF.    -    Cutoff frequency of a bandpass filter (resonr). This is a fixed frequency filter, i.e. doesn't follow the note being played 
-; BPF.BW.    -    Bandwidth of the bandpass filter
-; BPF.Bal.    -    Balancing method of the bandpass filter (resonr).     0=none 
+; BPF.CF.        -    Cutoff frequency of a bandpass filter (resonr). This is a fixed frequency filter, i.e. doesn't follow the note being played 
+; BPF.BW.        -    Bandwidth of the bandpass filter
+; BPF.Bal.       -    Balancing method of the bandpass filter (resonr).     0=none 
 ;                                        1=peak_response_of_1 
 ;                                        2=RMS_of_1
-; BPF.Mix    -    Mix between un-bandpass filtered sound and bandpass filtered sound.
-; Attack    -    Attack time for the main lowpass filter (moogladder) envelope
-; Phr.Len.    -    Phrase length in steps
-; Tempo        -    Tempo in beats per minute (this control is hidden if 'Clock: External' is selected
-; Volume    -    Volume control
-; Filter    -    (drop down menu) choose between a moogladder filter and an LPF18 filter. moogladder sounds fatter but LPF18 sounds better when used with distortion
-; Waveform    -    (drop down menu) basic waveform type. (Sawtooth, Square, Triangle, Pulse Width Modulation (PWM) or Noise)
-            If PWM is selected a control for pulse width is revealed
-; Sub.        -    If active a sub-oscillator (1 octave below the main oscillator) is added
-; Clock:---    -    Clock source internal (Tempo knob) or external (VST host)
-
+; BPF.Mix        -    Mix between un-bandpass filtered sound and bandpass filtered sound.
+; Attack         -    Attack time for the main lowpass filter (moogladder) envelope
+; Phr.Len.       -    Phrase length in steps
+; Tempo          -    Tempo in beats per minute (this control is hidden if 'Clock: External' is selected
+; Volume         -    Volume control
+; Filter         -    (drop down menu) choose between a moogladder filter and an LPF18 filter. moogladder sounds fatter but LPF18 sounds better when used with distortion
+; Waveform       -    (drop down menu) basic waveform type. (Sawtooth, Square, Triangle, Pulse Width Modulation (PWM) or Noise)
+;                     If PWM is selected a control for pulse width is revealed
+; Sub.           -    If active a sub-oscillator (1 octave below the main oscillator) is added
+; Clock:---      -    Clock source internal (Tempo knob) or external (VST host)
 <Cabbage>
 #define RSliderStyle trackerColour(255,255,255), colour(  0, 55,100), textColour(0,0,0), outlineColour(50,50,50), valueTextBox(1), textBox(1), fontColour("black")
 
@@ -67,7 +66,7 @@ checkbox bounds(520,  8,  5,  5), channel("Act14"), value(0), colour("yellow"), 
 checkbox bounds(555,  8,  5,  5), channel("Act15"), value(0), colour("yellow"), shape("ellipse"), active(0)
 checkbox bounds(590,  8,  5,  5), channel("Act16"), value(0), colour("yellow"), shape("ellipse"), active(0)
 
-label    bounds( 10, 43, 40, 12), text("Note"), FontColour("black")
+label    bounds( 10, 43, 40, 12), text("Note"), fontColour("black")
 rslider  bounds( 45, 15, 45, 65), text("1"),  channel("Note1"),  range(12, 96, 60, 1, 1), valueTextBox(1), textBox(1), fontColour("black"), $RSliderStyle
 rslider  bounds( 80, 15, 45, 65), text("2"),  channel("Note2"),  range(12, 96, 60, 1, 1), valueTextBox(1), textBox(1), fontColour("black"), $RSliderStyle
 rslider  bounds(115, 15, 45, 65), text("3"),  channel("Note3"),  range(12, 96, 60, 1, 1), valueTextBox(1), textBox(1), fontColour("black"), $RSliderStyle
@@ -164,7 +163,7 @@ rslider  bounds(470,220, 70, 90), text("Tempo"),   channel("Tempo"),   range(1, 
 rslider  bounds(535,220, 70, 90), text("Vol."),    channel("Vol"),     range(0, 5.00, 1),        $RSliderStyle
 
 label      bounds(480,146, 90, 12), text("Phrase Length:"), fontColour("black")                                                                       
-nslider  bounds(570,145, 30, 15), channel("PhrLen"),       range(1,16,16,1,1)
+nslider  bounds(570,141, 30, 24), channel("PhrLen"),       range(1,16,16,1,1)
 button     bounds(480,165, 60, 15), text("Reset"),   channel("Reset"),  value(0), latched(0)
 button     bounds(540,165, 60, 15), text("Random"),  channel("Rnd"),    value(0), latched(0)
 button     bounds(480,185, 60, 15), text("-semi"),   channel("SemiDn"), value(0), latched(0)
@@ -177,7 +176,7 @@ combobox bounds( 10,220, 70, 20), channel("FiltType"), value(1), text("303","LPF
 label    bounds( 10,247, 70, 12), text("Waveform"), fontColour("black")                                                                       
 combobox bounds( 10,260, 70, 20), channel("Waveform"), value(1), text("Saw","Square","Triangle","PWM","Noise"), fontColour("white")
 hslider  bounds( 10,308,270, 25), text("P.W."),    channel("pw"),      range(0.01,0.99, 0.25), identChannel("pwID"), visible(0), trackerColour(255,255,255), colour(  0, 55,100), textColour(0,0,0), outlineColour(50,50,50)
-checkbox bounds(280,313, 45, 13), text("Sub."), channel("sub"), value(0), fontColour("black")
+checkbox bounds(280,313, 45, 13), text("Sub."), channel("sub"), value(0), fontColour:0("black"), fontColour:1("black")
 button   bounds(330,310,100, 20), text("Clock: Internal","Clock: External"), channel("ClockSource"), value(0)                                                   
 label    bounds(435,321,165, 12), text("Author: Iain McCurdy |2012|"), fontColour("black")
                                                                        

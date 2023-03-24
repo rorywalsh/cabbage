@@ -93,10 +93,6 @@ if changed:k(ktype)==1 then
  endif
 endif
 
-;a1,a2  diskin2 "808loop.wav",1,0,1
-;a1 =   a1*0.4
-;a2 =   a2*0.4
-
 /*level meter*/
 amix            sum               a1, a2
 krms            rms               amix * 0.5
@@ -108,7 +104,7 @@ a1              EnvelopeFollower  a1, ksens, katt, krel, kfreq, ktype, kres * 0.
 a2              EnvelopeFollower  a2, ksens, katt, krel, kfreq, ktype, kres * 0.95, kdist * 100
 a1              =                 a1 * klevel * (1 - ((kdist * 0.3) ^ 0.02))                     ; scale amplitude according to distortion level (to compensate for gain increases it applies)
 a2              =                 a2 * klevel * (1 - ((kdist * 0.3) ^ 0.02))
-;               outs              a1, a2
+                outs              a1, a2
 endin
 
 </CsInstruments>

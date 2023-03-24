@@ -25,7 +25,7 @@ soundfiler bounds(  5,  5,675,175), channel("beg","len"), identChannel("filer1")
 
 image    bounds(  0,180,685,160), colour(0,0,0,0), outlineColour("white"), line(2), shape("sharp"), plant("controls"){
 filebutton bounds(  5, 10, 80, 25), text("Open File","Open File"), fontColour("white") channel("filename"), shape("ellipse")
-checkbox   bounds(  5, 40, 95, 25), channel("PlayStop"), text("Play/Stop"), colour("yellow"), fontColour("white")
+checkbox   bounds(  5, 40, 95, 25), channel("PlayStop"), text("Play/Stop"), colour("yellow"), fontColour:0("white"), fontColour:1("white")
 
 label      bounds(110, 12, 80, 12), text("Looping Mode"), fontColour("white")
 combobox   bounds(110, 25, 80, 20), channel("loop"), items("None", "Forward", "Fwd./Bwd."), value(1), fontColour("white")

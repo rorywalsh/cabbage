@@ -58,36 +58,36 @@ rslider  bounds(665,  5, 60, 60), text("Maracas"),    textColour("black"), colou
 rslider  bounds(720,  5, 60, 60), text("Quijada"),    textColour("black"), colour(255,220,155), alpha(0.75), channel("quijada"),     range(0, 1, 0.6), trackerColour(255,255,205)
 rslider  bounds(775,  5, 60, 60), text("Tamb."),      textColour("black"), colour(255,220,155), alpha(0.75), channel("tambourine"),  range(0, 1, 0.6), trackerColour(255,255,205)
 
-checkbox bounds( 13, 66, 60, 10), text("mute"), channel("mute1"), fontColour("black"), colour(red),value(0)
-checkbox bounds( 13, 78, 60, 10), text("solo"), channel("solo1"), fontColour("black"), colour(lime),value(0)
-checkbox bounds( 68, 66, 60, 10), text("mute"), channel("mute2"), fontColour("black"), colour(red),value(0)
-checkbox bounds( 68, 78, 60, 10), text("solo"), channel("solo2"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(123, 66, 60, 10), text("mute"), channel("mute3"), fontColour("black"), colour(red),value(0)
-checkbox bounds(123, 78, 60, 10), text("solo"), channel("solo3"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(178, 66, 60, 10), text("mute"), channel("mute4"), fontColour("black"), colour(red),value(0)
-checkbox bounds(178, 78, 60, 10), text("solo"), channel("solo4"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(233, 66, 60, 10), text("mute"), channel("mute5"), fontColour("black"), colour(red),value(0)
-checkbox bounds(233, 78, 60, 10), text("solo"), channel("solo5"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(288, 66, 60, 10), text("mute"), channel("mute6"), fontColour("black"), colour(red),value(0)
-checkbox bounds(288, 78, 60, 10), text("solo"), channel("solo6"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(343, 66, 60, 10), text("mute"), channel("mute7"), fontColour("black"), colour(red),value(0)
-checkbox bounds(343, 78, 60, 10), text("solo"), channel("solo7"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(398, 66, 60, 10), text("mute"), channel("mute8"), fontColour("black"), colour(red),value(0)
-checkbox bounds(398, 78, 60, 10), text("solo"), channel("solo8"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(453, 66, 60, 10), text("mute"), channel("mute9"), fontColour("black"), colour(red),value(0)
-checkbox bounds(453, 78, 60, 10), text("solo"), channel("solo9"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(508, 66, 60, 10), text("mute"), channel("mute10"), fontColour("black"), colour(red),value(0)
-checkbox bounds(508, 78, 60, 10), text("solo"), channel("solo10"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(563, 66, 60, 10), text("mute"), channel("mute11"), fontColour("black"), colour(red),value(0)
-checkbox bounds(563, 78, 60, 10), text("solo"), channel("solo11"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(618, 66, 60, 10), text("mute"), channel("mute12"), fontColour("black"), colour(red),value(0)
-checkbox bounds(618, 78, 60, 10), text("solo"), channel("solo12"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(673, 66, 60, 10), text("mute"), channel("mute13"), fontColour("black"), colour(red),value(0)
-checkbox bounds(673, 78, 60, 10), text("solo"), channel("solo13"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(728, 66, 60, 10), text("mute"), channel("mute14"), fontColour("black"), colour(red),value(0)
-checkbox bounds(728, 78, 60, 10), text("solo"), channel("solo14"), fontColour("black"), colour(lime),value(0)
-checkbox bounds(783, 66, 60, 10), text("mute"), channel("mute15"), fontColour("black"), colour(red),value(0)
-checkbox bounds(783, 78, 60, 10), text("solo"), channel("solo15"), fontColour("black"), colour(lime),value(0)
+checkbox bounds( 13, 66, 60, 10), text("mute"),  channel("mute1"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds( 13, 78, 60, 10), text("solo"),  channel("solo1"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds( 68, 66, 60, 10), text("mute"),  channel("mute2"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds( 68, 78, 60, 10), text("solo"),  channel("solo2"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(123, 66, 60, 10), text("mute"),  channel("mute3"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(123, 78, 60, 10), text("solo"),  channel("solo3"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(178, 66, 60, 10), text("mute"),  channel("mute4"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(178, 78, 60, 10), text("solo"),  channel("solo4"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(233, 66, 60, 10), text("mute"),  channel("mute5"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(233, 78, 60, 10), text("solo"),  channel("solo5"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(288, 66, 60, 10), text("mute"),  channel("mute6"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(288, 78, 60, 10), text("solo"),  channel("solo6"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(343, 66, 60, 10), text("mute"),  channel("mute7"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(343, 78, 60, 10), text("solo"),  channel("solo7"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(398, 66, 60, 10), text("mute"),  channel("mute8"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(398, 78, 60, 10), text("solo"),  channel("solo8"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(453, 66, 60, 10), text("mute"),  channel("mute9"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(453, 78, 60, 10), text("solo"),  channel("solo9"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(508, 66, 60, 10), text("mute"), channel("mute10"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(508, 78, 60, 10), text("solo"), channel("solo10"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(563, 66, 60, 10), text("mute"), channel("mute11"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(563, 78, 60, 10), text("solo"), channel("solo11"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(618, 66, 60, 10), text("mute"), channel("mute12"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(618, 78, 60, 10), text("solo"), channel("solo12"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(673, 66, 60, 10), text("mute"), channel("mute13"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(673, 78, 60, 10), text("solo"), channel("solo13"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(728, 66, 60, 10), text("mute"), channel("mute14"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(728, 78, 60, 10), text("solo"), channel("solo14"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
+checkbox bounds(783, 66, 60, 10), text("mute"), channel("mute15"), fontColour:0("black"), fontColour:1("black"), colour(red),value(0)
+checkbox bounds(783, 78, 60, 10), text("solo"), channel("solo15"), fontColour:0("black"), fontColour:1("black"), colour(lime),value(0)
 
 ;control
 image    bounds(620,100, 220,150), colour(0,0,0,0), line(0), plant("control"){
@@ -105,7 +105,7 @@ rslider  bounds(145,  5, 60, 60), text("Dec."), textColour("black"), colour(200,
 checkbox bounds(130,  2,  7,  7), channel("DistOn"), value(0), colour(red), shape("ellipse")
 checkbox bounds(190,  2,  7,  7), channel("FoldOn"), value(0), colour(red), shape("ellipse")
 
-checkbox bounds( 15, 45, 70, 12), channel("cutup"), text("Mash"), fontColour("black"), colour("yellow"),value(0)
+checkbox bounds( 15, 45, 70, 12), channel("cutup"), text("Mash"), fontColour:0("black"), fontColour:1("black"), colour("yellow"),value(0)
 
 rslider  bounds(  0, 70, 70, 70), text("Volume"),     textColour("black"), colour(200,160, 80), trackerColour(120,100, 52), outlineColour(60,50,26), channel("volume"),      range(0, 1.00, .4)
 rslider  bounds( 70, 70, 70, 70), text("Tempo"),      textColour("black"), colour(200,160, 80), trackerColour(120,100, 52), outlineColour(60,50,26), channel("tempo"),       range(40, 480, 115, 1, 1)
@@ -2052,7 +2052,6 @@ instr    201
     Sname    =    p4
     chnset    giOff,Sname
 endin
-
 
 </CsInstruments>  
 <CsScore>

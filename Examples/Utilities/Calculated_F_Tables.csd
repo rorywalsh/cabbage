@@ -17,11 +17,11 @@ https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode */
 ; Some of these functions might be useful for control mapping or waveshaping.
 
 <Cabbage>
-form size(500,570), text("Calculated F-Table"), guiRefresh(32), colour(80,80,80), pluginId("CaFT")
+form size(500,570), caption("Calculated F-Table"), guiRefresh(32), colour(80,80,80), pluginId("CaFT")
 gentable bounds(  0,  0,500,500), tableNumber(1), tableColour("Orange"), identChannel("table"), ampRange(-1,1,-1), zoom(-1), fill(0)
 image    bounds(  0,250,500,  1), shape("sharp"), colour("white")
 image    bounds(500,  0,  1,300), shape("sharp"), colour("white"), identChannel("y_axis")
-combobox bounds(  5,505,120, 20), channel("formula"), text("y = x","y = -x","y = x / a","y = x * a","y = x ^ a","y = - [x ^ a]","y = x ^ [1/a]","y = - x ^ [1/a] + 1","y = sin[x * pi]","y = cos[x * pi]","y = tan[x * pi]","y = log[x]","y = log2[x]","y = log10[x]","y = sinh[x * a]","y = cosh[x * a]","y = tanh[x * pi * a]","y = sininv[x]","y = cosinv[x]","y = taninv[x * a]","y = a ^ x","y = [a ^ x] - 1","y = [a ^ -x] - 1")
+combobox bounds(  5,505,120, 20), channel("formula"), text("y = x","y = -x","y = x / a","y = x * a","y = x ^ a","y = - [x ^ a]","y = x ^ [1/a]","y = - x ^ [1/a] + 1","y = sin[x * pi]","y = cos[x * pi]","y = tan[x * pi]","y = log[x]","y = log2[x]","y = log10[x]","y = sinh[x * a]","y = cosh[x * a]","y = tanh[x * pi * a]","y = sininv[x]","y = cosinv[x]","y = taninv[x * a]","y = a ^ x","y = [a ^ x] - 1","y = [a ^ -x] - 1"), value(1)
 
 image  bounds( 5,525, 66, 40) plant("a") identChannel("aID") colour(0,0,0,0)
 {
@@ -32,8 +32,8 @@ button    bounds(41,  8, 20, 14), text("^","^") channel("aDecr") latched(0), rot
 
 label    bounds(130,513,100, 14), text("normalised"), visible(0), identChannel("normalised")
 label    bounds(220,513,100, 14), text("x = 0 to 10"), visible(0), identChannel("x = 0 to 10")
-nslider bounds(340,505,60,30), text("x value"), channel("xval"), range(-10, 10,0,1,0.00001)
-nslider bounds(405,505,60,30), text("y value"), channel("yval"), range(-100,100,0,1,0.00001)
+nslider bounds(340,505,70,30), text("x value"), channel("xval"), range(-10, 10,0,1,0.00001)
+nslider bounds(415,505,70,30), text("y value"), channel("yval"), range(-100,100,0,1,0.00001)
 </Cabbage>
 
 <CsoundSynthesizer>
