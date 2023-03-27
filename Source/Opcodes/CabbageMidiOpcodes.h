@@ -17,7 +17,7 @@
 // ReadStateData
 //====================================================================================================
 
-struct CabbageMidiReader : csnd::Plugin<6, 5>
+struct CabbageMidiReader : csnd::Plugin<6, 6>
 {
     int init();
     int kperf();
@@ -26,6 +26,8 @@ struct CabbageMidiReader : csnd::Plugin<6, 5>
     double sampleIndex = 0;
     double nextStartTime = -1.0;
     double startTime;
+    double lastTimeStamp = 0;
+    bool shouldLoop = false;
     int getStatusType(juce::MidiMessage mess);
 
     bool hasStopped = false;

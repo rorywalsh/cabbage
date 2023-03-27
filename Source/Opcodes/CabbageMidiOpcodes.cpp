@@ -14,14 +14,18 @@ int CabbageMidiReader::init()
     sampleIndex = 0;
     nextStartTime = -1.0;
     startTime = 0;
+    skipTime = 0;
     
-    if(in_count()<4)
+    if (in_count() < 4)
     {
         csound->init_error("Not enough input arguments\n");
         return NOTOK;
     }
-    else if(in_count() == 5)
-        skipTime = inargs[4];
+    else if (in_count() == 6)
+    {
+        skipTime = inargs[5];
+    }
+        
     
     currentTrack = static_cast<int>(inargs[1]);
 
@@ -34,6 +38,7 @@ int CabbageMidiReader::init()
     juce::FileInputStream midiStream(File::getCurrentWorkingDirectory().getChildFile(inargs.str_data(0).data));
     midiFile.readFrom(midiStream, true);
     midiFile.convertTimestampTicksToSeconds();
+    lastTimeStamp = midiFile.getLastTimestamp();
     
     csnd::Vector<MYFLT>& statusOut = outargs.myfltvec_data(0);
     csnd::Vector<MYFLT>& channelOut = outargs.myfltvec_data(1);
@@ -58,10 +63,12 @@ int CabbageMidiReader::kperf()
         return NOTOK;
     }
 
+   
     
     
     bool isPlaying = static_cast<bool>(inargs[2]);
-    double playBackSpeed = inargs[3];
+    shouldLoop = inargs[3];
+    double playBackSpeed = inargs[4];
     int numEvents = 0;
     
     csnd::Vector<MYFLT>& statusOut = outargs.myfltvec_data(0);
@@ -87,22 +94,31 @@ int CabbageMidiReader::kperf()
         //event vectors
         for( int i = 0 ; i < ksmps() ; i++)
         {
-            startTime = (sampleIndex++)/sr() + skipTime;
+
+            startTime = (sampleIndex++)/sr() + skipTime;  
+            if (startTime > lastTimeStamp && shouldLoop)
+            {   
+                sampleIndex = 0;
+                startTime = 0 + skipTime;
+            }
             double endTime = startTime + (ksmps() / sr());
 
-            for (auto p = 0; p < theSequence->getNumEvents(); p++)
+            if (theSequence->getNumEvents() > 0)
             {
-                MidiMessageSequence::MidiEventHolder *event = theSequence->getEventPointer(p);
-
-                if (event->message.getTimeStamp()*playBackSpeed >= startTime &&
-                    event->message.getTimeStamp()*playBackSpeed < endTime)
+                for (auto p = 0; p < theSequence->getNumEvents(); p++)
                 {
-                    status[numEvents] = getStatusType(event->message);
-                    channel[numEvents] = event->message.getChannel();
-                    noteNumber[numEvents] = event->message.getNoteNumber();
-                    velocity[numEvents] = event->message.getVelocity();
-                    numEvents++;
-                    outargs[5] = 1;
+                    MidiMessageSequence::MidiEventHolder* event = theSequence->getEventPointer(p);
+                    
+                    if (event->message.getTimeStamp() * playBackSpeed >= startTime &&
+                        event->message.getTimeStamp() * playBackSpeed < endTime)
+                    {
+                        status[numEvents] = getStatusType(event->message);
+                        channel[numEvents] = event->message.getChannel();
+                        noteNumber[numEvents] = event->message.getNoteNumber();
+                        velocity[numEvents] = event->message.getVelocity();
+                        numEvents++;
+                        outargs[5] = 1;
+                    }
                 }
             }
         }
@@ -128,6 +144,8 @@ int CabbageMidiReader::kperf()
             hasStopped = true;
             outargs[5] = 1;
             numEvents = 128;
+            sampleIndex = 0;
+            startTime = 0;
         }
     }
     
@@ -175,12 +193,16 @@ int CabbageMidiFileInfo::init()
     }
 
     juce::FileInputStream midiStream(File::getCurrentWorkingDirectory().getChildFile(args.str_data(0).data));
-    int* type;
+    int* type = 0;
     midiFile.readFrom(midiStream, true, type);
     midiFile.convertTimestampTicksToSeconds();
     csound->message("\n***** Midi file information *****");
     csound->message("Nidi file name:\""+std::string(args.str_data(0).data)+"\"");
-    csound->message("Midi file type:"+std::to_string(*type));
+
+    if(type)
+        csound->message("Midi file type:"+std::to_string(*type));
+    else
+        csound->message("Could not determine the type of midi file...");
     csound->message("Number of tracks:"+std::to_string(midiFile.getNumTracks()));
     csound->message("Last time stamp in seconds:"+std::to_string(midiFile.getLastTimestamp()));
     MidiMessageSequence tempos;
