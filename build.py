@@ -575,7 +575,7 @@ for project in projects:
                 os.system('cp -rf ../Examples '+rootDir+'/CabbageInstall/Examples')
                 os.system('cp -rf ../Themes '+rootDir+'/CabbageInstall/Themes')
                 os.system('cp ./Installers/Linux/Cabbage.desktop ' + rootDir+'/CabbageInstall/Cabbage.desktop') 
-                os.system('cp 'rootDir+'/CabbageInstall/ '+rootDir+'/CabbageInstall/Desktop')
+                os.system('cp '+rootDir+'/CabbageInstall/ '+rootDir+'/CabbageInstall/Desktop')
             elif "CLIConverter" in project:
                 os.system('cp -Rf CLIConverter_artefacts/'+configType+'/CLIConverter ' +rootDir+'/CabbageInstall/bin/CLIConverter')
             elif "Effect" in project or "Synth" in project:
