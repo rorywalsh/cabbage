@@ -125,7 +125,7 @@ private:
     std::unique_ptr<AudioThumbnail> thumbnail;
     Colour colour, bgColour;
     int mouseDownX, mouseUpX;
-    Rectangle<int> localBounds;
+   juce::Rectangle<int> localBounds;
     double loopLength;
     double loopStart;
     double currentPlayPosition;

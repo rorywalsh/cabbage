@@ -30,7 +30,7 @@ class CabbageEncoder : public Component, public ValueTree::Listener, public Cabb
 {
     bool isMouseOver = false;
     bool shouldDisplayPopup = true;
-    Rectangle<float> slider;
+    juce::Rectangle<float> slider;
     Label textLabel, valueLabel;
     float sliderIncr = 0;
     float value = 0;

@@ -209,7 +209,7 @@ public:
 
 protected:
 	//==============================================================================
-	/** Draws a white note in the given rectangle.
+	/** Draws a white note in the givenjuce::Rectangle.
 
 	isOver indicates whether the mouse is over the key, isDown indicates whether the key is
 	currently pressed down.
@@ -217,11 +217,11 @@ protected:
 	When doing this, be sure to note the keyboard's orientation.
 	*/
 	virtual void drawWhiteNote(int midiNoteNumber,
-		Graphics& g, Rectangle<float> area,
+		Graphics& g, juce::Rectangle<float> area,
 		bool isDown, bool isOver,
 		Colour lineColour, Colour textColour);
 
-	/** Draws a black note in the given rectangle.
+	/** Draws a black note in the givenjuce::Rectangle.
 
 	isOver indicates whether the mouse is over the key, isDown indicates whether the key is
 	currently pressed down.
@@ -229,7 +229,7 @@ protected:
 	When doing this, be sure to note the keyboard's orientation.
 	*/
 	virtual void drawBlackNote(int midiNoteNumber,
-		Graphics& g, Rectangle<float> area,
+		Graphics& g, juce::Rectangle<float> area,
 		bool isDown, bool isOver,
 		Colour noteFillColour);
 
@@ -276,8 +276,8 @@ protected:
 	*/
 	virtual Range<float> getKeyPosition(int midiNoteNumber, float keyWidth) const;
 
-	/** Returns the rectangle for a given key if within the displayable range */
-	Rectangle<float> getRectangleForKey(int midiNoteNumber) const;
+	/** Returns thejuce::Rectangle for a given key if within the displayable range */
+	juce::Rectangle<float> getRectangleForKey(int midiNoteNumber) const;
 
 
 private:

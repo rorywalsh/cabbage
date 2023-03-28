@@ -103,7 +103,7 @@ private:
         {
         }
 
-        void contentAreaChanged (const Rectangle<int>& newArea) override
+        void contentAreaChanged (const juce::Rectangle<int>& newArea) override
         {
             comboBox.setSize (newArea.getWidth() - 2,
                               jmin (newArea.getHeight() - 2, 22));

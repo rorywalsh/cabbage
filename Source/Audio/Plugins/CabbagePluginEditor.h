@@ -20,6 +20,7 @@
 #ifndef CABBAGEPLUGINEDITOR_H_INCLUDED
 #define CABBAGEPLUGINEDITOR_H_INCLUDED
 
+
 #include "JuceHeader.h"
 #include "CabbagePluginProcessor.h"
 
@@ -57,6 +58,7 @@
 #include "../../Widgets/CabbageCustomWidgets.h"
 #include "../../Widgets/CabbageEventSequencer.h"
 #include "../../Widgets/CabbageUnlockButton.h"
+#include "../../Widgets/CabbageWebView.h"
 
 class CabbagePluginEditor;
 
@@ -126,6 +128,7 @@ public:
     void insertScrew (const ValueTree& cabbageWidgetData);
     void insertLight (const ValueTree& cabbageWidgetData);
 	void insertUnlockButton(const ValueTree& cabbageWidgetData);
+    void insertWebViewButton(const ValueTree& cabbageWidgetData);
     
     void moveBehind(String thisComp, String otherComp);
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);

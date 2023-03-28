@@ -220,7 +220,7 @@ void Soundfiler::paint (Graphics& g)
     if (thumbnail->getTotalLength() != 0.0 && validFile)
     {
         //if(GEN01 then draw thumbnail)
-        Rectangle<int> thumbArea (getLocalBounds());
+       juce::Rectangle<int> thumbArea (getLocalBounds());
         thumbArea.setHeight (getHeight() - 14);
         thumbArea.setTop (10.f);
         thumbnail->drawChannels (g, thumbArea.reduced (2),

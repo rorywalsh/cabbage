@@ -360,6 +360,9 @@ void CabbagePluginEditor::insertWidget (const ValueTree& cabbageWidgetData)
 	else if (widgetType == CabbageWidgetTypes::unlockbutton)
 		insertUnlockButton(cabbageWidgetData);
 
+    else if (widgetType == CabbageWidgetTypes::webview)
+        insertWebViewButton(cabbageWidgetData);
+
     else if (widgetType == CabbageWidgetTypes::filebutton)
         insertFileButton (cabbageWidgetData);
 
@@ -585,6 +588,15 @@ void CabbagePluginEditor::insertUnlockButton(const ValueTree& cabbageWidgetData)
 	addToEditorAndMakeVisible(button, cabbageWidgetData);
 	addMouseListenerAndSetVisibility(button, cabbageWidgetData);
 }
+
+void CabbagePluginEditor::insertWebViewButton(const ValueTree& cabbageWidgetData)
+{
+    CabbageWebView* webV;
+    components.add(webV = new CabbageWebView(cabbageWidgetData, this));
+    addToEditorAndMakeVisible(webV, cabbageWidgetData);
+    addMouseListenerAndSetVisibility(webV, cabbageWidgetData);
+}
+
 void CabbagePluginEditor::insertNumberSlider (const ValueTree& cabbageWidgetData)
 {
     CabbageNumberSlider* numberBox;

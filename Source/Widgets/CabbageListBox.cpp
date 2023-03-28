@@ -373,7 +373,7 @@ void CabbageListBox::paintListBoxItem (int rowNumber, Graphics& g,
         g.fillAll(Colour::fromString(colour));
 
     g.setColour(Colour::fromString(fontColour));
-    g.drawFittedText(stringItems[rowNumber], Rectangle<int> (width, height), justify, 0);
+    g.drawFittedText(stringItems[rowNumber], juce::Rectangle<int> (width, height), justify, 0);
 }
 
 void CabbageListBox::selectedRowsChanged (int /*lastRowselected*/)

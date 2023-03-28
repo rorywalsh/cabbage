@@ -208,12 +208,12 @@ bool CabbageKeyboard::mouseDraggedToKey (int midiNoteNumber, const MouseEvent &e
 }
 
 
-void CabbageKeyboard::drawNoteOutline(Graphics& g, int midiNote, Rectangle<float> area)
+void CabbageKeyboard::drawNoteOutline(Graphics& g, int midiNote,juce::Rectangle<float> area)
 {
     std::vector<PathPoint> points;
     auto blackNote = getRectangleForKey(midiNote + (midiNote % 12 == 11 ? -1 : 1));
 
-    Rectangle<float> nextBlackNoteArea = area.withHeight(getBlackNoteLength()).withWidth(getKeyWidth()*blackNoteWidth).withCentre(blackNote.getCentre().withX(area.getX()+area.getWidth()));
+   juce::Rectangle<float> nextBlackNoteArea = area.withHeight(getBlackNoteLength()).withWidth(getKeyWidth()*blackNoteWidth).withCentre(blackNote.getCentre().withX(area.getX()+area.getWidth()));
     
     //getLowestVisibleKey();
 
@@ -298,7 +298,7 @@ void CabbageKeyboard::drawNoteOutline(Graphics& g, int midiNote, Rectangle<float
 
 
 
-void CabbageKeyboard::drawWhiteNote (int midiNoteNumber, Graphics& g, Rectangle<float> area,
+void CabbageKeyboard::drawWhiteNote (int midiNoteNumber, Graphics& g,juce::Rectangle<float> area,
                                            bool isDown, bool isOver, Colour lineColour, Colour textColour)
 {
     auto c = Colours::transparentWhite;
@@ -358,7 +358,7 @@ void CabbageKeyboard::drawWhiteNote (int midiNoteNumber, Graphics& g, Rectangle<
 }
 
 
-void CabbageKeyboard::drawBlackNote (int midiNoteNumber, Graphics& g, Rectangle<float> area,
+void CabbageKeyboard::drawBlackNote (int midiNoteNumber, Graphics& g,juce::Rectangle<float> area,
                                            bool isDown, bool isOver, Colour noteFillColour)
 {
     auto c = noteFillColour;
@@ -384,7 +384,7 @@ void CabbageKeyboard::drawBlackNote (int midiNoteNumber, Graphics& g, Rectangle<
         if(outlineThickness>0)
         {
             auto nextNote = getRectangleForKey(midiNoteNumber+1);
-            Rectangle<float> nextBlackNoteArea = area.withWidth(getKeyWidth()*blackNoteWidth).withX(nextNote.getX() - (getKeyWidth()*blackNoteWidth)/2.f);
+           juce::Rectangle<float> nextBlackNoteArea = area.withWidth(getKeyWidth()*blackNoteWidth).withX(nextNote.getX() - (getKeyWidth()*blackNoteWidth)/2.f);
             drawNoteOutline(g, midiNoteNumber, nextBlackNoteArea);
         }
         else

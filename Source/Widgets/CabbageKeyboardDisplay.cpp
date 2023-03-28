@@ -290,7 +290,7 @@ Range<float> MidiKeyboardDisplay::getKeyPos(int midiNoteNumber) const
 		- getKeyPosition(rangeStart, keyWidth).getStart();
 }
 
-Rectangle<float> MidiKeyboardDisplay::getRectangleForKey(int note) const
+juce::Rectangle<float> MidiKeyboardDisplay::getRectangleForKey(int note) const
 {
 	jassert(note >= rangeStart && note <= rangeEnd);
 
@@ -491,7 +491,7 @@ void MidiKeyboardDisplay::paint(Graphics& g)
 	}
 }
 
-void MidiKeyboardDisplay::drawWhiteNote(int midiNoteNumber, Graphics& g, Rectangle<float> area,
+void MidiKeyboardDisplay::drawWhiteNote(int midiNoteNumber, Graphics& g, juce::Rectangle<float> area,
 	bool isDown, bool isOver, Colour lineColour, Colour textColour)
 {
 	auto c = Colours::transparentWhite;
@@ -545,7 +545,7 @@ void MidiKeyboardDisplay::drawWhiteNote(int midiNoteNumber, Graphics& g, Rectang
 	}
 }
 
-void MidiKeyboardDisplay::drawBlackNote(int /*midiNoteNumber*/, Graphics& g, Rectangle<float> area,
+void MidiKeyboardDisplay::drawBlackNote(int /*midiNoteNumber*/, Graphics& g, juce::Rectangle<float> area,
 	bool isDown, bool isOver, Colour noteFillColour)
 {
 	auto c = noteFillColour;

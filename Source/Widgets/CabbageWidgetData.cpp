@@ -196,6 +196,9 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, const String lineF
     else if (widgetType == CabbageWidgetTypes::eventsequencer)
         setEventSequencerProperties (widgetData, ID);
 
+    else if (widgetType == CabbageWidgetTypes::webview)
+        setWebViewProperties(widgetData, ID);
+
     //===============table==================//
     else if (widgetType == CabbageWidgetTypes::table)
     {
@@ -1077,7 +1080,7 @@ void CabbageWidgetData::setImageFiles (StringArray strTokens, ValueTree widgetDa
     }
 }
 
-void CabbageWidgetData::setBounds (ValueTree widgetData, Rectangle<int> rect)
+void CabbageWidgetData::setBounds (ValueTree widgetData,juce::Rectangle<int> rect)
 {
     setProperty (widgetData, CabbageIdentifierIds::left, rect.getX());
     setProperty (widgetData, CabbageIdentifierIds::top, rect.getY());
@@ -1459,12 +1462,12 @@ Rectangle<int> CabbageWidgetData::getBoundsFromText (String text)
     subString = subString.substring (7, subString.indexOf (")"));
     StringArray strTokens;
     strTokens.addTokens (subString, ",()", "");
-    return Rectangle<int> (strTokens[0].getIntValue(), strTokens[1].getIntValue(), strTokens[2].getIntValue(), strTokens[3].getIntValue());
+    return juce::Rectangle<int> (strTokens[0].getIntValue(), strTokens[1].getIntValue(), strTokens[2].getIntValue(), strTokens[3].getIntValue());
 }
 
 Rectangle<int> CabbageWidgetData::getBounds (ValueTree widgetData)
 {
-    Rectangle<int> rect (getProperty (widgetData, CabbageIdentifierIds::left),
+   juce::Rectangle<int> rect (getProperty (widgetData, CabbageIdentifierIds::left),
                          getProperty (widgetData, CabbageIdentifierIds::top),
                          getProperty (widgetData, CabbageIdentifierIds::width),
                          getProperty (widgetData, CabbageIdentifierIds::height));

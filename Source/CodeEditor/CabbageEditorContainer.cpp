@@ -163,7 +163,7 @@ void CabbageEditorContainer::mouseDrag (const MouseEvent& e)
 
 void CabbageEditorContainer::resized()
 {
-    Rectangle<int> rect = getLocalBounds();
+    juce::Rectangle<int> rect = getLocalBounds();
     editor->setBounds (rect.removeFromTop (statusBar.getY()));
     rect.removeFromTop (statusBar.getHeight());
     outputConsole->setBounds (rect.withHeight (rect.getHeight() - statusBar.getHeight() * 2));
@@ -192,7 +192,7 @@ void CabbageEditorContainer::StatusBar::paint (Graphics& g)
     g.fillRect (2, 2, getWidth() - 4, getHeight() - 4);
     g.setColour (text);
     g.setFont (Font (14));
-    Rectangle<int> area (getLocalBounds());
+    juce::Rectangle<int> area (getLocalBounds());
 
     if (statusText.size() == 1)
     {

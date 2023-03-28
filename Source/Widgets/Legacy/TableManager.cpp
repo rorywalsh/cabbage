@@ -989,7 +989,7 @@ const Image GenTable::drawGridImage (bool redraw, double width, double height, d
 
         //g.strokePath(p, PathStrokeType(1));
         //return a clipped image
-        Rectangle<int> clippedImage ((int)offset * -1, 0, (int)width, (int)height);
+       juce::Rectangle<int> clippedImage ((int)offset * -1, 0, (int)width, (int)height);
         return gridImage.getClippedImage (clippedImage);
     }
     else
@@ -1235,7 +1235,7 @@ void GenTable::mouseDrag (const MouseEvent& e)
 {
     if (genRoutine == 1)
     {
-        //draw rectangle when users select audio in a gen01 table...
+        //drawjuce::Rectangle when users select audio in a gen01 table...
         if (this->getLocalBounds().contains (e.getPosition()))
         {
             if (e.mods.isLeftButtonDown())
@@ -1280,7 +1280,7 @@ void GenTable::setScrubberPos (double pos)
         //assign time values in seconds to pos..
         double timePos = pos * thumbnail->getTotalLength() * sampleRate;
         timePos = (timePos / (thumbnail->getTotalLength() * sampleRate)) * thumbnail->getTotalLength();
-        //set position of scrubber rectangle
+        //set position of scrubberjuce::Rectangle
         currentPositionMarker->setRectangle (juce::Rectangle<float> (timeToX (timePos) - 0.75f, 0,
                                                                      1.5f, (float) (getHeight() - 20)));
 

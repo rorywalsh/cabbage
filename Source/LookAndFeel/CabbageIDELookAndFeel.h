@@ -42,14 +42,14 @@ public:
                           bool isMouseOverBar,
                           MenuBarComponent& menuBar) override;
     void drawPopupMenuBackground (Graphics& g, int width, int height) override;
-    void drawPopupMenuItem (Graphics&, const Rectangle<int>& area,
+    void drawPopupMenuItem (Graphics&, const juce::Rectangle<int>& area,
                             bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
                             const String& text, const String& shortcutKeyText,
                             const Drawable* icon, const Colour* textColour) override;
 
     void drawAlertBox (Graphics& g,
                        AlertWindow& alert,
-                       const Rectangle<int>& textArea,
+                       const juce::Rectangle<int>& textArea,
                        TextLayout& textLayout) override;
     void drawScrollbar (Graphics& g, ScrollBar& scrollbar, int x, int y, int width,
                         int height,
@@ -64,7 +64,7 @@ public:
     int getDefaultScrollbarWidth() override;
     int getScrollbarButtonSize (ScrollBar& scrollbar) override;
 
-    Rectangle<int> getPropertyComponentContentPosition (PropertyComponent& component) override;
+    juce::Rectangle<int> getPropertyComponentContentPosition (PropertyComponent& component) override;
 
 private:
     ValueTree colourTree;

@@ -31,7 +31,7 @@ static void drawFromSVG(Graphics& g, String svgText, int x, int y, int newWidth,
     if (svg != nullptr)
     {
         drawable = Drawable::createFromSVG(*svg);
-        drawable->setTransformToFit(Rectangle<float>(x, y, newWidth, newHeight), RectanglePlacement::stretchToFit);
+        drawable->setTransformToFit(juce::Rectangle<float>(x, y, newWidth, newHeight), RectanglePlacement::stretchToFit);
         drawable->draw(g, 1.f, affine);
     }
 }

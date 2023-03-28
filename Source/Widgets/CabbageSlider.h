@@ -142,7 +142,7 @@ class CabbageSlider
     Image filmStrip;
     File imageFile;
     int frameWidth = 32, frameHeight = 32;
-    Rectangle<float> filmStripBounds = {0, 0, 80, 80};
+   juce::Rectangle<float> filmStripBounds = {0, 0, 80, 80};
     Label filmStripValueBox;
     SliderThumb thumb;
 public:

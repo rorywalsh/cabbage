@@ -611,7 +611,7 @@ public SettableTooltipClient
         juce::Point<float> p1, p2;
         getPoints (p1, p2);
         
-        auto newBounds = Rectangle<float> (p1, p2).expanded (4.0f).getSmallestIntegerContainer();
+        auto newBounds = juce::Rectangle<float> (p1, p2).expanded (4.0f).getSmallestIntegerContainer();
         
         if (newBounds != getBounds())
             setBounds (newBounds);

@@ -76,7 +76,7 @@ public:
     struct PopupMenuLookAndFeel : public LookAndFeel_V4
         {
             void drawPopupMenuColumnSeparatorWithOptions (Graphics& g,
-                                                          const Rectangle<int>& bounds,
+                                                          const juce::Rectangle<int>& bounds,
                                                           const PopupMenu::Options& opt)
             {
                 if (auto* target = opt.getTargetComponent())
@@ -106,7 +106,7 @@ public:
                 return 10;
             }
             
-            void drawPopupMenuItem (Graphics& g, const Rectangle<int>& area,
+            void drawPopupMenuItem (Graphics& g, const juce::Rectangle<int>& area,
                                                            const bool isSeparator, const bool isActive,
                                                            const bool isHighlighted, const bool isTicked,
                                                            const bool hasSubMenu, const String& text,
@@ -115,7 +115,7 @@ public:
             {
                 if (isSeparator)
                 {
-                    Rectangle<int> r (area.reduced (5, 0));
+                   juce::Rectangle<int> r (area.reduced (5, 0));
                     r.removeFromTop (r.getHeight() / 2 - 1);
 
                     g.setColour (Colour (0x33000000));
@@ -131,7 +131,7 @@ public:
                     if (textColourToUse != nullptr)
                         textColour = *textColourToUse;
 
-                    Rectangle<int> r (area.reduced (1));
+                   juce::Rectangle<int> r (area.reduced (1));
 
                     if (isHighlighted)
                     {
@@ -157,7 +157,7 @@ public:
 
                     g.setFont (font);
 
-                    Rectangle<float> iconArea (r.removeFromLeft ((r.getHeight() * 3/*5*/) / 4).reduced (3).toFloat());
+                   juce::Rectangle<float> iconArea (r.removeFromLeft ((r.getHeight() * 3/*5*/) / 4).reduced (3).toFloat());
 
                     if (icon != nullptr)
                     {
