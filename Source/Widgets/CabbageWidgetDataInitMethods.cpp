@@ -398,7 +398,7 @@ void CabbageWidgetData::setKeyboardProperties (ValueTree widgetData, int ID, boo
     setProperty (widgetData, CabbageIdentifierIds::mouseoverkeycolour, Colour (0x80ffff00).withAlpha(1.f).toString());
     setProperty (widgetData, CabbageIdentifierIds::keydowncolour, Colour (0x80ffff00).toString());
     setProperty (widgetData, CabbageIdentifierIds::arrowcolour, Colour (0xff000000).toString());
-    setProperty (widgetData, CabbageIdentifierIds::keydowncolour, Colour (0x80ffff00).toString());
+
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::keywidth, 16);

@@ -56,7 +56,7 @@ CabbageKeyboard::CabbageKeyboard (ValueTree wData, CabbagePluginEditor* _owner, 
     updateColours(wData);
     
     if(scrollbars == 1)
-    setLowestVisibleKey (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value));
+        setLowestVisibleKey (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value));
     else
         setAvailableRange(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::value), 127);
     
@@ -179,6 +179,7 @@ void CabbageKeyboard::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
 void CabbageKeyboard::updateColours(ValueTree& wData)
 {
+
     setColour (MidiKeyboardComponent::whiteNoteColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::whitenotecolour)));
     setColour (MidiKeyboardComponent::blackNoteColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::blacknotecolour)));
     setColour (MidiKeyboardComponent::upDownButtonArrowColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::arrowcolour)));
@@ -302,8 +303,10 @@ void CabbageKeyboard::drawWhiteNote (int midiNoteNumber, Graphics& g, Rectangle<
 {
     auto c = Colours::transparentWhite;
 
-    if (isDown)  c = findColour (keyDownOverlayColourId);
-    if (isOver)  c = findColour (mouseOverKeyOverlayColourId);
+    if (isDown)  
+        c = findColour (keyDownOverlayColourId);
+    else if (isOver)  
+        c = findColour (mouseOverKeyOverlayColourId);
 
     g.setColour (c);
     g.fillRect (area);
@@ -317,7 +320,11 @@ void CabbageKeyboard::drawWhiteNote (int midiNoteNumber, Graphics& g, Rectangle<
             //g.drawRect(area);
         }
         else
+        {
+            g.setColour(c);
             g.drawRoundedRectangle(area, corners, outlineThickness);
+
+        }
         //g.setColour(mouseOverOutlineColour);
         //
     }
@@ -356,8 +363,12 @@ void CabbageKeyboard::drawBlackNote (int midiNoteNumber, Graphics& g, Rectangle<
 {
     auto c = noteFillColour;
 
-    
-    if (isOver)  c = findColour (mouseOverKeyOverlayColourId).getAlpha() == 0.f ? noteFillColour : findColour (mouseOverKeyOverlayColourId);
+    if (isDown)
+        c = findColour(keyDownOverlayColourId);
+    else if (isOver)
+        c = findColour(mouseOverKeyOverlayColourId);
+
+    //if (isOver)  c = findColour (mouseOverKeyOverlayColourId).getAlpha() == 0.f ? noteFillColour : findColour (mouseOverKeyOverlayColourId);
 
 
         
