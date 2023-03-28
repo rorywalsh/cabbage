@@ -1945,7 +1945,7 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 	{
 		//need to reset the filebutton to "" so that we trigger a channel change when users
 		//change the sampling rates because the channel is already set when the SR change takes place
-		resetFilebuttons(cabbageWidgets);
+		//resetFilebuttons(cabbageWidgets);
 		initAllCsoundChannels(cabbageWidgets);
 	}
 	else

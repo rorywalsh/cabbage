@@ -281,7 +281,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     
     csnd::plugin<GetCabbageStringValue>((csnd::Csound*) getCsound()->GetCsound(), "cabbageGetValue", "S", "S", csnd::thread::ik);
     csnd::plugin<GetCabbageStringValueArray>((csnd::Csound*) getCsound()->GetCsound(), "cabbageGetValue", "S[]", "S[]", csnd::thread::ik);
-    csnd::plugin<GetCabbageStringValueWithTrigger>((csnd::Csound*) getCsound()->GetCsound(), "cabbageGetValue", "Sk", "S", csnd::thread::ik);
+    csnd::plugin<GetCabbageStringValueWithTrigger>((csnd::Csound*) getCsound()->GetCsound(), "cabbageGetValue", "Sk", "Sj", csnd::thread::ik);
     csnd::plugin<GetCabbageStringValueArrayWithTrigger>((csnd::Csound*) getCsound()->GetCsound(), "cabbageGetValue", "S[]k[]", "S[]", csnd::thread::ik);
     csnd::plugin<GetCabbageIdentifierArray>((csnd::Csound*) getCsound()->GetCsound(), "cabbageGet", "k[]", "SS", csnd::thread::k);
     csnd::plugin<GetCabbageIdentifierArray>((csnd::Csound*) getCsound()->GetCsound(), "cabbageGet", "i[]", "SS", csnd::thread::i);
@@ -465,7 +465,7 @@ void CsoundPluginProcessor::resetFilebuttons(ValueTree cabbageData)
                     //trigger updates will take place with changed2 or cabbageGetValue opcodes. Commenting this out for now to resolve this.. 
                     csound->SetStringChannel(CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::channel).getCharPointer(),
                         "");
-                    csound->PerformKsmps();
+                    //csound->PerformKsmps();
                 }
             }
         }

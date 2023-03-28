@@ -153,15 +153,10 @@ struct GetCabbageStringValue : csnd::Plugin<1, 1>
     char* currentString;
     int init(){ 
         currentString = "";
-        csound->plugin_deinit(this); 
-        return getAttribute(); 
+        return getAttribute(true); 
     }
-    int kperf(){ return getAttribute(); }
-    int deinit() {
-        currentString = "";
-        return OK;
-    }
-    int getAttribute();
+    int kperf(){ return getAttribute(false); }
+    int getAttribute(bool init);
 };
 
 struct GetCabbageStringValueArray : csnd::Plugin<1, 1>
@@ -172,13 +167,14 @@ struct GetCabbageStringValueArray : csnd::Plugin<1, 1>
     int getAttribute();
 };
 
-struct GetCabbageStringValueWithTrigger : csnd::Plugin<2, 1>
+struct GetCabbageStringValueWithTrigger : csnd::Plugin<2, 2>
 {
     MYFLT* value;
     char* currentString;
-    int init(){ return getAttribute(); }
-    int kperf(){ return getAttribute(); }
-    int getAttribute();
+    int kCycleCount = 0;
+    int init(){ return getAttribute(true); }
+    int kperf(){ return getAttribute(false); }
+    int getAttribute(bool init);
 };
 
 struct CabbageValueChanged : csnd::Plugin<2, 3>

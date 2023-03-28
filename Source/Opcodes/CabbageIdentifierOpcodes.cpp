@@ -290,6 +290,9 @@ int GetCabbageStringIdentifierArray::getAttribute()
         varData = *vt;
     }
     
+    if (name.isEmpty())
+        return OK;
+
     const auto child = varData->data.getChildWithName(name);
     
     var args = child.getProperty(identifier);
@@ -460,7 +463,7 @@ int CabbageGetWidgetChannels::getChannels()
 }
 //====================================================================================================
 
-int GetCabbageStringValue::getAttribute()
+int GetCabbageStringValue::getAttribute(bool init)
 {
     
     if(in_count() == 0)
@@ -479,8 +482,16 @@ int GetCabbageStringValue::getAttribute()
             currentString = csound->strdup(((STRINGDAT*)value)->data);
         }
 
-        outargs.str_data(0).size = int(strlen(currentString)) + 1;
-        outargs.str_data(0).data = currentString;
+        if (init)
+        {
+            outargs.str_data(0).size = ((STRINGDAT*)value)->size;
+            outargs.str_data(0).data = (((STRINGDAT*)value)->data);
+        }
+        else //seems I need to use csound->strdup at k-time...
+        {
+            outargs.str_data(0).size = int(strlen(currentString)) + 1;
+            outargs.str_data(0).data = currentString;
+        }
     }
     
     
@@ -548,12 +559,17 @@ int GetCabbageValueArray::getAttribute()
 }
 
 //-------------------------------------------------------------------------------------------
-int GetCabbageStringValueWithTrigger::getAttribute()
+int GetCabbageStringValueWithTrigger::getAttribute(bool init)
 {
+
 
     if(in_count() == 0)
         return NOTOK;
     
+    int trigOnInit = 0;
+
+    if(in_count() == 2)
+        trigOnInit = inargs[1];
 
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
@@ -568,13 +584,22 @@ int GetCabbageStringValueWithTrigger::getAttribute()
             outargs[1] = 1;
         }
         else
-            outargs[1] = 0;
+        {
+            if(trigOnInit && !init && kCycleCount==1)
+                outargs[1] = 1;
+            else
+                outargs[1] = 0;
+        }
         
         outargs.str_data(0).size = int(strlen(currentString))+1;
         outargs.str_data(0).data = currentString;
     }
     
-    
+    if (init)
+        kCycleCount = 0;
+    else
+        kCycleCount++;
+
     return OK;
 }
 
