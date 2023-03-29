@@ -22,33 +22,77 @@
 
 CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     : widgetData (wData),
-    CabbageWidgetBase(o)
+    CabbageWidgetBase(o), webView(), hComp()
 {
+    addAndMakeVisible(hComp);
+    //webView.setHTML(R"xxx(
+    //  <!DOCTYPE html> <html>
+    //    <head> <title>Page Title</title> </head>
+    //    <script>
+    //      var eventCounter = 0;
+    //      // invokes a call to eventCallbackFn() and displays the return value
+    //      function sendEvent()
+    //      {
+    //        // When you invoke a function, it returns a Promise object
+    //        eventCallbackFn({ counter: ++eventCounter }, "Hello World")
+    //          .then ((result) => { document.getElementById ("eventResultDisplay").innerText = result; });
+    //      }
+    //    </script>
+    //    <body>
+    //      <h1>WebView</h1>
+    //      <p id="injectedJS"></p>
+    //    </body>
+    //  </html>
+    //)xxx");
+
+    webView.setHTML(R"xxx(
+    <!DOCTYPE html>
+        <html>
+        <body>
+
+        <canvas id="myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;">
+        Your browser does not support the HTML5 canvas tag.</canvas>
+
+        <script>
+            globalColr = "blue"
+            var c = document.getElementById("myCanvas");
+            var ctx = c.getContext("2d");
+
+             globalThis.setColour = function(){
+                ctx.fillStyle = "blue";
+                ctx.beginPath();
+                ctx.rect(20, 20, 150, 100);
+                ctx.fill();
+            }
+
+           
+        </script> 
+
+    </body>
+    </html>
+
+       )xxx");
+ 
+    hComp.setHWND(webView.getViewHandle());
+
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
-    server.start(8808);
-    
-    webView.reset(new WebBrowserComponent());
-    addAndMakeVisible(webView.get());
-
-    StreamingSocket socket;
-    if (!socket.connect("127.0.0.1", 8808))
-        DBG("crap");
 
 
-    
-    resized();
+    Timer::callAfterDelay(5000, [this]()
+    {
+        //const std::string script(R"xxx(document.getElementById("injectedJS").innerText = "Updated on the fly")xxx");
+        const std::string script(R"xxx(globalThis.setColour();)xxx");
+        webView.evaluateJavascript(script);
+    });
 }
+
+
 
 void CabbageWebView::resized() 
 {
-    if (webView)
-    {
-        webView->goToURL("https://www.google.com");
-        webView->setBounds(getLocalBounds());
-    }
-       
+    hComp.setBounds(getLocalBounds());       
 }
 
 void CabbageWebView::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)

@@ -360,7 +360,7 @@ int CabbageGetWidgetChannels::getChannels()
             ValueTree tempWidget(widgetTreeIdentifier);
             CabbageWidgetData::setCustomWidgetState(tempWidget, identifiers);
            
-//                    DBG(CabbageWidgetData::getStringProp(varData->data.getChild(x), CabbageIdentifierIds::channel));
+            DBG(CabbageWidgetData::getStringProp(varData->data.getChild(x), CabbageIdentifierIds::type));
 //                    DBG(CabbageWidgetData::getProperty(tempWidget, Identifier(idents.identifier[i])).toString());
 //                    DBG(CabbageWidgetData::getProperty(varData->data.getChild(x), Identifier(idents.identifier[i])).toString());
             

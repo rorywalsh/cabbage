@@ -23,7 +23,7 @@
 
 
 #include "../httplib.h"
-
+#include "../choc-main/gui/choc_WebView.h"
 
 
 class HttpServer : public Thread
@@ -90,8 +90,10 @@ class CabbageWebView : public Component, public ValueTree::Listener, public Cabb
     float rotate, corners;
     int pivotx, pivoty;
 	CabbagePluginEditor* owner;
-	HttpServer server;
-	std::unique_ptr<WebBrowserComponent> webView;
+	//HttpServer server;
+	choc::ui::WebView webView;
+	HWNDComponent hComp;
+
 public:
 
     CabbageWebView (ValueTree wData, CabbagePluginEditor* _owner);
@@ -107,6 +109,7 @@ public:
     ValueTree widgetData;
 
 	void resized() override;
+
 
 
 
