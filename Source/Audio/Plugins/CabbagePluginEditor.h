@@ -365,7 +365,7 @@ private:
     //int xyPadIndex = 0;
     int consoleCount = 0;
     bool showScrollbars = false;
-    CabbageLookAndFeel2 lookAndFeel;
+    //
     int newlyAddedWidgetIndex = 10000;
 
     bool editModeEnabled = false;

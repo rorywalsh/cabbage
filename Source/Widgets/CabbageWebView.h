@@ -23,60 +23,19 @@
 
 
 #include "../httplib.h"
-#include "../choc-main/gui/choc_WebView.h"
+#include "../../choc/gui/choc_WebView.h"
 
 
 class HttpServer : public Thread
 {
 public:
-	HttpServer() : Thread("HttpServer")
-	{
-	}
-
-	void start(int portNumber)
-	{
-		mPortNumber = portNumber;
-		if (mServer.set_mount_point("/", "C://Users//rory//OneDrive//Csoundfiles"))
-			DBG("success");
-
-		mServer.Post("/login", [this](const httplib::Request& req, httplib::Response& res)
-		{
-			jassertfalse;
-		});
-
-		// ...
-
-		mServer.Get("/logout", [this](const httplib::Request& req, httplib::Response& res)
-		{
-			jassertfalse;
-		});
-
-		startThread();
-	}
-
-	void stop()
-	{
-		mServer.stop();
-	}
-
-	void test() {
-		mServer.Get("/index.html", [&](const httplib::Request& req, httplib::Response& res) {
-			if (req.has_param("parameter1")) {
-				auto value1 = req.get_param_value("parameter1");
-			}
-		});
-	}
-
-	bool isRunning() const noexcept
-	{
-		return isThreadRunning();
-	}
+	HttpServer() : Thread("HttpServer")	{	}	
+	void start(int portNumber, std::string mountPoint);
+	bool isRunning() const noexcept	{		return isThreadRunning();	}
+	httplib::Server& getHttpServer() 	{		return mServer;	}
 
 protected:
-	void run() override
-	{
-		mServer.listen("127.0.0.1", mPortNumber);
-	}
+	void run() override;
 
 protected:
 	httplib::Server          mServer;
@@ -90,14 +49,14 @@ class CabbageWebView : public Component, public ValueTree::Listener, public Cabb
     float rotate, corners;
     int pivotx, pivoty;
 	CabbagePluginEditor* owner;
-	//HttpServer server;
-	choc::ui::WebView webView;
-	HWNDComponent hComp;
+	HttpServer server;
 
+	HWNDComponent hComp;
+	std::unique_ptr<choc::ui::WebView> webView;
 public:
 
     CabbageWebView (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageWebView() override {}
+	~CabbageWebView() override;
 
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
@@ -109,10 +68,6 @@ public:
     ValueTree widgetData;
 
 	void resized() override;
-
-
-
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageWebView)
 };
 

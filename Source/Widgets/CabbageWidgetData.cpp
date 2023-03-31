@@ -362,6 +362,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("typeface"):
             case HashStringToInt ("guiMode"):
             case HashStringToInt ("manufacturer"):
+            case HashStringToInt ("mountPoint"):
             case HashStringToInt ("logger"):
             case HashStringToInt ("parent"):
             case HashStringToInt ("namespace"):
@@ -457,6 +458,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("blackNoteWidth"):
             case HashStringToInt ("latched"):
             case HashStringToInt ("toFront"):
+            case HashStringToInt ("serverPort"):
             case HashStringToInt ("lineThickness"):
             case HashStringToInt ("latency"):
             case HashStringToInt ("markerEnd"):

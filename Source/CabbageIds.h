@@ -678,6 +678,7 @@ namespace CabbageIdentifierIds
     static const Identifier latency = "latency";
     static const Identifier linethickness = "lineThickness";
     static const Identifier logger = "logger";
+    static const Identifier mountPoint = "mountPoint";
     static const Identifier macrostrings = "macrostrings";
     static const Identifier markercolour = "markerColour";
     static const Identifier markerend = "markerEnd";
@@ -731,6 +732,7 @@ namespace CabbageIdentifierIds
     static const Identifier popup = "popup";
     static const Identifier pos = "pos";
     static const Identifier points = "points";
+    static const Identifier serverPort = "serverPort";
     static const Identifier position = "position";
     static const Identifier popuppostfix = "popupPostfix";
     static const Identifier popupprefix = "popupPrefix";

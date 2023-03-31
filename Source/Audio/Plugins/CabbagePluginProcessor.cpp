@@ -88,9 +88,9 @@ createPluginFilter() {
 CabbagePluginProcessor::CabbagePluginProcessor(const File& inputFile, BusesProperties ioBuses)
 	: CsoundPluginProcessor(inputFile, ioBuses),
 	cabbageWidgets("CabbageWidgetData"),
-	csdFile(inputFile)
+	csdFile(inputFile), lookAndFeel()
 {
-
+	LookAndFeel::setDefaultLookAndFeel(&lookAndFeel);
 	CabbageUtilities::debug("Cabbage Processor Constructor - Requested input channels:", getTotalNumInputChannels());
 	CabbageUtilities::debug("Cabbage Processor Constructor - Requested output channels:", getTotalNumOutputChannels());
 	createCsound(inputFile);

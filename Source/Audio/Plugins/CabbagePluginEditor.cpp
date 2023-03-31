@@ -30,7 +30,6 @@ class CabbageCheckbox;
 CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     : AudioProcessorEditor (&p),
       cabbageForm(this),
-      lookAndFeel(),
     cabbageProcessor(p)
 #if Cabbage_IDE_Build
     , layoutEditor (cabbageProcessor.cabbageWidgets)
@@ -38,7 +37,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 {
     setName ("PluginEditor");
     cabbageProcessor.editorIsOpen = true;
-    setLookAndFeel (&lookAndFeel);
+    //setLookAndFeel (&lookAndFeel);
     customFont = cabbageProcessor.getCustomFont();
     customFontFile = cabbageProcessor.getCustomFontFile();
     viewportContainer = std::make_unique<ViewportContainer> ();
@@ -66,7 +65,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 #endif
     resized();
 
-    tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
+   // tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
     if(cabbageProcessor.getCsound())
         cabbageProcessor.getCsound()->SetControlChannel ("IS_EDITOR_OPEN", 1.0);
 
@@ -257,7 +256,7 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     if (fontColourString != "")
         defaultFontColour = false;
 
-    lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);
+    //lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);
     cabbageForm.setColour (backgroundColour);
     instrumentBounds.setXY(width, height);
     setSize (width, height);

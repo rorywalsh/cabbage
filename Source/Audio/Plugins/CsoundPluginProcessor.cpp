@@ -320,7 +320,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<CabbageMidiListener>((csnd::Csound*)getCsound()->GetCsound(), "cabbageMidiListener", "k[]k[]k[]k", "O", csnd::thread::ik);
     csnd::plugin<CabbageMidiSender>((csnd::Csound*)getCsound()->GetCsound(), "cabbageMidiSender", "", "", csnd::thread::i);
 
-
+    const int flags = 0;
+    csound->AppendOpcode("websocket", sizeof(WebSocketOpcode), flags, 3, "*", "i.", (SUBR)WebSocketOpcode_initialise, (SUBR)WebSocketOpcode_process, NULL);
 
 
 	csound->CreateMessageBuffer(0);

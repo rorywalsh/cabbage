@@ -234,8 +234,7 @@ void CabbageWidgetData::setWebViewProperties(ValueTree widgetData, int ID)
     setProperty(widgetData, CabbageIdentifierIds::left, 10);
     setProperty(widgetData, CabbageIdentifierIds::width, 30);
     setProperty(widgetData, CabbageIdentifierIds::height, 30);
-    setProperty(widgetData, CabbageIdentifierIds::type, "webview");
-    setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString() + String(ID));
+    setProperty(widgetData, CabbageIdentifierIds::name, "webview" + String(ID));
     setProperty(widgetData, CabbageIdentifierIds::visible, 1);
 }
 

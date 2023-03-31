@@ -183,6 +183,7 @@ public:
     
 
 private:
+    CabbageLookAndFeel2 lookAndFeel;
 #if !Cabbage_IDE_Build
     PluginHostType pluginType;
 #endif

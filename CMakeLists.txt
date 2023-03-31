@@ -164,6 +164,8 @@ target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 set(COMMON_SOURCES
 Source/Opcodes/CabbageIdentifierOpcodes.cpp
 Source/Opcodes/CabbageIdentifierOpcodes.h
+Source/Opcodes/websockets/WebSocketOpcode.c
+Source/Opcodes/websockets/WebSocketOpcode.h
 Source/Opcodes/opcodes.hpp
 Source/Audio/Plugins/CabbageCsoundBreakpointData.h
 Source/Audio/Plugins/CabbagePluginEditor.cpp
@@ -269,6 +271,8 @@ Source/Widgets/CabbageXYPad.cpp
 Source/Widgets/CabbageXYPad.h
 Source/CabbageCommonHeaders.h
 Source/CabbageIds.h
+Source/Opcodes/CabbageSocketOpcodes.cpp
+Source/Opcodes/CabbageSocketOpcodes.h
 Source/Opcodes/CabbageMidiOpcodes.cpp
 Source/Opcodes/CabbageMidiOpcodes.h)
 
@@ -440,7 +444,17 @@ endif()
 
 if(MSVC)
     # SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "C:/Program Files/Csound6_x64/include/csound")
-    include_directories("C:\\Program Files\\Csound6_x64\\include\\csound" "C:\\SDKs\\ASIOSDK2.3.3\\asiosdk_2.3.3_2019-06-14\\common")
+    include_directories("C:\\Program Files\\Csound6_x64\\include\\csound" "C:\\SDKs\\ASIOSDK2.3.3\\asiosdk_2.3.3_2019-06-14\\common"
+    "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\libwebsockets_x64-windows\\include"
+    "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\openssl_x64-windows\\include")
+
+    # vcpkg install libwebsockets:x64-windows-static
+    set(WEBSOCKETS_LIBRARY "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\libwebsockets_x64-windows-static\\lib\\websockets.lib")
+    set(ssl_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\openssl_x64-windows-static\\lib\\libssl.lib")
+    set(crypto_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\openssl_x64-windows-static\\lib\\libcrypto.lib")
+    set(uv_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\libuv_x64-windows-static\\lib\\uv_a.lib")
+    set(zlib_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\zlib_x64-windows-static\\lib\\zlib.lib")
+
     if(CabbagePro MATCHES 1)
         # find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
         set(CSOUND_LIBRARY "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
@@ -453,6 +467,11 @@ if(MSVC)
         ${JUCE_MODULES}
         ${CSOUND_LIBRARY}
         ${EXTERNAL_LIBS}
+        ${WEBSOCKETS_LIBRARY}
+        ${ssl_library}
+        ${crypto_library}
+        ${uv_library}
+        ${zlib_library}
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags

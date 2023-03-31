@@ -45,7 +45,7 @@ commandLineArgs (commandLineParams)
     centreWithSize (getWidth(), getHeight());
     setVisible (true);
     
-    Desktop::getInstance().setDefaultLookAndFeel (lookAndFeel.get()); //set default look and feel for project
+    //Desktop::getInstance().setDefaultLookAndFeel (lookAndFeel.get()); //set default look and feel for project
     getLookAndFeel().setColour (PopupMenu::ColourIds::highlightedBackgroundColourId, Colour (200, 200, 200));
     
     initSettings();
