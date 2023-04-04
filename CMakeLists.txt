@@ -5,7 +5,6 @@ cmake_minimum_required(VERSION 3.15)
 set( CMAKE_WARN_DEPRECATED OFF )
 set(CMAKE_WARN_DEPRECATED OFF CACHE BOOL "" FORCE)
 
-
 if(NOT DEFINED PROJECT_NAME)
     set(PROJECT_NAME "Cabbage")
 endif()
@@ -16,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.40)
+	set(BUILD_VERSION 2.9.41)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
