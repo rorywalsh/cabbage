@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.41)
+	set(BUILD_VERSION 2.9.42)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -261,8 +261,6 @@ Source/Widgets/CabbageWidgetBase.cpp
 Source/Widgets/CabbageWidgetBase.h
 Source/Widgets/CabbageWidgetData.cpp
 Source/Widgets/CabbageWidgetData.h
-Source/Widgets/CabbageWebView.cpp
-Source/Widgets/CabbageWebView.h
 Source/Widgets/CabbageWidgetDataInitMethods.cpp
 Source/Widgets/CabbageXYPad.cpp
 Source/Widgets/CabbageXYPad.h
