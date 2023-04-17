@@ -26,8 +26,30 @@
 #include "../../Widgets/CabbageWidgetData.h"
 #include "../../CabbageIds.h"
 #include "../../Widgets/CabbageXYPad.h"
+#include "../../httplib.h"
 
 class CabbagePluginParameter;
+
+class HttpServer : public Thread
+{
+public:
+    HttpServer() : Thread("HttpServer") {	}
+
+    void start(int portNumber, std::string mountPoint);
+
+    bool isRunning() const noexcept { return isThreadRunning(); }
+    httplib::Server& getHttpServer() { return mServer; }
+
+protected:
+    void run() override;
+
+protected:
+    httplib::Server          mServer;
+    int                      mPortNumber;
+};
+
+//====================================================================================
+
 
 class CabbagePluginProcessor : public CsoundPluginProcessor,
 public Timer
@@ -181,8 +203,16 @@ public:
     int currentPluginScale = -1;
     String currentPresetName = "";
     
+    void startServer(int portNumber, std::string mountPoint) {
+        server.start(portNumber, mountPoint);
+    }
+
+    bool isServerRunning() {
+        return server.isRunning();
+    }
 
 private:
+    HttpServer server;
     CabbageLookAndFeel2 lookAndFeel;
 #if !Cabbage_IDE_Build
     PluginHostType pluginType;

@@ -18,9 +18,8 @@
 */
 
 #include "CabbageWebView.h"
+#include "../Audio/Plugins/CabbagePluginEditor.h"
 
-#include <chrono>
-#include <thread>
 
 CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     : widgetData (wData),
@@ -36,7 +35,10 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     
     const int port = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::serverPort);
     const String mntPoint = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mountPoint);
-    server.start(port, mntPoint.toStdString());
+    
+    if(!o->getProcessor().isServerRunning())
+        o->getProcessor().startServer(port, mntPoint.toStdString());
+
     webView->navigate("http://127.0.0.1:"+std::to_string(port)+"/index.html");
 
   
@@ -50,11 +52,7 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
 
 CabbageWebView::~CabbageWebView()
 {
-    //stopping the thread is causing an issue with the look and feel
-    //which is still active when the object is being destroyed..
-    server.getHttpServer().stop();
-    //we have to wait for thread to stop..
-    server.stopThread(-1);
+   
 }
 
 void CabbageWebView::resized() 
@@ -63,105 +61,6 @@ void CabbageWebView::resized()
 }
 
 void CabbageWebView::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
-{
-   
+{   
     //handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
-}
-
-//====================================================================================
-std::string dump_headers(const httplib::Headers& headers) {
-    std::string s;
-    char buf[BUFSIZ];
-
-    for (const auto& x : headers) {
-        snprintf(buf, sizeof(buf), "%s: %s\n", x.first.c_str(), x.second.c_str());
-        s += buf;
-    }
-
-    return s;
-}
-
-std::string dump_multipart_files(const httplib::MultipartFormDataMap& files) {
-    std::string s;
-    char buf[BUFSIZ];
-
-    s += "--------------------------------\n";
-
-    for (const auto& x : files) {
-        const auto& name = x.first;
-        const auto& file = x.second;
-
-        snprintf(buf, sizeof(buf), "name: %s\n", name.c_str());
-        s += buf;
-
-        snprintf(buf, sizeof(buf), "filename: %s\n", file.filename.c_str());
-        s += buf;
-
-        snprintf(buf, sizeof(buf), "content type: %s\n", file.content_type.c_str());
-        s += buf;
-
-        snprintf(buf, sizeof(buf), "text length: %zu\n", file.content.size());
-        s += buf;
-
-        s += "----------------\n";
-    }
-
-    return s;
-}
-
-
-std::string log(const httplib::Request& req, const httplib::Response& res) {
-    std::string s;
-    char buf[BUFSIZ];
-
-    s += "================================\n";
-
-    snprintf(buf, sizeof(buf), "%s %s %s", req.method.c_str(),
-        req.version.c_str(), req.path.c_str());
-    s += buf;
-
-    std::string query;
-    for (auto it = req.params.begin(); it != req.params.end(); ++it) {
-        const auto& x = *it;
-        snprintf(buf, sizeof(buf), "%c%s=%s",
-            (it == req.params.begin()) ? '?' : '&', x.first.c_str(),
-            x.second.c_str());
-        query += buf;
-    }
-    snprintf(buf, sizeof(buf), "%s\n", query.c_str());
-    s += buf;
-
-    s += dump_headers(req.headers);
-    s += dump_multipart_files(req.files);
-
-    s += "--------------------------------\n";
-
-    snprintf(buf, sizeof(buf), "%d\n", res.status);
-    s += buf;
-    s += dump_headers(res.headers);
-
-    return s;
-}
-
-void HttpServer::run()
-{
-     mServer.listen("127.0.0.1", mPortNumber);
-}
-
-void HttpServer::start(int portNumber, std::string mountPoint)
-{
-    mPortNumber = portNumber;
-
-    if (mServer.set_mount_point("/", mountPoint))
-        DBG("success");
-
-    mServer.set_logger([](const auto& req, const auto& res) {
-        DBG(log(req, res));
-        });
-
-    mServer.Get("/stop", [&](const auto& /*req*/, auto& /*res*/) {
-        mServer.stop();
-        });
-
-    startThread();
 }

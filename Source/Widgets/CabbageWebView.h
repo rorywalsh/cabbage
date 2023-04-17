@@ -22,25 +22,10 @@
 #include "CabbageWidgetBase.h"
 
 
-#include "../httplib.h"
+
 #include "../../choc/gui/choc_WebView.h"
 
 
-class HttpServer : public Thread
-{
-public:
-	HttpServer() : Thread("HttpServer")	{	}	
-	void start(int portNumber, std::string mountPoint);
-	bool isRunning() const noexcept	{		return isThreadRunning();	}
-	httplib::Server& getHttpServer() 	{		return mServer;	}
-
-protected:
-	void run() override;
-
-protected:
-	httplib::Server          mServer;
-	int                      mPortNumber;
-};
 
 
 class CabbageWebView : public Component, public ValueTree::Listener, public CabbageWidgetBase
@@ -49,7 +34,6 @@ class CabbageWebView : public Component, public ValueTree::Listener, public Cabb
     float rotate, corners;
     int pivotx, pivoty;
 	CabbagePluginEditor* owner;
-	HttpServer server;
 
 	HWNDComponent hComp;
 	std::unique_ptr<choc::ui::WebView> webView;
