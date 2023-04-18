@@ -64,7 +64,7 @@ public:
     Array<PropertyComponent*> createAmpRangeEditors (ValueTree valueTree);
     Array<PropertyComponent*> createTwoValueEditors (ValueTree valueTree, Identifier identifier);
     Value isActiveValue, isVisibleValue, alphaValue, shapeValue, filmstripFrames,
-          sliderNumberBoxValue, alignValue, velocityValue, fileModeValue,
+          sliderNumberBoxValue, alignValue, velocityValue, fileModeValue, markerStart, markerEnd, markerThickness,
           fillTableWaveformValue, zoomValue, channelTypeValue, innerRadius, outerRadius;
     Colour backgroundColour, borderColour;
 	bool hide = false;

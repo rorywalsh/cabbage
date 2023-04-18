@@ -359,6 +359,14 @@ void CabbagePropertiesPanel::valueChanged (Value& value)
                 setPropertyByName ("Channel Type", "string");
         }
     }
+    else if (value.refersToSameSourceAs(markerStart))
+        setPropertyByName("Marker Start", value.getValue());
+
+    else if (value.refersToSameSourceAs(markerEnd))
+        setPropertyByName("Marker End", value.getValue());
+
+    else if (value.refersToSameSourceAs(markerThickness))
+        setPropertyByName("Marker Thickness", value.getValue());
 
     else if (value.refersToSameSourceAs (shapeValue))
     {
@@ -902,6 +910,18 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createMiscEditors (ValueTree v
 		outerRadius.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackeroutsideradius));
 		outerRadius.addListener(this);
 		comps.add(new SliderPropertyComponent(outerRadius, "Outer Radius", 0, 1, .01, 1, 1));
+
+        markerStart.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::markerstart));
+        markerStart.addListener(this);
+        comps.add(new SliderPropertyComponent(markerStart, "Marker Start", 0, 1, .01, 1, 1));
+
+        markerEnd.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::markerend));
+        markerEnd.addListener(this);
+        comps.add(new SliderPropertyComponent(markerEnd, "Marker End", 0, 1, .01, 1, 1));
+
+        markerThickness.setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::markerthickness));
+        markerThickness.addListener(this);
+        comps.add(new SliderPropertyComponent(markerThickness, "Marker Thickness", 0, 1, .01, 1, 1));
     }
 
     else if (typeOfWidget == "filebutton")

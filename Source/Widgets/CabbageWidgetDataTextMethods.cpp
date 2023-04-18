@@ -57,6 +57,8 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("value"):
         case HashStringToInt ("numberOfClicks"):
         case HashStringToInt ("markerStart"):
+        case HashStringToInt ("markerEnd"):
+        case HashStringToInt ("markerThickness"):
         case HashStringToInt ("valueTextBox"):
         case HashStringToInt ("velocity"):
         case HashStringToInt ("visible"):
