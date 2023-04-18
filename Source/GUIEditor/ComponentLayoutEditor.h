@@ -58,7 +58,7 @@ public:
     void findLassoItemsInArea (Array <ComponentOverlay*>& results, const juce::Rectangle<int>& area) override;
     void updateCodeEditor();
     void updateSelectedComponentBounds();
-    void setComponentBoundsProperties (Component* child, Rectangle<int> bounds);
+    void setComponentBoundsProperties (Component* child, juce::Rectangle<int> bounds);
 
     SelectedItemSet <ComponentOverlay*>& getLassoSelection() override;
     LassoComponent <ComponentOverlay*> lassoComp;

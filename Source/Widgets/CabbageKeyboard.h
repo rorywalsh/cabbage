@@ -58,17 +58,17 @@ public:
     
     
     void drawBlackNote (int midiNoteNumber,
-                                Graphics& g, Rectangle<float> area,
+                                Graphics& g,juce::Rectangle<float> area,
                                 bool isDown, bool isOver,
                                 Colour noteFillColour) override;
     
     void drawWhiteNote (int midiNoteNumber,
-                                Graphics& g, Rectangle<float> area,
+                                Graphics& g,juce::Rectangle<float> area,
                                 bool isDown, bool isOver,
                                 Colour lineColour, Colour textColour) override;
 
     
-    void drawNoteOutline(Graphics& g, int midiNote, Rectangle<float> area);
+    void drawNoteOutline(Graphics& g, int midiNote,juce::Rectangle<float> area);
     
     Direction getNextDirection(std::vector<PathPoint>, std::size_t segment);
     void drawRoundedPath(Graphics& g, std::vector<PathPoint>, float lineThickness);
@@ -96,7 +96,7 @@ private:
     float lineThickness = 1.f;
     CabbagePluginEditor* owner;
     Colour mouseOverOutlineColour;
-    Rectangle<float> blackNoteArea;
+   juce::Rectangle<float> blackNoteArea;
     float blackNoteLength = 0.7f;
     float blackNoteWidth = 1.f;
     bool scrollBars = true;

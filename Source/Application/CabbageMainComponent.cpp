@@ -736,7 +736,7 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
             {
                 int lineNumberOfCustomPlant = CabbageWidgetData::getNumProp(widgetData,
                                                                             CabbageIdentifierIds::surrogatelinenumber);
-                const Rectangle<int> rect = CabbageWidgetData::getBounds(widgetData);
+                const juce::Rectangle<int> rect = CabbageWidgetData::getBounds(widgetData);
                 const String newBounds = CabbageWidgetData::getBoundsTextAsCabbageCode(rect);
                 String newL = CabbageWidgetData::replaceIdentifier(
                         getCurrentCodeEditor()->getLineText(lineNumberOfCustomPlant), "bounds", newBounds);

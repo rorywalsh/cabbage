@@ -79,6 +79,7 @@ public:
     static void setVRangeSliderProperties (ValueTree widgetData, int ID);
     static void setLineProperties (ValueTree widgetData, int ID);
     static void setScrewProperties (ValueTree widgetData, int ID);
+    static void setWebViewProperties(ValueTree widgetData, int ID);
     static void setPortProperties (ValueTree widgetData, int ID, const String type);
     static void setLightProperties (ValueTree widgetData, int ID);
     static void setMeterProperties (ValueTree widgetData, int ID, bool isVertical);
@@ -89,8 +90,8 @@ public:
     static void setNumProp (ValueTree widgetData, Identifier prop, float val);
     static void setStringProp (ValueTree widgetData, Identifier prop, const String val);
     static String getStringProp (ValueTree widgetData, Identifier prop);
-    static Rectangle<int> getBounds (ValueTree widgetData);
-    static void setBounds (ValueTree widgetData, Rectangle<int> rect);
+    static juce::Rectangle<int> getBounds (ValueTree widgetData);
+    static void setBounds (ValueTree widgetData,juce::Rectangle<int> rect);
     static void setProperty (ValueTree widgetData, Identifier name, const var& value, ValueTree::Listener *listenerToExclude = nullptr);
     static var getProperty (ValueTree widgetData, Identifier name);
     //============================================================================
@@ -126,7 +127,7 @@ public:
     static String getCabbageCodeFromIdentifiers (ValueTree props, const String);
     //============================================================================
     static void setSVGText(ValueTree widgetData, StringArray tokens);
-    static String getBoundsTextAsCabbageCode (Rectangle<int> rect);
+    static String getBoundsTextAsCabbageCode (juce::Rectangle<int> rect);
     static String getFilmStripTextAsCabbageCode(ValueTree widgetData, const String macroText);
     static String getMultiItemTextAsCabbageCode (ValueTree widgetData, String identifier, const String macroText);
     static String getColoursTextAsCabbageCode (ValueTree widgetData, const String identifier, const String macroText);
@@ -140,7 +141,7 @@ public:
     static String removeWidgetFromValueTree (ValueTree widgetData, int lineNumber);
     //============================================================================
     static ValueTree getValueTreeForComponent (ValueTree widgetData, String name, bool byChannel = false);
-    static Rectangle<int> getBoundsFromText (String text);
+    static juce::Rectangle<int> getBoundsFromText (String text);
     //const CabbageIdentifierStrings identifierArray;
 };
 

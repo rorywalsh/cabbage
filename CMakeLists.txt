@@ -5,7 +5,6 @@ cmake_minimum_required(VERSION 3.15)
 set( CMAKE_WARN_DEPRECATED OFF )
 set(CMAKE_WARN_DEPRECATED OFF CACHE BOOL "" FORCE)
 
-
 if(NOT DEFINED PROJECT_NAME)
     set(PROJECT_NAME "Cabbage")
 endif()
@@ -16,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.39)
+	set(BUILD_VERSION 2.9.43)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -86,6 +85,7 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
     juce_add_gui_app(${PROJECT_NAME}
         ICON_BIG ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png              
         ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png 
+        NEEDS_WEB_BROWSER TRUE
         HARDENED_RUNTIME_ENABLED TRUE
         HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" 
         # DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
@@ -399,7 +399,7 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
     target_compile_definitions(${PROJECT_NAME}
         PRIVATE
             # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
-            JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
+            JUCE_WEB_BROWSER=1  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
             JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
             JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
             JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
@@ -419,7 +419,7 @@ else()
     target_compile_definitions(${PROJECT_NAME}
     PRIVATE
         # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
-        JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
+        JUCE_WEB_BROWSER=1  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
         JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
         JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"

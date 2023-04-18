@@ -41,7 +41,7 @@ class CabbageXYPad
 {
     CabbagePluginEditor* owner;
     Colour fontColour, textColour, colour, bgColour, ballColour;
-    Rectangle<float> xyPadRect;
+   juce::Rectangle<float> xyPadRect;
     Line<float> dragLine;
     bool isAutomating = false;
     Label xValueLabel, yValueLabel;
@@ -107,7 +107,7 @@ public:
     {
         return yAxis;
     }
-    Rectangle<float> getXYPadRect()
+   juce::Rectangle<float> getXYPadRect()
     {
         return xyPadRect;
     }

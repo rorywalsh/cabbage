@@ -98,7 +98,7 @@ private:
 		g.setColour(getLookAndFeel().findColour(TextEditor::textColourId));
 
 		if (isPositiveAndBelow(rowNumber, log.size()))
-			g.drawText(log[rowNumber], Rectangle<int> { 0, 0, width, height }, Justification::left, true);
+			g.drawText(log[rowNumber], juce::Rectangle<int> { 0, 0, width, height }, Justification::left, true);
 	}
 
 	void handleAsyncUpdate() override

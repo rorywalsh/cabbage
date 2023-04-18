@@ -103,7 +103,7 @@ void ComponentLayoutEditor::updateSelectedComponentBounds()
     }
 }
 
-void ComponentLayoutEditor::setComponentBoundsProperties (Component* child, Rectangle<int> bounds)
+void ComponentLayoutEditor::setComponentBoundsProperties (Component* child, juce::Rectangle<int> bounds)
 {
     child->getProperties().set ("originalX", bounds.getX());
     child->getProperties().set ("originalY", bounds.getY());
@@ -241,9 +241,9 @@ void ComponentLayoutEditor::mouseDown (const MouseEvent& e)
 }
 
 //==================================================================================================================
-void ComponentLayoutEditor::findLassoItemsInArea (Array <ComponentOverlay*>& results, const Rectangle<int>& area)
+void ComponentLayoutEditor::findLassoItemsInArea (Array <ComponentOverlay*>& results, const juce::Rectangle<int>& area)
 {
-    const Rectangle<int> lasso (area);
+    const juce::Rectangle<int> lasso (area);
 
     for (int i = 0; i < getNumChildComponents() - 1; i++)
     {

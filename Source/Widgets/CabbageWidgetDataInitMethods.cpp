@@ -228,6 +228,16 @@ void CabbageWidgetData::setScrewProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
 }
 
+void CabbageWidgetData::setWebViewProperties(ValueTree widgetData, int ID)
+{
+    setProperty(widgetData, CabbageIdentifierIds::top, 10);
+    setProperty(widgetData, CabbageIdentifierIds::left, 10);
+    setProperty(widgetData, CabbageIdentifierIds::width, 30);
+    setProperty(widgetData, CabbageIdentifierIds::height, 30);
+    setProperty(widgetData, CabbageIdentifierIds::type, "webview");
+    setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString() + String(ID));
+    setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+}
 
 void CabbageWidgetData::setPortProperties (ValueTree widgetData, int ID, const String type)
 {
@@ -524,6 +534,8 @@ void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+        setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::outlinethickness, 1.f);
     setProperty (widgetData, CabbageIdentifierIds::type, "filebutton");
     setProperty (widgetData, CabbageIdentifierIds::name, "filebutton");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
@@ -635,6 +647,8 @@ void CabbageWidgetData::setOptionButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colours::white.toString());
+    setProperty (widgetData, CabbageIdentifierIds::outlinethickness, 1.f);
     setProperty (widgetData, CabbageIdentifierIds::type, "optionbutton");
     setProperty (widgetData, CabbageIdentifierIds::name, "optionbutton");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");

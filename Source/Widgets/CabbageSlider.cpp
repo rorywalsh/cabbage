@@ -700,6 +700,12 @@ void CabbageSlider::setLookAndFeelColours(ValueTree wData)
     getSlider().getProperties().set("gapmarkers", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::gapmarkers));
 
     getSlider().getProperties().set("markercolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::markercolour));
+    getSlider().getProperties().set("trackerthickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackerthickness));
+    getSlider().getProperties().set("trackerbgcolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackerbgcolour));
+    getSlider().getProperties().set("markerthickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerthickness));
+    getSlider().getProperties().set("markerstart", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerstart));
+    getSlider().getProperties().set("markerend", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerend));
+    getSlider().getProperties().set("gapmarkers", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::gapmarkers));
 
     getSlider().setColour(Label::outlineColourId, CabbageUtilities::getBackgroundSkin());
     getSlider().lookAndFeelChanged();

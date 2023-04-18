@@ -585,6 +585,8 @@ void CabbagePluginEditor::insertUnlockButton(const ValueTree& cabbageWidgetData)
 	addToEditorAndMakeVisible(button, cabbageWidgetData);
 	addMouseListenerAndSetVisibility(button, cabbageWidgetData);
 }
+
+
 void CabbagePluginEditor::insertNumberSlider (const ValueTree& cabbageWidgetData)
 {
     CabbageNumberSlider* numberBox;

@@ -1581,7 +1581,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                     }
                     else if(identifier == CabbageIdentifierIds::bounds)
                     {
-                        CabbageWidgetData::setBounds(cabbageWidgets.getChildWithName(name), Rectangle<int>( i.args[0],
+                        CabbageWidgetData::setBounds(cabbageWidgets.getChildWithName(name), juce::Rectangle<int>( i.args[0],
                                                                                                            i.args[1],
                                                                                                            i.args[2],
                                                                                                            i.args[3]));

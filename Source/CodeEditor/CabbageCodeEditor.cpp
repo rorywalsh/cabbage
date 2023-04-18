@@ -681,7 +681,7 @@ void CabbageCodeEditorComponent::paintListBoxItem (int rowNumber, Graphics& g, i
 
     g.setFont (Font (String ("DejaVu Sans Mono"), 17, 0));
     g.setColour (Colour (20, 20, 20));
-    g.drawFittedText (variableNamesToShow[rowNumber], Rectangle<int> (width, height), Justification::centredLeft, 0);
+    g.drawFittedText (variableNamesToShow[rowNumber], juce::Rectangle<int> (width, height), Justification::centredLeft, 0);
 }
 //==============================================================================
 bool CabbageCodeEditorComponent::deleteForwards (const bool moveInWholeWordSteps)

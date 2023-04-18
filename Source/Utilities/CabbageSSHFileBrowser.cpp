@@ -71,7 +71,7 @@ void CabbageSSHFileBrowser::paint (Graphics& g)
 
 void CabbageSSHFileBrowser::resized()
 {
-    Rectangle<int> area (getLocalBounds());
+    juce::Rectangle<int> area (getLocalBounds());
     currentDirectoryLabel.setBounds (area.removeFromTop (30).reduced (8).withHeight (25));
     filesListBox.setBounds (area.reduced (8));
 }
@@ -187,7 +187,7 @@ void CabbageSSHFileBrowser::paintListBoxItem (int rowNumber, Graphics& g,
     else
         g.setColour (Colours::cornflowerblue);
 
-    g.drawFittedText (filesAndFoldersToDisplay[rowNumber], Rectangle<int> (width, height).withLeft (8), Justification::centredLeft, 0);
+    g.drawFittedText (filesAndFoldersToDisplay[rowNumber], juce::Rectangle<int> (width, height).withLeft (8), Justification::centredLeft, 0);
 }
 
 
