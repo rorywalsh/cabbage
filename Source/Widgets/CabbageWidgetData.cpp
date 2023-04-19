@@ -458,7 +458,8 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("blackNoteWidth"):
             case HashStringToInt ("latched"):
             case HashStringToInt ("toFront"):
-            case HashStringToInt ("serverPort"):
+            case HashStringToInt ("liveServerPort"):
+            case HashStringToInt ("websocketPort"):
             case HashStringToInt ("lineThickness"):
             case HashStringToInt ("latency"):
             case HashStringToInt ("markerEnd"):

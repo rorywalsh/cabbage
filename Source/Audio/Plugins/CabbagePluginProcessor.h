@@ -26,9 +26,6 @@
 #include "../../Widgets/CabbageWidgetData.h"
 #include "../../CabbageIds.h"
 #include "../../Widgets/CabbageXYPad.h"
-#if !Cabbage_IDE_Build
-#include "../../Utilities/CabbageHttpServer.h"
-#endif
 
 class CabbagePluginParameter;
 
@@ -189,34 +186,9 @@ public:
     int currentPluginScale = -1;
     String currentPresetName = "";
  
-
-    void startServer(int portNumber, std::string mountPoint) {
-#if !Cabbage_IDE_Build
-        server.start(portNumber, mountPoint);
-#else
-
-#endif
-    }
-
-
-    bool isServerRunning() {
-#if !Cabbage_IDE_Build
-        return server.isRunning();
-#else
-        {
-
-        }
-#endif
-    }
-
-
-
 private:   
     CabbageLookAndFeel2 lookAndFeel;
-#if !Cabbage_IDE_Build
-    CabbageHttpServer server;
-    PluginHostType pluginType;
-#endif
+
     controlChannelInfo_s* csoundChanList{};
     String pluginName;
     File csdFile;

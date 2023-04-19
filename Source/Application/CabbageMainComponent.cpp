@@ -24,6 +24,7 @@
 #include "../Audio/UI/PluginWindow.h"
 #include "../Audio/Filters/InternalFilters.h"
 #include "../Utilities/CabbageStrings.h"
+#include "../Utilities/CabbageHttpServer.h"
 
 class CabbageMainComponent::PluginListWindow  : public DocumentWindow
 {
@@ -172,6 +173,11 @@ CabbageMainComponent::~CabbageMainComponent()
 
     stopFilterGraph();
 	graphComponent = nullptr;
+
+#if Cabbage_IDE_Build
+    CabbageHttpServer::deleteInstance();
+#endif
+
 }
 
 void CabbageMainComponent::paint (Graphics& g)

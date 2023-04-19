@@ -21,7 +21,9 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-
+#if Cabbage_IDE_Build
+#include "../Utilities/CabbageHttpServer.h"
+#endif
 
 #include "../../choc/gui/choc_WebView.h"
 
@@ -37,6 +39,10 @@ class CabbageWebView : public Component, public ValueTree::Listener, public Cabb
 
 	HWNDComponent hComp;
 	std::unique_ptr<choc::ui::WebView> webView;
+
+#if Cabbage_IDE_Build
+    CabbageHttpServer server;
+#endif
 public:
 
     CabbageWebView (ValueTree wData, CabbagePluginEditor* _owner);

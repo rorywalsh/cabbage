@@ -1,5 +1,8 @@
 #include "CabbageHttpServer.h"
 
+#if Cabbage_IDE_Build
+JUCE_IMPLEMENT_SINGLETON(CabbageHttpServer)
+#endif
 
 std::string dump_headers(const httplib::Headers& headers) {
 	std::string s;

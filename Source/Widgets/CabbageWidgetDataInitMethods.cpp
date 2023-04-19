@@ -236,6 +236,8 @@ void CabbageWidgetData::setWebViewProperties(ValueTree widgetData, int ID)
     setProperty(widgetData, CabbageIdentifierIds::height, 30);
     setProperty(widgetData, CabbageIdentifierIds::name, "webview" + String(ID));
     setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty(widgetData, CabbageIdentifierIds::serverport, 8089);
+    setProperty(widgetData, CabbageIdentifierIds::websocketport, 8000);
 }
 
 void CabbageWidgetData::setPortProperties (ValueTree widgetData, int ID, const String type)

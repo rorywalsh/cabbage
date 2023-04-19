@@ -21,6 +21,8 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 
+
+
 CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     : widgetData (wData),
     CabbageWidgetBase(o), hComp()
@@ -33,19 +35,19 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
 
     addAndMakeVisible(hComp);
     
-    const int port = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::serverPort);
+    const int port = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::serverport);
+    const int wsPort = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::websocketport);
     const String mntPoint = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mountPoint);
 #if !Cabbage_IDE_Build
-    if(!o->getProcessor().isServerRunning())
-        o->getProcessor().startServer(port, mntPoint.toStdString());
+    if (!server->isRunning())
+        server->start(port, mntPoint.toStdString());
 #else
-    o->testForParent();
+    auto* server = CabbageHttpServer::getInstance();
+    if(!server->isRunning())
+        server->start(port, mntPoint.toStdString());
 #endif
 
-    webView->navigate("http://127.0.0.1:" + std::to_string(port) + "/index.html");
-
-    
-    
+    webView->navigate("http://127.0.0.1:" + std::to_string(port) + "/index.html?wsPort="+ std::to_string(wsPort));
 
   
     hComp.setHWND(webView->getViewHandle());

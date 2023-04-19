@@ -732,7 +732,8 @@ namespace CabbageIdentifierIds
     static const Identifier popup = "popup";
     static const Identifier pos = "pos";
     static const Identifier points = "points";
-    static const Identifier serverPort = "serverPort";
+    static const Identifier serverport = "serverPort";
+    static const Identifier websocketport = "websocketPort";
     static const Identifier position = "position";
     static const Identifier popuppostfix = "popupPostfix";
     static const Identifier popupprefix = "popupPrefix";
