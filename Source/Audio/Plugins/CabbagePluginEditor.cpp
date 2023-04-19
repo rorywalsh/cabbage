@@ -24,7 +24,18 @@
 #include <windows.h>
 #endif
 
+#if Cabbage_IDE_Build
+#include "../UI/GraphEditorPanel.h"
+#endif
 class CabbageCheckbox;
+
+void CabbagePluginEditor::testForParent()
+{
+    if (auto* parent = findParentComponentOfClass<GraphEditorPanel>())
+    {
+        jassertfalse;
+    }
+}
 
 //==============================================================================
 CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)

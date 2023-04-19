@@ -194,6 +194,8 @@ Source/Utilities/CabbageColourProperty.cpp
 Source/Utilities/CabbageColourProperty.h
 Source/Utilities/CabbageStrings.h
 Source/Utilities/CabbageUtilities.h
+Source/Utilities/CabbageHttpServer.h
+Source/Utilities/CabbageHttpServer.cpp
 Source/Widgets/Legacy/FrequencyRangeDisplayComponent.h
 Source/Widgets/Legacy/Soundfiler.cpp
 Source/Widgets/Legacy/Soundfiler.h

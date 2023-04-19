@@ -26,27 +26,13 @@
 #include "../../Widgets/CabbageWidgetData.h"
 #include "../../CabbageIds.h"
 #include "../../Widgets/CabbageXYPad.h"
-#include "../../httplib.h"
+#if !Cabbage_IDE_Build
+#include "../../Utilities/CabbageHttpServer.h"
+#endif
 
 class CabbagePluginParameter;
 
-class HttpServer : public Thread
-{
-public:
-    HttpServer() : Thread("HttpServer") {	}
 
-    void start(int portNumber, std::string mountPoint);
-
-    bool isRunning() const noexcept { return isThreadRunning(); }
-    httplib::Server& getHttpServer() { return mServer; }
-
-protected:
-    void run() override;
-
-protected:
-    httplib::Server          mServer;
-    int                      mPortNumber;
-};
 
 //====================================================================================
 
@@ -202,19 +188,33 @@ public:
     const OwnedArray<CabbagePluginParameter>& getCabbageParameters() const { return parameters; }
     int currentPluginScale = -1;
     String currentPresetName = "";
-    
+ 
+
     void startServer(int portNumber, std::string mountPoint) {
+#if !Cabbage_IDE_Build
         server.start(portNumber, mountPoint);
+#else
+
+#endif
     }
+
 
     bool isServerRunning() {
+#if !Cabbage_IDE_Build
         return server.isRunning();
+#else
+        {
+
+        }
+#endif
     }
 
-private:
-    HttpServer server;
+
+
+private:   
     CabbageLookAndFeel2 lookAndFeel;
 #if !Cabbage_IDE_Build
+    CabbageHttpServer server;
     PluginHostType pluginType;
 #endif
     controlChannelInfo_s* csoundChanList{};

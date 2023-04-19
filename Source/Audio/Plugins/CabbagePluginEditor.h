@@ -60,7 +60,14 @@
 #include "../../Widgets/CabbageUnlockButton.h"
 #include "../../Widgets/CabbageWebView.h"
 
+
+
+
+
 class CabbagePluginEditor;
+#if Cabbage_IDE_Build
+class CabbageMainComponent;
+#endif
 
 //==============================================================================
 class CabbagePluginEditor
@@ -232,8 +239,8 @@ public:
     }
 
 	//=============================================================================
-
-
+    void testForParent();
+    //=============================================================================
     void addNewWidget (String widgetType, juce::Point<int> point, bool isPlant = false);
     //=============================================================================
     void refreshComboListBoxContents(const String& presetName = "");

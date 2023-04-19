@@ -35,11 +35,17 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     
     const int port = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::serverPort);
     const String mntPoint = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mountPoint);
-    
+#if !Cabbage_IDE_Build
     if(!o->getProcessor().isServerRunning())
         o->getProcessor().startServer(port, mntPoint.toStdString());
+#else
+    o->testForParent();
+#endif
 
-    webView->navigate("http://127.0.0.1:"+std::to_string(port)+"/index.html");
+    webView->navigate("http://127.0.0.1:" + std::to_string(port) + "/index.html");
+
+    
+    
 
   
     hComp.setHWND(webView->getViewHandle());
