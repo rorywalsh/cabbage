@@ -196,6 +196,8 @@ Source/Utilities/CabbageStrings.h
 Source/Utilities/CabbageUtilities.h
 Source/Utilities/CabbageHttpServer.h
 Source/Utilities/CabbageHttpServer.cpp
+Source/Utilities/FileSystemWatcher.h
+Source/Utilities/FileSystemWatcher.cpp
 Source/Widgets/Legacy/FrequencyRangeDisplayComponent.h
 Source/Widgets/Legacy/Soundfiler.cpp
 Source/Widgets/Legacy/Soundfiler.h

@@ -79,9 +79,13 @@ std::string log(const httplib::Request& req, const httplib::Response& res) {
 }
 
 
-void CabbageHttpServer::start(int portNumber, std::string mountPoint)
+void CabbageHttpServer::start(int portNumber, std::string mp)
 {
+	mountPoint = mp;
 	mPortNumber = portNumber;
+
+	watcher.addFolder(File(mountPoint));
+
 
 	if (mServer.set_mount_point("/", mountPoint))
 		DBG("success");
@@ -95,6 +99,8 @@ void CabbageHttpServer::start(int portNumber, std::string mountPoint)
 	});
 
 	startThread();
+
+
 }
 
 void CabbageHttpServer::run()

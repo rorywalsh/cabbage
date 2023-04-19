@@ -2,11 +2,14 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "httplib.h"
+#include "FileSystemWatcher.h"
 
-class CabbageHttpServer : public Thread
+class CabbageHttpServer : public Thread, private FileSystemWatcher::Listener
 {
 public:
-    CabbageHttpServer() : Thread("HttpServer") {	}
+    CabbageHttpServer() : Thread("HttpServer") {
+        watcher.addListener(this);
+    }
     ~CabbageHttpServer() {
 #if Cabbage_IDE_Build
         clearSingletonInstance();
@@ -16,6 +19,23 @@ public:
 
     bool isRunning() const noexcept { return isThreadRunning(); }
     httplib::Server& getHttpServer() { return mServer; }
+
+    void fileChanged(juce::File f, FileSystemWatcher::FileSystemEvent fsEvent) override
+    {
+         switch (fsEvent)
+            {
+            case FileSystemWatcher::fileCreated: DBG("Created");
+            case FileSystemWatcher::fileUpdated: DBG("Updated");
+            case FileSystemWatcher::fileDeleted: DBG("Deleted");
+            case FileSystemWatcher::fileRenamedOldName: DBG("Renamed From");
+            case FileSystemWatcher::fileRenamedNewName: DBG("Renamed To");
+            default: return;
+            }
+
+
+     
+    }
+
 
 #if Cabbage_IDE_Build
     JUCE_DECLARE_SINGLETON(CabbageHttpServer, true)
@@ -27,5 +47,7 @@ protected:
 private:
     httplib::Server          mServer;
     int                      mPortNumber;
+    std::string mountPoint = "";
+    FileSystemWatcher watcher;
 };
 
