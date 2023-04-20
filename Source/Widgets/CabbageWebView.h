@@ -28,6 +28,31 @@
 #include "../../choc/gui/choc_WebView.h"
 
 
+class NativeWindowComponent:
+#ifdef JUCE_WINDOWS
+    public HWNDComponent
+#elif JUCE_MACOS
+    public NSView
+#else
+    public XEmbedComponent
+#endif
+{
+public:
+    NativeWindowComponent(){}
+
+#ifdef JUCE_WINDOWS || JUCE_MACOS
+    void setWindow(void* view)
+    {
+    #ifdef JUCE_WINDOWS
+        setHWND(view);
+    #elif JUCE_MACOS
+        hComp.setView(view);
+    #endif
+    }
+#else
+    jassertfalse;
+#endif
+};
 
 
 class CabbageWebView : public Component, public ValueTree::Listener, public CabbageWidgetBase
@@ -37,7 +62,7 @@ class CabbageWebView : public Component, public ValueTree::Listener, public Cabb
     int pivotx, pivoty;
 	CabbagePluginEditor* owner;
 
-	HWNDComponent hComp;
+    NativeWindowComponent nwComp;
 	std::unique_ptr<choc::ui::WebView> webView;
 
 #if Cabbage_IDE_Build

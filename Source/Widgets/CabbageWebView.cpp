@@ -22,10 +22,9 @@
 
 
 
-
 CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     : widgetData (wData),
-    CabbageWidgetBase(o), hComp()
+    CabbageWidgetBase(o), nwComp()
 {
     setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
     setLookAndFeel(nullptr);
@@ -33,7 +32,7 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     options.enableDebugMode = true;
     webView.reset(new choc::ui::WebView(options));
 
-    addAndMakeVisible(hComp);
+    addAndMakeVisible(nwComp);
     
     const int port = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::serverport);
     const int wsPort = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::websocketport);
@@ -50,7 +49,7 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     webView->navigate("http://127.0.0.1:" + std::to_string(port) + "/index.html?wsPort="+ std::to_string(wsPort));
 
   
-    hComp.setHWND(webView->getViewHandle());
+    nwComp.setWindow(webView->getViewHandle());
 
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
@@ -65,7 +64,7 @@ CabbageWebView::~CabbageWebView()
 
 void CabbageWebView::resized() 
 {
-    hComp.setBounds(getLocalBounds());       
+    nwComp.setBounds(getLocalBounds());       
 }
 
 void CabbageWebView::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
