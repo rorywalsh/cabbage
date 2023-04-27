@@ -1187,8 +1187,9 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
                                                                                CabbageIdentifierIds::ignorelastdir);
                     if(ignoreLastDir == 0)
                     {
-                        const String absolutePath =
-                        csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();
+						const String absolutePath = (String(presetData.value().dump()).replaceCharacters("\\", "/"));
+                        /*const String absolutePath =
+                        csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();*/
                         CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
                     }
                 }
