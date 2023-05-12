@@ -934,7 +934,7 @@ void GraphEditorPanel::showPopupMenu(juce::Point<int> mousePos)
         Array<File> exampleFiles;
         Array<File> userFiles;
         PopupMenu m, subMenu1, subMenu2, subMenu3;
-        CabbageLookAndFeel2 lookAndFeel;
+        
         m.setLookAndFeel (&lookAndFeel);
         const String examplesDir = graphWindow->getOwner()->getCabbageSettings()->getUserSettings()->getValue("CabbageExamplesDir", "");
         CabbageUtilities::addExampleFilesToPopupMenu(subMenu1, exampleFiles, examplesDir, "*.csd", 3000);
