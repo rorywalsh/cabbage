@@ -185,15 +185,11 @@ void CabbagePluginProcessor::timerCallback()
     
     if(pollingChannels() == 0)
     {
-        //not sure we need to call this async...
-        //not doing so improves costs..
-        //juce::MessageManager::callAsync([this]() {
-            getIdentifierDataFromCsound();
-        //});
+        getIdentifierDataFromCsound();
     }
     
     
-    autoUpdateCount = autoUpdateCount < 1000/20 ? autoUpdateCount+1 : 0;
+    autoUpdateCount = autoUpdateCount < 500 ? autoUpdateCount+1 : 0;
 }
 
 //==============================================================================
@@ -1546,11 +1542,16 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
         return;
     
     identData = *pd;
-    
+
+	if (identData->canRead.load() == false)
+		return;
+
+
     for(auto && i : identData->data)
     {
-//        if(!i.isValid)
-//            break;
+		//DBG("1:" << identData->data.size());
+        //if(!i.isValid)
+        //    break;
         
         const auto identifier = i.identifier;
         const auto name = i.name;
@@ -1654,6 +1655,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                 }
             }
         }
+		DBG("2:" << identData->data.size());
     }
 
 
