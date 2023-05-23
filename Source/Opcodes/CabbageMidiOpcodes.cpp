@@ -254,6 +254,7 @@ int CabbageMidiListener::init()
         notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
         *notes = new MidiNotes();
         noteData = *notes;
+        noteData->notes.resize(128);
     }
 
     noteData->count = 0;
@@ -264,6 +265,16 @@ int CabbageMidiListener::init()
 int CabbageMidiListener::kperf()
 {
     return getMidiInfo();
+}
+
+bool compareByNote(const MidiNotes::NoteInfo& a, const MidiNotes::NoteInfo& b)
+{
+    if (a.note == 0) 
+        return false;
+    if (b.note == 0) 
+        return true;
+
+    return a.note < b.note;
 }
 
 int CabbageMidiListener::getMidiInfo()
@@ -288,6 +299,7 @@ int CabbageMidiListener::getMidiInfo()
     if (notes != nullptr)
     {
         noteData = *notes;
+
     }
     else
     {
@@ -295,49 +307,27 @@ int CabbageMidiListener::getMidiInfo()
         notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
         *notes = new MidiNotes();
         noteData = *notes;
+        noteData->notes.resize(128);
     }
 
     outargs[3] = noteData->count;
 
-    csnd::Vector<MYFLT>& notes = outargs.myfltvec_data(0);
-    csnd::Vector<MYFLT>& velocities = outargs.myfltvec_data(1);
-    csnd::Vector<MYFLT>& channels = outargs.myfltvec_data(2);
+    csnd::Vector<MYFLT>& notesOut = outargs.myfltvec_data(0);
+    csnd::Vector<MYFLT>& velocitiesOut = outargs.myfltvec_data(1);
+    csnd::Vector<MYFLT>& channelsOut = outargs.myfltvec_data(2);
 
     if (shouldSort == 1)
     {
-        //sorting
-        for (int j = 0; j < 128 - 1; j++)
-        {
-            if (noteData->notes[j].note > noteData->notes[j + 1].note)
-            {
-                auto temp = noteData->notes[j];
-                noteData->notes[j] = noteData->notes[j + 1];
-                noteData->notes[j + 1] = temp;
-                j = -1;
-            }
-        }
-
-        //push empty note slots to end
-        int cnt = 0;
-        for (int i = 0; i < 128; i++)
-            if (noteData->notes[i].note != 0)
-                noteData->notes[cnt++] = noteData->notes[i];
-
-        while (cnt < 128)
-        {
-            noteData->notes[cnt].note = 0;
-            noteData->notes[cnt].vel = 0;
-            noteData->notes[cnt].channel = -1;
-            cnt++;
-        }
+        std::sort(noteData->notes.begin(), noteData->notes.end(), compareByNote);
     }
 
-    //update output arrays with current events
+
+
     for (size_t i = 0; i < 128; i++)
     {
-        notes[i] = noteData->notes[i].note;
-        velocities[i] = noteData->notes[i].vel;
-        channels[i] = noteData->notes[i].channel;
+        notesOut[i] = noteData->notes[i].note;
+        velocitiesOut[i] = noteData->notes[i].vel;
+        channelsOut[i] = noteData->notes[i].channel;
     }
 
     
@@ -350,7 +340,7 @@ int CabbageMidiSender::init()
 {
     if (in_count() > 0)
     {
-        csound->init_error("cabbageMidiInfo takes no parameters..\n");
+        csound->init_error("cabbageMidiSender takes no parameters..\n");
         return NOTOK;
     }
 
@@ -358,10 +348,11 @@ int CabbageMidiSender::init()
 
     notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
     MidiNotes* noteData;
+    
 
     if (notes != nullptr)
     {
-        noteData = *notes;
+        noteData = *notes;        
     }
     else
     {
@@ -369,6 +360,7 @@ int CabbageMidiSender::init()
         notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
         *notes = new MidiNotes();
         noteData = *notes;
+        noteData->notes.resize(128);
     }
 
     const int noteNumber = midi_note_num();
@@ -376,9 +368,10 @@ int CabbageMidiSender::init()
     const int noteVelocity = midi_note_vel();
 
     bool noteAlreadyRegistered = false;
-    for (int i = 0; i < 128; i++)
+    int size = noteData->notes.size();
+    for (const auto& n :noteData->notes)
     {
-        if (noteNumber == noteData->notes[i].note)
+        if (noteNumber == n.note)
             noteAlreadyRegistered = true;
     }
 
@@ -407,10 +400,12 @@ int CabbageMidiSender::deinit()
         csound->perf_error("Error - global pointer is not valid", nullptr);
     }
 
-    int test = 0;
 
     noteData->count = (noteData->count > 1 ? noteData->count - 1 : 0);
+
     int index = -1;
+
+
 
     for (int i = 0; i < 128; i++)
     {

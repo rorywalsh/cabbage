@@ -53,7 +53,7 @@ public:
         int vel;
     };
 
-    NoteInfo notes[128];
+    std::vector<NoteInfo> notes;
     int count = 0;
 };
 
@@ -70,7 +70,6 @@ struct CabbageMidiListener : csnd::Plugin<4, 1>
     int init();
     int kperf();
     int getMidiInfo();
-
 
     MidiNotes** notes = nullptr;
 };
