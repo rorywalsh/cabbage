@@ -39,21 +39,27 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     
 
     int fontSize = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::fontsize);
-    if(owner->getCustomFontFile().existsAsFile())
+    const String font = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::typeface);
+    if (font.isNotEmpty()) 
     {
-        userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
-        textEditor.setFont(userFont);
-        textEditor.applyFontToAllText(userFont);
+        const String fontPath = File(getCsdFile()).getParentDirectory().getChildFile(font).getFullPathName();
+        if (File(fontPath).existsAsFile())
+        {
+            userFont = CabbageUtilities::getFontFromFile(File(fontPath));
+            userFont.setHeight(fontSize);
+            textEditor.setFont(userFont);
+            textEditor.applyFontToAllText(userFont);
+        }
     }
-    
-    textEditor.setFont(Font(fontSize));
-
-    if(owner->getCustomFontFile().existsAsFile())
+    else
     {
-        userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
-        userFont.setHeight(fontSize);
-        textEditor.setFont(userFont);
-        textEditor.applyFontToAllText(userFont);
+        if (owner->getCustomFontFile().existsAsFile())
+        {
+            userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
+            userFont.setHeight(fontSize);
+            textEditor.setFont(userFont);
+            textEditor.applyFontToAllText(userFont);
+        }
     }
     
     textEditor.toggleEditOnDoubleClick = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::doubleclicktogglesedit);

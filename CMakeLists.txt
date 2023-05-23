@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.47)
+	set(BUILD_VERSION 2.9.51)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -42,7 +42,7 @@ if(NOT DEFINED CabbagePro)
 endif()
 
 if(NOT DEFINED JucePlugin_ManufacturerCode)
-    set(JucePlugin_ManufacturerCode Cabb)
+    set(JucePlugin_ManufacturerCode CABB)
 endif()
 
 

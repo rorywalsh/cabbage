@@ -30,6 +30,8 @@ texteditor WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/text.md !} 
 
+{! ./markdown/Widgets/Properties/typeface.md !} 
+
 ### Common Identifiers
 
 {! ./markdown/Widgets/Properties/active.md !} 
