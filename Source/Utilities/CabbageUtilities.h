@@ -931,13 +931,6 @@ public:
     }
 
 
-    static String getFileAndPath (File csdFile, String filename)
-    {
-        if (filename.isEmpty())
-            return String();
-
-        return File (csdFile).getParentDirectory().getChildFile (filename).getFullPathName();
-    }
     //===================================================================================
     static int getNumberOfDecimalPlaces (String incr)
     {
