@@ -569,6 +569,11 @@ public:
 
     }
 
+	static String getFileAndPath(File csdFile, String file)
+	{
+		return csdFile.getParentDirectory().getChildFile(file).getFullPathName();
+	}
+
     static String expandDirectoryMacro(String dir)
     {
         StringPairArray folderMacros;
