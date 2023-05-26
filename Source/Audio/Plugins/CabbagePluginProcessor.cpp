@@ -1059,6 +1059,11 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  const String& f
                                                                          CabbageIdentifierIds::text);
                     j[presetName.toStdString()][channelName.toStdString()] = text.toRawUTF8();
                 }
+				if (type == CabbageWidgetTypes::soundfiler) {
+					String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::file);
+					j[presetName.toStdString()][channelName.toStdString()] = file.toRawUTF8();
+				}
                 else if(channelName == "PRESET_COMBOBOX")
                 {
                     //if snaps
@@ -1189,7 +1194,14 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
                         CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.toUTF8().getAddress());
                     }
                 }
-                
+				else if (type == CabbageWidgetTypes::soundfiler)
+				{
+					const String absolutePath = String(presetData.value().dump()).removeCharacters("\"");
+					/*const String absolutePath =
+					csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();*/
+					CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.toUTF8().getAddress());
+
+				}
                 //unique widgets taht take two channels...
                 else if (type == CabbageWidgetTypes::hrange ||
                          type == CabbageWidgetTypes::vrange) //double channel range widgets
@@ -1315,6 +1327,18 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 				const String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 					CabbageIdentifierIds::text);
 				xml->setAttribute(channelName, text);
+			}
+			else if (type == CabbageWidgetTypes::soundfiler) 
+			{
+				const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+					CabbageIdentifierIds::file);
+
+				if (file.length() > 2)
+				{
+					const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
+					xml->setAttribute(channelName, relativePath.replaceCharacters("\\", "/"));
+				}
+
 			}
 			else if (type == CabbageWidgetTypes::filebutton &&
 				!CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
@@ -1456,6 +1480,12 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
                 CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
                 
             }
+			else if (type == CabbageWidgetTypes::soundfiler)
+			{
+				const String file = e->getAttributeValue(i);
+				String channel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
+				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, e->getAttributeValue(i));
+			}
             else if (type == CabbageWidgetTypes::presetbutton)
             {
                 currentPresetName = e->getAttributeValue(i);

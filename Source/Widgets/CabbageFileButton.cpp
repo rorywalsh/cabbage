@@ -85,7 +85,7 @@ void CabbageFileButton::buttonClicked (Button* button)
     workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
     const String csdFile = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::csdfile);
     File currentDir;
-    if(File(workingDir).exists())
+    if(File(csdFile).getParentDirectory().getChildFile(workingDir).exists())
         currentDir = File(workingDir);
     else if (workingDir.isNotEmpty())
         currentDir = File(csdFile).getChildFile (workingDir).getParentDirectory();
