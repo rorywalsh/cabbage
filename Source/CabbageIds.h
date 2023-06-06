@@ -108,13 +108,17 @@ namespace CommandIDs
         batchConvertExamplesVST    = 0x612003,
         showConsole                 = 0x612004,
         showPluginListEditor    = 0x612005,
-        autoReloadFromDisk    = 0x612006,
-        addCabbageSection    = 0x612007,
-        convertToCamelCase    = 0x612008,
-        restartAudioDevice    = 0x612009,
-        convertToLowerCase    = 0x6120011,
-        updatePresetFile    = 0x6120012,
-
+        autoReloadFromDisk      = 0x612006,
+        addCabbageSection       = 0x612007,
+        convertToCamelCase      = 0x612008,
+        restartAudioDevice      = 0x612009,
+        convertToLowerCase      = 0x6120011,
+        updatePresetFile        = 0x6120012,
+        showFileMenu            = 0x6120013,
+        showEditMenu            = 0x6120014,
+        showToolsMenu           = 0x6120015,
+        showViewMenu            = 0x6120016,
+        showHelpMenu            = 0x6120017,
         lastCommandIDEntry
     };
 }

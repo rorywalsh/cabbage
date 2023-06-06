@@ -1484,6 +1484,7 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 			{
 				const String file = e->getAttributeValue(i);
 				String channel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
+				DBG(e->getAttributeValue(i));
 				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, e->getAttributeValue(i));
 			}
             else if (type == CabbageWidgetTypes::presetbutton)
