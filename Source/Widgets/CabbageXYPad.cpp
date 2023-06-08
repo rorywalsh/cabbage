@@ -198,7 +198,7 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 void CabbageXYPad::paint (Graphics& g)
 {
     //main background
-    g.fillAll (Colour (30, 30, 30));
+    //g.fillAll (Colour (30, 30, 30));
     g.setColour (colour);
     g.fillRoundedRectangle (0, 0, getWidth(), getHeight(), 5);
 
