@@ -328,8 +328,7 @@ StringArray CabbageDocumentWindow::getMenuBarNames()
 PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const String& menuName)
 {
     PopupMenu menu;
-    
-    menu.setLookAndFeel(&ideLookAndFeel);
+
     
     if (menuName == "File")             createFileMenu   (menu);
     else if (menuName == "Edit")        createEditMenu   (menu);

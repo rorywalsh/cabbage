@@ -91,7 +91,7 @@ private:
     String commandLineArgs = "";
     bool isGUIEnabled = false;
     CabbageMainComponent* content = nullptr;
-    CabbageIDELookAndFeel ideLookAndFeel;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageDocumentWindow)
 };
 
