@@ -30,6 +30,7 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
     colour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour))),
     bgColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour))),
     ballColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::ballcolour))),
+    outlineColour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour))),
     xValueLabel(),
     yValueLabel(),
     minX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::minx)),
@@ -38,6 +39,7 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
     maxY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxy)),
     valueX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuex)),
     valueY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuey)),
+    outlineThickness(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness)),
     ball(),
     widgetData (wData),
     CabbageWidgetBase(editor)
@@ -202,10 +204,10 @@ void CabbageXYPad::paint (Graphics& g)
     g.setColour (colour);
     g.fillRoundedRectangle (0, 0, getWidth(), getHeight(), 5);
 
-    float borderWidth = CabbageUtilities::getBorderWidth();
-    g.setColour (CabbageUtilities::getBorderColour());
-    g.drawRoundedRectangle (borderWidth / 2, borderWidth / 2, getWidth() - borderWidth, getHeight() - borderWidth,
-                            5, borderWidth);
+
+    g.setColour (outlineColour);
+    g.drawRoundedRectangle (outlineThickness / 2, outlineThickness / 2, getWidth() - outlineThickness, getHeight() - outlineThickness,
+                            5, outlineThickness);
 
     //text label
     Font font;
