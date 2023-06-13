@@ -42,7 +42,11 @@ xypad WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/colour.md !}   
 
+{! ./markdown/Widgets/Properties/outlineColour.md !}   
+
 {! ./markdown/Widgets/Properties/fontColour.md !}  
+
+{! ./markdown/Widgets/Properties/outlineThickness.md !}  
 
 {! ./markdown/Widgets/Properties/alpha.md !}   
 

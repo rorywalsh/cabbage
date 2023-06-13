@@ -309,6 +309,7 @@ void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::valuex, 0);
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::valuey, 0);
+    setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colour(20, 20, 20).toString());
     setProperty (widgetData, CabbageIdentifierIds::ballcolour, Colours::lime.toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::cornflowerblue.toString());
     setProperty (widgetData, CabbageIdentifierIds::textcolour, Colours::cornflowerblue.toString());
@@ -319,6 +320,7 @@ void CabbageWidgetData::setXYPadProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::name, getProperty (widgetData, "name").toString() + String (ID));
     setProperty (widgetData, CabbageIdentifierIds::identchannel, "");
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty (widgetData, CabbageIdentifierIds::outlinethickness, 0);
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
     setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
     setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
