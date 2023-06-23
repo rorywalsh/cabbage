@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.56)
+	set(BUILD_VERSION 2.9.57)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -121,7 +121,7 @@ else()
         set(PLUGIN_AU_MAIN_TYPE "kAudioUnitType_MIDIProcessor")
         set(MIDI_EFFECT True)
     else()
-        set(MIDI_EFFECT False)
+        set(MIDI_EFFECT False)  
     endif()
 
     juce_add_plugin(${PROJECT_NAME}

@@ -434,8 +434,20 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 currentItemIndex = comboValue - 1;
             }
             else
-            {
-                currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
+            {   
+                const String s = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
+
+                if (s.containsOnly("0123456789.-"))
+                {
+                    currentValueAsText = stringItems[juce::roundToInt(s.getIntValue()-.25)];
+                }
+
+                else
+                {
+                    currentValueAsText = s;
+                }
+                
+
                 currentValueAsText = File(getCsdFile()).getParentDirectory().getChildFile (currentValueAsText).getFileNameWithoutExtension();
                 
              
