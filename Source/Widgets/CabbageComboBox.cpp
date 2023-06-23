@@ -93,6 +93,12 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         else
             setSelectedItemIndex (0, dontSendNotification);
         
+
+        if (currentValueAsText.containsOnly("0123456789.-"))
+        {
+            index = currentValueAsText.getIntValue();
+        }
+
         if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
             owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFileNameWithoutExtension());
         else

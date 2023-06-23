@@ -652,7 +652,6 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("trackerBackgroundColour"):
             case HashStringToInt ("trackerColour"):
             case HashStringToInt ("whiteNoteColour"):
-                DBG(getColourFromText(strTokens.joinIntoString(",")).toString());
                 setProperty (widgetData, identifier, getColourFromText(strTokens.joinIntoString(",")).toString());
                 break;
                 
@@ -701,7 +700,6 @@ var CabbageWidgetData::getVarArrayFromTokens (StringArray strTokens)
 
     for (int i = 1; i < strTokens.size(); i++)
     {
-        DBG(strTokens[i].trim());
         array.append (strTokens[i].trim());
     }
 
@@ -712,11 +710,9 @@ void CabbageWidgetData::setPointsFromTokens (ValueTree widgetData, StringArray s
 {
     var newArray;
     newArray.append (strTokens[0].trim());
-    DBG(getProperty(widgetData, CabbageIdentifierIds::channel)[0].toString());
     
     for (int i = 1; i < strTokens.size(); i++)
     {
-        DBG(strTokens[i].trim());
         newArray.append (strTokens[i].trim());
     }
     
@@ -730,7 +726,6 @@ void CabbageWidgetData::setPointsFromTokens (ValueTree widgetData, StringArray s
 
 void CabbageWidgetData::setSVGText(ValueTree widgetData, StringArray tokens)
 {
-    DBG(tokens.joinIntoString(""));
     setProperty(widgetData, CabbageIdentifierIds::svgElement, tokens.joinIntoString(""));
 
 }
@@ -1223,7 +1218,7 @@ void CabbageWidgetData::setScrubberPosition (StringArray strTokens, ValueTree wi
     if (typeOfWidget == CabbageWidgetTypes::gentable)
     {
         setProperty (widgetData, CabbageIdentifierIds::scrubberposition_sample, scrubberInfo[0]);
-        setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberInfo[1]);
+        setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberInfo.size() == 1 ?  int(getProperty(widgetData, CabbageIdentifierIds::tablenumber)[0]) : scrubberInfo[1]);
     }
 }
 
@@ -1240,7 +1235,6 @@ void CabbageWidgetData::setPopulateProps (StringArray strTokens, ValueTree widge
     
     if (strTokens.size() > 1)
     {
-        DBG(widgetData.getProperty(CabbageIdentifierIds::csdfile).toString());
         setProperty (widgetData, CabbageIdentifierIds::currentdir, strTokens[1].trim());
     }
 
