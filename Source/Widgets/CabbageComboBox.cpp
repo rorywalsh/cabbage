@@ -416,6 +416,11 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
         else
         {
             owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
+            if (CabbagePluginParameter* param = owner->getParameterForComponent(combo->getName()))
+            {
+
+                param->setValueNotifyingHost(float(index+.9) / (float)stringItems.size());
+            }
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, stringItems[index]);
         }
         
