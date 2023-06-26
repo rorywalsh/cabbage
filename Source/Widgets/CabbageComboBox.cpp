@@ -451,7 +451,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 else
                 {
                     currentValueAsText = s;
-                }
+                }  
                 
 
                 currentValueAsText = File(getCsdFile()).getParentDirectory().getChildFile (currentValueAsText).getFileNameWithoutExtension();

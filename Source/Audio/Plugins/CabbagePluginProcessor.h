@@ -307,9 +307,12 @@ private:
         
         void setValue(float newValue) override
         {
-            currentValue = isCombo ? juce::roundToInt(range.convertFrom0to1 (newValue)) : range.convertFrom0to1 (newValue);
-            if(isCombo && items.size() > 0)
-                processor->setCabbageParameter(channel, juce::roundToInt(range.convertFrom0to1(newValue)) * (items.size() - 1), valueTree);
+            currentValue = (isCombo && items.size() == 0) ? juce::roundToInt(range.convertFrom0to1(newValue)) : range.convertFrom0to1(newValue);
+
+            if (isCombo && items.size() > 0)
+            {
+                processor->setCabbageParameter(channel, std::floor(newValue * (items.size())), valueTree);
+            }
             else
                 processor->setCabbageParameter(channel, currentValue, valueTree);
         }
@@ -333,7 +336,7 @@ private:
 
                 if (isCombo && items.size() > 0)
                 {
-                    const int index = juce::roundToInt(scaledValue * (items.size()-1));
+                    const int index = std::floor(currentValue * (items.size()*.9));
                     asText = prefix;
                     return asText + items[index] + postfix;
                 }
