@@ -1218,7 +1218,7 @@ void CabbageWidgetData::setScrubberPosition (StringArray strTokens, ValueTree wi
     if (typeOfWidget == CabbageWidgetTypes::gentable)
     {
         setProperty (widgetData, CabbageIdentifierIds::scrubberposition_sample, scrubberInfo[0]);
-        setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberInfo.size() == 1 ?  int(getProperty(widgetData, CabbageIdentifierIds::tablenumber)[0]) : scrubberInfo[1]);
+        setProperty (widgetData, CabbageIdentifierIds::scrubberposition_table, scrubberInfo.size() == 1 ?  int(getProperty(widgetData, CabbageIdentifierIds::tablenumber)[0]) : int(scrubberInfo[1]));
     }
 }
 
