@@ -100,7 +100,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         else if (type == "FMOD")
         {
             fileExtension = ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("bundle") : String("dll"));
-            pluginFilename = currentApplicationDirectory + ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("/CsoundUnityNative.bundle") : String("/CsoundUnityNative.dll"));
+            pluginFilename = currentApplicationDirectory + ((CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX) ? String("/fmod_csound_64.dylib") : String("/fmod_csound64.dll"));
         }
         else if (type == "FMODFx")
         {
