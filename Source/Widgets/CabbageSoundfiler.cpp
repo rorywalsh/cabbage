@@ -53,6 +53,12 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
     soundfiler.setFile (File::getCurrentWorkingDirectory().getChildFile(file));
     soundfiler.addChangeListener (this);
     
+    auto displayType = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::displaytype);
+    if (displayType == "mono")
+    {
+        soundfiler.setMonoDisplayType(true);
+    }
+
     var tables = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablenumber);
     
     for (int y = 0; y < tables.size(); y++)

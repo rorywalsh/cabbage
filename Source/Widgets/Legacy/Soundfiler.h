@@ -91,7 +91,7 @@ public:
     void createImage (String filename);
     void setRange (Range<double> newRange);
     void showScrollbars (bool show);
-
+    void setMonoDisplayType(bool displayMono) { showSingleChannel = displayMono; }
 
 private:
     Image img;
@@ -130,6 +130,7 @@ private:
     double loopStart;
     double currentPlayPosition;
     bool drawWaveform;
+    bool showSingleChannel = false;
 };
 
 
