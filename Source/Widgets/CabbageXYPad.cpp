@@ -242,7 +242,7 @@ void CabbageXYPad::paint (Graphics& g)
 
     if (rightMouseButtonDown)
     {
-        g.setColour (fontColour);
+        g.setColour (ballColour);
         g.drawLine (mouseDownXY.getX(), mouseDownXY.getY(), currentMouseXY.getX() + ball.getWidth() / 2, currentMouseXY.getY() + ball.getWidth() / 2);
     }
 
