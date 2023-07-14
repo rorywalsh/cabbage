@@ -315,6 +315,7 @@ void CabbageSettingsWindow::addMiscProperties()
     editorProps.add (new BooleanPropertyComponent (alwaysOnTopPluginValue, "Plugin Window", "Always show plugin on top"));
     editorProps.add (new BooleanPropertyComponent (alwaysOnTopGraphValue, "Graph Window", "Always show graph on top"));
     editorProps.add (new BooleanPropertyComponent (autoConnectNodes, "Auto-connect nodes", "Automatically connect nodes to graph"));
+    editorProps.add(new BooleanPropertyComponent(compileOnSaveValue, "Compile on save", "Automatically compile on save"));
 
 	UDPPortValue.addListener(this);
 	UDPPortValue.setValue(settings.getUserSettings()->getIntValue("UDP Port"));
