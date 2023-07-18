@@ -1753,7 +1753,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 			examplesDir = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
 #endif
 
-
+            bool compileOnSave = cabbageSettings->getUserSettings()->getBoolValue("CompileOnSave");
 
 			stopCsoundForNode(getCurrentCsdFile().getFullPathName());;
 			isGUIEnabled = false;
@@ -1780,7 +1780,8 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 					{
 						editorAndConsole[i]->editor->loadContent(getCurrentCodeEditor()->getDocument().getAllContent());
 						stopCsoundForNode(getCurrentCsdFile().getFullPathName(), i);
-						runCsoundForNode(getCurrentCsdFile().getFullPathName(), i);
+                        if(compileOnSave)
+						    runCsoundForNode(getCurrentCsdFile().getFullPathName(), i);
 
 					}
 					
@@ -1792,9 +1793,12 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
 			if (recompile == true && getCurrentCsdFile().hasFileExtension((".csd")))
 			{
-				runCsoundForNode(getCurrentCsdFile().getFullPathName());
-				fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
-                fileTabs[currentFileIndex]->lastModified = getCurrentCsdFile().getLastModificationTime();
+                if (compileOnSave)
+                {
+                    runCsoundForNode(getCurrentCsdFile().getFullPathName());
+                    fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
+                    fileTabs[currentFileIndex]->lastModified = getCurrentCsdFile().getLastModificationTime();
+                }
 			}
 
 			addInstrumentsAndRegionsToCombobox();

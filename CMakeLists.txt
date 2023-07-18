@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.46)
+	set(BUILD_VERSION 2.9.67)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -42,7 +42,7 @@ if(NOT DEFINED CabbagePro)
 endif()
 
 if(NOT DEFINED JucePlugin_ManufacturerCode)
-    set(JucePlugin_ManufacturerCode Cabb)
+    set(JucePlugin_ManufacturerCode CABB)
 endif()
 
 
@@ -77,6 +77,15 @@ macro(SetIfSynth var value1 value2)
     endif()
 endmacro()
 
+# these are needed for both hosting and creating plugins
+if(APPLE)
+juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
+elseif(MSVC)
+juce_set_vst2_sdk_path("C:/SDKs/VST_SDK/VST3_SDK")
+else()
+juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
+endif()
+
 if ("${PROJECT_NAME}" STREQUAL "CLIConverter")
 juce_add_console_app(${PROJECT_NAME}
     PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
@@ -87,6 +96,7 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
         ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png 
         NEEDS_WEB_BROWSER TRUE
         HARDENED_RUNTIME_ENABLED TRUE
+        PLUGINHOST_AU TRUE
         HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" 
         # DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
         COMPANY_NAME ${JucePlugin_Manufacturer}
@@ -95,14 +105,6 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
 else()
 # ============== This part of the CMake setup deals with plugins only.....
-    if(APPLE)
-        juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
-    elseif(MSVC)
-        juce_set_vst2_sdk_path("C:/SDKs/VST_SDK/VST3_SDK")
-    else()
-        juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
-    endif()
-
     set(PLUGIN_NEEDS_OUTPUT PLUGIN_IS_A_SYNTH)
     SetIfSynth(PLUGIN_VST2_CATEGORY "kPlugCategSynth" "kPlugCategEffect")
     SetIfSynth(PLUGIN_AU_MAIN_TYPE "aumi" "aumf")
@@ -119,7 +121,7 @@ else()
         set(PLUGIN_AU_MAIN_TYPE "kAudioUnitType_MIDIProcessor")
         set(MIDI_EFFECT True)
     else()
-        set(MIDI_EFFECT False)
+        set(MIDI_EFFECT False)  
     endif()
 
     juce_add_plugin(${PROJECT_NAME}
@@ -411,6 +413,8 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
             JucePlugin_WantsMidiInput=1
             JUCE_ASIO=1
             JUCE_VST3_CAN_REPLACE_VST2=0
+            JUCE_PLUGINHOST_VST3=1
+            JUCE_PLUGINHOST_VST=1
             JucePlugin_ProducesMidiOutput=1
             Cabbage_IDE_Build=${IS_IDE_Build}
             JUCE_DISPLAY_SPLASH_SCREEN=0

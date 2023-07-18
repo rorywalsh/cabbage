@@ -38,6 +38,7 @@ void CabbageForm::textDropped (const String& text, int x, int y)
 
 void CabbageForm::filesDropped (const StringArray& files, int x, int y)
 {
+    DBG(files[0]);
     owner->sendChannelDataToCsound(CabbageIdentifierIds::mousex, x);
     owner->sendChannelDataToCsound(CabbageIdentifierIds::mousey, y);
     owner->sendChannelStringDataToCsound(CabbageIdentifierIds::lastFileDropped, files[0]);

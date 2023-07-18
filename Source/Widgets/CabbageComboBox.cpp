@@ -93,6 +93,12 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         else
             setSelectedItemIndex (0, dontSendNotification);
         
+
+        if (currentValueAsText.containsOnly("0123456789.-"))
+        {
+            index = currentValueAsText.getIntValue();
+        }
+
         if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
             owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFileNameWithoutExtension());
         else
@@ -410,6 +416,11 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
         else
         {
             owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
+            if (CabbagePluginParameter* param = owner->getParameterForComponent(combo->getName()))
+            {
+
+                param->setValueNotifyingHost(float(index+.9) / (float)stringItems.size());
+            }
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, stringItems[index]);
         }
         
@@ -434,8 +445,20 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 currentItemIndex = comboValue - 1;
             }
             else
-            {
-                currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
+            {   
+                const String s = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
+
+                if (s.containsOnly("0123456789.-"))
+                {
+                    currentValueAsText = stringItems[juce::roundToInt(s.getIntValue()-.25)];
+                }
+
+                else
+                {
+                    currentValueAsText = s;
+                }  
+                
+
                 currentValueAsText = File(getCsdFile()).getParentDirectory().getChildFile (currentValueAsText).getFileNameWithoutExtension();
                 
              

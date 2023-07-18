@@ -1309,7 +1309,7 @@ void GenTable::setScrubberPos (double pos)
         double waveformLengthSeconds = (double)waveformBuffer.size() / sampleRate;
         double timePos = pos * waveformLengthSeconds;
         currentPositionMarker->setRectangle (juce::Rectangle<float> (timeToX (timePos), 0,
-                                                                     (genRoutine == 2 ? numPixelsPerIndex : 2), thumbArea.getHeight()));
+                                                                     (genRoutine == 2 ? jmax(2.0, numPixelsPerIndex) : 2), thumbArea.getHeight()));
 
         if (this->showScroll)
         {

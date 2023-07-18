@@ -41,7 +41,9 @@ public:
     CabbageWidgetIdentifiers(){
         data.clear();
     }
-    Array<IdentifierData, CriticalSection> data;
+    Array<IdentifierData> data;
+
+    std::atomic_bool canRead;
 };
 
 //Some of these classes use a reversed input/output system to get around the issue of 0 outputs..

@@ -14,6 +14,8 @@ soundfiler WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/channel.md  !}
 
+{! ./markdown/Widgets/Properties/displayType.md !}  
+
 {! ./markdown/Widgets/Properties/file.md !} 
 
 {! ./markdown/Widgets/Properties/scrubberPosition.md !} 

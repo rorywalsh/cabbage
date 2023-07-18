@@ -185,15 +185,11 @@ void CabbagePluginProcessor::timerCallback()
     
     if(pollingChannels() == 0)
     {
-        //not sure we need to call this async...
-        //not doing so improves costs..
-        //juce::MessageManager::callAsync([this]() {
-            getIdentifierDataFromCsound();
-        //});
+        getIdentifierDataFromCsound();
     }
     
     
-    autoUpdateCount = autoUpdateCount < 1000/20 ? autoUpdateCount+1 : 0;
+    autoUpdateCount = autoUpdateCount < 500 ? autoUpdateCount+1 : 0;
 }
 
 //==============================================================================
@@ -909,8 +905,20 @@ void CabbagePluginProcessor::createCabbageParameters()
 							CabbageIdentifierIds::min);
 						const float max = numOfFiles == 0 ? 1 : numOfFiles;
 
+						const String channelType = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+							CabbageIdentifierIds::channeltype);
+
+						var items = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+							CabbageIdentifierIds::text);
+
+
+						for (int i = 0 ; i < items.size() ; i++)
+						{
+							comboItems.add(items[i].toString());
+						}
+						
 						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), channel, name,
-							min, max, value, 1, 1, automatable, "", "");
+							min, max, value, 1, 1, automatable, "", "", true, comboItems);
 						addCabbageParameter(std::move(param));
 					}
 					else //comboboxes and options button are both set up with the same type of host parameter mapping...
@@ -1063,6 +1071,11 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  const String& f
                                                                          CabbageIdentifierIds::text);
                     j[presetName.toStdString()][channelName.toStdString()] = text.toRawUTF8();
                 }
+				if (type == CabbageWidgetTypes::soundfiler) {
+					String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::file);
+					j[presetName.toStdString()][channelName.toStdString()] = file.toRawUTF8();
+				}
                 else if(channelName == "PRESET_COMBOBOX")
                 {
                     //if snaps
@@ -1187,13 +1200,20 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
                                                                                CabbageIdentifierIds::ignorelastdir);
                     if(ignoreLastDir == 0)
                     {
-						const String absolutePath = (String(presetData.value().dump()).replaceCharacters("\\", "/"));
+						const String absolutePath = String(presetData.value().dump()).removeCharacters("\"");
                         /*const String absolutePath =
                         csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();*/
-                        CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
+                        CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.toUTF8().getAddress());
                     }
                 }
-                
+				else if (type == CabbageWidgetTypes::soundfiler)
+				{
+					const String absolutePath = String(presetData.value().dump()).removeCharacters("\"");
+					/*const String absolutePath =
+					csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();*/
+					CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.toUTF8().getAddress());
+
+				}
                 //unique widgets taht take two channels...
                 else if (type == CabbageWidgetTypes::hrange ||
                          type == CabbageWidgetTypes::vrange) //double channel range widgets
@@ -1319,6 +1339,18 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 				const String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 					CabbageIdentifierIds::text);
 				xml->setAttribute(channelName, text);
+			}
+			else if (type == CabbageWidgetTypes::soundfiler) 
+			{
+				const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+					CabbageIdentifierIds::file);
+
+				if (file.length() > 2)
+				{
+					const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
+					xml->setAttribute(channelName, relativePath.replaceCharacters("\\", "/"));
+				}
+
 			}
 			else if (type == CabbageWidgetTypes::filebutton &&
 				!CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
@@ -1460,6 +1492,13 @@ void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
                 CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
                 
             }
+			else if (type == CabbageWidgetTypes::soundfiler)
+			{
+				const String file = e->getAttributeValue(i);
+				String channel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
+				DBG(e->getAttributeValue(i));
+				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, e->getAttributeValue(i));
+			}
             else if (type == CabbageWidgetTypes::presetbutton)
             {
                 currentPresetName = e->getAttributeValue(i);
@@ -1546,11 +1585,16 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
         return;
     
     identData = *pd;
-    
+
+	if (identData->canRead.load() == false)
+		return;
+
+
     for(auto && i : identData->data)
     {
-//        if(!i.isValid)
-//            break;
+		//DBG("1:" << identData->data.size());
+        //if(!i.isValid)
+        //    break;
         
         const auto identifier = i.identifier;
         const auto name = i.name;
@@ -1654,6 +1698,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                 }
             }
         }
+		DBG("2:" << identData->data.size());
     }
 
 

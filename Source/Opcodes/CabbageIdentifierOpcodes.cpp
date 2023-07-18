@@ -18,6 +18,7 @@
 //====================================================================================================
 int CreateCabbageWidget::createWidget()
 {
+
     vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
     CabbageWidgetsValueTree* varData;
     
@@ -33,6 +34,7 @@ int CreateCabbageWidget::createWidget()
         varData = *vt;
     }
     
+
     const String widgetTreeIdentifier = "TempWidget";
     ValueTree tempWidget(widgetTreeIdentifier);
     if(in_count()!=2)
@@ -107,8 +109,6 @@ int GetCabbageStringIdentifierSingle::getAttribute()
     }
     
     
-    
-    
     vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
     CabbageWidgetsValueTree* varData;
     
@@ -124,6 +124,7 @@ int GetCabbageStringIdentifierSingle::getAttribute()
         varData = *vt;
     }
     
+        
     const auto child = varData->data.getChildWithName(name);
 
     if(child.getProperty(identifier).size()>0)
@@ -925,6 +926,8 @@ int SetCabbageValueIdentifier::setAttribute(int)
         varData = *vt;
     }
     
+    varData->canRead.store(false);
+
     //now update underlying Csound channel
     if(trigger == 1)
     {
@@ -955,7 +958,7 @@ int SetCabbageValueIdentifier::setAttribute(int)
             varData->data.add(data);
 
     }
-    
+    varData->canRead.store(true);
     return OK;
 }
 
@@ -993,6 +996,8 @@ int SetCabbageValueIdentifierITime::setAttribute(int)
         *value = args[1];
     }
     
+    varData->canRead.store(false);
+
     data.args = args[1];
     
     bool entryExists = false;
@@ -1012,7 +1017,7 @@ int SetCabbageValueIdentifierITime::setAttribute(int)
     if(!entryExists)
         varData->data.add(data);
         
-
+    varData->canRead.store(true);
     
     return OK;
 }
@@ -1052,6 +1057,8 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int)
         varData = *vt;
     }
     
+    varData->canRead.store(false);
+
     //now update underlying Csound channel
     if(trigger == 1)
     {
@@ -1084,7 +1091,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int)
             varData->data.add(data);
         
     }
-    
+    varData->canRead.store(true);
     return OK;
 }
 
@@ -1096,6 +1103,7 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
     
     CabbageWidgetIdentifiers::IdentifierData data;
     
+
     data.identifier = CabbageIdentifierIds::value;
     data.name = args.str_data(0).data;
     data.isValid = true;
@@ -1115,6 +1123,7 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
         varData = *vt;
     }
     
+    varData->canRead.store(false);
     data.args = args.str_data(1).data;
     
     bool entryExists = false;
@@ -1143,6 +1152,8 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
     if(!entryExists)
         varData->data.add(data);
     
+    varData->canRead.store(true);
+
     return OK;
 }
 //====================================================================================================
@@ -1173,6 +1184,8 @@ int SetCabbageIdentifier::setAttribute()
         varData = *vt;
     }
     
+    varData->canRead.store(false);
+
     if(trigger == 1)
     {
         //hack to trigger table update even if table number hasn't changed
@@ -1220,6 +1233,8 @@ int SetCabbageIdentifier::setAttribute()
             }
         }
     }
+
+    varData->canRead.store(true);
     return OK;
 }
 
@@ -1231,7 +1246,6 @@ int SetCabbageIdentifierArray::setAttribute()
         return OK;
     
     CabbageWidgetIdentifiers::IdentifierData data;
-    
     data.identifier = args.str_data(2).data;
     data.name = args.str_data(1).data;
     csnd::Vector<MYFLT>& inputArgs = args.myfltvec_data(3);
@@ -1250,7 +1264,8 @@ int SetCabbageIdentifierArray::setAttribute()
         *vt = new CabbageWidgetIdentifiers();
         varData = *vt;
     }
-    
+    varData->canRead.store(false);
+
     if(trigger == 1)
     {
         //hack to trigger table update even if table number hasn't changed
@@ -1289,6 +1304,8 @@ int SetCabbageIdentifierArray::setAttribute()
             }
         }
     }
+
+    varData->canRead.store(true);
     return OK;
 }
 
@@ -1327,7 +1344,8 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
         *vt = new CabbageWidgetIdentifiers();
         varData = *vt;
     }
-    
+    varData->canRead.store(false);
+
     //hack to trigger table update even if table number hasn't changed
     if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
     {
@@ -1362,6 +1380,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
         varData->data.add(updateData0);
     }
     
+    varData->canRead.store(true);
     return OK;
 }
 
@@ -1388,6 +1407,7 @@ int SetCabbageIdentifierITime::setAttribute()
         varData = *vt;
     }
     
+    varData->canRead.store(false);
     //hack to trigger table update even if table number hasn't changed
     if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
     {
@@ -1431,6 +1451,7 @@ int SetCabbageIdentifierITime::setAttribute()
         varData->data.add(updateData0);
     }
     
+    varData->canRead.store(true);
     return OK;
 }
 
@@ -1457,6 +1478,8 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
         varData = *vt;
     }
     
+    varData->canRead.store(false);
+
     //hack to trigger table update even if table number hasn't changed
     if(data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
     {
@@ -1498,7 +1521,9 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
         updateData0.args = 0;
         varData->data.add(updateData0);
     }
-    
+
+    varData->canRead.store(true);
+
     return OK;
 }
 //====================================================================================================

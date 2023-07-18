@@ -228,8 +228,9 @@ public:
                           bool automatable = true,
                           const String& prefix  = String(),
                           const String& postfix = String(),
-                          bool isCombo = false)
-    : parameter(new CabbageHostParameter(*this, thisOwner, wData, channelToUse, name, prefix, postfix, minValue, maxValue, def, incr, skew, isCombo)),
+                          bool isCombo = false,
+                          StringArray stringItems = StringArray())
+    : parameter(new CabbageHostParameter(*this, thisOwner, wData, channelToUse, name, prefix, postfix, minValue, maxValue, def, incr, skew, isCombo, stringItems)),
     widgetName(name),
     isAutomatable(automatable)
     {
@@ -306,8 +307,14 @@ private:
         
         void setValue(float newValue) override
         {
-            currentValue = isCombo ? juce::roundToInt(range.convertFrom0to1 (newValue)) : range.convertFrom0to1 (newValue);
-            processor->setCabbageParameter(channel, currentValue, valueTree);
+            currentValue = (isCombo && items.size() == 0) ? juce::roundToInt(range.convertFrom0to1(newValue)) : range.convertFrom0to1(newValue);
+
+            if (isCombo && items.size() > 0)
+            {
+                processor->setCabbageParameter(channel, std::floor(newValue * (items.size())), valueTree);
+            }
+            else
+                processor->setCabbageParameter(channel, currentValue, valueTree);
         }
         
         String getText(float normalizedValue, int length) const override
@@ -326,17 +333,27 @@ private:
             }
             else
             {
-                showingAffixes = true;
-                
-                asText = prefix;
-                asText += String(scaledValue, decimalPlaces);
-                
-                if (length > 0 && asText.length() + postfix.length() > length)
+
+                if (isCombo && items.size() > 0)
                 {
-                    asText = asText.substring(0, asText.length() - postfix.length());
+                    const int index = std::floor(currentValue * (items.size()*.9));
+                    asText = prefix;
+                    return asText + items[index] + postfix;
                 }
-                
-                asText += postfix;
+                else
+                {
+                    showingAffixes = true;
+
+                    asText = prefix;
+                    asText += String(scaledValue, decimalPlaces);
+
+                    if (length > 0 && asText.length() + postfix.length() > length)
+                    {
+                        asText = asText.substring(0, asText.length() - postfix.length());
+                    }
+
+                    asText += postfix;
+                }
             }
             
             return asText;
@@ -368,7 +385,8 @@ private:
                              float def,
                              float incr,
                              float skew,
-                             bool isACombo)
+                             bool isACombo,
+                             StringArray stringItems)
         : AudioParameterFloat(thisName, channelToUse, NormalisableRange<float>(minValue, maxValue, incr, skew), def),
         channel(channelToUse),
         prefix(prefixToUse),
@@ -376,7 +394,8 @@ private:
         currentValue(def),
         isCombo(isACombo),
         processor(proc),
-        valueTree(wData)
+        valueTree(wData),
+        items(stringItems)
         {
             ignoreUnused(thisOwner);
         }
@@ -386,6 +405,7 @@ private:
         const String postfix { };
         float currentValue;
         bool isCombo = false;
+        StringArray items = {};
         
         CabbagePluginProcessor* processor;
         ValueTree valueTree;

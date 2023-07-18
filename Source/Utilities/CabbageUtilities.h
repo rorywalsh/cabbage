@@ -569,6 +569,11 @@ public:
 
     }
 
+	static String getFileAndPath(File csdFile, String file)
+	{
+		return csdFile.getParentDirectory().getChildFile(file).getFullPathName();
+	}
+
     static String expandDirectoryMacro(String dir)
     {
         StringPairArray folderMacros;
@@ -931,13 +936,6 @@ public:
     }
 
 
-    static String getFileAndPath (File csdFile, String filename)
-    {
-        if (filename.isEmpty())
-            return String();
-
-        return File (csdFile).getParentDirectory().getChildFile (filename).getFullPathName();
-    }
     //===================================================================================
     static int getNumberOfDecimalPlaces (String incr)
     {

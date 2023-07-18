@@ -167,9 +167,11 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
 
 String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, const String currentLineText)
 {
-    String returnString = currentLineText;
+    //need to rip out any spaces at teh start so it doesn't mess up the generated text..
+    //https://forum.cabbageaudio.com/t/edit-mode-destroys-source-code-windows-10-11/3769/15
+    String returnString = currentLineText.trimStart();
     StringArray replacedIdentifiers;
-    StringArray identifiersInLine = CabbageUtilities::getTokens(currentLineText, ')');
+    StringArray identifiersInLine = CabbageUtilities::getTokens(currentLineText.trimStart(), ')');
     
     //remove widget type
     const String widgetType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);

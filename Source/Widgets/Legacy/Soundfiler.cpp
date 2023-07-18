@@ -223,9 +223,18 @@ void Soundfiler::paint (Graphics& g)
        juce::Rectangle<int> thumbArea (getLocalBounds());
         thumbArea.setHeight (getHeight() - 14);
         thumbArea.setTop (10.f);
-        thumbnail->drawChannels (g, thumbArea.reduced (2),
-                                 visibleRange.getStart(), visibleRange.getEnd(), 1.f);
-
+        if (showSingleChannel)
+        {
+            thumbnail->drawChannel(g, thumbArea.reduced(2),
+                visibleRange.getStart(), visibleRange.getEnd(), 0, 1.f);
+            thumbnail->drawChannel(g, thumbArea.reduced(2),
+                visibleRange.getStart(), visibleRange.getEnd(), 1, 1.f);
+        }
+        else
+        {
+            thumbnail->drawChannels(g, thumbArea.reduced(2),
+                visibleRange.getStart(), visibleRange.getEnd(), 1.f);
+        }
         //if(regionWidth>1){
         g.setColour (colour.contrasting (.5f).withAlpha (.7f));
         float zoomFactor = thumbnail->getTotalLength() / visibleRange.getLength();
