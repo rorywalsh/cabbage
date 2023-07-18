@@ -306,7 +306,7 @@ void Soundfiler::mouseDrag (const MouseEvent& e)
                     currentPlayPosition = jmax (0.0, xToTime (loopStart + (float)e.getDistanceFromDragStartX()));
 
                 float widthInTime = ((float)e.getDistanceFromDragStartX() / (float)getWidth()) * (float)thumbnail->getTotalLength();
-                loopLength = jmax (0.0, widthInTime * zoomFactor);
+                loopLength = abs (widthInTime * zoomFactor);
             }
 
             repaint();
