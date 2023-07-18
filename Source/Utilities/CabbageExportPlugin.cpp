@@ -9,7 +9,7 @@
  */
 
 #include "CabbageExportPlugin.h"
-
+#include <fstream>
 
 //===============   methods for exporting plugins ==============================
 void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, String destination, bool promptForFilename, bool encrypt)
@@ -25,7 +25,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         
         String pluginFilename, fileExtension;
         File thisFile = File::getSpecialLocation (File::currentApplicationFile);
-#if defined(JUCE_LINUX)
+#if defined(JUCE_LINUX)	
         String currentApplicationDirectory = "/usr/bin";
 #else
         String currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
@@ -131,17 +131,14 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         //if batch converting plugins
         if(File(destination).exists())
         {
-            const String newFile = destination+"/"+csdFile.getFileName();
+            const String newFile = File(destination).getChildFile(csdFile.getFileName()).getFullPathName();
             writePluginFileToDisk(newFile, csdFile, VSTData, fileExtension, pluginId, type,
                                   encrypt);
         }
         else if(promptForFilename == false)
         {
-            String newFile = destination;
-            if (newFile == "")
-            {
-                newFile = csdFile.getParentDirectory().getFullPathName()+"/"+csdFile.getFileNameWithoutExtension();
-            }
+            String newFile = destination+"/"+csdFile.getFileNameWithoutExtension();
+
             writePluginFileToDisk(newFile, csdFile, VSTData, fileExtension, pluginId, type,
                                   encrypt);
             
@@ -248,13 +245,26 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
         }
     }
     
+#if CLIConverter
+    if(exportedPlugin.existsAsFile())
+        DBG("plugin exists");
+
+    auto mkdir = "mkdir " + exportedPlugin.getParentDirectory().getFullPathName().toStdString();
+    system(mkdir.c_str());
+    auto command = "cp -Rf " + VSTData.getFullPathName().toStdString() + " " +exportedPlugin.getFullPathName().toStdString();
+    system(command.c_str());
     
+#else
     if (!VSTData.copyFileTo (exportedPlugin))
     {
+
+        Logger::writeToLog("Could not create plugin file. Check write access");
+
         CabbageUtilities::showMessage ("Error", "Exporting: " + csdFile.getFullPathName() + ", Can't copy plugin to this location. It currently be in use, or you may be trying to install to a system folder you don't have permission to write in. Please try exporting to a different location.", &lookAndFeel);
+
         return;
     }
-    
+#endif
     
     File exportedCsdFile;
     
@@ -323,7 +333,7 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
             String manu(CabbageManufacturer);
             const String pluginName = "<string>" +manu + ": " + fc.getFileNameWithoutExtension() + "</string>";
             const String toReplace = "<string>"+manu+": "+VSTData.getFileNameWithoutExtension()+"</string>";
-            DBG(toReplace);
+
             
 #if CabbagePro
             
