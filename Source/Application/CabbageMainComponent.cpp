@@ -515,7 +515,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
     if (drawableButton->getName() == "playButton")
     {
         if (drawableButton->getProperties().getWithDefault ("state", "") == "off")
-            saveDocument();
+            saveDocument(false, true);
         else
             stopCsoundForNode (drawableButton->getProperties().getWithDefault ("filename", ""));
 
@@ -1702,7 +1702,7 @@ void CabbageMainComponent::createCodeEditorForFile (File file)
     cabbageSettings->setProperty ("NumberOfOpenFiles", int (editorAndConsole.size()));
 }
 //==============================================================================
-void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
+void CabbageMainComponent::saveDocument (bool saveAs, bool compileFromPlayButton)
 {
 	if (fileTabs.size() > 0)
 	{
@@ -1791,15 +1791,15 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
 			propertyPanel->setEnabled(false);
 
-			if (recompile == true && getCurrentCsdFile().hasFileExtension((".csd")))
-			{
-                if (compileOnSave)
+            if (compileOnSave || compileFromPlayButton)
+            {
+                if (getCurrentCsdFile().hasFileExtension((".csd")))
                 {
                     runCsoundForNode(getCurrentCsdFile().getFullPathName());
                     fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
                     fileTabs[currentFileIndex]->lastModified = getCurrentCsdFile().getLastModificationTime();
                 }
-			}
+            }
 
 			addInstrumentsAndRegionsToCombobox();
 			getCurrentCodeEditor()->setSavePoint();

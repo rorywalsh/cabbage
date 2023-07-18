@@ -92,7 +92,7 @@ public:
 	const File openFile(String filename = "", bool updateRecentFiles = true, bool exportingPlugin = false);
 	void closeDocument();
 	void showSettingsDialog();
-	void saveDocument(bool saveAs = false, bool recompile = true);
+	void saveDocument(bool saveAs = false, bool compileFromPlayButton = false);
 	void runCsoundForNode(String file, int fileTabIndex = -99);
     StringArray preCompileCheckForIssues(File file);
     void stopCsoundForNode(String file, int fileTabIndex = -99);
