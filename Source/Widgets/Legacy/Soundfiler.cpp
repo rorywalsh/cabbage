@@ -272,7 +272,7 @@ void Soundfiler::mouseDown (const MouseEvent& e)
 {
     if (!e.mods.isPopupMenu())
     {
-        regionWidth = (1.01 - zoom) * 1.5;
+        regionWidth = 0;// (1.01 - zoom) * 1.5;
         currentPlayPosition = jmax (0.0, xToTime ((float) e.x));
         loopStart = e.x;
         loopLength =  0;
