@@ -45,6 +45,18 @@ public:
         return (int) (currentPlayPosition * sampleRate);
     }
 
+
+    void setCurrentPlayPos(int posInSamples)
+    {
+        currentPlayPosition  = posInSamples / sampleRate;
+    }
+
+    void setRegionWidth(float width)
+    {
+        const double zoomFactor = visibleRange.getLength() / thumbnail->getTotalLength();
+        regionWidth = (( width / ((float)thumbnail->getTotalLength() * sampleRate) ) * (float)getWidth()) * zoomFactor;
+    }
+
     int getLoopLengthInSamples()
     {
         return (int)(loopLength * sampleRate);

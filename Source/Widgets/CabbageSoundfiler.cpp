@@ -99,6 +99,8 @@ void CabbageSoundfiler::changeListenerCallback (ChangeBroadcaster* source)
     const float length = getLoopLength();
 
     owner->sendChannelDataToCsound (getChannelArray()[0], position);
+    CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::regionstart, position);
+    CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::regionlength, length);
 
     if (getChannelArray().size() > 1)
         owner->sendChannelDataToCsound (getChannelArray()[1], length);
@@ -165,6 +167,15 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
         file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
         const String fullPath = File (getCsdFile()).getParentDirectory().getChildFile (file).getFullPathName();
         setFile (fullPath);
+    }
+
+    if (prop == CabbageIdentifierIds::regionstart)
+    {
+        soundfiler.setCurrentPlayPos(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::regionstart));
+    }
+    else if (prop == CabbageIdentifierIds::regionlength)
+    {
+        soundfiler.setRegionWidth(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::regionlength));
     }
 
     if (zoom != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::zoom))

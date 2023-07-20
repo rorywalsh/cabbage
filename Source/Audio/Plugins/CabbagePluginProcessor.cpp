@@ -1066,15 +1066,31 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  const String& f
             
             //only write values for widgets that have channels
             if (channelName.isNotEmpty()) {
-                if (type == CabbageWidgetTypes::texteditor) {
+                if (type == CabbageWidgetTypes::texteditor)
+				{
                     String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                          CabbageIdentifierIds::text);
                     j[presetName.toStdString()][channelName.toStdString()] = text.toRawUTF8();
                 }
-				if (type == CabbageWidgetTypes::soundfiler) {
-					String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+				if (type == CabbageWidgetTypes::soundfiler) 
+				{
+					const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
 						CabbageIdentifierIds::file);
-					j[presetName.toStdString()][channelName.toStdString()] = file.toRawUTF8();
+					const int scrubberPos = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::scrubberposition);
+					const int regionStart = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::regionstart);
+					const int regionLength = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::regionlength);
+
+					//j[presetName.toStdString()][String(channelName).toStdString()] = file.toRawUTF8();
+					nlohmann::ordered_json b;
+					b[CabbageIdentifierIds::file.toString().toStdString()] = file.toRawUTF8();
+					b[CabbageIdentifierIds::scrubberposition.toString().toStdString()] = scrubberPos;
+					b[CabbageIdentifierIds::regionstart.toString().toStdString()] = regionStart;
+					b[CabbageIdentifierIds::regionlength.toString().toStdString()] = regionLength;
+					j[presetName.toStdString()][String(channelName).toStdString()] = b;
+
 				}
                 else if(channelName == "PRESET_COMBOBOX")
                 {
@@ -1200,6 +1216,7 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
                                                                                CabbageIdentifierIds::ignorelastdir);
                     if(ignoreLastDir == 0)
                     {
+
 						const String absolutePath = String(presetData.value().dump()).removeCharacters("\"");
                         /*const String absolutePath =
                         csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();*/
@@ -1208,10 +1225,19 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
                 }
 				else if (type == CabbageWidgetTypes::soundfiler)
 				{
-					const String absolutePath = String(presetData.value().dump()).removeCharacters("\"");
+					nlohmann::ordered_json b = nlohmann::ordered_json::parse(presetData.value().dump());
+					
+					const String absolutePath = String(b[CabbageIdentifierIds::file.toString().toStdString()].dump()).removeCharacters("\"");
+					const int scrubberPos = b[CabbageIdentifierIds::scrubberposition.toString().toStdString()].get<int>();
+					const int regionStart = b[CabbageIdentifierIds::regionstart.toString().toStdString()].get<int>();
+					const int regionLength = b[CabbageIdentifierIds::regionlength.toString().toStdString()].get<int>();
+
 					/*const String absolutePath =
 					csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();*/
 					CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.toUTF8().getAddress());
+					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::scrubberposition, scrubberPos);
+					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::regionstart, regionStart);
+					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::regionlength, regionLength);
 
 				}
                 //unique widgets taht take two channels...

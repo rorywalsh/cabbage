@@ -749,6 +749,8 @@ namespace CabbageIdentifierIds
     static const Identifier repeatInterval = "repeatInterval";
     static const Identifier scale = "scale";
     static const Identifier resize = "resize";
+    static const Identifier regionstart = "regionStart";
+    static const Identifier regionlength = "regionLength";
     static const Identifier resizemode = "resizeMode";
     static const Identifier rotate = "rotate";
     static const Identifier rowprefix = "rowPrefix";
