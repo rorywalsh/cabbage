@@ -17,6 +17,7 @@
 #include "../CabbageCommonHeaders.h"
 using json = nlohmann::json;
 
+
 #include "../Widgets/CabbageWidgetData.h"
 #include "JuceHeader.h"
 
@@ -250,6 +251,8 @@ struct SetStateFloatData : csnd::InPlug<2>
         }
             
         j = json::parse(jsonData.empty() ? "{}" : jsonData);
+
+
         j[jsonKeyName] = value;
         perData->data = j.dump();
         

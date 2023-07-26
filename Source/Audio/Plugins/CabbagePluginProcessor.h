@@ -85,7 +85,8 @@ public:
 
     
     //save and restore user plugin presets
-    void addPluginPreset(String presetName, const String& fileName, bool remove);
+    String addPluginPreset(String presetName, const String& fileName, bool remove);
+    void setPluginState(nlohmann::ordered_json j, const String presetName, bool hostState = false);
     void restorePluginPreset(String presetName, String filename);
     
     bool addImportFiles (StringArray& lineFromCsd);
