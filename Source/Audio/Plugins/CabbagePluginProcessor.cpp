@@ -1105,7 +1105,7 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
 
 					//j[presetName.toStdString()][String(channelName).toStdString()] = file.toRawUTF8();
 					nlohmann::ordered_json b;
-					b[CabbageIdentifierIds::file.toString().toStdString()] = file.toRawUTF8();
+                    b[CabbageIdentifierIds::file.toString().toStdString()] = file.replace ("\\", "/").toRawUTF8();
 					b[CabbageIdentifierIds::scrubberposition.toString().toStdString()] = scrubberPos;
 					b[CabbageIdentifierIds::regionstart.toString().toStdString()] = regionStart;
 					b[CabbageIdentifierIds::regionlength.toString().toStdString()] = regionLength;
