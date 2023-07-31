@@ -996,29 +996,28 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor() {
 //==============================================================================
 void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData) 
 {
-	//auto j = nlohmann::json::parse(addPluginPreset("CABBAGE_PRESETS", "", false).toStdString());
+	auto j = nlohmann::json::parse(addPluginPreset("CABBAGE_PRESETS", "", false).toStdString());
 
-	//nlohmann::json k, l;
-	//l["dummy"] = "dummy";
-	//k["daw state"] = j;
-	//k["dummy"] = l;
-	//DBG(k.dump(4));
-	//MemoryOutputStream(destData, true).writeString(k.dump(4));
-	//MemoryOutputStream(destData, true).writeString(j);
+	nlohmann::json k, l;
+	l["dummy"] = "dummy";
+	k["daw state"] = j;
+	k["dummy"] = l;
+	MemoryOutputStream(destData, true).writeString(k.dump(4));
 
-	copyXmlToBinary(savePluginState("CABBAGE_PRESETS"), destData);
-	Logger::writeToLog ("CabbagePluginProcessor::getStateInformation");
+//  the older xml way of doing it..
+//	copyXmlToBinary(savePluginState("CABBAGE_PRESETS"), destData);
+//	Logger::writeToLog ("CabbagePluginProcessor::getStateInformation");
 }
 
 void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInBytes) 
 {
-	//auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
-	//DBG(jsonData.dump(4));
-	//setPluginState(jsonData, "", true);
+	auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
+	setPluginState(jsonData, "", true);
 
-	std::unique_ptr <XmlElement> xmlElement(getXmlFromBinary(data, sizeInBytes));
-	restorePluginState(xmlElement.get());
-	Logger::writeToLog("CabbagePluginProcessor::setStateInformation");
+//  the older xml way of doing it..
+//	std::unique_ptr <XmlElement> xmlElement(getXmlFromBinary(data, sizeInBytes));
+//	restorePluginState(xmlElement.get());
+//	Logger::writeToLog("CabbagePluginProcessor::setStateInformation");
 }
 
 //==============================================================================
@@ -1208,7 +1207,9 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
 		{
 			for (nlohmann::ordered_json::iterator presetData = itA->begin(); presetData != itA->end(); ++presetData)
 			{
-				DBG(presetData.key());
+				if(presetData.key() == "dummy")
+                    return;
+                
 				ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, presetData.key(), true);
 				const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
 				const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
@@ -1261,10 +1262,15 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
 
 					/*const String absolutePath =
 					csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();*/
-					CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.toUTF8().getAddress());
-					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::scrubberposition, scrubberPos);
-					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::regionstart, regionStart);
-					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::regionlength, regionLength);
+                    //if this is called by the host, it may be that the widgets have not yet being created...
+                    Timer::callAfterDelay(100, [valueTree, absolutePath, scrubberPos, regionStart, regionLength]()
+                    {
+                        CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.toUTF8().getAddress());
+                        CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::scrubberposition, scrubberPos);
+                        CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::regionstart, regionStart);
+                        CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::regionlength, regionLength);
+                    });
+					
 
 				}
 				//unique widgets taht take two channels...
@@ -1680,110 +1686,120 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
 		//DBG("1:" << identData->data.size());
         //if(!i.isValid)
         //    break;
-        
-        const auto identifier = i.identifier;
-        const auto name = i.name;
+        //what happens when identifier is empty..check the opcodes, this should never happen..
+//        if(!i.isValid)
+//            return;
 
-        if(cabbageWidgets.getChildWithName(name).isValid())
+        if(i.methodCode<200 && i.methodCode >0 && i.identifier.toString().isNotEmpty())
         {
-			const auto child = cabbageWidgets.getChildWithName(name);
-			const String widgetType(CabbageWidgetData::getStringProp(child, "type"));
 
-            if(!i.args.isUndefined())
+
+
+
+            const auto identifier = i.identifier;
+            const auto name = i.name;
+
+            if(cabbageWidgets.getChildWithName(name).isValid())
             {
-                if(!i.identWithArgument)
+                const auto child = cabbageWidgets.getChildWithName(name);
+                const String widgetType(CabbageWidgetData::getStringProp(child, "type"));
+
+                if(!i.args.isUndefined())
                 {
-                    //any widgets taht break identifiers into unique entities must be parsed....
-                    if(identifier.toString().containsIgnoreCase("colour"))
+                    if(!i.identWithArgument)
                     {
-                        String colourTokens;
-                        for(int x = 0 ; x < i.args.size() ; x++){
-                            colourTokens += String(int(i.args[x])) + ",";
-                        }
-                        if(identifier.toString().contains(":"))
-                            CabbageWidgetData::setColourByNumber(colourTokens.dropLastCharacters(1), cabbageWidgets.getChildWithName(name), identifier.toString());
-                        else
-                            cabbageWidgets.getChildWithName(name).setProperty(identifier, CabbageWidgetData::getColourFromText(colourTokens.dropLastCharacters(1)).toString(), nullptr);
-                    }
-                    else if(identifier == CabbageIdentifierIds::populate)
-                    {
-                        cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::refreshfiles,Random::getSystemRandom().nextInt(), nullptr);
-                    }
-                    else if(identifier == CabbageIdentifierIds::bounds)
-                    {
-                        CabbageWidgetData::setBounds(cabbageWidgets.getChildWithName(name), juce::Rectangle<int>( i.args[0],
-                                                                                                           i.args[1],
-                                                                                                           i.args[2],
-                                                                                                           i.args[3]));
-                    }
-					else if (identifier == CabbageIdentifierIds::rotate)
-					{
-						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::rotate, i.args[0], nullptr);
-						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::pivotx, i.args[1], nullptr);
-						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::pivoty, i.args[2], nullptr);
-					}
-					/*else if (widgetType == CabbageWidgetTypes::hrange || widgetType == CabbageWidgetTypes::hrange &&
-						identifier == CabbageIdentifierIds::value)
-					{
-						var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
-						const float min = getCsound()->GetChannel(channels[0].toString().toUTF8());
-						const float max = getCsound()->GetChannel(channels[1].toString().toUTF8());
-						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::minvalue, min, nullptr);
-						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::maxvalue, max, nullptr);
-
-					}*/
-                    else
-                    {
-                        DBG(i.args.toString());
-                        cabbageWidgets.getChildWithName(name).setProperty(identifier,i.args, nullptr);
-                    }
-
-					
-                    if(identifier == CabbageIdentifierIds::value && getChnsetGestureMode() == 1)
-                    {
-                        var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
-                        for (auto cabbageParam : getCabbageParameters())
+                        //any widgets taht break identifiers into unique entities must be parsed....
+                        if(identifier.toString().containsIgnoreCase("colour"))
                         {
-                            if (cabbageParam->getChannel() == channels[0].toString())
+                            String colourTokens;
+                            for(int x = 0 ; x < i.args.size() ; x++){
+                                colourTokens += String(int(i.args[x])) + ",";
+                            }
+                            if(identifier.toString().contains(":"))
+                                CabbageWidgetData::setColourByNumber(colourTokens.dropLastCharacters(1), cabbageWidgets.getChildWithName(name), identifier.toString());
+                            else
+                                cabbageWidgets.getChildWithName(name).setProperty(identifier, CabbageWidgetData::getColourFromText(colourTokens.dropLastCharacters(1)).toString(), nullptr);
+                        }
+                        else if(identifier == CabbageIdentifierIds::populate)
+                        {
+                            cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::refreshfiles,Random::getSystemRandom().nextInt(), nullptr);
+                        }
+                        else if(identifier == CabbageIdentifierIds::bounds)
+                        {
+                            CabbageWidgetData::setBounds(cabbageWidgets.getChildWithName(name), juce::Rectangle<int>( i.args[0],
+                                                                                                               i.args[1],
+                                                                                                               i.args[2],
+                                                                                                               i.args[3]));
+                        }
+                        else if (identifier == CabbageIdentifierIds::rotate)
+                        {
+                            cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::rotate, i.args[0], nullptr);
+                            cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::pivotx, i.args[1], nullptr);
+                            cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::pivoty, i.args[2], nullptr);
+                        }
+                        /*else if (widgetType == CabbageWidgetTypes::hrange || widgetType == CabbageWidgetTypes::hrange &&
+                            identifier == CabbageIdentifierIds::value)
+                        {
+                            var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
+                            const float min = getCsound()->GetChannel(channels[0].toString().toUTF8());
+                            const float max = getCsound()->GetChannel(channels[1].toString().toUTF8());
+                            cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::minvalue, min, nullptr);
+                            cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::maxvalue, max, nullptr);
+
+                        }*/
+                        else
+                        {
+                            DBG(i.args.toString());
+                            cabbageWidgets.getChildWithName(name).setProperty(identifier,i.args, nullptr);
+                        }
+
+
+                        if(identifier == CabbageIdentifierIds::value && getChnsetGestureMode() == 1)
+                        {
+                            var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
+                            for (auto cabbageParam : getCabbageParameters())
                             {
-#if !Cabbage_IDE_Build
-                                if(pluginType.isAbletonLive())
-                                    if(cabbageParam->isPerformingGesture==true)
-                                        cabbageParam->endChangeGesture();
-#endif
-                                cabbageParam->beginChangeGesture();
-                                cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(getCsound()->GetChannel(channels[0].toString().toUTF8())));
-#if !Cabbage_IDE_Build
-                                if(!pluginType.isAbletonLive())
-#endif
-                                cabbageParam->endChangeGesture();
+                                if (cabbageParam->getChannel() == channels[0].toString())
+                                {
+    #if !Cabbage_IDE_Build
+                                    if(pluginType.isAbletonLive())
+                                        if(cabbageParam->isPerformingGesture==true)
+                                            cabbageParam->endChangeGesture();
+    #endif
+                                    cabbageParam->beginChangeGesture();
+                                    cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(getCsound()->GetChannel(channels[0].toString().toUTF8())));
+    #if !Cabbage_IDE_Build
+                                    if(!pluginType.isAbletonLive())
+    #endif
+                                    cabbageParam->endChangeGesture();
+                                }
                             }
                         }
                     }
-                }
-                else
-                {       
-                    CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), i.args.toString().paddedLeft(' ',1));
-                    if(i.args.toString().contains(CabbageIdentifierIds::populate))
-                        CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::update, Random::getSystemRandom().nextInt());
-                    /* the following lets up trigger an update even if moveBehind, or toFront have not changed */
-                    else if(i.args.toString().contains(CabbageIdentifierIds::tofront))
+                    else
                     {
-                        CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::tofront, Random::getSystemRandom().nextInt());
-                    }
-                    else if(i.args.toString().contains(CabbageIdentifierIds::movebehind))
-                    {
-                        const String moveBehind = CabbageWidgetData::getProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::movebehind);
-                        const String chn = CabbageWidgetData::getProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::channel)[0];
-                        CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::movebehind, "");
-                        CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::update, moveBehind);
-                    }
+                        CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), i.args.toString().paddedLeft(' ',1));
+                        if(i.args.toString().contains(CabbageIdentifierIds::populate))
+                            CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::update, Random::getSystemRandom().nextInt());
+                        /* the following lets up trigger an update even if moveBehind, or toFront have not changed */
+                        else if(i.args.toString().contains(CabbageIdentifierIds::tofront))
+                        {
+                            CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::tofront, Random::getSystemRandom().nextInt());
+                        }
+                        else if(i.args.toString().contains(CabbageIdentifierIds::movebehind))
+                        {
+                            const String moveBehind = CabbageWidgetData::getProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::movebehind);
+                            const String chn = CabbageWidgetData::getProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::channel)[0];
+                            CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::movebehind, "");
+                            CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::update, moveBehind);
+                        }
 
-      
+
+                    }
                 }
             }
+            DBG("2:" << identData->data.size());
         }
-		DBG("2:" << identData->data.size());
     }
 
 

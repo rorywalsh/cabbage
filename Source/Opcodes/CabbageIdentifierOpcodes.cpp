@@ -910,6 +910,7 @@ int SetCabbageValueIdentifier::setAttribute(int)
     data.identifier = CabbageIdentifierIds::value;
     data.name = args.str_data(0).data;
     data.isValid = true;
+    data.methodCode = 100;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -973,6 +974,7 @@ int SetCabbageValueIdentifierITime::setAttribute(int)
     data.identifier = CabbageIdentifierIds::value;
     data.name = args.str_data(0).data;
     data.isValid = true;
+    data.methodCode = 101;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -1038,6 +1040,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int)
     data.identifier = CabbageIdentifierIds::value;
     data.name = args.str_data(0).data;
     data.isValid = true;
+    data.methodCode = 102;
     
     const String strValue = String(args.str_data(1).data);
 
@@ -1107,6 +1110,7 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
     data.identifier = CabbageIdentifierIds::value;
     data.name = args.str_data(0).data;
     data.isValid = true;
+    data.methodCode = 103;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -1166,8 +1170,10 @@ int SetCabbageIdentifier::setAttribute()
     
     CabbageWidgetIdentifiers::IdentifierData data;
 
-    data.identifier = args.str_data(2).data;
-    data.name = args.str_data(1).data;
+    data.identifier = csound->strdup(args.str_data(2).data);
+    data.name = csound->strdup(args.str_data(1).data);
+    data.methodCode = 104;
+    data.isValid = true;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -1194,6 +1200,7 @@ int SetCabbageIdentifier::setAttribute()
             CabbageWidgetIdentifiers::IdentifierData updateData1;
             updateData1.identifier = CabbageIdentifierIds::update;
             updateData1.name = data.name;
+            updateData1.methodCode = data.methodCode;
             updateData1.args = 1;
             varData->data.add(updateData1);
         }
@@ -1220,6 +1227,7 @@ int SetCabbageIdentifier::setAttribute()
             CabbageWidgetIdentifiers::IdentifierData updateData0;
             updateData0.identifier = CabbageIdentifierIds::update;
             updateData0.name = data.name;
+            updateData0.methodCode = data.methodCode;
             updateData0.args = 0;
             varData->data.add(updateData0);
         }
@@ -1248,6 +1256,9 @@ int SetCabbageIdentifierArray::setAttribute()
     CabbageWidgetIdentifiers::IdentifierData data;
     data.identifier = args.str_data(2).data;
     data.name = args.str_data(1).data;
+    data.methodCode = 105;
+    data.isValid = true;
+    
     csnd::Vector<MYFLT>& inputArgs = args.myfltvec_data(3);
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
@@ -1275,6 +1286,7 @@ int SetCabbageIdentifierArray::setAttribute()
             updateData1.identifier = CabbageIdentifierIds::update;
             updateData1.name = data.name;
             updateData1.args = 1;
+            updateData1.methodCode = data.methodCode;
             varData->data.add(updateData1);
         }
         
@@ -1292,6 +1304,7 @@ int SetCabbageIdentifierArray::setAttribute()
             updateData0.identifier = CabbageIdentifierIds::update;
             updateData0.name = data.name;
             updateData0.args = 0;
+            updateData0.methodCode = data.methodCode;
             varData->data.add(updateData0);
         }
         
@@ -1329,6 +1342,8 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
 
     data.identifier = args.str_data(2).data;
     data.name = args.str_data(1).data;
+    data.methodCode = 106;
+    data.isValid = true;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -1353,6 +1368,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
         updateData1.identifier = CabbageIdentifierIds::update;
         updateData1.name = data.name;
         updateData1.args = 1;
+        updateData1.methodCode = data.methodCode;
         varData->data.add(updateData1);
     }
     
@@ -1377,6 +1393,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
         updateData0.identifier = CabbageIdentifierIds::update;
         updateData0.name = data.name;
         updateData0.args = 0;
+        updateData0.methodCode = data.methodCode;
         varData->data.add(updateData0);
     }
     
@@ -1391,6 +1408,8 @@ int SetCabbageIdentifierITime::setAttribute()
 
     data.identifier = outargs.str_data(1).data;
     data.name = outargs.str_data(0).data;
+    data.methodCode = 107;
+    data.isValid = true;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -1415,6 +1434,7 @@ int SetCabbageIdentifierITime::setAttribute()
         updateData1.identifier = CabbageIdentifierIds::update;
         updateData1.name = data.name;
         updateData1.args = 1;
+        updateData1.methodCode = data.methodCode;
         varData->data.add(updateData1);
     }
     
@@ -1448,6 +1468,7 @@ int SetCabbageIdentifierITime::setAttribute()
         updateData0.identifier = CabbageIdentifierIds::update;
         updateData0.name = data.name;
         updateData0.args = 0;
+        updateData0.methodCode = data.methodCode;
         varData->data.add(updateData0);
     }
     
@@ -1462,6 +1483,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
 
     data.identifier = outargs.str_data(1).data;
     data.name = outargs.str_data(0).data;
+    data.methodCode = 109;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -1486,6 +1508,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
         CabbageWidgetIdentifiers::IdentifierData updateData1;
         updateData1.identifier = CabbageIdentifierIds::update;
         updateData1.name = data.name;
+        updateData1.methodCode = data.methodCode;
         updateData1.args = 1;
         varData->data.add(updateData1);
     }
@@ -1519,6 +1542,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
         updateData0.identifier = CabbageIdentifierIds::update;
         updateData0.name = data.name;
         updateData0.args = 0;
+        updateData0.methodCode = data.methodCode;
         varData->data.add(updateData0);
     }
 

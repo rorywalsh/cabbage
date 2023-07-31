@@ -36,6 +36,7 @@ public:
         bool identWithArgument = false;
         var args;
         bool isValid = false;
+        int methodCode = 0;
     };
     
     CabbageWidgetIdentifiers(){
