@@ -272,6 +272,21 @@ struct GetCabbageIdentifierSingle : csnd::Plugin<1, 2>
     int getAttribute();
 };
 
+struct GetCabbageIdentifierSingleWithTrigger : csnd::Plugin<2, 2>
+{
+    double value = 0;
+    double currentValue = 0;
+    CabbageWidgetsValueTree** vt = nullptr;
+    bool firstRun = true;
+    int init(){
+        firstRun = true;
+        return getAttribute();
+    }
+    
+    int kperf(){ return getAttribute();  }
+    int getAttribute();
+};
+
 struct GetCabbageIdentifierSingleITime : csnd::Plugin<1, 2>
 {
     MYFLT* value;
