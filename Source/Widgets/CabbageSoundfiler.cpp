@@ -164,9 +164,12 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
     
     if (file != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file))
     {
-        file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
-        const String fullPath = File (getCsdFile()).getParentDirectory().getChildFile (file).getFullPathName();
-        setFile (fullPath);
+        if(File(CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file)).existsAsFile())
+        {
+            file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
+            const String fullPath = File (getCsdFile()).getParentDirectory().getChildFile (file).getFullPathName();
+            setFile (fullPath);
+        }
     }
 
     if (prop == CabbageIdentifierIds::regionstart)
