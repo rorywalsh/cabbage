@@ -536,7 +536,7 @@ void CabbageWidgetData::setFileButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
     setProperty (widgetData, CabbageIdentifierIds::oncolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::onfontcolour, Colours::white.toString());
-        setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colours::white.toString());
+        setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::outlinethickness, 1.f);
     setProperty (widgetData, CabbageIdentifierIds::type, "filebutton");
     setProperty (widgetData, CabbageIdentifierIds::name, "filebutton");

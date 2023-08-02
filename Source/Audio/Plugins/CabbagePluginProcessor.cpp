@@ -2059,8 +2059,6 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
     
 }
 
-
-
 void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
 	bool csoundRecompiled = false;
@@ -2084,19 +2082,12 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 
 	//samplingRate = sampleRate;
 	CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
-
-
 	
 	csoundRecompiled = true;
 	if (sampleRate != samplingRate)
 	{
-		//need to reset the filebutton to "" so that we trigger a channel change when users
-		//change the sampling rates because the channel is already set when the SR change takes place
-		//resetFilebuttons(cabbageWidgets);
 		initAllCsoundChannels(cabbageWidgets);
 	}
-	else
-		initAllCsoundChannels(cabbageWidgets);
 	
 #endif
 

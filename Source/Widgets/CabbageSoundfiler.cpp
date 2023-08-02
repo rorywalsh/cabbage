@@ -169,6 +169,7 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
             file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
             const String fullPath = File (getCsdFile()).getParentDirectory().getChildFile (file).getFullPathName();
             setFile (fullPath);
+            DBG("Soundfiler file:" << fullPath);
         }
     }
 
