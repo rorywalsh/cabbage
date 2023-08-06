@@ -51,9 +51,11 @@ csdFile (selectedCsdFile)
 #else  
     numCsoundOutputChannels = getTotalNumOutputChannels();
     CabbageUtilities::debug("Constructor - Requested output channels:", numCsoundOutputChannels);
+    
+    backgroundThread.startThread();
+    
 #endif
 
-    
 }  
 
 CsoundPluginProcessor::~CsoundPluginProcessor()
@@ -63,6 +65,7 @@ CsoundPluginProcessor::~CsoundPluginProcessor()
 
 void CsoundPluginProcessor::resetCsound()
 {
+
 	Logger::setCurrentLogger(nullptr);
 
 	CabbageUtilities::debug("Plugin destructor");
@@ -79,6 +82,51 @@ void CsoundPluginProcessor::resetCsound()
 	}
 }
 
+//==============================================================================
+void CsoundPluginProcessor::startRecording(const File& file)
+{
+    stopRecording();
+
+    if (samplingRate > 0)
+    {
+        // Create an OutputStream to write to our destination file...
+        file.deleteFile();
+
+        if (auto fileStream = std::unique_ptr<FileOutputStream> (file.createOutputStream()))
+        {
+            // Now create a WAV writer object that writes to our output stream...
+            WavAudioFormat wavFormat;
+
+            if (auto writer = wavFormat.createWriterFor (fileStream.get(), samplingRate, 1, 16, {}, 0))
+            {
+                fileStream.release(); // (passes responsibility for deleting the stream to the writer object that is now using it)
+
+                // Now we'll create one of these helper objects which will act as a FIFO buffer, and will
+                // write the data to disk on our background thread.
+                threadedWriter.reset (new AudioFormatWriter::ThreadedWriter (writer, backgroundThread, 32768));
+
+                // And now, swap over our active writer pointer so that the audio callback will start using it..
+                const ScopedLock sl (writerLock);
+                activeWriter = threadedWriter.get();
+            }
+        }
+    }
+}
+
+void CsoundPluginProcessor::stopRecording()
+{
+    // First, clear this pointer to stop the audio callback from using our writer object..
+    {
+        const ScopedLock sl (writerLock);
+        activeWriter = nullptr;
+    }
+
+    // Now we can delete the writer object. It's done in this order because the deletion could
+    // take a little time while remaining data gets flushed to disk, so it's best to avoid blocking
+    // the audio callback while this happens.
+
+    threadedWriter.reset();
+}
 //==============================================================================
 void CsoundPluginProcessor::destroyCsoundGlobalVars()
 {
@@ -1206,17 +1254,6 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 			buffer.clear(channelsToClear, 0, buffer.getNumSamples());
 		}
 
-//        for (auto busNr = 0; busNr < getBusCount(false); ++busNr)
-//        {
-//            auto busBuffer = getBusBuffer(buffer, false, busNr);
-//
-//            for (int channel = 0; channel < busBuffer.getNumChannels(); channel++)
-//            {
-//                busBuffer.clear(channel, 0, busBuffer.getNumSamples());
-//            }
-//        }
-
-
 		for (int i = 0; i < numSamples; i++, ++csndIndex)
 		{
 			if (csndIndex >= csdKsmps)
@@ -1290,6 +1327,12 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
         }
     }
 
+    AudioBuffer<float> writerBuffer;
+    writerBuffer.makeCopyOf(buffer);
+    if (activeWriter.load() != nullptr)
+    {
+         activeWriter.load()->write (writerBuffer.getArrayOfWritePointers(), writerBuffer.getNumSamples());
+    }
 #if JucePlugin_ProducesMidiOutput
 
 	if (!midiOutputBuffer.isEmpty())

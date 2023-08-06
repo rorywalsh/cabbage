@@ -273,7 +273,14 @@ public:
     
     void setNumPreCycles (int num)
     {
-        preCycles = num;
+        preCycles = num;			
+    }
+    
+    void startRecording(const File& file);
+    void stopRecording();
+    bool isRecording() const
+    {
+        return activeWriter.load() != nullptr;
     }
     
     
@@ -324,6 +331,12 @@ public:
         return returnVal;
     }
 
+    TimeSliceThread backgroundThread { "Audio Recorder Thread" }; // the thread that will write our audio data to disk
+    std::unique_ptr<AudioFormatWriter::ThreadedWriter> threadedWriter; // the FIFO used to buffer the incoming data
+    std::atomic<AudioFormatWriter::ThreadedWriter*> activeWriter { nullptr };
+    std::unique_ptr<AudioData::Converter> converter;
+    CriticalSection writerLock;
+    
     OwnedArray<MatrixEventSequencer> matrixEventSequencers;
     OwnedArray <SignalDisplay, CriticalSection> signalArrays;   //holds values from FFT function table created using dispfft
     CsoundPluginProcessor::SignalDisplay* getSignalArray (String variableName, String displayType = "") const;
@@ -334,6 +347,7 @@ public:
     }
 
 
+    
     void pollingChannels(int shouldPoll)
     {
         polling = shouldPoll;
@@ -373,6 +387,7 @@ private:
     File csdFile = {}, csdFilePath = {};
     std::unique_ptr<Csound> csound;
     std::unique_ptr<FileLogger> fileLogger;
+
 //    int busIndex = 0;
     bool disableLogging = false;
 	int preferredLatency = 32;

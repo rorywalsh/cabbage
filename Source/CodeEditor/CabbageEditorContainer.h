@@ -91,7 +91,7 @@ public:
     CsoundTokeniser csoundTokeniser;
 	JavascriptTokeniser javaTokeniser;
     CabbageSettings* settings;
-
+    bool shouldRecord = false;
 private:
 	File currentFile;
     bool isCsdFile = true;

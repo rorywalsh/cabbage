@@ -529,6 +529,24 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
             closeDocument();
         }
     }
+    else if (drawableButton->getName() == "armForRecord")
+    {
+        if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
+        {
+            if (drawableButton->getToggleState())
+            {
+                currentFileIndex = fileTabs.indexOf (tabButton);
+                editorAndConsole[currentFileIndex]->shouldRecord = true;
+            }
+            else
+            {
+                currentFileIndex = fileTabs.indexOf (tabButton);
+                editorAndConsole[currentFileIndex]->shouldRecord = false;
+            }
+                
+
+        }
+    }
     else if (drawableButton->getName() == "showEditorButton")
     {
         if (CabbageUtilities::hasCabbageTags(fileTabs[currentFileIndex]->getFilename()))
@@ -1123,6 +1141,8 @@ void CabbageMainComponent::createEditorForFilterGraphNode (juce::Point<int> posi
 		if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
         {
             pluginName = cabbagePlugin->getPluginName();
+            if(editorAndConsole[currentFileIndex]->shouldRecord == true)
+                cabbagePlugin->startRecording(getCurrentCsdFile().withFileExtension(".wav"));
         }
 
         if (PluginWindow* const w = getFilterGraph()->getOrCreateWindowFor(f.get(), type))
@@ -2308,8 +2328,10 @@ void CabbageMainComponent::stopCsoundForNode (String file, int fileTabIndex)
             if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()))
             {
                 cabbagePlugin->recreateWidgets(getCurrentCsdFile().loadFileAsString(), false);
+                cabbagePlugin->stopRecording();
                 cabbagePlugin->stopTimer();
                 cabbagePlugin->suspendProcessing(true);
+                cabbagePlugin->resetCsound();
 
             }
             else

@@ -164,11 +164,6 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 	Logger::writeToLog("CabbagePluginProcessor::~CabbagePluginProcessor");
 }
 
-void test()
-{
-    
-}
-
 void CabbagePluginProcessor::timerCallback()
 {
     if(autoUpdateCount == 0 && autoUpdateIsOn)

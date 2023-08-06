@@ -167,6 +167,7 @@ public:
         return buses;
     }
 
+
 	StringArray getCurrentCsdFileAsStringArray()
 	{
 		StringArray csdArray;
@@ -201,7 +202,6 @@ private:
     OwnedArray<CabbagePluginParameter> parameters;
     Font customFont;
     File customFontFile;
-
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbagePluginProcessor)
 
