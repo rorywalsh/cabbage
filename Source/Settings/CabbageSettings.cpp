@@ -121,6 +121,7 @@ void CabbageSettings::setDefaultSettings()
     defaultPropSet->setValue ("UsingCabbageCsound", 1);
     defaultPropSet->setValue ("windowX", 100);
     defaultPropSet->setValue ("windowY", 100);
+    defaultPropSet->setValue ("RecordingBitDepth", 32);
 
 	//=====================================================================
 	defaultPropSet->setValue("AudioDriversWarning_dismiss", 0);

@@ -468,8 +468,6 @@ void CabbageMainComponent::bringCodeEditorToFront (FileTab* tab)
 
 void CabbageMainComponent::handleToolbarButtons (ToolbarButton* toolbarButton)
 {
-    DBG(toolbarButton->getName());
-    
     if (toolbarButton->getName() == "new")             createNewProject();
     else if (toolbarButton->getName() == "open")       openFile();
     else if (toolbarButton->getName() == "save")
@@ -508,6 +506,19 @@ void CabbageMainComponent::handleToolbarButtons (ToolbarButton* toolbarButton)
         else
             this->stopFilterGraph();
     }
+    else if (toolbarButton->getName() == "toggleRecord")
+    {
+        bitDepth = cabbageSettings->getUserSettings()->getIntValue ("RecordingBitDepth");
+        
+        if (toolbarButton->getToggleState())
+        {
+            shouldRecord = false;
+        }
+        else
+        {
+            shouldRecord = true;
+        }
+    }
 }
 
 void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
@@ -529,24 +540,24 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
             closeDocument();
         }
     }
-    else if (drawableButton->getName() == "armForRecord")
-    {
-        if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
-        {
-            if (drawableButton->getToggleState())
-            {
-                currentFileIndex = fileTabs.indexOf (tabButton);
-                editorAndConsole[currentFileIndex]->shouldRecord = true;
-            }
-            else
-            {
-                currentFileIndex = fileTabs.indexOf (tabButton);
-                editorAndConsole[currentFileIndex]->shouldRecord = false;
-            }
-                
-
-        }
-    }
+//    else if (drawableButton->getName() == "armForRecord")
+//    {
+//        if (FileTab* tabButton = drawableButton->findParentComponentOfClass<FileTab>())
+//        {
+//            if (drawableButton->getToggleState())
+//            {
+//                currentFileIndex = fileTabs.indexOf (tabButton);
+//                editorAndConsole[currentFileIndex]->shouldRecord = true;
+//            }
+//            else
+//            {
+//                currentFileIndex = fileTabs.indexOf (tabButton);
+//                editorAndConsole[currentFileIndex]->shouldRecord = false;
+//            }
+//
+//
+//        }
+//    }
     else if (drawableButton->getName() == "showEditorButton")
     {
         if (CabbageUtilities::hasCabbageTags(fileTabs[currentFileIndex]->getFilename()))
@@ -1141,8 +1152,8 @@ void CabbageMainComponent::createEditorForFilterGraphNode (juce::Point<int> posi
 		if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
         {
             pluginName = cabbagePlugin->getPluginName();
-            if(editorAndConsole[currentFileIndex]->shouldRecord == true)
-                cabbagePlugin->startRecording(getCurrentCsdFile().withFileExtension(".wav"));
+            if(shouldRecord == true)
+                cabbagePlugin->startRecording(getCurrentCsdFile().withFileExtension(".wav"), bitDepth);
         }
 
         if (PluginWindow* const w = getFilterGraph()->getOrCreateWindowFor(f.get(), type))

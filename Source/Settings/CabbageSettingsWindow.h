@@ -144,7 +144,7 @@ private:
     TextButton deleteRepoButton, saveRepoButton;
     ImageButton audioSettingsButton, colourSettingsButton, miscSettingsButton, codeRepoButton;
 
-	Value alwaysOnTopPluginValue, resetNotifications, autoConnectNodes, alwaysOnTopGraphValue, UDPPortValue,
+	Value alwaysOnTopPluginValue, resetNotifications, autoConnectNodes, alwaysOnTopGraphValue, UDPPortValue, recordingBitDepth,
     showLastOpenedFileValue, compileOnSaveValue, breakLinesValue, autoCompleteValue, enableKioskMode, adhocSigningValue;
     Viewport viewport;
 

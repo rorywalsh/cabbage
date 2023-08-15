@@ -292,7 +292,8 @@ private:
     const int toolbarThickness = 35;
     class FindPanel;
     std::unique_ptr<FindPanel> findPanel;
-
+    bool shouldRecord = false;
+    int bitDepth = 32;
 
     GraphDocumentComponent* graphComponent = nullptr;
     std::unique_ptr<FilterGraphDocumentWindow> filterGraphWindow;

@@ -302,6 +302,9 @@ void CabbageSettingsWindow::addMiscProperties()
 
     autoCompleteValue.setValue (settings.getUserSettings()->getIntValue ("DisableAutoComplete"));
     autoCompleteValue.addListener (this);
+    autoCompleteValue.setValue (settings.getUserSettings()->getIntValue ("RecordingBitDepth"));
+    autoCompleteValue.addListener (this);
+    
     autoConnectNodes.setValue (settings.getUserSettings()->getIntValue ("autoConnectNodes"));
     autoConnectNodes.addListener (this);
     enableKioskMode.setValue (settings.getUserSettings()->getIntValue ("enableKioskMode"));
@@ -332,6 +335,9 @@ void CabbageSettingsWindow::addMiscProperties()
     const int sapcesInTabs = settings.getUserSettings()->getIntValue ("SpacesInTabs");
     editorProps.add (new TextPropertyComponent (Value (sapcesInTabs), "Spaces in tab (set to 0 to use tabs instead of spaces)", 10, false));
 
+    const int bitDepth = settings.getUserSettings()->getIntValue ("RecordingBitDepth");
+    editorProps.add (new TextPropertyComponent (Value (bitDepth), "Recording bit-depth", 10, false));
+    
     const String examplesDir = settings.getUserSettings()->getValue ("CabbageExamplesDir");
     
     
@@ -389,6 +395,8 @@ void CabbageSettingsWindow::textPropertyComponentChanged (TextPropertyComponent*
         settings.getUserSettings()->setValue ("CsoundPath", comp->getValue().toString());
 	else if (comp->getName() == "UDP Port")
 		settings.getUserSettings()->setValue("UDP Port", comp->getValue().toString());
+    else if (comp->getName() == "Recording bit-depth")
+        settings.getUserSettings()->setValue("RecordingBitDepth", comp->getValue().toString());
 }
 
 void CabbageSettingsWindow::resized()
@@ -456,7 +464,7 @@ void CabbageSettingsWindow::valueChanged (Value& value)
     else if (value.refersToSameSourceAs (adhocSigningValue))
         settings.getUserSettings()->setValue ("performAdHocCodesign", value.getValue().toString());
 	else if (value.refersToSameSourceAs(UDPPortValue)) 
-		settings.getUserSettings()->setValue("UDP Port", value.getValue().toString());
+		settings.getUserSettings()->setValue ("UDP Port", value.getValue().toString());
 }
 
 void CabbageSettingsWindow::filenameComponentChanged (FilenameComponent* fileComponent)

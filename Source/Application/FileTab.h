@@ -24,7 +24,7 @@
 
 class FileTab : public TextButton
 {
-    DrawableButton play, close, showEditor, editGUI, armForRecord;
+    DrawableButton play, close, showEditor, editGUI;
     LookAndFeel_V4 laf;
 
     File csdFile;
@@ -34,8 +34,6 @@ class FileTab : public TextButton
 
     std::unique_ptr <Drawable> drawable_editGUIoff = nullptr;
     std::unique_ptr <Drawable> drawable_editGUIon = nullptr;
-    std::unique_ptr <Drawable> drawable_armForRecordOn = nullptr;
-    std::unique_ptr <Drawable> drawable_armForRecordOff = nullptr;
 
     class Overlay : public Component
     {
@@ -90,7 +88,6 @@ public:
     DrawableButton& getShowEditorButton() {  return showEditor;  }
     DrawableButton& getCloseFileEditorButton() { return close;   }
     DrawableButton& getEditGUIButton() { return editGUI; }
-    DrawableButton& getArmForRecordButton() { return armForRecord; }
 
     uint32 uniqueFileId = -99;
     Time lastModified;

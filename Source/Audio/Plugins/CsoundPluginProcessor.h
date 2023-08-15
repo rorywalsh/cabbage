@@ -276,7 +276,7 @@ public:
         preCycles = num;			
     }
     
-    void startRecording(const File& file);
+    void startRecording(const File& file, int bitDepth = 32);
     void stopRecording();
     bool isRecording() const
     {
