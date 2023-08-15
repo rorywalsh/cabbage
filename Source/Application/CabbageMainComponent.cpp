@@ -512,11 +512,11 @@ void CabbageMainComponent::handleToolbarButtons (ToolbarButton* toolbarButton)
         
         if (toolbarButton->getToggleState())
         {
-            shouldRecord = false;
+            shouldRecord = true;
         }
         else
         {
-            shouldRecord = true;
+            shouldRecord = false;
         }
     }
 }

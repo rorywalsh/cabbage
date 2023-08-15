@@ -174,12 +174,12 @@ ToolbarButton* CabbageToolbarFactory::createToggleButtonFromSVG(const int itemId
     std::unique_ptr<Drawable> drawable_armForRecordOn(Drawable::createFromSVG (*svgOn));
     std::unique_ptr<XmlElement> svgOff(XmlDocument::parse(svgTextOff));
     std::unique_ptr<Drawable> drawable_armForRecordOff(Drawable::createFromSVG (*svgOff));
-    togglePlayButton = new ToolbarButton (itemId, text, std::move(drawable_armForRecordOff), std::move(drawable_armForRecordOn));
-    togglePlayButton->setClickingTogglesState (true);
-    togglePlayButton->addListener (owner);
-    togglePlayButton->setToggleState (true, false);
-    togglePlayButton->setTooltip ("Arm for record");
-    return togglePlayButton;
+    toggleRecordButton = new ToolbarButton (itemId, text, std::move(drawable_armForRecordOn), std::move(drawable_armForRecordOff));
+    toggleRecordButton->setClickingTogglesState (true);
+    toggleRecordButton->addListener (owner);
+    toggleRecordButton->setToggleState (false, false);
+    toggleRecordButton->setTooltip ("Arm for record");
+    return toggleRecordButton;
 }
 
 ToolbarButton* CabbageToolbarFactory::createToggleButtonFromPNG (const int itemId, const String& text, const void* png1, size_t size1, const void* png2, size_t size2)

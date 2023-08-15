@@ -64,6 +64,7 @@ public:
     }
 
     ToolbarButton* togglePlayButton;
+    ToolbarButton* toggleRecordButton;
 
 	void setIconsPath(String path)
 	{
