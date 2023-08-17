@@ -513,6 +513,7 @@ void CabbageMainComponent::handleToolbarButtons (ToolbarButton* toolbarButton)
         if (toolbarButton->getToggleState())
         {
             shouldRecord = true;
+            factory.startRecordingTimer(true);
         }
         else
         {
@@ -530,6 +531,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
         else
         {
             stopCsoundForNode (drawableButton->getProperties().getWithDefault ("filename", ""));
+            factory.startRecordingTimer(false);
             factory.setRecordButtonState("enabled");
             shouldRecord = false;
         }
@@ -1145,6 +1147,7 @@ void CabbageMainComponent::createEditorForFilterGraphNode (juce::Point<int> posi
                 
                 const String filename = getCurrentCsdFile().getFullPathName().substring(0, getCurrentCsdFile().getFullPathName().indexOf("."))+time+".wav";
                 cabbagePlugin->startRecording(filename, bitDepth);
+                factory.startRecordingTimer(false);
             }
         }
 

@@ -47,6 +47,12 @@ void CabbageToolbarFactory::getAllToolbarItemIds (Array<int>& ids)
     ids.add (record_to_disk);
 }
 
+void CabbageToolbarFactory::timerCallback()
+{
+    toggleRecordButton->setToggleState((flashing % 2 == 0), dontSendNotification);
+    flashing++;
+}
+
 void CabbageToolbarFactory::getDefaultItemSet (Array<int>& ids)
 {
     // This returns an ordered list of the set of items that make up a
