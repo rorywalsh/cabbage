@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.81)
+	set(BUILD_VERSION develop)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})

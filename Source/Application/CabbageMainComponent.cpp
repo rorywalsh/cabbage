@@ -528,7 +528,10 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
         if (drawableButton->getProperties().getWithDefault ("state", "") == "off")
             saveDocument(false, true);
         else
+        {
             stopCsoundForNode (drawableButton->getProperties().getWithDefault ("filename", ""));
+            factory.setRecordButtonState("enabled");
+        }
 
     }
     else if (drawableButton->getName() == "closeButton")
@@ -2172,6 +2175,7 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
             }
 
             factory.togglePlay(true);
+            factory.setRecordButtonState("disabled");
             //hack to allow saving on the fly with JUCE 5.4.7 - needs investigation...
 
             graphComponent->enableAudioInput();

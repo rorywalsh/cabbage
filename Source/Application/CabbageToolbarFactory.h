@@ -62,6 +62,20 @@ public:
     {
         togglePlayButton->setToggleState (enabled, dontSendNotification);
     }
+    
+    void setRecordButtonState (const String state)
+    {
+        if(state == "off")
+            toggleRecordButton->setToggleState (false, dontSendNotification);
+        else if(state == "disabled")
+            toggleRecordButton->setEnabled(false);
+        else if(state == "enabled")
+        {
+            toggleRecordButton->setEnabled(true);
+            toggleRecordButton->setToggleState (false, dontSendNotification);
+        }
+            
+    }
 
     ToolbarButton* togglePlayButton;
     ToolbarButton* toggleRecordButton;
