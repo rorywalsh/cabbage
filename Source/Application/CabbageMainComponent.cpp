@@ -531,6 +531,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
         {
             stopCsoundForNode (drawableButton->getProperties().getWithDefault ("filename", ""));
             factory.setRecordButtonState("enabled");
+            shouldRecord = false;
         }
 
     }
