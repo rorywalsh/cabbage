@@ -302,8 +302,8 @@ void CabbageSettingsWindow::addMiscProperties()
 
     autoCompleteValue.setValue (settings.getUserSettings()->getIntValue ("DisableAutoComplete"));
     autoCompleteValue.addListener (this);
-    autoCompleteValue.setValue (settings.getUserSettings()->getIntValue ("RecordingBitDepth"));
-    autoCompleteValue.addListener (this);
+    recordingBitDepth.setValue (settings.getUserSettings()->getIntValue ("RecordingBitDepth"));
+    recordingBitDepth.addListener (this);
     
     autoConnectNodes.setValue (settings.getUserSettings()->getIntValue ("autoConnectNodes"));
     autoConnectNodes.addListener (this);

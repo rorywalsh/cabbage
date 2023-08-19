@@ -36,7 +36,7 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
 
-    sampleRate = 44100;
+
     soundfiler.setZoomFactor (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom));
 
 
@@ -80,8 +80,8 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
     {
         Range<double> newRange;
         
-        newRange.setStart(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::startpos)/sampleRate);
-        newRange.setEnd(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::endpos)/sampleRate);
+        newRange.setStart(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::startpos)/soundfiler.getSampleRate());
+        newRange.setEnd(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::endpos)/soundfiler.getSampleRate());
         soundfiler.setRange (newRange);
     }
     
@@ -196,8 +196,8 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
         if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::startpos) > -1 && CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::endpos) > 0)
         {
             Range<double> newRange;
-            newRange.setStart(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::startpos)/sampleRate);
-            newRange.setEnd(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::endpos)/sampleRate);
+            newRange.setStart(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::startpos)/soundfiler.getSampleRate());
+            newRange.setEnd(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::endpos)/soundfiler.getSampleRate());
             soundfiler.setRange (newRange);
         }
     }

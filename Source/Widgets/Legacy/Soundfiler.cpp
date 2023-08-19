@@ -179,7 +179,6 @@ void Soundfiler::setWaveform (AudioSampleBuffer buffer, int channels)
     scrollbar->setRangeLimits (newRange);
     setRange (newRange);
     setZoomFactor (zoom);
-    sampleRate = sessionSampleRate;
     repaint();
 }
 

@@ -45,7 +45,16 @@ public:
         return (int) (currentPlayPosition * sampleRate);
     }
 
-
+    int getSampleRate()
+    {
+        return sampleRate;
+    }
+    
+    void setSampleRate(int sr)
+    {
+        sampleRate = sr;
+    }
+    
     void setCurrentPlayPos(int posInSamples)
     {
         currentPlayPosition  = posInSamples / sampleRate;
