@@ -62,6 +62,7 @@ Soundfiler::Soundfiler (int sr, Colour col, Colour bgcol):
     currentPositionMarker (new DrawableRectangle()),
     scrubberPosition (0),
     sampleRate (sr),
+    sessionSampleRate(sr),
     regionWidth (0),
     thumbnailCache (5),
     colour (col),
@@ -150,6 +151,7 @@ void Soundfiler::setFile (const File& file)
         {
             AudioBuffer<float> buffer(reader->numChannels, (int)reader->lengthInSamples);
             buffer.clear();
+            sampleRate = reader->sampleRate;
             reader->read (&buffer, 0, buffer.getNumSamples(), 0, true, true);
             setWaveform (buffer, reader->numChannels);
         }
@@ -177,6 +179,7 @@ void Soundfiler::setWaveform (AudioSampleBuffer buffer, int channels)
     scrollbar->setRangeLimits (newRange);
     setRange (newRange);
     setZoomFactor (zoom);
+    sampleRate = sessionSampleRate;
     repaint();
 }
 

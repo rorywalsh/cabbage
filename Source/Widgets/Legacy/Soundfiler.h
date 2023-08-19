@@ -131,6 +131,7 @@ private:
 
     AudioFormatManager formatManager;
     float sampleRate;
+    float sessionSampleRate;
     float regionWidth;
     Image waveformImage;
     AudioThumbnailCache thumbnailCache;
