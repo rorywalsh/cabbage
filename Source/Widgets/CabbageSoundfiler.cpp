@@ -28,7 +28,8 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
     scrubberPos (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrubberposition)),
     owner (_owner),
     widgetData (wData),
-    CabbageWidgetBase(_owner)
+    CabbageWidgetBase(_owner),
+    sampleRate(sr)
 {
     addAndMakeVisible (soundfiler);
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
@@ -73,7 +74,7 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
             sampleBuffer.setSample(0, i, tableValues[i]);
         }
 
-        setWaveform(sampleBuffer, 1);
+        setWaveform(sampleBuffer, sr, 1);
     }
     
     if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::startpos) > -1 && CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::endpos) > 0)
@@ -116,9 +117,9 @@ void CabbageSoundfiler::setFile (String newFile)
     soundfiler.setFile (File::getCurrentWorkingDirectory().getChildFile (newFile));
 }
 
-void CabbageSoundfiler::setWaveform (AudioSampleBuffer buffer, int channels)
+void CabbageSoundfiler::setWaveform (AudioSampleBuffer buffer, int sr, int channels)
 {
-    soundfiler.setWaveform (buffer, channels);
+    soundfiler.setWaveform (buffer, sr, channels);
 }
 
 int CabbageSoundfiler::getScrubberPosition()
@@ -151,7 +152,7 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
                     sampleBuffer.setSample(0, i, tableValues[i]);
                 }
 
-                setWaveform(sampleBuffer, 1);
+                setWaveform(sampleBuffer, sampleRate, 1);
             }
         }
         else

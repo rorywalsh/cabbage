@@ -108,7 +108,7 @@ public:
     void setZoomFactor (double amount);
     void setFile (const File& file);
     void mouseWheelMove (const MouseEvent&, const MouseWheelDetails& wheel) override;
-    void setWaveform (AudioSampleBuffer buffer, int channels);
+    void setWaveform (AudioSampleBuffer buffer, int sr, int channels);
     void createImage (String filename);
     void setRange (Range<double> newRange);
     void showScrollbars (bool show);
@@ -153,6 +153,7 @@ private:
     double currentPlayPosition;
     bool drawWaveform;
     bool showSingleChannel = false;
+    double fileLength = 0;
 };
 
 

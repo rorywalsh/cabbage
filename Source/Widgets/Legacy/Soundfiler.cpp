@@ -153,7 +153,7 @@ void Soundfiler::setFile (const File& file)
             buffer.clear();
             sampleRate = reader->sampleRate;
             reader->read (&buffer, 0, buffer.getNumSamples(), 0, true, true);
-            setWaveform (buffer, reader->numChannels);
+            setWaveform (buffer, reader->sampleRate, reader->numChannels);
         }
 
         delete reader;
@@ -167,12 +167,12 @@ void Soundfiler::setFile (const File& file)
 }
 
 //==============================================================================
-void Soundfiler::setWaveform (AudioSampleBuffer buffer, int channels)
+void Soundfiler::setWaveform (AudioSampleBuffer buffer, int sr, int channels)
 {
     validFile = true;
     thumbnail->clear();
     repaint();
-    thumbnail->reset (channels, 44100, buffer.getNumSamples());
+    thumbnail->reset (channels, sr, buffer.getNumSamples());
     //thumbnail->clear();
     thumbnail->addBlock (0, buffer, 0, buffer.getNumSamples());
     const Range<double> newRange (0.0, thumbnail->getTotalLength());

@@ -51,7 +51,7 @@ public:
     void resized() override;
 
     void setFile (String newFile);
-    void setWaveform (AudioSampleBuffer buffer, int channels);
+    void setWaveform (AudioSampleBuffer buffer, int sr, int channels);
     int getScrubberPosition();
     int getLoopLength();
 
