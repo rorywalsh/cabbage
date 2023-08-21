@@ -149,6 +149,7 @@ void Soundfiler::setFile (const File& file)
         //creates a reader for the result file (may file, if the result/opened file is no wav or aif)
         if (reader) //if a reader got created
         {
+            regionWidth = 0;
             AudioBuffer<float> buffer(reader->numChannels, (int)reader->lengthInSamples);
             buffer.clear();
             sampleRate = reader->sampleRate;
@@ -172,6 +173,7 @@ void Soundfiler::setWaveform (AudioSampleBuffer buffer, int sr, int channels)
     validFile = true;
     thumbnail->clear();
     repaint();
+    regionWidth = 0;
     thumbnail->reset (channels, sr, buffer.getNumSamples());
     //thumbnail->clear();
     thumbnail->addBlock (0, buffer, 0, buffer.getNumSamples());
