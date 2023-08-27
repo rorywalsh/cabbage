@@ -268,12 +268,12 @@ int GetCabbageIdentifierSingleWithTrigger::getAttribute()
     if ( currentValue != value)
     {
         value = currentValue;
-        if(firstRun)
-        {
-            firstRun = false;
-            outargs[1] = 0;
-        }
-        else
+//        if(firstRun)
+//        {
+//            firstRun = false;
+//            outargs[1] = 0;
+//        }
+//        else
             outargs[1] = 1;
     }
     else
@@ -703,13 +703,13 @@ int GetCabbageValueWithTrigger::getAttribute()
         if(*value != currentValue)
         {
             currentValue = *value;
-            if(firstRun)
-            {
-                firstRun = false;
-                outargs[1] = 0;
-            }
-            else
-                outargs[1] = 1;
+//            if(firstRun)
+//            {
+//                firstRun = false;
+//                outargs[1] = 0;
+//            }
+//            else
+            outargs[1] = 1;
         }
         else
             outargs[1] = 0;
@@ -740,12 +740,12 @@ int GetCabbageValueArrayWithTrigger::getAttribute()
             if(*value != currentValue[i])
             {
                 currentValue[i] = *value;
-                if(firstRun)
-                {
-                    firstRun = false;
-                    outTriggers[i] = 0;
-                }
-                else
+//                if(firstRun)
+//                {
+//                    firstRun = false;
+//                    outTriggers[i] = 0;
+//                }
+//                else
                     outTriggers[i] = 1;
             }
             else
@@ -1386,7 +1386,9 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
         return NOTOK;
     }
     
-
+    if(String(args.str_data(2).data).isEmpty())
+        return OK;
+    
     data.identifier = args.str_data(2).data;
     data.name = args.str_data(1).data;
     data.methodCode = 106;
