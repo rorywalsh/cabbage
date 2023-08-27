@@ -61,11 +61,11 @@ FileTab::FileTab (String name, String filename, bool isCsdFile, String iconsPath
     editGUI.setClickingTogglesState (true);
     editGUI.setTooltip ("Edit Plugin GUI");
 
-    
     setDrawableImages (play, 60, 25, "play");
     setDrawableImages (close, 25, 25, "close");
     setDrawableImages (showEditor, 25, 25, "showEditor");
     setDrawableImages (editGUI, 25, 25, "editGUI");
+
     addAndMakeVisible (close);
 
     if(isCsdFile)
@@ -187,7 +187,7 @@ void FileTab::disableButtons (bool disable)
 
 void FileTab::resized()
 {
-    overlay.setBounds (5, 3, 160, 25);
+    overlay.setBounds (5, 3, 125, 25);
     play.setBounds (5, 3, 60, 25);
     showEditor.setBounds (67, 3, 30, 25);
     editGUI.setBounds (99, 5, 25, 23);
@@ -224,12 +224,12 @@ void FileTab::setDrawableImages (DrawableButton& button, int width, int height, 
     else if (type == "editGUI")
     {
         String svgFile = getSVGTextFromFile (iconsPath + "/filetab-editGUI-off.svg");
-		std::unique_ptr<XmlElement> svgOff(XmlDocument::parse (svgFile));
+        std::unique_ptr<XmlElement> svgOff(XmlDocument::parse (svgFile));
 
         svgFile = getSVGTextFromFile (iconsPath + "/filetab-editGUI-on.svg");
-		std::unique_ptr<XmlElement> svgOn(XmlDocument::parse(svgFile));
+        std::unique_ptr<XmlElement> svgOn(XmlDocument::parse(svgFile));
 
-        if (iconsPath == "" || svgOn == nullptr || svgOff == nullptr) 
+        if (iconsPath == "" || svgOn == nullptr || svgOff == nullptr)
         { // if there is no iconsPath defined (or the svg files are missing), then we fallback on the previous hard-coded icon:
             imageNormal.setImage (CabbageImages::drawEditGUIIcon (width, height));
             imageNormalPressed.setImage (CabbageImages::drawEditGUIIcon (width - 1, height - 1));
@@ -250,7 +250,6 @@ void FileTab::setDrawableImages (DrawableButton& button, int width, int height, 
                 drawable_editGUIon.get(), drawable_editGUIon.get(), drawable_editGUIon.get(), drawable_editGUIon.get());
         }
     }
-
 }
 
 FileTab::~FileTab()

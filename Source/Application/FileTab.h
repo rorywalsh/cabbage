@@ -25,8 +25,6 @@
 class FileTab : public TextButton
 {
     DrawableButton play, close, showEditor, editGUI;
-    LookAndFeel_V4 laf;
-
     File csdFile;
     Colour fileBarBackground, fileTabBackground, fileTabText;
     String iconsPath;
