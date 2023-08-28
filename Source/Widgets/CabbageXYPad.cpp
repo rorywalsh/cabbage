@@ -184,10 +184,15 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     {
         //need to add a flag to xypad to disable dragging if users want to set values manually
         float xVal = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuex);
-        xVal = (xVal-minX)/(maxX-minX);
         float yVal = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
+        xValueLabel.setText (createValueText(xVal, 3, xPrefix, xPostfix), dontSendNotification);
+        yValueLabel.setText (createValueText(yVal, 3, yPrefix, yPostfix), dontSendNotification);
+        
+        xVal = (xVal-minX)/(maxX-minX);
+        
         yVal = (yVal-minY)/(maxY-minY);
 
+        
         const float xPos = jmap (xVal, 0.f, 1.f, xyPadRect.getX(), xyPadRect.getWidth() - ball.getHeight() * .7f);
         const float yPos = jmap (yVal, 1.f, 0.f, xyPadRect.getY(), xyPadRect.getHeight() - ball.getHeight() * .7f);
 
