@@ -21,11 +21,11 @@ int CabbageMidiReader::init()
         csound->init_error("Not enough input arguments\n");
         return NOTOK;
     }
-    else if (in_count() == 6)
+    else if (in_count() == 7)
     {
-        skipTime = inargs[5];
+        skipTime = inargs[6];
     }
-        
+            
     
     currentTrack = static_cast<int>(inargs[1]);
 
@@ -69,7 +69,8 @@ int CabbageMidiReader::kperf()
         return NOTOK;
     }
    
-    
+    if(inargs[5] == 1)
+        sampleIndex = 0;
     
     bool isPlaying = static_cast<bool>(inargs[2]);
     shouldLoop = inargs[3];

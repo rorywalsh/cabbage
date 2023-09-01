@@ -17,7 +17,7 @@
 // ReadStateData
 //====================================================================================================
 
-struct CabbageMidiReader : csnd::Plugin<6, 6>
+struct CabbageMidiReader : csnd::Plugin<6, 7>
 {
     int init();
     int kperf();
