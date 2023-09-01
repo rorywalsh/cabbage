@@ -991,6 +991,7 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor() {
 //==============================================================================
 void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData) 
 {
+    try{
 	auto j = nlohmann::json::parse(addPluginPreset("CABBAGE_PRESETS", "", false).toStdString());
 
 	nlohmann::json k, l;
@@ -998,7 +999,11 @@ void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData)
 	k["daw state"] = j;
 	k["dummy"] = l;
 	MemoryOutputStream(destData, true).writeString(k.dump(4));
-
+    }
+    catch (nlohmann::json::exception& e) {
+        DBG(e.what());
+        jassertfalse;
+    }
 //  the older xml way of doing it..
 //	copyXmlToBinary(savePluginState("CABBAGE_PRESETS"), destData);
 //	Logger::writeToLog ("CabbagePluginProcessor::getStateInformation");
@@ -1006,8 +1011,14 @@ void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData)
 
 void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInBytes) 
 {
+    try{
 	auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
 	setPluginState(jsonData, "", true);
+    }
+    catch (nlohmann::json::exception& e) {
+        DBG(e.what());
+        jassertfalse;
+    }
 
 //  the older xml way of doing it..
 //	std::unique_ptr <XmlElement> xmlElement(getXmlFromBinary(data, sizeInBytes));
@@ -1195,7 +1206,7 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
 
 void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const String presetName, bool hostState)
 {
-
+    try{
 	for (nlohmann::ordered_json::iterator itA = j.begin(); itA != j.end(); ++itA) 
 	{
 		if (String(itA.key()) == presetName || hostState == true)
@@ -1374,7 +1385,12 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
 
 		}
 
-	}
+    }
+    }
+    catch (nlohmann::json::exception& e) {
+        DBG(e.what());
+        jassertfalse;
+    }
 }
 
 void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileName)
@@ -1386,8 +1402,14 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
     File presetFile(fileName);
     String presetFileContents = presetFile.loadFileAsString();
 
+    try{
 	j = nlohmann::ordered_json::parse(presetFileContents.toRawUTF8());
 	setPluginState(j, presetName);
+    }
+    catch (nlohmann::json::exception& e) {
+        DBG(e.what());
+        jassertfalse;
+    }
 }
 //===============================================================================================
 

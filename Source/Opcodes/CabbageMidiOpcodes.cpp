@@ -63,6 +63,11 @@ int CabbageMidiReader::kperf()
         return NOTOK;
     }
 
+    if(currentTrack>midiFile.getNumTracks()-1)
+    {
+        csound->perf_error("Your track index is greater than the number of MIDI tracks in the curent MIDI file.\n", this);
+        return NOTOK;
+    }
    
     
     
@@ -77,6 +82,7 @@ int CabbageMidiReader::kperf()
     csnd::Vector<MYFLT>& velocityOut = outargs.myfltvec_data(3);
 
     outargs[5] = 0;
+    int noteOnEvents = 0;
     
     if (isPlaying)
     {
@@ -85,40 +91,40 @@ int CabbageMidiReader::kperf()
         
         if(theSequence == nullptr)
         {
-            csound->init_error("There was a problem reading events\n");
+            csound->init_error("There was a problem reading events from track..\n");
             return NOTOK;
         }
 
-        //run through all midi event in sequence, and add
-        //those that are set to play within this k-cycle to
-        //event vectors
-        for( int i = 0 ; i < ksmps() ; i++)
+
+        noteOnEvents = 0;
+
+        startTime = (sampleIndex)/sr() + skipTime;
+        if (startTime > lastTimeStamp && shouldLoop)
         {
+            sampleIndex = 0;
+            startTime = 0 + skipTime;
+        }
+        else
+            sampleIndex+=ksmps();
+        
+        double endTime = startTime + (ksmps() / sr());
 
-            startTime = (sampleIndex++)/sr() + skipTime;  
-            if (startTime > lastTimeStamp && shouldLoop)
-            {   
-                sampleIndex = 0;
-                startTime = 0 + skipTime;
-            }
-            double endTime = startTime + (ksmps() / sr());
-
-            if (theSequence->getNumEvents() > 0)
+        if (theSequence->getNumEvents() > 0)
+        {
+            for (auto p = 0; p < theSequence->getNumEvents(); p++)
             {
-                for (auto p = 0; p < theSequence->getNumEvents(); p++)
+                MidiMessageSequence::MidiEventHolder* event = theSequence->getEventPointer(p);
+                
+                if (event->message.getTimeStamp() * playBackSpeed >= startTime &&
+                    event->message.getTimeStamp() * playBackSpeed < endTime)
                 {
-                    MidiMessageSequence::MidiEventHolder* event = theSequence->getEventPointer(p);
+                    status[numEvents] = getStatusType(event->message);
+                    channel[numEvents] = event->message.getChannel();
+                    noteNumber[numEvents] = event->message.getNoteNumber();
+                    velocity[numEvents] = event->message.getVelocity();
+                    numEvents++;
+                    outargs[5] = 1;
                     
-                    if (event->message.getTimeStamp() * playBackSpeed >= startTime &&
-                        event->message.getTimeStamp() * playBackSpeed < endTime)
-                    {
-                        status[numEvents] = getStatusType(event->message);
-                        channel[numEvents] = event->message.getChannel();
-                        noteNumber[numEvents] = event->message.getNoteNumber();
-                        velocity[numEvents] = event->message.getVelocity();
-                        numEvents++;
-                        outargs[5] = 1;
-                    }
                 }
             }
         }
@@ -159,6 +165,7 @@ int CabbageMidiReader::kperf()
     }
 
     outargs[4] = numEvents;
+
 
     
     return OK;
