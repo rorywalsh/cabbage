@@ -127,10 +127,13 @@ void CabbageFileButton::buttonClicked (Button* button)
         fc->launchAsync(FileBrowserComponent::openMode | FileBrowserComponent::canSelectFiles,
             [this](const FileChooser& fc) mutable
         {
-            owner->sendChannelStringDataToCsound(getChannel(), returnValidPath(fc.getResult()));
-            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, returnValidPath(fc.getResult()));
-            //owner->refreshComboListBoxContents();
-            owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
+            if(fc.getResult() != File())
+            {
+                owner->sendChannelStringDataToCsound(getChannel(), returnValidPath(fc.getResult()));
+                CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, returnValidPath(fc.getResult()));
+                //owner->refreshComboListBoxContents();
+                owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
+            }
         });
     }
 
