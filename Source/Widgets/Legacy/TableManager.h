@@ -21,7 +21,7 @@
 #define GENTABLE_H
 
 #define FIXED_WIDTH 15
-#define MAX_TABLE_SIZE 44101
+#define MAX_TABLE_SIZE 48001
 
 #include "../../CabbageCommonHeaders.h"
 #include "../../LookAndFeel/CabbageLookAndFeel2.h"
