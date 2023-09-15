@@ -295,6 +295,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
                return;
                
             auto j = nlohmann::ordered_json::parse(fileName.loadFileAsString().toRawUTF8());
+            DBG(j.dump(4));
             for (nlohmann::ordered_json::iterator it = j.begin(); it != j.end(); ++it) {
                 presets.add (it.key());
             }

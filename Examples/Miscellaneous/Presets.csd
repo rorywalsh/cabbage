@@ -7,7 +7,6 @@ rslider bounds(184, 8, 85, 79), channel("sus"), range(0, 1, 0.7), text("Sus.")
 rslider bounds(270, 8, 85, 79), channel("rel"), range(0, 1, 0.8), text("Rel.")
 combobox bounds(74, 190, 100, 25), populate("*.snaps")
 filebutton bounds(12, 190, 60, 25), text("Save"), populate("*.snaps"), mode("snapshot")
-checkbox bounds(252, 188, 100, 30) channel("checkchan9") text("Test Check") 
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>

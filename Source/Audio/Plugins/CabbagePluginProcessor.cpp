@@ -1032,6 +1032,7 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
     nlohmann::ordered_json j;
 	String presetFileContents = "";
 	File presetFile;
+	currentPresetName = presetName;
 	if (fileName.isNotEmpty())
 	{
 		presetFile = File(fileName);
@@ -1055,6 +1056,8 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
             }
             if(presetName.isEmpty())
                 presetName = "Preset " +String(numberOfPresets);
+
+			currentPresetName = presetName;
         }
         else
         {
@@ -1071,14 +1074,16 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
             for (nlohmann::ordered_json::iterator it = j.begin(); it != j.end(); ++it) {
                 presets.add (it.key());
             }
-            
+
+
             currentPresetName = presets[presets.size()-1];
             
             presetFile.replaceWithText(String(j.dump(4)));
+
         }
     }
     
-    currentPresetName = presetName;
+    
     
     for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
         const String channelName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
@@ -1096,7 +1101,7 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
 				{
                     String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                          CabbageIdentifierIds::text);
-                    j[presetName.toStdString()][channelName.toStdString()] = text.toRawUTF8();
+                    j[currentPresetName.toStdString()][channelName.toStdString()] = text.toRawUTF8();
                 }
 				if (type == CabbageWidgetTypes::soundfiler) 
 				{
@@ -1115,7 +1120,7 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
 					b[CabbageIdentifierIds::scrubberposition.toString().toStdString()] = scrubberPos;
 					b[CabbageIdentifierIds::regionstart.toString().toStdString()] = regionStart;
 					b[CabbageIdentifierIds::regionlength.toString().toStdString()] = regionLength;
-					j[presetName.toStdString()][String(channelName).toStdString()] = b;
+					j[currentPresetName.toStdString()][String(channelName).toStdString()] = b;
 
 				}
                 else if(channelName == "PRESET_COMBOBOX")
@@ -1134,7 +1139,7 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
                      {
                          if (file.length() > 2) {
                              const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
-                             j[presetName.toStdString()][channelName.toStdString()] = relativePath.replaceCharacters("\\", "/").toStdString();
+                             j[currentPresetName.toStdString()][channelName.toStdString()] = relativePath.replaceCharacters("\\", "/").toStdString();
                          }
                      }
                 }
@@ -1147,8 +1152,8 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
                                                                          CabbageIdentifierIds::minvalue);
                     const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                          CabbageIdentifierIds::maxvalue);
-                    j[presetName.toStdString()][channels[0].toString().toStdString()] = minValue;
-                    j[presetName.toStdString()][channels[1].toString().toStdString()] = maxValue;
+                    j[currentPresetName.toStdString()][channels[0].toString().toStdString()] = minValue;
+                    j[currentPresetName.toStdString()][channels[1].toString().toStdString()] = maxValue;
                 }
                 else if (type == CabbageWidgetTypes::xypad) //double channel xypad widget
                 {
@@ -1159,8 +1164,8 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
                     const float yValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                        CabbageIdentifierIds::valuey);
                     
-                    j[presetName.toStdString()][channels[0].toString().toStdString()] = xValue;
-                    j[presetName.toStdString()][channels[1].toString().toStdString()] = yValue;
+                    j[currentPresetName.toStdString()][channels[0].toString().toStdString()] = xValue;
+                    j[currentPresetName.toStdString()][channels[1].toString().toStdString()] = yValue;
                 }
                 else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                                                 CabbageIdentifierIds::filetype).contains("snaps"))
@@ -1174,12 +1179,12 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
                     if(getCsound())
                         getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
                     const String file(tmp_str);
-                    j[presetName.toStdString()][channelName.toStdString()] = file.toStdString();
+                    j[currentPresetName.toStdString()][channelName.toStdString()] = file.toStdString();
                     
                 }
                 else
                 {
-                    j[presetName.toStdString()][channelName.toStdString()] = float(value);
+                    j[currentPresetName.toStdString()][channelName.toStdString()] = float(value);
                 }
             }
         }
@@ -1192,14 +1197,14 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
 		if (p != nullptr)
 		{
 			auto pdClass = *p;
-			j[presetName.toStdString()]["cabbageJSONData"] = pdClass->data;
+			j[currentPresetName.toStdString()]["cabbageJSONData"] = pdClass->data;
 		}
 	}
 
 	if(fileName.isNotEmpty())
 		presetFile.replaceWithText(String(j.dump(4)));
 
-	return  j[presetName.toStdString()].dump();
+	return  j[currentPresetName.toStdString()].dump();
 
 }
 
