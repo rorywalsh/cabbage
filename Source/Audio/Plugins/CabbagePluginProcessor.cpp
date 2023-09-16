@@ -1079,6 +1079,10 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
             currentPresetName = presets[presets.size()-1];
             
             presetFile.replaceWithText(String(j.dump(4)));
+            
+            
+            DBG(j.dump(4));
+            return;
 
         }
     }
@@ -1204,6 +1208,8 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
 	if(fileName.isNotEmpty())
 		presetFile.replaceWithText(String(j.dump(4)));
 
+    DBG(j.dump(4));
+    
 	return  j[currentPresetName.toStdString()].dump();
 
 }
