@@ -113,7 +113,7 @@ public:
     void setRange (Range<double> newRange);
     void showScrollbars (bool show);
     void setMonoDisplayType(bool displayMono) { showSingleChannel = displayMono; }
-
+    void setFileIsValidFlag(bool isValid){  validFile = isValid; }
 private:
     Image img;
     bool selectableRange;
