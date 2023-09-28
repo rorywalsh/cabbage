@@ -813,10 +813,9 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 
 void CabbagePluginEditor::buttonStateChanged(Button* button)
 {
+    
 	if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
 	{
-
-        
 		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageProcessor.cabbageWidgets, cabbageButton->getName());
 		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
         //DBG("ValueTreeListener:"+cabbageButton->getName());
@@ -827,6 +826,9 @@ void CabbagePluginEditor::buttonStateChanged(Button* button)
 				toggleButtonState(button, true);
 			else if(button->getToggleState()==true)
 				toggleButtonState(button, false);
+            
+            if(button->getState() == Button::ButtonState::buttonNormal)
+                toggleButtonState(button, false);
 		}
 		else if (latched == 1)
 		{
