@@ -100,7 +100,7 @@ int CabbageMidiReader::kperf()
         noteOnEvents = 0;
 
         startTime = (sampleIndex)/sr() + skipTime;
-        if (startTime > lastTimeStamp && shouldLoop)
+        if (startTime > lastTimeStamp * playBackSpeed && shouldLoop)
         {
             sampleIndex = 0;
             startTime = 0 + skipTime;
