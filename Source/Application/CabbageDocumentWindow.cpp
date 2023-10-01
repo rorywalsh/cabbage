@@ -443,7 +443,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 #endif
     }
     menu.addSeparator();
-	menu.addCommandItem(&commandManager, CommandIDs::exportNativeUnity);
+	//menu.addCommandItem(&commandManager, CommandIDs::exportNativeUnity);
 	menu.addCommandItem(&commandManager, CommandIDs::exportAsVCVRackModule);
 	menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneApp);
 
