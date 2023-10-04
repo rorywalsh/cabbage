@@ -1094,7 +1094,12 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
                                                                     CabbageIdentifierIds::channel);
         const int ignore = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                     CabbageIdentifierIds::presetignore);
-        if(ignore == 0 && channelName != "PluginResizerCombBox")
+        if(channelName == "PluginResizerCombBox")
+        {
+            const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+            j[currentPresetName.toStdString()][channelName.toStdString()] = float(value);
+        }
+        else if(ignore == 0)
         {
             const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
             const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
@@ -1218,6 +1223,7 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
 void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const String presetName, bool hostState)
 {
     try{
+
 	for (nlohmann::ordered_json::iterator itA = j.begin(); itA != j.end(); ++itA) 
 	{
 		if (String(itA.key()) == presetName || hostState == true)
