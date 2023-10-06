@@ -83,7 +83,9 @@ void CabbageEncoder::labelTextChanged (Label* label)
     float labelValue = jlimit (min, max, label->getText().getFloatValue());
     currentEncValue = value;
     valueLabel.setText (createValueText(labelValue, 3, "", postfix), dontSendNotification);
+    widgetData.setPropertyExcludingListener(this, CabbageIdentifierIds::value, currentEncValue, nullptr);
     owner->sendChannelDataToCsound (getChannel(), currentEncValue);
+    
     showPopup();
 }
 
@@ -105,6 +107,7 @@ void CabbageEncoder::mouseWheelMove (const MouseEvent& event, const MouseWheelDe
 
         repaint();
         owner->sendChannelDataToCsound (getChannel(), currentEncValue);
+        widgetData.setPropertyExcludingListener(this, CabbageIdentifierIds::value, currentEncValue, nullptr);
         showPopup();
     }
 }
@@ -119,6 +122,7 @@ void CabbageEncoder::mouseDown (const MouseEvent& e)
             currentEncValue = startingValue;
             repaint();
             owner->sendChannelDataToCsound (getChannel(), currentEncValue);
+            widgetData.setPropertyExcludingListener(this, CabbageIdentifierIds::value, currentEncValue, nullptr);
             showPopup();
             firstDrag = true;
         }
@@ -158,6 +162,7 @@ void CabbageEncoder::mouseDrag (const MouseEvent& e)
             firstDrag = false;
 
             owner->sendChannelDataToCsound (getChannel(), currentEncValue);
+            widgetData.setPropertyExcludingListener(this, CabbageIdentifierIds::value, currentEncValue, nullptr);
             showPopup();
         }
 

@@ -749,6 +749,7 @@ void CabbagePluginProcessor::recreateWidgets(const String& csdText, bool editMod
         StringArray strings;
         strings.addLines(csdText);
         parseCsdFile(strings);
+        
         editor->createEditorInterface(cabbageWidgets);
         if(editMode)
             editor->setEditMode(editMode);
@@ -952,8 +953,9 @@ void CabbagePluginProcessor::createCabbageParameters()
 					const float skew = 1;
 					const float min = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 						CabbageIdentifierIds::min);
-					const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+					auto m = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 						CabbageIdentifierIds::max);
+                    const float max = (m <= min ? m+1 : m);
 
 					auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), channel, name,
 						min, max, value, increment, skew, automatable, prefix, postfix);
@@ -998,6 +1000,7 @@ void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData)
 	l["dummy"] = "dummy";
 	k["daw state"] = j;
 	k["dummy"] = l;
+
 	MemoryOutputStream(destData, true).writeString(k.dump(4));
     }
     catch (nlohmann::json::exception& e) {
@@ -1013,8 +1016,8 @@ void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInByt
 {
     try{
 	auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
-        DBG(jsonData.dump(4));
         setPluginState(jsonData, "", true);
+        
     }
     catch (nlohmann::json::exception& e) {
         DBG(e.what());
@@ -1241,6 +1244,7 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
 				if(presetData.key() == "dummy")
                     return;
                 
+
 				ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, presetData.key(), true);
 				const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
 				const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
@@ -1393,6 +1397,7 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
 						if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
 							&& CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps" &&
 							CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
+
 							CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
 								presetData.value().get<float>());
 						//now make changes parameter changes so host can see them..
@@ -1575,6 +1580,7 @@ XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 }
 
 void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
+    jassertfalse;//no longer called...
 	if (xmlState != nullptr) {
 		//if dealing with session saved by host
 		initAllCsoundChannels(cabbageWidgets);
@@ -1584,6 +1590,7 @@ void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
 
 void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 {
+    jassertfalse;//no longer called...
 	Logger::writeToLog(" CabbagePluginProcessor::setParametersFromXml");
 	if (e)
 	{
