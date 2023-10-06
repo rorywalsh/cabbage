@@ -1013,7 +1013,8 @@ void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInByt
 {
     try{
 	auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
-	setPluginState(jsonData, "", true);
+        DBG(jsonData.dump(4));
+        setPluginState(jsonData, "", true);
     }
     catch (nlohmann::json::exception& e) {
         DBG(e.what());
@@ -1094,14 +1095,25 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
                                                                     CabbageIdentifierIds::channel);
         const int ignore = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                     CabbageIdentifierIds::presetignore);
+        const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
+        
         if(channelName == "PluginResizerCombBox")
         {
             const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
             j[currentPresetName.toStdString()][channelName.toStdString()] = float(value);
         }
+        else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),                                                                                                CabbageIdentifierIds::filetype).contains("snaps"))
+        {
+            const String presetN = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::value);
+            j[currentPresetName.toStdString()][channelName.toStdString()] = presetN.toStdString();
+        }
+       else if (type == CabbageWidgetTypes::presetbutton)
+       {
+            const String presetN = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::value);
+            j[currentPresetName.toStdString()][channelName.toStdString()] = presetN.toStdString();
+       }
         else if(ignore == 0)
         {
-            const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
             const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
             
             //only write values for widgets that have channels
@@ -1132,10 +1144,6 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
 					j[currentPresetName.toStdString()][String(channelName).toStdString()] = b;
 
 				}
-                else if(channelName == "PRESET_COMBOBOX")
-                {
-                    //if snaps
-                }
                 else if (type == CabbageWidgetTypes::filebutton &&
                          !CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                            CabbageIdentifierIds::filetype).contains("snaps"))
@@ -1245,9 +1253,13 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
 				{
 					CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, presetData.value().dump());
 				}
-				else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype).contains("snaps"))
+				else if ((type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype).contains("snaps")) ||
+                         type == CabbageWidgetTypes::presetbutton)
 				{
-					//ignore settings of preset comboboxes...
+#if !Cabbage_IDE_Build
+                    currentPresetName = presetData.value().get<std::string>();
+                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, currentPresetName);
+#endif
 				}
 				else if ((type == CabbageWidgetTypes::combobox || type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 				{
@@ -1432,11 +1444,11 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
 
 XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
 {
-	//todo: update this method to use JSON like the preset methods
+
     std::unique_ptr<XmlElement> xml;
     xml = std::make_unique<XmlElement>("CABBAGE_PRESETS");
     
-    try {    // very bad code
+    try {
 
     
     
