@@ -369,6 +369,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<CabbageMidiListener>((csnd::Csound*)getCsound()->GetCsound(), "cabbageMidiListener", "k[]k[]k[]k", "O", csnd::thread::ik);
     csnd::plugin<CabbageMidiSender>((csnd::Csound*)getCsound()->GetCsound(), "cabbageMidiSender", "", "", csnd::thread::i);
 
+    csnd::plugin<CabbageDiskin>((csnd::Csound*)getCsound()->GetCsound(), "cabbageDiskin", "aa", "Skii", csnd::thread::ia);
 
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
@@ -1038,6 +1039,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
         csound->SetChannel("HOST_BUFFER_SIZE", samplesPerBlock);
 #if Cabbage_IDE_Build == 0
     PluginHostType pluginType;
+    
     if (pluginType.isCubase())
         hostIsCubase = true;
 #endif

@@ -31,6 +31,7 @@
 
 
 #include "../../Opcodes/CabbageIdentifierOpcodes.h"
+#include "../../Opcodes/CabbageDiskinOpcode.h"
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"
 #if CabbagePro

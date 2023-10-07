@@ -717,7 +717,11 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
 
     if (prop == CabbageIdentifierIds::value)
     {
-        //const MessageManagerLock lock;
+        if (PluginHostType::getPluginLoadedAs() != AudioProcessor::wrapperType_AudioUnit)
+        {
+           const MessageManagerLock lock;
+        }
+        
         //this is causing some weird jumpy issue in Live
         getSlider().setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), dontSendNotification);
         if (sliderThumbImage.isValid())
