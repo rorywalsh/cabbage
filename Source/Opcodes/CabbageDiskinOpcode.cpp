@@ -66,6 +66,7 @@ int CabbageDiskin::aperf()
             if(!loopEnded)
             {
                 out[i] = channelSamples[int(sampleIndex[channel])];
+                
                 if((int)sampleIndex[channel]>=audioBuffer.getNumSamples())
                 {
                     sampleIndex[channel] = 0;
@@ -74,6 +75,14 @@ int CabbageDiskin::aperf()
                 }
             }
         }
+    }
+    
+    if(audioBuffer.getNumChannels() == 1)
+    {
+        csnd::AudioSig outL(this, outargs(0));
+        csnd::AudioSig outR(this, outargs(1));
+        std::copy(outL.begin(), outL.end(),
+        outR.begin());
     }
 
     
