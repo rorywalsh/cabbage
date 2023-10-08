@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.112)
+	set(BUILD_VERSION 2.9.113)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -270,8 +270,8 @@ Source/CabbageCommonHeaders.h
 Source/CabbageIds.h
 Source/Opcodes/CabbageMidiOpcodes.cpp
 Source/Opcodes/CabbageMidiOpcodes.h
-Source/Opcodes/CabbageDiskinOpcode.cpp
-Source/Opcodes/CabbageDiskinOpcode.h)
+Source/Opcodes/CabbageFileReaderOpcodes.cpp
+Source/Opcodes/CabbageFileReaderOpcodes.h)
 
 set(BATCH_CONVERTER_SOURCES
 Source/Converter/Main.cpp
