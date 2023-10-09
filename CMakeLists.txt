@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.114)
+	set(BUILD_VERSION 2.9.115)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -463,10 +463,10 @@ if(MSVC)
 
 elseif(APPLE)
     if(CabbagePro MATCHES 0)
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "Minimum OS X deployment version" FORCE)
-        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
+        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64")
         find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
-        "/Library/Frameworks/CsoundLib64.framework")  
+        "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64.framework")  
         include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
     else()
         if("${PROJECT_NAME}" STREQUAL "Cabbage")

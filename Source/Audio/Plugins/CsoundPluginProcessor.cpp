@@ -1136,6 +1136,9 @@ void CsoundPluginProcessor::sendHostDataToCsound()
 
 void CsoundPluginProcessor::performCsoundKsmps()
 {
+    if(csound == nullptr)
+        return;
+    
     result = csound->PerformKsmps();
 
     if (result == 0)
