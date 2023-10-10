@@ -76,6 +76,7 @@ void CabbageFileLoader::resampleBuffer(double ratio, AudioBuffer<float>& buffer,
 
 int CabbageFileReader::init()
 {
+    loopEnded = false;
     
     if(in_count()!=4)
         csound->init_error("Not enough input arguments\n");

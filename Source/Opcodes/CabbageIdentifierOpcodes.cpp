@@ -1216,22 +1216,26 @@ int SetCabbageIdentifier::setAttribute()
         return OK;
     
     CabbageWidgetIdentifiers::IdentifierData identData;
-    if(args.str_data(2).size == 0)
-        identData.identifier = {};
-    else
-        identData.identifier = csound->strdup(args.str_data(2).data);
+    //if(args.str_data(2).size == 0)
+    //    identData.identifier = {};
+    //else
+    identData.identifier = csound->strdup(args.str_data(2).data);
     
-    if(args.str_data(1).size == 0)
-        identData.name = csound->strdup(args.str_data(1).data);
-    else
-        return OK;
+    //if(args.str_data(1).size == 0)
+    identData.name = csound->strdup(args.str_data(1).data);
+    //else
+    //    return OK;
 
     
     identData.methodCode = 104;
     identData.isValid = true;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
+    
+    
+    
+    CabbageWidgetIdentifiers* varData = {};
+    
     
     if (vt != nullptr)
     {

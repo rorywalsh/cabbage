@@ -947,8 +947,8 @@ void CabbageMainComponent::timerCallback()
         }
         
         
-        //saveDocument(false, true);
-        //DBG("Number of compilations:"+String(compileCounter++));
+    //    saveDocument(false, true);
+    //    DBG("Number of compilations:"+String(compileCounter++));
       
     }
     
