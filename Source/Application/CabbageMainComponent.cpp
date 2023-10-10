@@ -2159,7 +2159,7 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
 
             createEditorForFilterGraphNode(pluginWindowPos);
 
-            startTimer(200);
+            startTimer(500);
             if (getFilterGraph()->graph.getNodeForId(node))
             {
                 fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
