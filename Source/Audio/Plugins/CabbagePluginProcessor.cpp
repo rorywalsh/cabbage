@@ -250,12 +250,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
             continue;
         
 		if (linesFromCsd[lineNumber].equalsIgnoreCase("</Cabbage>"))
-        {
-            for( int i = 0 ; i < cabbageWidgets.getNumChildren(); i++)
-            {
-                DBG(cabbageWidgets.getChild(i).getType());
-            }
-            
+        {          
 			return;
         }
         ValueTree tempWidget(Identifier("WidgetFromLine_" + std::to_string(lineNumber)));
@@ -1854,8 +1849,8 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
     }
 
 
-    
-    identData->data.clearQuick();
+    if (identData->canRead.load())
+        identData->data.clearQuick();
 
 
     

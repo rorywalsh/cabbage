@@ -157,7 +157,7 @@ void CsoundPluginProcessor::createCsoundGlobalVars(const ValueTree& cabbageData)
         *pd = new CabbagePersistentData();
         auto pdClass = *pd;
         pdClass->data = getInternalState().toStdString();
-        DBG(pdClass->data);
+        //DBG(pdClass->data);
     }
 
     auto** wi = (CabbageWidgetIdentifiers**)getCsound()->QueryGlobalVariable("cabbageData");

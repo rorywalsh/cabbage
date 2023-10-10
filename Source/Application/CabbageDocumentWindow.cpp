@@ -74,7 +74,7 @@ commandLineArgs (commandLineParams)
 
         String outputFileName = "";
         int outputFileNameIndex = -1;
-        DBG(commandLineParams.joinIntoString("\n"));
+        //DBG(commandLineParams.joinIntoString("\n"));
         for ( int x = 0; x < commandLineParams.size() ; x++)
         {
             if(commandLineParams[x].contains("--destination"))
@@ -615,7 +615,7 @@ void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIn
         {
             getContentComponent()->getCurrentCodeEditor()->setFont(fonts[menuItemID + 9999]);
             cabbageSettings->getUserSettings()->setValue("Font", fonts[menuItemID + 9999].getTypefaceName());
-            DBG(fonts[menuItemID + 9999].getTypefaceName());
+            //DBG(fonts[menuItemID + 9999].getTypefaceName());
         }
     }
 }

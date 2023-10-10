@@ -945,6 +945,11 @@ void CabbageMainComponent::timerCallback()
             }
             currentFileIndex = originalFileIndex;
         }
+        
+        
+        saveDocument(false, true);
+        DBG("Number of compilations:"+String(compileCounter++));
+      
     }
     
     
@@ -2033,7 +2038,7 @@ void CabbageMainComponent::covertToLowerCase()
     {
         if(currentFileText.contains(camelCaseIdentifiers[i]))
         {
-            DBG("Replacing"+camelCaseIdentifiers[i] + " with " + camelCaseIdentifiers[i].toLowerCase());
+            //("Replacing"+camelCaseIdentifiers[i] + " with " + camelCaseIdentifiers[i].toLowerCase());
             currentFileText = currentFileText.replace(camelCaseIdentifiers[i], camelCaseIdentifiers[i].toLowerCase());
         }
     }
@@ -2098,7 +2103,7 @@ void CabbageMainComponent::covertToCamelCase()
     {
         if(cabbageCode.contains(camelCaseIdentifiers[i].toLowerCase()))
         {
-            DBG("Replacing"+camelCaseIdentifiers[i].toLowerCase() + " with " + camelCaseIdentifiers[i]);
+            //DBG("Replacing"+camelCaseIdentifiers[i].toLowerCase() + " with " + camelCaseIdentifiers[i]);
             cabbageCode = cabbageCode.replace(camelCaseIdentifiers[i].toLowerCase(), camelCaseIdentifiers[i]);
         }
     }
@@ -2154,7 +2159,7 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
 
             createEditorForFilterGraphNode(pluginWindowPos);
 
-            startTimer(100);
+            startTimer(200);
             if (getFilterGraph()->graph.getNodeForId(node))
             {
                 fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");

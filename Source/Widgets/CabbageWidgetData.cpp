@@ -717,11 +717,6 @@ void CabbageWidgetData::setPointsFromTokens (ValueTree widgetData, StringArray s
     }
     
     setProperty(widgetData, CabbageIdentifierIds::points, newArray);
-    
-    for (int i = 0; i < newArray.size(); i++)
-    {
-        DBG(int(newArray[i]));
-    }
 }
 
 void CabbageWidgetData::setSVGText(ValueTree widgetData, StringArray tokens)
