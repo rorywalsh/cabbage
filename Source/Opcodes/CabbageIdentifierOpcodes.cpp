@@ -1215,12 +1215,20 @@ int SetCabbageIdentifier::setAttribute()
     if(trigger == 0)
         return OK;
     
-    CabbageWidgetIdentifiers::IdentifierData data;
+    CabbageWidgetIdentifiers::IdentifierData identData;
+    if(args.str_data(2).size == 0)
+        identData.identifier = {};
+    else
+        identData.identifier = csound->strdup(args.str_data(2).data);
+    
+    if(args.str_data(1).size == 0)
+        identData.name = csound->strdup(args.str_data(1).data);
+    else
+        return OK;
 
-    data.identifier = csound->strdup(args.str_data(2).data);
-    data.name = csound->strdup(args.str_data(1).data);
-    data.methodCode = 104;
-    data.isValid = true;
+    
+    identData.methodCode = 104;
+    identData.isValid = true;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData;
@@ -1242,20 +1250,20 @@ int SetCabbageIdentifier::setAttribute()
     if(trigger == 1)
     {
         //hack to trigger table update even if table number hasn't changed
-        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
+        if (identData.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
         {
             CabbageWidgetIdentifiers::IdentifierData updateData1;
             updateData1.identifier = CabbageIdentifierIds::update;
-            updateData1.name = data.name;
-            updateData1.methodCode = data.methodCode;
+            updateData1.name = identData.name;
+            updateData1.methodCode = identData.methodCode;
             updateData1.args = 1;
             varData->data.add(updateData1);
         }
         
         if(in_count() == 3)
         {
-            data.identWithArgument = true;
-            data.args = String(args.str_data(2).data);
+            identData.identWithArgument = true;
+            identData.args = String(args.str_data(2).data);
             //DBG(String(outargs.str_data(3).data));
         }
         else
@@ -1263,23 +1271,23 @@ int SetCabbageIdentifier::setAttribute()
             for ( int i = 3 ; i < in_count(); i++)
             {
                 //DBG(outargs[i]);
-                data.args.append(args[i]);
+                identData.args.append(args[i]);
             }
         }
-        varData->data.add(data);
+        varData->data.add(identData);
         
         //hack to trigger table update even if table number hasn't changed
-        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
+        if (identData.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
         {
             CabbageWidgetIdentifiers::IdentifierData updateData0;
             updateData0.identifier = CabbageIdentifierIds::update;
-            updateData0.name = data.name;
-            updateData0.methodCode = data.methodCode;
+            updateData0.name = identData.name;
+            updateData0.methodCode = identData.methodCode;
             updateData0.args = 0;
             varData->data.add(updateData0);
         }
         
-        if(data.identifier == CabbageIdentifierIds::value)
+        if(identData.identifier == CabbageIdentifierIds::value)
         {
             if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(1).data,
                                                    CSOUND_CONTROL_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
