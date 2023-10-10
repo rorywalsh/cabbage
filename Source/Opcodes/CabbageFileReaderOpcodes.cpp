@@ -19,7 +19,7 @@ int CabbageFileReader::init()
     resample = std::make_unique<LagrangeInterpolator>();
     loopMode = static_cast<int>(inargs[3]);
     skipTime = static_cast<int>(inargs[2]);
-    
+    loopEnded = false;
     
     std::ifstream stream;
     stream.open(inargs.str_data(0).data, std::ios::binary);
