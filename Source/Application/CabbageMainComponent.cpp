@@ -946,9 +946,9 @@ void CabbageMainComponent::timerCallback()
             currentFileIndex = originalFileIndex;
         }
         
-        
-    //    saveDocument(false, true);
-    //    DBG("Number of compilations:"+String(compileCounter++));
+//        
+//        saveDocument(false, true);
+//        DBG("Number of compilations:"+String(compileCounter++));
       
     }
     

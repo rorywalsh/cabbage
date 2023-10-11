@@ -31,11 +31,8 @@ int CabbageFileReader::init()
         return 0;
     }
 
-    // Read file info
     vorbis_info* vorbisInfo = ov_info(&file, -1);
-//    std::cout << "File info: " << vorbisInfo->rate << "Hz, "
-//        << vorbisInfo->channels << " channels" << std::endl;
-
+    
     
     numChannels = vorbisInfo->channels; // Stereo audio
     long pcm_size = 1024; // Number of samples to read at a time
@@ -70,6 +67,8 @@ int CabbageFileReader::init()
             }
         }
     }
+    
+    resampleBuffer((double)vorbisInfo->rate/(double)csound->sr(), audioBuffer, audioBuffer.getNumChannels());
     
     for( int i = 0 ; i < 16 ; i++)
         sampleIndex[i] = 0;
@@ -126,9 +125,6 @@ int CabbageFileReader::aperf()
             }
         }
     }
-
-    
-    
     
     return OK;
 }
