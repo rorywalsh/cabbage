@@ -49,6 +49,7 @@ public:
         const BusesProperties& ioBuses);
 	~CsoundPluginProcessor() override;
 
+    std::atomic_bool canUpdate;
     void destroyCsoundGlobalVars();
     void createCsoundGlobalVars(const ValueTree& cabbageData);
 	bool supportsSidechain = false;
@@ -118,8 +119,6 @@ public:
 #endif
 //=======================================================================================
 
-    
-    
     void performCsoundKsmps();
 	int result = -1;
     bool isLMMS = false;
@@ -320,6 +319,7 @@ public:
         {
             points.swapWith (tablePoints);
         }
+        
 
     private:
         Array <float, CriticalSection > points;
@@ -337,7 +337,6 @@ public:
     std::atomic<AudioFormatWriter::ThreadedWriter*> activeWriter { nullptr };
     std::unique_ptr<AudioData::Converter> converter;
     CriticalSection writerLock;
-    
     OwnedArray<MatrixEventSequencer> matrixEventSequencers;
     OwnedArray <SignalDisplay, CriticalSection> signalArrays;   //holds values from FFT function table created using dispfft
     CsoundPluginProcessor::SignalDisplay* getSignalArray (String variableName, String displayType = "") const;

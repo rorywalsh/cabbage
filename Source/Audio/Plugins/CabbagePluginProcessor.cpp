@@ -149,7 +149,7 @@ void CabbagePluginProcessor::createCsound(const File& inputFile, bool shouldCrea
 		
 
 		csdLastModifiedAt = csdFile.getLastModificationTime().toMilliseconds();
-
+        //getCsound()->SetYieldCallback(CabbagePluginProcessor::csoundYieldCallback);
 	}
 }
 
@@ -163,6 +163,7 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 
 	Logger::writeToLog("CabbagePluginProcessor::~CabbagePluginProcessor");
 }
+
 
 void CabbagePluginProcessor::timerCallback()
 {
@@ -180,7 +181,8 @@ void CabbagePluginProcessor::timerCallback()
     
     if(pollingChannels() == 0)
     {
-        getIdentifierDataFromCsound();
+        if(this->canUpdate.load())
+            getIdentifierDataFromCsound();
     }
     
     
