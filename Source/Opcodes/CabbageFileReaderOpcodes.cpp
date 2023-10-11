@@ -37,70 +37,52 @@ int CabbageFileReader::init()
 //        << vorbisInfo->channels << " channels" << std::endl;
 
     
-    int num_channels = vorbisInfo->channels; // Stereo audio
+    numChannels = vorbisInfo->channels; // Stereo audio
     long pcm_size = 1024; // Number of samples to read at a time
     float** pcm;
     
-    pcm = (float**)malloc(sizeof(float*) * num_channels);
-    for (int i = 0; i < num_channels; i++) {
+    pcm = (float**)malloc(sizeof(float*) * numChannels);
+    for (int i = 0; i < numChannels; i++) {
         pcm[i] = (float*)malloc(sizeof(float) * pcm_size);
     }
 
     
     int bitstream;
     long samples;
-    //int sampleIndex = 0;
-    
-    auto numSamples = ov_pcm_total(&file, -1);
-    audioBuffer.setSize(num_channels, numSamples);
-    auto buf = audioBuffer.getArrayOfWritePointers();
-    // Read audio data as float samples
 
-    while ((samples = ov_read_float(&file, &pcm, pcm_size, &bitstream)) > 0) {
-        // 'pcm' now contains 'samples' of audio data for each channel
-        // You can process or save the audio samples here
-        for (int i = 0; i < num_channels; i++) {
-//            buf[i] = pcm[i];
+    
+    numSamples = ov_pcm_total(&file, -1);
+    audioBuffer.clear();
+    audioBuffer.setSize(numChannels, numSamples);
+    ov_time_seek_lap(&file, 0);
+    auto buf = audioBuffer.getArrayOfWritePointers();
+
+    for( int i = 0 ; i < 16 ; i++)
+        sampleIndex[i] = 0;
+    
+    while ((samples = ov_read_float(&file, &pcm, pcm_size, &bitstream)) > 0)
+    {
+        for (int channel = 0; channel < numChannels; channel++) {
+
             for (long j = 0; j < samples; j++) {
-                auto s = (int)sampleIndex[i];
-                if((int)sampleIndex[i]<numSamples-1)
-                    buf[i][(int)sampleIndex[i]++] = pcm[i][j];
+                if((int)sampleIndex[channel]<numSamples)
+                    buf[channel][(int)sampleIndex[channel]++] = pcm[channel][j];
             }
         }
-        
     }
-
+    
     for( int i = 0 ; i < 16 ; i++)
         sampleIndex[i] = 0;
     return OK;
 }
-//
-//size_t CabbageFileReader::read(void* ptr, size_t size, size_t nmemb, void* datasource) {
-//    FILE* file = (FILE*)datasource;
-//    //return fread(ptr, size, nmemb, file);
-//}
 
-//size_t CabbageFileReader::read(void* dst, size_t size1, size_t size2, void* fh){
-//
-////size_t CabbageFileReader::read(void* buffer, size_t elementSize, size_t elementCount, void* dataSource) {
-//    //    assert(elementSize == 1);
-//    //
-//    //    std::ifstream& stream = *static_cast<std::ifstream*>(dataSource);
-//    //    stream.read(static_cast<char*>(buffer), elementCount);
-//    //    const std::streamsize bytesRead = stream.gcount();
-//    //    stream.clear(); // In case we read past EOF
-//    //    return static_cast<size_t>(bytesRead);
-//    //}
-//    OggVorbis_File* of = reinterpret_cast<OggVorbis_File*>(fh);
-//    size_t len = size1 * size2;
-//    if ( of->curPtr + len > of->filePtr + of->fileSize )
-//    {
-//        len = of->filePtr + of->fileSize - of->curPtr;
-//    }
-//    memcpy( dst, of->curPtr, len );
-//    of->curPtr += len;
-//    return len;
-//}
+int CabbageFileReader::deinit(){
+    
+    ov_clear (&file);
+    audioBuffer.clear();
+    
+    return OK;
+}
 
 void CabbageFileReader::resampleBuffer(double ratio, AudioBuffer<float>& buffer, int numChannels)
 {
@@ -120,28 +102,27 @@ void CabbageFileReader::resampleBuffer(double ratio, AudioBuffer<float>& buffer,
 
 int CabbageFileReader::aperf()
 {
-    
-    // Allocate memory for 'pcm' based on the number of channels
-    // Replace 'num_channels' with the actual number of channels in your audio file
-
-    
     playbackRate = inargs[1];
-    for (int channel = 0; channel < audioBuffer.getNumChannels(); ++channel)
+    for (int channel = 0; channel < numChannels; ++channel)
     {
-        auto* channelSamples = audioBuffer.getReadPointer (channel);
+        auto channelSamples = audioBuffer.getArrayOfWritePointers();
         // auto* channelData = buffer.getWritePointer (channel);
         csnd::AudioSig out(this, outargs(channel));
         for( int i = 0 ; i < out.GetNsmps() ; i++, sampleIndex[channel]+=playbackRate)
         {
             if(!loopEnded)
             {
-                out[i] = channelSamples[int(sampleIndex[channel])];
-                if((int)sampleIndex[channel]>=audioBuffer.getNumSamples())
+                auto s = int(sampleIndex[channel]);
+                out[i] = channelSamples[channel][int(sampleIndex[channel])];
+                if((int)sampleIndex[channel]>=numSamples)
                 {
                     sampleIndex[channel] = 0;
                     if(loopMode == 0)
                         loopEnded = true;
                 }
+            }
+            else{
+                out[i] = 0;
             }
         }
     }
