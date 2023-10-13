@@ -484,7 +484,7 @@ elseif(APPLE)
             #  include_directories("/Users/rwalsh/sourcecode/csound/include")
             set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile_uni/build/libsndfile.a")
             #  set(LIB_SNDFILE "/Users/rwalsh/sourcecode/libsndfile/build/libsndfile.a")
-        endif()
+        # endif()
     endif()
 
     target_link_libraries(${PROJECT_NAME} 

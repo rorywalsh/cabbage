@@ -67,27 +67,36 @@ public:
         }
     }
     
-    static CabbageWidgetIdentifiers::IdentifierData getIdentData(csnd::Param<64>& args, char** name, char** identifier, bool init)
+    static CabbageWidgetIdentifiers::IdentifierData getIdentData(csnd::Param<64>& args bool init)
     {
         CabbageWidgetIdentifiers::IdentifierData identData;
         if(init)
         {
             if(args.str_data(1).size == 0)
-                *name = {};
+                name = {};
             else
-                *name = args.str_data(1).data;
+                name = args.str_data(1).data;
             
             if(args.str_data(2).size == 0)
-                *identifier = {};
+                identifier = {};
             else
-                *identifier = args.str_data(2).data;
+                identifier = args.str_data(2).data;
         }
             
-        identData.identifier = Identifier(*identifier);
+        identData.identifier = Identifier(identifier);
         identData.name = *name;
         identData.isValid = true;
         //identData.canDelete->store(false);
         return identData;
+    }
+    
+    MYFLT* value;
+    char* name, *identifier;
+    
+    int deinit(){
+        free(name);
+        free(identifier);
+        return OK;
     }
 };
 
@@ -142,19 +151,12 @@ struct SetCabbageIdentifierSArgs : csnd::InPlug<64>
     int setAttribute(int rate);
 };
 
-struct SetCabbageIdentifier : csnd::InPlug<64>
+struct SetCabbageIdentifier : csnd::InPlug<64>, CabbageOpcodes
 {
-    MYFLT* value;
-    char* name, *identifier;
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(true); }
     int kperf(){ return setAttribute(false); }
     int setAttribute(bool init);
-    int deinit(){
-        free(name);
-        free(identifier);
-        return OK;
-    }
 };
 
 struct SetCabbageIdentifierArray : csnd::InPlug<64>

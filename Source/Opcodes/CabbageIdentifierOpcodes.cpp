@@ -1210,6 +1210,7 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
 //====================================================================================================
 int SetCabbageIdentifier::setAttribute(bool init)
 {
+    csound->plugin_deinit(this);
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
@@ -1227,20 +1228,20 @@ int SetCabbageIdentifier::setAttribute(bool init)
         varData = *vt;
     }
     
-    CabbageWidgetIdentifiers::IdentifierData identData;// = CabbageOpcodes::getIdentData(args, &name, &identifier, init)
-    if(init)
-    {
-        if(args.str_data(1).size == 0)
-            name = {};
-        else
-            name = args.str_data(1).data;
-        
-        if(args.str_data(2).size == 0)
-            identifier = {};
-        else
-            identifier = args.str_data(2).data;       
-
-    }
+    CabbageWidgetIdentifiers::IdentifierData getIdentData(args, init);
+//    if(init)
+//    {
+//        if(args.str_data(1).size == 0)
+//            name = {};
+//        else
+//            name = args.str_data(1).data;
+//
+//        if(args.str_data(2).size == 0)
+//            identifier = {};
+//        else
+//            identifier = args.str_data(2).data;
+//
+//    }
     
     int trigger = int(args[0]);
     
