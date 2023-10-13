@@ -1210,7 +1210,7 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
 //====================================================================================================
 int SetCabbageIdentifier::setAttribute(bool init)
 {
-    csound->plugin_deinit(this);
+    //csound->plugin_deinit(this);
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);

@@ -67,8 +67,8 @@ public:
         }
     }
     
-    static CabbageWidgetIdentifiers::IdentifierData getIdentData(csnd::Param<64>& args, bool init)
-    {
+//    static CabbageWidgetIdentifiers::IdentifierData getIdentData(csnd::Param<64>& args, bool init)
+//    {
 //        CabbageWidgetIdentifiers::IdentifierData identData;
 //        if(init)
 //        {
@@ -88,8 +88,7 @@ public:
 //        identData.isValid = true;
 //        //identData.canDelete->store(false);
 //        return identData;
-        return {};
-    }
+//    }
     
     MYFLT* value;
     char* name, *identifier;
@@ -152,10 +151,11 @@ struct SetCabbageIdentifierSArgs : csnd::InPlug<64>
     int setAttribute(int rate);
 };
 
-struct SetCabbageIdentifier : csnd::InPlug<64>
+struct SetCabbageIdentifier : csnd::InPlug<64>//, CabbageOpcodes
 {
     MYFLT* value;
     char* name, *identifier;
+    
     int deinit(){
         free(name);
         free(identifier);
