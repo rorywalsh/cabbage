@@ -31,7 +31,7 @@
 
 
 #include "../../Opcodes/CabbageIdentifierOpcodes.h"
-#include "../../Opcodes/CabbageFileReaderOpcodes.h"
+//#include "../../Opcodes/CabbageFileReaderOpcodes.h"
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"
 #if CabbagePro

@@ -371,7 +371,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     
    // csnd::plugin<CabbageFileLoader>((csnd::Csound*)getCsound()->GetCsound(), "cabbageFileLoader", "", "S", csnd::thread::i);
    // csnd::plugin<CabbageFileLoader>((csnd::Csound*)getCsound()->GetCsound(), "cabbageFileLoader", "", "S[]", csnd::thread::i);
-    csnd::plugin<CabbageFileReader>((csnd::Csound*)getCsound()->GetCsound(), "cabbageOggReader", "aa", "Skii", csnd::thread::ia);
+//    csnd::plugin<CabbageFileReader>((csnd::Csound*)getCsound()->GetCsound(), "cabbageOggReader", "aa", "Skii", csnd::thread::ia);
 
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
