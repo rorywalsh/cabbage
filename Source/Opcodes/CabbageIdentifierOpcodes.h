@@ -67,27 +67,28 @@ public:
         }
     }
     
-    static CabbageWidgetIdentifiers::IdentifierData getIdentData(csnd::Param<64>& args bool init)
+    static CabbageWidgetIdentifiers::IdentifierData getIdentData(csnd::Param<64>& args, bool init)
     {
-        CabbageWidgetIdentifiers::IdentifierData identData;
-        if(init)
-        {
-            if(args.str_data(1).size == 0)
-                name = {};
-            else
-                name = args.str_data(1).data;
-            
-            if(args.str_data(2).size == 0)
-                identifier = {};
-            else
-                identifier = args.str_data(2).data;
-        }
-            
-        identData.identifier = Identifier(identifier);
-        identData.name = *name;
-        identData.isValid = true;
-        //identData.canDelete->store(false);
-        return identData;
+//        CabbageWidgetIdentifiers::IdentifierData identData;
+//        if(init)
+//        {
+//            if(args.str_data(1).size == 0)
+//                name = {};
+//            else
+//                name = args.str_data(1).data;
+//
+//            if(args.str_data(2).size == 0)
+//                identifier = {};
+//            else
+//                identifier = args.str_data(2).data;
+//        }
+//
+//        identData.identifier = Identifier(identifier);
+//        identData.name = *name;
+//        identData.isValid = true;
+//        //identData.canDelete->store(false);
+//        return identData;
+        return {};
     }
     
     MYFLT* value;
@@ -151,8 +152,15 @@ struct SetCabbageIdentifierSArgs : csnd::InPlug<64>
     int setAttribute(int rate);
 };
 
-struct SetCabbageIdentifier : csnd::InPlug<64>, CabbageOpcodes
+struct SetCabbageIdentifier : csnd::InPlug<64>
 {
+    MYFLT* value;
+    char* name, *identifier;
+    int deinit(){
+        free(name);
+        free(identifier);
+        return OK;
+    }
     CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(true); }
     int kperf(){ return setAttribute(false); }
