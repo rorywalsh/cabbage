@@ -37,14 +37,58 @@ public:
         var args;
         bool isValid = false;
         int methodCode = 0;
+
     };
     
     CabbageWidgetIdentifiers(){
         data.clear();
     }
-    Array<IdentifierData> data;
+    
+    Array<IdentifierData, CriticalSection> data;
 
-    std::atomic_bool canRead;
+    //std::atomic_bool canRead;
+};
+
+class CabbageOpcodes
+{
+public:
+    static CabbageWidgetIdentifiers* getGlobalvariable(csnd::Csound* csound, CabbageWidgetIdentifiers** vt)
+    {
+        if (vt != nullptr)
+        {
+            return *vt;
+        }
+        else
+        {
+            csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
+            vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+            *vt = new CabbageWidgetIdentifiers();
+            return *vt;
+        }
+    }
+    
+    static CabbageWidgetIdentifiers::IdentifierData getIdentData(csnd::Param<64>& args, char** name, char** identifier, bool init)
+    {
+        CabbageWidgetIdentifiers::IdentifierData identData;
+        if(init)
+        {
+            if(args.str_data(1).size == 0)
+                *name = {};
+            else
+                *name = args.str_data(1).data;
+            
+            if(args.str_data(2).size == 0)
+                *identifier = {};
+            else
+                *identifier = args.str_data(2).data;
+        }
+            
+        identData.identifier = Identifier(*identifier);
+        identData.name = *name;
+        identData.isValid = true;
+        //identData.canDelete->store(false);
+        return identData;
+    }
 };
 
 //Some of these classes use a reversed input/output system to get around the issue of 0 outputs..
@@ -101,10 +145,16 @@ struct SetCabbageIdentifierSArgs : csnd::InPlug<64>
 struct SetCabbageIdentifier : csnd::InPlug<64>
 {
     MYFLT* value;
+    char* name, *identifier;
     CabbageWidgetIdentifiers** vt = nullptr;
-    int init(){ return setAttribute(); }
-    int kperf(){ return setAttribute(); }
-    int setAttribute();
+    int init(){ return setAttribute(true); }
+    int kperf(){ return setAttribute(false); }
+    int setAttribute(bool init);
+    int deinit(){
+        free(name);
+        free(identifier);
+        return OK;
+    }
 };
 
 struct SetCabbageIdentifierArray : csnd::InPlug<64>

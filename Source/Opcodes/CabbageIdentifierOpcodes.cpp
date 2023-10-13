@@ -974,7 +974,7 @@ int SetCabbageValueIdentifier::setAttribute(int)
         varData = *vt;
     }
     
-    varData->canRead.store(false);
+    //varData->canRead.store(false);
 
     //now update underlying Csound channel
     if(trigger == 1)
@@ -1006,7 +1006,7 @@ int SetCabbageValueIdentifier::setAttribute(int)
             varData->data.add(data);
 
     }
-    varData->canRead.store(true);
+    //varData->canRead.store(true);
     return OK;
 }
 
@@ -1045,7 +1045,7 @@ int SetCabbageValueIdentifierITime::setAttribute(int)
         *value = args[1];
     }
     
-    varData->canRead.store(false);
+    //varData->canRead.store(false);
 
     data.args = args[1];
     
@@ -1066,7 +1066,7 @@ int SetCabbageValueIdentifierITime::setAttribute(int)
     if(!entryExists)
         varData->data.add(data);
         
-    varData->canRead.store(true);
+    //varData->canRead.store(true);
     
     return OK;
 }
@@ -1107,7 +1107,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int)
         varData = *vt;
     }
     
-    varData->canRead.store(false);
+    //varData->canRead.store(false);
 
     //now update underlying Csound channel
     if(trigger == 1)
@@ -1141,7 +1141,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int)
             varData->data.add(data);
         
     }
-    varData->canRead.store(true);
+    //varData->canRead.store(true);
     return OK;
 }
 
@@ -1174,7 +1174,7 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
         varData = *vt;
     }
     
-    varData->canRead.store(false);
+    //varData->canRead.store(false);
     data.args = args.str_data(1).data;
     
     bool entryExists = false;
@@ -1203,38 +1203,16 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
     if(!entryExists)
         varData->data.add(data);
     
-    varData->canRead.store(true);
+    //varData->canRead.store(true);
 
     return OK;
 }
 //====================================================================================================
-int SetCabbageIdentifier::setAttribute()
+int SetCabbageIdentifier::setAttribute(bool init)
 {
-    int trigger = int(args[0]);
-    
-    if(trigger == 0)
-        return OK;
-    
-    CabbageWidgetIdentifiers::IdentifierData identData;
-    //if(args.str_data(2).size == 0)
-    //    identData.identifier = {};
-    //else
-    identData.identifier = csound->strdup(args.str_data(2).data);
-    
-    //if(args.str_data(1).size == 0)
-    identData.name = csound->strdup(args.str_data(1).data);
-    //else
-    //    return OK;
-
-    
-    identData.methodCode = 104;
-    identData.isValid = true;
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    
-    
-    
-    CabbageWidgetIdentifiers* varData = {};
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
     
     
     if (vt != nullptr)
@@ -1249,7 +1227,36 @@ int SetCabbageIdentifier::setAttribute()
         varData = *vt;
     }
     
-    varData->canRead.store(false);
+    CabbageWidgetIdentifiers::IdentifierData identData;// = CabbageOpcodes::getIdentData(args, &name, &identifier, init)
+    if(init)
+    {
+        if(args.str_data(1).size == 0)
+            name = {};
+        else
+            name = args.str_data(1).data;
+        
+        if(args.str_data(2).size == 0)
+            identifier = {};
+        else
+            identifier = args.str_data(2).data;       
+
+    }
+    
+    int trigger = int(args[0]);
+    
+    if(trigger == 0)
+        return OK;
+    
+    
+        
+    identData.identifier = Identifier(identifier);
+    identData.name = name;
+    identData.methodCode = 104;
+    identData.isValid = true;
+    
+    varData->data.getLock().enter();
+    
+    //varData->canRead.store(false);
 
     if(trigger == 1)
     {
@@ -1301,7 +1308,8 @@ int SetCabbageIdentifier::setAttribute()
         }
     }
 
-    varData->canRead.store(true);
+    varData->data.getLock().exit();
+    //varData->canRead.store(true);
     return OK;
 }
 
@@ -1334,7 +1342,7 @@ int SetCabbageIdentifierArray::setAttribute()
         *vt = new CabbageWidgetIdentifiers();
         varData = *vt;
     }
-    varData->canRead.store(false);
+    //varData->canRead.store(false);
 
     if(trigger == 1)
     {
@@ -1377,7 +1385,7 @@ int SetCabbageIdentifierArray::setAttribute()
         }
     }
 
-    varData->canRead.store(true);
+    //varData->canRead.store(true);
     return OK;
 }
 
@@ -1420,7 +1428,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
         *vt = new CabbageWidgetIdentifiers();
         varData = *vt;
     }
-    varData->canRead.store(false);
+    //varData->canRead.store(false);
 
     //hack to trigger table update even if table number hasn't changed
     if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
@@ -1458,7 +1466,7 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
         varData->data.add(updateData0);
     }
     
-    varData->canRead.store(true);
+    //varData->canRead.store(true);
     return OK;
 }
 
@@ -1487,7 +1495,7 @@ int SetCabbageIdentifierITime::setAttribute()
         varData = *vt;
     }
     
-    varData->canRead.store(false);
+    //varData->canRead.store(false);
     //hack to trigger table update even if table number hasn't changed
     if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
     {
@@ -1533,7 +1541,7 @@ int SetCabbageIdentifierITime::setAttribute()
         varData->data.add(updateData0);
     }
     
-    varData->canRead.store(true);
+    //varData->canRead.store(true);
     return OK;
 }
 
@@ -1561,7 +1569,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
         varData = *vt;
     }
     
-    varData->canRead.store(false);
+    //varData->canRead.store(false);
 
     //hack to trigger table update even if table number hasn't changed
     if(data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
@@ -1607,7 +1615,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
         varData->data.add(updateData0);
     }
 
-    varData->canRead.store(true);
+    //varData->canRead.store(true);
 
     return OK;
 }

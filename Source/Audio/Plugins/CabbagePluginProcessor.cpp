@@ -1727,18 +1727,8 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
     
     identData = *pd;
 
-	if (identData->canRead.load() == false)
-		return;
-
-
     for(auto && i : identData->data)
     {
-		//DBG("1:" << identData->data.size());
-        //if(!i.isValid)
-        //    break;
-        //what happens when identifier is empty..check the opcodes, this should never happen..
-//        if(!i.isValid)
-//            return;
 
         if(i.methodCode<200 && i.methodCode >0 && i.identifier.toString().isNotEmpty())
         {
@@ -1846,9 +1836,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
         }
     }
 
-
-    if (identData->canRead.load())
-        identData->data.clearQuick();
+    identData->data.clearQuick();
 
 
     
