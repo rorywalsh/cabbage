@@ -202,7 +202,7 @@ int GetCabbageIdentifierArray::getAttribute()
     return OK;
 }
 
-//=================================================================================================
+
 int GetCabbageIdentifierSingle::getAttribute()
 {
     String name(inargs.str_data(0).data);
@@ -509,7 +509,7 @@ int CabbageGetWidgetChannels::getChannels()
     
     return OK;
 }
-//====================================================================================================
+
 
 int GetCabbageStringValue::getAttribute(bool init)
 {
@@ -606,11 +606,9 @@ int GetCabbageValueArray::getAttribute()
     return OK;
 }
 
-//-------------------------------------------------------------------------------------------
+
 int GetCabbageStringValueWithTrigger::getAttribute(bool init)
 {
-
-
     if(in_count() == 0)
         return NOTOK;
     
@@ -758,7 +756,7 @@ int GetCabbageValueArrayWithTrigger::getAttribute()
     return OK;
 }
 
-//====================================================================================================
+
 int CabbageValueChanged::getAttribute()
 {
     if(in_count() == 0)
@@ -942,41 +940,28 @@ int CabbageValueChangedIndex::getAttribute()
 
 //====================================================================================================
 // from cabbageSetValue
-int SetCabbageValueIdentifier::setAttribute(int)
+int SetCabbageValueIdentifier::setAttribute(bool init)
 {
-    int trigger = int(args[2]);
     
-   // if (rate == I_RATE)
-   //     trigger = 1;
-    
-    if(trigger == 0 || args.str_data(0).size == 0)
-        return OK;
-    
-    CabbageWidgetIdentifiers::IdentifierData data;
-    
-    data.identifier = CabbageIdentifierIds::value;
-    data.name = args.str_data(0).data;
-    data.isValid = true;
-    data.methodCode = 100;
+    if(in_count()<2){
+        csound->perf_error("Not enough arguments\n", this);
+        return NOTOK;
+    }
+
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
-    
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
-    
-    //varData->canRead.store(false);
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
+    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
 
-    //now update underlying Csound channel
+    
+    int trigger = int(args[2]);
+
+    if(trigger == 0 || args.str_data(0).size == 0)
+        return OK;
+
+    varData->data.getLock().enter();
+    
     if(trigger == 1)
     {
         if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(0).data,
@@ -986,57 +971,31 @@ int SetCabbageValueIdentifier::setAttribute(int)
         }
         
         data.args = args[1];
-
-        bool entryExists = false;
-
-        for( auto& el : varData->data)
-        {
-            if(el.isValid == true)
-            {
-                //crash here intermittently...
-                if(el.identifier == data.identifier && el.name == data.name)
-                {
-                    el.args = data.args;
-                    entryExists = true;
-                }
-            }
-        }
-
-        if(entryExists == false)
-            varData->data.add(data);
+        varData->data.add(data);
 
     }
-    //varData->canRead.store(true);
+    
+    varData->data.getLock().exit();
     return OK;
 }
 
-int SetCabbageValueIdentifierITime::setAttribute(int)
+int SetCabbageValueIdentifierITime::setAttribute(bool init)
 {
+    
+    if(in_count()!=2){
+        csound->perf_error("Not enough arguments\n", this);
+        return NOTOK;
+    }
 
+    
+    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
+    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
     if(args.str_data(0).size == 0)
         return OK;
     
-    CabbageWidgetIdentifiers::IdentifierData data;
-    
-    data.identifier = CabbageIdentifierIds::value;
-    data.name = args.str_data(0).data;
-    data.isValid = true;
-    data.methodCode = 101;
-    
-    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
-    
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
+    varData->data.getLock().enter();
     
     //now update underlying Csound channel
     if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(0).data,
@@ -1045,69 +1004,39 @@ int SetCabbageValueIdentifierITime::setAttribute(int)
         *value = args[1];
     }
     
-    //varData->canRead.store(false);
-
     data.args = args[1];
-    
-    bool entryExists = false;
-    
-    for( auto& el : varData->data)
-    {
-        if(el.isValid)
-        {
-            if(el.identifier == data.identifier && el.name == data.name)
-            {
-                el.args = data.args;
-                entryExists = true;
-            }
-        }
-    }
-    
-    if(!entryExists)
-        varData->data.add(data);
-        
-    //varData->canRead.store(true);
+    varData->data.add(data);
+      
+    varData->data.getLock().exit();
+
     
     return OK;
 }
 
 
-int SetCabbageValueIdentifierSArgs::setAttribute(int)
+int SetCabbageValueIdentifierSArgs::setAttribute(bool init)
 {
-    int trigger = int(args[2]);
     
-    // if (rate == I_RATE)
-    //     trigger = 1;
-    
-    if(trigger == 0 || args.str_data(0).size == 0)
-        return OK;
-    
-    CabbageWidgetIdentifiers::IdentifierData data;
-    
-    data.identifier = CabbageIdentifierIds::value;
-    data.name = args.str_data(0).data;
-    data.isValid = true;
-    data.methodCode = 102;
-    
-    const String strValue = String(args.str_data(1).data);
+    if(in_count()!=3){
+        csound->perf_error("Not enough arguments\n", this);
+        return NOTOK;
+    }
 
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
+    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
     
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
+    int trigger = int(args[2]);
     
-    //varData->canRead.store(false);
+    if(trigger == 0 || args.str_data(0).size == 0)
+        return OK;
+        
+    const String strValue = String(args.str_data(1).data);
+
+    
+    varData->data.getLock().enter();
 
     //now update underlying Csound channel
     if(trigger == 1)
@@ -1122,182 +1051,76 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int)
         }
         
         data.args = args.str_data(1).data;
-        
-        bool entryExists = false;
-        
-        for( auto& el : varData->data)
-        {
-            if(el.isValid)
-            {
-                if(el.identifier == data.identifier && el.name == data.name)
-                {
-                    el.args = data.args;
-                    entryExists = true;
-                }
-            }
-        }
-        
-        if(!entryExists)
-            varData->data.add(data);
+        varData->data.add(data);
         
     }
-    //varData->canRead.store(true);
+    
+    varData->data.getLock().exit();
     return OK;
 }
 
-int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
+int SetCabbageValueIdentifierSArgsITime::setAttribute(bool init)
 {
-
+    if(in_count()!=2){
+        csound->perf_error("Not enough arguments\n", this);
+        return NOTOK;
+    }
+    
+    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
+    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
+    
+    
     if(args.str_data(0).size == 0)
         return OK;
     
-    CabbageWidgetIdentifiers::IdentifierData data;
-    
-
-    data.identifier = CabbageIdentifierIds::value;
-    data.name = args.str_data(0).data;
-    data.isValid = true;
-    data.methodCode = 103;
-    
-    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
-    
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
-    
+    varData->data.getLock().enter();
     //varData->canRead.store(false);
     data.args = args.str_data(1).data;
+    varData->data.add(data);
     
-    bool entryExists = false;
-    
-    for( auto& el : varData->data)
-    {
-        if(el.isValid)
-        {
-            if(el.identifier == data.identifier && el.name == data.name)
-            {
-                el.args = data.args;
-                entryExists = true;
-            }
-        }
-    }
-    
-    //now update underlying Csound channel
-    if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &strInput, args.str_data(0).data,
-                                           CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-    {
-//        STRINGDAT* stringdat = (STRINGDAT*) strInput;
-//        stringdat->data = args.str_data(1).data;
-//        stringdat->size = strlen(args.str_data(1).data) + 1;
-    }
-    
-    if(!entryExists)
-        varData->data.add(data);
-    
-    //varData->canRead.store(true);
+    varData->data.getLock().exit();
 
     return OK;
 }
 //====================================================================================================
 int SetCabbageIdentifier::setAttribute(bool init)
 {
-    //csound->plugin_deinit(this);
-    
+
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
-    
-    
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
-    
-    CabbageWidgetIdentifiers::IdentifierData identData;//getIdentData(args, init);
-    if(init)
-    {
-        if(args.str_data(1).size == 0)
-            name = {};
-        else
-            name = args.str_data(1).data;
-
-        if(args.str_data(2).size == 0)
-            identifier = {};
-        else
-            identifier = args.str_data(2).data;
-
-    }
+    CabbageWidgetIdentifiers::IdentifierData identData = getIdentData(args, init, 1, 2);
     
     int trigger = int(args[0]);
     
     if(trigger == 0)
         return OK;
-    
-    
-        
-    identData.identifier = Identifier(identifier);
-    identData.name = name;
-    identData.methodCode = 104;
-    identData.isValid = true;
-    
+
     varData->data.getLock().enter();
-    
-    //varData->canRead.store(false);
 
     if(trigger == 1)
     {
         //hack to trigger table update even if table number hasn't changed
-        if (identData.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-        {
-            CabbageWidgetIdentifiers::IdentifierData updateData1;
-            updateData1.identifier = CabbageIdentifierIds::update;
-            updateData1.name = identData.name;
-            updateData1.methodCode = identData.methodCode;
-            updateData1.args = 1;
-            varData->data.add(updateData1);
-        }
+        triggerTableUpdate(varData, identData, 1);
+        
         
         if(in_count() == 3)
         {
             identData.identWithArgument = true;
             identData.args = String(args.str_data(2).data);
-            //DBG(String(outargs.str_data(3).data));
         }
         else
         {
             for ( int i = 3 ; i < in_count(); i++)
             {
-                //DBG(outargs[i]);
                 identData.args.append(args[i]);
             }
         }
         varData->data.add(identData);
         
         //hack to trigger table update even if table number hasn't changed
-        if (identData.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-        {
-            CabbageWidgetIdentifiers::IdentifierData updateData0;
-            updateData0.identifier = CabbageIdentifierIds::update;
-            updateData0.name = identData.name;
-            updateData0.methodCode = identData.methodCode;
-            updateData0.args = 0;
-            varData->data.add(updateData0);
-        }
+        triggerTableUpdate(varData, identData, 0);
         
         if(identData.identifier == CabbageIdentifierIds::value)
         {
@@ -1310,53 +1133,31 @@ int SetCabbageIdentifier::setAttribute(bool init)
     }
 
     varData->data.getLock().exit();
-    //varData->canRead.store(true);
+
     return OK;
 }
 
-int SetCabbageIdentifierArray::setAttribute()
+int SetCabbageIdentifierArray::setAttribute(bool init)
 {
+    
+    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(args, init, 1, 2);
+    
+    
     int trigger = int(args[0]);
     
     if(trigger == 0)
         return OK;
     
-    CabbageWidgetIdentifiers::IdentifierData data;
-    data.identifier = args.str_data(2).data;
-    data.name = args.str_data(1).data;
-    data.methodCode = 105;
-    data.isValid = true;
-    
+
+    varData->data.getLock().enter();
     csnd::Vector<MYFLT>& inputArgs = args.myfltvec_data(3);
     
-    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
-    
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
-    //varData->canRead.store(false);
-
     if(trigger == 1)
     {
         //hack to trigger table update even if table number hasn't changed
-        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-        {
-            CabbageWidgetIdentifiers::IdentifierData updateData1;
-            updateData1.identifier = CabbageIdentifierIds::update;
-            updateData1.name = data.name;
-            updateData1.args = 1;
-            updateData1.methodCode = data.methodCode;
-            varData->data.add(updateData1);
-        }
+        triggerTableUpdate(varData, data, 1);
         
         for (int i = 0; i < int(inputArgs.len()); i++)
         {
@@ -1366,15 +1167,7 @@ int SetCabbageIdentifierArray::setAttribute()
         varData->data.add(data);
         
         //hack to trigger table update even if table number hasn't changed
-        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-        {
-            CabbageWidgetIdentifiers::IdentifierData updateData0;
-            updateData0.identifier = CabbageIdentifierIds::update;
-            updateData0.name = data.name;
-            updateData0.args = 0;
-            updateData0.methodCode = data.methodCode;
-            varData->data.add(updateData0);
-        }
+        triggerTableUpdate(varData, data, 0);
         
         if(data.identifier == CabbageIdentifierIds::value)
         {
@@ -1386,22 +1179,13 @@ int SetCabbageIdentifierArray::setAttribute()
         }
     }
 
-    //varData->canRead.store(true);
+    varData->data.getLock().exit();
     return OK;
 }
 
-int SetCabbageIdentifierSArgs::setAttribute(int rate)
+int SetCabbageIdentifierSArgs::setAttribute(bool init)
 {
 
-    CabbageWidgetIdentifiers::IdentifierData data;
-    int trigger = int(args[0]);
-
-    if (rate == I_RATE)
-        trigger = 1;
-
-    if(trigger == 0)
-        return OK;
-    
     if(in_count()<3){
         csound->perf_error("Not enough arguments\n", this);
         return NOTOK;
@@ -1410,37 +1194,20 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     if(String(args.str_data(2).data).isEmpty())
         return OK;
     
-    data.identifier = args.str_data(2).data;
-    data.name = args.str_data(1).data;
-    data.methodCode = 106;
-    data.isValid = true;
-    
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(args, init, 1, 2);
     
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
-    //varData->canRead.store(false);
+    
+    int trigger = int(args[0]);
 
+    if(trigger == 0)
+        return OK;
+    
+    varData->data.getLock().enter();
+    
     //hack to trigger table update even if table number hasn't changed
-    if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-    {
-        CabbageWidgetIdentifiers::IdentifierData updateData1;
-        updateData1.identifier = CabbageIdentifierIds::update;
-        updateData1.name = data.name;
-        updateData1.args = 1;
-        updateData1.methodCode = data.methodCode;
-        varData->data.add(updateData1);
-    }
+    triggerTableUpdate(varData, data, 1);
     
     if(String(args.str_data(2).data).isEmpty() || in_count() == 3)
     {
@@ -1456,58 +1223,25 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     }
     varData->data.add(data);
     
-    //hack to trigger table update even if table number hasn't changed
-    if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-    {
-        CabbageWidgetIdentifiers::IdentifierData updateData0;
-        updateData0.identifier = CabbageIdentifierIds::update;
-        updateData0.name = data.name;
-        updateData0.args = 0;
-        updateData0.methodCode = data.methodCode;
-        varData->data.add(updateData0);
-    }
+    triggerTableUpdate(varData, data, 0);
     
-    //varData->canRead.store(true);
+    varData->data.getLock().exit();
     return OK;
 }
 
-//-----------------------------------------------------------------------------------------------------------------------
-int SetCabbageIdentifierITime::setAttribute()
+//-----------------------------------------------------------------------------------------------------------------
+int SetCabbageIdentifierITime::setAttribute(bool init)
 {
-    CabbageWidgetIdentifiers::IdentifierData data;
 
-    data.identifier = outargs.str_data(1).data;
-    data.name = outargs.str_data(0).data;
-    data.methodCode = 107;
-    data.isValid = true;
-    
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(outargs, init, 0, 1);
     
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
-    
-    //varData->canRead.store(false);
+    varData->data.getLock().enter();
+
     //hack to trigger table update even if table number hasn't changed
-    if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-    {
-        CabbageWidgetIdentifiers::IdentifierData updateData1;
-        updateData1.identifier = CabbageIdentifierIds::update;
-        updateData1.name = data.name;
-        updateData1.args = 1;
-        updateData1.methodCode = data.methodCode;
-        varData->data.add(updateData1);
-    }
-    
+    triggerTableUpdate(varData, data, 1);
+
     if(in_count() == 2)
     {
         data.identWithArgument = true;
@@ -1531,57 +1265,21 @@ int SetCabbageIdentifierITime::setAttribute()
         }
     }
     
-   // here is the issue.... 
-    if(data.identifier == CabbageIdentifierIds::tablenumber)
-    {
-        CabbageWidgetIdentifiers::IdentifierData updateData0;
-        updateData0.identifier = CabbageIdentifierIds::update;
-        updateData0.name = data.name;
-        updateData0.args = 0;
-        updateData0.methodCode = data.methodCode;
-        varData->data.add(updateData0);
-    }
-    
-    //varData->canRead.store(true);
+    triggerTableUpdate(varData, data, 0);
+    varData->data.getLock().exit();
     return OK;
 }
 
-int SetCabbageIdentifierITimeSArgs::setAttribute()
+int SetCabbageIdentifierITimeSArgs::setAttribute(bool init)
 {
-    CabbageWidgetIdentifiers::IdentifierData data;
-
-
-    data.identifier = outargs.str_data(1).data;
-    data.name = outargs.str_data(0).data;
-    data.methodCode = 109;
-    
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+   
+    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(outargs, init, 0, 1);
     
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
-    
-    //varData->canRead.store(false);
-
-    //hack to trigger table update even if table number hasn't changed
-    if(data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-    {
-        CabbageWidgetIdentifiers::IdentifierData updateData1;
-        updateData1.identifier = CabbageIdentifierIds::update;
-        updateData1.name = data.name;
-        updateData1.methodCode = data.methodCode;
-        updateData1.args = 1;
-        varData->data.add(updateData1);
-    }
+    varData->data.getLock().enter();
+    triggerTableUpdate(varData, data, 1);
+        
     
     if(in_count() == 2)
     {
@@ -1606,17 +1304,8 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
         }
     }
     
-    if(data.identifier == CabbageIdentifierIds::tablenumber)
-    {
-        CabbageWidgetIdentifiers::IdentifierData updateData0;
-        updateData0.identifier = CabbageIdentifierIds::update;
-        updateData0.name = data.name;
-        updateData0.args = 0;
-        updateData0.methodCode = data.methodCode;
-        varData->data.add(updateData0);
-    }
-
-    //varData->canRead.store(true);
+    triggerTableUpdate(varData, data, 0);
+    varData->data.getLock().exit();
 
     return OK;
 }

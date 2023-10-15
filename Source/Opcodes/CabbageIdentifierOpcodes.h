@@ -36,7 +36,6 @@ public:
         bool identWithArgument = false;
         var args;
         bool isValid = false;
-        int methodCode = 0;
 
     };
     
@@ -49,9 +48,15 @@ public:
     //std::atomic_bool canRead;
 };
 
-class CabbageOpcodes
+template <std::size_t N>
+struct CabbageOpcodes
 {
-public:
+    CabbageWidgetIdentifiers** vt = nullptr;
+    char* name, *identifier;
+    MYFLT* value = {};
+    MYFLT lastValue = 0;
+    MYFLT* str = {};
+    
     static CabbageWidgetIdentifiers* getGlobalvariable(csnd::Csound* csound, CabbageWidgetIdentifiers** vt)
     {
         if (vt != nullptr)
@@ -67,131 +72,116 @@ public:
         }
     }
     
-//    static CabbageWidgetIdentifiers::IdentifierData getIdentData(csnd::Param<64>& args, bool init)
-//    {
-//        CabbageWidgetIdentifiers::IdentifierData identData;
-//        if(init)
-//        {
-//            if(args.str_data(1).size == 0)
-//                name = {};
-//            else
-//                name = args.str_data(1).data;
-//
-//            if(args.str_data(2).size == 0)
-//                identifier = {};
-//            else
-//                identifier = args.str_data(2).data;
-//        }
-//
-//        identData.identifier = Identifier(identifier);
-//        identData.name = *name;
-//        identData.isValid = true;
-//        //identData.canDelete->store(false);
-//        return identData;
-//    }
+    CabbageWidgetIdentifiers::IdentifierData getValueIdentData(csnd::Param<N>& args, bool init, int nameIndex, int identIndex)
+    {
+        CabbageWidgetIdentifiers::IdentifierData identData;
+        if(init)
+        {
+            if(args.str_data(nameIndex).size == 0)
+                name = {};
+            else
+                name = args.str_data(nameIndex).data;
+        }
+
+        identData.identifier = CabbageIdentifierIds::value;
+        identData.name = name;
+        identData.isValid = true;
+        return identData;
+    }
     
-    MYFLT* value;
-    char* name, *identifier;
+
+    CabbageWidgetIdentifiers::IdentifierData getIdentData(csnd::Param<N>& args, bool init, int nameIndex, int identIndex)
+    {
+        CabbageWidgetIdentifiers::IdentifierData identData;
+        if(init)
+        {
+            if(args.str_data(nameIndex).size == 0)
+                name = {};
+            else
+                name = args.str_data(nameIndex).data;
+
+            if(args.str_data(identIndex).size == 0)
+                identifier = {};
+            else
+                identifier = args.str_data(identIndex).data;
+        }
+
+        identData.identifier = Identifier(identifier);
+        identData.name = name;
+        identData.isValid = true;
+        return identData;
+    }
     
-    int deinit(){
-        free(name);
-        free(identifier);
-        return OK;
+    void triggerTableUpdate(CabbageWidgetIdentifiers* varData, CabbageWidgetIdentifiers::IdentifierData data, int value)
+    {
+        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
+        {
+            CabbageWidgetIdentifiers::IdentifierData updateData;
+            updateData.identifier = CabbageIdentifierIds::update;
+            updateData.name = name;
+            updateData.args = value;
+            varData->data.add(updateData);
+        }
     }
 };
 
 //Some of these classes use a reversed input/output system to get around the issue of 0 outputs..
-struct SetCabbageValueIdentifier : csnd::InPlug<3>
+struct SetCabbageValueIdentifier : csnd::InPlug<3>, CabbageOpcodes<3>
 {
-    MYFLT* value;
-    MYFLT lastValue = 0;
-    String name, identifier;
-    CabbageWidgetIdentifiers** vt = nullptr;
-    int init(){ return setAttribute(I_RATE); }
-    int kperf(){ return setAttribute(K_RATE); }
-    int setAttribute(int rate);
+    int kperf(){ return setAttribute(false); }
+    int setAttribute(bool init);
 };
 
-struct SetCabbageValueIdentifierITime : csnd::InPlug<3>
+struct SetCabbageValueIdentifierITime : csnd::InPlug<3>, CabbageOpcodes<3>
 {
-    MYFLT* value;
-    MYFLT lastValue = 0;
-    String name, identifier;
-    CabbageWidgetIdentifiers** vt = nullptr;
-    int init(){ return setAttribute(I_RATE); }
-    int kperf(){ return setAttribute(K_RATE); }
-    int setAttribute(int rate);
+    int init(){ return setAttribute(true); }
+    int setAttribute(bool init);
 };
 
-struct SetCabbageValueIdentifierSArgs : csnd::InPlug<3>
+struct SetCabbageValueIdentifierSArgs : csnd::InPlug<3>, CabbageOpcodes<3>
 {
-    MYFLT* str;
-    String name, identifier;
-    CabbageWidgetIdentifiers** vt = nullptr;
-    int init(){ return setAttribute(I_RATE); }
-    int kperf(){ return setAttribute(K_RATE); }
-    int setAttribute(int rate);
+    int kperf(){ return setAttribute(true); }
+    int setAttribute(bool init);
 };
 
-struct SetCabbageValueIdentifierSArgsITime : csnd::InPlug<3>
+struct SetCabbageValueIdentifierSArgsITime : csnd::InPlug<3>, CabbageOpcodes<3>
 {
-    MYFLT* strInput;
-    String name, identifier;
-    CabbageWidgetIdentifiers** vt = nullptr;
-    int init(){ return setAttribute(I_RATE); }
-    int setAttribute(int rate);
+    int init(){ return setAttribute(true); }
+    int setAttribute(bool init);
 };
 
-struct SetCabbageIdentifierSArgs : csnd::InPlug<64>
+//====================================================================================================
+struct SetCabbageIdentifierSArgs : csnd::InPlug<64>, CabbageOpcodes<64>
 {
-    MYFLT* value;
-    CabbageWidgetIdentifiers** vt = nullptr;
-    int init(){ return setAttribute(I_RATE); }
-    int kperf(){ return setAttribute(K_RATE); }
-    int setAttribute(int rate);
-};
-
-struct SetCabbageIdentifier : csnd::InPlug<64>//, CabbageOpcodes
-{
-    MYFLT* value;
-    char* name, *identifier;
-    
-    int deinit(){
-        free(name);
-        free(identifier);
-        return OK;
-    }
-    CabbageWidgetIdentifiers** vt = nullptr;
     int init(){ return setAttribute(true); }
     int kperf(){ return setAttribute(false); }
     int setAttribute(bool init);
 };
 
-struct SetCabbageIdentifierArray : csnd::InPlug<64>
+struct SetCabbageIdentifier : csnd::InPlug<64>, CabbageOpcodes<64>
 {
-    MYFLT* value;
-    CabbageWidgetIdentifiers** vt = nullptr;
-    int init(){ return setAttribute(); }
-    int kperf(){ return setAttribute(); }
-    int setAttribute();
+    int init(){ return setAttribute(true); }
+    int kperf(){ return setAttribute(false); }
+    int setAttribute(bool init);
 };
 
-struct SetCabbageIdentifierITime : csnd::Plugin<64, 0>
+struct SetCabbageIdentifierArray : csnd::InPlug<64>, CabbageOpcodes<64>
 {
-    MYFLT* value;
-    //String name, identifier;
-    CabbageWidgetIdentifiers** vt = nullptr;
-    int init(){ return setAttribute(); }
-    int setAttribute();
+    int init(){ return setAttribute(true); }
+    int kperf(){ return setAttribute(false); }
+    int setAttribute(bool init);
 };
 
-struct SetCabbageIdentifierITimeSArgs : csnd::Plugin<64, 0>
+struct SetCabbageIdentifierITime : csnd::Plugin<64, 0>, CabbageOpcodes<64>
 {
-    //String name, identifier;
-    MYFLT* value;
-    CabbageWidgetIdentifiers** vt = nullptr;
-    int init(){ return setAttribute(); }
-    int setAttribute();
+    int init(){ return setAttribute(true); }
+    int setAttribute(bool init);
+};
+
+struct SetCabbageIdentifierITimeSArgs : csnd::Plugin<64, 0>, CabbageOpcodes<64>
+{
+    int init(){ return setAttribute(true); }
+    int setAttribute(bool init);
 };
 //================================================================
 struct GetCabbageValue : csnd::Plugin<1, 1>

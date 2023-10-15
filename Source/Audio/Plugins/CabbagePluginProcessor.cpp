@@ -1730,7 +1730,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
     for(auto && i : identData->data)
     {
 
-        if(i.methodCode<200 && i.methodCode >0 && i.identifier.toString().isNotEmpty())
+        if( i.identifier.toString().isNotEmpty())
         {
             const auto identifier = i.identifier;
             const auto name = i.name;
