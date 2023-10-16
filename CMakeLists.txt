@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.130)
+	set(BUILD_VERSION 2.9.131)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -476,22 +476,22 @@ elseif(APPLE)
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
     else()
-        if("${PROJECT_NAME}" STREQUAL "Cabbage")
-            set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
-            SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
-            find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
-            "/Library/Frameworks/CsoundLib64.framework")  
-            include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
-            target_link_libraries(${PROJECT_NAME} 
-    PRIVATE
-        ${JUCE_MODULES}
-        ${CSOUND_LIBRARY}
-        ${LIB_SNDFILE}
-    PUBLIC
-        juce::juce_recommended_config_flags
-        juce::juce_recommended_lto_flags
-        juce::juce_recommended_warning_flags)
-        else()
+    #     if("${PROJECT_NAME}" STREQUAL "Cabbage")
+    #         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
+    #         SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
+    #         find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
+    #         "/Library/Frameworks/CsoundLib64.framework")  
+    #         include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
+    #         target_link_libraries(${PROJECT_NAME} 
+    # PRIVATE
+    #     ${JUCE_MODULES}
+    #     ${CSOUND_LIBRARY}
+    #     ${LIB_SNDFILE}
+    # PUBLIC
+    #     juce::juce_recommended_config_flags
+    #     juce::juce_recommended_lto_flags
+    #     juce::juce_recommended_warning_flags)
+    #     else()
         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
         SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
         set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/build/libCsoundLib64.a")   
