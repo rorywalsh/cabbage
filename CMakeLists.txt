@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.131)
+	set(BUILD_VERSION 2.9.132)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -519,7 +519,7 @@ elseif(APPLE)
             juce::juce_recommended_config_flags
             juce::juce_recommended_lto_flags
             juce::juce_recommended_warning_flags)
-        endif()
+        # endif()
     endif()
 
 else()
