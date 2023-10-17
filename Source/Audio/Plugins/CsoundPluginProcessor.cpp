@@ -1166,11 +1166,11 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
     auto mainInput = getBusBuffer(buffer, true, 0);
 #endif
     
-    Type** sideChainBuffer = nullptr;
+    //Type* sideChainBuffer = nullptr;
 
 	if (supportsSidechain)
 	{
-		sideChainBuffer = getBusBuffer(buffer, true, getBusCount(true)-1).getArrayOfWritePointers();
+		//sideChainBuffer = getBusBuffer(buffer, true, getBusCount(true)-1).getArrayOfWritePointers();
 		numSideChainChannels = getBusBuffer(buffer, true, getBusCount(true) - 1).getNumChannels();
 	}
 #if !Cabbage_IDE_Build
@@ -1248,7 +1248,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
             for (int busIndex = 0; busIndex < numInputBuses; busIndex++)
             {
                 auto inputBus = getBusBuffer(buffer, true, busIndex);
-                Type** inputBuffer = inputBus.getArrayOfWritePointers();
+                auto inputBuffer = inputBus.getArrayOfWritePointers();
 
                 for (int channel = 0; channel < inputBus.getNumChannels(); channel++)
                 {
@@ -1262,7 +1262,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
             for (int busIndex = 0; busIndex < numOutputBuses; busIndex++)
             {
                 auto outputBus = getBusBuffer(buffer, false, busIndex);
-                Type** outputBuffer = outputBus.getArrayOfWritePointers();
+                auto outputBuffer = outputBus.getArrayOfWritePointers();
 
                 for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
                 {

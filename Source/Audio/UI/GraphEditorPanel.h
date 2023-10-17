@@ -167,11 +167,12 @@ public:
     AudioSampleBuffer emptyBuffer;
     //inherting audioIODeviceCallback so as to get rid of feedback when graph first starts..
     //==============================================================================
-    void audioDeviceIOCallback (const float** inputChannelData,
-                                int numInputChannels,
-                                float** outputChannelData,
-                                int numOutputChannels,
-                                int numSamples) override
+    void audioDeviceIOCallbackWithContext(const float* const* inputChannelData,
+        int numInputChannels,
+        float* const* outputChannelData,
+        int numOutputChannels,
+        int numSamples,
+        const AudioIODeviceCallbackContext& context) override
     {
         
         if (shouldMuteInput)
@@ -180,8 +181,8 @@ public:
             inputChannelData = emptyBuffer.getArrayOfReadPointers();
         }
         
-        graphPlayer.audioDeviceIOCallback (inputChannelData, numInputChannels,
-                                           outputChannelData, numOutputChannels, numSamples);
+        graphPlayer.audioDeviceIOCallbackWithContext(inputChannelData, numInputChannels,
+                                           outputChannelData, numOutputChannels, numSamples, context);
     }
     
     void audioDeviceAboutToStart (AudioIODevice* device) override

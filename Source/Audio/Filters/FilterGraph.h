@@ -305,13 +305,17 @@ public:
 	bool isLooping = false;
 	bool isRecording = false;
 
+	juce::Optional<juce::AudioPlayHead::PositionInfo> juce::AudioPlayHead::getPosition(void) const {
+		return {};
+	}
+
 	void bringAllPluginWindowsToFront()
 	{
 		for (auto* w : activePluginWindows)
 			w->toFront(true);
 	}
 
-    bool getCurrentPosition (CurrentPositionInfo &result) override
+    bool getCurrentPosition (CurrentPositionInfo &result)
     {
         result = playHeadPositionInfo;
         return true;
