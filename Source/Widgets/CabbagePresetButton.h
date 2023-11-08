@@ -68,7 +68,7 @@ public:
     String returnValidPath (File path);
     void setLookAndFeelColours (ValueTree wData);
     PopupMenu addPresetsToMenu(String custom);
-    void showPopupWindow(Component* owner, int height);
+    void showPopupWindow();
     void buttonClicked (Button* button)  override;
     ValueTree widgetData;
 

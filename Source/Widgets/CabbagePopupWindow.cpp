@@ -87,10 +87,9 @@ void CabbagePopupWindow::resized()
 {
     if(showEditor)
     {
-        int h = 250;
-        editor.setBounds(75, h-100, getWidth()-150, 16);
-        buttons[0].setBounds(75, 195, 120, 30);
-        buttons[1].setBounds(205, 195, 120, 30);
+        editor.setBounds(75, 90, getWidth()-150, 16);
+        buttons[0].setBounds(56, 117, 90, 20);
+        buttons[1].setBounds(154, 117, 90, 20);
     }
     else
         buttons[0].setCentrePosition(getLocalBounds().removeFromBottom(50).getCentre());

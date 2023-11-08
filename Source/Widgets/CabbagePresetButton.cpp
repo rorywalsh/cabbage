@@ -181,7 +181,7 @@ void CabbagePresetButton::buttonClicked (Button* button)
         }
         else if(choice==3000)
         {
-            showPopupWindow(this, 250);
+            showPopupWindow();
         }
         else if(choice == 3001)
         {            
@@ -292,7 +292,7 @@ String CabbagePresetButton::returnValidPath (File fc)
 }
 
 //===============================================================================
-void CabbagePresetButton::showPopupWindow(Component* owner, int height)
+void CabbagePresetButton::showPopupWindow()
 {
     String presetName = "";
     popupWindow = std::make_unique<CabbagePopupWindow>(widgetData, svgText, true);
@@ -300,7 +300,9 @@ void CabbagePresetButton::showPopupWindow(Component* owner, int height)
         popupWindow->addToDesktop(1);
     else
         owner->getParentComponent()->addChildComponent(popupWindow.get());
-    popupWindow->centreWithSize(400, height);
+    DBG(owner->getBounds().toString());
+    popupWindow->setBounds(owner->getWidth()/2 - 150,
+                           100, 300, 150);
     popupWindow->setVisible(true);
     popupWindow->toFront(true);
     popupWindow->setAlwaysOnTop(true);
@@ -309,7 +311,7 @@ void CabbagePresetButton::showPopupWindow(Component* owner, int height)
                                                                            {
         if (parent == nullptr)
             return;
-        parent->setLookAndFeel(nullptr);
+
         parent->popupWindow = nullptr;
     }));
     
@@ -329,7 +331,6 @@ void CabbagePresetButton::valueTreePropertyChanged (ValueTree& valueTree, const 
 {
     if(prop == CabbageIdentifierIds::value)
     {
-        
         const auto file = File(CabbageWidgetData::getStringProp(valueTree, prop));
         if(file.existsAsFile())
         {
