@@ -38,7 +38,26 @@
 #include "../../Utilities/encrypt.h"
 #endif
 
+//this class comes courtesy of @EyalAmir from TAP discord..
+class ProcessBlockTimeListener
+{
+public:
+    void updateBlockTime() { lastTime = getCurrentTime(); }
 
+    double getTimeSinceLastBlock() const
+    {
+        return getCurrentTime() - lastTime.load();
+    }
+
+private:
+    static double getCurrentTime()
+    {
+        return juce::Time::getMillisecondCounterHiRes();
+    }
+
+    std::atomic<double> lastTime {getCurrentTime()};
+
+};
 
 //==============================================================================
 class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater
@@ -363,6 +382,8 @@ public:
     {
         return polling;
     }
+    
+    ProcessBlockTimeListener processBlockListener;
 private:
     //==============================================================================
     int polling = 1;

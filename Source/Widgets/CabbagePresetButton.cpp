@@ -112,6 +112,8 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
     }
 	if (userFolder.size() > 1)
 		user.extension = userFolder[1].toString().trim();
+    if (userFolder.size() > 2)
+        user.useNameAsSubMenu = userFolder[2].toString().trim().getIntValue() == 1 ? true : false;
 
 	if (factoryFolder.size() > 0)
     {
@@ -120,7 +122,8 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
     }
 	if (factoryFolder.size() > 1)
 		factory.extension = factoryFolder[1].toString().trim();
-	
+    if (factoryFolder.size() > 1)
+        factory.useNameAsSubMenu = factoryFolder[2].toString().trim().getIntValue() == 1 ? true : false;
 }
 
 //===============================================================================
@@ -163,7 +166,7 @@ void CabbagePresetButton::buttonClicked (Button* button)
             if(File(this->user.folder).exists())
                 File(this->user.folder).revealToUser();
         }
-        else
+        else if(choice > 3 && choice < 3000)
         {
 //            DBG(File(this->fullPresetList[choice-3]).getFileNameWithoutExtension());
 //            DBG(File(this->fullPresetList[choice-3]).getFullPathName());
@@ -176,6 +179,21 @@ void CabbagePresetButton::buttonClicked (Button* button)
                 setButtonText(File(this->fullPresetList[choice-numDefaultMenuItems]).getFileNameWithoutExtension());
             }
         }
+        else if(choice==3000)
+        {
+            showPopupWindow(this, 250);
+        }
+        else if(choice == 3001)
+        {            
+            int currentIndex = fullPresetList.indexOf(currentPreset.getFullPathName());
+            currentPreset.deleteFile();
+            fullPresetList.remove(currentIndex);
+            DBG(fullPresetList[fullPresetList.size()-1]);
+            owner->sendChannelStringDataToCsound(this->getChannel(), File(fullPresetList[fullPresetList.size()-1]).getFullPathName());
+            owner->restorePluginStateFrom (File(fullPresetList[fullPresetList.size()-1]).getFileNameWithoutExtension(), this->fullPresetList[fullPresetList.size()-1]);
+            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, fullPresetList[fullPresetList.size()-1]);
+            currentPreset = File(fullPresetList[fullPresetList.size()-1]);
+        }
     });
 
     m.setLookAndFeel(nullptr);
@@ -184,14 +202,23 @@ void CabbagePresetButton::buttonClicked (Button* button)
 PopupMenu CabbagePresetButton::addPresetsToMenu(String custom)
 {
 
-
     fullPresetList.clear();
     PopupMenu m;
 	if (readonly == 0)
 	{
-		m.addItem(1, "Save");
-		m.addItem(2, "Save As");
-		m.addItem(3, "Preset Folder");
+        if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::presetBrowser) == 1.f)
+        {
+            m.addItem(1, "Save");
+            if(CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::saveas) == 1.f)
+                m.addItem(2, "Save As");
+            m.addItem(3, "Preset Folder");
+        }
+        else
+        {
+            m.addItem(3000, "Save");
+            m.addItem(3001, "Remove");
+        }
+
 	}
 
     m.addSeparator();
@@ -200,10 +227,13 @@ PopupMenu CabbagePresetButton::addPresetsToMenu(String custom)
     
     for ( auto preset : presets)
     {
+        PopupMenu subMenu;
+
         String workingDir = (preset == "User" ? user.folder : factory.folder);
         if(workingDir != "undefined")
         {
             m.addSeparator();
+            
             String fileType = (preset == "User" ? user.extension : factory.extension);
             
             Array<File> directories;
@@ -216,7 +246,10 @@ PopupMenu CabbagePresetButton::addPresetsToMenu(String custom)
             presetFiles.sort();
             for ( int x = 0 ; x < presetFiles.size() ; x++)
             {
-                m.addItem(numPresetFiles, presetFiles[x].getFileNameWithoutExtension());
+                if(user.useNameAsSubMenu)
+                    subMenu.addItem(numPresetFiles, presetFiles[x].getFileNameWithoutExtension());
+                else
+                    m.addItem(numPresetFiles, presetFiles[x].getFileNameWithoutExtension());
                 fullPresetList.add(presetFiles[x].getFullPathName());
                 numPresetFiles++;
             }
@@ -234,8 +267,18 @@ PopupMenu CabbagePresetButton::addPresetsToMenu(String custom)
                     numPresetFiles++;
                 }
                 if(presetFiles.size()>0)
-                    m.addSubMenu(directories[i].getFileNameWithoutExtension(), subM);
+                {
+                    if(user.useNameAsSubMenu == false)
+                        m.addSubMenu(directories[i].getFileNameWithoutExtension(), subM);
+                    else
+                        subMenu.addSubMenu(directories[i].getFileNameWithoutExtension(), subM);
+                }
+                    
             }
+            
+            if(user.useNameAsSubMenu)
+                m.addSubMenu((preset == "User" ? File(user.folder).getFileNameWithoutExtension() : File(factory.folder).getFileNameWithoutExtension()), subMenu);
+
         }
     }
     
@@ -248,10 +291,33 @@ String CabbagePresetButton::returnValidPath (File fc)
     return fc.getFullPathName().replaceCharacters ("\\", "/");
 }
 
-
+//===============================================================================
+void CabbagePresetButton::showPopupWindow(Component* owner, int height)
+{
+    String presetName = "";
+    popupWindow = std::make_unique<CabbagePopupWindow>(widgetData, svgText, true);
+    if(!owner)
+        popupWindow->addToDesktop(1);
+    else
+        owner->getParentComponent()->addChildComponent(popupWindow.get());
+    popupWindow->centreWithSize(400, height);
+    popupWindow->setVisible(true);
+    popupWindow->toFront(true);
+    popupWindow->setAlwaysOnTop(true);
+    Component::SafePointer<CabbagePresetButton> parent{ this };
+    popupWindow->enterModalState(true, juce::ModalCallbackFunction::create([parent](int)
+                                                                           {
+        if (parent == nullptr)
+            return;
+        parent->setLookAndFeel(nullptr);
+        parent->popupWindow = nullptr;
+    }));
+    
+    DBG(presetName);
+}
 //===============================================================================
 void CabbagePresetButton::setLookAndFeelColours (ValueTree wData)
-{
+{    
     setColour (TextButton::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     setColour (TextButton::buttonColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour)));
     setColour (TextButton::textColourOnId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::onfontcolour)));
@@ -271,6 +337,18 @@ void CabbagePresetButton::valueTreePropertyChanged (ValueTree& valueTree, const 
         }
         if(replaceTextWithPreset)
             setButtonText(file.getFileNameWithoutExtension());
+    }
+    else if(prop == CabbageIdentifierIds::svgElement)
+    {
+        svgText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::svgElement);
+    }
+    else if(prop == Identifier("NEW_PRESET_NAME"))
+    {
+        File presetFile = File(user.folder).getChildFile(valueTree.getProperty(prop).toString());
+        const String ext = user.extension.substring(user.extension.indexOf(".")+1);
+        owner->savePluginStateToFile (presetFile.getFileNameWithoutExtension(), presetFile.withFileExtension(ext).getFullPathName(), false);
+        owner->sendChannelStringDataToCsound(this->getChannel(), presetFile.getFullPathName());
+        CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, presetFile.getFullPathName());
     }
     else
     {

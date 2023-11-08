@@ -72,6 +72,11 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 
     if(cabbageProcessor.currentPluginScale != -1)
         resizePlugin(cabbageProcessor.currentPluginScale);
+    
+    isBypassedValue.setValue(false);
+    isBypassedValue.addListener(this);
+    //start thread to check bypass
+    startTimer(100);
 
 }
 
@@ -89,6 +94,27 @@ CabbagePluginEditor::~CabbagePluginEditor()
     
     if(cabbageProcessor.getCsound())
     	cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 0.0);
+}
+
+void CabbagePluginEditor::valueChanged (Value &value)
+{
+    if(value.refersToSameSourceAs(isBypassedValue))
+        cabbageProcessor.getCsound()->SetControlChannel("IS_BYPASSED", value.getValue() ? 1.0 : 0.0);
+}
+void CabbagePluginEditor::timerCallback()
+{
+    if(cabbageProcessor.getCsound())
+    {
+        auto timeDiff = cabbageProcessor.getTimeSinceLastBlock();
+            //timeDiff is in milliseconds:
+        if (timeDiff > 500.0)
+        {
+            isBypassedValue.setValue(true);
+        }
+        else{
+            isBypassedValue.setValue(true);
+        }
+    }
 }
 
 void CabbagePluginEditor::refreshValueTreeListeners()

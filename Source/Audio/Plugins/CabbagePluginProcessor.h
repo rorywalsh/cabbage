@@ -182,7 +182,10 @@ public:
     const OwnedArray<CabbagePluginParameter>& getCabbageParameters() const { return parameters; }
     int currentPluginScale = -1;
     String currentPresetName = "";
-    
+    double getTimeSinceLastBlock(){
+        return this->processBlockListener.getTimeSinceLastBlock();
+    }
+
 
 private:
 #if !Cabbage_IDE_Build

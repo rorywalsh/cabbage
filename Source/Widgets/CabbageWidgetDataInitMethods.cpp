@@ -584,6 +584,8 @@ void CabbageWidgetData::setPresetButtonProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::type, "presetbutton");
     setProperty (widgetData, CabbageIdentifierIds::name, "presetbutton");
     setProperty (widgetData, CabbageIdentifierIds::presetignore, 1);
+    setProperty (widgetData, CabbageIdentifierIds::presetBrowser, 1);
+    setProperty (widgetData, CabbageIdentifierIds::saveas, 1);
     setProperty (widgetData, CabbageIdentifierIds::presetnameastext, 0);
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "string");
     setProperty (widgetData, CabbageIdentifierIds::mode, "file");
@@ -1127,7 +1129,10 @@ void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
-    setProperty (widgetData, CabbageIdentifierIds::menucolour, Colours::whitesmoke.toString());
+    setProperty (widgetData, CabbageIdentifierIds::menucolour, Colours::black.toString());
+    setProperty (widgetData, CabbageIdentifierIds::outlinecolour, Colour::fromRGBA (160, 160, 160, 255).withMultipliedAlpha (0.2f).toString());
+    
+    
     setProperty (widgetData, CabbageIdentifierIds::type, "combobox");
     setProperty (widgetData, CabbageIdentifierIds::comborange, 7);
     setProperty (widgetData, CabbageIdentifierIds::file, "");

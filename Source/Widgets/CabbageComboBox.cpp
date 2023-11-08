@@ -37,14 +37,22 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     isStringCombo(CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::channeltype) == "string"    ),
     CabbageWidgetBase(_owner)
 {
+    
     widgetData.addListener (this);
+    setLookAndFeel(&lookAndFeel);
+
     setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
+    
     setColour (ComboBox::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour)));
+    setColour (ComboBox::outlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::outlinecolour)));
+    
     setTooltip (tooltipText = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
-    setColour (PopupMenu::ColourIds::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour)).brighter (.8f));
-    setColour (PopupMenu::ColourIds::highlightedBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
-    setColour (PopupMenu::ColourIds::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
-    setColour (PopupMenu::ColourIds::highlightedTextColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)).darker());
+    setColour (PopupMenu::ColourIds::backgroundColourId, Colour::fromString( CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::menucolour)));
+//    setColour (PopupMenu::ColourIds::highlightedBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
+    setColour (PopupMenu::ColourIds::highlightedTextColourId, Colour::fromString( CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::menucolour)).withAlpha(0.5f));
+    setColour (PopupMenu::ColourIds::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour)));
+    
+    lookAndFeelChanged();
     setEditableText (false);
     setTextWhenNothingSelected (text);
     setWantsKeyboardFocus (false);
@@ -134,7 +142,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     }
 
     lookAndFeel.customFont = owner->customFont;
-    setLookAndFeel(&lookAndFeel);
+    
 }
 //---------------------------------------------
 CabbageComboBox::~CabbageComboBox()
@@ -514,10 +522,11 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     else
     {
         //handleCommonUpdates (this, valueTree, false, prop);
-        setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
-        setColour (ComboBox::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
-        setColour (PopupMenu::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::menucolour)));
-
+//        setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
+//        setColour (ComboBox::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
+//        setColour (PopupMenu::ColourIds::backgroundColourId, Colour::fromString( CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::menucolour)));
+//        setColour (PopupMenu::ColourIds::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
+//        
         setTooltip (getCurrentPopupText (valueTree));
 
         if((prop == CabbageIdentifierIds::currentdir || prop == CabbageIdentifierIds::populate || prop == CabbageIdentifierIds::update) && isPresetCombo == false)

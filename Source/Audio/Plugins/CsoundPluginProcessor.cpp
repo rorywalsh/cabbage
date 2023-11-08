@@ -53,7 +53,7 @@ csdFile (selectedCsdFile)
     CabbageUtilities::debug("Constructor - Requested output channels:", numCsoundOutputChannels);
     
     backgroundThread.startThread();
-    
+
 #endif
 
 }  
@@ -705,7 +705,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     csound->SetStringChannel ("LAST_FILE_DROPPED", const_cast<char*> (""));
 
-
+    csound->SetChannel("IS_BYPASSED", 0.0);
     //csdFilePath.setAsCurrentWorkingDirectory();
     csound->SetChannel("HOST_BUFFER_SIZE", csdKsmps);
     csound->SetChannel("HOME_FOLDER_UID", File::getSpecialLocation (File::userHomeDirectory).getFileIdentifier());
@@ -1206,6 +1206,7 @@ void CsoundPluginProcessor::processIOBuffers(int bufferType, Type* buffer, int s
 
 void CsoundPluginProcessor::processBlock(AudioBuffer< float >& buffer, MidiBuffer& midiMessages)
 {
+    processBlockListener.updateBlockTime();
     canUpdate.store(false);
 	processSamples(buffer, midiMessages);
     canUpdate.store(true);
@@ -1213,6 +1214,7 @@ void CsoundPluginProcessor::processBlock(AudioBuffer< float >& buffer, MidiBuffe
 
 void CsoundPluginProcessor::processBlock(AudioBuffer< double >& buffer, MidiBuffer& midiMessages)
 {
+    processBlockListener.updateBlockTime();
     canUpdate.store(false);
 	processSamples(buffer, midiMessages);
     canUpdate.store(true);

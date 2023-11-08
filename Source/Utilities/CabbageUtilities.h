@@ -1020,7 +1020,7 @@ public:
 
     static const Colour getBorderColour()
     {
-        return getComponentFontColour().withMultipliedAlpha (0.2f);
+        return Colour::fromRGBA (160, 160, 160, 255).withMultipliedAlpha (0.2f);
     }
 
     static const float getBorderWidth()

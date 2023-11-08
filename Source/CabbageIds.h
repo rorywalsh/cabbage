@@ -357,6 +357,7 @@ public:
         add ("trackerRadius");
         add ("trackerCentre");
 		add ("factoryFolder");
+        add ("presetBrowser");
         add ("sliderBounds");
         add ("markerColour");
         add ("valueTextBox");
@@ -473,6 +474,7 @@ public:
         add ("rangeY");
         add ("rangeX");
         add ("rotate");
+        add ("saveAs");
         add ("active");
         add ("parent");
         add ("shape");
@@ -727,6 +729,7 @@ namespace CabbageIdentifierIds
     static const Identifier parentdir = "parentDir";
     static const Identifier presetnameastext = "presetNameAsText";
     static const Identifier presetignore = "presetIgnore";
+    static const Identifier presetBrowser = "presetBrowser";
     static const Identifier pivotx = "pivotX";
     static const Identifier pivoty = "pivotY";
     static const Identifier plant = "plant";
@@ -755,6 +758,7 @@ namespace CabbageIdentifierIds
     static const Identifier rotate = "rotate";
     static const Identifier rowprefix = "rowPrefix";
     static const Identifier samplerange = "sampleRange";
+    static const Identifier saveas = "saveAs";
     static const Identifier scalex = "scaleX";
     static const Identifier scaley = "scaleY";
     static const Identifier scrollbars = "scrollbars";

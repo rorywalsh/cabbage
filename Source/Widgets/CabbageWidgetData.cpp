@@ -472,6 +472,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("pivotX"):
             case HashStringToInt ("pivotY"):
             case HashStringToInt ("presetIgnore"):
+            case HashStringToInt ("presetBrowser"):
             case HashStringToInt ("protectedItems"):
             case HashStringToInt ("readOnly"):
             case HashStringToInt ("repeatInterval"):
@@ -492,6 +493,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("valueTextBox"):
             case HashStringToInt ("valueX"):
             case HashStringToInt ("scale"):
+            case HashStringToInt ("saveAs"):
             case HashStringToInt ("sort"):
             case HashStringToInt ("valueY"):
             case HashStringToInt ("velocitY"):

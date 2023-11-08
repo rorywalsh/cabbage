@@ -188,7 +188,8 @@ void CabbageLookAndFeel2::drawComboBox(Graphics& g, int width, int height, bool 
     g.fillRoundedRectangle(0, 0, width, height, height * 0.1);
 
     // Border outline
-    g.setColour(CabbageUtilities::getBorderColour());
+    DBG(box.findColour(ComboBox::outlineColourId).toDisplayString(true));
+    g.setColour(box.findColour(ComboBox::outlineColourId));
     float borderWidth = CabbageUtilities::getBorderWidth();
     g.drawRoundedRectangle(borderWidth / 2, borderWidth / 2, width - borderWidth,
         height - borderWidth, height * 0.1, borderWidth);
@@ -202,14 +203,31 @@ void CabbageLookAndFeel2::drawComboBox(Graphics& g, int width, int height, bool 
 //======== Popup Menu background ======================================================================
 void CabbageLookAndFeel2::drawPopupMenuBackground(Graphics& g, int width, int height)
 {
-    g.setColour(findColour(PopupMenu::backgroundColourId));
-    g.fillAll();
+    g.fillAll(findColour(PopupMenu::backgroundColourId));
     g.setColour(findColour(PopupMenu::backgroundColourId));
     g.drawRect(0, 0, width, height, 1); //dont want to see top line
 }
 
+PopupMenu::Options CabbageLookAndFeel2::getOptionsForComboBoxPopupMenu (ComboBox& box, Label& label)
+{
+    return PopupMenu::Options().withTargetComponent (&box)
+                               .withItemThatMustBeVisible (box.getSelectedId())
+                               .withInitiallySelectedItem (box.getSelectedId())
+                               .withMinimumWidth (box.getWidth())
+                               .withMaximumNumColumns (1)
+                               .withStandardItemHeight (label.getHeight());
+}
+
+void CabbageLookAndFeel2::drawPopupMenuBackgroundWithOptions (Graphics& g,
+                                                         int width,
+                                                         int height,
+                                                         const PopupMenu::Options& box)
+{
+    setColour(PopupMenu::backgroundColourId, box.getTargetComponent()->findColour(PopupMenu::backgroundColourId));
+    drawPopupMenuBackground (g, width, height);
+}
 //====== Returns image of a check mark ==============================================
-Image CabbageLookAndFeel2::drawCheckMark()
+Image CabbageLookAndFeel2::drawCheckMark(Colour colour)
 {
     Image img = Image(Image::ARGB, 10, 10, true);
     Graphics g(img);
@@ -218,10 +236,33 @@ Image CabbageLookAndFeel2::drawCheckMark()
     path.startNewSubPath(3, 7);
     path.lineTo(5, 10);
     path.lineTo(10, 0);
-    g.setColour(Colours::black.brighter(.2));
+    g.setColour(colour);
     g.strokePath(path, PathStrokeType(2.0f));
 
     return img;
+}
+
+void CabbageLookAndFeel2::drawPopupMenuItemWithOptions (Graphics& g, const Rectangle<int>& area,
+                                                   bool isHighlighted,
+                                                   const PopupMenu::Item& item,
+                                                   const PopupMenu::Options& box)
+{
+    const auto colour = box.getTargetComponent()->findColour(PopupMenu::textColourId);
+    const auto hasSubMenu = item.subMenu != nullptr
+                            && (item.itemID == 0 || item.subMenu->getNumItems() > 0);
+    setColour(PopupMenu::highlightedBackgroundColourId, box.getTargetComponent()->findColour(PopupMenu::textColourId).withAlpha(0.2f));
+
+    drawPopupMenuItem (g,
+                       area,
+                       item.isSeparator,
+                       item.isEnabled,
+                       isHighlighted,
+                       item.isTicked,
+                       hasSubMenu,
+                       item.text,
+                       item.shortcutKeyDescription,
+                       item.image.get(),
+                       &colour);
 }
 //======== Popup Menu Items ===========================================================================
 void CabbageLookAndFeel2::drawPopupMenuItem(Graphics& g, const Rectangle<int>& area,
@@ -235,9 +276,13 @@ void CabbageLookAndFeel2::drawPopupMenuItem(Graphics& g, const Rectangle<int>& a
 
     if ((isHighlighted == true) && (isSeparator == false))
     {
-        g.setColour(Colour(200, 200, 200)); //red
+        g.setColour(findColour(PopupMenu::highlightedBackgroundColourId));
         g.fillAll();
-        g.setColour(Colour(10, 10, 10)); //findColour(ComboBox::backgroundColourId)); //black
+        if (textColourToUse != nullptr)
+        {
+            textColour = *textColourToUse;
+            g.setColour(textColour);
+        }
     }
     else
     {
@@ -262,8 +307,7 @@ void CabbageLookAndFeel2::drawPopupMenuItem(Graphics& g, const Rectangle<int>& a
 
     if (isTicked)
     {
-        Image checkMark = drawCheckMark();
-        g.setColour(Colours::cornflowerblue);
+        Image checkMark = drawCheckMark(textColour);
         g.drawImage(checkMark, 5, (area.getHeight() / 2) - 5, 10, 10, 0, 0, 10, 10, false);
     }
 

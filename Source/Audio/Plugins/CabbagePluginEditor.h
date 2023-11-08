@@ -65,13 +65,15 @@ class CabbagePluginEditor;
 //==============================================================================
 class CabbagePluginEditor
     : public AudioProcessorEditor,
-      public Button::Listener,
-      public ChangeBroadcaster,
-      public ActionBroadcaster,
-      public ComboBox::Listener,
-      public Slider::Listener,
-      //public FileDragAndDropTarget,
-	  public KeyListener
+    public Button::Listener,
+    public ChangeBroadcaster,
+    public ActionBroadcaster,
+    public ComboBox::Listener,
+    public Slider::Listener,
+    //public FileDragAndDropTarget,
+	public KeyListener,
+    public Value::Listener,
+    public Timer
 {
 public:
     explicit CabbagePluginEditor (CabbagePluginProcessor&);
@@ -134,7 +136,7 @@ public:
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
     //=============================================================================
 	void refreshValueTreeListeners();
-
+    void timerCallback() override;
 	//=============================================================================
     // all these methods expose public methods in CabagePluginProcessor
     void sendChannelDataToCsound (const String& channel, float value);
@@ -232,7 +234,7 @@ public:
     }
 
 	//=============================================================================
-
+    void valueChanged (Value &value);
 
     void addNewWidget (String widgetType, juce::Point<int> point, bool isPlant = false);
     //=============================================================================
@@ -325,7 +327,7 @@ public:
     String changeMessage = "";
     juce::Point<int> customPlantPosition;
     Font customFont;
-    
+    Value isBypassedValue;
 private:
     
     File customFontFile;
