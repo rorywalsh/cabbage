@@ -324,6 +324,9 @@ void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData,
                 newPList = newPList.replace (pluginDesc+"MidiEffect", fc.getFileNameWithoutExtension());
                 newPList = newPList.replace (pluginDesc, fc.getFileNameWithoutExtension());
 #else
+                if(type == "Standalone")
+                    newPList = newPList.replace (pluginDesc+"Effect", fc.getFileNameWithoutExtension());
+                
                 newPList = newPList.replace (pluginDesc+"MidiEffect", fc.getFileNameWithoutExtension());
                 newPList = newPList.replace (pluginDesc, fc.getFileNameWithoutExtension());
 #endif
