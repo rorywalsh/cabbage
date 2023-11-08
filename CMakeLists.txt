@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION fix: lookandfeel for presetbutton)
+	set(BUILD_VERSION 2.9.136)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
