@@ -122,7 +122,7 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
     }
 	if (factoryFolder.size() > 1)
 		factory.extension = factoryFolder[1].toString().trim();
-    if (factoryFolder.size() > 1)
+    if (factoryFolder.size() > 2)
         factory.useNameAsSubMenu = factoryFolder[2].toString().trim().getIntValue() == 1 ? true : false;
 }
 
