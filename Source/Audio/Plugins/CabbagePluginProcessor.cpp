@@ -1104,9 +1104,12 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
         }
         else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),                                                                                                CabbageIdentifierIds::filetype).contains("snaps"))
         {
-            const String presetN = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::value);
-            const String presetText = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::text);
-            j[currentPresetName.toStdString()][channelName.toStdString()] = presetN.toStdString();
+            if(presetName == "CABBAGE_PRESETS")
+            {
+                const String presetN = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::value);
+                const String presetText = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::text);
+                j[currentPresetName.toStdString()][channelName.toStdString()] = presetN.toStdString();
+            }
         }
        else if (type == CabbageWidgetTypes::presetbutton)
        {
