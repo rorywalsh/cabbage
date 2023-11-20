@@ -98,16 +98,21 @@ struct CabbageOpcodes
             if(args.str_data(nameIndex).size == 0)
                 name = {};
             else
+            {
                 name = args.str_data(nameIndex).data;
+            }
 
             if(args.str_data(identIndex).size == 0)
                 identifier = {};
             else
                 identifier = args.str_data(identIndex).data;
         }
-
-        identData.identifier = Identifier(identifier);
-        identData.name = name;
+        
+        if(String(name).isNotEmpty())
+            identData.name = name;
+        if(String(identifier).isNotEmpty())
+            identData.identifier = Identifier(identifier);
+        
         identData.isValid = true;
         return identData;
     }
@@ -153,6 +158,7 @@ struct SetCabbageValueIdentifierSArgsITime : csnd::InPlug<3>, CabbageOpcodes<3>
 //====================================================================================================
 struct SetCabbageIdentifierSArgs : csnd::InPlug<64>, CabbageOpcodes<64>
 {
+    int numberOfPasses = 0;
     int init(){ return setAttribute(true); }
     int kperf(){ return setAttribute(false); }
     int setAttribute(bool init);
@@ -160,6 +166,7 @@ struct SetCabbageIdentifierSArgs : csnd::InPlug<64>, CabbageOpcodes<64>
 
 struct SetCabbageIdentifier : csnd::InPlug<64>, CabbageOpcodes<64>
 {
+    int numberOfPasses = 0;
     int init(){ return setAttribute(true); }
     int kperf(){ return setAttribute(false); }
     int setAttribute(bool init);
@@ -276,15 +283,13 @@ struct GetCabbageStringValueArrayWithTrigger : csnd::Plugin<2, 1>
     int getAttribute();
 };
 
-struct GetCabbageValueWithTrigger : csnd::Plugin<2, 1>
+struct GetCabbageValueWithTrigger : csnd::Plugin<2, 2>
 {
     MYFLT* value;
+    MYFLT triggerOnPerfPass = 0;
     MYFLT currentValue = 0;
-    bool firstRun = true;
-    int init(){
-        firstRun = true;
-        return getAttribute();        
-    }
+    int numberOfPasses = 0;
+    int init(){ return getAttribute(); }
     int kperf(){ return getAttribute(); }
     int getAttribute();
 };

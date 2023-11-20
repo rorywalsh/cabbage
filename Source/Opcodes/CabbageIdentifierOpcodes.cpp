@@ -693,26 +693,33 @@ int GetCabbageValueWithTrigger::getAttribute()
     if(in_count() == 0)
         return NOTOK;
     
+    if(in_count() > 1)
+        triggerOnPerfPass = inargs[1];
+    
 
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
+        numberOfPasses = (numberOfPasses < 3 ? numberOfPasses+1 : 3);
+
+            if(*value != currentValue)
+            {
+                currentValue = *value;
+                outargs[1] = 1;
+            }
+            else
+            {
+                if(numberOfPasses == 2 && triggerOnPerfPass>0)
+                {
+                    outargs[1] = 1;
+                }
+                else
+                    outargs[1] = 0;
+            }
+            outargs[0] = currentValue;
+
         
-        if(*value != currentValue)
-        {
-            currentValue = *value;
-//            if(firstRun)
-//            {
-//                firstRun = false;
-//                outargs[1] = 0;
-//            }
-//            else
-            outargs[1] = 1;
-        }
-        else
-            outargs[1] = 0;
         
-        outargs[0] = currentValue;
     }
     
     return OK;
@@ -1090,7 +1097,9 @@ int SetCabbageIdentifier::setAttribute(bool init)
 
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
-    CabbageWidgetIdentifiers::IdentifierData identData = getIdentData(args, init, 1, 2);
+    CabbageWidgetIdentifiers::IdentifierData identData = getIdentData(args, numberOfPasses < 3, 1, 2);
+    
+    numberOfPasses = (numberOfPasses < 3 ? numberOfPasses + 1 : 3);
     
     int trigger = int(args[0]);
     
@@ -1193,11 +1202,13 @@ int SetCabbageIdentifierSArgs::setAttribute(bool init)
     
     if(String(args.str_data(2).data).isEmpty())
         return OK;
-    
+        
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
-    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(args, init, 1, 2);
+    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(args, numberOfPasses<3, 1, 2);
     
+
+    numberOfPasses = (numberOfPasses < 3 ? numberOfPasses + 1 : 3);
     
     int trigger = int(args[0]);
 

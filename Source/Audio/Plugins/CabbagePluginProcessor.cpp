@@ -1730,11 +1730,10 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
         return;
     
     identData = *pd;
-
+    
     for(auto && i : identData->data)
     {
-
-        if( i.identifier.toString().isNotEmpty())
+        if(i.identifier.getCharPointer().getAddress() != nullptr)
         {
             const auto identifier = i.identifier;
             const auto name = i.name;
@@ -1816,16 +1815,19 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                         }
                     }
                     else
-                    {
-                        CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), i.args.toString().paddedLeft(' ',1));
-                        if(i.args.toString().contains(CabbageIdentifierIds::populate))
+                    {                       
+                        const auto argString = i.args.toString();
+                        CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), argString.paddedLeft(' ',1));
+                        if(argString.contains(CabbageIdentifierIds::populate))
+                        {
                             CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::update, Random::getSystemRandom().nextInt());
+                        }
                         /* the following lets up trigger an update even if moveBehind, or toFront have not changed */
-                        else if(i.args.toString().contains(CabbageIdentifierIds::tofront))
+                        else if(argString.contains(CabbageIdentifierIds::tofront))
                         {
                             CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::tofront, Random::getSystemRandom().nextInt());
                         }
-                        else if(i.args.toString().contains(CabbageIdentifierIds::movebehind))
+                        else if(argString.contains(CabbageIdentifierIds::movebehind))
                         {
                             const String moveBehind = CabbageWidgetData::getProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::movebehind);
                             const String chn = CabbageWidgetData::getProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::channel)[0];
