@@ -21,7 +21,7 @@
 
 
 CabbagePopupWindow::CabbagePopupWindow (ValueTree valueTree, const String& svgText, bool withEditor)
-: showEditor(withEditor)
+: showEditor(withEditor), vt(valueTree)
 {
     setOpaque(false);
 
@@ -50,22 +50,22 @@ CabbagePopupWindow::CabbagePopupWindow (ValueTree valueTree, const String& svgTe
 
 
     
-    buttons[0].onClick = [valueTree, this] mutable
+    buttons[0].onClick = [this]
     {
-        valueTree.setProperty("NEW_PRESET_NAME", editor.getText(), nullptr);
+        setValueTreeProperty("NEW_PRESET_NAME", editor.getText());
         juce::ModalComponentManager::getInstance()->cancelAllModalComponents();
     };
 
-    buttons[1].onClick = [valueTree, this] mutable
+    buttons[1].onClick = [this]
     {
-        valueTree.setProperty("NEW_PRESET_NAME", "", nullptr);
+        setValueTreeProperty("NEW_PRESET_NAME", "");
         juce::ModalComponentManager::getInstance()->cancelAllModalComponents();
     };
 
 
-    editor.onReturnKey = [valueTree, this] mutable
+    editor.onReturnKey = [this]
     {
-        valueTree.setProperty("NEW_PRESET_NAME", editor.getText(), nullptr);
+        setValueTreeProperty("NEW_PRESET_NAME", editor.getText());
         juce::ModalComponentManager::getInstance()->cancelAllModalComponents();
     };
     
@@ -73,6 +73,11 @@ CabbagePopupWindow::CabbagePopupWindow (ValueTree valueTree, const String& svgTe
 
     setSVGImage(svgText);
 
+}
+
+void CabbagePopupWindow::setValueTreeProperty(String prop, String val)
+{
+    vt.setProperty(prop, val, nullptr);
 }
 
 void CabbagePopupWindow::setSVGImage(const String svgText)
@@ -100,6 +105,5 @@ void CabbagePopupWindow::paint(Graphics& g)
     g.fillAll(Colours::transparentBlack);
     drawable->setTransformToFit(getLocalBounds().toFloat(), RectanglePlacement::stretchToFit);
     drawable->draw(g, 1.f, {});
-
     //g.setColour(Colour(0xff00ABD1));
 }
