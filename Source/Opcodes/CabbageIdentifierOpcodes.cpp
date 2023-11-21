@@ -1097,9 +1097,9 @@ int SetCabbageIdentifier::setAttribute(bool init)
 
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
-    CabbageWidgetIdentifiers::IdentifierData identData = getIdentData(args, numberOfPasses < 3, 1, 2);
-    
-    numberOfPasses = (numberOfPasses < 3 ? numberOfPasses + 1 : 3);
+    //setting second param to true here so that we can loop through arrays and run loop at k-rate
+    CabbageWidgetIdentifiers::IdentifierData identData = getIdentData(args, true, 1, 2);
+
     
     int trigger = int(args[0]);
     
@@ -1151,7 +1151,8 @@ int SetCabbageIdentifierArray::setAttribute(bool init)
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
-    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(args, init, 1, 2);
+    //setting second param to true here so that we can loop through arrays and run loop at k-rate
+    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(args, true, 1, 2);
     
     
     int trigger = int(args[0]);
@@ -1205,11 +1206,10 @@ int SetCabbageIdentifierSArgs::setAttribute(bool init)
         
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
-    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(args, numberOfPasses<3, 1, 2);
+    //setting second param to true here so that we can loop through arrays and run loop at k-rate
+    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(args, true, 1, 2);
     
 
-    numberOfPasses = (numberOfPasses < 3 ? numberOfPasses + 1 : 3);
-    
     int trigger = int(args[0]);
 
     if(trigger == 0)

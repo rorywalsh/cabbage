@@ -158,7 +158,6 @@ struct SetCabbageValueIdentifierSArgsITime : csnd::InPlug<3>, CabbageOpcodes<3>
 //====================================================================================================
 struct SetCabbageIdentifierSArgs : csnd::InPlug<64>, CabbageOpcodes<64>
 {
-    int numberOfPasses = 0;
     int init(){ return setAttribute(true); }
     int kperf(){ return setAttribute(false); }
     int setAttribute(bool init);
@@ -166,7 +165,6 @@ struct SetCabbageIdentifierSArgs : csnd::InPlug<64>, CabbageOpcodes<64>
 
 struct SetCabbageIdentifier : csnd::InPlug<64>, CabbageOpcodes<64>
 {
-    int numberOfPasses = 0;
     int init(){ return setAttribute(true); }
     int kperf(){ return setAttribute(false); }
     int setAttribute(bool init);
