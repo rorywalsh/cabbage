@@ -29,10 +29,12 @@ class CabbagePopupWindow : public Component
     TextEditor editor;
     std::unique_ptr<Drawable> drawable;
     bool showEditor = false;
+    ValueTree vt;
     
 public:
     
     CabbagePopupWindow (ValueTree presetName, const String& svgText, bool withEditor);
+    void setValueTreeProperty(String prop, String val);
     ~CabbagePopupWindow() override {
      
     }
