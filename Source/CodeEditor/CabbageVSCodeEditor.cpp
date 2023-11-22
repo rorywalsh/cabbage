@@ -30,6 +30,8 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     choc::ui::WebView::Options options;
     options.enableDebugMode = true;
     webView.reset(new choc::ui::WebView(options));
+    webView->setHTML(CabbageStrings::getVSEditorHTML().toStdString());
+    
     auto v = webView->getViewHandle();
     nativeWindow.setBounds(0, 0, 400, 400);
     nativeWindow.setWindow(v);

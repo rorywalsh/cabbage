@@ -23,7 +23,7 @@
 #include "CsoundTokeniser.h"
 #include "../CabbageCommonHeaders.h"
 #include "../Utilities/CabbageStrings.h"
-#include "../../choc-main/gui/choc_WebView.h"
+
 
 #ifndef JUCE_LINUX
 
@@ -79,9 +79,9 @@ public:
     void resized() override;
     NativeWindowComponent nativeWindow;
     void loadContent(String content){ jassertfalse; }
-    void updateColourScheme(bool isCsdFile=true){ jassertfalse; }
-    void setFont(Font f){ jassertfalse; }
-    void setFontSize(int size){ jassertfalse; }
+    void updateColourScheme(bool isCsdFile=true){  }
+    void setFont(Font f){  }
+    void setFontSize(int size){  }
     void startThread(){ jassertfalse; }
     void cut(){ jassertfalse; }
     void copy(){ jassertfalse; }

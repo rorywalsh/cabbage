@@ -49,7 +49,7 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* cabbageSettings
     outputConsole.reset (new CabbageOutputConsole (settings->valueTree, consoleDocument));
     addAndMakeVisible (outputConsole.get());
 
-    editor->setLineNumbersShown (true);
+    //editor->setLineNumbersShown (true);
     editor->addMouseListener (this, true);
     setDefaultFont();
     editor->setVisible (true);

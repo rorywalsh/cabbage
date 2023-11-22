@@ -136,6 +136,384 @@ public:
         return newRackFile;
     }
     
+    static String getVSEditorHTML() {
+        return {CharPointer_UTF8(R"xxx(
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Monaco editor</title>
+    <style type="text/css" media="screen">
+        body {
+            background-color: rgb(30, 30, 30);
+            overflow: hidden;
+            /* Hide scrollbars */
+        }
+
+        #container {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            margin-top: 0px;
+            margin-bottom: 25px;
+        }
+    </style>
+    <link rel="stylesheet" data-name="vs/editor/editor.main"
+        href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/editor/editor.main.min.css">
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.40.0/min/vs/loader.min.js"></script>
+    <script>
+
+        // require is provided by loader.min.js.
+        let editor;
+        var suggestions = [];
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs' } });
+        require(["vs/editor/editor.main"], () => {
+
+
+            editor = monaco.editor.create(document.getElementById('container'), {
+                value: `
+                <CsoundSynthesizer>
+<CsOptions>
+; Select audio/midi flags here according to platform
+; Audio out   Audio in    No messages
+-odac           -iadc     -d     ;;;RT audio I/O
+; For Non-realtime ouput leave only the line below:
+; -o vco2.wav -W ;;; for file output any platform
+</CsOptions>
+<CsInstruments>
+
+sr      =  44100
+ksmps   =  10
+nchnls  =  1
+
+; user defined waveform -1: trapezoid wave with default parameters (can be
+; accessed at ftables starting from 10000)
+itmp    ftgen 1, 0, 16384, 7, 0, 2048, 1, 4096, 1, 4096, -1, 4096, -1, 2048, 0
+ift     vco2init -1, 10000, 0, 0, 0, 1
+; user defined waveform -2: fixed table size (4096), number of partials
+; multiplier is 1.02 (~238 tables)
+itmp    ftgen 2, 0, 16384, 7, 1, 4095, 1, 1, -1, 4095, -1, 1, 0, 8192, 0
+ift     vco2init -2, ift, 1.02, 4096, 4096, 2
+
+        instr 1
+kcps    expon p4, p3, p5                ; instr 1: basic vco2 example
+a1      vco2 12000, kcps                ; (sawtooth wave with default
+        out a1                          ; parameters)
+        endin
+
+        instr 2
+kcps    expon p4, p3, p5                        ; instr 2:
+kpw     linseg 0.1, p3/2, 0.9, p3/2, 0.1        ; PWM example
+a1      vco2 10000, kcps, 2, kpw
+        out a1
+        endin
+
+        instr 3
+kcps    expon p4, p3, p5                ; instr 3: vco2 with user
+a1      vco2 14000, kcps, 14            ; defined waveform (-1)
+aenv    linseg 1, p3 - 0.1, 1, 0.1, 0   ; de-click envelope
+        out a1 * aenv
+        endin
+
+        instr 4
+kcps    expon p4, p3, p5                ; instr 4: vco2ft example,
+kfn     vco2ft kcps, -2, 0.25           ; with user defined waveform
+a1      oscilikt 12000, kcps, kfn       ; (-2), and sr/4 bandwidth
+        out a1
+        endin
+
+
+</CsInstruments>
+<CsScore>
+
+i 1  0 3 20 2000
+i 2  4 2 200 400
+i 3  7 3 400 20
+i 4 11 2 100 200
+
+f 0 14
+
+e
+
+
+</CsScore>
+</CsoundSynthesizer>
+                `,
+
+
+                language: 'mySpecialLanguage',
+                //theme: 'vs-dark',
+                "editor.quickSuggestions": {
+                    "other": "inline", // the `inline` value is new
+                    "comments": true,
+                    "strings": true
+                },
+                automaticLayout: true,
+                minimap: {
+                    enabled: false
+                },
+                formatOnPaste: true
+            });
+
+                        // Register a new language
+            monaco.languages.register({ id: 'mySpecialLanguage' });
+
+            // Register a tokens provider for the language
+            monaco.languages.setMonarchTokensProvider('mySpecialLanguage', {
+                keywords: [
+    'abstract', 'continue', 'for', 'new', 'switch', 'assert', 'goto', 'do',
+    'if', 'private', 'this', 'break', 'protected', 'throw', 'else', 'public',
+    'enum', 'return', 'catch', 'try', 'interface', 'static', 'class',
+    'finally', 'const', 'super', 'while', 'true', 'false'
+  ],
+
+  typeKeywords: [
+    'boolean', 'double', 'byte', 'int', 'short', 'char', 'void', 'long', 'float'
+  ],
+
+  operators: [
+    '=', '>', '<', '!', '~', '?', ':', '==', '<=', '>=', '!=',
+    '&&', '||', '++', '--', '+', '-', '*', '/', '&', '|', '^', '%',
+    '<<', '>>', '>>>', '+=', '-=', '*=', '/=', '&=', '|=', '^=',
+    '%=', '<<=', '>>=', '>>>='
+  ],
+
+  // we include these common regular expressions
+  symbols:  /[=><!~?:&|+\-*\/\^%]+/,
+
+  // C# style strings
+  escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
+
+  // The main tokenizer for our languages
+  tokenizer: {
+    root: [
+      // identifiers and keywords
+      [/[a-z_$][\w$]*/, { cases: { '@typeKeywords': 'keyword',
+                                   '@keywords': 'keyword',
+                                   '@default': 'identifier' } }],
+      [/[A-Z][\w\$]*/, 'type.identifier' ],  // to show class names nicely
+
+      // whitespace
+      { include: '@whitespace' },
+
+      // delimiters and operators
+      [/[{}()\[\]]/, '@brackets'],
+      [/[<>](?!@symbols)/, '@brackets'],
+      [/@symbols/, { cases: { '@operators': 'operator',
+                              '@default'  : '' } } ],
+
+      // @ annotations.
+      // As an example, we emit a debugging log message on these tokens.
+      // Note: message are supressed during the first load -- change some lines to see them.
+      [/@\s*[a-zA-Z_\$][\w\$]*/, { token: 'annotation', log: 'annotation token: $0' }],
+
+      // numbers
+      [/\d*\.\d+([eE][\-+]?\d+)?/, 'number.float'],
+      [/0[xX][0-9a-fA-F]+/, 'number.hex'],
+      [/\d+/, 'number'],
+
+      // delimiter: after number because of .\d floats
+      [/[;,.]/, 'delimiter'],
+
+      // strings
+      [/"([^"\\]|\\.)*$/, 'string.invalid' ],  // non-teminated string
+      [/"/,  { token: 'string.quote', bracket: '@open', next: '@string' } ],
+
+      // characters
+      [/'[^\\']'/, 'string'],
+      [/(')(@escapes)(')/, ['string','string.escape','string']],
+      [/'/, 'string.invalid']
+    ],
+
+    comment: [
+      [/[^\/*]+/, 'comment' ],
+      [/\/\*/,    'comment', '@push' ],    // nested comment
+      ["\\*/",    'comment', '@pop'  ],
+      [/[\/*]/,   'comment' ]
+    ],
+
+    string: [
+      [/[^\\"]+/,  'string'],
+      [/@escapes/, 'string.escape'],
+      [/\\./,      'string.escape.invalid'],
+      [/"/,        { token: 'string.quote', bracket: '@close', next: '@pop' } ]
+    ],
+
+    whitespace: [
+      [/[ \t\r\n]+/, 'white'],
+      [/\/\*/,       'comment', '@comment' ],
+      [/\/\/.*$/,    'comment'],
+    ],
+  },
+            });
+
+            monaco.editor.defineTheme("myTheme", {
+            base: "vs-dark",
+                inherit: true,
+                rules: [],
+                colors: {
+                    "editor.background": "#191E2B",
+                },
+            });
+            monaco.editor.setTheme("myTheme");
+            editor.getModel().updateOptions({ tabSize: 2 })
+            editor.onDidPaste( ( e ) => {
+                updatePropertiesCallback(JSON.parse(editor.getValue()));
+            })
+
+            var myBinding = editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_Y, function () {
+                alert('CMD + Y pressed!');
+            });
+
+            editor.onDidChangeModelContent(function (e) {
+                if (e.isFlush) {
+                    console.log("setValue called")
+                  } else {
+                    updatePropertiesCallback(JSON.parse(editor.getValue()));
+                  }
+
+                console.log("text changed");
+
+                //editor.getAction('editor.action.formatDocument').run();
+            });
+
+            editor.getAction('editor.action.triggerSuggest').run().then(() => console.log('finished'));
+            let actions = editor.getSupportedActions().map((a) => a.id);
+            actions.forEach(e => console.log(e));
+
+            editor.setPosition({column: 9, lineNumber: 3});
+
+            editor.focus();
+
+            suggestions = [
+                            {
+                                label: 'range',
+                                kind: monaco.languages.CompletionItemKind.Snippet,
+                                documentation: 'Add an a range parameter',
+                                command: {
+                                    id: 'editor.action.triggerSuggest',
+                                    title: 'operator_additional_suggestions',
+                                },
+                                insertText: [
+                                    '"name": {    "type": "range","increment": 0.001,"max": 1.0,"min": 0.0,"skew": 1.0, "value":0,',
+                                    '"nodeParameters":{',
+                                    '}',
+                                    '}'].join('\n')
+                            },
+                            {
+                                label: 'keyboard',
+                                kind: monaco.languages.CompletionItemKind.Snippet,
+                                documentation: 'Add an a range parameter',
+                                command: {
+                                    id: 'editor.action.triggerSuggest',
+                                    title: 'operator_additional_suggestions',
+                                },
+                                insertText: [
+                                    '"keyboard": {    "min": 48.0,"max": 72.0',
+                                    '}'].join('\n')
+                            },
+                            {
+                                label: 'button',
+                                kind: monaco.languages.CompletionItemKind.Snippet,
+                                documentation: 'Add an a button parameter',
+                                command: {
+                                    id: 'editor.action.triggerSuggest',
+                                    title: 'operator_additional_suggestions',
+                                },
+                                insertText: [
+                                    '"name": {    "type": "button","increment": 0.1,"max": 1.0,"min": 0.0, "value":0, "onText": "On", "offText": "Off",',
+                                    '"nodeParameters":{',
+                                    '}',
+                                    '}'].join('\n')
+                            }
+                        ]
+
+            monaco.languages.registerCompletionItemProvider('mySpecialLanguage', {
+                provideCompletionItems: () => {
+                    return {
+                        suggestions
+                    };
+                }
+            });
+        });//end of require
+
+            window.addEventListener('keydown', function(event) {
+            if (event.keyCode === 80 && (event.ctrlKey || event.metaKey) && !event.altKey && (!event.shiftKey || window.chrome || window.opera)) {
+                event.preventDefault();
+                if (event.stopImmediatePropagation) {
+                    event.stopImmediatePropagation();
+                } else {
+                    event.stopPropagation();
+                }
+                updatePropertiesEditorCallback('hide editor');
+                return;
+                } else if (event.keyCode === 83 && (event.ctrlKey || event.metaKey) && !event.altKey && (!event.shiftKey || window.chrome || window.opera)) {
+                event.preventDefault();
+                if (event.stopImmediatePropagation) {
+                    event.stopImmediatePropagation();
+                } else {
+                    event.stopPropagation();
+                }
+
+
+                updatePropertiesEditorCallback('save');
+                return;
+            }
+            else if (event.keyCode === 81)
+                    console.log(editor);
+            else if ((event.metaKey || event.ctrlKey) && event.key === 'c'){
+                console.log('’Cmd+c’ was pressed')
+                editor.trigger('source','editor.action.clipboardCopyAction');
+            }
+            else if ((event.metaKey || event.ctrlKey) && event.key === 'v'){
+                console.log('’Cmd+v’ was pressed')
+                editor.trigger('source','editor.action.clipboardPasteAction');
+            }
+            else if ((event.metaKey || event.ctrlKey) && event.key === 'x'){
+                console.log('’Cmd+x’ was pressed')
+                editor.trigger('source','editor.action.clipboardCutAction');
+            }
+
+        }, true);
+            function updateText(txt){
+                console.log("should be updating the text");
+                // Select all text
+                const fullRange = editor.getModel().getFullModelRange();
+//                var lines = txt.split('\n');
+//                // remove one line, starting at the first position
+//                lines.splice(0,1);
+//                // join the array back into a single string
+//                txt = lines.join('\n').replace(/^ {2}/gm, '');
+
+                // Apply the text over the range
+                editor.executeEdits(null, [{
+                  text: txt,
+                  range: fullRange
+                }]);
+
+                // Indicates the above edit is a complete undo/redo change.
+                editor.pushUndoStop();
+
+                //editor.getModels()[0].setValue(txt);
+                //editor.setValue(txt);
+                updatePropertiesCallback(JSON.parse(editor.getValue()));
+                console.log(txt);
+            }
+    </script>
+</body>
+
+</html>
+)xxx")
+        };
+    }
+        
     static String getNewCabbageEffectFileText()
     {
         String newCsoundFile =

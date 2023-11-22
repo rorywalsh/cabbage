@@ -30,6 +30,8 @@ Cabbage::Cabbage()
 //==============================================================================
 void Cabbage::initialise (const String& commandLine)
 {
+    choc::messageloop::initialise();
+    
     documentWindow.reset (new CabbageDocumentWindow (getApplicationName(), getCommandLineParameters()));
 
     if (commandLine.isEmpty())
