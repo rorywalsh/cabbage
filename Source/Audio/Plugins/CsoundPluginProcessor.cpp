@@ -587,7 +587,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                         const String relativeDir = CabbageWidgetData::getStringProp(cabbageData.getChild(i), CabbageIdentifierIds::currentdir);
                         const String workingDir = csdFilePath.getChildFile(relativeDir).getFullPathName();
 
-                        if(workingDir.isNotEmpty())
+                        if(relativeDir.isNotEmpty() && workingDir.isNotEmpty())
                         {
                             int numOfFiles;
                             Array<File> folderFiles;
