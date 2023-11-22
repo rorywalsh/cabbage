@@ -37,6 +37,9 @@ CabbagePopupWindow::CabbagePopupWindow (ValueTree valueTree, const String& svgTe
 
     editor.setColour (Label::outlineColourId, Colours::transparentBlack);
     editor.setColour (TextEditor::outlineColourId, Colours::transparentBlack);
+    editor.setColour (TextEditor::backgroundColourId, Colours::transparentBlack);
+    editor.setColour (TextEditor::textColourId, Colour(165, 165, 165));
+    editor.setCaretVisible(false);
     editor.setColour (Label::outlineWhenEditingColourId, Colours::transparentBlack);
     editor.setColour (TextEditor::ColourIds::focusedOutlineColourId, Colours::transparentBlack);
 //    lookAndFeelChanged();
@@ -92,9 +95,9 @@ void CabbagePopupWindow::resized()
 {
     if(showEditor)
     {
-        editor.setBounds(75, 90, getWidth()-150, 16);
-        buttons[0].setBounds(56, 117, 90, 20);
-        buttons[1].setBounds(154, 117, 90, 20);
+        editor.setBounds(30, getHeight()*.47, getWidth()-60, 18);
+        buttons[0].setBounds(86, 105, 90, 20);
+        buttons[1].setBounds(154, 105, 90, 20);
     }
     else
         buttons[0].setCentrePosition(getLocalBounds().removeFromBottom(50).getCentre());
