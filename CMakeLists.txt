@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.140)
+	set(BUILD_VERSION 2.9.141)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -317,6 +317,8 @@ set(IDE_SOURCES
     Source/Audio/UI/PluginWindow.h
     Source/CodeEditor/CabbageCodeEditor.cpp
     Source/CodeEditor/CabbageCodeEditor.h
+    Source/CodeEditor/CabbageVSCodeEditor.cpp
+    Source/CodeEditor/CabbageVSCodeEditor.h
     Source/CodeEditor/CabbageEditorContainer.cpp
     Source/CodeEditor/CabbageEditorContainer.h
     Source/CodeEditor/CabbageOutputConsole.h

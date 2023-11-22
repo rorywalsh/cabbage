@@ -16,6 +16,7 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
   02111-1307 USA
 */
+#ifdef JUCE_LINUX
 
 #include "CabbageCodeEditor.h"
 //#include "../Settings/CabbageSettings.h"
@@ -1311,3 +1312,5 @@ StringArray CabbageCodeEditorComponent::getSelectedTextArray()
     tempArray.addLines (selectedText);
     return tempArray;
 }
+
+#endif

@@ -24,7 +24,7 @@
 #include "../CabbageCommonHeaders.h"
 #include "../Utilities/CabbageStrings.h"
 
-
+#ifdef JUCE_LINUX
 class CabbageEditorContainer;
 
 class CabbageCodeEditorComponent :
@@ -69,6 +69,7 @@ public:
     String getSelectedText();
     const StringArray getAllTextAsStringArray();
     const String getAllText();
+    const String getAllContent(){ return getDocument()->getAllContent(); }
     StringArray getSelectedTextArray();
     StringArray keywordsArray;
 
@@ -313,5 +314,5 @@ struct CustomTextEditorKeyMapper
     }
 };
 
-
+#endif  //end if linux
 #endif  // CABBAGECODEEDITOR_H_INCLUDED

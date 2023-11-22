@@ -730,8 +730,11 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
                 if (CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber) > 9999) //if widget was added in edit mode...
                 {
                     StringArray csdArray;
+#ifdef JUCE_LINUX
                     csdArray.addLines(getCurrentCodeEditor()->getDocument().getAllContent());
-
+#else
+                    jassertfalse;
+#endif
                     for (int i = 0; i < csdArray.size(); i++)
                     {
                         if (csdArray[i].contains(
@@ -857,7 +860,11 @@ void CabbageMainComponent::actionListenerCallback (const String& message)
         //deleted whatever line is currently selected, we don't need the know the line number...
         //const int lineNumber = String (message.replace ("delete:", "")).getIntValue();
         //getCurrentCodeEditor()->removeLine (getCurrentCodeEditor()->getSel);
+#ifdef JUCE_LINUX
         getCurrentCodeEditor()->removeSelectedText();
+#else
+        jassertfalse;
+#endif
         saveDocument();
         enableEditMode();
     }
@@ -896,7 +903,11 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
                                                                                                                : currentLineText));
 
                 if (isGUIEnabled == true && guiPropUpdate == false)
+#ifdef JUCE_LINUX
                     getCurrentCodeEditor()->updateBoundsText(lineNumber, newText, true);
+#else
+                jassertfalse;
+#endif
                 else
                     getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, parent.isEmpty());
 
@@ -1211,6 +1222,7 @@ CabbageCodeEditorComponent* CabbageMainComponent::getCurrentCodeEditor()
     else
         return nullptr;
 }
+
 //==================================================================================
 CabbageOutputConsole* CabbageMainComponent::getCurrentOutputConsole()
 {
@@ -1646,59 +1658,60 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
 //==================================================================================
 void CabbageMainComponent::launchHelpfile (String type)
 {
-    String url = "";
-    String keyword = "";
-    if (getCurrentCodeEditor())
-    {
-        CodeDocument::Position pos1, pos2;
-        pos1 = getCurrentCodeEditor()->getDocument().findWordBreakBefore(getCurrentCodeEditor()->getCaretPos());
-        pos2 = getCurrentCodeEditor()->getDocument().findWordBreakAfter(getCurrentCodeEditor()->getCaretPos());
-        keyword = getCurrentCodeEditor()->getDocument().getTextBetween(pos1, pos2).trim();
-    }
-    const String csoundHelpDir = cabbageSettings->getUserSettings()->getValue ("CsoundManualDir");
-    const String cabbageHelpDir = cabbageSettings->getUserSettings()->getValue ("CabbageManualDir");
-
-
-    if (type == "context")
-    {
-        CabbageControlWidgetStrings controlWidgets;
-        CabbageLayoutWidgetStrings layoutWidgets;
-
-        if (controlWidgets.contains (keyword) || layoutWidgets.contains (keyword))
-        {
-            if (keyword.contains ("slider"))
-                url = cabbageHelpDir + "/docs/sliders/index.html";
-            else if (keyword == "filebutton")
-                url = cabbageHelpDir + "/docs/filebutton/index.html";
-            else if (keyword == "infobutton")
-                url = cabbageHelpDir + "/docs/infobutton/index.html";
-            else
-                url = cabbageHelpDir + "/docs/" + keyword + "/index.html";
-        }
-        else
-            url = csoundHelpDir + "/" + keyword +".html";
-    }
-    else if (type == "csound")
-        url = csoundHelpDir + "/index.html";
-
-    else
-        url = cabbageHelpDir + "/index.html";
-
-    if (File (url).existsAsFile())
-    {
-        URL urlHelp (url);
-        ChildProcess process;
-        File temp (urlHelp.toString (false));
-#ifdef LINUX
-
-        if (!process.start (String ("xdg-open " + urlHelp.toString (false)).toUTF8()))
-            CabbageUtilities::showMessage ("Couldn't show file, see 'Set Csound manual directory' in Options->Preferences", &getLookAndFeel());
-
-#else
-        urlHelp.launchInDefaultBrowser();
-#endif
-
-    }
+    jassertfalse;
+//    String url = "";
+//    String keyword = "";
+//    if (getCurrentCodeEditor())
+//    {
+//        CodeDocument::Position pos1, pos2;
+//        pos1 = getCurrentCodeEditor()->getDocument().findWordBreakBefore(getCurrentCodeEditor()->getCaretPos());
+//        pos2 = getCurrentCodeEditor()->getDocument().findWordBreakAfter(getCurrentCodeEditor()->getCaretPos());
+//        keyword = getCurrentCodeEditor()->getDocument().getTextBetween(pos1, pos2).trim();
+//    }
+//    const String csoundHelpDir = cabbageSettings->getUserSettings()->getValue ("CsoundManualDir");
+//    const String cabbageHelpDir = cabbageSettings->getUserSettings()->getValue ("CabbageManualDir");
+//
+//
+//    if (type == "context")
+//    {
+//        CabbageControlWidgetStrings controlWidgets;
+//        CabbageLayoutWidgetStrings layoutWidgets;
+//
+//        if (controlWidgets.contains (keyword) || layoutWidgets.contains (keyword))
+//        {
+//            if (keyword.contains ("slider"))
+//                url = cabbageHelpDir + "/docs/sliders/index.html";
+//            else if (keyword == "filebutton")
+//                url = cabbageHelpDir + "/docs/filebutton/index.html";
+//            else if (keyword == "infobutton")
+//                url = cabbageHelpDir + "/docs/infobutton/index.html";
+//            else
+//                url = cabbageHelpDir + "/docs/" + keyword + "/index.html";
+//        }
+//        else
+//            url = csoundHelpDir + "/" + keyword +".html";
+//    }
+//    else if (type == "csound")
+//        url = csoundHelpDir + "/index.html";
+//
+//    else
+//        url = cabbageHelpDir + "/index.html";
+//
+//    if (File (url).existsAsFile())
+//    {
+//        URL urlHelp (url);
+//        ChildProcess process;
+//        File temp (urlHelp.toString (false));
+//#ifdef LINUX
+//
+//        if (!process.start (String ("xdg-open " + urlHelp.toString (false)).toUTF8()))
+//            CabbageUtilities::showMessage ("Couldn't show file, see 'Set Csound manual directory' in Options->Preferences", &getLookAndFeel());
+//
+//#else
+//        urlHelp.launchInDefaultBrowser();
+//#endif
+//
+//    }
 }
 
 //==================================================================================
@@ -1800,7 +1813,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool compileFromPlayButton
 				}
 
 				if (getCurrentCsdFile().existsAsFile())
-					getCurrentCsdFile().replaceWithText(getCurrentCodeEditor()->getDocument().getAllContent());
+					getCurrentCsdFile().replaceWithText(getCurrentCodeEditor()->getAllContent());
 			
 				for (int i = 0; i < editorAndConsole.size(); i++)
 				{
@@ -1809,7 +1822,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool compileFromPlayButton
 					if (getCurrentEditorContainer() != editorAndConsole[i] &&
 						getCurrentCsdFile().getFullPathName() == editorAndConsole[i]->getFile().getFullPathName())
 					{
-						editorAndConsole[i]->editor->loadContent(getCurrentCodeEditor()->getDocument().getAllContent());
+						editorAndConsole[i]->editor->loadContent(getCurrentCodeEditor()->getAllContent());
 						stopCsoundForNode(getCurrentCsdFile().getFullPathName(), i);
                         if(compileOnSave)
 						    runCsoundForNode(getCurrentCsdFile().getFullPathName(), i);
@@ -2208,9 +2221,11 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
     {
         if (fileContents.contains(camelCaseIdentifiers[i].toLowerCase()) && camelCaseIdentifiers.contains(camelCaseIdentifiers[i].toLowerCase()) == false && camelCaseIdentifiers[i].isNotEmpty())
         {
+#ifdef JUCE_LINUX
             const CodeDocument::Position startPos (getCurrentCodeEditor()->getDocument(), fileContents.indexOf(camelCaseIdentifiers[i].toLowerCase()));
             int lineNum = startPos.getLineNumber() + 1;
             nonCamelCaseIdentifiers.add("\""+camelCaseIdentifiers[i].toLowerCase()+"\"(Line:"+String(lineNum)+")");
+#endif
         }
     }
 
@@ -2243,18 +2258,22 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
             
             if (pluginId.length() != 4)
             {
+#ifdef LINUX_BUILD
                 const CodeDocument::Position startPos (getCurrentCodeEditor()->getDocument(), fileContents.indexOf(pluginId));
                 int lineNum = startPos.getLineNumber() + 1;
                 warnings.add("\nWarning: The current pluginId(\""+pluginId+"\") (Line:"+String(lineNum)+") is not valid. A form pluginId() must be an alphanumeric string of 4 characters. ");
+#endif
             }
         }
         else if(CabbageWidgetData::getStringProp(tempWidget, CabbageIdentifierIds::type) == "gentable")
         {
+#ifdef LINUX_BUILD
             const int drawMode = CabbageWidgetData::getNumProp(tempWidget, CabbageIdentifierIds::drawmode);
             if(drawMode != -1)
             {
             warnings.add("\nWarning: drawMode("+String(drawMode)+") (Line:"+String(lineIndex)+") is deprecated. Please use a meter widget");
             }
+#endif
         }
         
         if (string.indexOf(";") == -1)
@@ -2302,12 +2321,14 @@ StringArray CabbageMainComponent::preCompileCheckForIssues(File file)
             channels.remove(i);
         else
         {
+#if JUCE_LINUX
             const String chan = channels[i].substring(0, channels[i].indexOf("|"));
             const CodeDocument::Position startPos (getCurrentCodeEditor()->getDocument(), fileContents.indexOf(chan));
             int lineNum = startPos.getLineNumber() + 1;
             
             channels.set(i, "\""+channels[i].substring(0, channels[i].indexOf("|"))+"\" (Line:"+String(lineNum)+")");
-            fileContents = fileContents.replaceFirstOccurrenceOf(chan, "test");            
+            fileContents = fileContents.replaceFirstOccurrenceOf(chan, "test");
+#endif
         }
     }
     

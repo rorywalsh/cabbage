@@ -29,12 +29,20 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* cabbageSettings
 
     if (isCsdFile)
     {
+#ifdef JUCE_LINUX
         editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
+#else
+        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree));
+#endif
         addAndMakeVisible (editor.get());
     }
     else
     {
+#ifdef JUCE_LINUX
         editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &javaTokeniser));
+#else
+        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree));
+#endif
         addAndMakeVisible (editor.get());
     }
 

@@ -22,6 +22,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageCodeEditor.h"
+#include "CabbageVSCodeEditor.h"
 #include "CabbageOutputConsole.h"
 #include "JavascriptCodeTokeniser.h"
 
@@ -83,7 +84,10 @@ public:
 
     int getStatusBarPosition();
     void hideOutputConsole();
+
+
     std::unique_ptr<CabbageCodeEditorComponent> editor;
+
     std::unique_ptr<CabbageOutputConsole> outputConsole;
     StatusBar statusBar;
     CodeDocument csoundDocument;
