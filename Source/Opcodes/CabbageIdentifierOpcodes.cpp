@@ -702,23 +702,21 @@ int GetCabbageValueWithTrigger::getAttribute()
     {
         numberOfPasses = (numberOfPasses < 3 ? numberOfPasses+1 : 3);
 
-            if(*value != currentValue)
+        if(*value != currentValue)
+        {
+            currentValue = *value;
+            outargs[1] = 1;
+        }
+        else
+        {
+            if(numberOfPasses == 2 && triggerOnPerfPass>0)
             {
-                currentValue = *value;
                 outargs[1] = 1;
             }
             else
-            {
-                if(numberOfPasses == 2 && triggerOnPerfPass>0)
-                {
-                    outargs[1] = 1;
-                }
-                else
-                    outargs[1] = 0;
-            }
-            outargs[0] = currentValue;
-
-        
+                outargs[1] = 0;
+        }
+        outargs[0] = currentValue;       
         
     }
     
@@ -763,7 +761,7 @@ int GetCabbageValueArrayWithTrigger::getAttribute()
     return OK;
 }
 
-
+//=========================================================================================
 int CabbageValueChanged::getAttribute()
 {
     if(in_count() == 0)
@@ -777,79 +775,87 @@ int CabbageValueChanged::getAttribute()
     csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
     bool foundAChange = false;
     
-    for (unsigned long i = 0 ; i < int(inputArgs.len()) ; i++)
+    if(mode == 3 && firstPerfPass)
     {
-        if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
-                                                CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+        outargs.str_data(0) = inputArgs[0];
+        outargs[1] = 1;
+        firstPerfPass = false;
+    }
+    else
+    {
+        for (unsigned long i = 0 ; i < int(inputArgs.len()) ; i++)
         {
-            if(in_count() > 1)
+            if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                                                    CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
             {
-                if(mode == 2)
+                if(in_count() > 1)
                 {
-                    if ((oldValue[i] <= inargs[1] && *value > inargs[1]) ||
-                        (oldValue[i] >= inargs[1] && *value < inargs[1] ) )
+                    if(mode == 2)
                     {
+                        if ((oldValue[i] <= inargs[1] && *value > inargs[1]) ||
+                            (oldValue[i] >= inargs[1] && *value < inargs[1] ) )
+                        {
+                            outargs.str_data(0).size = inputArgs[i].size;
+                            outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                            foundAChange = true;
+                        }
+                    }
+                    else if(mode == 0)
+                    {
+                        if (oldValue[i] <= inargs[1] && *value > inargs[1])
+                        {
+                            outargs.str_data(0).size = inputArgs[i].size;
+                            outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                            foundAChange = true;
+                        }
+                    }
+                    else if(mode == 1)
+                    {
+                        if (oldValue[i] >= inargs[1] && *value < inargs[1])
+                        {
+                            outargs.str_data(0).size = inputArgs[i].size;
+                            outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                            foundAChange = true;
+                        }
+                    }
+                    
+                    oldValue[i] = *value;
+                }
+                else
+                {
+                    if(*value != oldValue[i])
+                    {
+                        oldValue[i] = *value;
                         outargs.str_data(0).size = inputArgs[i].size;
                         outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
                         foundAChange = true;
                     }
                 }
-                else if(mode == 0)
-                {
-                    if (oldValue[i] <= inargs[1] && *value > inargs[1])
-                    {
-                        outargs.str_data(0).size = inputArgs[i].size;
-                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                        foundAChange = true;
-                    }
-                }
-                else if(mode == 1)
-                {
-                    if (oldValue[i] >= inargs[1] && *value < inargs[1])
-                    {
-                        outargs.str_data(0).size = inputArgs[i].size;
-                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                        foundAChange = true;
-                    }
+            }
+            else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                                                         CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+            {
+                if(int(currentStrings[static_cast<unsigned long>(i)].size) == 0){
+                    currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                    currentStrings[i].size = ((STRINGDAT*)value)->size;
                 }
                 
-                oldValue[i] = *value;
-            }
-            else
-            {
-                if(*value != oldValue[i])
+                if(strcmp(currentStrings[i].data, ((STRINGDAT*)value)->data) != 0)
                 {
-                    oldValue[i] = *value;
+                    currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                    currentStrings[i].size = ((STRINGDAT*)value)->size;
+                    foundAChange = true;
                     outargs.str_data(0).size = inputArgs[i].size;
                     outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                    foundAChange = true;
                 }
             }
         }
-        else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
-                                                     CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-        {
-            if(int(currentStrings[static_cast<unsigned long>(i)].size) == 0){
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
-                currentStrings[i].size = ((STRINGDAT*)value)->size;
-            }
-            
-            if(strcmp(currentStrings[i].data, ((STRINGDAT*)value)->data) != 0)
-            {
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
-                currentStrings[i].size = ((STRINGDAT*)value)->size;
-                foundAChange = true;
-                outargs.str_data(0).size = inputArgs[i].size;
-                outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-            }
-        }
+        
+        if(foundAChange)
+            outargs[1] = 1;
+        else
+            outargs[1] = 0;
     }
-    
-    if(foundAChange)
-        outargs[1] = 1;
-    else
-        outargs[1] = 0;
-    
     return OK;
 }
 
@@ -866,82 +872,85 @@ int CabbageValueChangedIndex::getAttribute()
     csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
     bool foundAChange = false;
     
-    for ( unsigned long i = 0 ; i < int(inputArgs.len()) ; i++)
+    if(mode == 3 && firstPerfPass)
     {
-        if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
-                                                CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+        outargs[0] = 0;
+        outargs[1] = 1;
+        firstPerfPass = false;
+    }
+    else
+    {
+        for ( unsigned long i = 0 ; i < int(inputArgs.len()) ; i++)
         {
-            if(in_count() > 1)
+            if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                                                    CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
             {
-                if(mode == 2)
+                if(in_count() > 1)
                 {
-                    if ((oldValue[i] <= inargs[1] && *value > inargs[1]) ||
-                        (oldValue[i] >= inargs[1] && *value < inargs[1] ) )
+                    if(mode == 2)
                     {
-//                        outargs.str_data(0).size = inputArgs[i].size;
-//                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                        outargs[0] = i;
-                        foundAChange = true;
+                        if ((oldValue[i] <= inargs[1] && *value > inargs[1]) ||
+                            (oldValue[i] >= inargs[1] && *value < inargs[1] ) )
+                        {
+                            //                        outargs.str_data(0).size = inputArgs[i].size;
+                            //                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                            outargs[0] = i;
+                            foundAChange = true;
+                        }
                     }
-                }
-                else if(mode == 0)
-                {
-                    if (oldValue[i] <= inargs[1] && *value > inargs[1])
+                    else if(mode == 0)
                     {
-//                        outargs.str_data(0).size = inputArgs[i].size;
-//                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                        outargs[0] = i;
-                        foundAChange = true;
+                        if (oldValue[i] <= inargs[1] && *value > inargs[1])
+                        {
+                            //                        outargs.str_data(0).size = inputArgs[i].size;
+                            //                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                            outargs[0] = i;
+                            foundAChange = true;
+                        }
                     }
-                }
-                else if(mode == 1)
-                {
-                    if (oldValue[i] >= inargs[1] && *value < inargs[1])
+                    else if(mode == 1)
                     {
-//                        outargs.str_data(0).size = inputArgs[i].size;
-//                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                        outargs[0] = i;
-                        foundAChange = true;
+                        if (oldValue[i] >= inargs[1] && *value < inargs[1])
+                        {
+                            //                        outargs.str_data(0).size = inputArgs[i].size;
+                            //                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                            outargs[0] = i;
+                            foundAChange = true;
+                        }
                     }
-                }
-                
-                oldValue[i] = *value;
-            }
-            else
-            {
-                if(*value != oldValue[i])
-                {
+                    
                     oldValue[i] = *value;
-//                    outargs.str_data(0).size = inputArgs[i].size;
-//                    outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                }
+                else
+                {
+                    if(*value != oldValue[i])
+                    {
+                        oldValue[i] = *value;
+                        //                    outargs.str_data(0).size = inputArgs[i].size;
+                        //                    outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        foundAChange = true;
+                        outargs[0] = i;
+                    }
+                }
+            }
+            else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                                                         CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+            {
+                if(strcmp(currentStrings[i].data, ((STRINGDAT*)value)->data) != 0)
+                {
+                    currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                    currentStrings[i].size = ((STRINGDAT*)value)->size;
                     foundAChange = true;
                     outargs[0] = i;
                 }
             }
         }
-        else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
-                                                     CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-        {
-            if(currentStrings[i].size == 0){
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
-                currentStrings[i].size = ((STRINGDAT*)value)->size;
-            }
-            
-            if(strcmp(currentStrings[i].data, ((STRINGDAT*)value)->data) != 0)
-            {
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
-                currentStrings[i].size = ((STRINGDAT*)value)->size;
-                foundAChange = true;
-                outargs[0] = i;
-            }
-        }
+        
+        if(foundAChange == true)
+            outargs[1] = 1;
+        else
+            outargs[1] = 0;
     }
-    
-    if(foundAChange == true)
-        outargs[1] = 1;
-    else
-        outargs[1] = 0;
-    
     return OK;
 }
 

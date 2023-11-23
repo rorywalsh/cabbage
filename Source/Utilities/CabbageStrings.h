@@ -175,76 +175,9 @@ public:
         var suggestions = [];
         require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.26.1/min/vs' } });
         require(["vs/editor/editor.main"], () => {
-
-
+    console.log('=============================================');
             editor = monaco.editor.create(document.getElementById('container'), {
                 value: `
-                <CsoundSynthesizer>
-<CsOptions>
-; Select audio/midi flags here according to platform
-; Audio out   Audio in    No messages
--odac           -iadc     -d     ;;;RT audio I/O
-; For Non-realtime ouput leave only the line below:
-; -o vco2.wav -W ;;; for file output any platform
-</CsOptions>
-<CsInstruments>
-
-sr      =  44100
-ksmps   =  10
-nchnls  =  1
-
-; user defined waveform -1: trapezoid wave with default parameters (can be
-; accessed at ftables starting from 10000)
-itmp    ftgen 1, 0, 16384, 7, 0, 2048, 1, 4096, 1, 4096, -1, 4096, -1, 2048, 0
-ift     vco2init -1, 10000, 0, 0, 0, 1
-; user defined waveform -2: fixed table size (4096), number of partials
-; multiplier is 1.02 (~238 tables)
-itmp    ftgen 2, 0, 16384, 7, 1, 4095, 1, 1, -1, 4095, -1, 1, 0, 8192, 0
-ift     vco2init -2, ift, 1.02, 4096, 4096, 2
-
-        instr 1
-kcps    expon p4, p3, p5                ; instr 1: basic vco2 example
-a1      vco2 12000, kcps                ; (sawtooth wave with default
-        out a1                          ; parameters)
-        endin
-
-        instr 2
-kcps    expon p4, p3, p5                        ; instr 2:
-kpw     linseg 0.1, p3/2, 0.9, p3/2, 0.1        ; PWM example
-a1      vco2 10000, kcps, 2, kpw
-        out a1
-        endin
-
-        instr 3
-kcps    expon p4, p3, p5                ; instr 3: vco2 with user
-a1      vco2 14000, kcps, 14            ; defined waveform (-1)
-aenv    linseg 1, p3 - 0.1, 1, 0.1, 0   ; de-click envelope
-        out a1 * aenv
-        endin
-
-        instr 4
-kcps    expon p4, p3, p5                ; instr 4: vco2ft example,
-kfn     vco2ft kcps, -2, 0.25           ; with user defined waveform
-a1      oscilikt 12000, kcps, kfn       ; (-2), and sr/4 bandwidth
-        out a1
-        endin
-
-
-</CsInstruments>
-<CsScore>
-
-i 1  0 3 20 2000
-i 2  4 2 200 400
-i 3  7 3 400 20
-i 4 11 2 100 200
-
-f 0 14
-
-e
-
-
-</CsScore>
-</CsoundSynthesizer>
                 `,
 
 
@@ -262,109 +195,99 @@ e
                 formatOnPaste: true
             });
 
-                        // Register a new language
+            // Register a new language
             monaco.languages.register({ id: 'mySpecialLanguage' });
 
             // Register a tokens provider for the language
             monaco.languages.setMonarchTokensProvider('mySpecialLanguage', {
                 keywords: [
-    'abstract', 'continue', 'for', 'new', 'switch', 'assert', 'goto', 'do',
-    'if', 'private', 'this', 'break', 'protected', 'throw', 'else', 'public',
-    'enum', 'return', 'catch', 'try', 'interface', 'static', 'class',
-    'finally', 'const', 'super', 'while', 'true', 'false'
-  ],
+                    'abstract', 'continue', 'for', 'new', 'switch', 'assert', 'goto', 'do',
+                    'if', 'private', 'this', 'break', 'protected', 'throw', 'else', 'public',
+                    'enum', 'return', 'catch', 'try', 'interface', 'static', 'class',
+                    'finally', 'const', 'super', 'while', 'true', 'false'
+                ],
 
-  typeKeywords: [
-    'boolean', 'double', 'byte', 'int', 'short', 'char', 'void', 'long', 'float'
-  ],
+                typeKeywords: [
+                    'boolean', 'double', 'byte', 'int', 'short', 'char', 'void', 'long', 'float'
+                ],
 
-  operators: [
-    '=', '>', '<', '!', '~', '?', ':', '==', '<=', '>=', '!=',
-    '&&', '||', '++', '--', '+', '-', '*', '/', '&', '|', '^', '%',
-    '<<', '>>', '>>>', '+=', '-=', '*=', '/=', '&=', '|=', '^=',
-    '%=', '<<=', '>>=', '>>>='
-  ],
+                operators: [
+                    '=', '>', '<', '!', '~', '?', ':', '==', '<=', '>=', '!=',
+                    '&&', '||', '++', '--', '+', '-', '*', '/', '&', '|', '^', '%',
+                    '<<', '>>', '>>>', '+=', '-=', '*=', '/=', '&=', '|=', '^=',
+                    '%=', '<<=', '>>=', '>>>='
+                ],
 
-  // we include these common regular expressions
-  symbols:  /[=><!~?:&|+\-*\/\^%]+/,
+                // we include these common regular expressions
+                symbols: /[=><!~?:&|+\-*\/\^%]+/,
 
-  // C# style strings
-  escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
+                // C# style strings
+                escapes: /\\(?:[abfnrtv\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})/,
 
-  // The main tokenizer for our languages
-  tokenizer: {
-    root: [
-      // identifiers and keywords
-      [/[a-z_$][\w$]*/, { cases: { '@typeKeywords': 'keyword',
-                                   '@keywords': 'keyword',
-                                   '@default': 'identifier' } }],
-      [/[A-Z][\w\$]*/, 'type.identifier' ],  // to show class names nicely
+                // The main tokenizer for our languages
+                tokenizer: {
+                    root: [
+                        // Comments
+                        [/;.*$/, "comment"],
 
-      // whitespace
-      { include: '@whitespace' },
+                        // Instrument and score statements
+                        // Keywords
+                        ["<CsOptions>|</CsOptions>|<CsInstruments>|</CsInstruments>|</CsScore>|</CsoundSynthesizer>|<CsScore>|<CsoundSynthesizer>", "cs-tags"],
+                        ["if |then|else|elseif|endif", "control-flow"],
 
-      // delimiters and operators
-      [/[{}()\[\]]/, '@brackets'],
-      [/[<>](?!@symbols)/, '@brackets'],
-      [/@symbols/, { cases: { '@operators': 'operator',
-                              '@default'  : '' } } ],
 
-      // @ annotations.
-      // As an example, we emit a debugging log message on these tokens.
-      // Note: message are supressed during the first load -- change some lines to see them.
-      [/@\s*[a-zA-Z_\$][\w\$]*/, { token: 'annotation', log: 'annotation token: $0' }],
+                        ["sr|nchnls|ksmps|kr|0dbfs", "keyword"],
+                        ["instr|endin", "instrDefine"],
+                        ["endin", "keyword"],
+                        [/\b[a]\w*/, "variables"],
+                        [/\b[i]\w*/, "variables"],
+                        [/\b[f]\w*/, "variables"],
+                        [/\b[S]\w*/, "variables"],
+                        [/\b[k]\w*/, "variables"],
+                        // [/\b(?:<\/CsOptions>|<CsInstruments>|<CsOptions>|<\/CsInstruments>|<\/CsScore>|<\/CsoundSynthesizer>|<CsScore>|<CsoundSynthesizer>)\b/, "tag"],
+                        // Opcode names
+                        [/\b[^a\d]\w*/, "opcode"],
+                        [/\b[^i\d]\w*/, "opcode"],
+                        [/\b[^k\d]\w*/, "opcode"],
+                        [/\b[^f\d]\w*/, "opcode"],
+                        [/\b[^S\d]\w*/, "opcode"],
 
-      // numbers
-      [/\d*\.\d+([eE][\-+]?\d+)?/, 'number.float'],
-      [/0[xX][0-9a-fA-F]+/, 'number.hex'],
-      [/\d+/, 'number'],
+                        [/[a-zA-Z_]\w*/, "opcode"],
 
-      // delimiter: after number because of .\d floats
-      [/[;,.]/, 'delimiter'],
+                        // Numbers
+                        [/\b\d+(\.\d+)?\b/, "number"],
 
-      // strings
-      [/"([^"\\]|\\.)*$/, 'string.invalid' ],  // non-teminated string
-      [/"/,  { token: 'string.quote', bracket: '@open', next: '@string' } ],
+                        // Strings
+                        [/"(?:\\.|[^"])*"/, "string"],
 
-      // characters
-      [/'[^\\']'/, 'string'],
-      [/(')(@escapes)(')/, ['string','string.escape','string']],
-      [/'/, 'string.invalid']
-    ],
 
-    comment: [
-      [/[^\/*]+/, 'comment' ],
-      [/\/\*/,    'comment', '@push' ],    // nested comment
-      ["\\*/",    'comment', '@pop'  ],
-      [/[\/*]/,   'comment' ]
-    ],
+                    ]
+                },
 
-    string: [
-      [/[^\\"]+/,  'string'],
-      [/@escapes/, 'string.escape'],
-      [/\\./,      'string.escape.invalid'],
-      [/"/,        { token: 'string.quote', bracket: '@close', next: '@pop' } ]
-    ],
-
-    whitespace: [
-      [/[ \t\r\n]+/, 'white'],
-      [/\/\*/,       'comment', '@comment' ],
-      [/\/\/.*$/,    'comment'],
-    ],
-  },
             });
 
             monaco.editor.defineTheme("myTheme", {
-            base: "vs-dark",
+                base: "vs-dark",
                 inherit: true,
-                rules: [],
+                rules: [
+                    { token: "cs-tags", foreground: '#3F90CC', fontStyle: "bold" },
+                    { token: "control-flow", foreground: '#518048' },
+                    { token: "variables", foreground: '#dddddd' },
+                    { token: "opcode", foreground: '#3F90CC', fontStyle: "bold" },
+                    { token: "string", foreground: '#FF8C00', fontStyle: "bold" },
+                    { token: "keyword", foreground: '#dddddd', fontStyle: "normal" },
+                    { token: "instrDefine", foreground: '#3F90CC', fontStyle: "bold" },
+
+                    { token: "number", foreground: '#518048', fontStyle: "normal" },
+
+                ],
                 colors: {
-                    "editor.background": "#191E2B",
+                    "editor.background": "#191E2B"
                 },
             });
             monaco.editor.setTheme("myTheme");
             editor.getModel().updateOptions({ tabSize: 2 })
-            editor.onDidPaste( ( e ) => {
+            editor.onDidPaste((e) => {
                 updatePropertiesCallback(JSON.parse(editor.getValue()));
             })
 
@@ -375,9 +298,9 @@ e
             editor.onDidChangeModelContent(function (e) {
                 if (e.isFlush) {
                     console.log("setValue called")
-                  } else {
+                } else {
                     updatePropertiesCallback(JSON.parse(editor.getValue()));
-                  }
+                }
 
                 console.log("text changed");
 
@@ -388,52 +311,52 @@ e
             let actions = editor.getSupportedActions().map((a) => a.id);
             actions.forEach(e => console.log(e));
 
-            editor.setPosition({column: 9, lineNumber: 3});
+            editor.setPosition({ column: 9, lineNumber: 3 });
 
             editor.focus();
 
             suggestions = [
-                            {
-                                label: 'range',
-                                kind: monaco.languages.CompletionItemKind.Snippet,
-                                documentation: 'Add an a range parameter',
-                                command: {
-                                    id: 'editor.action.triggerSuggest',
-                                    title: 'operator_additional_suggestions',
-                                },
-                                insertText: [
-                                    '"name": {    "type": "range","increment": 0.001,"max": 1.0,"min": 0.0,"skew": 1.0, "value":0,',
-                                    '"nodeParameters":{',
-                                    '}',
-                                    '}'].join('\n')
-                            },
-                            {
-                                label: 'keyboard',
-                                kind: monaco.languages.CompletionItemKind.Snippet,
-                                documentation: 'Add an a range parameter',
-                                command: {
-                                    id: 'editor.action.triggerSuggest',
-                                    title: 'operator_additional_suggestions',
-                                },
-                                insertText: [
-                                    '"keyboard": {    "min": 48.0,"max": 72.0',
-                                    '}'].join('\n')
-                            },
-                            {
-                                label: 'button',
-                                kind: monaco.languages.CompletionItemKind.Snippet,
-                                documentation: 'Add an a button parameter',
-                                command: {
-                                    id: 'editor.action.triggerSuggest',
-                                    title: 'operator_additional_suggestions',
-                                },
-                                insertText: [
-                                    '"name": {    "type": "button","increment": 0.1,"max": 1.0,"min": 0.0, "value":0, "onText": "On", "offText": "Off",',
-                                    '"nodeParameters":{',
-                                    '}',
-                                    '}'].join('\n')
-                            }
-                        ]
+                {
+                    label: 'range',
+                    kind: monaco.languages.CompletionItemKind.Snippet,
+                    documentation: 'Add an a range parameter',
+                    command: {
+                        id: 'editor.action.triggerSuggest',
+                        title: 'operator_additional_suggestions',
+                    },
+                    insertText: [
+                        '"name": {    "type": "range","increment": 0.001,"max": 1.0,"min": 0.0,"skew": 1.0, "value":0,',
+                        '"nodeParameters":{',
+                        '}',
+                        '}'].join('\n')
+                },
+                {
+                    label: 'keyboard',
+                    kind: monaco.languages.CompletionItemKind.Snippet,
+                    documentation: 'Add an a range parameter',
+                    command: {
+                        id: 'editor.action.triggerSuggest',
+                        title: 'operator_additional_suggestions',
+                    },
+                    insertText: [
+                        '"keyboard": {    "min": 48.0,"max": 72.0',
+                        '}'].join('\n')
+                },
+                {
+                    label: 'button',
+                    kind: monaco.languages.CompletionItemKind.Snippet,
+                    documentation: 'Add an a button parameter',
+                    command: {
+                        id: 'editor.action.triggerSuggest',
+                        title: 'operator_additional_suggestions',
+                    },
+                    insertText: [
+                        '"name": {    "type": "button","increment": 0.1,"max": 1.0,"min": 0.0, "value":0, "onText": "On", "offText": "Off",',
+                        '"nodeParameters":{',
+                        '}',
+                        '}'].join('\n')
+                }
+            ]
 
             monaco.languages.registerCompletionItemProvider('mySpecialLanguage', {
                 provideCompletionItems: () => {
@@ -444,7 +367,7 @@ e
             });
         });//end of require
 
-            window.addEventListener('keydown', function(event) {
+        window.addEventListener('keydown', function (event) {
             if (event.keyCode === 80 && (event.ctrlKey || event.metaKey) && !event.altKey && (!event.shiftKey || window.chrome || window.opera)) {
                 event.preventDefault();
                 if (event.stopImmediatePropagation) {
@@ -454,7 +377,7 @@ e
                 }
                 updatePropertiesEditorCallback('hide editor');
                 return;
-                } else if (event.keyCode === 83 && (event.ctrlKey || event.metaKey) && !event.altKey && (!event.shiftKey || window.chrome || window.opera)) {
+            } else if (event.keyCode === 83 && (event.ctrlKey || event.metaKey) && !event.altKey && (!event.shiftKey || window.chrome || window.opera)) {
                 event.preventDefault();
                 if (event.stopImmediatePropagation) {
                     event.stopImmediatePropagation();
@@ -467,45 +390,46 @@ e
                 return;
             }
             else if (event.keyCode === 81)
-                    console.log(editor);
-            else if ((event.metaKey || event.ctrlKey) && event.key === 'c'){
+                console.log(editor);
+            else if ((event.metaKey || event.ctrlKey) && event.key === 'c') {
                 console.log('’Cmd+c’ was pressed')
-                editor.trigger('source','editor.action.clipboardCopyAction');
+                editor.trigger('source', 'editor.action.clipboardCopyAction');
             }
-            else if ((event.metaKey || event.ctrlKey) && event.key === 'v'){
+            else if ((event.metaKey || event.ctrlKey) && event.key === 'v') {
                 console.log('’Cmd+v’ was pressed')
-                editor.trigger('source','editor.action.clipboardPasteAction');
+                editor.trigger('source', 'editor.action.clipboardPasteAction');
             }
-            else if ((event.metaKey || event.ctrlKey) && event.key === 'x'){
+            else if ((event.metaKey || event.ctrlKey) && event.key === 'x') {
                 console.log('’Cmd+x’ was pressed')
-                editor.trigger('source','editor.action.clipboardCutAction');
+                editor.trigger('source', 'editor.action.clipboardCutAction');
             }
 
         }, true);
-            function updateText(txt){
-                console.log("should be updating the text");
-                // Select all text
-                const fullRange = editor.getModel().getFullModelRange();
-//                var lines = txt.split('\n');
-//                // remove one line, starting at the first position
-//                lines.splice(0,1);
-//                // join the array back into a single string
-//                txt = lines.join('\n').replace(/^ {2}/gm, '');
+        function updateText(txt) {
+            console.log("should be updating the text");
+            // Select all text
+            alert(txt);
+            const fullRange = editor.getModel().getFullModelRange();
+            //                var lines = txt.split('\n');
+            //                // remove one line, starting at the first position
+            //                lines.splice(0,1);
+            //                // join the array back into a single string
+            //                txt = lines.join('\n').replace(/^ {2}/gm, '');
 
-                // Apply the text over the range
-                editor.executeEdits(null, [{
-                  text: txt,
-                  range: fullRange
-                }]);
+            // Apply the text over the range
+            editor.executeEdits(null, [{
+                text: txt,
+                range: fullRange
+            }]);
 
-                // Indicates the above edit is a complete undo/redo change.
-                editor.pushUndoStop();
+            // Indicates the above edit is a complete undo/redo change.
+            editor.pushUndoStop();
 
-                //editor.getModels()[0].setValue(txt);
-                //editor.setValue(txt);
-                updatePropertiesCallback(JSON.parse(editor.getValue()));
-                console.log(txt);
-            }
+            //editor.getModels()[0].setValue(txt);
+            //editor.setValue(txt);
+            //updatePropertiesCallback(JSON.parse(editor.getValue()));
+            console.log(txt);
+        }
     </script>
 </body>
 

@@ -77,6 +77,15 @@ CabbageEditorContainer::~CabbageEditorContainer()
     outputConsole = nullptr;
 }
 
+void CabbageEditorContainer::hide()
+{
+    editor->nativeWindow.setVisible(false);
+}
+void CabbageEditorContainer::show()
+{
+    toFront(true);
+    editor->nativeWindow.setVisible(true);
+}
 void CabbageEditorContainer::setDefaultFont()
 {
     const int fontSize = settings->getUserSettings()->getIntValue("FontSize", 17);

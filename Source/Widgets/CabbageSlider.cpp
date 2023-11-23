@@ -751,14 +751,18 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
         getSlider().getProperties().set("trackerinnerradius", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackerinsideradius));
         getSlider().getProperties().set("trackerouterradius", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackeroutsideradius));
 
+        
         handleCommonUpdates(this, valueTree, false, prop);
+        
         if(prop == CabbageIdentifierIds::left || prop == CabbageIdentifierIds::top ||
            prop == CabbageIdentifierIds::width || prop == CabbageIdentifierIds::height ||
            prop == CabbageIdentifierIds::bounds)
         {
             //after resizing, make sure the slider's thumb is in the right position
+            DBG(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value));
             getSlider().setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), dontSendNotification);
         }
+        
         setLookAndFeelColours(valueTree);
 
         const String popup = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);

@@ -340,6 +340,7 @@ void CabbageMainComponent::buttonClicked (Button* button)
 
 void CabbageMainComponent::handleFileTab (FileTab* tabButton, bool increment)
 {
+    editorAndConsole[currentFileIndex]->hide();
     if (increment && tabButton == nullptr)
     {
         currentFileIndex = (currentFileIndex  < fileTabs.size() - 1 ? currentFileIndex + 1 : 0);
@@ -348,7 +349,7 @@ void CabbageMainComponent::handleFileTab (FileTab* tabButton, bool increment)
         currentFileIndex = fileTabs.indexOf (tabButton);
 
     hideFindPanel();
-    editorAndConsole[currentFileIndex]->toFront (true);
+    editorAndConsole[currentFileIndex]->show();
     cabbageSettings->setProperty ("MostRecentFile", fileTabs[currentFileIndex]->getFile().getFullPathName());
 
     

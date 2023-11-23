@@ -27,10 +27,12 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     : Component ("VS Code Editor")
 
 {
+    
     choc::ui::WebView::Options options;
     options.enableDebugMode = true;
     webView.reset(new choc::ui::WebView(options));
-    webView->setHTML(CabbageStrings::getVSEditorHTML().toStdString());
+    File vscode("~/sourcecode/vscode.html");
+    webView->setHTML(vscode.loadFileAsString().toStdString());
     
     auto v = webView->getViewHandle();
     nativeWindow.setBounds(0, 0, 400, 400);
@@ -41,6 +43,16 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
 CabbageCodeEditorComponent::~CabbageCodeEditorComponent()
 {
 
+}
+
+void CabbageCodeEditorComponent::loadContent(String content)
+{
+    Timer::callAfterDelay(1000, [this, content]()
+    {
+        auto jsCode = "updateText(`" + content + "`);";
+        webView->evaluateJavascript(jsCode.toStdString());
+    });
+    
 }
 
 void CabbageCodeEditorComponent::resized()

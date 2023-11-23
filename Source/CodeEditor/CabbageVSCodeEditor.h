@@ -75,21 +75,21 @@ class CabbageCodeEditorComponent :
 public:
     CabbageCodeEditorComponent (CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree);
     ~CabbageCodeEditorComponent() override;
- 
+    void hide();
     void resized() override;
     NativeWindowComponent nativeWindow;
-    void loadContent(String content){ jassertfalse; }
+    void loadContent(String content);
     void updateColourScheme(bool isCsdFile=true){  }
     void setFont(Font f){  }
     void setFontSize(int size){  }
-    void startThread(){ jassertfalse; }
+    void startThread(){  }
     void cut(){ jassertfalse; }
     void copy(){ jassertfalse; }
     void paste(){ jassertfalse; }
     void redo(){ jassertfalse; }
     void undo(){ jassertfalse; }
     void selectAll(){ jassertfalse; }
-    void parseTextForInstrumentsAndRegions(){ jassertfalse; }
+    void parseTextForInstrumentsAndRegions(){ }
     void insertCode(int lineNumber, String updatedText, bool, bool){ jassertfalse; }
     void scrollToLine(int line){ jassertfalse; }
     String getAllText(){    jassertfalse;   return ""; }
@@ -102,13 +102,13 @@ public:
     void zoomIn(){jassertfalse;}
     void zoomOut(){jassertfalse;}
     bool hasFileChanged(){ jassertfalse; return true; }
-    void setSavePoint(){ jassertfalse;}
+    void setSavePoint(){ }
     int findText (String, bool, bool, bool){ jassertfalse;}
     String getSelectedText(){ jassertfalse; return ""; }
     void setAllText(String){jassertfalse;}
     void replaceText(String, String){jassertfalse;}
     String getAllContent(){ jassertfalse; return ""; }
-    
+
     NamedValueSet instrumentsAndRegions;
 private:
     std::unique_ptr<choc::ui::WebView> webView;

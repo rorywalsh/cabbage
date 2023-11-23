@@ -72,7 +72,8 @@ public:
 	File getFile() { return currentFile; }
 	void setFile(File file) { currentFile = file; }
     void resized() override;
-
+    void hide();
+    void show();
     void updateEditorColourScheme();
     void mouseDown (const MouseEvent& e) override;
     void mouseUp (const MouseEvent& e) override;
