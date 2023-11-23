@@ -61,7 +61,6 @@ CabbagePopupWindow::CabbagePopupWindow (ValueTree valueTree, const String& svgTe
 
     buttons[1].onClick = [this]
     {
-        setValueTreeProperty("NEW_PRESET_NAME", "");
         juce::ModalComponentManager::getInstance()->cancelAllModalComponents();
     };
 
