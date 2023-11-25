@@ -57,5 +57,5 @@ void CabbageCodeEditorComponent::loadContent(String content)
 
 void CabbageCodeEditorComponent::resized()
 {
-    nativeWindow.setBounds(0, 0, static_cast<int>(getWidth() * .97), getHeight());
+    nativeWindow.setBounds(0, 0, static_cast<int>(getWidth()), getHeight());
 }

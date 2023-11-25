@@ -373,6 +373,10 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
    // csnd::plugin<CabbageFileLoader>((csnd::Csound*)getCsound()->GetCsound(), "cabbageFileLoader", "", "S[]", csnd::thread::i);
 //    csnd::plugin<CabbageFileReader>((csnd::Csound*)getCsound()->GetCsound(), "cabbageOggReader", "aa", "Skii", csnd::thread::ia);
 
+#if Bluetooth
+    csnd::plugin<CabbageBTOpcode>((csnd::Csound*) getCsound()->GetCsound(), "cabbageBleutooth", "k", "S", csnd::thread::k);
+#endif
+    
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
 	csound->SetExternalMidiReadCallback(ReadMidiData);

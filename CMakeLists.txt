@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.141)
+	set(BUILD_VERSION 2.9.142)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -39,6 +39,10 @@ endif()
 
 if(NOT DEFINED CabbagePro)
     set(CabbagePro 0)
+endif()
+
+if(NOT DEFINED Bluetooth)
+    set(Bluetooth 0)
 endif()
 
 if(NOT DEFINED JucePlugin_ManufacturerCode)
@@ -347,8 +351,22 @@ set(IDE_SOURCES
     Source/Utilities/CabbageSSHFileBrowser.cpp
     Source/Utilities/CabbageSSHFileBrowser.h
     Source/Cabbage.cpp
-    Source/Cabbage.h )
+    Source/Cabbage.h 
+    )
     
+
+set(BLUETOOTH_SOURCES 
+Source/Opcodes/CabbageBTOpcodes.cpp
+Source/Opcodes/CabbageBTOpcodes.h
+Source/Opcodes/utils.cpp
+Source/Opcodes/utils.hpp
+)    
+
+if(Bluetooth MATCHES 1)
+    target_sources(${PROJECT_NAME} PRIVATE  ${BLUETOOTH_SOURCES} )
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${BLUETOOTH_SOURCES})
+endif()
+
 if ("${PROJECT_NAME}" STREQUAL "CLIConverter")
     target_sources(${PROJECT_NAME} PRIVATE  ${BATCH_CONVERTER_SOURCES} )
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${BATCH_CONVERTER_SOURCES})
@@ -412,6 +430,7 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
             JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
             JUCE_MODAL_LOOPS_PERMITTED=1
             CabbagePro=${CabbagePro}
+            Bluetooth=${Bluetooth}
             PluginDesc="${PluginDesc}"
             CabbageManufacturer="${CabbageManufacturer}"
             Use_Native_File_Browser=1
@@ -434,6 +453,7 @@ else()
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
         JUCE_MODAL_LOOPS_PERMITTED=1
         CabbagePro=${CabbagePro}
+        Bluetooth=${Bluetooth}
         PluginDesc="${PluginDesc}"
         CabbageManufacturer="${CabbageManufacturer}"
         Use_Native_File_Browser=1
@@ -442,6 +462,13 @@ else()
         Cabbage_IDE_Build=${IS_IDE_Build}
         JUCE_DISPLAY_SPLASH_SCREEN=0
         )
+endif()
+
+if(Bluetooth MATCHES 1)
+    add_subdirectory("/Volumes/SSD_Drive/Mac/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
+    target_link_libraries(${PROJECT_NAME} 
+        PRIVATE
+        simpleble::simpleble)
 endif()
 
 if(MSVC)

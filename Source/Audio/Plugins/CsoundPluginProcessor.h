@@ -38,6 +38,10 @@
 #include "../../Utilities/encrypt.h"
 #endif
 
+#if Bluetooth
+#include "../../Opcodes/CabbageBTOpcodes.h"
+#endif
+
 //this class comes courtesy of @EyalAmir from TAP discord..
 class ProcessBlockTimeListener
 {

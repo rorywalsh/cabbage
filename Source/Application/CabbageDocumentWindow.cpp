@@ -1072,7 +1072,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             
         case CommandIDs::showFindPanel:
             result.setInfo (TRANS ("Find"), TRANS ("Searches for text in the current document."), "Editing", 0);
-            result.defaultKeypresses.add (KeyPress ('f', ModifierKeys::commandModifier, 0));
+            //result.defaultKeypresses.add (KeyPress ('f', ModifierKeys::commandModifier, 0));
             break;
             
         case CommandIDs::showReplacePanel:
