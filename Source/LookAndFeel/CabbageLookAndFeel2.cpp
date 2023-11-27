@@ -223,7 +223,10 @@ void CabbageLookAndFeel2::drawPopupMenuBackgroundWithOptions (Graphics& g,
                                                          int height,
                                                          const PopupMenu::Options& box)
 {
-    setColour(PopupMenu::backgroundColourId, box.getTargetComponent()->findColour(PopupMenu::backgroundColourId));
+    if (box.getTargetComponent())
+    {
+        setColour(PopupMenu::backgroundColourId, box.getTargetComponent()->findColour(PopupMenu::backgroundColourId));
+    }
     drawPopupMenuBackground (g, width, height);
 }
 //====== Returns image of a check mark ==============================================
@@ -247,10 +250,15 @@ void CabbageLookAndFeel2::drawPopupMenuItemWithOptions (Graphics& g, const Recta
                                                    const PopupMenu::Item& item,
                                                    const PopupMenu::Options& box)
 {
-    const auto colour = box.getTargetComponent()->findColour(PopupMenu::textColourId);
+    Colour colour;
+    if (box.getTargetComponent())
+        colour = box.getTargetComponent()->findColour(PopupMenu::textColourId);
+    else
+        colour = Colour(40, 40, 40);
+
     const auto hasSubMenu = item.subMenu != nullptr
                             && (item.itemID == 0 || item.subMenu->getNumItems() > 0);
-    setColour(PopupMenu::highlightedBackgroundColourId, box.getTargetComponent()->findColour(PopupMenu::textColourId).withAlpha(0.2f));
+    setColour(PopupMenu::highlightedBackgroundColourId, colour.withAlpha(0.2f));
 
     drawPopupMenuItem (g,
                        area,
