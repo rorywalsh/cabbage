@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.143)
+	set(BUILD_VERSION 2.9.144)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -39,6 +39,37 @@ endif()
 
 if(NOT DEFINED CabbagePro)
     set(CabbagePro 0)
+endif()
+
+if(NOT DEFINED CustomStandalone)
+    set(USE_CUSTOM_STANDALONE 0)
+else()
+    set(USE_CUSTOM_STANDALONE 1)
+endif()
+
+if(NOT DEFINED Bluetooth)
+    set(Bluetooth 0)
+    set(PLIST_INFO "")
+else()
+set(PLIST_INFO "\
+<plist>
+    <dict>
+        <key>NSMicrophoneUsageDescription</key>
+        <string>No microphone input is required for this app</string>
+        <key>NSBluetoothAlwaysUsageDescription</key>
+        <string>Bluetooth is used for connecting to MIDI devices</string>
+        <key>CFBundleIconName</key>
+        <string>Icons</string>
+        <key>UIRequiresFullScreen</key>
+        <true/>
+        <key>UISupportedInterfaceOrientations</key>
+        <array>
+            <string>UIInterfaceOrientationLandscapeLeft</string>
+            <string>UIInterfaceOrientationLandscapeRight</string>
+        </array>
+    </dict>
+</plist>    
+    ")
 endif()
 
 if(NOT DEFINED JucePlugin_ManufacturerCode)
@@ -94,13 +125,14 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
     juce_add_gui_app(${PROJECT_NAME}
         ICON_BIG ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png              
         ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png 
-        NEEDS_WEB_BROWSER TRUE
+        NEEDS_WEB_BROWSER FALSE
         HARDENED_RUNTIME_ENABLED TRUE
         PLUGINHOST_AU TRUE
-        HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" 
+        HARDENED_RUNTIME_OPTIONS com.apple.security.files.downloads.read-write com.apple.security.device.audio-input com.apple.security.cs.disable-library-validation com.apple.security.cs.allow-unsigned-executable-memory com.apple.security.device.audio-input
         # DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
         COMPANY_NAME ${JucePlugin_Manufacturer}
         MICROPHONE_PERMISSION_ENABLED TRUE
+        PLIST_TO_MERGE ${PLIST_INFO}
         MICROPHONE_PERMISSION_TEXT "Cabbage needs access to your audio interface" 
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
 else()
@@ -143,8 +175,10 @@ else()
         AU_EXPORT_PREFIX "${PROJECT_NAME}AU"
         AU_SANDBOX_SAFE TRUE
         COPY_PLUGIN_AFTER_BUILD FALSE
+        HARDENED_RUNTIME_OPTIONS com.apple.security.files.downloads.read-write com.apple.security.device.audio-input com.apple.security.cs.disable-library-validation com.apple.security.cs.allow-unsigned-executable-memory com.apple.security.device.audio-input
         COMPANY_NAME ${JucePlugin_Manufacturer}
         HARDENED_RUNTIME_ENABLED TRUE
+        PLIST_TO_MERGE ${PLIST_INFO}
         HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input"
         PRODUCT_NAME "${PROJECT_NAME}")   
 endif()
@@ -162,10 +196,14 @@ add_compile_options ( -Wno-reorder -Wno-deprecated -Wno-deprecated-declarations)
 
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 
+
+
 set(COMMON_SOURCES
 Source/Opcodes/CabbageIdentifierOpcodes.cpp
 Source/Opcodes/CabbageIdentifierOpcodes.h
 Source/Opcodes/opcodes.hpp
+Source/Standalone/CabbageStandaloneFilterApp.cpp
+Source/Standalone/CabbageStandaloneFilterWindow.h
 Source/Audio/Plugins/CabbageCsoundBreakpointData.h
 Source/Audio/Plugins/CabbagePluginEditor.cpp
 Source/Audio/Plugins/CabbagePluginEditor.h
@@ -345,8 +383,22 @@ set(IDE_SOURCES
     Source/Utilities/CabbageSSHFileBrowser.cpp
     Source/Utilities/CabbageSSHFileBrowser.h
     Source/Cabbage.cpp
-    Source/Cabbage.h )
+    Source/Cabbage.h 
+    )
     
+
+set(BLUETOOTH_SOURCES 
+Source/Opcodes/CabbageBTOpcodes.cpp
+Source/Opcodes/CabbageBTOpcodes.h
+Source/Opcodes/utils.cpp
+Source/Opcodes/utils.hpp
+)    
+
+if(Bluetooth MATCHES 1)
+    target_sources(${PROJECT_NAME} PRIVATE  ${BLUETOOTH_SOURCES} )
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${BLUETOOTH_SOURCES})
+endif()
+
 if ("${PROJECT_NAME}" STREQUAL "CLIConverter")
     target_sources(${PROJECT_NAME} PRIVATE  ${BATCH_CONVERTER_SOURCES} )
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${BATCH_CONVERTER_SOURCES})
@@ -365,13 +417,14 @@ endif()
 #     //XCODE_ATTRIBUTE_CODE_SIGN_ENTITLEMENTS "${CMAKE_CURRENT_SOURCE_DIR}/entitlements.xcent"
 # )
 
+
 set(JUCE_MODULES
     juce::juce_core
     juce::juce_events
     juce::juce_graphics
     juce::juce_data_structures
     juce::juce_gui_basics
-    juce::juce_gui_extra
+    # juce::juce_gui_extra
     juce::juce_cryptography
     juce::juce_audio_basics
     juce::juce_audio_devices
@@ -403,12 +456,13 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
     target_compile_definitions(${PROJECT_NAME}
         PRIVATE
             # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
-            JUCE_WEB_BROWSER=1  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
+            JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
             JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
             JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
             JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
             JUCE_MODAL_LOOPS_PERMITTED=1
             CabbagePro=${CabbagePro}
+            Bluetooth=${Bluetooth}
             PluginDesc="${PluginDesc}"
             CabbageManufacturer="${CabbageManufacturer}"
             Use_Native_File_Browser=1
@@ -425,12 +479,14 @@ else()
     target_compile_definitions(${PROJECT_NAME}
     PRIVATE
         # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
-        JUCE_WEB_BROWSER=1  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
+        JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
         JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
         JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
         JUCE_MODAL_LOOPS_PERMITTED=1
         CabbagePro=${CabbagePro}
+        Bluetooth=${Bluetooth}
+        JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=${USE_CUSTOM_STANDALONE}
         PluginDesc="${PluginDesc}"
         CabbageManufacturer="${CabbageManufacturer}"
         Use_Native_File_Browser=1
@@ -439,6 +495,13 @@ else()
         Cabbage_IDE_Build=${IS_IDE_Build}
         JUCE_DISPLAY_SPLASH_SCREEN=0
         )
+endif()
+
+if(Bluetooth MATCHES 1)
+    add_subdirectory("/Volumes/SSD_Drive/Mac/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
+    target_link_libraries(${PROJECT_NAME} 
+        PRIVATE
+        simpleble::simpleble)
 endif()
 
 if(MSVC)
@@ -462,6 +525,7 @@ if(MSVC)
         juce::juce_recommended_warning_flags)
 
 elseif(APPLE)
+    set(WEBKIT "-framework WebKit -framework CoreServices")
     if(CabbagePro MATCHES 0)
         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
         SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64")
@@ -473,6 +537,7 @@ elseif(APPLE)
         ${JUCE_MODULES}
         ${CSOUND_LIBRARY}
         ${LIB_SNDFILE}
+        ${WEBKIT}
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
@@ -517,6 +582,7 @@ elseif(APPLE)
             ${LIB_VORBIS}
             ${LIB_VORBISENC}
             ${LIB_VORBIS_FILE}
+            ${WEBKIT}
         PUBLIC
             juce::juce_recommended_config_flags
             juce::juce_recommended_lto_flags

@@ -145,6 +145,11 @@ void CsoundPluginProcessor::destroyCsoundGlobalVars()
         if (vt != nullptr) {
             getCsound()->DestroyGlobalVariable("cabbageWidgetsValueTree");
         }
+        
+        auto** ps = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageGlobalPreset");
+        if (ps != nullptr) {
+            getCsound()->DestroyGlobalVariable("cabbageGlobalPreset");
+        }
     }
 }
 
@@ -165,6 +170,15 @@ void CsoundPluginProcessor::createCsoundGlobalVars(const ValueTree& cabbageData)
         getCsound()->CreateGlobalVariable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
     }
 
+    auto** ps = (CabbagePresetData**)getCsound()->QueryGlobalVariable("cabbageGlobalPreset");
+    if (ps == nullptr) {
+        getCsound()->CreateGlobalVariable("cabbageGlobalPreset", sizeof(CabbagePresetData*));
+        ps = (CabbagePresetData**)getCsound()->QueryGlobalVariable("cabbageGlobalPreset");
+        *ps = new CabbagePresetData();
+        auto p = *ps;
+        p->data = "";
+    }
+    
     auto** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
     if (vt == nullptr) {
         getCsound()->CreateGlobalVariable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
@@ -369,6 +383,9 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<CabbageMidiListener>((csnd::Csound*)getCsound()->GetCsound(), "cabbageMidiListener", "k[]k[]k[]k", "O", csnd::thread::ik);
     csnd::plugin<CabbageMidiSender>((csnd::Csound*)getCsound()->GetCsound(), "cabbageMidiSender", "", "", csnd::thread::i);
     
+#ifdef Bluetooth
+    csnd::plugin<CabbageBTOpcode>((csnd::Csound*)getCsound()->GetCsound(), "cabbageBluetooth", "k", "SS", csnd::thread::ik);
+#endif
    // csnd::plugin<CabbageFileLoader>((csnd::Csound*)getCsound()->GetCsound(), "cabbageFileLoader", "", "S", csnd::thread::i);
    // csnd::plugin<CabbageFileLoader>((csnd::Csound*)getCsound()->GetCsound(), "cabbageFileLoader", "", "S[]", csnd::thread::i);
 //    csnd::plugin<CabbageFileReader>((csnd::Csound*)getCsound()->GetCsound(), "cabbageOggReader", "aa", "Skii", csnd::thread::ia);
@@ -799,7 +816,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
     //csound->Message("Running single k-cycle...\n");
     
-//    csound->PerformKsmps();
+    csound->PerformKsmps();
 //
 //    //run through a set of preCycles...
 //    for( int i = 0 ; i < preCycles ; i++ )

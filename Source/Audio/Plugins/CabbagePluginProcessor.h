@@ -80,6 +80,10 @@ public:
     void setWidthHeight();
     CabbageWidgetIdentifiers** pd{};
     CabbageWidgetIdentifiers* identData{};
+    
+    std::string** globalPreset;
+    std::string* preset;
+    
     int autoUpdateCount = 0;
     bool autoUpdateIsOn = false;
 
