@@ -891,6 +891,8 @@ void CabbageWidgetData::setEncoderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::minenabled, 0);
     setProperty (widgetData, CabbageIdentifierIds::maxenabled, 0);
+    setProperty(widgetData, CabbageIdentifierIds::max, 1);
+    setProperty(widgetData, CabbageIdentifierIds::min, 0);
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
     setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
     setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");

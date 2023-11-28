@@ -788,7 +788,7 @@ int CabbageValueChanged::getAttribute()
             if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                     CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
             {
-                if(in_count() > 1)
+                if(in_count() > 1 && mode != 3)
                 {
                     if(mode == 2)
                     {
@@ -885,7 +885,7 @@ int CabbageValueChangedIndex::getAttribute()
             if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                     CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
             {
-                if(in_count() > 1)
+                if(in_count() > 1 && mode != 3)
                 {
                     if(mode == 2)
                     {
