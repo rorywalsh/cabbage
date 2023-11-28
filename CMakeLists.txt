@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.151)
+	set(BUILD_VERSION 2.9.152)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -41,11 +41,11 @@ if(NOT DEFINED CabbagePro)
     set(CabbagePro 0)
 endif()
 
-if(NOT DEFINED CustomStandalone)
-    set(USE_CUSTOM_STANDALONE 0)
-else()
-    set(USE_CUSTOM_STANDALONE 1)
-endif()
+# if(NOT DEFINED CustomStandalone)
+#     set(USE_CUSTOM_STANDALONE 0)
+# else()
+     set(USE_CUSTOM_STANDALONE 1)
+# endif()
 
 if(NOT DEFINED Bluetooth)
     set(Bluetooth 0)
