@@ -485,6 +485,7 @@ void CabbageWidgetData::setCustomWidgetState (ValueTree widgetData, const String
             case HashStringToInt ("trackerInsideRadius"):
             case HashStringToInt ("trackerOutsideRadius"):
             case HashStringToInt ("trackerThickness"):
+            case HashStringToInt ("titleBarHeight"):
             case HashStringToInt ("trackerStart"):
             case HashStringToInt ("trackerEnd"):
             case HashStringToInt ("trackerCentre"):

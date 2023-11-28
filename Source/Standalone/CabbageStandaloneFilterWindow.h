@@ -701,7 +701,7 @@ public:
                             bool autoOpenMidiDevices = false
                            #endif
                             )
-        : DocumentWindow (title, backgroundColour, DocumentWindow::minimiseButton | DocumentWindow::closeButton),
+        : DocumentWindow (title, backgroundColour, 0),
           optionsButton ("Options")
     {
         
@@ -723,7 +723,9 @@ public:
 
         StringArray csdLines;
         csdLines.addLines(csdFile.loadFileAsString());
-
+        
+        int titleBarHeight = 18;
+        
         for (const auto& line : csdLines)
         {
           if (line.contains("</Cabbage>"))
@@ -734,6 +736,7 @@ public:
           if (CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::type) == "form")
           {
               auto typeFace = CabbageWidgetData::getStringProp(temp, CabbageIdentifierIds::typeface);
+              titleBarHeight = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::titlebarheight);
               if(typeFace.isNotEmpty()){
                   const String fontPath = csdFile.getParentDirectory().getChildFile(typeFace).getFullPathName();
                   if(File(fontPath).existsAsFile())
@@ -750,14 +753,16 @@ public:
               int y = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::top);
               int w = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::width);
               int h = CabbageWidgetData::getNumProp(temp, CabbageIdentifierIds::height);
-              optionButtonBounds = {x, y+18, w, h};
+              optionButtonBounds = {x, y+titleBarHeight, w, h};
               hasSettingsButtons = true;
           }
         }
         
+        
        #if JUCE_IOS || JUCE_ANDROID
         setTitleBarHeight (0);
        #else
+        setTitleBarHeight (titleBarHeight);
         setTitleBarButtonsRequired (DocumentWindow::minimiseButton | DocumentWindow::closeButton, false);
 
         Component::addAndMakeVisible (optionsButton);
