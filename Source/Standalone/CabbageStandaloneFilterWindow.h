@@ -1,6 +1,8 @@
 
 #pragma once
 
+#if !Cabbage_IDE_Build
+
 #include "../CabbageIds.h"
 #include "../CabbageCommonHeaders.h"
 
@@ -1097,3 +1099,4 @@ inline StandalonePluginHolder* StandalonePluginHolder::getInstance()
 }
 
 
+#endif

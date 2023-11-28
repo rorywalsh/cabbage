@@ -38,11 +38,15 @@
 // You can set this flag in your build if you need to specify a different
 // standalone JUCEApplication class for your app to use. If you don't
 // set it then by default we'll just create a simple one as below.
+#if !Cabbage_IDE_Build
+
 #include "CabbageStandaloneFilterWindow.h"
 
 
 
 //extern juce::JUCEApplicationBase* juce_CreateApplication();
+
+
 
 //==============================================================================
 class StandaloneFilterApp  : public JUCEApplication
@@ -69,7 +73,7 @@ public:
     const String getApplicationName() override              { 
         String pluginString =  File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension();
         return pluginString; }
-    const String getApplicationVersion() override           { return JucePlugin_VersionString; }
+    const String getApplicationVersion() override           { return String("Cabbage version:")+ProjectInfo::versionString+String("\n"); }
     bool moreThanOneInstanceAllowed() override              { return true; }
     void anotherInstanceStarted (const String&) override    {}
 
@@ -137,7 +141,9 @@ protected:
     std::unique_ptr<StandaloneFilterWindow> mainWindow;
 };
 
-START_JUCE_APPLICATION(StandaloneFilterApp)
+
+    START_JUCE_APPLICATION(StandaloneFilterApp)
+#endif
 
 #if JucePlugin_Build_Standalone && JUCE_IOS
 

@@ -1235,7 +1235,7 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
 void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const String presetName, bool hostState)
 {
     try{
-#ifdef Bluetooth
+#if Bluetooth
         auto** p = (CabbagePresetData**)getCsound()->QueryGlobalVariable("cabbageGlobalPreset");
 
         if (p != nullptr)

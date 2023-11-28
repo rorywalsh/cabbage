@@ -170,6 +170,7 @@ void CsoundPluginProcessor::createCsoundGlobalVars(const ValueTree& cabbageData)
         getCsound()->CreateGlobalVariable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
     }
 
+#if Bluetooth
     auto** ps = (CabbagePresetData**)getCsound()->QueryGlobalVariable("cabbageGlobalPreset");
     if (ps == nullptr) {
         getCsound()->CreateGlobalVariable("cabbageGlobalPreset", sizeof(CabbagePresetData*));
@@ -178,7 +179,7 @@ void CsoundPluginProcessor::createCsoundGlobalVars(const ValueTree& cabbageData)
         auto p = *ps;
         p->data = "";
     }
-    
+#endif
     auto** vt = (CabbageWidgetsValueTree**)getCsound()->QueryGlobalVariable("cabbageWidgetsValueTree");
     if (vt == nullptr) {
         getCsound()->CreateGlobalVariable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
@@ -383,7 +384,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<CabbageMidiListener>((csnd::Csound*)getCsound()->GetCsound(), "cabbageMidiListener", "k[]k[]k[]k", "O", csnd::thread::ik);
     csnd::plugin<CabbageMidiSender>((csnd::Csound*)getCsound()->GetCsound(), "cabbageMidiSender", "", "", csnd::thread::i);
     
-#ifdef Bluetooth
+#if Bluetooth
     csnd::plugin<CabbageBTOpcode>((csnd::Csound*)getCsound()->GetCsound(), "cabbageBluetooth", "k", "SS", csnd::thread::ik);
 #endif
    // csnd::plugin<CabbageFileLoader>((csnd::Csound*)getCsound()->GetCsound(), "cabbageFileLoader", "", "S", csnd::thread::i);
