@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.147)
+	set(BUILD_VERSION 2.9.148)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -387,14 +387,16 @@ set(IDE_SOURCES
     )
     
 
-set(BLUETOOTH_SOURCES 
-Source/Opcodes/CabbageBTOpcodes.cpp
-Source/Opcodes/CabbageBTOpcodes.h
-Source/Opcodes/utils.cpp
-Source/Opcodes/utils.hpp
-)    
+   
 
 if(Bluetooth MATCHES 1)
+    set(BLUETOOTH_SOURCES 
+    Source/Opcodes/CabbageBTOpcodes.cpp
+    Source/Opcodes/CabbageBTOpcodes.h
+    Source/Opcodes/utils.cpp
+    Source/Opcodes/utils.hpp
+    ) 
+
     target_sources(${PROJECT_NAME} PRIVATE  ${BLUETOOTH_SOURCES} )
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${BLUETOOTH_SOURCES})
 endif()
