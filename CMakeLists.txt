@@ -500,7 +500,11 @@ else()
 endif()
 
 if(Bluetooth MATCHES 1)
+if(MSVC)
+    add_subdirectory("C:/Users/rory/sourcecode/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
+else()
     add_subdirectory("/Volumes/SSD_Drive/Mac/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
+endif()
     target_link_libraries(${PROJECT_NAME} 
         PRIVATE
         simpleble::simpleble)
