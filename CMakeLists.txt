@@ -500,6 +500,7 @@ else()
 endif()
 
 if(Bluetooth MATCHES 1)
+    message("The BluetoothAddressType enum has a PUBLIC member that conflicts with Csound - it need to be changed.")
 if(MSVC)
     add_subdirectory("C:/Users/rory/sourcecode/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
 else()
