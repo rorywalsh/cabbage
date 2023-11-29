@@ -522,10 +522,10 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
     else
     {
         //handleCommonUpdates (this, valueTree, false, prop);
-//        setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
-//        setColour (ComboBox::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
-//        setColour (PopupMenu::ColourIds::backgroundColourId, Colour::fromString( CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::menucolour)));
-//        setColour (PopupMenu::ColourIds::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
+        setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
+        setColour (ComboBox::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
+        setColour (PopupMenu::ColourIds::backgroundColourId, Colour::fromString( CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::menucolour)));
+        setColour (PopupMenu::ColourIds::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
 //
         setTooltip (getCurrentPopupText (valueTree));
 
