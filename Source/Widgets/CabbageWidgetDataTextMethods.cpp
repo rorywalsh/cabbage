@@ -350,7 +350,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
     
     else if (identifier == "max" || identifier == "min")
     {
-        if (type.contains ("range") || type == CabbageWidgetTypes::encoder)
+        if (type.contains ("range"))
             return identifier + "(" + String (getNumProp (widgetData, identifier)) + ")";
     }
     else if (type == "xypad" && identifier == "range")
