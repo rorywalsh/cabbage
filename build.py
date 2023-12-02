@@ -86,7 +86,7 @@ parser.add_argument('--customStandalone', type=str,
 args = parser.parse_args()
 
 buildBtOpcode = 0
-if args.btOpcode is not None:
+if args.btOpcode is 1:
     print('Bluetooth Enabled')
     buildBtOpcode = 1
 else:
@@ -94,7 +94,7 @@ else:
     buildBtOpcode = 0
 
 customStandaloneWrapper = 0
-if args.customStandalone is not None:
+if args.customStandalone is 1:
     customStandaloneWrapper = 1
 else:
     customStandaloneWrapper = 0
