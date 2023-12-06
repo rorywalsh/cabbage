@@ -15,7 +15,11 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.143)
+<<<<<<< HEAD
+	set(BUILD_VERSION 2.9.144)
+=======
+	set(BUILD_VERSION 2.9.144)
+>>>>>>> develop
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -41,8 +45,40 @@ if(NOT DEFINED CabbagePro)
     set(CabbagePro 0)
 endif()
 
+<<<<<<< HEAD
 if(NOT DEFINED Bluetooth)
     set(Bluetooth 0)
+=======
+# if(NOT DEFINED CustomStandalone)
+#     set(USE_CUSTOM_STANDALONE 0)
+# else()
+     set(USE_CUSTOM_STANDALONE 1)
+# endif()
+
+if(NOT DEFINED Bluetooth)
+    set(Bluetooth 0)
+    set(PLIST_INFO "")
+else()
+set(PLIST_INFO "\
+<plist>
+    <dict>
+        <key>NSMicrophoneUsageDescription</key>
+        <string>No microphone input is required for this app</string>
+        <key>NSBluetoothAlwaysUsageDescription</key>
+        <string>Bluetooth is used for connecting to MIDI devices</string>
+        <key>CFBundleIconName</key>
+        <string>Icons</string>
+        <key>UIRequiresFullScreen</key>
+        <true/>
+        <key>UISupportedInterfaceOrientations</key>
+        <array>
+            <string>UIInterfaceOrientationLandscapeLeft</string>
+            <string>UIInterfaceOrientationLandscapeRight</string>
+        </array>
+    </dict>
+</plist>    
+    ")
+>>>>>>> develop
 endif()
 
 if(NOT DEFINED JucePlugin_ManufacturerCode)
@@ -105,6 +141,7 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
         # DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
         COMPANY_NAME ${JucePlugin_Manufacturer}
         MICROPHONE_PERMISSION_ENABLED TRUE
+        PLIST_TO_MERGE ${PLIST_INFO}
         MICROPHONE_PERMISSION_TEXT "Cabbage needs access to your audio interface" 
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
 else()
@@ -147,8 +184,10 @@ else()
         AU_EXPORT_PREFIX "${PROJECT_NAME}AU"
         AU_SANDBOX_SAFE TRUE
         COPY_PLUGIN_AFTER_BUILD FALSE
+        HARDENED_RUNTIME_OPTIONS com.apple.security.files.downloads.read-write com.apple.security.device.audio-input com.apple.security.cs.disable-library-validation com.apple.security.cs.allow-unsigned-executable-memory com.apple.security.device.audio-input
         COMPANY_NAME ${JucePlugin_Manufacturer}
         HARDENED_RUNTIME_ENABLED TRUE
+        PLIST_TO_MERGE ${PLIST_INFO}
         HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input"
         PRODUCT_NAME "${PROJECT_NAME}")   
 endif()
@@ -166,10 +205,14 @@ add_compile_options ( -Wno-reorder -Wno-deprecated -Wno-deprecated-declarations)
 
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 
+
+
 set(COMMON_SOURCES
 Source/Opcodes/CabbageIdentifierOpcodes.cpp
 Source/Opcodes/CabbageIdentifierOpcodes.h
 Source/Opcodes/opcodes.hpp
+Source/Standalone/CabbageStandaloneFilterApp.cpp
+Source/Standalone/CabbageStandaloneFilterWindow.h
 Source/Audio/Plugins/CabbageCsoundBreakpointData.h
 Source/Audio/Plugins/CabbagePluginEditor.cpp
 Source/Audio/Plugins/CabbagePluginEditor.h
@@ -355,6 +398,7 @@ set(IDE_SOURCES
     )
     
 
+<<<<<<< HEAD
 set(BLUETOOTH_SOURCES 
 Source/Opcodes/CabbageBTOpcodes.cpp
 Source/Opcodes/CabbageBTOpcodes.h
@@ -363,6 +407,18 @@ Source/Opcodes/utils.hpp
 )    
 
 if(Bluetooth MATCHES 1)
+=======
+   
+
+if(Bluetooth MATCHES 1)
+    set(BLUETOOTH_SOURCES 
+    Source/Opcodes/CabbageBTOpcodes.cpp
+    Source/Opcodes/CabbageBTOpcodes.h
+    Source/Opcodes/utils.cpp
+    Source/Opcodes/utils.hpp
+    ) 
+
+>>>>>>> develop
     target_sources(${PROJECT_NAME} PRIVATE  ${BLUETOOTH_SOURCES} )
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${BLUETOOTH_SOURCES})
 endif()
@@ -454,6 +510,10 @@ else()
         JUCE_MODAL_LOOPS_PERMITTED=1
         CabbagePro=${CabbagePro}
         Bluetooth=${Bluetooth}
+<<<<<<< HEAD
+=======
+        JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=${USE_CUSTOM_STANDALONE}
+>>>>>>> develop
         PluginDesc="${PluginDesc}"
         CabbageManufacturer="${CabbageManufacturer}"
         Use_Native_File_Browser=1
@@ -465,7 +525,16 @@ else()
 endif()
 
 if(Bluetooth MATCHES 1)
+<<<<<<< HEAD
     add_subdirectory("/Volumes/SSD_Drive/Mac/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
+=======
+    message("The BluetoothAddressType enum has a PUBLIC member that conflicts with Csound - it need to be changed.")
+if(MSVC)
+    add_subdirectory("C:/Users/rory/sourcecode/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
+else()
+    add_subdirectory("/Volumes/SSD_Drive/Mac/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
+endif()
+>>>>>>> develop
     target_link_libraries(${PROJECT_NAME} 
         PRIVATE
         simpleble::simpleble)

@@ -718,6 +718,22 @@ int GetCabbageValueWithTrigger::getAttribute()
         }
         outargs[0] = currentValue;       
         
+        if(*value != currentValue)
+        {
+            currentValue = *value;
+            outargs[1] = 1;
+        }
+        else
+        {
+            if(numberOfPasses == 2 && triggerOnPerfPass>0)
+            {
+                outargs[1] = 1;
+            }
+            else
+                outargs[1] = 0;
+        }
+        outargs[0] = currentValue;       
+        
     }
     
     return OK;
@@ -762,6 +778,7 @@ int GetCabbageValueArrayWithTrigger::getAttribute()
 }
 
 //=========================================================================================
+//=========================================================================================
 int CabbageValueChanged::getAttribute()
 {
     if(in_count() == 0)
@@ -788,7 +805,7 @@ int CabbageValueChanged::getAttribute()
             if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                     CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
             {
-                if(in_count() > 1)
+                if(in_count() > 1 && mode != 3)
                 {
                     if(mode == 2)
                     {
@@ -885,7 +902,7 @@ int CabbageValueChangedIndex::getAttribute()
             if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
                                                     CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
             {
-                if(in_count() > 1)
+                if(in_count() > 1 && mode != 3)
                 {
                     if(mode == 2)
                     {

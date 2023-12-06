@@ -1097,7 +1097,7 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
                                                                     CabbageIdentifierIds::presetignore);
         const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
         
-        if(channelName == "PluginResizerCombBox")
+        if(channelName == "PluginResizerCombBox" && ignore==0)
         {
             const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
             j[currentPresetName.toStdString()][channelName.toStdString()] = float(value);
@@ -1116,7 +1116,7 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
             const String presetN = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::value);
             j[currentPresetName.toStdString()][channelName.toStdString()] = presetN.toStdString();
        }
-        else if(ignore == 0)
+       else if(ignore == 0)
         {
             const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
             
@@ -1235,8 +1235,18 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
 void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const String presetName, bool hostState)
 {
     try{
+#if Bluetooth
+        auto** p = (CabbagePresetData**)getCsound()->QueryGlobalVariable("cabbageGlobalPreset");
 
-	for (nlohmann::ordered_json::iterator itA = j.begin(); itA != j.end(); ++itA) 
+        if (p != nullptr)
+        {
+            auto preset = *p;
+            preset->data = j.dump(4);
+            DBG(preset->data);
+        }
+#endif
+        
+	for (nlohmann::ordered_json::iterator itA = j.begin(); itA != j.end(); ++itA)
 	{
 		if (String(itA.key()) == presetName || hostState == true)
 		{
@@ -1592,130 +1602,6 @@ void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
 void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
 {
     jassertfalse;//no longer called...
-	Logger::writeToLog(" CabbagePluginProcessor::setParametersFromXml");
-	if (e)
-	{
-		for (int i = 0; i < e->getNumAttributes(); i++)
-		{
-			//none of these are being updated in their respective valueTreeChanged listeners..
-            if(e->getAttributeName(i) == "cabbageJSONData")
-            {
-				
-                if(getCsound())
-                {
-                    auto** p = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-                    
-                    if (p != nullptr)
-                    {
-                        auto pdClass = *p;
-                        pdClass->data = e->getStringAttribute("cabbageJSONData").toRawUTF8();
-						Logger::writeToLog(e->getStringAttribute("cabbageJSONData"));
-                    }
-					else
-						Logger::writeToLog("cabbageJSONData is null");
-                }
-            }
-            
-            
-			ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, e->getAttributeName(i), true);
-
-
-			const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
-			const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
-			const String channelName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
-            
-            if(channelName == "PluginResizerCombBox")
-                currentPluginScale = e->getAttributeValue(i).getIntValue();
-
-			if (type == CabbageWidgetTypes::texteditor)
-			{
-				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
-			}
-            else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype).contains("snaps"))
-            {
-                currentPresetName = e->getAttributeValue(i);
-                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
-                
-            }
-			else if (type == CabbageWidgetTypes::soundfiler)
-			{
-				const String file = e->getAttributeValue(i);
-				String channel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
-
-				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, e->getAttributeValue(i));
-			}
-            else if (type == CabbageWidgetTypes::presetbutton)
-            {
-                currentPresetName = e->getAttributeValue(i);
-                String channel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
-                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
-                getCsound()->SetStringChannel(channel.toUTF8().getAddress(), currentPresetName.toUTF8().getAddress());
-            }
-			else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
-			{
-                String testItem = e->getAttributeValue(i);
-				const String stringComboItem = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).existsAsFile() ?
-					csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).getFileNameWithoutExtension() : e->getAttributeValue(i);
-
-                
-                const String dir = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::currentdir);
-                if(type != CabbageWidgetTypes::listbox && csdFile.getParentDirectory().getChildFile(dir).existsAsFile())
-                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
-                
-				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
-                
-
-			}
-			else if (type == CabbageWidgetTypes::filebutton)
-			{
-                const int ignorelastdir = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                                                                        CabbageIdentifierIds::ignorelastdir);
-                if(ignorelastdir == 0)
-                {
-                    const String absolutePath = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i).replaceCharacters("\\", "/")).getFullPathName();
-                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
-					Logger::writeToLog("CabbagePluginProcessor::setParametersFromXml:\n\tSetting file channel value to:" + absolutePath);
-                }
-			}
-			else if (type == CabbageWidgetTypes::hrange ||
-				type == CabbageWidgetTypes::vrange) //double channel range widgets
-			{
-				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::minvalue,
-					e->getAttributeValue(i).getFloatValue());
-				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::maxvalue,
-					e->getAttributeValue(i + 1).getFloatValue());
-				i++;
-			}
-			else if (type == CabbageWidgetTypes::xypad) //double channel range widgets
-			{
-				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuex,
-					e->getAttributeValue(i).getFloatValue());
-				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuey,
-					e->getAttributeValue(i + 1).getFloatValue());
-				i++;
-			}
-            else
-			{
-				if (CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype) != "preset"
-					&& CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype) != "*.snaps" &&
-					CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
-					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
-						e->getAttributeValue(i).getFloatValue());
-				//now make changes parameter changes so host can see them..
-				//getParameters().
-
-				for (auto cabbageParam : getCabbageParameters())
-				{
-					if (widgetName == cabbageParam->getWidgetName())
-					{
-						cabbageParam->beginChangeGesture();
-						cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(e->getAttributeValue(i).getFloatValue()));
-						cabbageParam->endChangeGesture();
-					}
-				}
-			}
-		}
-	}
 }
 
 void CabbagePluginProcessor::getIdentifierDataFromCsound()

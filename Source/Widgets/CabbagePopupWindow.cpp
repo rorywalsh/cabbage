@@ -40,6 +40,9 @@ CabbagePopupWindow::CabbagePopupWindow (ValueTree valueTree, const String& svgTe
     editor.setColour (TextEditor::backgroundColourId, Colours::transparentBlack);
     editor.setColour (TextEditor::textColourId, Colour(165, 165, 165));
     editor.setCaretVisible(false);
+    editor.setColour (TextEditor::backgroundColourId, Colours::transparentBlack);
+    editor.setColour (TextEditor::textColourId, Colour(165, 165, 165));
+    editor.setCaretVisible(false);
     editor.setColour (Label::outlineWhenEditingColourId, Colours::transparentBlack);
     editor.setColour (TextEditor::ColourIds::focusedOutlineColourId, Colours::transparentBlack);
 //    lookAndFeelChanged();
@@ -61,7 +64,6 @@ CabbagePopupWindow::CabbagePopupWindow (ValueTree valueTree, const String& svgTe
 
     buttons[1].onClick = [this]
     {
-        setValueTreeProperty("NEW_PRESET_NAME", "");
         juce::ModalComponentManager::getInstance()->cancelAllModalComponents();
     };
 
@@ -83,6 +85,11 @@ void CabbagePopupWindow::setValueTreeProperty(String prop, String val)
     vt.setProperty(prop, val, nullptr);
 }
 
+void CabbagePopupWindow::setValueTreeProperty(String prop, String val)
+{
+    vt.setProperty(prop, val, nullptr);
+}
+
 void CabbagePopupWindow::setSVGImage(const String svgText)
 {
     std::unique_ptr<XmlElement> svg(XmlDocument::parse(svgText));
@@ -95,6 +102,9 @@ void CabbagePopupWindow::resized()
 {
     if(showEditor)
     {
+        editor.setBounds(30, getHeight()*.47, getWidth()-60, 18);
+        buttons[0].setBounds(86, 105, 90, 20);
+        buttons[1].setBounds(154, 105, 90, 20);
         editor.setBounds(30, getHeight()*.47, getWidth()-60, 18);
         buttons[0].setBounds(86, 105, 90, 20);
         buttons[1].setBounds(154, 105, 90, 20);

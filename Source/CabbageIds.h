@@ -339,6 +339,7 @@ public:
         add ("showStepNumbers");
         add ("markerThickness");
         add ("blackNoteLength");
+        add ("titleBarHeight");
         add ("blackNoteWidth");
         add ("blackNoteWidth");
         add ("numberOfClicks");
@@ -800,6 +801,7 @@ namespace CabbageIdentifierIds
     static const Identifier textcolour = "textColour";
     static const Identifier titlebarcolour = "titleBarColour";
     static const Identifier titlebargradient = "titleBarGradient";
+    static const Identifier titlebarheight = "titleBarHeight";
     static const Identifier tofront = "toFront";
     static const Identifier top = "top";
     static const Identifier trackercolour = "trackerColour";

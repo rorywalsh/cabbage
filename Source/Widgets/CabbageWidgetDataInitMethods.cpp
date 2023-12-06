@@ -41,6 +41,7 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::scrollbars, 0);
     setProperty (widgetData, CabbageIdentifierIds::titlebarcolour, Colour(57, 70, 76).toString());
     setProperty (widgetData, CabbageIdentifierIds::titlebargradient, 0.15f);
+    setProperty (widgetData, CabbageIdentifierIds::titlebarheight, 18.f);
     setProperty (widgetData, CabbageIdentifierIds::style, "");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
 	setProperty(widgetData, CabbageIdentifierIds::sidechain, 0);
@@ -891,6 +892,8 @@ void CabbageWidgetData::setEncoderProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::visible, 1);
     setProperty (widgetData, CabbageIdentifierIds::minenabled, 0);
     setProperty (widgetData, CabbageIdentifierIds::maxenabled, 0);
+    setProperty(widgetData, CabbageIdentifierIds::max, 10000);
+    setProperty(widgetData, CabbageIdentifierIds::min,-10000);
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
     setProperty (widgetData, CabbageIdentifierIds::valueprefix, "");
     setProperty (widgetData, CabbageIdentifierIds::valuepostfix, "");
