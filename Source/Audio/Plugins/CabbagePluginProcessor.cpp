@@ -1244,8 +1244,6 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
             preset->data = j.dump(4);
             DBG(preset->data);
         }
-        
-      
 #endif
         
 	for (nlohmann::ordered_json::iterator itA = j.begin(); itA != j.end(); ++itA)
