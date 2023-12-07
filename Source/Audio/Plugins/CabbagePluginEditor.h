@@ -171,6 +171,7 @@ public:
     
     void attachOpenGL()
     {
+        openGLContext.detach();
         setBufferedToImage(true);
         openGLContext.setContinuousRepainting (true);
         openGLContext.setMultisamplingEnabled (true);
@@ -197,6 +198,7 @@ public:
     {
         openGLEnabled = false;
         setBufferedToImage(false);
+//        openGLContext.setMultisamplingEnabled(false);
         openGLContext.detach();
     }
     
