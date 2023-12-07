@@ -49,6 +49,7 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
     const juce::Point<float> pos (getValueAsPosition (juce::Point<float> (valueX, valueY)));
+
     ball.setBounds (pos.getX(), pos.getY(), 20, 20);
     ball.setInterceptsMouseClicks (false, false);
     addAndMakeVisible (ball);

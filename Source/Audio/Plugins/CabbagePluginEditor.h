@@ -178,10 +178,24 @@ public:
         openGLContext.attachTo(*getTopLevelComponent());
         openGLContext.setImageCacheSize(64);
         repaint();
+        openGLEnabled = true;
     }
     
+    void setOpenGLForShader()
+    {
+        openGLContext.detach();
+        setBufferedToImage(false);
+        openGLContext.setContinuousRepainting(true);
+        openGLContext.setMultisamplingEnabled(false);
+        //openGLContext.setTextureMagnificationFilter (OpenGLContext::linear);
+        openGLContext.attachTo(*getTopLevelComponent());
+        openGLContext.setImageCacheSize(64);
+        repaint();
+        openGLEnabled = true;
+    }
     void detachOpenGL()
     {
+        openGLEnabled = false;
         setBufferedToImage(false);
         openGLContext.detach();
     }
@@ -328,6 +342,7 @@ public:
     juce::Point<int> customPlantPosition;
     Font customFont;
     Value isBypassedValue;
+    bool openGLEnabled = false;
 private:
     
     File customFontFile;
