@@ -15,11 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-<<<<<<< HEAD
-	set(BUILD_VERSION 2.9.144)
-=======
-	set(BUILD_VERSION 2.9.144)
->>>>>>> develop
+	set(BUILD_VERSION 2.9.145)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -45,10 +41,6 @@ if(NOT DEFINED CabbagePro)
     set(CabbagePro 0)
 endif()
 
-<<<<<<< HEAD
-if(NOT DEFINED Bluetooth)
-    set(Bluetooth 0)
-=======
 # if(NOT DEFINED CustomStandalone)
 #     set(USE_CUSTOM_STANDALONE 0)
 # else()
@@ -78,7 +70,6 @@ set(PLIST_INFO "\
     </dict>
 </plist>    
     ")
->>>>>>> develop
 endif()
 
 if(NOT DEFINED JucePlugin_ManufacturerCode)
@@ -398,16 +389,6 @@ set(IDE_SOURCES
     )
     
 
-<<<<<<< HEAD
-set(BLUETOOTH_SOURCES 
-Source/Opcodes/CabbageBTOpcodes.cpp
-Source/Opcodes/CabbageBTOpcodes.h
-Source/Opcodes/utils.cpp
-Source/Opcodes/utils.hpp
-)    
-
-if(Bluetooth MATCHES 1)
-=======
    
 
 if(Bluetooth MATCHES 1)
@@ -418,7 +399,6 @@ if(Bluetooth MATCHES 1)
     Source/Opcodes/utils.hpp
     ) 
 
->>>>>>> develop
     target_sources(${PROJECT_NAME} PRIVATE  ${BLUETOOTH_SOURCES} )
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${BLUETOOTH_SOURCES})
 endif()
@@ -510,10 +490,7 @@ else()
         JUCE_MODAL_LOOPS_PERMITTED=1
         CabbagePro=${CabbagePro}
         Bluetooth=${Bluetooth}
-<<<<<<< HEAD
-=======
         JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=${USE_CUSTOM_STANDALONE}
->>>>>>> develop
         PluginDesc="${PluginDesc}"
         CabbageManufacturer="${CabbageManufacturer}"
         Use_Native_File_Browser=1
@@ -525,16 +502,12 @@ else()
 endif()
 
 if(Bluetooth MATCHES 1)
-<<<<<<< HEAD
-    add_subdirectory("/Volumes/SSD_Drive/Mac/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
-=======
     message("The BluetoothAddressType enum has a PUBLIC member that conflicts with Csound - it need to be changed.")
 if(MSVC)
     add_subdirectory("C:/Users/rory/sourcecode/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
 else()
     add_subdirectory("/Volumes/SSD_Drive/Mac/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
 endif()
->>>>>>> develop
     target_link_libraries(${PROJECT_NAME} 
         PRIVATE
         simpleble::simpleble)

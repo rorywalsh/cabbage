@@ -1814,7 +1814,10 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool compileFromPlayButton
 				}
 
 				if (getCurrentCsdFile().existsAsFile())
-					getCurrentCsdFile().replaceWithText(getCurrentCodeEditor()->getAllContent());
+                {
+                    getCurrentCsdFile().replaceWithText(getCurrentCodeEditor()->getAllContent());
+                    DBG(getCurrentCodeEditor()->getAllContent());
+                }
 			
 				for (int i = 0; i < editorAndConsole.size(); i++)
 				{

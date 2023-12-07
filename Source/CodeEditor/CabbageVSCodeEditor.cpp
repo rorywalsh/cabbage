@@ -38,6 +38,20 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     nativeWindow.setBounds(0, 0, 400, 400);
     nativeWindow.setWindow(v);
     addAndMakeVisible(nativeWindow);
+    
+    webView->bind("textHasChanged", [this](const choc::value::ValueView& args) -> choc::value::Value
+        {
+        auto j = choc::json::toString(args, true);
+        auto json = nlohmann::json::parse(j);
+        allContent.clear();
+        allContent.addLines(json[0].get<std::string>());
+        DBG("==================================================");
+        DBG(json[0].get<std::string>());
+        DBG("==================================================");
+        DBG(allContent.joinIntoString("\n").trimCharactersAtEnd("\"").trimCharactersAtStart("\""));
+        hasTextChanged = true;
+        return choc::value::createString("Text has changed in editor");
+    });
 }
 
 CabbageCodeEditorComponent::~CabbageCodeEditorComponent()
@@ -50,6 +64,7 @@ void CabbageCodeEditorComponent::loadContent(String content)
     Timer::callAfterDelay(1000, [this, content]()
     {
         auto jsCode = "updateText(`" + content + "`);";
+        jassertfalse;
         webView->evaluateJavascript(jsCode.toStdString());
     });
     

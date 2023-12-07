@@ -85,11 +85,6 @@ void CabbagePopupWindow::setValueTreeProperty(String prop, String val)
     vt.setProperty(prop, val, nullptr);
 }
 
-void CabbagePopupWindow::setValueTreeProperty(String prop, String val)
-{
-    vt.setProperty(prop, val, nullptr);
-}
-
 void CabbagePopupWindow::setSVGImage(const String svgText)
 {
     std::unique_ptr<XmlElement> svg(XmlDocument::parse(svgText));

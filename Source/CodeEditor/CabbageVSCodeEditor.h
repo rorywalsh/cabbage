@@ -101,17 +101,19 @@ public:
     void runInDebugMode(){jassertfalse;}
     void zoomIn(){jassertfalse;}
     void zoomOut(){jassertfalse;}
-    bool hasFileChanged(){ jassertfalse; return true; }
+    bool hasFileChanged(){ return hasTextChanged; }
     void setSavePoint(){ }
     int findText (String, bool, bool, bool){ jassertfalse;}
     String getSelectedText(){ jassertfalse; return ""; }
     void setAllText(String){jassertfalse;}
     void replaceText(String, String){jassertfalse;}
-    String getAllContent(){ jassertfalse; return ""; }
+    String getAllContent(){ return allContent.joinIntoString("\n").trimCharactersAtEnd("\"").trimCharactersAtStart("\""); }
 
     NamedValueSet instrumentsAndRegions;
 private:
     std::unique_ptr<choc::ui::WebView> webView;
+    bool hasTextChanged = false;
+    StringArray allContent;
 };
 
 #endif
