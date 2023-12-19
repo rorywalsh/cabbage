@@ -42,13 +42,16 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     webView->bind("textHasChanged", [this](const choc::value::ValueView& args) -> choc::value::Value
         {
         auto j = choc::json::toString(args, true);
+        DBG("==================================================");
+//        
         auto json = nlohmann::json::parse(j);
-        allContent.clear();
-        allContent.addLines(json[0].get<std::string>());
-        DBG("==================================================");
-        DBG(json[0].get<std::string>());
-        DBG("==================================================");
-        DBG(allContent.joinIntoString("\n").trimCharactersAtEnd("\"").trimCharactersAtStart("\""));
+        allContent = json[0].get<std::string>();
+//        allContent.clear();
+//        allContent.addLines(json[0].get<std::string>());
+        DBG(allContent);
+//        DBG(json[0].get<std::string>());
+//        DBG("==================================================");
+//        DBG(allContent.joinIntoString("\n").trimCharactersAtEnd("\"").trimCharactersAtStart("\""));
         hasTextChanged = true;
         return choc::value::createString("Text has changed in editor");
     });
@@ -64,7 +67,7 @@ void CabbageCodeEditorComponent::loadContent(String content)
     Timer::callAfterDelay(1000, [this, content]()
     {
         auto jsCode = "updateText(`" + content + "`);";
-        jassertfalse;
+//        jassertfalse;
         webView->evaluateJavascript(jsCode.toStdString());
     });
     

@@ -107,13 +107,13 @@ public:
     String getSelectedText(){ jassertfalse; return ""; }
     void setAllText(String){jassertfalse;}
     void replaceText(String, String){jassertfalse;}
-    String getAllContent(){ return allContent.joinIntoString("\n").trimCharactersAtEnd("\"").trimCharactersAtStart("\""); }
+    String getAllContent(){ return allContent; }
 
     NamedValueSet instrumentsAndRegions;
 private:
     std::unique_ptr<choc::ui::WebView> webView;
     bool hasTextChanged = false;
-    StringArray allContent;
+    String allContent;
 };
 
 #endif
