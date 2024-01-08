@@ -1153,6 +1153,7 @@ void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::currentdir, "");
     setProperty (widgetData, CabbageIdentifierIds::refreshfiles, 0);
     setProperty (widgetData, CabbageIdentifierIds::automatable, 1.0f);
+    setProperty (widgetData, CabbageIdentifierIds::corners, 3.0f);
 }
 
 void CabbageWidgetData::setNumberSliderProperties (ValueTree widgetData, int ID)

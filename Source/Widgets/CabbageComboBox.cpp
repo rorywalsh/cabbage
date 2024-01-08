@@ -57,6 +57,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     setTextWhenNothingSelected (text);
     setWantsKeyboardFocus (false);
     getProperties().set("isPresetCombo", false);
+    getProperties().set("corners", CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::corners));
     initialiseCommonAttributes (this, widgetData);
 
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
