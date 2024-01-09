@@ -94,7 +94,7 @@ else:
     buildBtOpcode = 0
 
 customStandaloneWrapper = 0
-if args.customStandalone is 1:
+if args.customStandalone == 1:
     customStandaloneWrapper = 1
 else:
     customStandaloneWrapper = 0
