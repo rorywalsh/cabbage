@@ -135,7 +135,7 @@ public:
 
     //see below file for implementation
     template< typename Type >
-    void setImgProperties (Type& comp, ValueTree widgetData, String type);
+    void setImgProperties (Type& comp, ValueTree widgetData, String csdFilePath, String type);
 
 
 
@@ -164,11 +164,11 @@ public:
 
 //================== setImgProperties ==========================
 template< typename Type >
-void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String imgType)
+void CabbageWidgetBase::setImgProperties (Type& comp, ValueTree data, String csdFilePath, String imgType)
 {
 
     File imgFile;
-    const File csdfile (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::csdfile));
+    const File csdfile (csdFilePath);
     const File imgPath (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::imgpath));
     const String fileType (CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::filetype));
 

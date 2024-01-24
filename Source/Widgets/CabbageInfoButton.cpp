@@ -33,9 +33,9 @@ CabbageInfoButton::CabbageInfoButton (ValueTree wData, CabbagePluginEditor* _own
     setButtonText (getText());
 
     filename = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file);
-
-    setImgProperties (*this, wData, "buttonon");
-    setImgProperties (*this, wData, "buttonoff");
+    auto csdPath = owner->getProcessor().getCsdFile().getFullPathName();
+    setImgProperties (*this, wData, csdPath, "buttonon");
+    setImgProperties (*this, wData, csdPath, "buttonoff");
     addListener (this);
 
     const String imgOff = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonoff);

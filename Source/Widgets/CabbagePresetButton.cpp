@@ -47,8 +47,9 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
     replaceTextWithPreset = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::presetnameastext) == 1 ? true : false;
     filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).replaceCharacters (" ", ";");
 
-    setImgProperties (*this, wData, "buttonon");
-    setImgProperties (*this, wData, "buttonoff");
+    auto csdPath = owner->getProcessor().getCsdFile().getFullPathName();
+    setImgProperties (*this, wData, csdPath, "buttonon");
+    setImgProperties (*this, wData, csdPath, "buttonoff");
     addListener (this);
 
     const String imgOff = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonoff);

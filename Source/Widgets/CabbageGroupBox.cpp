@@ -52,7 +52,8 @@ CabbageGroupBox::CabbageGroupBox (ValueTree wData, CabbagePluginEditor* _owner)
     getProperties().set ("outlinethickness", outlineThickness);
     getProperties().set ("linethickness", lineThickness);
     getProperties().set ("cornersize", corners);
-    setImgProperties (*this, wData, "groupbox");
+    auto csdPath = owner->getProcessor().getCsdFile().getFullPathName();
+    setImgProperties (*this, wData, csdPath, "groupbox");
     
     lookAndFeel.customFont = owner->customFont;
     setLookAndFeel(&lookAndFeel);

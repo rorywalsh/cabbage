@@ -52,7 +52,8 @@ template <std::size_t N>
 struct CabbageOpcodes
 {
     CabbageWidgetIdentifiers** vt = nullptr;
-    char* name, *identifier;
+    char* name = NULL;
+    char* identifier = NULL;
     MYFLT* value = {};
     MYFLT lastValue = 0;
     MYFLT* str = {};

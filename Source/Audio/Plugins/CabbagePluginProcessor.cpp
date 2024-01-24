@@ -297,6 +297,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
         if(widgetNameId.isEmpty())
             widgetNameId = tempWidget.getType().toString();
         
+
         ValueTree newWidget(widgetNameId);
         newWidget.copyPropertiesFrom(tempWidget, nullptr);
         
