@@ -722,6 +722,8 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
     }
 
     csound->SetStringChannel ("LAST_FILE_DROPPED", const_cast<char*> (""));
+    
+    csound->SetChannel("PRESET_STATE", -1.0);
 
     csound->SetChannel("IS_BYPASSED", 0.0);
     //csdFilePath.setAsCurrentWorkingDirectory();

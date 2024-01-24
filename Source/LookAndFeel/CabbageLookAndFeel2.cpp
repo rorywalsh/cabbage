@@ -257,6 +257,8 @@ void CabbageLookAndFeel2::drawPopupMenuItemWithOptions (Graphics& g, const Recta
     else
         colour = Colour(40, 40, 40);
 
+    
+    
     const auto hasSubMenu = item.subMenu != nullptr
                             && (item.itemID == 0 || item.subMenu->getNumItems() > 0);
     setColour(PopupMenu::highlightedBackgroundColourId, colour.withAlpha(0.2f));
@@ -306,7 +308,7 @@ void CabbageLookAndFeel2::drawPopupMenuItem(Graphics& g, const Rectangle<int>& a
 
 
 
-    g.drawText(CabbageUtilities::cabbageString(text, CabbageUtilities::getComponentFont(), area.getWidth() * 0.8), 20, 0, area.getWidth() * 0.8, area.getHeight(), 1, false);
+    g.drawFittedText(CabbageUtilities::cabbageString(text, CabbageUtilities::getComponentFont(), area.getWidth() * 0.8), 20, 0, area.getWidth() * 0.8, area.getHeight(), 1, false);
 
     if (isSeparator == true)
     {
