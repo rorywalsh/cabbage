@@ -762,7 +762,7 @@ Array<double> GenTable::getPfields()
         if (genRoutine == 7 || genRoutine == 5)
         {
             currXPos = handleViewer->handles[i]->xPosRelative * waveformBuffer.size();
-
+            currXPos = (double)CabbageUtilities::roundToMultiple(currXPos, quantiseSpace);
             values.add (jmax (0.0, ceil (currXPos - prevXPos)));
             //hack to prevent csound from bawking with a 0 in gen05
             float amp = pixelToAmp (handleViewer->getHeight(), minMax, (float)currYPos);
@@ -787,6 +787,7 @@ Array<double> GenTable::getPfields()
             else
             {
                 float amp = pixelToAmp (handleViewer->getHeight(), minMax, (float)currYPos);
+                amp = (double)CabbageUtilities::roundToMultiple(amp, quantiseSpace);
                 values.add (amp);
             }
         }
