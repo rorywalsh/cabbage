@@ -211,12 +211,13 @@ void CabbageLookAndFeel2::drawPopupMenuBackground(Graphics& g, int width, int he
 
 PopupMenu::Options CabbageLookAndFeel2::getOptionsForComboBoxPopupMenu (ComboBox& box, Label& label)
 {
+    const int h = box.getProperties().getWithDefault("fontSize", 0);
     return PopupMenu::Options().withTargetComponent (&box)
                                .withItemThatMustBeVisible (box.getSelectedId())
                                .withInitiallySelectedItem (box.getSelectedId())
                                .withMinimumWidth (box.getWidth())
                                .withMaximumNumColumns (1)
-                               .withStandardItemHeight (label.getHeight());
+                               .withStandardItemHeight (h==0 ? label.getHeight() : h);
 }
 
 void CabbageLookAndFeel2::drawPopupMenuBackgroundWithOptions (Graphics& g,
@@ -257,7 +258,7 @@ void CabbageLookAndFeel2::drawPopupMenuItemWithOptions (Graphics& g, const Recta
     else
         colour = Colour(40, 40, 40);
 
-    
+
     
     const auto hasSubMenu = item.subMenu != nullptr
                             && (item.itemID == 0 || item.subMenu->getNumItems() > 0);
@@ -307,8 +308,8 @@ void CabbageLookAndFeel2::drawPopupMenuItem(Graphics& g, const Rectangle<int>& a
     }
 
 
-
-    g.drawFittedText(CabbageUtilities::cabbageString(text, CabbageUtilities::getComponentFont(), area.getWidth() * 0.8), 20, 0, area.getWidth() * 0.8, area.getHeight(), 1, false);
+    g.setFont(area.getHeight() * 0.8);
+    g.drawText(CabbageUtilities::cabbageString(text, CabbageUtilities::getComponentFont(), area.getWidth() * 0.8), 20, 0, area.getWidth() * 0.8, area.getHeight(), 1, false);
 
     if (isSeparator == true)
     {

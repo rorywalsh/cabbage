@@ -47,6 +47,8 @@ combobox WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/fontColour.md !}  
 
+{! ./markdown/Widgets/Properties/fontSize.md !}  
+
 {! ./markdown/Widgets/Properties/identChannel.md !}  
 
 {! ./markdown/Widgets/Properties/menuColour.md !}   

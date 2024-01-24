@@ -57,6 +57,8 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     setTextWhenNothingSelected (text);
     setWantsKeyboardFocus (false);
     getProperties().set("isPresetCombo", false);
+    const int fontSize = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::fontsize);
+    getProperties().set("fontSize",  fontSize);
     getProperties().set("corners", CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::corners));
     initialiseCommonAttributes (this, widgetData);
 

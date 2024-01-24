@@ -1129,6 +1129,7 @@ void CabbageWidgetData::setComboBoxProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::update, 1);
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
     setProperty (widgetData, CabbageIdentifierIds::currenttext, "");
+    setProperty (widgetData, CabbageIdentifierIds::fontsize, 0);
     setProperty (widgetData, CabbageIdentifierIds::caption, "");
     setProperty (widgetData, CabbageIdentifierIds::colour, Colours::black.toString());
     setProperty (widgetData, CabbageIdentifierIds::fontcolour, Colours::white.toString());
