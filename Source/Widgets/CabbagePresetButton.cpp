@@ -143,7 +143,7 @@ void CabbagePresetButton::buttonClicked (Button* button)
 
     m.showMenuAsync(juce::PopupMenu::Options(), [this, numDefaultMenuItems](int choice) {
         if(choice == 0){
-            owner->sendChannelDataToCsound("PRESET_STATE", 0.0);
+            owner->sendChannelDataToCsound("PRESET_STATE", 0.0+Random::getSystemRandom().nextFloat());
             return;
         }
             
@@ -154,14 +154,14 @@ void CabbagePresetButton::buttonClicked (Button* button)
         if(choice == 1){
 			owner->savePluginStateToFile (this->currentPreset.getFileNameWithoutExtension(), this->currentPreset.getFullPathName(), false);
             owner->sendChannelStringDataToCsound(this->getChannel(), this->currentPreset.getFullPathName());
-            owner->sendChannelDataToCsound("PRESET_STATE", 1.0);
+            owner->sendChannelDataToCsound("PRESET_STATE", 1.0+Random::getSystemRandom().nextFloat());
         }
         else if(choice == 2){
             FileChooser fc("Save as", File(this->user.folder), this->user.extension, CabbageUtilities::shouldUseNativeBrowser());
 
             if (fc.browseForFileToSave(true))
             {
-                owner->sendChannelDataToCsound("PRESET_STATE", 2.0);
+                owner->sendChannelDataToCsound("PRESET_STATE", 2.0+Random::getSystemRandom().nextFloat());
                 owner->savePluginStateToFile (fc.getResult().getFileNameWithoutExtension(), fc.getResult().getFullPathName(), false);
                 owner->sendChannelStringDataToCsound(this->getChannel(), fc.getResult().getFullPathName());
                 CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, fc.getResult().getFullPathName());
@@ -171,12 +171,12 @@ void CabbagePresetButton::buttonClicked (Button* button)
         {
             if(File(this->user.folder).exists()){
                 File(this->user.folder).revealToUser();
-                owner->sendChannelDataToCsound("PRESET_STATE", 3.0);
+                owner->sendChannelDataToCsound("PRESET_STATE", 3.0 + Random::getSystemRandom().nextFloat());
             }
         }
         else if(choice > 3 && choice < 3000)
         {
-            owner->sendChannelDataToCsound("PRESET_STATE",4.0);
+            owner->sendChannelDataToCsound("PRESET_STATE",4.0+Random::getSystemRandom().nextFloat());
             owner->sendChannelStringDataToCsound(this->getChannel(), File(this->fullPresetList[choice-numDefaultMenuItems]).getFullPathName());
             owner->restorePluginStateFrom (File(this->fullPresetList[choice-numDefaultMenuItems]).getFileNameWithoutExtension(), this->fullPresetList[choice-numDefaultMenuItems]);
             CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, this->fullPresetList[choice-numDefaultMenuItems]);
@@ -193,7 +193,7 @@ void CabbagePresetButton::buttonClicked (Button* button)
         }
         else if(choice == 3001)
         {       
-            owner->sendChannelDataToCsound("PRESET_STATE", 6.0);
+            owner->sendChannelDataToCsound("PRESET_STATE", 6.0+Random::getSystemRandom().nextFloat());
             int currentIndex = fullPresetList.indexOf(currentPreset.getFullPathName());
             currentPreset.deleteFile();
             fullPresetList.remove(currentIndex);
@@ -356,7 +356,7 @@ void CabbagePresetButton::valueTreePropertyChanged (ValueTree& valueTree, const 
         File presetFile = File(user.folder).getChildFile(valueTree.getProperty(prop).toString());
         const String ext = user.extension.substring(user.extension.indexOf(".")+1);
         owner->savePluginStateToFile (presetFile.getFileNameWithoutExtension(), presetFile.withFileExtension(ext).getFullPathName(), false);
-        owner->sendChannelDataToCsound("PRESET_STATE", 5.0);
+        owner->sendChannelDataToCsound("PRESET_STATE", 5.0+Random::getSystemRandom().nextFloat());
         owner->sendChannelStringDataToCsound(this->getChannel(), presetFile.getFullPathName());
         CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, presetFile.getFullPathName());
     }
