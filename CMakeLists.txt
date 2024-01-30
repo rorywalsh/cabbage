@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.165)
+	set(BUILD_VERSION 2.9.166)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -192,7 +192,7 @@ if(MSVC)
 endif()
 
 if(Bluetooth MATCHES 1)
-add_compile_options (-Wno-deprecated -Wno-deprecated-declarations)
+
 else()
 add_compile_options ( -Wno-reorder -Wno-deprecated -Wno-deprecated-declarations)
 endif()
