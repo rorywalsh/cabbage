@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.163)
+	set(BUILD_VERSION 2.9.164)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -139,7 +139,12 @@ else()
 # ============== This part of the CMake setup deals with plugins only.....
     set(PLUGIN_NEEDS_OUTPUT PLUGIN_IS_A_SYNTH)
     SetIfSynth(PLUGIN_VST2_CATEGORY "kPlugCategSynth" "kPlugCategEffect")
-    SetIfSynth(PLUGIN_AU_MAIN_TYPE "aumi" "aumf")
+    
+    IF(${midiEffectProject} GREATER 0)
+
+    ELSE()
+        SetIfSynth(PLUGIN_AU_MAIN_TYPE "aumi" "aumf")
+    ENDIF()
     SetIfSynth(PLUGIN_VST3_CATEGORIES "Instrument|Synth" "Fx")
     SetIfSynth(SYNTH_OR_EFFECT "Synth" "Effect")
 
@@ -174,7 +179,7 @@ else()
         VST3_CATEGORIES "${PLUGIN_VST3_CATEGORIES}"
         AU_EXPORT_PREFIX "${PROJECT_NAME}AU"
         AU_SANDBOX_SAFE TRUE
-        COPY_PLUGIN_AFTER_BUILD FALSE
+        COPY_PLUGIN_AFTER_BUILD TRUE
         HARDENED_RUNTIME_OPTIONS com.apple.security.files.downloads.read-write com.apple.security.device.audio-input com.apple.security.cs.disable-library-validation com.apple.security.cs.allow-unsigned-executable-memory com.apple.security.device.audio-input
         COMPANY_NAME ${JucePlugin_Manufacturer}
         HARDENED_RUNTIME_ENABLED TRUE

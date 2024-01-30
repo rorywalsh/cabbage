@@ -54,6 +54,7 @@ CabbageLabel::CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner)
     if(owner->getCustomFontFile().existsAsFile())
     {
         userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
+        usingCustomFont = true;
     }
 }
 
@@ -63,7 +64,8 @@ void CabbageLabel::paint (Graphics& g)
     g.fillRoundedRectangle (getLocalBounds().toFloat(), corners);
     g.setColour (Colour::fromString (fontcolour));
     
-    userFont.setStyleFlags(fontstyle);
+    if(!usingCustomFont)
+        userFont.setStyleFlags(fontstyle);
     
 
 	if (fontsize == 0)
