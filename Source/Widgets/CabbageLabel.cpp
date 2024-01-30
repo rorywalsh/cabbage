@@ -54,6 +54,7 @@ CabbageLabel::CabbageLabel (ValueTree wData, CabbagePluginEditor* _owner)
     if(owner->getCustomFontFile().existsAsFile())
     {
         userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
+        
     }
 }
 

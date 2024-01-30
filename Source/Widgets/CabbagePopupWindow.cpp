@@ -32,14 +32,15 @@ CabbagePopupWindow::CabbagePopupWindow (ValueTree valueTree, const String& svgTe
     buttons[0].setAlpha(0.0f);
     buttons[1].setAlpha(0.0f);
 
-    buttons[0].setColour(TextButton::ColourIds::buttonOnColourId, Colour(0xff00ABD1));// Lattice::getColours()[1]);
-    buttons[1].setColour(TextButton::ColourIds::buttonOnColourId, Colour(0xff00ABD1));// Lattice::getColours()[1]);
+    buttons[0].setColour(TextButton::ColourIds::buttonOnColourId, Colour(0xff00ABD1));
+    buttons[1].setColour(TextButton::ColourIds::buttonOnColourId, Colour(0xff00ABD1));
 
     editor.setColour (Label::outlineColourId, Colours::transparentBlack);
     editor.setColour (TextEditor::outlineColourId, Colours::transparentBlack);
     editor.setColour (TextEditor::backgroundColourId, Colours::transparentBlack);
     editor.setColour (TextEditor::textColourId, Colour(165, 165, 165));
-    editor.setCaretVisible(false);
+    editor.setColour (CaretComponent::ColourIds::caretColourId, Colour(200, 200, 200));
+    //editor.setCaretVisible(false);
     editor.setColour (Label::outlineWhenEditingColourId, Colours::transparentBlack);
     editor.setColour (TextEditor::ColourIds::focusedOutlineColourId, Colours::transparentBlack);
 //    lookAndFeelChanged();
