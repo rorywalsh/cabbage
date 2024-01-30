@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.164)
+	set(BUILD_VERSION 2.9.165)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -191,8 +191,11 @@ if(MSVC)
     add_definitions( "/wd26495 /wd4996" )
 endif()
 
-
+if(Bluetooth MATCHES 1)
+add_compile_options (-Wno-deprecated -Wno-deprecated-declarations)
+else()
 add_compile_options ( -Wno-reorder -Wno-deprecated -Wno-deprecated-declarations)
+endif()
 
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 
