@@ -493,7 +493,8 @@ if platform.system() == "Windows":
 for project in projects:
     os.chdir(rootDir)
     if os.path.exists(rootDir+"/build"):
-        shutil.rmtree(rootDir+"/build")
+        # shutil.rmtree(rootDir+"/build")
+        os.system('rm -rf '+rootDir+"/build")
     os.mkdir(rootDir+'/build')
     os.chdir(rootDir+'/build')
 
