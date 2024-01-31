@@ -124,9 +124,6 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-    void setParametersFromXml (XmlElement* e);
-    XmlElement savePluginState (String tag);
-    void restorePluginState (XmlElement* xmlElement);
     //==============================================================================
     StringArray cabbageScriptGeneratedCode;
     Array<PlantImportStruct> plantStructs;
