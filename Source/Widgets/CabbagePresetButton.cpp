@@ -303,16 +303,22 @@ String CabbagePresetButton::returnValidPath (File fc)
 //===============================================================================
 void CabbagePresetButton::showPopupWindow()
 {
+    
     String presetName = "";
     popupWindow = std::make_unique<CabbagePopupWindow>(widgetData, svgText, true);
-    if(!owner)
+    auto form = owner->getCabbageForm();
+    if(!form)
+    {
         popupWindow->addToDesktop(1);
+        popupWindow->setVisible(true);
+    }
     else
-        owner->getParentComponent()->addChildComponent(popupWindow.get());
+    {
+        popupWindow->setBounds(150,
+                               100, 300, 150);
+        form->addAndMakeVisible(popupWindow.get());
+    }
 
-    popupWindow->setBounds(owner->getWidth()/2 - 150,
-                           100, 300, 150);
-    popupWindow->setVisible(true);
     popupWindow->toFront(true);
     popupWindow->setAlwaysOnTop(true);
     Component::SafePointer<CabbagePresetButton> parent{ this };
@@ -337,6 +343,7 @@ void CabbagePresetButton::setLookAndFeelColours (ValueTree wData)
 //===============================================================================
 void CabbagePresetButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
+    owner->getProcessor().getCsound()->Message(prop.toString().toUTF8().getAddress());
     if(prop == CabbageIdentifierIds::value)
     {
         const auto file = File(CabbageWidgetData::getStringProp(valueTree, prop));
@@ -350,6 +357,7 @@ void CabbagePresetButton::valueTreePropertyChanged (ValueTree& valueTree, const 
     else if(prop == CabbageIdentifierIds::svgElement)
     {
         svgText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::svgElement);
+        
     }
     else if(prop == Identifier("NEW_PRESET_NAME"))
     {

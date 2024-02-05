@@ -583,6 +583,7 @@ public:
         folderMacros.set("#USER_MUSIC_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::userMusicDirectory).getFullPathName());
         folderMacros.set("#USER_APPLICATION_DATA_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName());
         folderMacros.set("#USER_DOCUMENTS_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::userDocumentsDirectory).getFullPathName());
+        folderMacros.set("#CURRENT_EXECUTABLE_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::currentExecutableFile).getFullPathName());
         
         const auto keys = folderMacros.getAllKeys();
         for ( auto key : keys)

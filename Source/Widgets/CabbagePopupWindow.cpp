@@ -106,7 +106,9 @@ void CabbagePopupWindow::resized()
 void CabbagePopupWindow::paint(Graphics& g)
 {
     g.fillAll(Colours::transparentBlack);
-    drawable->setTransformToFit(getLocalBounds().toFloat(), RectanglePlacement::stretchToFit);
-    drawable->draw(g, 1.f, {});
-    //g.setColour(Colour(0xff00ABD1));
+    if(drawable){
+        drawable->setTransformToFit(getLocalBounds().toFloat(), RectanglePlacement::stretchToFit);
+        drawable->draw(g, 1.f, {});
+    }
+
 }
