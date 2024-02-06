@@ -81,7 +81,7 @@ public:
     void init (bool enableAudioInput, const String& preferredDefaultDeviceName)
     {
         setupAudioDevices (enableAudioInput, preferredDefaultDeviceName, options.get());
-        reloadPluginState();
+        //reloadPluginState();
         startPlaying();
 
        if (autoOpenMidiDevices)
