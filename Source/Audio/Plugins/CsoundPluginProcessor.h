@@ -28,6 +28,7 @@
 #include "../../Opcodes/opcodes.hpp"
 
 #include "../../Opcodes/CabbageMidiOpcodes.h"
+#include "../../Opcodes/CabbageProfilerOpcodes.h"
 
 
 #include "../../Opcodes/CabbageIdentifierOpcodes.h"
