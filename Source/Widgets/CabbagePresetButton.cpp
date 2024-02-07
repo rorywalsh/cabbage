@@ -314,7 +314,7 @@ void CabbagePresetButton::showPopupWindow()
     }
     else
     {
-        popupWindow->setBounds(150,
+        popupWindow->setBounds((form->getWidth()/2)-150,
                                100, 300, 150);
         form->addAndMakeVisible(popupWindow.get());
     }
