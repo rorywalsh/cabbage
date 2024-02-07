@@ -570,7 +570,7 @@ int GetCabbageStringValueArray::getAttribute()
     return OK;
 }
 
-int GetCabbageValue::getAttribute()
+int GetCabbageValue::getAttribute(bool irate)
 {
     if(in_count() == 0)
         return NOTOK;
@@ -706,6 +706,7 @@ int GetCabbageValueWithTrigger::getAttribute()
         {
             currentValue = *value;
             outargs[1] = 1;
+            outargs[0] = currentValue;
         }
         else
         {
@@ -716,7 +717,7 @@ int GetCabbageValueWithTrigger::getAttribute()
             else
                 outargs[1] = 0;
         }
-        outargs[0] = currentValue;       
+        //   
         
     }
     

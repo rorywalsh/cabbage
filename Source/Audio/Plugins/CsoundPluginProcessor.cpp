@@ -1087,19 +1087,23 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Requested output channels:", numCsoundOutputChannels);
 
     CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - Sampling rate:", samplingRate);
-    if((samplingRate != sampleRate)
-#if ! JucePlugin_IsSynth && ! JucePlugin_IsSynth
-       || numCsoundInputChannels != inputs
-#endif
-       || numCsoundOutputChannels != outputs)
-    {
-        //if sampling rate is other than default or has been changed, recompile..
-        samplingRate = (double)sampleRate;
-        //the problem here is channels have already been instantiated, so no change triggers will take place..
-        CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - calling setupAndCompileCsound()");
-        setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
-    }
 
+    //weird thing in FL Studio where outputs is 0 at some point, causing Csound to recompile, causing issues with channels
+    if (outputs != 0)
+    {
+        if (((samplingRate != sampleRate))
+#if ! JucePlugin_IsSynth
+            || numCsoundInputChannels != inputs
+#endif
+            || numCsoundOutputChannels != outputs)
+        {
+            //if sampling rate is other than default or has been changed, recompile..
+            samplingRate = (double)sampleRate;
+            //the problem here is channels have already been instantiated, so no change triggers will take place..
+            CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - calling setupAndCompileCsound()");
+            setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
+        }
+    }
     if (preferredLatency == -1)
         this->setLatencySamples(0);
     else
