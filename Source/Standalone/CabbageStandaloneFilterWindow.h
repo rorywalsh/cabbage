@@ -268,7 +268,7 @@ public:
                 o.content.setOwned (content.release());
         
                 o.dialogTitle                   = TRANS("Audio/MIDI Settings");
-                o.dialogBackgroundColour        = o.content->getLookAndFeel().findColour (ResizableWindow::backgroundColourId);
+                o.dialogBackgroundColour        = Colour(15, 15, 15);
                 o.escapeKeyTriggersCloseButton  = true;
                 o.useNativeTitleBar             = true;
                 o.resizable                     = false;
@@ -506,14 +506,14 @@ private:
         {
             
             setOpaque (true);
-            deviceSelector.getLookAndFeel().setColour(ListBox::ColourIds::textColourId, Colours::red);
-            deviceSelector.getLookAndFeel().setColour(ListBox::ColourIds::backgroundColourId, Colour(25, 25, 25));
-            deviceSelector.getLookAndFeel().setColour(ComboBox::ColourIds::textColourId, Colours::red);
-            deviceSelector.getLookAndFeel().setColour(ComboBox::ColourIds::backgroundColourId, Colour(25, 25, 25));
-            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::textColourOffId, Colours::red);
-            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::textColourOnId, Colours::red);
-            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::buttonColourId, Colour(25, 25, 25));
-            deviceSelector.getLookAndFeel().setColour(PopupMenu::ColourIds::backgroundColourId, Colour(25, 25, 25));
+            deviceSelector.getLookAndFeel().setColour(ListBox::ColourIds::textColourId, Colours::white);
+            deviceSelector.getLookAndFeel().setColour(ListBox::ColourIds::backgroundColourId, Colour(52, 52, 52));
+            deviceSelector.getLookAndFeel().setColour(ComboBox::ColourIds::textColourId, Colours::white);
+            deviceSelector.getLookAndFeel().setColour(ComboBox::ColourIds::backgroundColourId, Colour(52, 52, 52));
+            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::textColourOffId, Colours::white);
+            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::textColourOnId, Colours::white);
+            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::buttonColourId, Colours::white);
+            deviceSelector.getLookAndFeel().setColour(PopupMenu::ColourIds::backgroundColourId, Colour(52, 52, 52));
             
             
             deviceSelector.sendLookAndFeelChange();
