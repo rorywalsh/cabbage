@@ -75,7 +75,7 @@ parser.add_argument('--license', type=str,
                     help='GPL by default')
 
 parser.add_argument('--generator', type=str,
-                    help='Defaults VS2019 on Windows, XCode on Mac, and Ninja or Linux')
+                    help='Defaults VS2022 on Windows, XCode on Mac, and Ninja or Linux')
 
 parser.add_argument('--btOpcode', type=str,
                     help='')
@@ -108,7 +108,7 @@ if args.generator is not None:
     generator = args.generator
 else:
     if platform.system() == "Windows":
-        generator = "Visual Studio 16 2019"
+        generator = "Visual Studio 17 2022"
     elif platform.system() == "Linux":
         generator = "Ninja"
     elif platform.system() == "Darwin":
