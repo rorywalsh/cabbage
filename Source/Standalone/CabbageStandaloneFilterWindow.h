@@ -510,9 +510,9 @@ private:
             deviceSelector.getLookAndFeel().setColour(ListBox::ColourIds::backgroundColourId, Colour(52, 52, 52));
             deviceSelector.getLookAndFeel().setColour(ComboBox::ColourIds::textColourId, Colours::white);
             deviceSelector.getLookAndFeel().setColour(ComboBox::ColourIds::backgroundColourId, Colour(52, 52, 52));
-            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::textColourOffId, Colour(52, 52, 52));
-            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::textColourOnId, Colour(52, 52, 52));
-            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::buttonColourId, Colours::white);
+            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::textColourOffId, Colours::white);
+            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::textColourOnId, Colours::white);
+            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::buttonColourId, Colour(52, 52, 52));
             deviceSelector.getLookAndFeel().setColour(PopupMenu::ColourIds::backgroundColourId, Colour(52, 52, 52));
             
             
