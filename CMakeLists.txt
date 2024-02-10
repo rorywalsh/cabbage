@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.176)
+	set(BUILD_VERSION 2.9.177)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -522,7 +522,8 @@ if(MSVC)
     include_directories("C:\\Program Files\\Csound6_x64\\include\\csound" "C:\\SDKs\\ASIOSDK2.3.3\\asiosdk_2.3.3_2019-06-14\\common")
     if(CabbagePro MATCHES 1)
         # find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
-        set(CSOUND_LIBRARY "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
+        # set(CSOUND_LIBRARY "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
+        set(CSOUND_LIBRARY "c:\\Users\\rory\\sourcecode\\csound\\build\\Release\\libcsound64.lib")
         set(EXTERNAL_LIBS "c:\\Program Files\\Csound6_x64\\lib\\sndfile.lib" "c:\\Program Files\\Csound6_x64\\lib\\opus.lib" "c:\\Program Files\\Csound6_x64\\lib\\syn123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmpghip-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\out123.lib" "c:\\Program Files\\Csound6_x64\\lib\\mpg123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmp3lame-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\FLAC.lib")
     else()
     find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
