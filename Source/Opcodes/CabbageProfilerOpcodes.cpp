@@ -10,7 +10,28 @@
 
 int CabbageProfilerStart::init()
 {
- 
+    std::string identifier(args.str_data(0).data);
+    std::string block(args.str_data(1).data);
+    
+    profiler = (Profiler**)csound->query_global_variable(identifier.c_str());
+    Profiler* profilerData;
+
+    if (profiler != nullptr)
+    {
+        profilerData = *profiler;
+        profilerData->timer[block].reset(new ProfilerTimer());
+        profilerData->timer[block]->Start();
+    }
+    else
+    {
+        csound->create_global_variable(identifier.c_str(), sizeof(Profiler*));
+        profiler = (Profiler**)csound->query_global_variable(identifier.c_str());
+        *profiler = new Profiler();
+        profilerData = *profiler;
+        profilerData->timer[block].reset(new ProfilerTimer());
+        profilerData->timer[block]->Start();
+    }
+
     return OK;
 }
 
@@ -19,6 +40,7 @@ int CabbageProfilerStart::init()
 int CabbageProfilerStart::kperf()
 {
     std::string identifier(args.str_data(0).data);
+    std::string block(args.str_data(1).data);
     
     profiler = (Profiler**)csound->query_global_variable(identifier.c_str());
     Profiler* profilerData;
@@ -28,15 +50,9 @@ int CabbageProfilerStart::kperf()
         profilerData = *profiler;
     }
     else
-    {
-        csound->create_global_variable(identifier.c_str(), sizeof(Profiler*));
-        profiler = (Profiler**)csound->query_global_variable(identifier.c_str());
-        *profiler = new Profiler();
-        profilerData = *profiler;
-        profilerData->timer = new ProfilerTimer(identifier.c_str());
-    }
+        return NOTOK;
     
-    profilerData->timer->Start();
+    profilerData->timer[block]->Start();
     return OK;
 }
     
@@ -52,6 +68,7 @@ int CabbageProfilerStop::init()
 int CabbageProfilerStop::kperf()
 {
     std::string identifier(inargs.str_data(0).data);
+    std::string block(inargs.str_data(1).data);
     
     profiler = (Profiler**)csound->query_global_variable(identifier.c_str());
     Profiler* profilerData;
@@ -61,16 +78,11 @@ int CabbageProfilerStop::kperf()
         profilerData = *profiler;
     }
     else
-    {
-        csound->create_global_variable(identifier.c_str(), sizeof(Profiler*));
-        profiler = (Profiler**)csound->query_global_variable(identifier.c_str());
-        *profiler = new Profiler();
-        profilerData = *profiler;
-        profilerData->timer = new ProfilerTimer(identifier.c_str());
-    }
+        return NOTOK;
     
-    profilerData->timer->Stop();
-    outargs[0] = profilerData->timer->getAverage();
+    
+    profilerData->timer[block]->Stop();
+    outargs[0] = profilerData->timer[block]->getAverage();
     
     return OK;
 }

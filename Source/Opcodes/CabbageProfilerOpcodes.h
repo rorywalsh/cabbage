@@ -21,8 +21,7 @@
 class ProfilerTimer
 {
 public:
-    ProfilerTimer(const char* name)
-        : m_Name(name), m_Stopped(false)
+    ProfilerTimer()
     {
         
     }
@@ -55,28 +54,26 @@ public:
     }
     
 private:
-    const char* m_Name;
     float average = 0.f;
     float count = 1.f;
     std::chrono::time_point<std::chrono::high_resolution_clock> m_StartTimepoint;
-    bool m_Stopped;
 };
 //====================================================================================================
 
 class Profiler
 {
 public:
-    ProfilerTimer* timer;
+    std::map<std::string, std::unique_ptr<ProfilerTimer>> timer;
 };
 
-struct CabbageProfilerStart : csnd::InPlug<1>
+struct CabbageProfilerStart : csnd::InPlug<2>
 {
     int init();
     int kperf();
     Profiler** profiler = nullptr;
 };
 
-struct CabbageProfilerStop : csnd::Plugin<1, 1>
+struct CabbageProfilerStop : csnd::Plugin<1, 2>
 {
     int init();
     int kperf();
