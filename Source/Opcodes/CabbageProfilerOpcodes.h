@@ -75,7 +75,12 @@ struct CabbageProfilerStart : csnd::InPlug<2>
 
 struct CabbageProfilerStop : csnd::Plugin<1, 2>
 {
-    int init();
+    int kperf();
+    Profiler** profiler = nullptr;
+};
+
+struct CabbageProfilerPrint : csnd::InPlug<2>
+{
     int kperf();
     Profiler** profiler = nullptr;
 };

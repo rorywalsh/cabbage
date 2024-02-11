@@ -710,9 +710,20 @@ public:
         const String dir = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName();
         const String pluginBundleName = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getParentDirectory().getFileNameWithoutExtension();
                 
-        const String filename(File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName());
+        File csdFile;
+        StringArray csdLines;
 
-        File csdFile = File(dir + "/" + filename);
+
+#ifdef JUCE_WINDOWS
+        csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
+        const String homeDrive = File::getSpecialLocation(File::windowsSystemDirectory).getParentDirectory().getParentDirectory().getFullPathName();
+        if (csdFile.existsAsFile() == false)
+        {
+            String filename = homeDrive + "/ProgramData/" + String(CabbageManufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
+            csdFile = File(filename);
+           
+        }
+#elif JUCE_MAC
         if(csdFile.existsAsFile() == false)
         {
             csdFile = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension()+"/"+filename;
@@ -722,10 +733,20 @@ public:
                 csdFile = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + pluginBundleName + "/"+filename;
             }
         }
+#else
+        CabbageUtilities::debug(CabbageManufacturer);
+        csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
+        if (!csdFile.existsAsFile())
+        {
+            //In Linux, plugin application directory will reside in ~/Manufacturer/PluginName
+            String filename = "~/" + String(CabbageManufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
 
-        StringArray csdLines;
-        csdLines.addLines(csdFile.loadFileAsString());
+            csdFile = File(filename);
+        }
+#endif
         
+        csdLines.addLines(csdFile.loadFileAsString());
+        int t = csdLines.size();
         int titleBarHeight = 18;
         
         for (const auto& line : csdLines)

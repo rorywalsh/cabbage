@@ -56,14 +56,6 @@ int CabbageProfilerStart::kperf()
     return OK;
 }
     
-int CabbageProfilerStop::init()
-{
- 
- 
-    return OK;
-}
-
-
 
 int CabbageProfilerStop::kperf()
 {
@@ -83,6 +75,41 @@ int CabbageProfilerStop::kperf()
     
     profilerData->timer[block]->Stop();
     outargs[0] = profilerData->timer[block]->getAverage();
+    
+    return OK;
+}
+
+int CabbageProfilerPrint::kperf()
+{
+    std::string identifier(args.str_data(0).data);
+    int trig = args[1];
+    
+    profiler = (Profiler**)csound->query_global_variable(identifier.c_str());
+    Profiler* profilerData;
+
+    if (profiler != nullptr)
+    {
+        profilerData = *profiler;
+    }
+    else
+        return NOTOK;
+    
+
+    
+    if(trig == 1)
+    {
+        std::map<std::string, std::unique_ptr<ProfilerTimer>>::iterator it;
+        String output = {};
+        
+        for (auto const& t : profilerData->timer)
+        {
+            output+= String(t.first) + ":" + String(t.second.get()->getAverage()) + "\t";
+        }
+        
+      
+        csound->message(output.toStdString());
+    }
+    //outargs[0] = profilerData->timer[block]->getAverage();
     
     return OK;
 }

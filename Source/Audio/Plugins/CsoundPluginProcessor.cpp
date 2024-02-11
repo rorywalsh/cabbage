@@ -386,6 +386,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     
     csnd::plugin<CabbageProfilerStart>((csnd::Csound*)getCsound()->GetCsound(), "cabbageProfilerStart", "", "SS", csnd::thread::ik);
     csnd::plugin<CabbageProfilerStop>((csnd::Csound*)getCsound()->GetCsound(), "cabbageProfilerStop", "k", "SS", csnd::thread::k);
+    csnd::plugin<CabbageProfilerPrint>((csnd::Csound*)getCsound()->GetCsound(), "cabbageProfilerPrint", "", "Sk", csnd::thread::k);
 #if Bluetooth
     csnd::plugin<CabbageBTOpcode>((csnd::Csound*)getCsound()->GetCsound(), "cabbageBluetooth", "k", "SS", csnd::thread::ik);
 #endif
