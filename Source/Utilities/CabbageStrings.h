@@ -17,8 +17,6 @@ class CabbageStrings
 public:
     CabbageStrings()
     {
-
-
     }
 
     ~CabbageStrings() {}

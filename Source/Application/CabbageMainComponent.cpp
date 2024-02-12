@@ -731,11 +731,8 @@ void CabbageMainComponent::changeListenerCallback (ChangeBroadcaster* source)
                 if (CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::linenumber) > 9999) //if widget was added in edit mode...
                 {
                     StringArray csdArray;
-#ifdef JUCE_LINUX
-                    csdArray.addLines(getCurrentCodeEditor()->getDocument().getAllContent());
-#else
-                    jassertfalse;
-#endif
+                    csdArray.addLines(getCurrentCodeEditor()->getAllContent());
+
                     for (int i = 0; i < csdArray.size(); i++)
                     {
                         if (csdArray[i].contains(
@@ -858,16 +855,7 @@ void CabbageMainComponent::actionListenerCallback (const String& message)
     }
     else if (message.contains ("delete:"))
     {
-        //deleted whatever line is currently selected, we don't need the know the line number...
-        //const int lineNumber = String (message.replace ("delete:", "")).getIntValue();
-        //getCurrentCodeEditor()->removeLine (getCurrentCodeEditor()->getSel);
-#ifdef JUCE_LINUX
-        getCurrentCodeEditor()->removeSelectedText();
-#else
-        jassertfalse;
-#endif
-        saveDocument();
-        enableEditMode();
+        getCurrentCodeEditor()->removeCurrentLine();
     }
 }
 //=======================================================================================
@@ -904,11 +892,7 @@ void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool
                                                                                                                : currentLineText));
 
                 if (isGUIEnabled == true && guiPropUpdate == false)
-#ifdef JUCE_LINUX
                     getCurrentCodeEditor()->updateBoundsText(lineNumber, newText, true);
-#else
-                jassertfalse;
-#endif
                 else
                     getCurrentCodeEditor()->insertCode(lineNumber, newText, replaceExistingLine, parent.isEmpty());
 

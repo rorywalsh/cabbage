@@ -55,6 +55,7 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
         hasTextChanged = true;
         return choc::value::createString("Text has changed in editor");
     });
+    
 }
 
 CabbageCodeEditorComponent::~CabbageCodeEditorComponent()
@@ -62,14 +63,19 @@ CabbageCodeEditorComponent::~CabbageCodeEditorComponent()
 
 }
 
-void CabbageCodeEditorComponent::loadContent(String content)
+void CabbageCodeEditorComponent::loadContent(String content, int lineNumber, int delay)
 {
-    Timer::callAfterDelay(1000, [this, content]()
+    
+    
+    Timer::callAfterDelay(delay, [this, lineNumber, delay, content]()
     {
-        auto jsCode = "updateText(`" + content + "`);";
-//        jassertfalse;
+        auto jsCode = "updateText(`" + content + "`, " + String(lineNumber+1) +");";
         webView->evaluateJavascript(jsCode.toStdString());
+        insertSuggestion();
     });
+    
+    currentLineNumber = lineNumber;
+    allContent = content;
     
 }
 
@@ -77,3 +83,55 @@ void CabbageCodeEditorComponent::resized()
 {
     nativeWindow.setBounds(0, 0, static_cast<int>(getWidth()), getHeight());
 }
+
+void CabbageCodeEditorComponent::insertSuggestion()
+{
+    //auto xmlDoc = XmlDocument(CabbageStrings::getOpcodesXml());
+    
+
+
+    //webView->evaluateJavascript(newSuggestion.toStdString());
+}
+
+void CabbageCodeEditorComponent::removeCurrentLine()
+{
+    StringArray lines;
+    lines.addLines(allContent);
+    lines.remove(currentLineNumber);
+    loadContent(lines.joinIntoString("\n"), currentLineNumber, 100);
+}
+
+String CabbageCodeEditorComponent::getLineText(int line)
+{
+    StringArray lines;
+    lines.addLines(allContent);
+    return lines[line];
+}
+
+void CabbageCodeEditorComponent::insertCode(int lineNumber, String updatedText, bool, bool)
+{
+    StringArray lines;
+    lines.addLines(allContent);
+    lines.set(lineNumber, updatedText);
+    loadContent(lines.joinIntoString("\n"), lineNumber, 100);
+}
+
+void CabbageCodeEditorComponent::updateBoundsText (int lineNumber, String codeToInsert, bool shouldHighlight)
+{
+    StringArray csdLines;
+    csdLines.addLines (allContent);
+    const int currentIndexOfBounds = csdLines[lineNumber].indexOf("bounds");
+    const int newIndexOfBounds = csdLines[lineNumber].indexOf("bounds");
+    const String currentLine = csdLines[lineNumber];
+    const String currentBounds = currentLine.substring(currentIndexOfBounds, currentLine.indexOf(currentIndexOfBounds, ")")+1);
+    const String newBounds = codeToInsert.substring(newIndexOfBounds, codeToInsert.indexOf(newIndexOfBounds, ")")+1);
+    
+    if(currentIndexOfBounds == -1)
+        csdLines.insert (lineNumber, codeToInsert);
+    else
+        csdLines.set (lineNumber, currentLine.replace(currentBounds, newBounds));
+
+    loadContent(csdLines.joinIntoString ("\n"), lineNumber, 100);
+
+}
+

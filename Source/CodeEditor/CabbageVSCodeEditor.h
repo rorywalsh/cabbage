@@ -78,11 +78,12 @@ public:
     void hide();
     void resized() override;
     NativeWindowComponent nativeWindow;
-    void loadContent(String content);
+    void loadContent(String content, int lineNumber=0, int delay=1000);
     void updateColourScheme(bool isCsdFile=true){  }
     void setFont(Font f){  }
     void setFontSize(int size){  }
     void startThread(){  }
+    void removeCurrentLine();
     void cut(){ jassertfalse; }
     void copy(){ jassertfalse; }
     void paste(){ jassertfalse; }
@@ -90,10 +91,12 @@ public:
     void undo(){ jassertfalse; }
     void selectAll(){ jassertfalse; }
     void parseTextForInstrumentsAndRegions(){ }
-    void insertCode(int lineNumber, String updatedText, bool, bool){ jassertfalse; }
+    void insertCode(int lineNumber, String updatedText, bool, bool);
+    void updateBoundsText (int lineNumber, String codeToInsert, bool shouldHighlight);
+    void highlightLine(int number);
     void scrollToLine(int line){ jassertfalse; }
-    String getAllText(){    jassertfalse;   return ""; }
-    String getLineText(int line){    jassertfalse;   return ""; }
+    String getAllText(){    return allContent; }
+    String getLineText(int line);
     int getCaretPos(){     jassertfalse;   return -1; }
     void setLineNumbersShown(bool){jassertfalse;}
     void updateCurrenLineMarker(){ jassertfalse; }
@@ -103,6 +106,7 @@ public:
     void zoomOut(){jassertfalse;}
     bool hasFileChanged(){ return hasTextChanged; }
     void setSavePoint(){ }
+    void insertSuggestion();
     int findText (String, bool, bool, bool){ jassertfalse;}
     String getSelectedText(){ jassertfalse; return ""; }
     void setAllText(String){jassertfalse;}
@@ -114,6 +118,7 @@ private:
     std::unique_ptr<choc::ui::WebView> webView;
     bool hasTextChanged = false;
     String allContent;
+    int currentLineNumber = 0;
 };
 
 #endif
