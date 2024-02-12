@@ -32,8 +32,8 @@ CabbagePopupWindow::CabbagePopupWindow (ValueTree valueTree, const String& svgTe
     buttons[0].setAlpha(0.0f);
     buttons[1].setAlpha(0.0f);
 
-    buttons[0].setColour(TextButton::ColourIds::buttonOnColourId, Colour(0xff00ABD1));// Lattice::getColours()[1]);
-    buttons[1].setColour(TextButton::ColourIds::buttonOnColourId, Colour(0xff00ABD1));// Lattice::getColours()[1]);
+    buttons[0].setColour(TextButton::ColourIds::buttonOnColourId, Colour(0xff00ABD1));
+    buttons[1].setColour(TextButton::ColourIds::buttonOnColourId, Colour(0xff00ABD1));
 
     editor.setColour (Label::outlineColourId, Colours::transparentBlack);
     editor.setColour (TextEditor::outlineColourId, Colours::transparentBlack);
@@ -111,7 +111,9 @@ void CabbagePopupWindow::resized()
 void CabbagePopupWindow::paint(Graphics& g)
 {
     g.fillAll(Colours::transparentBlack);
-    drawable->setTransformToFit(getLocalBounds().toFloat(), RectanglePlacement::stretchToFit);
-    drawable->draw(g, 1.f, {});
-    //g.setColour(Colour(0xff00ABD1));
+    if(drawable){
+        drawable->setTransformToFit(getLocalBounds().toFloat(), RectanglePlacement::stretchToFit);
+        drawable->draw(g, 1.f, {});
+    }
+
 }

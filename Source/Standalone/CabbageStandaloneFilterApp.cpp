@@ -113,7 +113,7 @@ public:
     void shutdown() override
     {
         mainWindow = nullptr;
-        appProperties.saveIfNeeded();
+        //appProperties.saveIfNeeded();
     }
 
     //==============================================================================

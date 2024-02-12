@@ -52,7 +52,8 @@ template <std::size_t N>
 struct CabbageOpcodes
 {
     CabbageWidgetIdentifiers** vt = nullptr;
-    char* name, *identifier;
+    char* name = NULL;
+    char* identifier = NULL;
     MYFLT* value = {};
     MYFLT lastValue = 0;
     MYFLT* str = {};
@@ -192,9 +193,9 @@ struct SetCabbageIdentifierITimeSArgs : csnd::Plugin<64, 0>, CabbageOpcodes<64>
 struct GetCabbageValue : csnd::Plugin<1, 1>
 {
     MYFLT* value;
-    int init(){ return getAttribute(); }
-    int kperf(){ return getAttribute(); }
-    int getAttribute();
+    int init(){ return getAttribute(true); }
+    int kperf(){ return getAttribute(false); }
+    int getAttribute(bool irate);
 };
 
 struct GetCabbageValueArray : csnd::Plugin<1, 1>

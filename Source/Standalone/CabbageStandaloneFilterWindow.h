@@ -81,7 +81,7 @@ public:
     void init (bool enableAudioInput, const String& preferredDefaultDeviceName)
     {
         setupAudioDevices (enableAudioInput, preferredDefaultDeviceName, options.get());
-        reloadPluginState();
+        //reloadPluginState();
         startPlaying();
 
        if (autoOpenMidiDevices)
@@ -268,7 +268,7 @@ public:
                 o.content.setOwned (content.release());
         
                 o.dialogTitle                   = TRANS("Audio/MIDI Settings");
-                o.dialogBackgroundColour        = o.content->getLookAndFeel().findColour (ResizableWindow::backgroundColourId);
+                o.dialogBackgroundColour        = Colour(15, 15, 15);
                 o.escapeKeyTriggersCloseButton  = true;
                 o.useNativeTitleBar             = true;
                 o.resizable                     = false;
@@ -506,14 +506,14 @@ private:
         {
             
             setOpaque (true);
-            deviceSelector.getLookAndFeel().setColour(ListBox::ColourIds::textColourId, Colours::red);
-            deviceSelector.getLookAndFeel().setColour(ListBox::ColourIds::backgroundColourId, Colour(25, 25, 25));
-            deviceSelector.getLookAndFeel().setColour(ComboBox::ColourIds::textColourId, Colours::red);
-            deviceSelector.getLookAndFeel().setColour(ComboBox::ColourIds::backgroundColourId, Colour(25, 25, 25));
-            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::textColourOffId, Colours::red);
-            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::textColourOnId, Colours::red);
-            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::buttonColourId, Colour(25, 25, 25));
-            deviceSelector.getLookAndFeel().setColour(PopupMenu::ColourIds::backgroundColourId, Colour(25, 25, 25));
+            deviceSelector.getLookAndFeel().setColour(ListBox::ColourIds::textColourId, Colours::white);
+            deviceSelector.getLookAndFeel().setColour(ListBox::ColourIds::backgroundColourId, Colour(52, 52, 52));
+            deviceSelector.getLookAndFeel().setColour(ComboBox::ColourIds::textColourId, Colours::white);
+            deviceSelector.getLookAndFeel().setColour(ComboBox::ColourIds::backgroundColourId, Colour(52, 52, 52));
+            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::textColourOffId, Colours::white);
+            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::textColourOnId, Colours::white);
+            deviceSelector.getLookAndFeel().setColour(TextButton::ColourIds::buttonColourId, Colour(52, 52, 52));
+            deviceSelector.getLookAndFeel().setColour(PopupMenu::ColourIds::backgroundColourId, Colour(52, 52, 52));
             
             
             deviceSelector.sendLookAndFeelChange();
@@ -534,7 +534,7 @@ private:
 
         void paint (Graphics& g) override
         {
-            g.fillAll (Colour(45, 45, 45));
+            g.fillAll (Colour(15, 15, 15));
         }
 
         void resized() override
@@ -710,9 +710,20 @@ public:
         const String dir = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName();
         const String pluginBundleName = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getParentDirectory().getFileNameWithoutExtension();
                 
-        const String filename(File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName());
+        File csdFile;
+        StringArray csdLines;
 
-        File csdFile = File(dir + "/" + filename);
+
+#ifdef JUCE_WINDOWS
+        csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
+        const String homeDrive = File::getSpecialLocation(File::windowsSystemDirectory).getParentDirectory().getParentDirectory().getFullPathName();
+        if (csdFile.existsAsFile() == false)
+        {
+            String filename = homeDrive + "/ProgramData/" + String(CabbageManufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
+            csdFile = File(filename);
+           
+        }
+#elif JUCE_MAC
         if(csdFile.existsAsFile() == false)
         {
             csdFile = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension()+"/"+filename;
@@ -722,10 +733,20 @@ public:
                 csdFile = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + pluginBundleName + "/"+filename;
             }
         }
+#else
+        CabbageUtilities::debug(CabbageManufacturer);
+        csdFile = File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFullPathName();
+        if (!csdFile.existsAsFile())
+        {
+            //In Linux, plugin application directory will reside in ~/Manufacturer/PluginName
+            String filename = "~/" + String(CabbageManufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension() + "/" + File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName();
 
-        StringArray csdLines;
-        csdLines.addLines(csdFile.loadFileAsString());
+            csdFile = File(filename);
+        }
+#endif
         
+        csdLines.addLines(csdFile.loadFileAsString());
+        int t = csdLines.size();
         int titleBarHeight = 18;
         
         for (const auto& line : csdLines)

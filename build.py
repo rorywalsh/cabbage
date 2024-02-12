@@ -75,7 +75,7 @@ parser.add_argument('--license', type=str,
                     help='GPL by default')
 
 parser.add_argument('--generator', type=str,
-                    help='Defaults VS2019 on Windows, XCode on Mac, and Ninja or Linux')
+                    help='Defaults VS2022 on Windows, XCode on Mac, and Ninja or Linux')
 
 parser.add_argument('--btOpcode', type=str,
                     help='')
@@ -86,7 +86,7 @@ parser.add_argument('--customStandalone', type=str,
 args = parser.parse_args()
 
 buildBtOpcode = 0
-if args.btOpcode is 1:
+if args.btOpcode is not None:
     print('Bluetooth Enabled')
     buildBtOpcode = 1
 else:
@@ -94,7 +94,7 @@ else:
     buildBtOpcode = 0
 
 customStandaloneWrapper = 0
-if args.customStandalone is 1:
+if args.customStandalone == 1:
     customStandaloneWrapper = 1
 else:
     customStandaloneWrapper = 0
@@ -108,7 +108,7 @@ if args.generator is not None:
     generator = args.generator
 else:
     if platform.system() == "Windows":
-        generator = "Visual Studio 16 2019"
+        generator = "Visual Studio 17 2022"
     elif platform.system() == "Linux":
         generator = "Ninja"
     elif platform.system() == "Darwin":
@@ -493,7 +493,8 @@ if platform.system() == "Windows":
 for project in projects:
     os.chdir(rootDir)
     if os.path.exists(rootDir+"/build"):
-        shutil.rmtree(rootDir+"/build")
+        # shutil.rmtree(rootDir+"/build")
+        os.system('rm -rf '+rootDir+"/build")
     os.mkdir(rootDir+'/build')
     os.chdir(rootDir+'/build')
 

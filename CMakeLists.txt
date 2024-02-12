@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.156)
+	set(BUILD_VERSION 2.9.157)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -174,7 +174,8 @@ else()
         VST3_CATEGORIES "${PLUGIN_VST3_CATEGORIES}"
         AU_EXPORT_PREFIX "${PROJECT_NAME}AU"
         AU_SANDBOX_SAFE TRUE
-        COPY_PLUGIN_AFTER_BUILD FALSE
+        # disable this on windows or face the wrath of setlocal errors..
+        COPY_PLUGIN_AFTER_BUILD FALSE 
         HARDENED_RUNTIME_OPTIONS com.apple.security.files.downloads.read-write com.apple.security.device.audio-input com.apple.security.cs.disable-library-validation com.apple.security.cs.allow-unsigned-executable-memory com.apple.security.device.audio-input
         COMPANY_NAME ${JucePlugin_Manufacturer}
         HARDENED_RUNTIME_ENABLED TRUE
@@ -191,14 +192,19 @@ if(MSVC)
     add_definitions( "/wd26495 /wd4996" )
 endif()
 
+if(Bluetooth MATCHES 1)
 
+else()
 add_compile_options ( -Wno-reorder -Wno-deprecated -Wno-deprecated-declarations)
+endif()
 
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 
 
 
 set(COMMON_SOURCES
+Source/Opcodes/CabbageProfilerOpcodes.cpp
+Source/Opcodes/CabbageProfilerOpcodes.h
 Source/Opcodes/CabbageIdentifierOpcodes.cpp
 Source/Opcodes/CabbageIdentifierOpcodes.h
 Source/Opcodes/opcodes.hpp
@@ -519,6 +525,9 @@ if(MSVC)
     if(CabbagePro MATCHES 1)
         # find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
         set(CSOUND_LIBRARY "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
+ 
+
+
         set(EXTERNAL_LIBS "c:\\Program Files\\Csound6_x64\\lib\\sndfile.lib" "c:\\Program Files\\Csound6_x64\\lib\\opus.lib" "c:\\Program Files\\Csound6_x64\\lib\\syn123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmpghip-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\out123.lib" "c:\\Program Files\\Csound6_x64\\lib\\mpg123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmp3lame-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\FLAC.lib")
     else()
     find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")

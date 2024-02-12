@@ -47,8 +47,9 @@ CabbagePresetButton::CabbagePresetButton (ValueTree wData, CabbagePluginEditor* 
     replaceTextWithPreset = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::presetnameastext) == 1 ? true : false;
     filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).replaceCharacters (" ", ";");
 
-    setImgProperties (*this, wData, "buttonon");
-    setImgProperties (*this, wData, "buttonoff");
+    auto csdPath = owner->getProcessor().getCsdFile().getFullPathName();
+    setImgProperties (*this, wData, csdPath, "buttonon");
+    setImgProperties (*this, wData, csdPath, "buttonoff");
     addListener (this);
 
     const String imgOff = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonoff);
@@ -141,8 +142,11 @@ void CabbagePresetButton::buttonClicked (Button* button)
     const int numDefaultMenuItems = 4;
 
     m.showMenuAsync(juce::PopupMenu::Options(), [this, numDefaultMenuItems](int choice) {
-        if(choice == 0)
+        if(choice == 0){
+            owner->sendChannelDataToCsound("PRESET_STATE", 0.0+Random::getSystemRandom().nextFloat());
             return;
+        }
+            
 
 		if (choice == 1 && !currentPreset.existsAsFile())
 			choice = 2;
@@ -150,12 +154,14 @@ void CabbagePresetButton::buttonClicked (Button* button)
         if(choice == 1){
 			owner->savePluginStateToFile (this->currentPreset.getFileNameWithoutExtension(), this->currentPreset.getFullPathName(), false);
             owner->sendChannelStringDataToCsound(this->getChannel(), this->currentPreset.getFullPathName());
+            owner->sendChannelDataToCsound("PRESET_STATE", 1.0+Random::getSystemRandom().nextFloat());
         }
         else if(choice == 2){
             FileChooser fc("Save as", File(this->user.folder), this->user.extension, CabbageUtilities::shouldUseNativeBrowser());
 
             if (fc.browseForFileToSave(true))
             {
+                owner->sendChannelDataToCsound("PRESET_STATE", 2.0+Random::getSystemRandom().nextFloat());
                 owner->savePluginStateToFile (fc.getResult().getFileNameWithoutExtension(), fc.getResult().getFullPathName(), false);
                 owner->sendChannelStringDataToCsound(this->getChannel(), fc.getResult().getFullPathName());
                 CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, fc.getResult().getFullPathName());
@@ -163,17 +169,19 @@ void CabbagePresetButton::buttonClicked (Button* button)
         }
         else if(choice == 3)
         {
-            if(File(this->user.folder).exists())
+            if(File(this->user.folder).exists()){
                 File(this->user.folder).revealToUser();
+                owner->sendChannelDataToCsound("PRESET_STATE", 3.0 + Random::getSystemRandom().nextFloat());
+            }
         }
         else if(choice > 3 && choice < 3000)
         {
-//            DBG(File(this->fullPresetList[choice-3]).getFileNameWithoutExtension());
-//            DBG(File(this->fullPresetList[choice-3]).getFullPathName());
+            owner->sendChannelDataToCsound("PRESET_STATE",4.0+Random::getSystemRandom().nextFloat());
             owner->sendChannelStringDataToCsound(this->getChannel(), File(this->fullPresetList[choice-numDefaultMenuItems]).getFullPathName());
             owner->restorePluginStateFrom (File(this->fullPresetList[choice-numDefaultMenuItems]).getFileNameWithoutExtension(), this->fullPresetList[choice-numDefaultMenuItems]);
             CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, this->fullPresetList[choice-numDefaultMenuItems]);
             currentPreset = File(this->fullPresetList[choice-numDefaultMenuItems]);
+            
             if(replaceTextWithPreset)
             {
                 setButtonText(File(this->fullPresetList[choice-numDefaultMenuItems]).getFileNameWithoutExtension());
@@ -184,15 +192,16 @@ void CabbagePresetButton::buttonClicked (Button* button)
             showPopupWindow();
         }
         else if(choice == 3001)
-        {            
+        {       
+            owner->sendChannelDataToCsound("PRESET_STATE", 6.0+Random::getSystemRandom().nextFloat());
             int currentIndex = fullPresetList.indexOf(currentPreset.getFullPathName());
             currentPreset.deleteFile();
             fullPresetList.remove(currentIndex);
-            DBG(fullPresetList[fullPresetList.size()-1]);
             owner->sendChannelStringDataToCsound(this->getChannel(), File(fullPresetList[fullPresetList.size()-1]).getFullPathName());
             owner->restorePluginStateFrom (File(fullPresetList[fullPresetList.size()-1]).getFileNameWithoutExtension(), this->fullPresetList[fullPresetList.size()-1]);
             CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, fullPresetList[fullPresetList.size()-1]);
             currentPreset = File(fullPresetList[fullPresetList.size()-1]);
+            
         }
     });
 
@@ -294,28 +303,33 @@ String CabbagePresetButton::returnValidPath (File fc)
 //===============================================================================
 void CabbagePresetButton::showPopupWindow()
 {
+    
     String presetName = "";
     popupWindow = std::make_unique<CabbagePopupWindow>(widgetData, svgText, true);
-    if(!owner)
+    auto form = owner->getCabbageForm();
+    if(!form)
+    {
         popupWindow->addToDesktop(1);
+        popupWindow->setVisible(true);
+    }
     else
-        owner->getParentComponent()->addChildComponent(popupWindow.get());
-    DBG(owner->getBounds().toString());
-    popupWindow->setBounds(owner->getWidth()/2 - 150,
-                           100, 300, 150);
-    popupWindow->setVisible(true);
+    {
+        popupWindow->setBounds((form->getWidth()/2)-150,
+                               100, 300, 150);
+        form->addAndMakeVisible(popupWindow.get());
+    }
+
     popupWindow->toFront(true);
     popupWindow->setAlwaysOnTop(true);
     Component::SafePointer<CabbagePresetButton> parent{ this };
     popupWindow->enterModalState(true, juce::ModalCallbackFunction::create([parent](int)
-                                                                           {
+                                                                            {
         if (parent == nullptr)
             return;
 
         parent->popupWindow = nullptr;
     }));
-    
-    DBG(presetName);
+
 }
 //===============================================================================
 void CabbagePresetButton::setLookAndFeelColours (ValueTree wData)
@@ -329,6 +343,7 @@ void CabbagePresetButton::setLookAndFeelColours (ValueTree wData)
 //===============================================================================
 void CabbagePresetButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
+    owner->getProcessor().getCsound()->Message(prop.toString().toUTF8().getAddress());
     if(prop == CabbageIdentifierIds::value)
     {
         const auto file = File(CabbageWidgetData::getStringProp(valueTree, prop));
@@ -342,12 +357,14 @@ void CabbagePresetButton::valueTreePropertyChanged (ValueTree& valueTree, const 
     else if(prop == CabbageIdentifierIds::svgElement)
     {
         svgText = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::svgElement);
+        
     }
     else if(prop == Identifier("NEW_PRESET_NAME"))
     {
         File presetFile = File(user.folder).getChildFile(valueTree.getProperty(prop).toString());
         const String ext = user.extension.substring(user.extension.indexOf(".")+1);
         owner->savePluginStateToFile (presetFile.getFileNameWithoutExtension(), presetFile.withFileExtension(ext).getFullPathName(), false);
+        owner->sendChannelDataToCsound("PRESET_STATE", 5.0+Random::getSystemRandom().nextFloat());
         owner->sendChannelStringDataToCsound(this->getChannel(), presetFile.getFullPathName());
         CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::value, presetFile.getFullPathName());
     }

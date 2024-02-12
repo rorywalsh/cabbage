@@ -145,8 +145,9 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     slider.getProperties().set("markerstart", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerstart));
     slider.getProperties().set("markerend", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerend));
     slider.getProperties().set("gapmarkers", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::gapmarkers));
-    setImgProperties(this->slider, wData, "slider");
-    setImgProperties(this->slider, wData, "sliderbg");
+    auto csdPath = owner->getProcessor().getCsdFile().getFullPathName();
+    setImgProperties(this->slider, wData, csdPath, "slider");
+    setImgProperties(this->slider, wData, csdPath, "sliderbg");
     
     slider.getProperties().set("trackerCentre", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackercentre));
     
@@ -735,8 +736,9 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
     }
     else if(prop == CabbageIdentifierIds::imgslider)
     {
-        setImgProperties(this->slider, valueTree, "slider");
-        setImgProperties(this->slider, valueTree, "sliderbg");
+        auto csdPath = owner->getProcessor().getCsdFile().getFullPathName();
+        setImgProperties(this->slider, valueTree, csdPath, "slider");
+        setImgProperties(this->slider, valueTree, csdPath, "sliderbg");
         repaint();
     }
     else

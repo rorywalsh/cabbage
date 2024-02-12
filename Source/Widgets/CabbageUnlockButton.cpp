@@ -638,10 +638,10 @@ CabbageUnlockButton::CabbageUnlockButton(ValueTree wData, CabbagePluginEditor* _
 
 	setToggleState((bool)getValue(), dontSendNotification);
 
-
-	setImgProperties(*this, wData, "buttonon");
-	setImgProperties(*this, wData, "buttonoff");
-	setImgProperties(*this, wData, "buttonover");
+	auto csdPath = owner->getProcessor().getCsdFile().getFullPathName();
+	setImgProperties(*this, wData, csdPath, "buttonon");
+	setImgProperties(*this, wData, csdPath, "buttonoff");
+	setImgProperties(*this, wData, csdPath,  "buttonover");
 
 	const String imgOff = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonoff);
 	const String imgOver = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonover);

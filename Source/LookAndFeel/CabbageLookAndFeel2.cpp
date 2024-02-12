@@ -185,14 +185,15 @@ void CabbageLookAndFeel2::drawComboBox(Graphics& g, int width, int height, bool 
 
     // Main bg
     g.setColour(box.findColour(ComboBox::backgroundColourId));
-    g.fillRoundedRectangle(0, 0, width, height, height * 0.1);
+    float corners = box.getProperties().getWithDefault("corners", height * 0.1);
+    g.fillRoundedRectangle(0, 0, width, height, corners);
 
     // Border outline
     DBG(box.findColour(ComboBox::outlineColourId).toDisplayString(true));
     g.setColour(box.findColour(ComboBox::outlineColourId));
     float borderWidth = CabbageUtilities::getBorderWidth();
     g.drawRoundedRectangle(borderWidth / 2, borderWidth / 2, width - borderWidth,
-        height - borderWidth, height * 0.1, borderWidth);
+        height - borderWidth, corners, borderWidth);
 
     // Arrow
     g.setColour(box.findColour(ComboBox::textColourId));
@@ -210,12 +211,13 @@ void CabbageLookAndFeel2::drawPopupMenuBackground(Graphics& g, int width, int he
 
 PopupMenu::Options CabbageLookAndFeel2::getOptionsForComboBoxPopupMenu (ComboBox& box, Label& label)
 {
+    const int h = box.getProperties().getWithDefault("fontSize", 0);
     return PopupMenu::Options().withTargetComponent (&box)
                                .withItemThatMustBeVisible (box.getSelectedId())
                                .withInitiallySelectedItem (box.getSelectedId())
                                .withMinimumWidth (box.getWidth())
                                .withMaximumNumColumns (1)
-                               .withStandardItemHeight (label.getHeight());
+                               .withStandardItemHeight (h==0 ? label.getHeight() : h);
 }
 
 void CabbageLookAndFeel2::drawPopupMenuBackgroundWithOptions (Graphics& g,
@@ -256,6 +258,8 @@ void CabbageLookAndFeel2::drawPopupMenuItemWithOptions (Graphics& g, const Recta
     else
         colour = Colour(40, 40, 40);
 
+
+    
     const auto hasSubMenu = item.subMenu != nullptr
                             && (item.itemID == 0 || item.subMenu->getNumItems() > 0);
     setColour(PopupMenu::highlightedBackgroundColourId, colour.withAlpha(0.2f));
@@ -304,7 +308,7 @@ void CabbageLookAndFeel2::drawPopupMenuItem(Graphics& g, const Rectangle<int>& a
     }
 
 
-
+    g.setFont(area.getHeight() * 0.8);
     g.drawText(CabbageUtilities::cabbageString(text, CabbageUtilities::getComponentFont(), area.getWidth() * 0.8), 20, 0, area.getWidth() * 0.8, area.getHeight(), 1, false);
 
     if (isSeparator == true)
