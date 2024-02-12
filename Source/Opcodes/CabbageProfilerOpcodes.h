@@ -21,27 +21,17 @@
 class ProfilerTimer
 {
 public:
-    ProfilerTimer()
+    void start()
     {
-        
-    }
-
-    ~ProfilerTimer()
-    {
-
-    }
-
-    void Start()
-    {
-        m_StartTimepoint = std::chrono::high_resolution_clock::now();
+        startPoint = std::chrono::high_resolution_clock::now();
     }
     
-    void Stop()
+    void stop()
     {
-        auto endTimepoint = std::chrono::high_resolution_clock::now();
+        auto endPoint = std::chrono::high_resolution_clock::now();
 
-        long long start = std::chrono::time_point_cast<std::chrono::microseconds>(m_StartTimepoint).time_since_epoch().count();
-        long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
+        long long start = std::chrono::time_point_cast<std::chrono::microseconds>(startPoint).time_since_epoch().count();
+        long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endPoint).time_since_epoch().count();
         auto duration = end-start;
         average = average+duration;
         count++;
@@ -56,7 +46,7 @@ public:
 private:
     float average = 0.f;
     float count = 1.f;
-    std::chrono::time_point<std::chrono::high_resolution_clock> m_StartTimepoint;
+    std::chrono::time_point<std::chrono::high_resolution_clock> startPoint;
 };
 //====================================================================================================
 

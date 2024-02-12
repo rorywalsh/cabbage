@@ -5,6 +5,7 @@
 //  Created by Rory on 09/02/2023.
 //
 
+#include <sstream>
 #include "CabbageProfilerOpcodes.h"
 
 
@@ -20,7 +21,7 @@ int CabbageProfilerStart::init()
     {
         profilerData = *profiler;
         profilerData->timer[block].reset(new ProfilerTimer());
-        profilerData->timer[block]->Start();
+        profilerData->timer[block]->start();
     }
     else
     {
@@ -29,7 +30,7 @@ int CabbageProfilerStart::init()
         *profiler = new Profiler();
         profilerData = *profiler;
         profilerData->timer[block].reset(new ProfilerTimer());
-        profilerData->timer[block]->Start();
+        profilerData->timer[block]->start();
     }
 
     return OK;
@@ -52,7 +53,7 @@ int CabbageProfilerStart::kperf()
     else
         return NOTOK;
     
-    profilerData->timer[block]->Start();
+    profilerData->timer[block]->start();
     return OK;
 }
     
@@ -72,9 +73,11 @@ int CabbageProfilerStop::kperf()
     else
         return NOTOK;
     
-    
-    profilerData->timer[block]->Stop();
-    outargs[0] = profilerData->timer[block]->getAverage();
+    if(profilerData->timer[block])
+    {
+        profilerData->timer[block]->stop();
+        outargs[0] = profilerData->timer[block]->getAverage();
+    }
     
     return OK;
 }
@@ -99,17 +102,17 @@ int CabbageProfilerPrint::kperf()
     if(trig == 1)
     {
         std::map<std::string, std::unique_ptr<ProfilerTimer>>::iterator it;
-        String output = {};
-        
+        std::stringstream output = {};
+        output << identifier << " | ";
         for (auto const& t : profilerData->timer)
         {
-            output+= String(t.first) + ":" + String(t.second.get()->getAverage()) + "\t";
+            if(t.second.get())
+                output << t.first << ":" << String(t.second.get()->getAverage(), 4).paddedLeft(' ', 10).toStdString() << "\t\t";
         }
-        
-      
-        csound->message(output.toStdString());
+
+        csound->message(output.str());
     }
-    //outargs[0] = profilerData->timer[block]->getAverage();
+
     
     return OK;
 }
