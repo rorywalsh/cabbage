@@ -41,11 +41,8 @@ if(NOT DEFINED CabbagePro)
     set(CabbagePro 0)
 endif()
 
-# if(NOT DEFINED CustomStandalone)
-#     set(USE_CUSTOM_STANDALONE 0)
-# else()
-     set(USE_CUSTOM_STANDALONE 1)
-# endif()
+set(USE_CUSTOM_STANDALONE 1)
+
 
 if(NOT DEFINED Bluetooth)
     set(Bluetooth 0)
