@@ -726,6 +726,7 @@ public:
 #elif JUCE_MAC
         if(csdFile.existsAsFile() == false)
         {
+            const String filename(File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName());
             csdFile = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension()+"/"+filename;
 
             if(!csdFile.existsAsFile() && (PluginHostType::getPluginLoadedAs() == AudioProcessor::wrapperType_AudioUnit))
