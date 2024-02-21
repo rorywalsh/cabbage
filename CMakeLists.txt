@@ -523,7 +523,7 @@ if(MSVC)
  
 
 
-        set(EXTERNAL_LIBS "c:\\Program Files\\Csound6_x64\\lib\\sndfile.lib" "c:\\Program Files\\Csound6_x64\\lib\\opus.lib" "c:\\Program Files\\Csound6_x64\\lib\\syn123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmpghip-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\out123.lib" "c:\\Program Files\\Csound6_x64\\lib\\mpg123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmp3lame-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\FLAC.lib")
+        set(EXTERNAL_LIBS "c:\\Program Files\\Csound6_x64\\lib\\sndfile.lib" "c:\\Program Files\\Csound6_x64\\lib\\opus.lib" "c:\\Program Files\\Csound6_x64\\lib\\ogg.lib" "c:\\Program Files\\Csound6_x64\\lib\\FLAC.lib")
     else()
     find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
     endif()
