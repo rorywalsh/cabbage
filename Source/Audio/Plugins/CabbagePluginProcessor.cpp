@@ -998,7 +998,7 @@ void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData)
 	l["dummy"] = "dummy";
 	k["daw state"] = j;
 	k["dummy"] = l;
-
+	hostStateData = k;
 	MemoryOutputStream(destData, true).writeString(k.dump(4));
     }
     catch (nlohmann::json::exception& e) {
@@ -1013,9 +1013,12 @@ void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData)
 void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInBytes) 
 {
     try{
-	auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
-        setPluginState(jsonData, "", true);
-        
+	
+		auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
+        setPluginState(jsonData, "", true); 
+		//hostStateData is updated regularly so if a user changes any session state
+		//their changes won't be lost when Csound recompiles
+		hostStateData = jsonData;
     }
     catch (nlohmann::json::exception& e) {
         DBG(e.what());
@@ -1905,6 +1908,8 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 			pdClass->data = jsonStateData.toStdString();
 		}
 	}
+
+	setPluginState(hostStateData, "", true);
 
 }
 

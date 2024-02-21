@@ -189,6 +189,7 @@ public:
 
 
 private:
+    json hostStateData;
 #if !Cabbage_IDE_Build
     PluginHostType pluginType;
 #endif
@@ -206,7 +207,7 @@ private:
     OwnedArray<CabbagePluginParameter> parameters;
     Font customFont;
     File customFontFile;
-
+ 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbagePluginProcessor)
 
 };
