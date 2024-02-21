@@ -1103,6 +1103,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
             //the problem here is channels have already been instantiated, so no change triggers will take place..
             CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - calling setupAndCompileCsound()");
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
+
         }
     }
     if (preferredLatency == -1)
@@ -1116,6 +1117,7 @@ void CsoundPluginProcessor::releaseResources()
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
+
 
 void CsoundPluginProcessor::handleAsyncUpdate()
 {
