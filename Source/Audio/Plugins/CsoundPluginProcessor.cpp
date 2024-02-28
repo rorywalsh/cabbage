@@ -1239,17 +1239,13 @@ void CsoundPluginProcessor::processIOBuffers(int bufferType, Type* buffer, int s
 void CsoundPluginProcessor::processBlock(AudioBuffer< float >& buffer, MidiBuffer& midiMessages)
 {
     processBlockListener.updateBlockTime();
-    canUpdate.store(false);
 	processSamples(buffer, midiMessages);
-    canUpdate.store(true);
 }
 
 void CsoundPluginProcessor::processBlock(AudioBuffer< double >& buffer, MidiBuffer& midiMessages)
 {
     processBlockListener.updateBlockTime();
-    canUpdate.store(false);
 	processSamples(buffer, midiMessages);
-    canUpdate.store(true);
 }
 
 template< typename Type >
