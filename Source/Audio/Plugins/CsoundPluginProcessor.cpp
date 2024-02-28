@@ -1328,29 +1328,46 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 #if !JucePlugin_IsSynth
             const int numInputBuses = getBusCount(true);
             pos = csndIndex * inputChannelCount;
-            
-            for (int busIndex = 0; busIndex < numInputBuses; busIndex++)
-            {
-                auto inputBus = getBusBuffer(buffer, true, busIndex);
-                Type** inputBuffer = inputBus.getArrayOfWritePointers();
+            const int numOutputBuses = getBusCount(false);
 
-                for (int channel = 0; channel < inputBus.getNumChannels(); channel++)
+            if (matchingNumberOfIOChannels)
+            {
+                for (int busIndex = 0; busIndex < numOutputBuses; busIndex++)
                 {
-                    processIOBuffers(BufferType::input, inputBuffer[channel], i, pos++);
+                    auto outputBus = getBusBuffer(buffer, false, busIndex);
+                    Type** outputBuffer = outputBus.getArrayOfWritePointers();
+
+                    for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
+                    {
+                        processIOBuffers(BufferType::inputOutput, outputBuffer[channel], i, pos++);
+                    }
                 }
             }
-
-            const int numOutputBuses = getBusCount(false);
-            pos = csndIndex* outputChannelCount;
-            
-            for (int busIndex = 0; busIndex < numOutputBuses; busIndex++)
+            else
             {
-                auto outputBus = getBusBuffer(buffer, false, busIndex);
-                Type** outputBuffer = outputBus.getArrayOfWritePointers();
-
-                for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
+                for (int busIndex = 0; busIndex < numInputBuses; busIndex++)
                 {
-                    processIOBuffers(BufferType::output, outputBuffer[channel], i, pos++);
+                    auto inputBus = getBusBuffer(buffer, true, busIndex);
+                    Type** inputBuffer = inputBus.getArrayOfWritePointers();
+
+                    for (int channel = 0; channel < inputBus.getNumChannels(); channel++)
+                    {
+                        processIOBuffers(BufferType::input, inputBuffer[channel], i, pos++);
+                    }
+                }
+
+                
+                pos = csndIndex * outputChannelCount;
+
+                for (int busIndex = 0; busIndex < numOutputBuses; busIndex++)
+                {
+                    auto outputBus = getBusBuffer(buffer, false, busIndex);
+                    Type** outputBuffer = outputBus.getArrayOfWritePointers();
+
+                    for (int channel = 0; channel < outputBus.getNumChannels(); channel++)
+                    {
+                        processIOBuffers(BufferType::output, outputBuffer[channel], i, pos++);
+                    }
                 }
             }
 #else
