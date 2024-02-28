@@ -75,7 +75,7 @@ public:
         const BusesProperties& ioBuses);
 	~CsoundPluginProcessor() override;
 
-    std::atomic_bool canUpdate;
+
     void destroyCsoundGlobalVars();
     void createCsoundGlobalVars(const ValueTree& cabbageData);
 	bool supportsSidechain = false;
