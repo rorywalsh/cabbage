@@ -390,9 +390,12 @@ public:
         return polling;
     }
     
+    bool wasRecompiled() { return recompiledOnPrepareToPlay;   }
+    void resetRecompiled() { recompiledOnPrepareToPlay = false; }
     ProcessBlockTimeListener processBlockListener;
 private:
     //==============================================================================
+    bool recompiledOnPrepareToPlay = false;
     int polling = 1;
     MidiBuffer midiOutputBuffer;
     int guiCycles = 0;

@@ -1861,6 +1861,8 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
 
 void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
+	//getCsound()->Message("CABBAGE: prepareToPlay() called by host\n");
+
 	bool csoundRecompiled = false;
 	String jsonStateData;
 
@@ -1909,7 +1911,17 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 		}
 	}
 
-	setPluginState(hostStateData, "", true);
+
+	//some host call prepreToPlay mutliple times, this can cause channel changed events to be missed. Therefore it's best 
+	//to reinit and update all channels every time Csound is recompiled. 'hostStateData' will always reflect the current state
+	if (wasRecompiled())
+	{
+		initAllCsoundChannels(cabbageWidgets);
+		setPluginState(hostStateData, "", true);
+		resetRecompiled();
+	}
+	
+	
 
 }
 

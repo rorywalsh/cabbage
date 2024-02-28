@@ -480,7 +480,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 		CSspin = csound->GetSpin();
 		cs_scale = csound->Get0dBFS();
 		csndIndex = csound->GetKsmps();
-        const String version = String("Cabbage version:")+ProjectInfo::versionString+String("\n");
+        const String version = String("CABBAGE: Version:")+ProjectInfo::versionString+String("\n");
         csound->Message(version.toRawUTF8());
         
 #if CabbagePro
@@ -668,8 +668,10 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
                 var channels = CabbageWidgetData::getProperty(cabbageData.getChild(i), CabbageIdentifierIds::channel);
                 if(channels.size()==2)
                 {
-                    const var minValue = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::minvalue);
-                    csound->SetChannel (channels[0].toString().getCharPointer(), float (minValue));
+                    const float minValue = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::minvalue);
+                    const float v1 = csound->GetControlChannel(channels[0].toString().getCharPointer());
+                    DBG("MinValue:" << minValue << " ChannalVal:" << v1);
+                    csound->SetChannel (channels[0].toString().getCharPointer(), minValue);
 
                     const var maxValue = CabbageWidgetData::getProperty (cabbageData.getChild (i), CabbageIdentifierIds::maxvalue);
                     csound->SetChannel (channels[1].toString().getCharPointer(), float (maxValue));
@@ -1103,6 +1105,7 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
             //the problem here is channels have already been instantiated, so no change triggers will take place..
             CabbageUtilities::debug("CsoundPluginProcessor::prepareToPlay - calling setupAndCompileCsound()");
             setupAndCompileCsound(csdFile, csdFilePath, samplingRate);
+            recompiledOnPrepareToPlay = true;
 
         }
     }
