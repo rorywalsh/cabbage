@@ -181,8 +181,7 @@ void CabbagePluginProcessor::timerCallback()
     
     if(pollingChannels() == 0)
     {
-        if(this->canUpdate.load())
-            getIdentifierDataFromCsound();
+        getIdentifierDataFromCsound();
     }
     
     
