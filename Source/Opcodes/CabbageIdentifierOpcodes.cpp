@@ -620,19 +620,25 @@ int GetCabbageStringValueWithTrigger::getAttribute(bool init)
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
+        const auto s = csound->strdup(inargs.str_data(0).data);
         if(!currentString){
+            DBG(csound->strdup(inargs.str_data(0).data));
             currentString = csound->strdup((((STRINGDAT*)value)->data));
         }
         
         if(strcmp(currentString, ((STRINGDAT*)value)->data) != 0)
         {
+            DBG(csound->strdup(inargs.str_data(0).data));
             currentString = csound->strdup(((STRINGDAT*)value)->data);
             outargs[1] = 1;
         }
         else
         {
-            if(trigOnInit && !init && kCycleCount==1)
+            if (trigOnInit && !init && kCycleCount == 1) {
                 outargs[1] = 1;
+                DBG(inargs.str_data(0).data);
+            }
+                
             else
                 outargs[1] = 0;
         }
