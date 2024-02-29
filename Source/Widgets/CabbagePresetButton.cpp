@@ -305,30 +305,34 @@ void CabbagePresetButton::showPopupWindow()
 {
     
     String presetName = "";
-    popupWindow = std::make_unique<CabbagePopupWindow>(widgetData, svgText, true);
-    auto form = owner->getCabbageForm();
-    if(!form)
+    if(popupWindow == nullptr)
     {
-        popupWindow->addToDesktop(1);
-        popupWindow->setVisible(true);
+        popupWindow = std::make_unique<CabbagePopupWindow>(widgetData, svgText, true);
+        
+        auto form = owner->getCabbageForm();
+        if(!form)
+        {
+            popupWindow->addToDesktop(1);
+            popupWindow->setVisible(true);
+        }
+        else
+        {
+            popupWindow->setBounds((form->getWidth()/2)-150,
+                                   100, 300, 150);
+            form->addAndMakeVisible(popupWindow.get());
+        }
     }
-    else
-    {
-        popupWindow->setBounds((form->getWidth()/2)-150,
-                               100, 300, 150);
-        form->addAndMakeVisible(popupWindow.get());
-    }
-
+    popupWindow->setVisible(true);
     popupWindow->toFront(true);
     popupWindow->setAlwaysOnTop(true);
-    Component::SafePointer<CabbagePresetButton> parent{ this };
-    popupWindow->enterModalState(true, juce::ModalCallbackFunction::create([parent](int)
-                                                                            {
-        if (parent == nullptr)
-            return;
-
-        parent->popupWindow = nullptr;
-    }));
+//    Component::SafePointer<CabbagePresetButton> parent{ this };
+//    popupWindow->enterModalState(true, juce::ModalCallbackFunction::create([parent](int)
+//                                                                            {
+//        if (parent == nullptr)
+//            return;
+//
+//        parent->popupWindow = nullptr;
+//    }));
 
 }
 //===============================================================================

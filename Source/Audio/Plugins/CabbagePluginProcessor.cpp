@@ -998,6 +998,7 @@ void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData)
 	k["daw state"] = j;
 	k["dummy"] = l;
 	hostStateData = k;
+        DBG(k.dump(4));
 	MemoryOutputStream(destData, true).writeString(k.dump(4));
     }
     catch (nlohmann::json::exception& e) {
@@ -1015,6 +1016,7 @@ void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInByt
 	
 		auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
         setPluginState(jsonData, "", true); 
+        DBG(jsonData.dump(4));
 		//hostStateData is updated regularly so if a user changes any session state
 		//their changes won't be lost when Csound recompiles
 		hostStateData = jsonData;
@@ -1291,9 +1293,9 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
 				}
 				else if ((type == CabbageWidgetTypes::combobox || type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 				{
-					const String test = presetData.value().dump();
-					const String stringComboItem = csdFile.getParentDirectory().getChildFile(presetData.value().dump()).existsAsFile() ?
-						csdFile.getParentDirectory().getChildFile(presetData.value().dump()).getFileNameWithoutExtension() : presetData.value().dump();
+					//const String test = presetData.value().get<std::string>();
+					const String stringComboItem = csdFile.getParentDirectory().getChildFile(presetData.value().get<std::string>()).existsAsFile() ?
+						csdFile.getParentDirectory().getChildFile(presetData.value().get<std::string>()).getFileNameWithoutExtension() : presetData.value().get<std::string>();
 
 					if (type == CabbageWidgetTypes::combobox)
 						CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem); //IMPORTANT: - updates the combobox text..
