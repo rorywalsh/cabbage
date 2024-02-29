@@ -1913,11 +1913,14 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 
 	//some host call prepreToPlay mutliple times, this can cause channel changed events to be missed. Therefore it's best 
 	//to reinit and update all channels every time Csound is recompiled. 'hostStateData' will always reflect the current state
-	if (wasRecompiled())
+	if(PluginHostType::getPluginLoadedAs() == AudioProcessor::wrapperType_VST3)
 	{
-		initAllCsoundChannels(cabbageWidgets);
-		setPluginState(hostStateData, "", true);
-		resetRecompiled();
+		if (wasRecompiled())
+		{
+			initAllCsoundChannels(cabbageWidgets);
+			setPluginState(hostStateData, "", true);
+			resetRecompiled();
+		}
 	}
 	
 	
