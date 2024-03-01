@@ -810,6 +810,12 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel("IS_A_PLUGIN", 1.0);
     }
 
+#ifdef JucePlugin_Build_Standalone
+    csound->SetChannel("IS_A_STANDALONE", 1.0);
+#else
+    csound->SetChannel("IS_A_STANDALONE", 0.0);
+#endif
+    
     if (getPlayHead() != nullptr && getPlayHead()->getCurrentPosition (hostInfo))
     {
         csound->SetChannel (CabbageIdentifierIds::hostbpm.toUTF8(), hostInfo.bpm);
