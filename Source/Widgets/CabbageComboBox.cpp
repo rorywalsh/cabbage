@@ -95,8 +95,6 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         }
         else
         {
-            for(auto i : stringItems)
-                DBG(i);
             index = stringItems.indexOf (currentValueAsText);
         }
         

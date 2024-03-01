@@ -998,7 +998,6 @@ void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData)
 	k["daw state"] = j;
 	k["dummy"] = l;
 	hostStateData = k;
-        DBG(k.dump(4));
 	MemoryOutputStream(destData, true).writeString(k.dump(4));
     }
     catch (nlohmann::json::exception& e) {
@@ -1015,8 +1014,7 @@ void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInByt
     try{
 	
 		auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
-        setPluginState(jsonData, "", true); 
-        DBG(jsonData.dump(4));
+        setPluginState(jsonData, "", true);
 		//hostStateData is updated regularly so if a user changes any session state
 		//their changes won't be lost when Csound recompiles
 		hostStateData = jsonData;
@@ -1885,21 +1883,15 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 
 	//samplingRate = sampleRate;
 	CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
-	
-	csoundRecompiled = true;
+
 	if (sampleRate != samplingRate)
 	{
+        samplingRate = sampleRate;
+        CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
 		initAllCsoundChannels(cabbageWidgets);
 	}
 	
 #endif
-
-	//DBG(cabbageWidgets.toXmlString());
-	if (sampleRate != samplingRate && csoundRecompiled == false) {
-		samplingRate = sampleRate;
-		CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
-		initAllCsoundChannels(cabbageWidgets);
-	}
 
 	if (getCsound())
 	{

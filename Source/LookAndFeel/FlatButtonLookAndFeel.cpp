@@ -66,7 +66,6 @@ void FlatButtonLookAndFeel::drawButtonBackground(Graphics &g, Button &button, co
     const bool toggleState = button.getToggleState();
     
     Colour bg = button.findColour (toggleState == true ? TextButton::buttonOnColourId : TextButton::buttonColourId);
-    DBG(bg.toDisplayString(true));
     if (isButtonDown == true)
         bg = bg.contrasting (0.2f);
     else if (isMouseOverButton == true)

@@ -716,15 +716,13 @@ int GetCabbageValueWithTrigger::getAttribute()
         }
         else
         {
-            if(numberOfPasses == 2 && triggerOnPerfPass>0)
+            if(numberOfPasses == 2 && triggerOnPerfPass>0)//test first k-pass
             {
                 outargs[1] = 1;
             }
             else
                 outargs[1] = 0;
         }
-        //   
-        
     }
     
     return OK;

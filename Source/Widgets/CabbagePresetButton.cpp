@@ -347,7 +347,6 @@ void CabbagePresetButton::setLookAndFeelColours (ValueTree wData)
 //===============================================================================
 void CabbagePresetButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    owner->getProcessor().getCsound()->Message(prop.toString().toUTF8().getAddress());
     if(prop == CabbageIdentifierIds::value)
     {
         const auto file = File(CabbageWidgetData::getStringProp(valueTree, prop));
