@@ -28,7 +28,8 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
     scrubberPos (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::scrubberposition)),
     owner (_owner),
     widgetData (wData),
-    CabbageWidgetBase(_owner)
+    CabbageWidgetBase(_owner),
+    sampleRate(sr)
 {
     addAndMakeVisible (soundfiler);
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
@@ -36,7 +37,7 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
 
-    sampleRate = 44100;
+
     soundfiler.setZoomFactor (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom));
 
 
@@ -53,6 +54,12 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
     soundfiler.setFile (File::getCurrentWorkingDirectory().getChildFile(file));
     soundfiler.addChangeListener (this);
     
+    auto displayType = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::displaytype);
+    if (displayType == "mono")
+    {
+        soundfiler.setMonoDisplayType(true);
+    }
+
     var tables = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablenumber);
     
     for (int y = 0; y < tables.size(); y++)
@@ -67,15 +74,15 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
             sampleBuffer.setSample(0, i, tableValues[i]);
         }
 
-        setWaveform(sampleBuffer, 1);
+        setWaveform(sampleBuffer, sr, 1);
     }
     
     if (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::startpos) > -1 && CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::endpos) > 0)
     {
         Range<double> newRange;
         
-        newRange.setStart(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::startpos)/sampleRate);
-        newRange.setEnd(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::endpos)/sampleRate);
+        newRange.setStart(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::startpos)/soundfiler.getSampleRate());
+        newRange.setEnd(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::endpos)/soundfiler.getSampleRate());
         soundfiler.setRange (newRange);
     }
     
@@ -93,6 +100,8 @@ void CabbageSoundfiler::changeListenerCallback (ChangeBroadcaster* source)
     const float length = getLoopLength();
 
     owner->sendChannelDataToCsound (getChannelArray()[0], position);
+    CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::regionstart, position);
+    CabbageWidgetData::setNumProp(widgetData, CabbageIdentifierIds::regionlength, length);
 
     if (getChannelArray().size() > 1)
         owner->sendChannelDataToCsound (getChannelArray()[1], length);
@@ -108,9 +117,9 @@ void CabbageSoundfiler::setFile (String newFile)
     soundfiler.setFile (File::getCurrentWorkingDirectory().getChildFile (newFile));
 }
 
-void CabbageSoundfiler::setWaveform (AudioSampleBuffer buffer, int channels)
+void CabbageSoundfiler::setWaveform (AudioSampleBuffer buffer, int sr, int channels)
 {
-    soundfiler.setWaveform (buffer, channels);
+    soundfiler.setWaveform (buffer, sr, channels);
 }
 
 int CabbageSoundfiler::getScrubberPosition()
@@ -143,7 +152,7 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
                     sampleBuffer.setSample(0, i, tableValues[i]);
                 }
 
-                setWaveform(sampleBuffer, 1);
+                setWaveform(sampleBuffer, sampleRate, 1);
             }
         }
         else
@@ -156,9 +165,32 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
     
     if (file != CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file))
     {
-        file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
-        const String fullPath = File (getCsdFile()).getParentDirectory().getChildFile (file).getFullPathName();
-        setFile (fullPath);
+        if(File(CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file)).existsAsFile())
+        {
+            file = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::file);
+            const String fullPath = File (getCsdFile()).getParentDirectory().getChildFile (file).getFullPathName();
+            setFile (fullPath);
+            
+//            DBG("Soundfiler file:" << fullPath);
+        }
+        else
+        {
+            soundfiler.setFileIsValidFlag(false);
+            file = "";
+        }
+    }
+
+
+    if (prop == CabbageIdentifierIds::regionstart)
+    {
+        soundfiler.setCurrentPlayPos(static_cast<int>(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::regionstart)));
+    }
+    else if (prop == CabbageIdentifierIds::regionlength)
+    {
+        int length = static_cast<int>(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::regionlength));
+        soundfiler.setRegionWidth(length);
+//        if(length == 0)
+//            soundfiler.setCurrentPlayPos(-1);
     }
 
     if (zoom != CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::zoom))
@@ -172,8 +204,8 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
         if (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::startpos) > -1 && CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::endpos) > 0)
         {
             Range<double> newRange;
-            newRange.setStart(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::startpos)/sampleRate);
-            newRange.setEnd(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::endpos)/sampleRate);
+            newRange.setStart(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::startpos)/soundfiler.getSampleRate());
+            newRange.setEnd(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::endpos)/soundfiler.getSampleRate());
             soundfiler.setRange (newRange);
         }
     }

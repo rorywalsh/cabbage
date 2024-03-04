@@ -365,6 +365,7 @@ public:
 
         return img;
     }
+
 };
 
 //===========================================================================================
@@ -569,6 +570,11 @@ public:
 
     }
 
+	static String getFileAndPath(File csdFile, String file)
+	{
+		return csdFile.getParentDirectory().getChildFile(file).getFullPathName();
+	}
+
     static String expandDirectoryMacro(String dir)
     {
         StringPairArray folderMacros;
@@ -577,6 +583,7 @@ public:
         folderMacros.set("#USER_MUSIC_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::userMusicDirectory).getFullPathName());
         folderMacros.set("#USER_APPLICATION_DATA_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::userApplicationDataDirectory).getFullPathName());
         folderMacros.set("#USER_DOCUMENTS_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::userDocumentsDirectory).getFullPathName());
+        folderMacros.set("#CURRENT_EXECUTABLE_DIRECTORY", File::getSpecialLocation(File::SpecialLocationType::currentExecutableFile).getFullPathName());
         
         const auto keys = folderMacros.getAllKeys();
         for ( auto key : keys)
@@ -931,13 +938,6 @@ public:
     }
 
 
-    static String getFileAndPath (File csdFile, String filename)
-    {
-        if (filename.isEmpty())
-            return String();
-
-        return File (csdFile).getParentDirectory().getChildFile (filename).getFullPathName();
-    }
     //===================================================================================
     static int getNumberOfDecimalPlaces (String incr)
     {
@@ -1021,7 +1021,7 @@ public:
 
     static const Colour getBorderColour()
     {
-        return getComponentFontColour().withMultipliedAlpha (0.2f);
+        return Colour::fromRGBA (160, 160, 160, 255).withMultipliedAlpha (0.2f);
     }
 
     static const float getBorderWidth()

@@ -44,6 +44,13 @@ void CabbageToolbarFactory::getAllToolbarItemIds (Array<int>& ids)
     ids.add (system_prefs);
     ids.add (toggle_play);
     ids.add (custom_comboBox);
+    ids.add (record_to_disk);
+}
+
+void CabbageToolbarFactory::timerCallback()
+{
+    toggleRecordButton->setToggleState((flashing % 2 == 0), dontSendNotification);
+    flashing++;
 }
 
 void CabbageToolbarFactory::getDefaultItemSet (Array<int>& ids)
@@ -63,6 +70,7 @@ void CabbageToolbarFactory::getDefaultItemSet (Array<int>& ids)
     ids.add (system_prefs);
     ids.add (toggle_play);
     ids.add (custom_comboBox);
+    ids.add (record_to_disk);
 
 }
 
@@ -105,6 +113,9 @@ ToolbarItemComponent* CabbageToolbarFactory::createItem (int itemId)
             button = createButtonFromPNG (itemId, "save", CabbageBinaryData::documentsave_png, CabbageBinaryData::documentsave_pngSize);
         //return createButtonFromSVG (itemId, "save", getSVGTextFromMemory (CabbageBinaryData::documentsave_svg, CabbageBinaryData::documentsave_svgSize));
         break;
+    case record_to_disk:
+            button = createToggleButtonFromSVG (itemId, "toggleRecord", svgRecordTextOff, svgRecordTextOn);
+            break;
     case doc_saveAs:
         button = createButtonFromSVG (itemId, "save as", getSVGTextFromFile (iconsPath + "/document-save-as.svg"));
         if (!button)
@@ -161,6 +172,20 @@ ToolbarButton* CabbageToolbarFactory::createButtonFromPNG (const int itemId, con
     button->setTooltip (text);
     button->addListener (owner);
     return button;
+}
+
+ToolbarButton* CabbageToolbarFactory::createToggleButtonFromSVG(const int itemId, const String &text, String svgTextOn, String svgTextOff)
+{
+    std::unique_ptr<XmlElement> svgOn(XmlDocument::parse(svgTextOn));
+    std::unique_ptr<Drawable> drawable_armForRecordOn(Drawable::createFromSVG (*svgOn));
+    std::unique_ptr<XmlElement> svgOff(XmlDocument::parse(svgTextOff));
+    std::unique_ptr<Drawable> drawable_armForRecordOff(Drawable::createFromSVG (*svgOff));
+    toggleRecordButton = new ToolbarButton (itemId, text, std::move(drawable_armForRecordOn), std::move(drawable_armForRecordOff));
+    toggleRecordButton->setClickingTogglesState (true);
+    toggleRecordButton->addListener (owner);
+    toggleRecordButton->setToggleState (false, false);
+    toggleRecordButton->setTooltip ("Arm for record");
+    return toggleRecordButton;
 }
 
 ToolbarButton* CabbageToolbarFactory::createToggleButtonFromPNG (const int itemId, const String& text, const void* png1, size_t size1, const void* png2, size_t size2)

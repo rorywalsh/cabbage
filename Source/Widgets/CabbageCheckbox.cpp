@@ -66,8 +66,10 @@ CabbageCheckbox::CabbageCheckbox (ValueTree wData, CabbagePluginEditor* _owner)
     getProperties().set (CabbageIdentifierIds::corners, CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::corners));
 
     initialiseCommonAttributes (this, wData);
-    setImgProperties (*this, wData, "buttonon");
-    setImgProperties (*this, wData, "buttonoff");
+    auto csdPath = owner->getProcessor().getCsdFile().getFullPathName();
+
+    setImgProperties (*this, wData, csdPath, "buttonon");
+    setImgProperties (*this, wData, csdPath, "buttonoff");
     setToggleState (getCurrentValue() == 1 ? true : false, dontSendNotification);
 }
 

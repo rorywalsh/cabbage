@@ -63,7 +63,7 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
 
     if (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::file).isNotEmpty())
     {
-        table.addTable (44100,
+        table.addTable (owner->getProcessor().getCsound()->GetSr(),
                         Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[0].toString()),
                         1,
                         ampRanges,
@@ -93,7 +93,7 @@ void CabbageGenTable::initialiseGenTable (ValueTree wData)
                                          Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[y].toString()) :
                                          Colour::fromString (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::tablecolour)[numberOfColours - 1].toString()));
 
-                table.addTable (44100, tableCol, (tableValues.size() >= MAX_TABLE_SIZE ? 1 : genRoutine), ampRanges, tableNumber, this);
+                table.addTable (owner->getProcessor().getCsound()->GetSr(), tableCol, (tableValues.size() >= MAX_TABLE_SIZE ? 1 : genRoutine), ampRanges, tableNumber, this);
 
                 if (abs (genRoutine) == 1 || tableValues.size() >= MAX_TABLE_SIZE)
                 {

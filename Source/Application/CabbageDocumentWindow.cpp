@@ -50,6 +50,7 @@ commandLineArgs (commandLineParams)
     
     initSettings();
     
+
     auto enableKioskMode = cabbageSettings->getUserSettings()->getIntValue ("enableKioskMode");
     if(enableKioskMode == 1)
         setUsingNativeTitleBar (true);
@@ -73,7 +74,7 @@ commandLineArgs (commandLineParams)
 
         String outputFileName = "";
         int outputFileNameIndex = -1;
-        DBG(commandLineParams.joinIntoString("\n"));
+        //DBG(commandLineParams.joinIntoString("\n"));
         for ( int x = 0; x < commandLineParams.size() ; x++)
         {
             if(commandLineParams[x].contains("--destination"))
@@ -192,6 +193,7 @@ commandLineArgs (commandLineParams)
     //    getContentComponent()->fileList.refresh();
     setApplicationCommandManagerToWatch (&commandManager);
     commandManager.registerAllCommandsForTarget (this);
+
     addKeyListener (commandManager.getKeyMappings());
     
     
@@ -208,6 +210,7 @@ commandLineArgs (commandLineParams)
     lookAndFeelChanged();
     
     
+
     const int width = cabbageSettings->getUserSettings()->getIntValue ("IDE_LastKnownWidth");
     const int height = cabbageSettings->getUserSettings()->getIntValue ("IDE_LastKnownHeight");
     const int x = cabbageSettings->getUserSettings()->getIntValue ("IDE_LastKnownX");
@@ -215,6 +218,7 @@ commandLineArgs (commandLineParams)
     this->setTopLeftPosition (x, y);
     setSize (width, height);
         CabbageUtilities::debug(commandLineArgs);
+
 }
 
 void CabbageDocumentWindow::initSettings()
@@ -232,6 +236,9 @@ void CabbageDocumentWindow::initSettings()
     cabbageSettings.reset (new CabbageSettings());
     cabbageSettings->setStorageParameters (options);
     cabbageSettings->setDefaultSettings();
+
+
+
 }
 
 CabbageDocumentWindow::~CabbageDocumentWindow()
@@ -321,6 +328,7 @@ StringArray CabbageDocumentWindow::getMenuBarNames()
 PopupMenu CabbageDocumentWindow::getMenuForIndex (int topLevelMenuIndex, const String& menuName)
 {
     PopupMenu menu;
+
     
     if (menuName == "File")             createFileMenu   (menu);
     else if (menuName == "Edit")        createEditMenu   (menu);
@@ -435,7 +443,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 #endif
     }
     menu.addSeparator();
-	menu.addCommandItem(&commandManager, CommandIDs::exportNativeUnity);
+	//menu.addCommandItem(&commandManager, CommandIDs::exportNativeUnity);
 	menu.addCommandItem(&commandManager, CommandIDs::exportAsVCVRackModule);
 	menu.addCommandItem (&commandManager, CommandIDs::exportAsStandaloneApp);
 
@@ -478,6 +486,7 @@ void CabbageDocumentWindow::createFileMenu (PopupMenu& menu)
 #if ! JUCE_MAC
     menu.addSeparator();
     menu.addCommandItem (&commandManager, StandardApplicationCommandIDs::quit);
+    menu.addCommandItem(&commandManager, CommandIDs::showFileMenu);
 #endif
 }
 
@@ -525,6 +534,11 @@ void CabbageDocumentWindow::createEditMenu (PopupMenu& menu)
 
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::settings);
+
+#if ! JUCE_MAC
+    menu.addSeparator();
+    menu.addCommandItem(&commandManager, CommandIDs::showEditMenu);
+#endif
     
 }
 
@@ -539,6 +553,11 @@ void CabbageDocumentWindow::createViewMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::zoomIn);
     menu.addCommandItem (&commandManager, CommandIDs::zoomOut);
+
+#if ! JUCE_MAC
+    menu.addSeparator();
+    menu.addCommandItem(&commandManager, CommandIDs::showViewMenu);
+#endif
 }
 
 
@@ -549,6 +568,11 @@ void CabbageDocumentWindow::createToolsMenu (PopupMenu& menu)
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::startAudioGraph);
     menu.addCommandItem (&commandManager, CommandIDs::stopAudioGraph);
+
+#if ! JUCE_MAC
+    menu.addSeparator();
+    menu.addCommandItem(&commandManager, CommandIDs::showToolsMenu);
+#endif
 }
 
 void CabbageDocumentWindow::createHelpMenu (PopupMenu& menu)
@@ -559,6 +583,10 @@ void CabbageDocumentWindow::createHelpMenu (PopupMenu& menu)
     menu.addCommandItem (&commandManager, CommandIDs::contextHelp);
     menu.addSeparator();
     menu.addCommandItem (&commandManager, CommandIDs::about);
+#if ! JUCE_MAC
+    menu.addSeparator();
+    menu.addCommandItem(&commandManager, CommandIDs::showHelpMenu);
+#endif
 }
 
 void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIndex)
@@ -587,7 +615,7 @@ void CabbageDocumentWindow::menuItemSelected (int menuItemID, int topLevelMenuIn
         {
             getContentComponent()->getCurrentCodeEditor()->setFont(fonts[menuItemID + 9999]);
             cabbageSettings->getUserSettings()->setValue("Font", fonts[menuItemID + 9999].getTypefaceName());
-            DBG(fonts[menuItemID + 9999].getTypefaceName());
+            //DBG(fonts[menuItemID + 9999].getTypefaceName());
         }
     }
 }
@@ -680,7 +708,12 @@ void CabbageDocumentWindow::getAllCommands (Array <CommandID>& commands)
         CommandIDs::showPluginListEditor,
         CommandIDs::autoReloadFromDisk,
 		CommandIDs::sendToPort,
-		CommandIDs::exportNativeUnity
+		CommandIDs::exportNativeUnity,
+        CommandIDs::showFileMenu,
+        CommandIDs::showEditMenu,
+        CommandIDs::showViewMenu,
+        CommandIDs::showToolsMenu,
+        CommandIDs::showHelpMenu
     };
     
     commands.addArray (ids, numElementsInArray (ids));
@@ -701,7 +734,7 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
             result.setInfo ("New Csound file", "Create a new Csound file", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('n', ModifierKeys::commandModifier, 0));
             break;
-            
+
         case CommandIDs::newTextFile:
             result.setInfo ("New text file", "Create a new text file", CommandCategories::general, 0);
             result.defaultKeypresses.add (KeyPress ('n', ModifierKeys::commandModifier | ModifierKeys::altModifier, 0));
@@ -1105,7 +1138,28 @@ void CabbageDocumentWindow::getCommandInfo (CommandID commandID, ApplicationComm
                 result.defaultKeypresses.add (KeyPress (KeyPress::F1Key));
             
             break;
-            
+
+        //accessibility menu for blind users
+        case CommandIDs::showFileMenu:
+            result.setInfo("Show File Menu", "Open the file menu (workaround for screen readers)", CommandCategories::general, 0);
+            result.defaultKeypresses.add(KeyPress('f', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
+            break;
+        case CommandIDs::showEditMenu:
+            result.setInfo("Show Edit Menu", "Open the edit menu (workaround for screen readers)", CommandCategories::general, 0);
+            result.defaultKeypresses.add(KeyPress('e', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
+            break;
+        case CommandIDs::showToolsMenu:
+            result.setInfo("Show Tools Menu", "Open the tools menu (workaround for screen readers)", CommandCategories::general, 0);
+            result.defaultKeypresses.add(KeyPress('t', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
+            break;
+        case CommandIDs::showViewMenu:
+            result.setInfo("Show View Menu", "Open the view menu (workaround for screen readers)", CommandCategories::general, 0);
+            result.defaultKeypresses.add(KeyPress('v', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
+            break;
+        case CommandIDs::showHelpMenu:
+            result.setInfo("Show Help Menu", "Open the help menu (workaround for screen readers)", CommandCategories::general, 0);
+            result.defaultKeypresses.add(KeyPress('h', ModifierKeys::commandModifier | ModifierKeys::shiftModifier, 0));
+            break;
         default:
             
             break;
@@ -1131,6 +1185,26 @@ bool CabbageDocumentWindow::perform (const InvocationInfo& info)
             getContentComponent()->createNewProject();
             return true;
             
+        case CommandIDs::showFileMenu:
+            getMenuForIndex(0, "File").showMenu(PopupMenu::Options().withTargetComponent(this));
+            return true;
+
+        case CommandIDs::showEditMenu:
+            getMenuForIndex(0, "Edit").showMenu(PopupMenu::Options().withTargetComponent(this));
+            return true;
+
+        case CommandIDs::showToolsMenu:
+            getMenuForIndex(0, "Tools").showMenu(PopupMenu::Options().withTargetComponent(this));
+            return true;
+
+        case CommandIDs::showViewMenu:
+            getMenuForIndex(0, "View").showMenu(PopupMenu::Options().withTargetComponent(this));
+            return true;
+
+        case CommandIDs::showHelpMenu:
+            getMenuForIndex(0, "Help").showMenu(PopupMenu::Options().withTargetComponent(this));
+            return true;
+
         case CommandIDs::newTextFile:
             getContentComponent()->createNewTextFile();
             return true;

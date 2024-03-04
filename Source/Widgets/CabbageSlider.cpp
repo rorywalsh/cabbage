@@ -145,8 +145,9 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     slider.getProperties().set("markerstart", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerstart));
     slider.getProperties().set("markerend", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerend));
     slider.getProperties().set("gapmarkers", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::gapmarkers));
-    setImgProperties(this->slider, wData, "slider");
-    setImgProperties(this->slider, wData, "sliderbg");
+    auto csdPath = owner->getProcessor().getCsdFile().getFullPathName();
+    setImgProperties(this->slider, wData, csdPath, "slider");
+    setImgProperties(this->slider, wData, csdPath, "sliderbg");
     
     slider.getProperties().set("trackerCentre", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackercentre));
     
@@ -691,7 +692,21 @@ void CabbageSlider::setLookAndFeelColours(ValueTree wData)
     filmStripValueBox.setColour(Label::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textboxcolour)));
     //filmStripValueBox.setColour(Label::ColourIds::backgroundWhenEditingColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textboxcolour)).contrasting());
     filmStripValueBox.lookAndFeelChanged();
+
+    getSlider().getProperties().set("trackerthickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackerthickness));
+    getSlider().getProperties().set("trackerbgcolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackerbgcolour));
+    getSlider().getProperties().set("markerthickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerthickness));
+    getSlider().getProperties().set("markerstart", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerstart));
+    getSlider().getProperties().set("markerend", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerend));
+    getSlider().getProperties().set("gapmarkers", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::gapmarkers));
+
     getSlider().getProperties().set("markercolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::markercolour));
+    getSlider().getProperties().set("trackerthickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::trackerthickness));
+    getSlider().getProperties().set("trackerbgcolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::trackerbgcolour));
+    getSlider().getProperties().set("markerthickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerthickness));
+    getSlider().getProperties().set("markerstart", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerstart));
+    getSlider().getProperties().set("markerend", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::markerend));
+    getSlider().getProperties().set("gapmarkers", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::gapmarkers));
 
     getSlider().setColour(Label::outlineColourId, CabbageUtilities::getBackgroundSkin());
     getSlider().lookAndFeelChanged();
@@ -703,7 +718,11 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
 
     if (prop == CabbageIdentifierIds::value)
     {
-        //const MessageManagerLock lock;
+        if (PluginHostType::getPluginLoadedAs() != AudioProcessor::wrapperType_AudioUnit)
+        {
+           const MessageManagerLock lock;
+        }
+        
         //this is causing some weird jumpy issue in Live
         getSlider().setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), dontSendNotification);
         if (sliderThumbImage.isValid())
@@ -717,8 +736,9 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
     }
     else if(prop == CabbageIdentifierIds::imgslider)
     {
-        setImgProperties(this->slider, valueTree, "slider");
-        setImgProperties(this->slider, valueTree, "sliderbg");
+        auto csdPath = owner->getProcessor().getCsdFile().getFullPathName();
+        setImgProperties(this->slider, valueTree, csdPath, "slider");
+        setImgProperties(this->slider, valueTree, csdPath, "sliderbg");
         repaint();
     }
     else
@@ -734,6 +754,13 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
         getSlider().getProperties().set("trackerouterradius", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackeroutsideradius));
 
         handleCommonUpdates(this, valueTree, false, prop);
+        if(prop == CabbageIdentifierIds::left || prop == CabbageIdentifierIds::top ||
+           prop == CabbageIdentifierIds::width || prop == CabbageIdentifierIds::height ||
+           prop == CabbageIdentifierIds::bounds)
+        {
+            //after resizing, make sure the slider's thumb is in the right position
+            getSlider().setValue(CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::value), dontSendNotification);
+        }
         setLookAndFeelColours(valueTree);
 
         const String popup = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::popuptext);

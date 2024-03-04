@@ -57,12 +57,16 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("value"):
         case HashStringToInt ("numberOfClicks"):
         case HashStringToInt ("markerStart"):
+        case HashStringToInt ("markerEnd"):
+        case HashStringToInt ("markerThickness"):
         case HashStringToInt ("valueTextBox"):
         case HashStringToInt ("velocity"):
         case HashStringToInt ("visible"):
         case HashStringToInt ("wrap"):
         case HashStringToInt ("zoom"):
         case HashStringToInt ("sort"):
+        case HashStringToInt ("saveAs"):
+        case HashStringToInt ("presetBrowser"):
         case HashStringToInt ("protectedItems"):
         case HashStringToInt ("serverPort"):
         case HashStringToInt ("websocketPort"):
@@ -168,9 +172,11 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
 
 String CabbageWidgetData::getCabbageCodeFromIdentifiers (ValueTree widgetData, const String currentLineText)
 {
-    String returnString = currentLineText;
+    //need to rip out any spaces at teh start so it doesn't mess up the generated text..
+    //https://forum.cabbageaudio.com/t/edit-mode-destroys-source-code-windows-10-11/3769/15
+    String returnString = currentLineText.trimStart();
     StringArray replacedIdentifiers;
-    StringArray identifiersInLine = CabbageUtilities::getTokens(currentLineText, ')');
+    StringArray identifiersInLine = CabbageUtilities::getTokens(currentLineText.trimStart(), ')');
     
     //remove widget type
     const String widgetType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::type);
@@ -347,7 +353,7 @@ String CabbageWidgetData::getNumericalValueTextAsCabbageCode (ValueTree widgetDa
     
     else if (identifier == "max" || identifier == "min")
     {
-        if (type.contains ("range") || type == CabbageWidgetTypes::encoder)
+        if (type.contains ("range"))
             return identifier + "(" + String (getNumProp (widgetData, identifier)) + ")";
     }
     else if (type == "xypad" && identifier == "range")

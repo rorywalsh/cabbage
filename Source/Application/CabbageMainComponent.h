@@ -61,7 +61,7 @@ public:
 	void mouseExit(const MouseEvent& e) override;
 	void mouseEnter(const MouseEvent& e) override;
 	void mouseDrag(const MouseEvent& e) override;
-
+    int compileCounter = 0;
 
 	//==============================================================================
 	CabbageMainComponent(CabbageDocumentWindow* owner, CabbageSettings* settings);
@@ -92,7 +92,7 @@ public:
 	const File openFile(String filename = "", bool updateRecentFiles = true, bool exportingPlugin = false);
 	void closeDocument();
 	void showSettingsDialog();
-	void saveDocument(bool saveAs = false, bool recompile = true);
+	void saveDocument(bool saveAs = false, bool compileFromPlayButton = false);
 	void runCsoundForNode(String file, int fileTabIndex = -99);
     StringArray preCompileCheckForIssues(File file);
     void stopCsoundForNode(String file, int fileTabIndex = -99);
@@ -292,7 +292,8 @@ private:
     const int toolbarThickness = 35;
     class FindPanel;
     std::unique_ptr<FindPanel> findPanel;
-
+    bool shouldRecord = false;
+    int bitDepth = 32;
 
     GraphDocumentComponent* graphComponent = nullptr;
     std::unique_ptr<FilterGraphDocumentWindow> filterGraphWindow;

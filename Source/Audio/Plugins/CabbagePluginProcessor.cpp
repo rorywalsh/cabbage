@@ -150,7 +150,7 @@ void CabbagePluginProcessor::createCsound(const File& inputFile, bool shouldCrea
 		
 
 		csdLastModifiedAt = csdFile.getLastModificationTime().toMilliseconds();
-
+        //getCsound()->SetYieldCallback(CabbagePluginProcessor::csoundYieldCallback);
 	}
 }
 
@@ -170,10 +170,6 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 #endif
 }
 
-void test()
-{
-    
-}
 
 void CabbagePluginProcessor::timerCallback()
 {
@@ -191,15 +187,11 @@ void CabbagePluginProcessor::timerCallback()
     
     if(pollingChannels() == 0)
     {
-        //not sure we need to call this async...
-        //not doing so improves costs..
-        //juce::MessageManager::callAsync([this]() {
-            getIdentifierDataFromCsound();
-        //});
+        getIdentifierDataFromCsound();
     }
     
     
-    autoUpdateCount = autoUpdateCount < 1000/20 ? autoUpdateCount+1 : 0;
+    autoUpdateCount = autoUpdateCount < 500 ? autoUpdateCount+1 : 0;
 }
 
 //==============================================================================
@@ -265,12 +257,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
             continue;
         
 		if (linesFromCsd[lineNumber].equalsIgnoreCase("</Cabbage>"))
-        {
-            for( int i = 0 ; i < cabbageWidgets.getNumChildren(); i++)
-            {
-                DBG(cabbageWidgets.getChild(i).getType());
-            }
-            
+        {          
 			return;
         }
         ValueTree tempWidget(Identifier("WidgetFromLine_" + std::to_string(lineNumber)));
@@ -315,6 +302,7 @@ void CabbagePluginProcessor::parseCsdFile(StringArray& linesFromCsd)
         if(widgetNameId.isEmpty())
             widgetNameId = tempWidget.getType().toString();
         
+
         ValueTree newWidget(widgetNameId);
         newWidget.copyPropertiesFrom(tempWidget, nullptr);
         
@@ -764,6 +752,7 @@ void CabbagePluginProcessor::recreateWidgets(const String& csdText, bool editMod
         StringArray strings;
         strings.addLines(csdText);
         parseCsdFile(strings);
+        
         editor->createEditorInterface(cabbageWidgets);
         if(editMode)
             editor->setEditMode(editMode);
@@ -915,8 +904,20 @@ void CabbagePluginProcessor::createCabbageParameters()
 							CabbageIdentifierIds::min);
 						const float max = numOfFiles == 0 ? 1 : numOfFiles;
 
+						const String channelType = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+							CabbageIdentifierIds::channeltype);
+
+						var items = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
+							CabbageIdentifierIds::text);
+
+
+						for (int i = 0 ; i < items.size() ; i++)
+						{
+							comboItems.add(items[i].toString());
+						}
+						
 						auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), channel, name,
-							min, max, value, 1, 1, automatable, "", "");
+							min, max, value, 1, 1, automatable, "", "", true, comboItems);
 						addCabbageParameter(std::move(param));
 					}
 					else //comboboxes and options button are both set up with the same type of host parameter mapping...
@@ -955,8 +956,9 @@ void CabbagePluginProcessor::createCabbageParameters()
 					const float skew = 1;
 					const float min = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 						CabbageIdentifierIds::min);
-					const float max = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+					auto m = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
 						CabbageIdentifierIds::max);
+                    const float max = (m <= min ? m+1 : m);
 
 					auto param = std::make_unique<CabbagePluginParameter>(this, cabbageWidgets.getChild(i), channel, name,
 						min, max, value, increment, skew, automatable, prefix, postfix);
@@ -992,23 +994,59 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor() {
 }
 
 //==============================================================================
-void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData) {
-	copyXmlToBinary(savePluginState("CABBAGE_PRESETS"), destData);
-	Logger::writeToLog ("CabbagePluginProcessor::getStateInformation");
+void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData) 
+{
+    try{
+	auto j = nlohmann::json::parse(addPluginPreset("CABBAGE_PRESETS", "", false).toStdString());
+
+	nlohmann::json k, l;
+	l["dummy"] = "dummy";
+	k["daw state"] = j;
+	k["dummy"] = l;
+
+	MemoryOutputStream(destData, true).writeString(k.dump(4));
+    }
+    catch (nlohmann::json::exception& e) {
+        DBG(e.what());
+        jassertfalse;
+    }
+//  the older xml way of doing it..
+//	copyXmlToBinary(savePluginState("CABBAGE_PRESETS"), destData);
+//	Logger::writeToLog ("CabbagePluginProcessor::getStateInformation");
 }
 
-void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInBytes) {
-	std::unique_ptr <XmlElement> xmlElement(getXmlFromBinary(data, sizeInBytes));
-	restorePluginState(xmlElement.get());
-	Logger::writeToLog("CabbagePluginProcessor::setStateInformation");
+void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInBytes) 
+{
+    try{
+	
+		auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
+        setPluginState(jsonData, "", true); 
+		DBG(jsonData.dump(4));
+    }
+    catch (nlohmann::json::exception& e) {
+        DBG(e.what());
+        jassertfalse;
+    }
+
+//  the older xml way of doing it..
+//	std::unique_ptr <XmlElement> xmlElement(getXmlFromBinary(data, sizeInBytes));
+//	restorePluginState(xmlElement.get());
+//	Logger::writeToLog("CabbagePluginProcessor::setStateInformation");
 }
 
 //==============================================================================
-void CabbagePluginProcessor::addPluginPreset(String presetName,  const String& fileName, bool remove)
+String CabbagePluginProcessor::addPluginPreset(String presetName,  const String& fileName, bool remove)
 {    
     nlohmann::ordered_json j;
-    File presetFile(fileName);
-    String presetFileContents = presetFile.loadFileAsString();
+	String presetFileContents = "";
+	File presetFile;
+	currentPresetName = presetName;
+	if (fileName.isNotEmpty())
+	{
+		presetFile = File(fileName);
+		presetFileContents = presetFile.loadFileAsString();
+	}
+
     if(presetFileContents.isEmpty())
     {
         if(presetName.isEmpty())
@@ -1026,6 +1064,8 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  const String& f
             }
             if(presetName.isEmpty())
                 presetName = "Preset " +String(numberOfPresets);
+
+			currentPresetName = presetName;
         }
         else
         {
@@ -1042,37 +1082,79 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  const String& f
             for (nlohmann::ordered_json::iterator it = j.begin(); it != j.end(); ++it) {
                 presets.add (it.key());
             }
-            
+
+
             currentPresetName = presets[presets.size()-1];
             
             presetFile.replaceWithText(String(j.dump(4)));
-            return;
+            
+            
+			return j[currentPresetName.toStdString()].dump();
+
+
         }
     }
     
-    currentPresetName = presetName;
+    
     
     for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
         const String channelName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                     CabbageIdentifierIds::channel);
         const int ignore = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                     CabbageIdentifierIds::presetignore);
-        if(ignore == 0 && channelName != "PluginResizerCombBox")
+        const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
+        
+        if(channelName == "PluginResizerCombBox" && ignore==0)
         {
-            const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
+            const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
+            j[currentPresetName.toStdString()][channelName.toStdString()] = float(value);
+        }
+        else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),                                                                                                CabbageIdentifierIds::filetype).contains("snaps"))
+        {
+            if(presetName == "CABBAGE_PRESETS")
+            {
+                const String presetN = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::value);
+                const String presetText = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::text);
+                j[currentPresetName.toStdString()][channelName.toStdString()] = presetN.toStdString();
+            }
+        }
+       else if (type == CabbageWidgetTypes::presetbutton)
+       {
+            const String presetN = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::value);
+            j[currentPresetName.toStdString()][channelName.toStdString()] = presetN.toStdString();
+       }
+       else if(ignore == 0)
+        {
             const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
             
             //only write values for widgets that have channels
             if (channelName.isNotEmpty()) {
-                if (type == CabbageWidgetTypes::texteditor) {
+                if (type == CabbageWidgetTypes::texteditor)
+				{
                     String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                          CabbageIdentifierIds::text);
-                    j[presetName.toStdString()][channelName.toStdString()] = text.toRawUTF8();
+                    j[currentPresetName.toStdString()][channelName.toStdString()] = text.toRawUTF8();
                 }
-                else if(channelName == "PRESET_COMBOBOX")
-                {
-                    //if snaps
-                }
+				if (type == CabbageWidgetTypes::soundfiler) 
+				{
+					const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::file);
+					const int scrubberPos = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::scrubberposition);
+					const int regionStart = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::regionstart);
+					const int regionLength = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
+						CabbageIdentifierIds::regionlength);
+
+					//j[presetName.toStdString()][String(channelName).toStdString()] = file.toRawUTF8();
+					nlohmann::ordered_json b;
+                    b[CabbageIdentifierIds::file.toString().toStdString()] = file.replace ("\\", "/").toRawUTF8();
+					b[CabbageIdentifierIds::scrubberposition.toString().toStdString()] = scrubberPos;
+					b[CabbageIdentifierIds::regionstart.toString().toStdString()] = regionStart;
+					b[CabbageIdentifierIds::regionlength.toString().toStdString()] = regionLength;
+					j[currentPresetName.toStdString()][String(channelName).toStdString()] = b;
+
+				}
                 else if (type == CabbageWidgetTypes::filebutton &&
                          !CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                            CabbageIdentifierIds::filetype).contains("snaps"))
@@ -1085,7 +1167,7 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  const String& f
                      {
                          if (file.length() > 2) {
                              const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
-                             j[presetName.toStdString()][channelName.toStdString()] = relativePath.replaceCharacters("\\", "/").toStdString();
+                             j[currentPresetName.toStdString()][channelName.toStdString()] = relativePath.replaceCharacters("\\", "/").toStdString();
                          }
                      }
                 }
@@ -1098,8 +1180,13 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  const String& f
                                                                          CabbageIdentifierIds::minvalue);
                     const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                          CabbageIdentifierIds::maxvalue);
-                    j[presetName.toStdString()][channels[0].toString().toStdString()] = minValue;
-                    j[presetName.toStdString()][channels[1].toString().toStdString()] = maxValue;
+					nlohmann::ordered_json b;
+					b["Range Min"] = minValue;
+					b["Range Max"] = maxValue;
+					j[currentPresetName.toStdString()][channels[0].toString().toStdString()] = b;
+
+                    //j[currentPresetName.toStdString()][channels[0].toString().toStdString()] = minValue;
+                    //j[currentPresetName.toStdString()][channels[1].toString().toStdString()] = maxValue;
                 }
                 else if (type == CabbageWidgetTypes::xypad) //double channel xypad widget
                 {
@@ -1110,8 +1197,12 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  const String& f
                     const float yValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
                                                                        CabbageIdentifierIds::valuey);
                     
-                    j[presetName.toStdString()][channels[0].toString().toStdString()] = xValue;
-                    j[presetName.toStdString()][channels[1].toString().toStdString()] = yValue;
+                    //j[currentPresetName.toStdString()][channels[0].toString().toStdString()] = xValue;
+                    //j[currentPresetName.toStdString()][channels[1].toString().toStdString()] = yValue;
+					nlohmann::ordered_json b;
+					b["X"] = xValue;
+					b["Y"] = yValue;
+					j[currentPresetName.toStdString()][channels[0].toString().toStdString()] = b;
                 }
                 else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                                                 CabbageIdentifierIds::filetype).contains("snaps"))
@@ -1125,21 +1216,251 @@ void CabbagePluginProcessor::addPluginPreset(String presetName,  const String& f
                     if(getCsound())
                         getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
                     const String file(tmp_str);
-                    j[presetName.toStdString()][channelName.toStdString()] = file.toStdString();
+                    j[currentPresetName.toStdString()][channelName.toStdString()] = file.toStdString();
                     
                 }
                 else
                 {
-                    j[presetName.toStdString()][channelName.toStdString()] = float(value);
+                    j[currentPresetName.toStdString()][channelName.toStdString()] = float(value);
                 }
             }
         }
     }
     
+	if (getCsound())
+	{
+		auto** p = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
 
-    presetFile.replaceWithText(String(j.dump(4)));
+		if (p != nullptr)
+		{
+			auto pdClass = *p;
+			j[currentPresetName.toStdString()]["cabbageJSONData"] = pdClass->data;
+		}
+	}
+
+	if(fileName.isNotEmpty())
+		presetFile.replaceWithText(String(j.dump(4)));
 
 
+    
+	return  j[currentPresetName.toStdString()].dump();
+
+}
+
+
+void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const String presetName, bool hostState)
+{
+    try{
+#if Bluetooth
+        auto** p = (CabbagePresetData**)getCsound()->QueryGlobalVariable("cabbageGlobalPreset");
+
+        if (p != nullptr)
+        {
+            auto preset = *p;
+            preset->data = j.dump(4);
+            DBG(preset->data);
+        }
+#endif
+        
+		DBG(j.dump(4));
+	for (nlohmann::ordered_json::iterator itA = j.begin(); itA != j.end(); ++itA)
+	{
+		if (String(itA.key()) == presetName || hostState == true)
+		{
+			for (nlohmann::ordered_json::iterator presetData = itA->begin(); presetData != itA->end(); ++presetData)
+			{
+				if(presetData.key() == "dummy")
+                    return;
+                
+
+				ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, presetData.key(), true);
+				const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
+				const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
+				const String channelName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
+
+				if (channelName == "PluginResizerCombBox")
+					currentPluginScale = presetData.value().get<int>();
+
+				if (type == CabbageWidgetTypes::texteditor)
+				{
+					CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, presetData.value().get<std::string>());
+				}
+				else if ((type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype).contains("snaps")) ||
+                         type == CabbageWidgetTypes::presetbutton)
+				{
+#if !Cabbage_IDE_Build
+                    currentPresetName = presetData.value().get<std::string>();
+                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, currentPresetName);
+#endif
+				}
+				else if ((type == CabbageWidgetTypes::combobox || type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
+				{
+					const String test = presetData.value().get<std::string>();
+					const String stringComboItem = csdFile.getParentDirectory().getChildFile(presetData.value().get<std::string>()).existsAsFile() ?
+						csdFile.getParentDirectory().getChildFile(presetData.value().get<std::string>()).getFileNameWithoutExtension() : presetData.value().get<std::string>();
+
+					if (type == CabbageWidgetTypes::combobox)
+						CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem); //IMPORTANT: - updates the combobox text..
+
+					CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
+
+				}
+				else if (type == CabbageWidgetTypes::filebutton)
+				{
+					const int ignoreLastDir = CabbageWidgetData::getNumProp(valueTree,
+						CabbageIdentifierIds::ignorelastdir);
+					if (ignoreLastDir == 0)
+					{
+
+						const String absolutePath = String(presetData.value().dump()).removeCharacters("\"");
+						/*const String absolutePath =
+						csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();*/
+						CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.toUTF8().getAddress());
+					}
+				}
+				else if (type == CabbageWidgetTypes::soundfiler)
+				{
+					nlohmann::ordered_json b = nlohmann::ordered_json::parse(presetData.value().dump());
+
+					const String absolutePath = String(b[CabbageIdentifierIds::file.toString().toStdString()].dump()).removeCharacters("\"");
+					const int scrubberPos = b[CabbageIdentifierIds::scrubberposition.toString().toStdString()].get<int>();
+					const int regionStart = b[CabbageIdentifierIds::regionstart.toString().toStdString()].get<int>();
+					const int regionLength = b[CabbageIdentifierIds::regionlength.toString().toStdString()].get<int>();
+
+					/*const String absolutePath =
+					csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();*/
+                    //if this is called by the host, it may be that the widgets have not yet being created...
+                    Timer::callAfterDelay(100, [valueTree, absolutePath, scrubberPos, regionStart, regionLength]()
+                    {
+                        CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.toUTF8().getAddress());
+                        CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::scrubberposition, scrubberPos);
+                        CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::regionstart, regionStart);
+                        CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::regionlength, regionLength);
+                    });
+					
+
+				}
+				//unique widgets taht take two channels...
+				else if (type == CabbageWidgetTypes::hrange ||
+					type == CabbageWidgetTypes::vrange) //double channel range widgets
+				{
+					nlohmann::ordered_json b = nlohmann::ordered_json::parse(presetData.value().dump());
+					const float min = b["Range Min"].get<float>();
+					const float max = b["Range Max"].get<float>();
+
+					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::minvalue, min);
+
+					for (auto cabbageParam : getCabbageParameters())
+					{
+						if (widgetName + "_min" == cabbageParam->getWidgetName())
+						{
+							cabbageParam->beginChangeGesture();
+							cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(min));
+							cabbageParam->endChangeGesture();
+						}
+					}
+
+					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::maxvalue, max);
+
+					for (auto cabbageParam : getCabbageParameters())
+					{
+						if (widgetName + "_max" == cabbageParam->getWidgetName())
+						{
+							cabbageParam->beginChangeGesture();
+							cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(max));
+							cabbageParam->endChangeGesture();
+						}
+					}
+				}
+				else if (type == CabbageWidgetTypes::xypad) //double channel range widgets
+				{
+
+					nlohmann::ordered_json b = nlohmann::ordered_json::parse(presetData.value().dump());
+					const float x = b["X"].get<float>();
+					const float y = b["Y"].get<float>();
+
+					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuex,x);
+
+					for (auto cabbageParam : getCabbageParameters())
+					{
+						if (widgetName + "_x" == cabbageParam->getWidgetName())
+						{
+							cabbageParam->beginChangeGesture();
+							cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(x));
+							cabbageParam->endChangeGesture();
+						}
+					}
+
+
+					/**presetData++;*/
+					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuey, y);
+
+					for (auto cabbageParam : getCabbageParameters())
+					{
+						if (widgetName + "_y" == cabbageParam->getWidgetName())
+						{
+							cabbageParam->beginChangeGesture();
+							cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(y));
+							cabbageParam->endChangeGesture();
+						}
+					}
+
+				}
+				else
+				{
+					if (presetData.key() == "cabbageJSONData")
+					{
+						if (getCsound())
+						{
+							auto** p = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
+
+							if (p != nullptr)
+							{
+								auto pdClass = *p;
+								pdClass->data = json::parse(presetData.value().dump());
+								Logger::writeToLog(presetData.value().dump());
+							}
+							else
+								Logger::writeToLog("cabbageJSONData is null");
+						}
+					}
+					else
+					{
+						if (channelName.isNotEmpty())
+						{
+							if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
+								&& CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps" &&
+								CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
+
+
+								CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
+									presetData.value().get<float>());
+							//now make changes parameter changes so host can see them..
+							//getParameters().
+
+							for (auto cabbageParam : getCabbageParameters())
+							{
+								if (widgetName == cabbageParam->getWidgetName())
+								{
+									cabbageParam->beginChangeGesture();
+									cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(presetData.value().get<float>()));
+									cabbageParam->endChangeGesture();
+								}
+							}
+						}
+					}
+				}
+
+			}
+
+		}
+
+    }
+    }
+    catch (nlohmann::json::exception& e) {
+        DBG(e.what());
+        jassertfalse;
+    }
 }
 
 void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileName)
@@ -1150,394 +1471,17 @@ void CabbagePluginProcessor::restorePluginPreset(String presetName, String fileN
     nlohmann::ordered_json j;
     File presetFile(fileName);
     String presetFileContents = presetFile.loadFileAsString();
-//    DBG(presetFileContents);
-    j = nlohmann::ordered_json::parse(presetFileContents.toRawUTF8());
-    
-    for (nlohmann::ordered_json::iterator itA = j.begin(); itA != j.end(); ++itA) {
-        if(String(itA.key()) == presetName)
-        {
-            for (nlohmann::ordered_json::iterator presetData = itA->begin(); presetData != itA->end(); ++presetData)
-            {
-                
-                ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, presetData.key(), true);
-                const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
-                const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
-                const String channelName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
-                
-                if(channelName == "PluginResizerCombBox")
-                    currentPluginScale = presetData.value().get<int>();
-                
-                if (type == CabbageWidgetTypes::texteditor)
-                {
-                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, presetData.value().dump());
-                }
-                else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype).contains("snaps"))
-                {
-                    //ignore settings of preset comboboxes...
-                }
-                else if ((type == CabbageWidgetTypes::combobox || type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
-                {
-                    const String test = presetData.value().dump();
-                    const String stringComboItem = csdFile.getParentDirectory().getChildFile(presetData.value().dump()).existsAsFile() ?
-                    csdFile.getParentDirectory().getChildFile(presetData.value().dump()).getFileNameWithoutExtension() : presetData.value().dump();
-                    
-                    if(type == CabbageWidgetTypes::combobox)
-                        CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem); //IMPORTANT: - updates the combobox text..
-                    
-                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
-                    
-                }
-                else if (type == CabbageWidgetTypes::filebutton)
-                {
-                    const int ignoreLastDir = CabbageWidgetData::getNumProp(valueTree,
-                                                                               CabbageIdentifierIds::ignorelastdir);
-                    if(ignoreLastDir == 0)
-                    {
-                        const String absolutePath =
-                        csdFile.getParentDirectory().getChildFile(String(presetData.value().dump()).replaceCharacters("\\", "/")).getFullPathName();
-                        CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
-                    }
-                }
-                
-                //unique widgets taht take two channels...
-                else if (type == CabbageWidgetTypes::hrange ||
-                         type == CabbageWidgetTypes::vrange) //double channel range widgets
-                {
-                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::minvalue,
-                                                  presetData.value().get<float>());
 
-                    for (auto cabbageParam : getCabbageParameters())
-                    {
-                        if (widgetName+"_min" == cabbageParam->getWidgetName())
-                        {
-                            cabbageParam->beginChangeGesture();
-                            cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(presetData.value().get<float>()));
-                            cabbageParam->endChangeGesture();
-                        }
-                    }
-                    
-                    *presetData++;
-                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::maxvalue,
-                                                  presetData.value().get<float>());
-                    
-                    for (auto cabbageParam : getCabbageParameters())
-                    {
-                        if (widgetName+"_max" == cabbageParam->getWidgetName())
-                        {
-                            cabbageParam->beginChangeGesture();
-                            cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(presetData.value().get<float>()));
-                            cabbageParam->endChangeGesture();
-                        }
-                    }
-                }
-                else if (type == CabbageWidgetTypes::xypad) //double channel range widgets
-                {
-                    
-                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuex, presetData.value().get<float>());
-                    
-                    for (auto cabbageParam : getCabbageParameters())
-                    {
-                        if (widgetName+"_x" == cabbageParam->getWidgetName())
-                        {
-                            cabbageParam->beginChangeGesture();
-                            cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(presetData.value().get<float>()));
-                            cabbageParam->endChangeGesture();
-                        }
-                    }
-                    
-                    *presetData++;
-
-                    
-                    CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuey, presetData.value().get<float>());
-                    
-                    for (auto cabbageParam : getCabbageParameters())
-                    {
-                        if (widgetName+"_y" == cabbageParam->getWidgetName())
-                        {
-                            cabbageParam->beginChangeGesture();
-                            cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(presetData.value().get<float>()));
-                            cabbageParam->endChangeGesture();
-                        }
-                    }
-                    
-                }
-                else
-                {
-                    if (CabbageWidgetData::getStringProp(valueTree, "filetype") != "preset"
-                        && CabbageWidgetData::getStringProp(valueTree, "filetype") != "*.snaps" &&
-                        CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
-                        CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
-                                                      presetData.value().get<float>());
-                    //now make changes parameter changes so host can see them..
-                    //getParameters().
-                
-                    for (auto cabbageParam : getCabbageParameters())
-                    {
-                        if (widgetName == cabbageParam->getWidgetName())
-                        {
-                            cabbageParam->beginChangeGesture();
-                            cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(presetData.value().get<float>()));
-                            cabbageParam->endChangeGesture();
-                        }
-                    }
-                }
-                
-            }
-
-        }
-        
+    try{
+	j = nlohmann::ordered_json::parse(presetFileContents.toRawUTF8());
+	setPluginState(j, presetName);
+    }
+    catch (nlohmann::json::exception& e) {
+        DBG(e.what());
+        jassertfalse;
     }
 }
 //===============================================================================================
-
-XmlElement CabbagePluginProcessor::savePluginState(String xmlTag)
-{
-    std::unique_ptr<XmlElement> xml;
-    xml = std::make_unique<XmlElement>("CABBAGE_PRESETS");
-    
-    try {    // very bad code
-
-    
-    
-    if (getCsound())
-    {
-        auto** p = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-        
-        if (p != nullptr)
-        {
-            auto pdClass = *p;	
-            xml->setAttribute("cabbageJSONData", pdClass->data);
-        }
-    }
-    
-	for (int i = 0; i < cabbageWidgets.getNumChildren(); i++) {
-		const String channelName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-			CabbageIdentifierIds::channel);
-		//const String widgetName = CabbageWidgetData::getStringProp (cabbageWidgets.getChild (i), CabbageIdentifierIds::name);
-       
-		const String type = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i), CabbageIdentifierIds::type);
-		const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
-        
-		//only write values for widgets that have channels
-		if (channelName.isNotEmpty()) {
-			if (type == CabbageWidgetTypes::texteditor) {
-				const String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-					CabbageIdentifierIds::text);
-				xml->setAttribute(channelName, text);
-			}
-			else if (type == CabbageWidgetTypes::filebutton &&
-				!CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-					CabbageIdentifierIds::filetype).contains("snaps"))
-            {
-                if(CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                                                 CabbageIdentifierIds::presetignore) == 0)
-                {
-                    const String file = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                        CabbageIdentifierIds::file);
-
-                    const int ignorelastdir = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                                                                            CabbageIdentifierIds::ignorelastdir);
-                    if(ignorelastdir == 0)
-                    {
-                        if (file.length() > 2)
-                        {
-                            const String relativePath = File(csdFile).getParentDirectory().getChildFile(file).getFullPathName();
-                            xml->setAttribute(channelName, relativePath.replaceCharacters("\\", "/"));
-                        }
-                    }
-                }
-			}
-			else if (type.contains("range")) //double channel range widgets
-			{
-				var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
-					CabbageIdentifierIds::channel);
-                
-
-				const float minValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-					CabbageIdentifierIds::minvalue);
-				const float maxValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-					CabbageIdentifierIds::maxvalue);
-				xml->setAttribute(channels[0].toString(), minValue);
-                if(channels.size() == 2)
-                   xml->setAttribute(channels[1].toString(), maxValue);
-			}
-			else if (type == CabbageWidgetTypes::xypad) //double channel xypad widget
-			{
-				var channels = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
-					CabbageIdentifierIds::channel);
-				const float xValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-					CabbageIdentifierIds::valuex);
-				const float yValue = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-					CabbageIdentifierIds::valuey);
-				xml->setAttribute(channels[0].toString(), xValue);
-				xml->setAttribute(channels[1].toString(), yValue);
-			}
-            else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
-                                                                                              CabbageIdentifierIds::filetype).contains("snaps"))
-            {
-                const String presetName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::value);
-                if(currentPresetName.isNotEmpty())
-                    xml->setAttribute(channelName, currentPresetName);
-                else
-                    xml->setAttribute(channelName, presetName);
-            }
-            else if (type == CabbageWidgetTypes::presetbutton)
-            {
-                const String presetName = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),CabbageIdentifierIds::value);
-                xml->setAttribute(channelName, presetName);
-            }
-			else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getProperty(cabbageWidgets.getChild(i),
-				CabbageIdentifierIds::channeltype) == "string")
-			{
-				char tmp_str[4096] = { 0 };
-				if(getCsound())
-                    getCsound()->GetStringChannel(channelName.getCharPointer(), tmp_str);
-				const String file(tmp_str);
-				xml->setAttribute(channelName, file);
-
-			}
-			else
-			{
-				xml->setAttribute(channelName, float(value));
-			}
-		}
-	}
-    } catch (std::runtime_error&) {
-        Logger::writeToLog("Problem with savePluginState");
-    }
-    
-	return *xml;
-}
-
-void CabbagePluginProcessor::restorePluginState(XmlElement* xmlState) {
-	if (xmlState != nullptr) {
-		//if dealing with session saved by host
-		initAllCsoundChannels(cabbageWidgets);
-		setParametersFromXml(xmlState);
-
-	}
-}
-
-void CabbagePluginProcessor::setParametersFromXml(XmlElement* e)
-{
-	Logger::writeToLog(" CabbagePluginProcessor::setParametersFromXml");
-	if (e)
-	{
-		for (int i = 0; i < e->getNumAttributes(); i++)
-		{
-			//none of these are being updated in their respective valueTreeChanged listeners..
-            if(e->getAttributeName(i) == "cabbageJSONData")
-            {
-				
-                if(getCsound())
-                {
-                    auto** p = (CabbagePersistentData**)getCsound()->QueryGlobalVariable("cabbageData");
-                    
-                    if (p != nullptr)
-                    {
-                        auto pdClass = *p;
-                        pdClass->data = e->getStringAttribute("cabbageJSONData").toRawUTF8();
-						Logger::writeToLog(e->getStringAttribute("cabbageJSONData"));
-                    }
-					else
-						Logger::writeToLog("cabbageJSONData is null");
-                }
-            }
-            
-            
-			ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, e->getAttributeName(i), true);
-
-
-			const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
-			const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
-			const String channelName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
-            
-            if(channelName == "PluginResizerCombBox")
-                currentPluginScale = e->getAttributeValue(i).getIntValue();
-
-			if (type == CabbageWidgetTypes::texteditor)
-			{
-				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, e->getAttributeValue(i));
-			}
-            else if (type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype).contains("snaps"))
-            {
-                currentPresetName = e->getAttributeValue(i);
-                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
-                
-            }
-            else if (type == CabbageWidgetTypes::presetbutton)
-            {
-                currentPresetName = e->getAttributeValue(i);
-                String channel = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channel);
-                CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, e->getAttributeValue(i));
-                getCsound()->SetStringChannel(channel.toUTF8().getAddress(), currentPresetName.toUTF8().getAddress());
-            }
-			else if ((type == CabbageWidgetTypes::combobox ||  type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
-			{
-                String testItem = e->getAttributeValue(i);
-				const String stringComboItem = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).existsAsFile() ?
-					csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i)).getFileNameWithoutExtension() : e->getAttributeValue(i);
-
-                
-                const String dir = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::currentdir);
-                if(type != CabbageWidgetTypes::listbox && csdFile.getParentDirectory().getChildFile(dir).existsAsFile())
-                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, stringComboItem); //IMPORTANT: - updates the combobox text..
-                
-				CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
-                
-
-			}
-			else if (type == CabbageWidgetTypes::filebutton)
-			{
-                const int ignorelastdir = CabbageWidgetData::getNumProp(cabbageWidgets.getChild(i),
-                                                                        CabbageIdentifierIds::ignorelastdir);
-                if(ignorelastdir == 0)
-                {
-                    const String absolutePath = csdFile.getParentDirectory().getChildFile(e->getAttributeValue(i).replaceCharacters("\\", "/")).getFullPathName();
-                    CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::file, absolutePath.replaceCharacters("\\", "/"));
-					Logger::writeToLog("CabbagePluginProcessor::setParametersFromXml:\n\tSetting file channel value to:" + absolutePath);
-                }
-			}
-			else if (type == CabbageWidgetTypes::hrange ||
-				type == CabbageWidgetTypes::vrange) //double channel range widgets
-			{
-				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::minvalue,
-					e->getAttributeValue(i).getFloatValue());
-				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::maxvalue,
-					e->getAttributeValue(i + 1).getFloatValue());
-				i++;
-			}
-			else if (type == CabbageWidgetTypes::xypad) //double channel range widgets
-			{
-				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuex,
-					e->getAttributeValue(i).getFloatValue());
-				CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::valuey,
-					e->getAttributeValue(i + 1).getFloatValue());
-				i++;
-			}
-            else
-			{
-				if (CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype) != "preset"
-					&& CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype) != "*.snaps" &&
-					CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) != "string")
-					CabbageWidgetData::setNumProp(valueTree, CabbageIdentifierIds::value,
-						e->getAttributeValue(i).getFloatValue());
-				//now make changes parameter changes so host can see them..
-				//getParameters().
-
-				for (auto cabbageParam : getCabbageParameters())
-				{
-					if (widgetName == cabbageParam->getWidgetName())
-					{
-						cabbageParam->beginChangeGesture();
-						cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(e->getAttributeValue(i).getFloatValue()));
-						cabbageParam->endChangeGesture();
-					}
-				}
-			}
-		}
-	}
-}
 
 void CabbagePluginProcessor::getIdentifierDataFromCsound()
 {
@@ -1554,115 +1498,115 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
     
     for(auto && i : identData->data)
     {
-//        if(!i.isValid)
-//            break;
-        
-        const auto identifier = i.identifier;
-        const auto name = i.name;
-
-        if(cabbageWidgets.getChildWithName(name).isValid())
+        if(i.identifier.getCharPointer().getAddress() != nullptr)
         {
-			const auto child = cabbageWidgets.getChildWithName(name);
-			const String widgetType(CabbageWidgetData::getStringProp(child, "type"));
+            const auto identifier = i.identifier;
+            const auto name = i.name;
 
-            if(!i.args.isUndefined())
+            if(cabbageWidgets.getChildWithName(name).isValid())
             {
-                if(!i.identWithArgument)
+                const auto child = cabbageWidgets.getChildWithName(name);
+                const String widgetType(CabbageWidgetData::getStringProp(child, "type"));
+
+                if(!i.args.isUndefined())
                 {
-                    //any widgets taht break identifiers into unique entities must be parsed....
-                    if(identifier.toString().containsIgnoreCase("colour"))
+                    if(!i.identWithArgument)
                     {
-                        String colourTokens;
-                        for(int x = 0 ; x < i.args.size() ; x++){
-                            colourTokens += String(int(i.args[x])) + ",";
-                        }
-                        if(identifier.toString().contains(":"))
-                            CabbageWidgetData::setColourByNumber(colourTokens.dropLastCharacters(1), cabbageWidgets.getChildWithName(name), identifier.toString());
-                        else
-                            cabbageWidgets.getChildWithName(name).setProperty(identifier, CabbageWidgetData::getColourFromText(colourTokens.dropLastCharacters(1)).toString(), nullptr);
-                    }
-                    else if(identifier == CabbageIdentifierIds::populate)
-                    {
-                        cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::refreshfiles,Random::getSystemRandom().nextInt(), nullptr);
-                    }
-                    else if(identifier == CabbageIdentifierIds::bounds)
-                    {
-                        CabbageWidgetData::setBounds(cabbageWidgets.getChildWithName(name), juce::Rectangle<int>( i.args[0],
-                                                                                                           i.args[1],
-                                                                                                           i.args[2],
-                                                                                                           i.args[3]));
-                    }
-					else if (identifier == CabbageIdentifierIds::rotate)
-					{
-						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::rotate, i.args[0], nullptr);
-						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::pivotx, i.args[1], nullptr);
-						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::pivoty, i.args[2], nullptr);
-					}
-					/*else if (widgetType == CabbageWidgetTypes::hrange || widgetType == CabbageWidgetTypes::hrange &&
-						identifier == CabbageIdentifierIds::value)
-					{
-						var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
-						const float min = getCsound()->GetChannel(channels[0].toString().toUTF8());
-						const float max = getCsound()->GetChannel(channels[1].toString().toUTF8());
-						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::minvalue, min, nullptr);
-						cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::maxvalue, max, nullptr);
-
-					}*/
-                    else
-                    {
-                        DBG(i.args.toString());
-                        cabbageWidgets.getChildWithName(name).setProperty(identifier,i.args, nullptr);
-                    }
-
-					
-                    if(identifier == CabbageIdentifierIds::value && getChnsetGestureMode() == 1)
-                    {
-                        var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
-                        for (auto cabbageParam : getCabbageParameters())
+                        //any widgets taht break identifiers into unique entities must be parsed....
+                        if(identifier.toString().containsIgnoreCase("colour"))
                         {
-                            if (cabbageParam->getChannel() == channels[0].toString())
+                            String colourTokens;
+                            for(int x = 0 ; x < i.args.size() ; x++){
+                                colourTokens += String(int(i.args[x])) + ",";
+                            }
+                            if(identifier.toString().contains(":"))
+                                CabbageWidgetData::setColourByNumber(colourTokens.dropLastCharacters(1), cabbageWidgets.getChildWithName(name), identifier.toString());
+                            else
+                                cabbageWidgets.getChildWithName(name).setProperty(identifier, CabbageWidgetData::getColourFromText(colourTokens.dropLastCharacters(1)).toString(), nullptr);
+                        }
+                        else if(identifier == CabbageIdentifierIds::populate)
+                        {
+                            cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::refreshfiles,Random::getSystemRandom().nextInt(), nullptr);
+                        }
+                        else if(identifier == CabbageIdentifierIds::bounds)
+                        {
+                            CabbageWidgetData::setBounds(cabbageWidgets.getChildWithName(name), juce::Rectangle<int>( i.args[0],
+                                                                                                               i.args[1],
+                                                                                                               i.args[2],
+                                                                                                               i.args[3]));
+                        }
+                        else if (identifier == CabbageIdentifierIds::rotate)
+                        {
+                            cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::rotate, i.args[0], nullptr);
+                            cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::pivotx, i.args[1], nullptr);
+                            cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::pivoty, i.args[2], nullptr);
+                        }
+                        /*else if (widgetType == CabbageWidgetTypes::hrange || widgetType == CabbageWidgetTypes::hrange &&
+                            identifier == CabbageIdentifierIds::value)
+                        {
+                            var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
+                            const float min = getCsound()->GetChannel(channels[0].toString().toUTF8());
+                            const float max = getCsound()->GetChannel(channels[1].toString().toUTF8());
+                            cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::minvalue, min, nullptr);
+                            cabbageWidgets.getChildWithName(name).setProperty(CabbageIdentifierIds::maxvalue, max, nullptr);
+
+                        }*/
+                        else
+                        {
+                            cabbageWidgets.getChildWithName(name).setProperty(identifier,i.args, nullptr);
+                        }
+
+
+                        if(identifier == CabbageIdentifierIds::value && getChnsetGestureMode() == 1)
+                        {
+                            var channels = cabbageWidgets.getChildWithName(name).getProperty(CabbageIdentifierIds::channel);
+                            for (auto cabbageParam : getCabbageParameters())
                             {
-#if !Cabbage_IDE_Build
-                                if(pluginType.isAbletonLive())
-                                    if(cabbageParam->isPerformingGesture==true)
-                                        cabbageParam->endChangeGesture();
-#endif
-                                cabbageParam->beginChangeGesture();
-                                cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(getCsound()->GetChannel(channels[0].toString().toUTF8())));
-#if !Cabbage_IDE_Build
-                                if(!pluginType.isAbletonLive())
-#endif
-                                cabbageParam->endChangeGesture();
+                                if (cabbageParam->getChannel() == channels[0].toString())
+                                {
+    #if !Cabbage_IDE_Build
+                                    if(pluginType.isAbletonLive())
+                                        if(cabbageParam->isPerformingGesture==true)
+                                            cabbageParam->endChangeGesture();
+    #endif
+                                    cabbageParam->beginChangeGesture();
+                                    cabbageParam->setValueNotifyingHost(cabbageParam->getNormalisableRange().convertTo0to1(getCsound()->GetChannel(channels[0].toString().toUTF8())));
+    #if !Cabbage_IDE_Build
+                                    if(!pluginType.isAbletonLive())
+    #endif
+                                    cabbageParam->endChangeGesture();
+                                }
                             }
                         }
                     }
-                }
-                else
-                {       
-                    CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), i.args.toString().paddedLeft(' ',1));
-                    if(i.args.toString().contains(CabbageIdentifierIds::populate))
-                        CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::update, Random::getSystemRandom().nextInt());
-                    /* the following lets up trigger an update even if moveBehind, or toFront have not changed */
-                    else if(i.args.toString().contains(CabbageIdentifierIds::tofront))
-                    {
-                        CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::tofront, Random::getSystemRandom().nextInt());
-                    }
-                    else if(i.args.toString().contains(CabbageIdentifierIds::movebehind))
-                    {
-                        const String moveBehind = CabbageWidgetData::getProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::movebehind);
-                        const String chn = CabbageWidgetData::getProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::channel)[0];
-                        CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::movebehind, "");
-                        CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::update, moveBehind);
-                    }
+                    else
+                    {                       
+                        const auto argString = i.args.toString();
+                        CabbageWidgetData::setCustomWidgetState(cabbageWidgets.getChildWithName(name), argString.paddedLeft(' ',1));
+                        if(argString.contains(CabbageIdentifierIds::populate))
+                        {
+                            CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::update, Random::getSystemRandom().nextInt());
+                        }
+                        /* the following lets up trigger an update even if moveBehind, or toFront have not changed */
+                        else if(argString.contains(CabbageIdentifierIds::tofront))
+                        {
+                            CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::tofront, Random::getSystemRandom().nextInt());
+                        }
+                        else if(argString.contains(CabbageIdentifierIds::movebehind))
+                        {
+                            const String moveBehind = CabbageWidgetData::getProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::movebehind);
+                            const String chn = CabbageWidgetData::getProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::channel)[0];
+                            CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::movebehind, "");
+                            CabbageWidgetData::setProperty(cabbageWidgets.getChildWithName(name), CabbageIdentifierIds::update, moveBehind);
+                        }
 
-      
+
+                    }
                 }
             }
         }
     }
 
-
-    
     identData->data.clearQuick();
 
 
@@ -1918,10 +1862,10 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
     
 }
 
-
-
 void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
+	//getCsound()->Message("CABBAGE: prepareToPlay() called by host\n");
+
 	bool csoundRecompiled = false;
 	String jsonStateData;
 
@@ -1944,27 +1888,14 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 	//samplingRate = sampleRate;
 	CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
 
-
-	
-	csoundRecompiled = true;
 	if (sampleRate != samplingRate)
 	{
-		//need to reset the filebutton to "" so that we trigger a channel change when users
-		//change the sampling rates because the channel is already set when the SR change takes place
-		//resetFilebuttons(cabbageWidgets);
+        samplingRate = sampleRate;
+        CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
 		initAllCsoundChannels(cabbageWidgets);
 	}
-	else
-		initAllCsoundChannels(cabbageWidgets);
 	
 #endif
-
-	//DBG(cabbageWidgets.toXmlString());
-	if (sampleRate != samplingRate && csoundRecompiled == false) {
-		samplingRate = sampleRate;
-		CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
-		initAllCsoundChannels(cabbageWidgets);
-	}
 
 	if (getCsound())
 	{
@@ -1976,6 +1907,18 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 			pdClass->data = jsonStateData.toStdString();
 		}
 	}
+
+
+	//some host call prepareToPlay multiple times, this can cause channel changed events to be missed. 
+	if (wasRecompiled())
+	{
+		initAllCsoundChannels(cabbageWidgets);
+		//setPluginState(hostStateData, "", true);
+		resetRecompiled();
+	}
+
+	
+	
 
 }
 

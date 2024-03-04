@@ -41,6 +41,18 @@ class CabbageImage : public Component, public ValueTree::Listener, public Cabbag
     double prevWidth = 0, prevHeight = 0;
     std::unique_ptr<Drawable> drawable;
     std::unique_ptr<XmlElement> svg;
+    std::unique_ptr<OpenGLGraphicsContextCustomShader> shader;
+
+
+    String glShaderCode {};
+    //    "void main()\n"
+    //            "{\n"
+    //            "    " JUCE_MEDIUMP " vec4 colour1 = vec4 (1.0, 0.4, 0.6, 1.0);\n"
+    //            "    " JUCE_MEDIUMP " vec4 colour2 = vec4 (0.0, 0.8, 0.6, 1.0);\n"
+    //            "    " JUCE_MEDIUMP " float alpha = pixelPos.x / 1000.0;\n"
+    //            "    gl_FragColor = pixelAlpha * mix (colour1, colour2, alpha);\n"
+    //            "}\n"
+    //};
 
 public:
 

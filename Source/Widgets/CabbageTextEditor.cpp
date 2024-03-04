@@ -31,7 +31,9 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     isMultiline = int(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::wrap)) == 0 ? false : true;
     textEditor.setMultiLine(isMultiline);
     
-
+    setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
+    widgetData.addListener(this);              //add listener to valueTree so it gets notified when a widget's property changes
+    initialiseCommonAttributes(this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
     
 
     const int readOnly = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::readonly);
@@ -39,21 +41,27 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     
 
     int fontSize = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::fontsize);
-    if(owner->getCustomFontFile().existsAsFile())
+    const String font = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::typeface);
+    if (font.isNotEmpty()) 
     {
-        userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
-        textEditor.setFont(userFont);
-        textEditor.applyFontToAllText(userFont);
+        const String fontPath = File(getCsdFile()).getParentDirectory().getChildFile(font).getFullPathName();
+        if (File(fontPath).existsAsFile())
+        {
+            userFont = CabbageUtilities::getFontFromFile(File(fontPath));
+            userFont.setHeight(fontSize);
+            textEditor.setFont(userFont);
+            textEditor.applyFontToAllText(userFont);
+        }
     }
-    
-    textEditor.setFont(Font(fontSize));
-
-    if(owner->getCustomFontFile().existsAsFile())
+    else
     {
-        userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
-        userFont.setHeight(fontSize);
-        textEditor.setFont(userFont);
-        textEditor.applyFontToAllText(userFont);
+        if (owner->getCustomFontFile().existsAsFile())
+        {
+            userFont = CabbageUtilities::getFontFromFile(owner->getCustomFontFile());
+            userFont.setHeight(fontSize);
+            textEditor.setFont(userFont);
+            textEditor.applyFontToAllText(userFont);
+        }
     }
     
     textEditor.toggleEditOnDoubleClick = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::doubleclicktogglesedit);

@@ -29,16 +29,43 @@
 #include "../../Opcodes/websockets/WebSocketOpcode.h"
 
 #include "../../Opcodes/CabbageMidiOpcodes.h"
+#include "../../Opcodes/CabbageProfilerOpcodes.h"
 
 
 #include "../../Opcodes/CabbageIdentifierOpcodes.h"
+//#include "../../Opcodes/CabbageFileReaderOpcodes.h"
 #include "../../Utilities/CabbageUtilities.h"
 #include "CabbageCsoundBreakpointData.h"
 #if CabbagePro
 #include "../../Utilities/encrypt.h"
 #endif
 
+#if Bluetooth
+#include "../../Opcodes/CabbageBTOpcodes.h"
+#endif
 
+
+
+//this class comes courtesy of @EyalAmir from TAP discord..
+class ProcessBlockTimeListener
+{
+public:
+    void updateBlockTime() { lastTime = getCurrentTime(); }
+
+    double getTimeSinceLastBlock() const
+    {
+        return getCurrentTime() - lastTime.load();
+    }
+
+private:
+    static double getCurrentTime()
+    {
+        return juce::Time::getMillisecondCounterHiRes();
+    }
+
+    std::atomic<double> lastTime {getCurrentTime()};
+
+};
 
 //==============================================================================
 class CsoundPluginProcessor : public AudioProcessor, public AsyncUpdater
@@ -48,6 +75,7 @@ public:
 	CsoundPluginProcessor(File csoundInputFile, 
         const BusesProperties& ioBuses);
 	~CsoundPluginProcessor() override;
+
 
     void destroyCsoundGlobalVars();
     void createCsoundGlobalVars(const ValueTree& cabbageData);
@@ -118,8 +146,6 @@ public:
 #endif
 //=======================================================================================
 
-    
-    
     void performCsoundKsmps();
 	int result = -1;
     bool isLMMS = false;
@@ -274,7 +300,14 @@ public:
     
     void setNumPreCycles (int num)
     {
-        preCycles = num;
+        preCycles = num;			
+    }
+    
+    void startRecording(const File& file, int bitDepth = 32);
+    void stopRecording();
+    bool isRecording() const
+    {
+        return activeWriter.load() != nullptr;
     }
     
     
@@ -313,6 +346,7 @@ public:
         {
             points.swapWith (tablePoints);
         }
+        
 
     private:
         Array <float, CriticalSection > points;
@@ -325,6 +359,11 @@ public:
         return returnVal;
     }
 
+    TimeSliceThread backgroundThread { "Audio Recorder Thread" }; // the thread that will write our audio data to disk
+    std::unique_ptr<AudioFormatWriter::ThreadedWriter> threadedWriter; // the FIFO used to buffer the incoming data
+    std::atomic<AudioFormatWriter::ThreadedWriter*> activeWriter { nullptr };
+    std::unique_ptr<AudioData::Converter> converter;
+    CriticalSection writerLock;
     OwnedArray<MatrixEventSequencer> matrixEventSequencers;
     OwnedArray <SignalDisplay, CriticalSection> signalArrays;   //holds values from FFT function table created using dispfft
     CsoundPluginProcessor::SignalDisplay* getSignalArray (String variableName, String displayType = "") const;
@@ -335,6 +374,7 @@ public:
     }
 
 
+    
     void pollingChannels(int shouldPoll)
     {
         polling = shouldPoll;
@@ -350,8 +390,13 @@ public:
     {
         return polling;
     }
+    
+    bool wasRecompiled() { return recompiledOnPrepareToPlay;   }
+    void resetRecompiled() { recompiledOnPrepareToPlay = false; }
+    ProcessBlockTimeListener processBlockListener;
 private:
     //==============================================================================
+    bool recompiledOnPrepareToPlay = false;
     int polling = 1;
     MidiBuffer midiOutputBuffer;
     int guiCycles = 0;

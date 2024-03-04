@@ -24,6 +24,8 @@ form WIDGET_SYNTAX
 
 {! ./markdown/Widgets/Properties/titleBarColour.md !}  
 
+{! ./markdown/Widgets/Properties/titleBarHeight.md !}  
+
 {! ./markdown/Widgets/Properties/style.md !}  
 
 {! ./markdown/Widgets/Properties/sideChain.md !}  

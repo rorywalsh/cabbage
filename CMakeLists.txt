@@ -5,7 +5,6 @@ cmake_minimum_required(VERSION 3.15)
 set( CMAKE_WARN_DEPRECATED OFF )
 set(CMAKE_WARN_DEPRECATED OFF CACHE BOOL "" FORCE)
 
-
 if(NOT DEFINED PROJECT_NAME)
     set(PROJECT_NAME "Cabbage")
 endif()
@@ -16,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.39)
+	set(BUILD_VERSION 2.9.187)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -42,8 +41,36 @@ if(NOT DEFINED CabbagePro)
     set(CabbagePro 0)
 endif()
 
+set(USE_CUSTOM_STANDALONE 1)
+
+
+if(NOT DEFINED Bluetooth)
+    set(Bluetooth 0)
+    set(PLIST_INFO "")
+else()
+set(PLIST_INFO "\
+<plist>
+    <dict>
+        <key>NSMicrophoneUsageDescription</key>
+        <string>No microphone input is required for this app</string>
+        <key>NSBluetoothAlwaysUsageDescription</key>
+        <string>Bluetooth is used for connecting to MIDI devices</string>
+        <key>CFBundleIconName</key>
+        <string>Icons</string>
+        <key>UIRequiresFullScreen</key>
+        <true/>
+        <key>UISupportedInterfaceOrientations</key>
+        <array>
+            <string>UIInterfaceOrientationLandscapeLeft</string>
+            <string>UIInterfaceOrientationLandscapeRight</string>
+        </array>
+    </dict>
+</plist>    
+    ")
+endif()
+
 if(NOT DEFINED JucePlugin_ManufacturerCode)
-    set(JucePlugin_ManufacturerCode Cabb)
+    set(JucePlugin_ManufacturerCode CABB)
 endif()
 
 
@@ -78,6 +105,15 @@ macro(SetIfSynth var value1 value2)
     endif()
 endmacro()
 
+# these are needed for both hosting and creating plugins
+if(APPLE)
+juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
+elseif(MSVC)
+juce_set_vst2_sdk_path("C:/SDKs/VST_SDK/VST3_SDK")
+else()
+juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
+endif()
+
 if ("${PROJECT_NAME}" STREQUAL "CLIConverter")
 juce_add_console_app(${PROJECT_NAME}
     PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
@@ -86,24 +122,18 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
     juce_add_gui_app(${PROJECT_NAME}
         ICON_BIG ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png              
         ICON_SMALL ${CMAKE_CURRENT_SOURCE_DIR}/Images/cabbage.png 
-        NEEDS_WEB_BROWSER TRUE
+        NEEDS_WEB_BROWSER FALSE
         HARDENED_RUNTIME_ENABLED TRUE
-        HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input" "com.apple.security.cs.disable-library-validation" 
+        PLUGINHOST_AU TRUE
+        HARDENED_RUNTIME_OPTIONS com.apple.security.files.downloads.read-write com.apple.security.device.audio-input com.apple.security.cs.disable-library-validation com.apple.security.cs.allow-unsigned-executable-memory com.apple.security.device.audio-input
         # DOCUMENT_EXTENSIONS ".csd"          # Specify file extensions that should be associated with this app
         COMPANY_NAME ${JucePlugin_Manufacturer}
         MICROPHONE_PERMISSION_ENABLED TRUE
+        PLIST_TO_MERGE ${PLIST_INFO}
         MICROPHONE_PERMISSION_TEXT "Cabbage needs access to your audio interface" 
         PRODUCT_NAME ${PROJECT_NAME})     # The name of the final executable, which can differ from the target name
 else()
 # ============== This part of the CMake setup deals with plugins only.....
-    if(APPLE)
-        juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
-    elseif(MSVC)
-        juce_set_vst2_sdk_path("C:/SDKs/VST_SDK/VST3_SDK")
-    else()
-        juce_set_vst2_sdk_path("$ENV{HOME}/SDKs/VST_SDK/VST3_SDK")
-    endif()
-
     set(PLUGIN_NEEDS_OUTPUT PLUGIN_IS_A_SYNTH)
     SetIfSynth(PLUGIN_VST2_CATEGORY "kPlugCategSynth" "kPlugCategEffect")
     SetIfSynth(PLUGIN_AU_MAIN_TYPE "aumi" "aumf")
@@ -120,7 +150,7 @@ else()
         set(PLUGIN_AU_MAIN_TYPE "kAudioUnitType_MIDIProcessor")
         set(MIDI_EFFECT True)
     else()
-        set(MIDI_EFFECT False)
+        set(MIDI_EFFECT False)  
     endif()
 
     juce_add_plugin(${PROJECT_NAME}
@@ -141,9 +171,12 @@ else()
         VST3_CATEGORIES "${PLUGIN_VST3_CATEGORIES}"
         AU_EXPORT_PREFIX "${PROJECT_NAME}AU"
         AU_SANDBOX_SAFE TRUE
-        COPY_PLUGIN_AFTER_BUILD FALSE
+        # disable this on windows or face the wrath of setlocal errors..
+        COPY_PLUGIN_AFTER_BUILD FALSE 
+        HARDENED_RUNTIME_OPTIONS com.apple.security.files.downloads.read-write com.apple.security.device.audio-input com.apple.security.cs.disable-library-validation com.apple.security.cs.allow-unsigned-executable-memory com.apple.security.device.audio-input
         COMPANY_NAME ${JucePlugin_Manufacturer}
         HARDENED_RUNTIME_ENABLED TRUE
+        PLIST_TO_MERGE ${PLIST_INFO}
         HARDENED_RUNTIME_OPTIONS "com.apple.security.device.audio-input"
         PRODUCT_NAME "${PROJECT_NAME}")   
 endif()
@@ -156,17 +189,26 @@ if(MSVC)
     add_definitions( "/wd26495 /wd4996" )
 endif()
 
+if(Bluetooth MATCHES 1)
 
+else()
 add_compile_options ( -Wno-reorder -Wno-deprecated -Wno-deprecated-declarations)
+endif()
 
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 
+
+
 set(COMMON_SOURCES
+Source/Opcodes/CabbageProfilerOpcodes.cpp
+Source/Opcodes/CabbageProfilerOpcodes.h
 Source/Opcodes/CabbageIdentifierOpcodes.cpp
 Source/Opcodes/CabbageIdentifierOpcodes.h
 Source/Opcodes/websockets/WebSocketOpcode.c
 Source/Opcodes/websockets/WebSocketOpcode.h
 Source/Opcodes/opcodes.hpp
+Source/Standalone/CabbageStandaloneFilterApp.cpp
+Source/Standalone/CabbageStandaloneFilterWindow.h
 Source/Audio/Plugins/CabbageCsoundBreakpointData.h
 Source/Audio/Plugins/CabbagePluginEditor.cpp
 Source/Audio/Plugins/CabbagePluginEditor.h
@@ -209,6 +251,8 @@ Source/Widgets/CabbageForm.cpp
 Source/Widgets/CabbageForm.h
 Source/Widgets/CabbagePath.cpp
 Source/Widgets/CabbagePath.h
+Source/Widgets/CabbagePopupWindow.cpp
+Source/Widgets/CabbagePopupWindow.h
 Source/Widgets/CabbageOptionButton.cpp
 Source/Widgets/CabbageOptionButton.h
 Source/Widgets/CabbageRackWidgets.cpp
@@ -268,8 +312,6 @@ Source/Widgets/CabbageWidgetBase.cpp
 Source/Widgets/CabbageWidgetBase.h
 Source/Widgets/CabbageWidgetData.cpp
 Source/Widgets/CabbageWidgetData.h
-Source/Widgets/CabbageWebView.cpp
-Source/Widgets/CabbageWebView.h
 Source/Widgets/CabbageWidgetDataInitMethods.cpp
 Source/Widgets/CabbageXYPad.cpp
 Source/Widgets/CabbageXYPad.h
@@ -352,8 +394,24 @@ set(IDE_SOURCES
     Source/Utilities/CabbageSSHFileBrowser.cpp
     Source/Utilities/CabbageSSHFileBrowser.h
     Source/Cabbage.cpp
-    Source/Cabbage.h )
+    Source/Cabbage.h 
+    )
     
+
+   
+
+if(Bluetooth MATCHES 1)
+    set(BLUETOOTH_SOURCES 
+    Source/Opcodes/CabbageBTOpcodes.cpp
+    Source/Opcodes/CabbageBTOpcodes.h
+    Source/Opcodes/utils.cpp
+    Source/Opcodes/utils.hpp
+    ) 
+
+    target_sources(${PROJECT_NAME} PRIVATE  ${BLUETOOTH_SOURCES} )
+    source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${BLUETOOTH_SOURCES})
+endif()
+
 if ("${PROJECT_NAME}" STREQUAL "CLIConverter")
     target_sources(${PROJECT_NAME} PRIVATE  ${BATCH_CONVERTER_SOURCES} )
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "Cabbage Source" FILES ${BATCH_CONVERTER_SOURCES})
@@ -372,13 +430,14 @@ endif()
 #     //XCODE_ATTRIBUTE_CODE_SIGN_ENTITLEMENTS "${CMAKE_CURRENT_SOURCE_DIR}/entitlements.xcent"
 # )
 
+
 set(JUCE_MODULES
     juce::juce_core
     juce::juce_events
     juce::juce_graphics
     juce::juce_data_structures
     juce::juce_gui_basics
-    juce::juce_gui_extra
+    # juce::juce_gui_extra
     juce::juce_cryptography
     juce::juce_audio_basics
     juce::juce_audio_devices
@@ -410,18 +469,21 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
     target_compile_definitions(${PROJECT_NAME}
         PRIVATE
             # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
-            JUCE_WEB_BROWSER=1  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
+            JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
             JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
             JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
             JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
             JUCE_MODAL_LOOPS_PERMITTED=1
             CabbagePro=${CabbagePro}
+            Bluetooth=${Bluetooth}
             PluginDesc="${PluginDesc}"
             CabbageManufacturer="${CabbageManufacturer}"
             Use_Native_File_Browser=1
             JucePlugin_WantsMidiInput=1
             JUCE_ASIO=1
             JUCE_VST3_CAN_REPLACE_VST2=0
+            JUCE_PLUGINHOST_VST3=1
+            JUCE_PLUGINHOST_VST=1
             JucePlugin_ProducesMidiOutput=1
             Cabbage_IDE_Build=${IS_IDE_Build}
             JUCE_DISPLAY_SPLASH_SCREEN=0
@@ -430,12 +492,14 @@ else()
     target_compile_definitions(${PROJECT_NAME}
     PRIVATE
         # JUCE_WEB_BROWSER and JUCE_USE_CURL would be on by default, but you might not need them.
-        JUCE_WEB_BROWSER=1  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
+        JUCE_WEB_BROWSER=0  # If you remove this, add `NEEDS_WEB_BROWSER TRUE` to the `juce_add_gui_app` call
         JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_gui_app` call
         JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_PRODUCT_NAME>"
         JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:${PROJECT_NAME},JUCE_VERSION>"
         JUCE_MODAL_LOOPS_PERMITTED=1
         CabbagePro=${CabbagePro}
+        Bluetooth=${Bluetooth}
+        JUCE_USE_CUSTOM_PLUGIN_STANDALONE_APP=${USE_CUSTOM_STANDALONE}
         PluginDesc="${PluginDesc}"
         CabbageManufacturer="${CabbageManufacturer}"
         Use_Native_File_Browser=1
@@ -444,6 +508,18 @@ else()
         Cabbage_IDE_Build=${IS_IDE_Build}
         JUCE_DISPLAY_SPLASH_SCREEN=0
         )
+endif()
+
+if(Bluetooth MATCHES 1)
+    message("The BluetoothAddressType enum has a PUBLIC member that conflicts with Csound - it need to be changed.")
+if(MSVC)
+    add_subdirectory("C:/Users/rory/sourcecode/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
+else()
+    add_subdirectory("/Volumes/SSD_Drive/Mac/SimpleBLE/simpleble" ${CMAKE_BINARY_DIR}/simpleble)
+endif()
+    target_link_libraries(${PROJECT_NAME} 
+        PRIVATE
+        simpleble::simpleble)
 endif()
 
 if(MSVC)
@@ -462,7 +538,7 @@ if(MSVC)
     if(CabbagePro MATCHES 1)
         # find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
         set(CSOUND_LIBRARY "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
-        set(EXTERNAL_LIBS "c:\\Program Files\\Csound6_x64\\lib\\sndfile.lib" "c:\\Program Files\\Csound6_x64\\lib\\opus.lib" "c:\\Program Files\\Csound6_x64\\lib\\syn123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmpghip-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\out123.lib" "c:\\Program Files\\Csound6_x64\\lib\\mpg123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmp3lame-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\FLAC.lib")
+        set(EXTERNAL_LIBS "c:\\Program Files\\Csound6_x64\\lib\\sndfile.lib" "c:\\Program Files\\Csound6_x64\\lib\\opus.lib" "c:\\Program Files\\Csound6_x64\\lib\\syn123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmpghip-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\out123.lib" "c:\\Program Files\\Csound6_x64\\lib\\mpg123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmp3lame-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\FLAC.lib")    
     else()
     find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
     endif()
@@ -482,32 +558,71 @@ if(MSVC)
         juce::juce_recommended_warning_flags)
 
 elseif(APPLE)
+    set(WEBKIT "-framework WebKit -framework CoreServices")
     if(CabbagePro MATCHES 0)
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "Minimum OS X deployment version" FORCE)
-        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
+        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64")
         find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
-        "/Library/Frameworks/CsoundLib64.framework")  
+        "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64.framework")  
         include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
-    else()
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "Minimum OS X deployment version" FORCE)
-    SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
-    set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/build/libCsoundLib64.a")  
-    #  set(CSOUND_LIBRARY "/Users/rwalsh/sourcecode/csound/build/libCsoundLib64.a")  
-    include_directories("/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
-    #  include_directories("/Users/rwalsh/sourcecode/csound/include")
-    set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile/build/libsndfile.a")
-    #  set(LIB_SNDFILE "/Users/rwalsh/sourcecode/libsndfile/build/libsndfile.a")
-    endif()
-
-    target_link_libraries(${PROJECT_NAME} 
+        target_link_libraries(${PROJECT_NAME} 
     PRIVATE
         ${JUCE_MODULES}
         ${CSOUND_LIBRARY}
         ${LIB_SNDFILE}
+        ${WEBKIT}
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
+    else()
+    #     if("${PROJECT_NAME}" STREQUAL "Cabbage")
+    #         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
+    #         SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
+    #         find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
+    #         "/Library/Frameworks/CsoundLib64.framework")  
+    #         include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
+    #         target_link_libraries(${PROJECT_NAME} 
+    # PRIVATE
+    #     ${JUCE_MODULES}
+    #     ${CSOUND_LIBRARY}
+    #     ${LIB_SNDFILE}
+    # PUBLIC
+    #     juce::juce_recommended_config_flags
+    #     juce::juce_recommended_lto_flags
+    #     juce::juce_recommended_warning_flags)
+    #     else()
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
+        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
+        set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/build/libCsoundLib64.a")   
+        include_directories("/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
+        set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile_uni/build/libsndfile.a")
+        set(LIB_FLAC "/Users/rwalsh/sourcecode/xiph_libs/libFLAC.a")
+        set(LIB_OGG "/Users/rwalsh/sourcecode/xiph_libs/libogg.a")
+        set(LIB_OPUS "/Users/rwalsh/sourcecode/xiph_libs/libopus.a")
+        set(LIB_VORBIS "/Users/rwalsh/sourcecode/xiph_libs/libvorbis.a")
+        set(LIB_VORBISENC "/Users/rwalsh/sourcecode/xiph_libs/libvorbisenc.a")
+        set(LIB_VORBIS_FILE "/Users/rwalsh/sourcecode/xiph_libs/libvorbisfile.a")
+
+        target_link_libraries(${PROJECT_NAME} 
+        PRIVATE
+            ${JUCE_MODULES}
+            ${CSOUND_LIBRARY}
+            ${LIB_SNDFILE}
+            ${LIB_FLAC}
+            ${LIB_OGG}
+            ${LIB_OPUS}
+            ${LIB_VORBIS}
+            ${LIB_VORBISENC}
+            ${LIB_VORBIS_FILE}
+            ${WEBKIT}
+        PUBLIC
+            juce::juce_recommended_config_flags
+            juce::juce_recommended_lto_flags
+            juce::juce_recommended_warning_flags)
+        # endif()
+    endif()
+
 else()
     include_directories("/usr/local/include/csound")
     include_directories("/usr/include/csound")

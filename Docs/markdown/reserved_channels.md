@@ -58,6 +58,8 @@ Cabbage also reserved the following macros which can be used to expand system di
 
 **IS_A_PLUGIN** Returns 1 if the instrument is running as an audio plugin, and 0 if the instrument is running as a standalone. 
 
+**IS_BYPASSED** Returns 1 if the host has bypassed the plugin.
+
 **IS_EDITOR_OPEN** Returns 1 if the plugin editor window is currently open, or 0 if the user has closed it. 
 
 **WINDOWS** Returns 1 if Cabbage is running on a Windows machine

@@ -22,6 +22,7 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
+#include "CabbagePopupWindow.h"
 #include "../LookAndFeel/FlatButtonLookAndFeel.h"
 #include "../LookAndFeel/CabbageIDELookAndFeel.h"
 class CabbagePluginEditor;
@@ -35,12 +36,14 @@ class CabbagePresetButton : public TextButton, public ValueTree::Listener, publi
     bool replaceTextWithPreset = false;
     File currentPreset;
 	int readonly = 0;
-
+    String svgText = "";
+    std::unique_ptr<CabbagePopupWindow> popupWindow;
 
 	struct DirAndExt
 	{
 		String folder;
 		String extension; // C++11 allows the extra comma
+        bool useNameAsSubMenu = false;
 	};
 
 	DirAndExt user;
@@ -65,7 +68,7 @@ public:
     String returnValidPath (File path);
     void setLookAndFeelColours (ValueTree wData);
     PopupMenu addPresetsToMenu(String custom);
-
+    void showPopupWindow();
     void buttonClicked (Button* button)  override;
     ValueTree widgetData;
 

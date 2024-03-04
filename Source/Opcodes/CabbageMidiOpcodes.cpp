@@ -21,11 +21,11 @@ int CabbageMidiReader::init()
         csound->init_error("Not enough input arguments\n");
         return NOTOK;
     }
-    else if (in_count() == 6)
+    else if (in_count() == 7)
     {
-        skipTime = inargs[5];
+        skipTime = inargs[6];
     }
-        
+            
     
     currentTrack = static_cast<int>(inargs[1]);
 
@@ -63,8 +63,14 @@ int CabbageMidiReader::kperf()
         return NOTOK;
     }
 
+    if(currentTrack>midiFile.getNumTracks()-1)
+    {
+        csound->perf_error("Your track index is greater than the number of MIDI tracks in the curent MIDI file.\n", this);
+        return NOTOK;
+    }
    
-    
+    if(inargs[5] == 1)
+        sampleIndex = 0;
     
     bool isPlaying = static_cast<bool>(inargs[2]);
     shouldLoop = inargs[3];
@@ -77,6 +83,7 @@ int CabbageMidiReader::kperf()
     csnd::Vector<MYFLT>& velocityOut = outargs.myfltvec_data(3);
 
     outargs[5] = 0;
+    int noteOnEvents = 0;
     
     if (isPlaying)
     {
@@ -85,40 +92,40 @@ int CabbageMidiReader::kperf()
         
         if(theSequence == nullptr)
         {
-            csound->init_error("There was a problem reading events\n");
+            csound->init_error("There was a problem reading events from track..\n");
             return NOTOK;
         }
 
-        //run through all midi event in sequence, and add
-        //those that are set to play within this k-cycle to
-        //event vectors
-        for( int i = 0 ; i < ksmps() ; i++)
+
+        noteOnEvents = 0;
+
+        startTime = (sampleIndex)/sr() + skipTime;
+        if (startTime > lastTimeStamp * playBackSpeed && shouldLoop)
         {
+            sampleIndex = 0;
+            startTime = 0 + skipTime;
+        }
+        else
+            sampleIndex+=ksmps();
+        
+        double endTime = startTime + (ksmps() / sr());
 
-            startTime = (sampleIndex++)/sr() + skipTime;  
-            if (startTime > lastTimeStamp && shouldLoop)
-            {   
-                sampleIndex = 0;
-                startTime = 0 + skipTime;
-            }
-            double endTime = startTime + (ksmps() / sr());
-
-            if (theSequence->getNumEvents() > 0)
+        if (theSequence->getNumEvents() > 0)
+        {
+            for (auto p = 0; p < theSequence->getNumEvents(); p++)
             {
-                for (auto p = 0; p < theSequence->getNumEvents(); p++)
+                MidiMessageSequence::MidiEventHolder* event = theSequence->getEventPointer(p);
+                
+                if (event->message.getTimeStamp() * playBackSpeed >= startTime &&
+                    event->message.getTimeStamp() * playBackSpeed < endTime)
                 {
-                    MidiMessageSequence::MidiEventHolder* event = theSequence->getEventPointer(p);
+                    status[numEvents] = getStatusType(event->message);
+                    channel[numEvents] = event->message.getChannel();
+                    noteNumber[numEvents] = event->message.getNoteNumber();
+                    velocity[numEvents] = event->message.getVelocity();
+                    numEvents++;
+                    outargs[5] = 1;
                     
-                    if (event->message.getTimeStamp() * playBackSpeed >= startTime &&
-                        event->message.getTimeStamp() * playBackSpeed < endTime)
-                    {
-                        status[numEvents] = getStatusType(event->message);
-                        channel[numEvents] = event->message.getChannel();
-                        noteNumber[numEvents] = event->message.getNoteNumber();
-                        velocity[numEvents] = event->message.getVelocity();
-                        numEvents++;
-                        outargs[5] = 1;
-                    }
                 }
             }
         }
@@ -159,6 +166,7 @@ int CabbageMidiReader::kperf()
     }
 
     outargs[4] = numEvents;
+
 
     
     return OK;
@@ -254,6 +262,7 @@ int CabbageMidiListener::init()
         notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
         *notes = new MidiNotes();
         noteData = *notes;
+        noteData->notes.resize(128);
     }
 
     noteData->count = 0;
@@ -264,6 +273,16 @@ int CabbageMidiListener::init()
 int CabbageMidiListener::kperf()
 {
     return getMidiInfo();
+}
+
+bool compareByNote(const MidiNotes::NoteInfo& a, const MidiNotes::NoteInfo& b)
+{
+    if (a.note == 0) 
+        return false;
+    if (b.note == 0) 
+        return true;
+
+    return a.note < b.note;
 }
 
 int CabbageMidiListener::getMidiInfo()
@@ -288,6 +307,7 @@ int CabbageMidiListener::getMidiInfo()
     if (notes != nullptr)
     {
         noteData = *notes;
+
     }
     else
     {
@@ -295,49 +315,27 @@ int CabbageMidiListener::getMidiInfo()
         notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
         *notes = new MidiNotes();
         noteData = *notes;
+        noteData->notes.resize(128);
     }
 
     outargs[3] = noteData->count;
 
-    csnd::Vector<MYFLT>& notes = outargs.myfltvec_data(0);
-    csnd::Vector<MYFLT>& velocities = outargs.myfltvec_data(1);
-    csnd::Vector<MYFLT>& channels = outargs.myfltvec_data(2);
+    csnd::Vector<MYFLT>& notesOut = outargs.myfltvec_data(0);
+    csnd::Vector<MYFLT>& velocitiesOut = outargs.myfltvec_data(1);
+    csnd::Vector<MYFLT>& channelsOut = outargs.myfltvec_data(2);
 
     if (shouldSort == 1)
     {
-        //sorting
-        for (int j = 0; j < 128 - 1; j++)
-        {
-            if (noteData->notes[j].note > noteData->notes[j + 1].note)
-            {
-                auto temp = noteData->notes[j];
-                noteData->notes[j] = noteData->notes[j + 1];
-                noteData->notes[j + 1] = temp;
-                j = -1;
-            }
-        }
-
-        //push empty note slots to end
-        int cnt = 0;
-        for (int i = 0; i < 128; i++)
-            if (noteData->notes[i].note != 0)
-                noteData->notes[cnt++] = noteData->notes[i];
-
-        while (cnt < 128)
-        {
-            noteData->notes[cnt].note = 0;
-            noteData->notes[cnt].vel = 0;
-            noteData->notes[cnt].channel = -1;
-            cnt++;
-        }
+        std::sort(noteData->notes.begin(), noteData->notes.end(), compareByNote);
     }
 
-    //update output arrays with current events
+
+
     for (size_t i = 0; i < 128; i++)
     {
-        notes[i] = noteData->notes[i].note;
-        velocities[i] = noteData->notes[i].vel;
-        channels[i] = noteData->notes[i].channel;
+        notesOut[i] = noteData->notes[i].note;
+        velocitiesOut[i] = noteData->notes[i].vel;
+        channelsOut[i] = noteData->notes[i].channel;
     }
 
     
@@ -350,7 +348,7 @@ int CabbageMidiSender::init()
 {
     if (in_count() > 0)
     {
-        csound->init_error("cabbageMidiInfo takes no parameters..\n");
+        csound->init_error("cabbageMidiSender takes no parameters..\n");
         return NOTOK;
     }
 
@@ -358,10 +356,11 @@ int CabbageMidiSender::init()
 
     notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
     MidiNotes* noteData;
+    
 
     if (notes != nullptr)
     {
-        noteData = *notes;
+        noteData = *notes;        
     }
     else
     {
@@ -369,6 +368,7 @@ int CabbageMidiSender::init()
         notes = (MidiNotes**)csound->query_global_variable("cabbageMidiNotes");
         *notes = new MidiNotes();
         noteData = *notes;
+        noteData->notes.resize(128);
     }
 
     const int noteNumber = midi_note_num();
@@ -376,9 +376,10 @@ int CabbageMidiSender::init()
     const int noteVelocity = midi_note_vel();
 
     bool noteAlreadyRegistered = false;
-    for (int i = 0; i < 128; i++)
+    int size = noteData->notes.size();
+    for (const auto& n :noteData->notes)
     {
-        if (noteNumber == noteData->notes[i].note)
+        if (noteNumber == n.note)
             noteAlreadyRegistered = true;
     }
 
@@ -407,10 +408,12 @@ int CabbageMidiSender::deinit()
         csound->perf_error("Error - global pointer is not valid", nullptr);
     }
 
-    int test = 0;
 
     noteData->count = (noteData->count > 1 ? noteData->count - 1 : 0);
+
     int index = -1;
+
+
 
     for (int i = 0; i < 128; i++)
     {

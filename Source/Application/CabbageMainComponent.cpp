@@ -474,8 +474,6 @@ void CabbageMainComponent::bringCodeEditorToFront (FileTab* tab)
 
 void CabbageMainComponent::handleToolbarButtons (ToolbarButton* toolbarButton)
 {
-    DBG(toolbarButton->getName());
-    
     if (toolbarButton->getName() == "new")             createNewProject();
     else if (toolbarButton->getName() == "open")       openFile();
     else if (toolbarButton->getName() == "save")
@@ -514,6 +512,20 @@ void CabbageMainComponent::handleToolbarButtons (ToolbarButton* toolbarButton)
         else
             this->stopFilterGraph();
     }
+    else if (toolbarButton->getName() == "toggleRecord")
+    {
+        bitDepth = cabbageSettings->getUserSettings()->getIntValue ("RecordingBitDepth");
+        
+        if (toolbarButton->getToggleState())
+        {
+            shouldRecord = true;
+            factory.startRecordingTimer(true);
+        }
+        else
+        {
+            shouldRecord = false;
+        }
+    }
 }
 
 void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
@@ -521,9 +533,14 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
     if (drawableButton->getName() == "playButton")
     {
         if (drawableButton->getProperties().getWithDefault ("state", "") == "off")
-            saveDocument();
+            saveDocument(false, true);
         else
+        {
             stopCsoundForNode (drawableButton->getProperties().getWithDefault ("filename", ""));
+            factory.startRecordingTimer(false);
+            factory.setRecordButtonState("enabled");
+            shouldRecord = false;
+        }
 
     }
     else if (drawableButton->getName() == "closeButton")
@@ -535,6 +552,7 @@ void CabbageMainComponent::handleFileTabs (DrawableButton* drawableButton)
             closeDocument();
         }
     }
+
     else if (drawableButton->getName() == "showEditorButton")
     {
         if (CabbageUtilities::hasCabbageTags(fileTabs[currentFileIndex]->getFilename()))
@@ -933,6 +951,11 @@ void CabbageMainComponent::timerCallback()
             }
             currentFileIndex = originalFileIndex;
         }
+        
+//        
+//        saveDocument(false, true);
+//        DBG("Number of compilations:"+String(compileCounter++));
+      
     }
     
     
@@ -1129,6 +1152,14 @@ void CabbageMainComponent::createEditorForFilterGraphNode (juce::Point<int> posi
 		if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (f->getProcessor()))
         {
             pluginName = cabbagePlugin->getPluginName();
+            if(shouldRecord == true)
+            {
+                String time = Time::getCurrentTime().formatted("_%Y%m%d_%H%M%S");
+                
+                const String filename = getCurrentCsdFile().getFullPathName().substring(0, getCurrentCsdFile().getFullPathName().indexOf("."))+time+".wav";
+                cabbagePlugin->startRecording(filename, bitDepth);
+                factory.startRecordingTimer(false);
+            }
         }
 
         if (PluginWindow* const w = getFilterGraph()->getOrCreateWindowFor(f.get(), type))
@@ -1708,7 +1739,7 @@ void CabbageMainComponent::createCodeEditorForFile (File file)
     cabbageSettings->setProperty ("NumberOfOpenFiles", int (editorAndConsole.size()));
 }
 //==============================================================================
-void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
+void CabbageMainComponent::saveDocument (bool saveAs, bool compileFromPlayButton)
 {
 	if (fileTabs.size() > 0)
 	{
@@ -1759,7 +1790,7 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 			examplesDir = File::getSpecialLocation(File::currentExecutableFile).getParentDirectory().getParentDirectory().getFullPathName() + "/Examples";
 #endif
 
-
+            bool compileOnSave = cabbageSettings->getUserSettings()->getBoolValue("CompileOnSave");
 
 			stopCsoundForNode(getCurrentCsdFile().getFullPathName());;
 			isGUIEnabled = false;
@@ -1786,7 +1817,8 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 					{
 						editorAndConsole[i]->editor->loadContent(getCurrentCodeEditor()->getDocument().getAllContent());
 						stopCsoundForNode(getCurrentCsdFile().getFullPathName(), i);
-						runCsoundForNode(getCurrentCsdFile().getFullPathName(), i);
+                        if(compileOnSave)
+						    runCsoundForNode(getCurrentCsdFile().getFullPathName(), i);
 
 					}
 					
@@ -1796,12 +1828,15 @@ void CabbageMainComponent::saveDocument (bool saveAs, bool recompile)
 
 			propertyPanel->setEnabled(false);
 
-			if (recompile == true && getCurrentCsdFile().hasFileExtension((".csd")))
-			{
-				runCsoundForNode(getCurrentCsdFile().getFullPathName());
-				fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
-                fileTabs[currentFileIndex]->lastModified = getCurrentCsdFile().getLastModificationTime();
-			}
+            if (compileOnSave || compileFromPlayButton)
+            {
+                if (getCurrentCsdFile().hasFileExtension((".csd")))
+                {
+                    runCsoundForNode(getCurrentCsdFile().getFullPathName());
+                    fileTabs[currentFileIndex]->getPlayButton().setToggleState(true, dontSendNotification);
+                    fileTabs[currentFileIndex]->lastModified = getCurrentCsdFile().getLastModificationTime();
+                }
+            }
 
 			addInstrumentsAndRegionsToCombobox();
 			getCurrentCodeEditor()->setSavePoint();
@@ -2009,7 +2044,7 @@ void CabbageMainComponent::covertToLowerCase()
     {
         if(currentFileText.contains(camelCaseIdentifiers[i]))
         {
-            DBG("Replacing"+camelCaseIdentifiers[i] + " with " + camelCaseIdentifiers[i].toLowerCase());
+            //("Replacing"+camelCaseIdentifiers[i] + " with " + camelCaseIdentifiers[i].toLowerCase());
             currentFileText = currentFileText.replace(camelCaseIdentifiers[i], camelCaseIdentifiers[i].toLowerCase());
         }
     }
@@ -2074,7 +2109,7 @@ void CabbageMainComponent::covertToCamelCase()
     {
         if(cabbageCode.contains(camelCaseIdentifiers[i].toLowerCase()))
         {
-            DBG("Replacing"+camelCaseIdentifiers[i].toLowerCase() + " with " + camelCaseIdentifiers[i]);
+            //DBG("Replacing"+camelCaseIdentifiers[i].toLowerCase() + " with " + camelCaseIdentifiers[i]);
             cabbageCode = cabbageCode.replace(camelCaseIdentifiers[i].toLowerCase(), camelCaseIdentifiers[i]);
         }
     }
@@ -2130,7 +2165,7 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
 
             createEditorForFilterGraphNode(pluginWindowPos);
 
-            startTimer(100);
+            startTimer(500);
             if (getFilterGraph()->graph.getNodeForId(node))
             {
                 fileTabs[fileTabIndex != -99 ? fileTabIndex : currentFileIndex]->getPlayButton().getProperties().set("state", "on");
@@ -2143,6 +2178,7 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
             }
 
             factory.togglePlay(true);
+            factory.setRecordButtonState("disabled");
             //hack to allow saving on the fly with JUCE 5.4.7 - needs investigation...
 
             graphComponent->enableAudioInput();
@@ -2310,8 +2346,10 @@ void CabbageMainComponent::stopCsoundForNode (String file, int fileTabIndex)
             if (CabbagePluginProcessor* cabbagePlugin = dynamic_cast<CabbagePluginProcessor*> (getFilterGraph()->graph.getNodeForId(nodeId)->getProcessor()))
             {
                 cabbagePlugin->recreateWidgets(getCurrentCsdFile().loadFileAsString(), false);
+                cabbagePlugin->stopRecording();
                 cabbagePlugin->stopTimer();
                 cabbagePlugin->suspendProcessing(true);
+                cabbagePlugin->resetCsound();
 
             }
             else

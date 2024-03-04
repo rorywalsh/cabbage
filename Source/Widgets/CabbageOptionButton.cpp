@@ -25,10 +25,10 @@ CabbageWidgetBase(_owner)
     if (tooltipText.isNotEmpty())
         setTooltip(tooltipText);
     
-
-    setImgProperties(*this, wData, "buttonon");
-    setImgProperties(*this, wData, "buttonoff");
-    setImgProperties(*this, wData, "buttonover");
+    auto csdPath = owner->getProcessor().getCsdFile().getFullPathName();
+    setImgProperties(*this, wData, csdPath, "buttonon");
+    setImgProperties(*this, wData, csdPath, "buttonoff");
+    setImgProperties(*this, wData, csdPath, "buttonover");
     
     const String imgOff = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonoff);
     const String imgOver = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonover);
@@ -66,6 +66,10 @@ void CabbageOptionButton::setLookAndFeelColours(ValueTree wData)
     setColour(TextButton::buttonColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::colour)));
     setColour(TextButton::textColourOnId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::onfontcolour)));
     setColour(TextButton::buttonOnColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::oncolour)));
+    getProperties().set("outlinecolour", CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour));
+    getProperties().set("outlinethickness", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness));
+    getProperties().set("corners", CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::corners));
+    repaint();
     
 }
 

@@ -62,6 +62,7 @@ Soundfiler::Soundfiler (int sr, Colour col, Colour bgcol):
     currentPositionMarker (new DrawableRectangle()),
     scrubberPosition (0),
     sampleRate (sr),
+    sessionSampleRate(sr),
     regionWidth (0),
     thumbnailCache (5),
     colour (col),
@@ -148,10 +149,12 @@ void Soundfiler::setFile (const File& file)
         //creates a reader for the result file (may file, if the result/opened file is no wav or aif)
         if (reader) //if a reader got created
         {
+            regionWidth = 0;
             AudioBuffer<float> buffer(reader->numChannels, (int)reader->lengthInSamples);
             buffer.clear();
+            sampleRate = reader->sampleRate;
             reader->read (&buffer, 0, buffer.getNumSamples(), 0, true, true);
-            setWaveform (buffer, reader->numChannels);
+            setWaveform (buffer, reader->sampleRate, reader->numChannels);
         }
 
         delete reader;
@@ -165,12 +168,13 @@ void Soundfiler::setFile (const File& file)
 }
 
 //==============================================================================
-void Soundfiler::setWaveform (AudioSampleBuffer buffer, int channels)
+void Soundfiler::setWaveform (AudioSampleBuffer buffer, int sr, int channels)
 {
     validFile = true;
     thumbnail->clear();
     repaint();
-    thumbnail->reset (channels, 44100, buffer.getNumSamples());
+    regionWidth = 0;
+    thumbnail->reset (channels, sr, buffer.getNumSamples());
     //thumbnail->clear();
     thumbnail->addBlock (0, buffer, 0, buffer.getNumSamples());
     const Range<double> newRange (0.0, thumbnail->getTotalLength());
@@ -223,9 +227,18 @@ void Soundfiler::paint (Graphics& g)
        juce::Rectangle<int> thumbArea (getLocalBounds());
         thumbArea.setHeight (getHeight() - 14);
         thumbArea.setTop (10.f);
-        thumbnail->drawChannels (g, thumbArea.reduced (2),
-                                 visibleRange.getStart(), visibleRange.getEnd(), 1.f);
-
+        if (showSingleChannel)
+        {
+            thumbnail->drawChannel(g, thumbArea.reduced(2),
+                visibleRange.getStart(), visibleRange.getEnd(), 0, 1.f);
+            thumbnail->drawChannel(g, thumbArea.reduced(2),
+                visibleRange.getStart(), visibleRange.getEnd(), 1, 1.f);
+        }
+        else
+        {
+            thumbnail->drawChannels(g, thumbArea.reduced(2),
+                visibleRange.getStart(), visibleRange.getEnd(), 1.f);
+        }
         //if(regionWidth>1){
         g.setColour (colour.contrasting (.5f).withAlpha (.7f));
         float zoomFactor = thumbnail->getTotalLength() / visibleRange.getLength();
@@ -263,7 +276,7 @@ void Soundfiler::mouseDown (const MouseEvent& e)
 {
     if (!e.mods.isPopupMenu())
     {
-        regionWidth = (1.01 - zoom) * 1.5;
+        regionWidth = 0;// (1.01 - zoom) * 1.5;
         currentPlayPosition = jmax (0.0, xToTime ((float) e.x));
         loopStart = e.x;
         loopLength =  0;
@@ -297,7 +310,7 @@ void Soundfiler::mouseDrag (const MouseEvent& e)
                     currentPlayPosition = jmax (0.0, xToTime (loopStart + (float)e.getDistanceFromDragStartX()));
 
                 float widthInTime = ((float)e.getDistanceFromDragStartX() / (float)getWidth()) * (float)thumbnail->getTotalLength();
-                loopLength = jmax (0.0, widthInTime * zoomFactor);
+                loopLength = abs (widthInTime * zoomFactor);
             }
 
             repaint();

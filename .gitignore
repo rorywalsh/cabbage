@@ -8,3 +8,4 @@ CabbageInstall/
 *.zip
 CabbageRack
 CabbageManual
+Source/Opcodes/CabbageBTOpcodes.*

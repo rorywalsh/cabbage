@@ -34,6 +34,7 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
     outlineColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::outlinecolour))),
     mainColour (Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour))),
     isLineWidget (isLineWidget),
+    glShaderCode(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::glshader)),
     isParent(CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::isparent))
 {
     
@@ -82,60 +83,86 @@ CabbageImage::CabbageImage (ValueTree wData, CabbagePluginEditor* owner, bool is
 //==============================================================================
 void CabbageImage::paint (Graphics& g)
 {
-    if (isLineWidget)
+    if (glShaderCode.isNotEmpty() && owner->openGLEnabled)
     {
-        g.setColour (mainColour);
-        g.fillRoundedRectangle (0, 0, getWidth(), getHeight(), 1);
+        g.setColour(mainColour);
+        if (shader.get() == nullptr || shader->getFragmentShaderCode() != glShaderCode)
+        {
+            shader.reset();
 
-        g.setColour (CabbageUtilities::getBackgroundSkin());
-        g.fillRoundedRectangle (0, 0, getWidth() - 1, getHeight() - 1, 1);
+            shader.reset(new OpenGLGraphicsContextCustomShader(glShaderCode));
+
+            auto result = shader->checkCompilation(g.getInternalContext());
+
+            if (result.failed())
+            {
+                shader.reset();
+            }
+
+        }
+
+        if (shader.get() != nullptr)
+        {
+            shader->fillRect(g.getInternalContext(), getLocalBounds());
+        }
     }
-    else
+    else 
     {
-       
-        if (imgFile.hasFileExtension (".svg"))
+        if (isLineWidget)
         {
-            CabbageLookAndFeel2::drawFromSVG (g, imgFile, 0, 0, getWidth(), getHeight(), AffineTransform());
+            g.setColour(mainColour);
+            g.fillRoundedRectangle(0, 0, getWidth(), getHeight(), 1);
+
+            g.setColour(CabbageUtilities::getBackgroundSkin());
+            g.fillRoundedRectangle(0, 0, getWidth() - 1, getHeight() - 1, 1);
         }
-        else if (img.isValid())
-			
-        {
-            g.drawImage (img, 0, 0, getWidth(), getHeight(), cropx, cropy,
-                            cropwidth == 0 ? img.getWidth() : cropwidth,
-                            cropheight == 0 ? img.getHeight() : cropheight);
-        }
-        
         else
         {
-            g.fillAll (Colours::transparentBlack);
-            g.setColour (mainColour);
 
-            if (shape == "square")
-                g.fillRoundedRectangle (0, 0, getWidth(), getHeight(), corners);
-            else
-                g.fillEllipse (lineThickness*.9f, lineThickness*.9f, getWidth()-lineThickness*1.9f, getHeight()-lineThickness*1.9f);
-
-
-            g.setColour (outlineColour);
-
-            if (shape == "square")
-                g.drawRoundedRectangle (0, 0, jmax (1, getWidth()), jmax (1, getHeight()), corners, lineThickness);
-            else
-                g.drawEllipse (lineThickness/2.f, lineThickness/2.f, jmax (1, getWidth()-lineThickness), jmax (1, getHeight()-lineThickness), lineThickness);
-        }
-        
-        if(usesSVGElement)
-        {
-            g.fillAll (Colours::transparentBlack);
-            svg = (XmlDocument::parse(svgElement));
-            
-            if (svg == nullptr)
-                return;
-            
-            if (svg != nullptr)
+            if (imgFile.hasFileExtension(".svg"))
             {
-                drawable = Drawable::createFromSVG(*svg);
-                drawable->draw(g, 1.f, AffineTransform());
+                CabbageLookAndFeel2::drawFromSVG(g, imgFile, 0, 0, getWidth(), getHeight(), AffineTransform());
+            }
+            else if (img.isValid())
+
+            {
+                g.drawImage(img, 0, 0, getWidth(), getHeight(), cropx, cropy,
+                    cropwidth == 0 ? img.getWidth() : cropwidth,
+                    cropheight == 0 ? img.getHeight() : cropheight);
+            }
+
+            else
+            {
+                g.fillAll(Colours::transparentBlack);
+                g.setColour(mainColour);
+
+                if (shape == "square")
+                    g.fillRoundedRectangle(0, 0, getWidth(), getHeight(), corners);
+                else
+                    g.fillEllipse(lineThickness * .9f, lineThickness * .9f, getWidth() - lineThickness * 1.9f, getHeight() - lineThickness * 1.9f);
+
+
+                g.setColour(outlineColour);
+
+                if (shape == "square")
+                    g.drawRoundedRectangle(0, 0, jmax(1, getWidth()), jmax(1, getHeight()), corners, lineThickness);
+                else
+                    g.drawEllipse(lineThickness / 2.f, lineThickness / 2.f, jmax(1, getWidth() - lineThickness), jmax(1, getHeight() - lineThickness), lineThickness);
+            }
+
+            if (usesSVGElement)
+            {
+                g.fillAll(Colours::transparentBlack);
+                svg = (XmlDocument::parse(svgElement));
+
+                if (svg == nullptr)
+                    return;
+
+                if (svg != nullptr)
+                {
+                    drawable = Drawable::createFromSVG(*svg);
+                    drawable->draw(g, 1.f, AffineTransform());
+                }
             }
         }
     }
@@ -183,9 +210,13 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     cropheight = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropheight);
     handleCommonUpdates (this, valueTree, false, prop);
     
-    if(prop == CabbageIdentifierIds::svgElement)
+    if (prop == CabbageIdentifierIds::svgElement)
         svgElement = createSVG(valueTree);
-    
+    else if (prop == CabbageIdentifierIds::glshader)
+    {
+        glShaderCode = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::glshader);
+        owner->setOpenGLForShader();
+    }
     repaint();
 }
 

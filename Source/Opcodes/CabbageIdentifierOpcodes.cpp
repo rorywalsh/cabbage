@@ -18,6 +18,7 @@
 //====================================================================================================
 int CreateCabbageWidget::createWidget()
 {
+
     vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
     CabbageWidgetsValueTree* varData;
     
@@ -33,6 +34,7 @@ int CreateCabbageWidget::createWidget()
         varData = *vt;
     }
     
+
     const String widgetTreeIdentifier = "TempWidget";
     ValueTree tempWidget(widgetTreeIdentifier);
     if(in_count()!=2)
@@ -107,8 +109,6 @@ int GetCabbageStringIdentifierSingle::getAttribute()
     }
     
     
-    
-    
     vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
     CabbageWidgetsValueTree* varData;
     
@@ -124,6 +124,7 @@ int GetCabbageStringIdentifierSingle::getAttribute()
         varData = *vt;
     }
     
+        
     const auto child = varData->data.getChildWithName(name);
 
     if(child.getProperty(identifier).size()>0)
@@ -201,7 +202,7 @@ int GetCabbageIdentifierArray::getAttribute()
     return OK;
 }
 
-//=================================================================================================
+
 int GetCabbageIdentifierSingle::getAttribute()
 {
     String name(inargs.str_data(0).data);
@@ -232,6 +233,53 @@ int GetCabbageIdentifierSingle::getAttribute()
         outargs[0] = child.getProperty(identifier);
     
     
+    return OK;
+}
+
+int GetCabbageIdentifierSingleWithTrigger::getAttribute()
+{
+    String name(inargs.str_data(0).data);
+    String identifier(inargs.str_data(1).data);
+    
+    if(name.isEmpty() || identifier.isEmpty())
+        return OK;
+    
+    vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+    CabbageWidgetsValueTree* varData;
+    
+    if (vt != nullptr)
+    {
+        varData = *vt;
+    }
+    else
+    {
+        csound->create_global_variable("cabbageWidgetsValueTree", sizeof(CabbageWidgetsValueTree*));
+        vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
+        *vt = new CabbageWidgetsValueTree();
+        varData = *vt;
+    }
+    
+    const auto child = varData->data.getChildWithName(name);
+    if(child.getProperty(identifier).size()>0)
+        currentValue = (double)child.getProperty(identifier)[0];
+    else
+        currentValue = child.getProperty(identifier);
+    
+    if ( currentValue != value)
+    {
+        value = currentValue;
+//        if(firstRun)
+//        {
+//            firstRun = false;
+//            outargs[1] = 0;
+//        }
+//        else
+            outargs[1] = 1;
+    }
+    else
+        outargs[1] = 0;
+    
+    outargs[0] = currentValue;
     return OK;
 }
 
@@ -461,7 +509,7 @@ int CabbageGetWidgetChannels::getChannels()
     
     return OK;
 }
-//====================================================================================================
+
 
 int GetCabbageStringValue::getAttribute(bool init)
 {
@@ -522,7 +570,7 @@ int GetCabbageStringValueArray::getAttribute()
     return OK;
 }
 
-int GetCabbageValue::getAttribute()
+int GetCabbageValue::getAttribute(bool irate)
 {
     if(in_count() == 0)
         return NOTOK;
@@ -558,11 +606,9 @@ int GetCabbageValueArray::getAttribute()
     return OK;
 }
 
-//-------------------------------------------------------------------------------------------
+
 int GetCabbageStringValueWithTrigger::getAttribute(bool init)
 {
-
-
     if(in_count() == 0)
         return NOTOK;
     
@@ -574,19 +620,25 @@ int GetCabbageStringValueWithTrigger::getAttribute(bool init)
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
+        const auto s = csound->strdup(inargs.str_data(0).data);
         if(!currentString){
+            DBG(csound->strdup(inargs.str_data(0).data));
             currentString = csound->strdup((((STRINGDAT*)value)->data));
         }
         
         if(strcmp(currentString, ((STRINGDAT*)value)->data) != 0)
         {
+            DBG(csound->strdup(inargs.str_data(0).data));
             currentString = csound->strdup(((STRINGDAT*)value)->data);
             outargs[1] = 1;
         }
         else
         {
-            if(trigOnInit && !init && kCycleCount==1)
+            if (trigOnInit && !init && kCycleCount == 1) {
                 outargs[1] = 1;
+                DBG(inargs.str_data(0).data);
+            }
+                
             else
                 outargs[1] = 0;
         }
@@ -647,26 +699,30 @@ int GetCabbageValueWithTrigger::getAttribute()
     if(in_count() == 0)
         return NOTOK;
     
+    if(in_count() > 1)
+        triggerOnPerfPass = inargs[1];
+    
 
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inargs.str_data(0).data,
                                             CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
-        
+        numberOfPasses = (numberOfPasses < 3 ? numberOfPasses+1 : 3);
+
         if(*value != currentValue)
         {
             currentValue = *value;
-            if(firstRun)
-            {
-                firstRun = false;
-                outargs[1] = 0;
-            }
-            else
-                outargs[1] = 1;
+            outargs[1] = 1;
+            outargs[0] = currentValue;
         }
         else
-            outargs[1] = 0;
-        
-        outargs[0] = currentValue;
+        {
+            if(numberOfPasses == 2 && triggerOnPerfPass>0)//test first k-pass
+            {
+                outargs[1] = 1;
+            }
+            else
+                outargs[1] = 0;
+        }
     }
     
     return OK;
@@ -692,12 +748,12 @@ int GetCabbageValueArrayWithTrigger::getAttribute()
             if(*value != currentValue[i])
             {
                 currentValue[i] = *value;
-                if(firstRun)
-                {
-                    firstRun = false;
-                    outTriggers[i] = 0;
-                }
-                else
+//                if(firstRun)
+//                {
+//                    firstRun = false;
+//                    outTriggers[i] = 0;
+//                }
+//                else
                     outTriggers[i] = 1;
             }
             else
@@ -710,7 +766,7 @@ int GetCabbageValueArrayWithTrigger::getAttribute()
     return OK;
 }
 
-//====================================================================================================
+//=========================================================================================
 int CabbageValueChanged::getAttribute()
 {
     if(in_count() == 0)
@@ -724,79 +780,87 @@ int CabbageValueChanged::getAttribute()
     csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
     bool foundAChange = false;
     
-    for (unsigned long i = 0 ; i < int(inputArgs.len()) ; i++)
+    if(mode == 3 && firstPerfPass)
     {
-        if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
-                                                CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+        outargs.str_data(0) = inputArgs[0];
+        outargs[1] = 1;
+        firstPerfPass = false;
+    }
+    else
+    {
+        for (unsigned long i = 0 ; i < int(inputArgs.len()) ; i++)
         {
-            if(in_count() > 1)
+            if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                                                    CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
             {
-                if(mode == 2)
+                if(in_count() > 1 && mode != 3)
                 {
-                    if ((oldValue[i] <= inargs[1] && *value > inargs[1]) ||
-                        (oldValue[i] >= inargs[1] && *value < inargs[1] ) )
+                    if(mode == 2)
                     {
+                        if ((oldValue[i] <= inargs[1] && *value > inargs[1]) ||
+                            (oldValue[i] >= inargs[1] && *value < inargs[1] ) )
+                        {
+                            outargs.str_data(0).size = inputArgs[i].size;
+                            outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                            foundAChange = true;
+                        }
+                    }
+                    else if(mode == 0)
+                    {
+                        if (oldValue[i] <= inargs[1] && *value > inargs[1])
+                        {
+                            outargs.str_data(0).size = inputArgs[i].size;
+                            outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                            foundAChange = true;
+                        }
+                    }
+                    else if(mode == 1)
+                    {
+                        if (oldValue[i] >= inargs[1] && *value < inargs[1])
+                        {
+                            outargs.str_data(0).size = inputArgs[i].size;
+                            outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                            foundAChange = true;
+                        }
+                    }
+                    
+                    oldValue[i] = *value;
+                }
+                else
+                {
+                    if(*value != oldValue[i])
+                    {
+                        oldValue[i] = *value;
                         outargs.str_data(0).size = inputArgs[i].size;
                         outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
                         foundAChange = true;
                     }
                 }
-                else if(mode == 0)
-                {
-                    if (oldValue[i] <= inargs[1] && *value > inargs[1])
-                    {
-                        outargs.str_data(0).size = inputArgs[i].size;
-                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                        foundAChange = true;
-                    }
-                }
-                else if(mode == 1)
-                {
-                    if (oldValue[i] >= inargs[1] && *value < inargs[1])
-                    {
-                        outargs.str_data(0).size = inputArgs[i].size;
-                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                        foundAChange = true;
-                    }
+            }
+            else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                                                         CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+            {
+                if(int(currentStrings[static_cast<unsigned long>(i)].size) == 0){
+                    currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                    currentStrings[i].size = ((STRINGDAT*)value)->size;
                 }
                 
-                oldValue[i] = *value;
-            }
-            else
-            {
-                if(*value != oldValue[i])
+                if(strcmp(currentStrings[i].data, ((STRINGDAT*)value)->data) != 0)
                 {
-                    oldValue[i] = *value;
+                    currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                    currentStrings[i].size = ((STRINGDAT*)value)->size;
+                    foundAChange = true;
                     outargs.str_data(0).size = inputArgs[i].size;
                     outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                    foundAChange = true;
                 }
             }
         }
-        else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
-                                                     CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-        {
-            if(int(currentStrings[static_cast<unsigned long>(i)].size) == 0){
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
-                currentStrings[i].size = ((STRINGDAT*)value)->size;
-            }
-            
-            if(strcmp(currentStrings[i].data, ((STRINGDAT*)value)->data) != 0)
-            {
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
-                currentStrings[i].size = ((STRINGDAT*)value)->size;
-                foundAChange = true;
-                outargs.str_data(0).size = inputArgs[i].size;
-                outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-            }
-        }
+        
+        if(foundAChange)
+            outargs[1] = 1;
+        else
+            outargs[1] = 0;
     }
-    
-    if(foundAChange)
-        outargs[1] = 1;
-    else
-        outargs[1] = 0;
-    
     return OK;
 }
 
@@ -813,119 +877,112 @@ int CabbageValueChangedIndex::getAttribute()
     csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
     bool foundAChange = false;
     
-    for ( unsigned long i = 0 ; i < int(inputArgs.len()) ; i++)
+    if(mode == 3 && firstPerfPass)
     {
-        if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
-                                                CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+        outargs[0] = 0;
+        outargs[1] = 1;
+        firstPerfPass = false;
+    }
+    else
+    {
+        for ( unsigned long i = 0 ; i < int(inputArgs.len()) ; i++)
         {
-            if(in_count() > 1)
+            if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                                                    CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
             {
-                if(mode == 2)
+                if(in_count() > 1 && mode != 3)
                 {
-                    if ((oldValue[i] <= inargs[1] && *value > inargs[1]) ||
-                        (oldValue[i] >= inargs[1] && *value < inargs[1] ) )
+                    if(mode == 2)
                     {
-//                        outargs.str_data(0).size = inputArgs[i].size;
-//                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                        outargs[0] = i;
-                        foundAChange = true;
+                        if ((oldValue[i] <= inargs[1] && *value > inargs[1]) ||
+                            (oldValue[i] >= inargs[1] && *value < inargs[1] ) )
+                        {
+                            //                        outargs.str_data(0).size = inputArgs[i].size;
+                            //                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                            outargs[0] = i;
+                            foundAChange = true;
+                        }
                     }
-                }
-                else if(mode == 0)
-                {
-                    if (oldValue[i] <= inargs[1] && *value > inargs[1])
+                    else if(mode == 0)
                     {
-//                        outargs.str_data(0).size = inputArgs[i].size;
-//                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                        outargs[0] = i;
-                        foundAChange = true;
+                        if (oldValue[i] <= inargs[1] && *value > inargs[1])
+                        {
+                            //                        outargs.str_data(0).size = inputArgs[i].size;
+                            //                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                            outargs[0] = i;
+                            foundAChange = true;
+                        }
                     }
-                }
-                else if(mode == 1)
-                {
-                    if (oldValue[i] >= inargs[1] && *value < inargs[1])
+                    else if(mode == 1)
                     {
-//                        outargs.str_data(0).size = inputArgs[i].size;
-//                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
-                        outargs[0] = i;
-                        foundAChange = true;
+                        if (oldValue[i] >= inargs[1] && *value < inargs[1])
+                        {
+                            //                        outargs.str_data(0).size = inputArgs[i].size;
+                            //                        outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                            outargs[0] = i;
+                            foundAChange = true;
+                        }
                     }
-                }
-                
-                oldValue[i] = *value;
-            }
-            else
-            {
-                if(*value != oldValue[i])
-                {
+                    
                     oldValue[i] = *value;
-//                    outargs.str_data(0).size = inputArgs[i].size;
-//                    outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                }
+                else
+                {
+                    if(*value != oldValue[i])
+                    {
+                        oldValue[i] = *value;
+                        //                    outargs.str_data(0).size = inputArgs[i].size;
+                        //                    outargs.str_data(0).data = csound->strdup(inputArgs[i].data);
+                        foundAChange = true;
+                        outargs[0] = i;
+                    }
+                }
+            }
+            else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                                                         CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+            {
+                if(strcmp(currentStrings[i].data, ((STRINGDAT*)value)->data) != 0)
+                {
+                    currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                    currentStrings[i].size = ((STRINGDAT*)value)->size;
                     foundAChange = true;
                     outargs[0] = i;
                 }
             }
         }
-        else if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
-                                                     CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-        {
-            if(currentStrings[i].size == 0){
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
-                currentStrings[i].size = ((STRINGDAT*)value)->size;
-            }
-            
-            if(strcmp(currentStrings[i].data, ((STRINGDAT*)value)->data) != 0)
-            {
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
-                currentStrings[i].size = ((STRINGDAT*)value)->size;
-                foundAChange = true;
-                outargs[0] = i;
-            }
-        }
+        
+        if(foundAChange == true)
+            outargs[1] = 1;
+        else
+            outargs[1] = 0;
     }
-    
-    if(foundAChange == true)
-        outargs[1] = 1;
-    else
-        outargs[1] = 0;
-    
     return OK;
 }
 
 //====================================================================================================
 // from cabbageSetValue
-int SetCabbageValueIdentifier::setAttribute(int)
+int SetCabbageValueIdentifier::setAttribute(bool init)
 {
-    int trigger = int(args[2]);
     
-   // if (rate == I_RATE)
-   //     trigger = 1;
-    
-    if(trigger == 0 || args.str_data(0).size == 0)
-        return OK;
-    
-    CabbageWidgetIdentifiers::IdentifierData data;
-    
-    data.identifier = CabbageIdentifierIds::value;
-    data.name = args.str_data(0).data;
-    data.isValid = true;
+    if(in_count()<2){
+        csound->perf_error("Not enough arguments\n", this);
+        return NOTOK;
+    }
+
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
+    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
+
     
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
+    int trigger = int(args[2]);
+
+    if(trigger == 0 || args.str_data(0).size == 0)
+        return OK;
+
+    varData->data.getLock().enter();
     
-    //now update underlying Csound channel
     if(trigger == 1)
     {
         if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(0).data,
@@ -935,56 +992,31 @@ int SetCabbageValueIdentifier::setAttribute(int)
         }
         
         data.args = args[1];
-
-        bool entryExists = false;
-
-        for( auto& el : varData->data)
-        {
-            if(el.isValid == true)
-            {
-                //crash here intermittently...
-                if(el.identifier == data.identifier && el.name == data.name)
-                {
-                    el.args = data.args;
-                    entryExists = true;
-                }
-            }
-        }
-
-        if(entryExists == false)
-            varData->data.add(data);
+        varData->data.add(data);
 
     }
     
+    varData->data.getLock().exit();
     return OK;
 }
 
-int SetCabbageValueIdentifierITime::setAttribute(int)
+int SetCabbageValueIdentifierITime::setAttribute(bool init)
 {
+    
+    if(in_count()!=2){
+        csound->perf_error("Not enough arguments\n", this);
+        return NOTOK;
+    }
 
+    
+    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
+    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
     if(args.str_data(0).size == 0)
         return OK;
     
-    CabbageWidgetIdentifiers::IdentifierData data;
-    
-    data.identifier = CabbageIdentifierIds::value;
-    data.name = args.str_data(0).data;
-    data.isValid = true;
-    
-    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
-    
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
+    varData->data.getLock().enter();
     
     //now update underlying Csound channel
     if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(0).data,
@@ -994,64 +1026,39 @@ int SetCabbageValueIdentifierITime::setAttribute(int)
     }
     
     data.args = args[1];
-    
-    bool entryExists = false;
-    
-    for( auto& el : varData->data)
-    {
-        if(el.isValid)
-        {
-            if(el.identifier == data.identifier && el.name == data.name)
-            {
-                el.args = data.args;
-                entryExists = true;
-            }
-        }
-    }
-    
-    if(!entryExists)
-        varData->data.add(data);
-        
+    varData->data.add(data);
+      
+    varData->data.getLock().exit();
 
     
     return OK;
 }
 
 
-int SetCabbageValueIdentifierSArgs::setAttribute(int)
+int SetCabbageValueIdentifierSArgs::setAttribute(bool init)
 {
-    int trigger = int(args[2]);
     
-    // if (rate == I_RATE)
-    //     trigger = 1;
-    
-    if(trigger == 0 || args.str_data(0).size == 0)
-        return OK;
-    
-    CabbageWidgetIdentifiers::IdentifierData data;
-    
-    data.identifier = CabbageIdentifierIds::value;
-    data.name = args.str_data(0).data;
-    data.isValid = true;
-    
-    const String strValue = String(args.str_data(1).data);
+    if(in_count()!=3){
+        csound->perf_error("Not enough arguments\n", this);
+        return NOTOK;
+    }
 
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
+    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
     
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
+    int trigger = int(args[2]);
     
+    if(trigger == 0 || args.str_data(0).size == 0)
+        return OK;
+        
+    const String strValue = String(args.str_data(1).data);
+
+    
+    varData->data.getLock().enter();
+
     //now update underlying Csound channel
     if(trigger == 1)
     {
@@ -1065,153 +1072,80 @@ int SetCabbageValueIdentifierSArgs::setAttribute(int)
         }
         
         data.args = args.str_data(1).data;
-        
-        bool entryExists = false;
-        
-        for( auto& el : varData->data)
-        {
-            if(el.isValid)
-            {
-                if(el.identifier == data.identifier && el.name == data.name)
-                {
-                    el.args = data.args;
-                    entryExists = true;
-                }
-            }
-        }
-        
-        if(!entryExists)
-            varData->data.add(data);
+        varData->data.add(data);
         
     }
     
+    varData->data.getLock().exit();
     return OK;
 }
 
-int SetCabbageValueIdentifierSArgsITime::setAttribute(int)
+int SetCabbageValueIdentifierSArgsITime::setAttribute(bool init)
 {
-
+    if(in_count()!=2){
+        csound->perf_error("Not enough arguments\n", this);
+        return NOTOK;
+    }
+    
+    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
+    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
+    
+    
     if(args.str_data(0).size == 0)
         return OK;
     
-    CabbageWidgetIdentifiers::IdentifierData data;
-    
-    data.identifier = CabbageIdentifierIds::value;
-    data.name = args.str_data(0).data;
-    data.isValid = true;
-    
-    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
-    
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
-    
+    varData->data.getLock().enter();
+    //varData->canRead.store(false);
     data.args = args.str_data(1).data;
+    varData->data.add(data);
     
-    bool entryExists = false;
-    
-    for( auto& el : varData->data)
-    {
-        if(el.isValid)
-        {
-            if(el.identifier == data.identifier && el.name == data.name)
-            {
-                el.args = data.args;
-                entryExists = true;
-            }
-        }
-    }
-    
-    //now update underlying Csound channel
-    if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &strInput, args.str_data(0).data,
-                                           CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-    {
-//        STRINGDAT* stringdat = (STRINGDAT*) strInput;
-//        stringdat->data = args.str_data(1).data;
-//        stringdat->size = strlen(args.str_data(1).data) + 1;
-    }
-    
-    if(!entryExists)
-        varData->data.add(data);
-    
+    varData->data.getLock().exit();
+
     return OK;
 }
 //====================================================================================================
-int SetCabbageIdentifier::setAttribute()
+int SetCabbageIdentifier::setAttribute(bool init)
 {
+
+    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    //setting second param to true here so that we can loop through arrays and run loop at k-rate
+    CabbageWidgetIdentifiers::IdentifierData identData = getIdentData(args, true, 1, 2);
+
+    
     int trigger = int(args[0]);
     
     if(trigger == 0)
         return OK;
-    
-    CabbageWidgetIdentifiers::IdentifierData data;
 
-    data.identifier = args.str_data(2).data;
-    data.name = args.str_data(1).data;
-    
-    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
-    
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
-    
+    varData->data.getLock().enter();
+
     if(trigger == 1)
     {
         //hack to trigger table update even if table number hasn't changed
-        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-        {
-            CabbageWidgetIdentifiers::IdentifierData updateData1;
-            updateData1.identifier = CabbageIdentifierIds::update;
-            updateData1.name = data.name;
-            updateData1.args = 1;
-            varData->data.add(updateData1);
-        }
+        triggerTableUpdate(varData, identData, 1);
+        
         
         if(in_count() == 3)
         {
-            data.identWithArgument = true;
-            data.args = String(args.str_data(2).data);
-            //DBG(String(outargs.str_data(3).data));
+            identData.identWithArgument = true;
+            identData.args = String(args.str_data(2).data);
         }
         else
         {
             for ( int i = 3 ; i < in_count(); i++)
             {
-                //DBG(outargs[i]);
-                data.args.append(args[i]);
+                identData.args.append(args[i]);
             }
         }
-        varData->data.add(data);
+        varData->data.add(identData);
         
         //hack to trigger table update even if table number hasn't changed
-        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-        {
-            CabbageWidgetIdentifiers::IdentifierData updateData0;
-            updateData0.identifier = CabbageIdentifierIds::update;
-            updateData0.name = data.name;
-            updateData0.args = 0;
-            varData->data.add(updateData0);
-        }
+        triggerTableUpdate(varData, identData, 0);
         
-        if(data.identifier == CabbageIdentifierIds::value)
+        if(identData.identifier == CabbageIdentifierIds::value)
         {
             if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(1).data,
                                                    CSOUND_CONTROL_CHANNEL | CSOUND_INPUT_CHANNEL) == CSOUND_SUCCESS)
@@ -1220,48 +1154,34 @@ int SetCabbageIdentifier::setAttribute()
             }
         }
     }
+
+    varData->data.getLock().exit();
+
     return OK;
 }
 
-int SetCabbageIdentifierArray::setAttribute()
+int SetCabbageIdentifierArray::setAttribute(bool init)
 {
+    
+    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    //setting second param to true here so that we can loop through arrays and run loop at k-rate
+    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(args, true, 1, 2);
+    
+    
     int trigger = int(args[0]);
     
     if(trigger == 0)
         return OK;
     
-    CabbageWidgetIdentifiers::IdentifierData data;
-    
-    data.identifier = args.str_data(2).data;
-    data.name = args.str_data(1).data;
+
+    varData->data.getLock().enter();
     csnd::Vector<MYFLT>& inputArgs = args.myfltvec_data(3);
-    
-    vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
-    
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
     
     if(trigger == 1)
     {
         //hack to trigger table update even if table number hasn't changed
-        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-        {
-            CabbageWidgetIdentifiers::IdentifierData updateData1;
-            updateData1.identifier = CabbageIdentifierIds::update;
-            updateData1.name = data.name;
-            updateData1.args = 1;
-            varData->data.add(updateData1);
-        }
+        triggerTableUpdate(varData, data, 1);
         
         for (int i = 0; i < int(inputArgs.len()); i++)
         {
@@ -1271,14 +1191,7 @@ int SetCabbageIdentifierArray::setAttribute()
         varData->data.add(data);
         
         //hack to trigger table update even if table number hasn't changed
-        if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-        {
-            CabbageWidgetIdentifiers::IdentifierData updateData0;
-            updateData0.identifier = CabbageIdentifierIds::update;
-            updateData0.name = data.name;
-            updateData0.args = 0;
-            varData->data.add(updateData0);
-        }
+        triggerTableUpdate(varData, data, 0);
         
         if(data.identifier == CabbageIdentifierIds::value)
         {
@@ -1289,54 +1202,37 @@ int SetCabbageIdentifierArray::setAttribute()
             }
         }
     }
+
+    varData->data.getLock().exit();
     return OK;
 }
 
-int SetCabbageIdentifierSArgs::setAttribute(int rate)
+int SetCabbageIdentifierSArgs::setAttribute(bool init)
 {
 
-    CabbageWidgetIdentifiers::IdentifierData data;
-    int trigger = int(args[0]);
-
-    if (rate == I_RATE)
-        trigger = 1;
-
-    if(trigger == 0)
-        return OK;
-    
     if(in_count()<3){
         csound->perf_error("Not enough arguments\n", this);
         return NOTOK;
     }
     
-
-    data.identifier = args.str_data(2).data;
-    data.name = args.str_data(1).data;
-    
+    if(String(args.str_data(2).data).isEmpty())
+        return OK;
+        
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    //setting second param to true here so that we can loop through arrays and run loop at k-rate
+    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(args, true, 1, 2);
     
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
+
+    int trigger = int(args[0]);
+
+    if(trigger == 0)
+        return OK;
+    
+    varData->data.getLock().enter();
     
     //hack to trigger table update even if table number hasn't changed
-    if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-    {
-        CabbageWidgetIdentifiers::IdentifierData updateData1;
-        updateData1.identifier = CabbageIdentifierIds::update;
-        updateData1.name = data.name;
-        updateData1.args = 1;
-        varData->data.add(updateData1);
-    }
+    triggerTableUpdate(varData, data, 1);
     
     if(String(args.str_data(2).data).isEmpty() || in_count() == 3)
     {
@@ -1352,52 +1248,25 @@ int SetCabbageIdentifierSArgs::setAttribute(int rate)
     }
     varData->data.add(data);
     
-    //hack to trigger table update even if table number hasn't changed
-    if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-    {
-        CabbageWidgetIdentifiers::IdentifierData updateData0;
-        updateData0.identifier = CabbageIdentifierIds::update;
-        updateData0.name = data.name;
-        updateData0.args = 0;
-        varData->data.add(updateData0);
-    }
+    triggerTableUpdate(varData, data, 0);
     
+    varData->data.getLock().exit();
     return OK;
 }
 
-//-----------------------------------------------------------------------------------------------------------------------
-int SetCabbageIdentifierITime::setAttribute()
+//-----------------------------------------------------------------------------------------------------------------
+int SetCabbageIdentifierITime::setAttribute(bool init)
 {
-    CabbageWidgetIdentifiers::IdentifierData data;
 
-    data.identifier = outargs.str_data(1).data;
-    data.name = outargs.str_data(0).data;
-    
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(outargs, init, 0, 1);
     
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
-    
+    varData->data.getLock().enter();
+
     //hack to trigger table update even if table number hasn't changed
-    if (data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-    {
-        CabbageWidgetIdentifiers::IdentifierData updateData1;
-        updateData1.identifier = CabbageIdentifierIds::update;
-        updateData1.name = data.name;
-        updateData1.args = 1;
-        varData->data.add(updateData1);
-    }
-    
+    triggerTableUpdate(varData, data, 1);
+
     if(in_count() == 2)
     {
         data.identWithArgument = true;
@@ -1421,51 +1290,21 @@ int SetCabbageIdentifierITime::setAttribute()
         }
     }
     
-   // here is the issue.... 
-    if(data.identifier == CabbageIdentifierIds::tablenumber)
-    {
-        CabbageWidgetIdentifiers::IdentifierData updateData0;
-        updateData0.identifier = CabbageIdentifierIds::update;
-        updateData0.name = data.name;
-        updateData0.args = 0;
-        varData->data.add(updateData0);
-    }
-    
+    triggerTableUpdate(varData, data, 0);
+    varData->data.getLock().exit();
     return OK;
 }
 
-int SetCabbageIdentifierITimeSArgs::setAttribute()
+int SetCabbageIdentifierITimeSArgs::setAttribute(bool init)
 {
-    CabbageWidgetIdentifiers::IdentifierData data;
-
-
-    data.identifier = outargs.str_data(1).data;
-    data.name = outargs.str_data(0).data;
-    
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-    CabbageWidgetIdentifiers* varData;
+    CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
+   
+    CabbageWidgetIdentifiers::IdentifierData data = getIdentData(outargs, init, 0, 1);
     
-    if (vt != nullptr)
-    {
-        varData = *vt;
-    }
-    else
-    {
-        csound->create_global_variable("cabbageWidgetData", sizeof(CabbageWidgetIdentifiers*));
-        vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
-        *vt = new CabbageWidgetIdentifiers();
-        varData = *vt;
-    }
-    
-    //hack to trigger table update even if table number hasn't changed
-    if(data.identifier.toString().contains(CabbageIdentifierIds::tablenumber.toString()))
-    {
-        CabbageWidgetIdentifiers::IdentifierData updateData1;
-        updateData1.identifier = CabbageIdentifierIds::update;
-        updateData1.name = data.name;
-        updateData1.args = 1;
-        varData->data.add(updateData1);
-    }
+    varData->data.getLock().enter();
+    triggerTableUpdate(varData, data, 1);
+        
     
     if(in_count() == 2)
     {
@@ -1490,15 +1329,9 @@ int SetCabbageIdentifierITimeSArgs::setAttribute()
         }
     }
     
-    if(data.identifier == CabbageIdentifierIds::tablenumber)
-    {
-        CabbageWidgetIdentifiers::IdentifierData updateData0;
-        updateData0.identifier = CabbageIdentifierIds::update;
-        updateData0.name = data.name;
-        updateData0.args = 0;
-        varData->data.add(updateData0);
-    }
-    
+    triggerTableUpdate(varData, data, 0);
+    varData->data.getLock().exit();
+
     return OK;
 }
 //====================================================================================================

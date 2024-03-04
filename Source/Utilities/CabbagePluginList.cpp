@@ -180,7 +180,8 @@ numThreads (allowAsync ? 1 : 0)
     pluginList.addChangeListener (this);
     updateList();
     table.getHeader().reSortTable();
-    
+
+
     PluginDirectoryScanner::applyBlacklistingsFromDeadMansPedal (pluginList, deadMansPedalFile);
     deadMansPedalFile.deleteFile();
 }

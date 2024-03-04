@@ -1,3 +1,3 @@
 <a name="displayType"><h3 style="padding-top: 40px; margin-top: 40px;"></h3></a>
 _____________________________
-**displayType("type")** Sets the the type of display. Must be 'spectrogram' or 'spectroscope', 'waveform' or 'lissajous'. Set to 'spectroscope by default.
+**displayType("type")** Sets the the type of display. Must be 'spectrogram' or 'spectroscope', 'waveform' or 'lissajous' for the signal display widget. Set to 'spectroscope by default. This identifier can also be used for the soundfiler widget to display a mixed down stereo to mono view. To enable this behaviour, set the diplay type to mono. 

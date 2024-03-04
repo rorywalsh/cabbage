@@ -85,12 +85,17 @@ public:
     void setWidthHeight();
     CabbageWidgetIdentifiers** pd{};
     CabbageWidgetIdentifiers* identData{};
+    
+    std::string** globalPreset;
+    std::string* preset;
+    
     int autoUpdateCount = 0;
     bool autoUpdateIsOn = false;
 
     
     //save and restore user plugin presets
-    void addPluginPreset(String presetName, const String& fileName, bool remove);
+    String addPluginPreset(String presetName, const String& fileName, bool remove);
+    void setPluginState(nlohmann::ordered_json j, const String presetName, bool hostState = false);
     void restorePluginPreset(String presetName, String filename);
     
     bool addImportFiles (StringArray& lineFromCsd);
@@ -124,9 +129,6 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-    void setParametersFromXml (XmlElement* e);
-    XmlElement savePluginState (String tag);
-    void restorePluginState (XmlElement* xmlElement);
     //==============================================================================
     StringArray cabbageScriptGeneratedCode;
     Array<PlantImportStruct> plantStructs;
@@ -171,6 +173,7 @@ public:
         return buses;
     }
 
+
 	StringArray getCurrentCsdFileAsStringArray()
 	{
 		StringArray csdArray;
@@ -185,6 +188,15 @@ public:
     const OwnedArray<CabbagePluginParameter>& getCabbageParameters() const { return parameters; }
     int currentPluginScale = -1;
     String currentPresetName = "";
+    double getTimeSinceLastBlock(){
+        return this->processBlockListener.getTimeSinceLastBlock();
+    }
+
+
+private:
+#if !Cabbage_IDE_Build
+    PluginHostType pluginType;
+#endif
  
 private:   
     CabbageLookAndFeel2 lookAndFeel;
@@ -203,8 +215,7 @@ private:
     OwnedArray<CabbagePluginParameter> parameters;
     Font customFont;
     File customFontFile;
-
-
+ 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbagePluginProcessor)
 
 };
@@ -231,8 +242,9 @@ public:
                           bool automatable = true,
                           const String& prefix  = String(),
                           const String& postfix = String(),
-                          bool isCombo = false)
-    : parameter(new CabbageHostParameter(*this, thisOwner, wData, channelToUse, name, prefix, postfix, minValue, maxValue, def, incr, skew, isCombo)),
+                          bool isCombo = false,
+                          StringArray stringItems = StringArray())
+    : parameter(new CabbageHostParameter(*this, thisOwner, wData, channelToUse, name, prefix, postfix, minValue, maxValue, def, incr, skew, isCombo, stringItems)),
     widgetName(name),
     isAutomatable(automatable)
     {
@@ -309,8 +321,14 @@ private:
         
         void setValue(float newValue) override
         {
-            currentValue = isCombo ? juce::roundToInt(range.convertFrom0to1 (newValue)) : range.convertFrom0to1 (newValue);
-            processor->setCabbageParameter(channel, currentValue, valueTree);
+            currentValue = (isCombo && items.size() == 0) ? juce::roundToInt(range.convertFrom0to1(newValue)) : range.convertFrom0to1(newValue);
+
+            if (isCombo && items.size() > 0)
+            {
+                processor->setCabbageParameter(channel, std::floor(newValue * (items.size())), valueTree);
+            }
+            else
+                processor->setCabbageParameter(channel, currentValue, valueTree);
         }
         
         String getText(float normalizedValue, int length) const override
@@ -329,17 +347,27 @@ private:
             }
             else
             {
-                showingAffixes = true;
-                
-                asText = prefix;
-                asText += String(scaledValue, decimalPlaces);
-                
-                if (length > 0 && asText.length() + postfix.length() > length)
+
+                if (isCombo && items.size() > 0)
                 {
-                    asText = asText.substring(0, asText.length() - postfix.length());
+                    const int index = std::floor(currentValue * (items.size()*.9));
+                    asText = prefix;
+                    return asText + items[index] + postfix;
                 }
-                
-                asText += postfix;
+                else
+                {
+                    showingAffixes = true;
+
+                    asText = prefix;
+                    asText += String(scaledValue, decimalPlaces);
+
+                    if (length > 0 && asText.length() + postfix.length() > length)
+                    {
+                        asText = asText.substring(0, asText.length() - postfix.length());
+                    }
+
+                    asText += postfix;
+                }
             }
             
             return asText;
@@ -371,7 +399,8 @@ private:
                              float def,
                              float incr,
                              float skew,
-                             bool isACombo)
+                             bool isACombo,
+                             StringArray stringItems)
         : AudioParameterFloat(thisName, channelToUse, NormalisableRange<float>(minValue, maxValue, incr, skew), def),
         channel(channelToUse),
         prefix(prefixToUse),
@@ -379,7 +408,8 @@ private:
         currentValue(def),
         isCombo(isACombo),
         processor(proc),
-        valueTree(wData)
+        valueTree(wData),
+        items(stringItems)
         {
             ignoreUnused(thisOwner);
         }
@@ -389,6 +419,7 @@ private:
         const String postfix { };
         float currentValue;
         bool isCombo = false;
+        StringArray items = {};
         
         CabbagePluginProcessor* processor;
         ValueTree valueTree;

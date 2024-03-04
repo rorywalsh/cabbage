@@ -74,14 +74,26 @@ public:
 
     void drawComboBox (Graphics& g, int width, int height, bool /*isButtonDown*/, int /*buttonX*/, int /*buttonY*/, int /*buttonW*/, int /*buttonH*/, ComboBox& box) override;
 
+    PopupMenu::Options getOptionsForComboBoxPopupMenu (ComboBox& box, Label& label) override;
+    
+    void drawPopupMenuBackgroundWithOptions (Graphics& g,
+                                             int width,
+                                             int height,
+                                             const PopupMenu::Options&) override;
+    
     void drawPopupMenuBackground (Graphics& g, int width, int height) override;
 
-    void drawPopupMenuItem (Graphics&, const juce::Rectangle<int>& area,
+    void drawPopupMenuItemWithOptions (Graphics& g, const Rectangle<int>& area,
+                                                       bool isHighlighted,
+                                                       const PopupMenu::Item& item,
+                                       const PopupMenu::Options&) override;
+    
+    void drawPopupMenuItem (Graphics&, const Rectangle<int>& area,
                             bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
                             const String& text, const String& shortcutKeyText,
                             const Drawable* icon, const Colour* textColour) override;
 
-    void drawAlertBox (Graphics& g, AlertWindow& alert, const juce::Rectangle<int>& textArea, TextLayout& textLayout) override;
+    void drawAlertBox (Graphics& g, AlertWindow& alert, const Rectangle<int>& textArea, TextLayout& textLayout) override;
     Image drawCheckMark();
 
     static void drawFromSVG (Graphics& g, File svgFile, int x, int y, int newWidth, int newHeight, AffineTransform affine);

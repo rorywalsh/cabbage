@@ -224,12 +224,12 @@ void FileTab::setDrawableImages (DrawableButton& button, int width, int height, 
     else if (type == "editGUI")
     {
         String svgFile = getSVGTextFromFile (iconsPath + "/filetab-editGUI-off.svg");
-		std::unique_ptr<XmlElement> svgOff(XmlDocument::parse (svgFile));
+        std::unique_ptr<XmlElement> svgOff(XmlDocument::parse (svgFile));
 
         svgFile = getSVGTextFromFile (iconsPath + "/filetab-editGUI-on.svg");
-		std::unique_ptr<XmlElement> svgOn(XmlDocument::parse(svgFile));
+        std::unique_ptr<XmlElement> svgOn(XmlDocument::parse(svgFile));
 
-        if (iconsPath == "" || svgOn == nullptr || svgOff == nullptr) 
+        if (iconsPath == "" || svgOn == nullptr || svgOff == nullptr)
         { // if there is no iconsPath defined (or the svg files are missing), then we fallback on the previous hard-coded icon:
             imageNormal.setImage (CabbageImages::drawEditGUIIcon (width, height));
             imageNormalPressed.setImage (CabbageImages::drawEditGUIIcon (width - 1, height - 1));

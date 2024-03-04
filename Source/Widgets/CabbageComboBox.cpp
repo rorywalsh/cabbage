@@ -37,18 +37,29 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     isStringCombo(CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::channeltype) == "string"    ),
     CabbageWidgetBase(_owner)
 {
+    
     widgetData.addListener (this);
+    setLookAndFeel(&lookAndFeel);
+
     setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
+    
     setColour (ComboBox::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour)));
+    setColour (ComboBox::outlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::outlinecolour)));
+    
     setTooltip (tooltipText = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::popuptext));
-    setColour (PopupMenu::ColourIds::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour)).brighter (.8f));
-    setColour (PopupMenu::ColourIds::highlightedBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
-    setColour (PopupMenu::ColourIds::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
-    setColour (PopupMenu::ColourIds::highlightedTextColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)).darker());
+    setColour (PopupMenu::ColourIds::backgroundColourId, Colour::fromString( CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::menucolour)));
+//    setColour (PopupMenu::ColourIds::highlightedBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::colour)));
+    setColour (PopupMenu::ColourIds::highlightedTextColourId, Colour::fromString( CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::menucolour)).withAlpha(0.5f));
+    setColour (PopupMenu::ColourIds::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::fontcolour)));
+    
+    lookAndFeelChanged();
     setEditableText (false);
     setTextWhenNothingSelected (text);
     setWantsKeyboardFocus (false);
     getProperties().set("isPresetCombo", false);
+    const int fontSize = CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::fontsize);
+    getProperties().set("fontSize",  fontSize);
+    getProperties().set("corners", CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::corners));
     initialiseCommonAttributes (this, widgetData);
 
     if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
@@ -60,10 +71,8 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         return;
         
     if (CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::channeltype) == "string" &&
-		!CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::filetype).contains("snaps"))
+        !CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::filetype).contains("snaps"))
     {
-
-
         if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
 
@@ -93,6 +102,12 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         else
             setSelectedItemIndex (0, dontSendNotification);
         
+
+        if (currentValueAsText.containsOnly("0123456789.-"))
+        {
+            index = currentValueAsText.getIntValue();
+        }
+
         if(CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
             owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFileNameWithoutExtension());
         else
@@ -122,13 +137,14 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         }
         else
         {
+            DBG(getValue());
             owner->sendChannelDataToCsound (getChannel(), getValue());
             setSelectedItemIndex (getValue() - 1, dontSendNotification);
         }
     }
 
     lookAndFeel.customFont = owner->customFont;
-    setLookAndFeel(&lookAndFeel);
+    
 }
 //---------------------------------------------
 CabbageComboBox::~CabbageComboBox()
@@ -185,11 +201,11 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         StringArray lines = StringArray::fromLines (comboFile);
         for (int i = 0; i < lines.size(); ++i)
         {
-            if (lines[i].isNotEmpty()) 
+            if (lines[i].isNotEmpty())
             {
                 addItem(lines[i], i + 1);
                 stringItems.add(lines[i]);
-            }                
+            }
         }
     }
 
@@ -289,6 +305,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
                return;
                
             auto j = nlohmann::ordered_json::parse(fileName.loadFileAsString().toRawUTF8());
+
             for (nlohmann::ordered_json::iterator it = j.begin(); it != j.end(); ++it) {
                 presets.add (it.key());
             }
@@ -339,7 +356,7 @@ void CabbageComboBox::addItemsToCombobox (ValueTree wData)
         
         for ( int i = 0; i < folderFiles.size(); i++)
         {
-			stringItems.add(folderFiles[i].getFileNameWithoutExtension());
+            stringItems.add(folderFiles[i].getFileNameWithoutExtension());
             addItem (folderFiles[i].getFileNameWithoutExtension(), i + 1);
         }
 
@@ -386,7 +403,7 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
                 item->setAction([this, combo] {
                     owner->restorePluginStateFrom(presets[combo->getSelectedItemIndex()], presetFile.getFullPathName());
                     owner->sendChannelStringDataToCsound(getChannel(), presets[combo->getSelectedItemIndex()]);
-                    CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::value, presets[combo->getSelectedItemIndex()]); 
+                    CabbageWidgetData::setProperty(widgetData, CabbageIdentifierIds::value, presets[combo->getSelectedItemIndex()]);
                 });
             }
             else
@@ -401,15 +418,20 @@ void CabbageComboBox::comboBoxChanged (ComboBox* combo) //this listener is only 
         const String fileType = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype);
         const int index = combo->getSelectedItemIndex();
 
-		if (fileType.isNotEmpty())
-		{
-			String test = folderFiles[index].getFullPathName();
-			owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFileNameWithoutExtension());
+        if (fileType.isNotEmpty())
+        {
+            String test = folderFiles[index].getFullPathName();
+            owner->sendChannelStringDataToCsound(getChannel(), folderFiles[index].getFileNameWithoutExtension());
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, folderFiles[index].getFileName());
-		}
+        }
         else
         {
             owner->sendChannelStringDataToCsound (getChannel(), stringItems[index]);
+            if (CabbagePluginParameter* param = owner->getParameterForComponent(combo->getName()))
+            {
+
+                param->setValueNotifyingHost(float(index+.9) / (float)stringItems.size());
+            }
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::value, stringItems[index]);
         }
         
@@ -435,7 +457,19 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             }
             else
             {
-                currentValueAsText = CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
+                const String s = CabbageWidgetData::getProperty(valueTree, CabbageIdentifierIds::value).toString().removeCharacters("\"");
+
+                if (s.containsOnly("0123456789.-"))
+                {
+                    currentValueAsText = stringItems[juce::roundToInt(s.getIntValue()-.25)];
+                }
+
+                else
+                {
+                    currentValueAsText = s;
+                }
+                
+
                 currentValueAsText = File(getCsdFile()).getParentDirectory().getChildFile (currentValueAsText).getFileNameWithoutExtension();
                 
              
@@ -468,8 +502,8 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }
-		else
-		{
+        else
+        {
             if (owner->getCurrentPreset().isNotEmpty())
             {
                 String presetName = owner->getCurrentPreset();
@@ -483,7 +517,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 setSelectedItemIndex((index - 1 >= 0 ? index : 0), dontSendNotification);
                 currentItemIndex = index;
             }
-		}
+        }
 
     }
 
@@ -492,8 +526,9 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
         //handleCommonUpdates (this, valueTree, false, prop);
         setColour (ComboBox::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
         setColour (ComboBox::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
-        setColour (PopupMenu::backgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::menucolour)));
-
+        setColour (PopupMenu::ColourIds::backgroundColourId, Colour::fromString( CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::menucolour)));
+        setColour (PopupMenu::ColourIds::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
+//
         setTooltip (getCurrentPopupText (valueTree));
 
         if((prop == CabbageIdentifierIds::currentdir || prop == CabbageIdentifierIds::populate || prop == CabbageIdentifierIds::update) && isPresetCombo == false)

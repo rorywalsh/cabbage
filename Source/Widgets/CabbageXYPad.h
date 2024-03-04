@@ -40,7 +40,7 @@ class CabbageXYPad
       public ChangeListener
 {
     CabbagePluginEditor* owner;
-    Colour fontColour, textColour, colour, bgColour, ballColour;
+    Colour fontColour, textColour, colour, bgColour, ballColour, outlineColour;
    juce::Rectangle<float> xyPadRect;
     Line<float> dragLine;
     bool isAutomating = false;
@@ -79,6 +79,7 @@ class CabbageXYPad
     };
 
     XYBall ball;
+    int outlineThickness = 0;
 public:
 
     CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor);

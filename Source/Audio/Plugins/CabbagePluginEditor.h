@@ -72,13 +72,15 @@ class CabbageMainComponent;
 //==============================================================================
 class CabbagePluginEditor
     : public AudioProcessorEditor,
-      public Button::Listener,
-      public ChangeBroadcaster,
-      public ActionBroadcaster,
-      public ComboBox::Listener,
-      public Slider::Listener,
-      //public FileDragAndDropTarget,
-	  public KeyListener
+    public Button::Listener,
+    public ChangeBroadcaster,
+    public ActionBroadcaster,
+    public ComboBox::Listener,
+    public Slider::Listener,
+    //public FileDragAndDropTarget,
+	public KeyListener,
+    public Value::Listener,
+    public Timer
 {
 public:
     explicit CabbagePluginEditor (CabbagePluginProcessor&);
@@ -135,13 +137,13 @@ public:
     void insertScrew (const ValueTree& cabbageWidgetData);
     void insertLight (const ValueTree& cabbageWidgetData);
 	void insertUnlockButton(const ValueTree& cabbageWidgetData);
-    void insertWebViewButton(const ValueTree& cabbageWidgetData);
+
     
     void moveBehind(String thisComp, String otherComp);
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
     //=============================================================================
 	void refreshValueTreeListeners();
-
+    void timerCallback() override;
 	//=============================================================================
     // all these methods expose public methods in CabagePluginProcessor
     void sendChannelDataToCsound (const String& channel, float value);
@@ -176,6 +178,7 @@ public:
     
     void attachOpenGL()
     {
+        openGLContext.detach();
         setBufferedToImage(true);
         openGLContext.setContinuousRepainting (true);
         openGLContext.setMultisamplingEnabled (true);
@@ -183,11 +186,26 @@ public:
         openGLContext.attachTo(*getTopLevelComponent());
         openGLContext.setImageCacheSize(64);
         repaint();
+        openGLEnabled = true;
     }
     
+    void setOpenGLForShader()
+    {
+        openGLContext.detach();
+        setBufferedToImage(false);
+        openGLContext.setContinuousRepainting(true);
+        openGLContext.setMultisamplingEnabled(false);
+        //openGLContext.setTextureMagnificationFilter (OpenGLContext::linear);
+        openGLContext.attachTo(*getTopLevelComponent());
+        openGLContext.setImageCacheSize(64);
+        repaint();
+        openGLEnabled = true;
+    }
     void detachOpenGL()
     {
+        openGLEnabled = false;
         setBufferedToImage(false);
+//        openGLContext.setMultisamplingEnabled(false);
         openGLContext.detach();
     }
     
@@ -239,8 +257,8 @@ public:
     }
 
 	//=============================================================================
-    void testForParent();
-    //=============================================================================
+
+
     void addNewWidget (String widgetType, juce::Point<int> point, bool isPlant = false);
     //=============================================================================
     void refreshComboListBoxContents(const String& presetName = "");
@@ -332,7 +350,8 @@ public:
     String changeMessage = "";
     juce::Point<int> customPlantPosition;
     Font customFont;
-    
+    Value isBypassedValue;
+    bool openGLEnabled = false;
 private:
     
     File customFontFile;

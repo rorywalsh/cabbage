@@ -30,6 +30,7 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
     colour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::colour))),
     bgColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::backgroundcolour))),
     ballColour (Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::ballcolour))),
+    outlineColour(Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::outlinecolour))),
     xValueLabel(),
     yValueLabel(),
     minX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::minx)),
@@ -38,6 +39,7 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
     maxY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxy)),
     valueX (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuex)),
     valueY (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::valuey)),
+    outlineThickness(CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::outlinethickness)),
     ball(),
     widgetData (wData),
     CabbageWidgetBase(editor)
@@ -47,6 +49,7 @@ CabbageXYPad::CabbageXYPad (ValueTree wData, CabbagePluginEditor* editor)
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
     const juce::Point<float> pos (getValueAsPosition (juce::Point<float> (valueX, valueY)));
+
     ball.setBounds (pos.getX(), pos.getY(), 20, 20);
     ball.setInterceptsMouseClicks (false, false);
     addAndMakeVisible (ball);
@@ -182,10 +185,15 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     {
         //need to add a flag to xypad to disable dragging if users want to set values manually
         float xVal = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuex);
-        xVal = (xVal-minX)/(maxX-minX);
         float yVal = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::valuey);
+        xValueLabel.setText (createValueText(xVal, 3, xPrefix, xPostfix), dontSendNotification);
+        yValueLabel.setText (createValueText(yVal, 3, yPrefix, yPostfix), dontSendNotification);
+        
+        xVal = (xVal-minX)/(maxX-minX);
+        
         yVal = (yVal-minY)/(maxY-minY);
 
+        
         const float xPos = jmap (xVal, 0.f, 1.f, xyPadRect.getX(), xyPadRect.getWidth() - ball.getHeight() * .7f);
         const float yPos = jmap (yVal, 1.f, 0.f, xyPadRect.getY(), xyPadRect.getHeight() - ball.getHeight() * .7f);
 
@@ -198,14 +206,14 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 void CabbageXYPad::paint (Graphics& g)
 {
     //main background
-    g.fillAll (Colour (30, 30, 30));
+    //g.fillAll (Colour (30, 30, 30));
     g.setColour (colour);
     g.fillRoundedRectangle (0, 0, getWidth(), getHeight(), 5);
 
-    float borderWidth = CabbageUtilities::getBorderWidth();
-    g.setColour (CabbageUtilities::getBorderColour());
-    g.drawRoundedRectangle (borderWidth / 2, borderWidth / 2, getWidth() - borderWidth, getHeight() - borderWidth,
-                            5, borderWidth);
+
+    g.setColour (outlineColour);
+    g.drawRoundedRectangle (outlineThickness / 2, outlineThickness / 2, getWidth() - outlineThickness, getHeight() - outlineThickness,
+                            5, outlineThickness);
 
     //text label
     Font font;
@@ -240,7 +248,7 @@ void CabbageXYPad::paint (Graphics& g)
 
     if (rightMouseButtonDown)
     {
-        g.setColour (fontColour);
+        g.setColour (ballColour);
         g.drawLine (mouseDownXY.getX(), mouseDownXY.getY(), currentMouseXY.getX() + ball.getWidth() / 2, currentMouseXY.getY() + ball.getWidth() / 2);
     }
 

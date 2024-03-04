@@ -17,6 +17,7 @@
 #include "../CabbageCommonHeaders.h"
 using json = nlohmann::json;
 
+
 #include "../Widgets/CabbageWidgetData.h"
 #include "JuceHeader.h"
 
@@ -56,9 +57,16 @@ struct StateDataIsValid : csnd::Plugin<1, 0>
     {
         std::string jsonData;
         CabbagePersistentData** pd = (CabbagePersistentData**)csound->query_global_variable("cabbageData");
-        auto perData = *pd;
-        if (perData != nullptr)
+        //auto perData = *pd;
+        if (pd == nullptr) {
+            outargs[0] = 0;
+            return OK;
+        }
+            
+
+        if (*pd != nullptr)
         {
+            auto perData = *pd;
             jsonData = perData->data;
         }
         else
@@ -250,6 +258,8 @@ struct SetStateFloatData : csnd::InPlug<2>
         }
             
         j = json::parse(jsonData.empty() ? "{}" : jsonData);
+
+
         j[jsonKeyName] = value;
         perData->data = j.dump();
         

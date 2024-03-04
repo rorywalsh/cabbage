@@ -39,8 +39,9 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
    
     filetype = CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::filetype).replaceCharacters (" ", ";");
 
-    setImgProperties (*this, wData, "buttonon");
-    setImgProperties (*this, wData, "buttonoff");
+    auto csdPath = owner->getProcessor().getCsdFile().getFullPathName();
+    setImgProperties (*this, wData, csdPath, "buttonon");
+    setImgProperties (*this, wData, csdPath, "buttonoff");
     addListener (this);
 
     const String imgOff = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgbuttonoff);
@@ -81,11 +82,12 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
 //===============================================================================
 void CabbageFileButton::buttonClicked (Button* button)
 {   
+    DBG(getChannel());
     String workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::currentdir);
     workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
     const String csdFile = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::csdfile);
     File currentDir;
-    if(File(workingDir).exists())
+    if(File(csdFile).getParentDirectory().getChildFile(workingDir).exists())
         currentDir = File(workingDir);
     else if (workingDir.isNotEmpty())
         currentDir = File(csdFile).getChildFile (workingDir).getParentDirectory();
@@ -127,10 +129,13 @@ void CabbageFileButton::buttonClicked (Button* button)
         fc->launchAsync(FileBrowserComponent::openMode | FileBrowserComponent::canSelectFiles,
             [this](const FileChooser& fc) mutable
         {
-            owner->sendChannelStringDataToCsound(getChannel(), returnValidPath(fc.getResult()));
-            CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, returnValidPath(fc.getResult()));
-            //owner->refreshComboListBoxContents();
-            owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
+            if(fc.getResult() != File())
+            {
+                owner->sendChannelStringDataToCsound(getChannel(), returnValidPath(fc.getResult()));
+                CabbageWidgetData::setStringProp(widgetData, CabbageIdentifierIds::file, returnValidPath(fc.getResult()));
+                //owner->refreshComboListBoxContents();
+                owner->setLastOpenedDirectory(fc.getResult().getParentDirectory().getFullPathName());
+            }
         });
     }
 
@@ -252,6 +257,7 @@ void CabbageFileButton::buttonClicked (Button* button)
             owner->sendChannelStringDataToCsound(getChannel(), presetName);
             owner->savePluginStateToFile(presetName, fileName.getFullPathName(), false);
             owner->refreshComboListBoxContents(presetName);
+            
         }
         else
         {
@@ -329,6 +335,7 @@ void CabbageFileButton::setLookAndFeelColours (ValueTree wData)
 //===============================================================================
 void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
+    DBG(getChannel());
     setLookAndFeelColours (valueTree);
     handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     setButtonText (getText());

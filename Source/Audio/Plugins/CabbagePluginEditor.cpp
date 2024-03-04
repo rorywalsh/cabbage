@@ -82,6 +82,11 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 
     if(cabbageProcessor.currentPluginScale != -1)
         resizePlugin(cabbageProcessor.currentPluginScale);
+    
+    isBypassedValue.setValue(false);
+    isBypassedValue.addListener(this);
+    //start thread to check bypass
+    startTimer(100);
 
 }
 
@@ -99,6 +104,27 @@ CabbagePluginEditor::~CabbagePluginEditor()
     
     if(cabbageProcessor.getCsound())
     	cabbageProcessor.getCsound()->SetChannel ("IS_EDITOR_OPEN", 0.0);
+}
+
+void CabbagePluginEditor::valueChanged (Value &value)
+{
+    if(value.refersToSameSourceAs(isBypassedValue))
+        cabbageProcessor.getCsound()->SetControlChannel("IS_BYPASSED", value.getValue() ? 1.0 : 0.0);
+}
+void CabbagePluginEditor::timerCallback()
+{
+    if(cabbageProcessor.getCsound())
+    {
+        auto timeDiff = cabbageProcessor.getTimeSinceLastBlock();
+            //timeDiff is in milliseconds:
+        if (timeDiff > 500.0)
+        {
+            isBypassedValue.setValue(true);
+        }
+        else{
+            isBypassedValue.setValue(true);
+        }
+    }
 }
 
 void CabbagePluginEditor::refreshValueTreeListeners()
@@ -229,6 +255,8 @@ void CabbagePluginEditor::createEditorInterface (ValueTree widgets)
     components.clear();
 	keyboardCount = 0;
 
+   
+    
     for (int widget = 0; widget < widgets.getNumChildren(); widget++)
     {
         const String widgetType = widgets.getChild (widget).getProperty (CabbageIdentifierIds::type).toString();
@@ -369,9 +397,6 @@ void CabbagePluginEditor::insertWidget (const ValueTree& cabbageWidgetData)
 
 	else if (widgetType == CabbageWidgetTypes::unlockbutton)
 		insertUnlockButton(cabbageWidgetData);
-
-    else if (widgetType == CabbageWidgetTypes::webview)
-        insertWebViewButton(cabbageWidgetData);
 
     else if (widgetType == CabbageWidgetTypes::filebutton)
         insertFileButton (cabbageWidgetData);
@@ -599,13 +624,6 @@ void CabbagePluginEditor::insertUnlockButton(const ValueTree& cabbageWidgetData)
 	addMouseListenerAndSetVisibility(button, cabbageWidgetData);
 }
 
-void CabbagePluginEditor::insertWebViewButton(const ValueTree& cabbageWidgetData)
-{
-    CabbageWebView* webV;
-    components.add(webV = new CabbageWebView(cabbageWidgetData, this));
-    addToEditorAndMakeVisible(webV, cabbageWidgetData);
-    addMouseListenerAndSetVisibility(webV, cabbageWidgetData);
-}
 
 void CabbagePluginEditor::insertNumberSlider (const ValueTree& cabbageWidgetData)
 {
@@ -833,10 +851,9 @@ void CabbagePluginEditor::buttonClicked(Button* button)
 
 void CabbagePluginEditor::buttonStateChanged(Button* button)
 {
+    
 	if (CabbageButton* cabbageButton = dynamic_cast<CabbageButton*> (button))
 	{
-
-        
 		const ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageProcessor.cabbageWidgets, cabbageButton->getName());
 		const int latched = CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::latched);
         //DBG("ValueTreeListener:"+cabbageButton->getName());
@@ -847,6 +864,9 @@ void CabbagePluginEditor::buttonStateChanged(Button* button)
 				toggleButtonState(button, true);
 			else if(button->getToggleState()==true)
 				toggleButtonState(button, false);
+            
+            if(button->getState() == Button::ButtonState::buttonNormal)
+                toggleButtonState(button, false);
 		}
 		else if (latched == 1)
 		{
