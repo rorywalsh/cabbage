@@ -748,7 +748,7 @@ public:
         
         csdLines.addLines(csdFile.loadFileAsString());
         int t = csdLines.size();
-        int titleBarHeight = 18;
+        int titleBarHeight = 22;
         
         for (const auto& line : csdLines)
         {

@@ -82,6 +82,7 @@ CabbageFileButton::CabbageFileButton (ValueTree wData, CabbagePluginEditor* owne
 //===============================================================================
 void CabbageFileButton::buttonClicked (Button* button)
 {   
+    DBG(getChannel());
     String workingDir = CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::currentdir);
     workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
     const String csdFile = CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::csdfile);
@@ -334,6 +335,7 @@ void CabbageFileButton::setLookAndFeelColours (ValueTree wData)
 //===============================================================================
 void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
+    DBG(getChannel());
     setLookAndFeelColours (valueTree);
     handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     setButtonText (getText());

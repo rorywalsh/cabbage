@@ -57,19 +57,31 @@ CabbagePopupWindow::CabbagePopupWindow (ValueTree valueTree, const String& svgTe
     buttons[0].onClick = [this]
     {
         setValueTreeProperty("NEW_PRESET_NAME", editor.getText());
+#ifdef JUCE_Android
         juce::ModalComponentManager::getInstance()->cancelAllModalComponents();
+#else
+        setVisible(false);
+#endif
     };
 
     buttons[1].onClick = [this]
     {
+#ifdef JUCE_Android
         juce::ModalComponentManager::getInstance()->cancelAllModalComponents();
+#else
+        setVisible(false);
+#endif
     };
 
 
     editor.onReturnKey = [this]
     {
         setValueTreeProperty("NEW_PRESET_NAME", editor.getText());
+#ifdef JUCE_Android
         juce::ModalComponentManager::getInstance()->cancelAllModalComponents();
+#else
+        setVisible(false);
+#endif
     };
     
     addAndMakeVisible(buttons[0]);

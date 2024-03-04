@@ -318,6 +318,8 @@ void CabbageListBox::listBoxItemClicked(int row, const MouseEvent &e)
 {
     if(numberOfClicks == 1)
         clicked(row);
+
+    owner->sendChannelStringDataToCsound(CabbageIdentifierIds::currentWidgetChannel.toString(), CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::channel));
 }
 
 void CabbageListBox::clicked(int row)
@@ -346,6 +348,8 @@ void CabbageListBox::clicked(int row)
         
         owner->restorePluginStateFrom (presets[row], fileName.getFullPathName());
         owner->sendChannelDataToCsound (getChannel(), row+1);
+        
+        owner->sendChannelStringDataToCsound(CabbageIdentifierIds::currentWidgetChannel.toString(), CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::channel));
     }
     else if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::channeltype).contains ("string"))
     {

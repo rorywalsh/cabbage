@@ -189,7 +189,6 @@ void CabbageLookAndFeel2::drawComboBox(Graphics& g, int width, int height, bool 
     g.fillRoundedRectangle(0, 0, width, height, corners);
 
     // Border outline
-    DBG(box.findColour(ComboBox::outlineColourId).toDisplayString(true));
     g.setColour(box.findColour(ComboBox::outlineColourId));
     float borderWidth = CabbageUtilities::getBorderWidth();
     g.drawRoundedRectangle(borderWidth / 2, borderWidth / 2, width - borderWidth,

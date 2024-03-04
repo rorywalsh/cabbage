@@ -762,6 +762,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 
 #if Cabbage_IDE_Build == 0
     PluginHostType pluginType;
+    
     if (pluginType.isFruityLoops())
         csound->SetChannel ("FLStudio", 1.0);
     else if (pluginType.isAbletonLive())
@@ -810,6 +811,14 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
         csound->SetChannel("IS_A_PLUGIN", 1.0);
     }
 
+    if ( JUCEApplicationBase::isStandaloneApp() )
+    {
+        csound->SetChannel("IS_A_STANDALONE", 1.0);
+    }
+    else
+        csound->SetChannel("IS_A_STANDALONE", 0.0);
+
+    
     if (getPlayHead() != nullptr && getPlayHead()->getCurrentPosition (hostInfo))
     {
         csound->SetChannel (CabbageIdentifierIds::hostbpm.toUTF8(), hostInfo.bpm);

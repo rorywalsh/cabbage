@@ -1881,21 +1881,15 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 
 	//samplingRate = sampleRate;
 	CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
-	
-	csoundRecompiled = true;
+
 	if (sampleRate != samplingRate)
 	{
+        samplingRate = sampleRate;
+        CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
 		initAllCsoundChannels(cabbageWidgets);
 	}
 	
 #endif
-
-	//DBG(cabbageWidgets.toXmlString());
-	if (sampleRate != samplingRate && csoundRecompiled == false) {
-		samplingRate = sampleRate;
-		CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
-		initAllCsoundChannels(cabbageWidgets);
-	}
 
 	if (getCsound())
 	{
@@ -1916,6 +1910,7 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 		//setPluginState(hostStateData, "", true);
 		resetRecompiled();
 	}
+
 	
 	
 
