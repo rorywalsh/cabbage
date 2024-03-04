@@ -2,13 +2,13 @@
 
 #include "../CabbageCommonHeaders.h"
 #include "httplib.h"
-#include "FileSystemWatcher.h"
 
-class CabbageHttpServer : public Thread, private FileSystemWatcher::Listener
+
+class CabbageHttpServer : public Thread
 {
 public:
     CabbageHttpServer() : Thread("HttpServer") {
-        watcher.addListener(this);
+
     }
     ~CabbageHttpServer() {
 #if Cabbage_IDE_Build
@@ -19,22 +19,19 @@ public:
 
     bool isRunning() const noexcept { return isThreadRunning(); }
     httplib::Server& getHttpServer() { return mServer; }
-
-    void fileChanged(juce::File f, FileSystemWatcher::FileSystemEvent fsEvent) override
-    {
-         switch (fsEvent)
-            {
-            case FileSystemWatcher::fileCreated: DBG("Created");
-            case FileSystemWatcher::fileUpdated: DBG("Updated");
-            case FileSystemWatcher::fileDeleted: DBG("Deleted");
-            case FileSystemWatcher::fileRenamedOldName: DBG("Renamed From");
-            case FileSystemWatcher::fileRenamedNewName: DBG("Renamed To");
-            default: return;
-            }
-
-
-     
-    }
+//
+//    void fileChanged(juce::File f, FileSystemWatcher::FileSystemEvent fsEvent) override
+//    {
+//         switch (fsEvent)
+//            {
+//            case FileSystemWatcher::fileCreated: DBG("Created");
+//            case FileSystemWatcher::fileUpdated: DBG("Updated");
+//            case FileSystemWatcher::fileDeleted: DBG("Deleted");
+//            case FileSystemWatcher::fileRenamedOldName: DBG("Renamed From");
+//            case FileSystemWatcher::fileRenamedNewName: DBG("Renamed To");
+//            default: return;
+//            }
+//    }
 
 
 #if Cabbage_IDE_Build
@@ -48,6 +45,5 @@ private:
     httplib::Server          mServer;
     int                      mPortNumber;
     std::string mountPoint = "";
-    FileSystemWatcher watcher;
 };
 

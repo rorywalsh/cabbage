@@ -26,7 +26,6 @@
 #include "csdl.h"
 #include <cwindow.h>
 #include "../../Opcodes/opcodes.hpp"
-#include "../../Opcodes/websockets/WebSocketOpcode.h"
 
 #include "../../Opcodes/CabbageMidiOpcodes.h"
 #include "../../Opcodes/CabbageProfilerOpcodes.h"

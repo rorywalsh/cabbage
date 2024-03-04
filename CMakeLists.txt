@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.187)
+	set(BUILD_VERSION 2.9.188)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -204,8 +204,13 @@ Source/Opcodes/CabbageProfilerOpcodes.cpp
 Source/Opcodes/CabbageProfilerOpcodes.h
 Source/Opcodes/CabbageIdentifierOpcodes.cpp
 Source/Opcodes/CabbageIdentifierOpcodes.h
-Source/Opcodes/websockets/WebSocketOpcode.c
-Source/Opcodes/websockets/WebSocketOpcode.h
+Source/Opcodes/websockets/_init_.c
+Source/Opcodes/websockets/common.c
+Source/Opcodes/websockets/common.h
+Source/Opcodes/websockets/get.c
+Source/Opcodes/websockets/get.h
+Source/Opcodes/websockets/set.c
+Source/Opcodes/websockets/set.h
 Source/Opcodes/opcodes.hpp
 Source/Standalone/CabbageStandaloneFilterApp.cpp
 Source/Standalone/CabbageStandaloneFilterWindow.h
@@ -238,8 +243,6 @@ Source/Utilities/CabbageStrings.h
 Source/Utilities/CabbageUtilities.h
 Source/Utilities/CabbageHttpServer.h
 Source/Utilities/CabbageHttpServer.cpp
-Source/Utilities/FileSystemWatcher.h
-Source/Utilities/FileSystemWatcher.cpp
 Source/Widgets/Legacy/FrequencyRangeDisplayComponent.h
 Source/Widgets/Legacy/Soundfiler.cpp
 Source/Widgets/Legacy/Soundfiler.h
@@ -592,10 +595,23 @@ elseif(APPLE)
     #     juce::juce_recommended_lto_flags
     #     juce::juce_recommended_warning_flags)
     #     else()
+
+
         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
+        
+if(NOT WEB_UI)
         SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
         set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/build/libCsoundLib64.a")   
         include_directories("/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
+else()
+        # if we are using LWS we need to use the most recent build of Csound6
+        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Users/rwalsh/sourcecode/csound/include")
+        set(CSOUND_LIBRARY "/Users/rwalsh/sourcecode/csound/build/libCsoundLib64.a") 
+        set(WEBSOCKETS_LIBRARY "/Volumes/SSD_Drive/Mac/libwebsockets/build/lib/libwebsockets.a")
+        include_directories("/Users/rwalsh/sourcecode/csound/include")
+        include_directories("/Volumes/SSD_Drive/Mac/libwebsockets/build")
+        include_directories("/Volumes/SSD_Drive/Mac/libwebsockets/include")
+endif()
         set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile_uni/build/libsndfile.a")
         set(LIB_FLAC "/Users/rwalsh/sourcecode/xiph_libs/libFLAC.a")
         set(LIB_OGG "/Users/rwalsh/sourcecode/xiph_libs/libogg.a")
@@ -616,6 +632,7 @@ elseif(APPLE)
             ${LIB_VORBISENC}
             ${LIB_VORBIS_FILE}
             ${WEBKIT}
+            ${WEBSOCKETS_LIBRARY}
         PUBLIC
             juce::juce_recommended_config_flags
             juce::juce_recommended_lto_flags

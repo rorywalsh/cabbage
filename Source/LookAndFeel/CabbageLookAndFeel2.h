@@ -94,7 +94,7 @@ public:
                             const Drawable* icon, const Colour* textColour) override;
 
     void drawAlertBox (Graphics& g, AlertWindow& alert, const Rectangle<int>& textArea, TextLayout& textLayout) override;
-    Image drawCheckMark();
+    Image drawCheckMark(Colour colour);
 
     static void drawFromSVG (Graphics& g, File svgFile, int x, int y, int newWidth, int newHeight, AffineTransform affine);
 

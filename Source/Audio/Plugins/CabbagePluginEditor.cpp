@@ -29,13 +29,7 @@
 #endif
 class CabbageCheckbox;
 
-void CabbagePluginEditor::testForParent()
-{
-    if (auto* parent = findParentComponentOfClass<GraphEditorPanel>())
-    {
-        jassertfalse;
-    }
-}
+
 
 //==============================================================================
 CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
@@ -111,6 +105,7 @@ void CabbagePluginEditor::valueChanged (Value &value)
     if(value.refersToSameSourceAs(isBypassedValue))
         cabbageProcessor.getCsound()->SetControlChannel("IS_BYPASSED", value.getValue() ? 1.0 : 0.0);
 }
+
 void CabbagePluginEditor::timerCallback()
 {
     if(cabbageProcessor.getCsound())

@@ -137,7 +137,7 @@ public:
     void insertScrew (const ValueTree& cabbageWidgetData);
     void insertLight (const ValueTree& cabbageWidgetData);
 	void insertUnlockButton(const ValueTree& cabbageWidgetData);
-
+    void valueChanged (Value &value);
     
     void moveBehind(String thisComp, String otherComp);
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);

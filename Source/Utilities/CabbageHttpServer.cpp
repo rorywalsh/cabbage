@@ -84,7 +84,7 @@ void CabbageHttpServer::start(int portNumber, std::string mp)
 	mountPoint = mp;
 	mPortNumber = portNumber;
 
-	watcher.addFolder(File(mountPoint));
+	//watcher.addFolder(File(mountPoint));
 
 
 	if (mServer.set_mount_point("/", mountPoint))

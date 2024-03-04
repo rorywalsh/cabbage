@@ -25,34 +25,49 @@
 #include "../Utilities/CabbageHttpServer.h"
 #endif
 
-#include "../../choc/gui/choc_WebView.h"
+#include "../../choc-main/gui/choc_WebView.h"
 
 
-class NativeWindowComponent:
+class NativeWindowComponent :
 #ifdef JUCE_WINDOWS
     public HWNDComponent
-#elif JUCE_MACOS
-    public NSView
+#elif JUCE_MAC
+    public NSViewComponent
 #else
     public XEmbedComponent
 #endif
 {
 public:
-    NativeWindowComponent(){}
+    NativeWindowComponent() = default;
+#if defined(JUCE_WINDOWS) || defined(JUCE_MAC)
+    ~NativeWindowComponent() override
+    {
+#ifdef JUCE_WINDOWS
+        setHWND(nullptr);
+#elif JUCE_MAC
+        setView(nullptr);
+#endif
+    }
 
-#ifdef JUCE_WINDOWS || JUCE_MACOS
     void setWindow(void* view)
     {
-    #ifdef JUCE_WINDOWS
+#ifdef JUCE_WINDOWS
         setHWND(view);
-    #elif JUCE_MACOS
-        hComp.setView(view);
-    #endif
+#elif JUCE_MAC
+        setView(view);
+#endif
     }
 #else
     jassertfalse;
 #endif
+
+    void mouseDown(const MouseEvent &event) override
+    {
+        jassertfalse;
+    }
+
 };
+
 
 
 class CabbageWebView : public Component, public ValueTree::Listener, public CabbageWidgetBase
