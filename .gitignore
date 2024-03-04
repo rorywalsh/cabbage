@@ -9,3 +9,4 @@ CabbageInstall/
 CabbageRack
 CabbageManual
 Source/Opcodes/CabbageBTOpcodes.*
+Source/Utilities/encrypt.h
