@@ -73,8 +73,6 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
     if (CabbageWidgetData::getProperty (widgetData, CabbageIdentifierIds::channeltype) == "string" &&
         !CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::filetype).contains("snaps"))
     {
-
-
         if (CabbageWidgetData::getStringProp (widgetData, CabbageIdentifierIds::filetype).isNotEmpty())
             CabbageWidgetData::setProperty (widgetData, CabbageIdentifierIds::text, "");
 
@@ -139,6 +137,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         }
         else
         {
+            DBG(getValue());
             owner->sendChannelDataToCsound (getChannel(), getValue());
             setSelectedItemIndex (getValue() - 1, dontSendNotification);
         }
