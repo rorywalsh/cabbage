@@ -81,16 +81,16 @@ GenericCabbageEditor::~GenericCabbageEditor()
 
 void GenericCabbageEditor::resized()
 {
-    Rectangle<int> r = getLocalBounds();
+    juce::Rectangle<int> r = getLocalBounds();
     noParameterLabel.setBounds (r);
 
     for (int i = 0; i < controls.size(); ++i)
     {
-        Rectangle<int> paramBounds = r.removeFromTop (kParamControlHeight);
+        juce::Rectangle<int> paramBounds = r.removeFromTop (kParamControlHeight);
 
         if (Slider* aSlider = dynamic_cast<Slider*> (controls[i]))
         {
-            Rectangle<int> labelBounds = paramBounds.removeFromLeft (kParamLabelWidth);
+            juce::Rectangle<int> labelBounds = paramBounds.removeFromLeft (kParamLabelWidth);
 
             const int sliderIndex = paramSliders.indexOf (aSlider);
             paramLabels[sliderIndex]->setBounds (labelBounds);
