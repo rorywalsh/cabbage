@@ -1,5 +1,7 @@
 #include "set.h"
 
+#if WebUI
+
 static void sendWebsocketPathData(CSOUND *csound, struct lws *websocket, WebsocketPathData *pathData)
 {
     csound->LockMutex(pathData->messageMutex);
@@ -113,3 +115,5 @@ int32_t websocket_setString_perf(CSOUND *csound, WS_set *p) {
     writeWebsocketPathDataMessage(csound, p->common.websocket->pathSetStringHashTable, p, StringType, input->data, input->size);
     return OK;
 }
+
+#endif

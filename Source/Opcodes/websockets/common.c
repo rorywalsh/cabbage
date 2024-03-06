@@ -1,4 +1,5 @@
 #include "common.h"
+#if WebUI
 
 const int LibWebsocketLogLevel = LLL_ERR;
 
@@ -224,3 +225,5 @@ int32_t noop_perf(CSOUND *csound, void *p)
     IGN(p);
     return OK;
 }
+
+#endif

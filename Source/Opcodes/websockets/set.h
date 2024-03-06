@@ -1,5 +1,6 @@
 #ifndef WEBSOCKET_IO_SET_H
 #define WEBSOCKET_IO_SET_H
+#if WebUI
 
 #include "common.h"
 
@@ -19,4 +20,5 @@ int32_t websocket_set_init(CSOUND *csound, WS_set *p);
 int32_t websocket_setArray_perf(CSOUND *csound, WS_set *p);
 int32_t websocket_setString_perf(CSOUND *csound, WS_set *p);
 
+#endif
 #endif

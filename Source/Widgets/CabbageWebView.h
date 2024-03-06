@@ -25,8 +25,9 @@
 #include "../Utilities/CabbageHttpServer.h"
 #endif
 
+#ifdef WebUI
 #include "../../choc/gui/choc_WebView.h"
-
+#endif
 
 class NativeWindowComponent :
 #ifdef JUCE_WINDOWS
@@ -78,11 +79,11 @@ class CabbageWebView : public Component, public ValueTree::Listener, public Cabb
 	CabbagePluginEditor* owner;
 
     NativeWindowComponent nwComp;
-	std::unique_ptr<choc::ui::WebView> webView;
 
-#if Cabbage_IDE_Build
-    CabbageHttpServer server;
+#if WebUI
+	std::unique_ptr<choc::ui::WebView> webView;
 #endif
+
 public:
 
     CabbageWebView (ValueTree wData, CabbagePluginEditor* _owner);
@@ -96,7 +97,7 @@ public:
     void valueTreeParentChanged (ValueTree&) override {}
 
     ValueTree widgetData;
-
+    CabbageHttpServer server;
 	void resized() override;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageWebView)
 };

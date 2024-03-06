@@ -3,6 +3,8 @@
 
 #include "csdl.h"
 
+#if WebUI
+
 #include <libwebsockets.h>
 #include <stdbool.h>
 
@@ -76,5 +78,5 @@ Websocket *getWebsocket(CSOUND *csound, int port, WS_common *p);
 WebsocketPathData *getWebsocketPathData(CSOUND *csound, CS_HASH_TABLE *pathHashTable, char *path);
 
 int32_t noop_perf(CSOUND *csound, void *p);
-
+#endif
 #endif

@@ -24,42 +24,53 @@
 
 CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     : widgetData (wData),
-    CabbageWidgetBase(o), nwComp()
+    CabbageWidgetBase(o), nwComp(),
+    owner(o)
 {
     setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
     setLookAndFeel(nullptr);
+#if WebUI
     choc::ui::WebView::Options options;
     options.enableDebugMode = true;
     webView.reset(new choc::ui::WebView(options));
 
     addAndMakeVisible(nwComp);
     
-    const int port = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::serverport);
-    const int wsPort = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::websocketport);
-    const String mntPoint = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mountPoint);
-#if !Cabbage_IDE_Build
-    if (!server->isRunning())
-        server->start(port, mntPoint.toStdString());
-#else
-    auto* server = CabbageHttpServer::getInstance();
-    if(!server->isRunning())
-        server->start(port, mntPoint.toStdString());
+    
+    
+    const String mntDir = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mountPoint);
+    File mntPoint(File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(mntDir));
+    
+    if(!mntPoint.exists())
+    {
+        owner->getProcessor().getCsound()->Message("Cabbage: Could not find mount point for webview");
+    }
+    else
+    {
+        if(!server.isRunning())
+            server.start(mntPoint.getFullPathName().toStdString());
+        
+        const int port = 9090;//server.getCurrentPort();
+        CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::serverport, port);
+        webView->navigate("http://127.0.0.1:9095");// + std::to_string(port) + "/index.html?port="+ std::to_string(port));
+
 #endif
-
-    webView->navigate("http://127.0.0.1:" + std::to_string(port) + "/index.html?wsPort="+ std::to_string(wsPort));
-
+        
+        
+    }
   
     nwComp.setWindow(webView->getViewHandle());
 
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
-   
+
 }
 
 CabbageWebView::~CabbageWebView()
 {
-   
+    server.getHttpServer().stop();
+    server.stopThread(-1);
 }
 
 void CabbageWebView::resized() 

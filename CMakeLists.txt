@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.189)
+	set(BUILD_VERSION 2.9.190)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -43,6 +43,11 @@ endif()
 
 set(USE_CUSTOM_STANDALONE 1)
 
+if(DEFINED WEB_UI)
+    set(WebUI 1)
+else()
+    set(WebUI 0)
+endif()
 
 if(NOT DEFINED Bluetooth)
     set(Bluetooth 0)
@@ -492,6 +497,7 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
             JucePlugin_ProducesMidiOutput=1
             Cabbage_IDE_Build=${IS_IDE_Build}
             JUCE_DISPLAY_SPLASH_SCREEN=0
+            WebUI=${WebUI}
             )
 else()
     target_compile_definitions(${PROJECT_NAME}
@@ -510,6 +516,7 @@ else()
         Use_Native_File_Browser=1
         JUCE_VST3_CAN_REPLACE_VST2=0
         JUCE_ASIO=1
+        WebUI=${WebUI}
         Cabbage_IDE_Build=${IS_IDE_Build}
         JUCE_DISPLAY_SPLASH_SCREEN=0
         )
@@ -529,20 +536,27 @@ endif()
 
 if(MSVC)
     # SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "C:/Program Files/Csound6_x64/include/csound")
-    include_directories("D:\\sourcecode\\csound\\include" "C:\\SDKs\\ASIOSDK2.3.3\\asiosdk_2.3.3_2019-06-14\\common"
-    "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\libwebsockets_x64-windows\\include"
-    "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\openssl_x64-windows\\include")
+    include_directories("D:\\sourcecode\\csound\\include" "C:\\SDKs\\ASIOSDK2.3.3\\asiosdk_2.3.3_2019-06-14\\common")
 
     # vcpkg install libwebsockets:x64-windows-static
-    set(WEBSOCKETS_LIBRARY "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\libwebsockets_x64-windows-static\\lib\\websockets.lib")
-    set(ssl_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\openssl_x64-windows-static\\lib\\libssl.lib")
-    set(crypto_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\openssl_x64-windows-static\\lib\\libcrypto.lib")
-    set(uv_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\libuv_x64-windows-static\\lib\\uv_a.lib")
-    set(zlib_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\zlib_x64-windows-static\\lib\\zlib.lib")
+    if(WEB_UI)
+        include_directories("C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\libwebsockets_x64-windows\\include"
+        "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\openssl_x64-windows\\include")
+        set(WEBSOCKETS_LIBRARY "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\libwebsockets_x64-windows-static\\lib\\websockets.lib")
+        set(ssl_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\openssl_x64-windows-static\\lib\\libssl.lib")
+        set(crypto_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\openssl_x64-windows-static\\lib\\libcrypto.lib")
+        set(uv_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\libuv_x64-windows-static\\lib\\uv_a.lib")
+        set(zlib_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\zlib_x64-windows-static\\lib\\zlib.lib")
+    endif()
 
     if(CabbagePro MATCHES 1)
         #  find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
-        set(CSOUND_LIBRARY "D:\\sourcecode\\csound\\build\\Release\\libcsound64.lib")
+        if(WEB_UI)
+            # csound6 with latest API updates
+            set(CSOUND_LIBRARY "D:\\sourcecode\\csound\\build\\Release\\libcsound64.lib")
+        else()
+            set(CSOUND_LIBRARY "D:\\sourcecode\\csound\\build\\Release\\libcsound64.lib")
+        endif()
         set(EXTERNAL_LIBS "c:\\Program Files\\Csound6_x64\\lib\\sndfile.lib" "c:\\Program Files\\Csound6_x64\\lib\\opus.lib" "c:\\Program Files\\Csound6_x64\\lib\\syn123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmpghip-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\out123.lib" "c:\\Program Files\\Csound6_x64\\lib\\mpg123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmp3lame-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\FLAC.lib")    
     # else()
     find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
@@ -566,54 +580,49 @@ elseif(APPLE)
     set(WEBKIT "-framework WebKit -framework CoreServices")
     if(CabbagePro MATCHES 0)
         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
-        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64")
-        find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
-        "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64.framework")  
-        include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
+
+        if(WEB_UI)
+            # if we are using LWS we need to use the most recent build of Csound6
+            SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Users/rwalsh/sourcecode/csound/include")
+            set(CSOUND_LIBRARY "/Users/rwalsh/sourcecode/csound/build/libCsoundLib64.a") 
+            set(WEBSOCKETS_LIBRARY "/Volumes/SSD_Drive/Mac/libwebsockets/build/lib/libwebsockets.a")
+            include_directories("/Users/rwalsh/sourcecode/csound/include")
+            include_directories("/Users/rwalsh/sourcecode/csound/include")
+            include_directories("/Volumes/SSD_Drive/Mac/libwebsockets/build")
+            include_directories("/Volumes/SSD_Drive/Mac/libwebsockets/include")
+            set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile_uni/build/libsndfile.a")
+            set(LIB_FLAC "/Users/rwalsh/sourcecode/xiph_libs/libFLAC.a")
+            set(LIB_OGG "/Users/rwalsh/sourcecode/xiph_libs/libogg.a")
+            set(LIB_OPUS "/Users/rwalsh/sourcecode/xiph_libs/libopus.a")
+            set(LIB_VORBIS "/Users/rwalsh/sourcecode/xiph_libs/libvorbis.a")
+            set(LIB_VORBISENC "/Users/rwalsh/sourcecode/xiph_libs/libvorbisenc.a")
+            set(LIB_VORBIS_FILE "/Users/rwalsh/sourcecode/xiph_libs/libvorbisfile.a")
+        else()
+            SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64")
+            find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
+            "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64.framework")  
+            include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
+        endif()
+
         target_link_libraries(${PROJECT_NAME} 
     PRIVATE
         ${JUCE_MODULES}
         ${CSOUND_LIBRARY}
         ${LIB_SNDFILE}
+        ${LIB_FLAC}
+        ${LIB_OGG}
+        ${LIB_OPUS}
+        ${LIB_VORBIS}
+        ${LIB_VORBISENC}
+        ${LIB_VORBIS_FILE}
         ${WEBKIT}
+        ${WEBSOCKETS_LIBRARY}
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
     else()
-    #     if("${PROJECT_NAME}" STREQUAL "Cabbage")
-    #         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
-    #         SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Library/Frameworks/CsoundLib64")
-    #         find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
-    #         "/Library/Frameworks/CsoundLib64.framework")  
-    #         include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
-    #         target_link_libraries(${PROJECT_NAME} 
-    # PRIVATE
-    #     ${JUCE_MODULES}
-    #     ${CSOUND_LIBRARY}
-    #     ${LIB_SNDFILE}
-    # PUBLIC
-    #     juce::juce_recommended_config_flags
-    #     juce::juce_recommended_lto_flags
-    #     juce::juce_recommended_warning_flags)
-    #     else()
-
-
         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
-        
-if(NOT WEB_UI)
-        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
-        set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/build/libCsoundLib64.a")   
-        include_directories("/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
-else()
-        # if we are using LWS we need to use the most recent build of Csound6
-        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Users/rwalsh/sourcecode/csound/include")
-        set(CSOUND_LIBRARY "/Users/rwalsh/sourcecode/csound/build/libCsoundLib64.a") 
-        set(WEBSOCKETS_LIBRARY "/Volumes/SSD_Drive/Mac/libwebsockets/build/lib/libwebsockets.a")
-        include_directories("/Users/rwalsh/sourcecode/csound/include")
-        include_directories("/Volumes/SSD_Drive/Mac/libwebsockets/build")
-        include_directories("/Volumes/SSD_Drive/Mac/libwebsockets/include")
-endif()
         set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile_uni/build/libsndfile.a")
         set(LIB_FLAC "/Users/rwalsh/sourcecode/xiph_libs/libFLAC.a")
         set(LIB_OGG "/Users/rwalsh/sourcecode/xiph_libs/libogg.a")

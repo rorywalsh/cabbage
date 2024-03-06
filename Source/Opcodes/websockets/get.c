@@ -1,5 +1,7 @@
 #include "get.h"
 
+#if WebUI
+
 int32_t onWebsocketReceive(struct lws *websocket, void *inputData, size_t inputDataSize)
 {
     if (inputData && 0 < inputDataSize) {
@@ -185,3 +187,5 @@ int32_t websocket_getString_perf(CSOUND *csound, WS_get *p)
     readWebsocketPathDataMessage(csound, p->common.websocket->pathGetStringHashTable, p, StringType);
     return OK;
 }
+
+#endif

@@ -174,9 +174,6 @@ CabbageMainComponent::~CabbageMainComponent()
     stopFilterGraph();
 	graphComponent = nullptr;
 
-#if Cabbage_IDE_Build
-    CabbageHttpServer::deleteInstance();
-#endif
 
 }
 
