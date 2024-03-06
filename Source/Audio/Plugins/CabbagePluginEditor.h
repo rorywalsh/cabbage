@@ -133,6 +133,7 @@ public:
     void insertStepper (ValueTree cabbageWidgetData) {ignoreUnused(cabbageWidgetData);}
     void insertMeter (const ValueTree& cabbageWidgetData);
     void insertPath (const ValueTree& cabbageWidgetData);
+    void insertWebView(const ValueTree& cabbageWidgetData);
     void insertPort (const ValueTree& cabbageWidgetData);
     void insertScrew (const ValueTree& cabbageWidgetData);
     void insertLight (const ValueTree& cabbageWidgetData);

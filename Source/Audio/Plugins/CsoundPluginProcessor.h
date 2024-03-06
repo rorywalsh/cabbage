@@ -26,6 +26,10 @@
 #include "csdl.h"
 #include <cwindow.h>
 #include "../../Opcodes/opcodes.hpp"
+extern "C" {
+#include "../../Opcodes/websockets/get.h"
+#include "../../Opcodes/websockets/set.h"
+}
 
 #include "../../Opcodes/CabbageMidiOpcodes.h"
 #include "../../Opcodes/CabbageProfilerOpcodes.h"
@@ -319,14 +323,14 @@ public:
     {
     public:
         float yScale = 0.f;
-        int windid = 0, min = 0, max = 0, size = 0;
+        int windid = 0, min1 = 0, max1 = 0, size = 0;
         String caption = {}, variableName = {};
 
         SignalDisplay (String _caption, int _id, float _scale, int _min, int _max, int _size):
             yScale (_scale),
             windid (_id),
-            min (_min),
-            max (_max),
+            min1 (_min),
+            max1 (_max),
             size (_size),
             caption (_caption)
         {}

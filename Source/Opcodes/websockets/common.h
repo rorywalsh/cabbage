@@ -6,12 +6,16 @@
 #include <libwebsockets.h>
 #include <stdbool.h>
 
+#pragma comment ( lib, "Crypt32.lib" )
+#pragma comment ( lib, "iphlpapi.lib")
+#pragma comment ( lib, "userenv.lib")
+#pragma comment ( lib, "psapi.lib")
 
-const int LibWebsocketLogLevel;
+extern const int LibWebsocketLogLevel;
 
-const char *SharedWebsocketDataGlobalVariableName;
-const int WebsocketBufferCount;
-const int WebsocketInitialMessageSize;
+extern const char *SharedWebsocketDataGlobalVariableName;
+extern const int WebsocketBufferCount;
+extern const int WebsocketInitialMessageSize;
 
 enum {
     StringType = 1,

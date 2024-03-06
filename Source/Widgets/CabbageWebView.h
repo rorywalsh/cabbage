@@ -25,7 +25,7 @@
 #include "../Utilities/CabbageHttpServer.h"
 #endif
 
-#include "../../choc-main/gui/choc_WebView.h"
+#include "../../choc/gui/choc_WebView.h"
 
 
 class NativeWindowComponent :
