@@ -1153,13 +1153,13 @@ void CabbagePluginEditor::updatefTableData (GenTable* table)
 //======================================================================================================
 void CabbagePluginEditor::sendChannelDataToCsound (const String& channel, float value)
 {
-    if (csdCompiledWithoutError() && cabbageProcessor.getCsound())
+    if (cabbageProcessor.getCsound())
         cabbageProcessor.getCsound()->SetChannel (channel.getCharPointer(), value);
 }
 
 float CabbagePluginEditor::getChannelDataFromCsound (const String& channel)
 {
-    if (csdCompiledWithoutError() && cabbageProcessor.getCsound())
+    if (cabbageProcessor.getCsound())
         return cabbageProcessor.getCsound()->GetChannel (channel.getCharPointer());
     
     return 0;

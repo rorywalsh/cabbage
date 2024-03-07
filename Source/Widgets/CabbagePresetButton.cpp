@@ -143,7 +143,7 @@ void CabbagePresetButton::buttonClicked (Button* button)
 
     m.showMenuAsync(juce::PopupMenu::Options(), [this, numDefaultMenuItems](int choice) {
         if(choice == 0){
-            owner->sendChannelDataToCsound("PRESET_STATE", 0.0+Random::getSystemRandom().nextFloat());
+            //owner->sendChannelDataToCsound("PRESET_STATE", 0.0+Random::getSystemRandom().nextFloat());
             return;
         }
             
