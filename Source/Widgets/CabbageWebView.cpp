@@ -35,11 +35,11 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     webView.reset(new choc::ui::WebView(options));
 
     addAndMakeVisible(nwComp);
-    
-    
-    
+        
     const String mntDir = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mountPoint);
     File mntPoint(File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(mntDir));
+    
+    
     
     if(!mntPoint.exists())
     {
@@ -47,20 +47,56 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     }
     else
     {
-        if(!server.isRunning())
-            server.start(mntPoint.getFullPathName().toStdString());
-        
-        const int port = 9090;//server.getCurrentPort();
-        CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::serverport, port);
-        webView->navigate("http://127.0.0.1:9095");// + std::to_string(port) + "/index.html?port="+ std::to_string(port));
-
+#if !Cabbage_IDE_Build
+    server = std::make_unique<CabbageHttpServer>();
+#else
+    auto* server = CabbageHttpServer::getInstance();
 #endif
+    if (!server->isRunning())
+        server->start(mntPoint.getFullPathName().toStdString());
+
         
+       
         
+        const auto port = server->getCurrentPort();
+        CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::serverport, port);
+        
+        //this method will be called by the cabbageWebSend opcode. Users should register
+        //an event listener in their html code to pick these up
+        std::string js = R"(
+        function sendDataToWebUI(data){
+            event = new CustomEvent("dataFromCabbage", { detail: data});
+            window.dispatchEvent(event);
+        }
+        )";
+        
+        webView->addInitScript(js);
+        auto file = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::file);
+        if(file.isEmpty())
+            file = "index.html";
+        
+        webView->navigate("http://127.0.0.1:"+std::to_string(port)+"/"+file.toStdString()+"?port="+ std::to_string(port));
+        
+        webView->bind("updateCabbageParameterValue", [this](const choc::value::ValueView &args) -> choc::value::Value {
+                    auto p = choc::json::toString(args);
+                    var parsedJson;
+
+                    if (JSON::parse(p, parsedJson).wasOk()) {
+                        auto p1 = parsedJson[0];
+                        auto name = p1.getProperty("name", "NULL").toString();
+                        double value = double(p1.getProperty("value", 0));
+                        if (CabbagePluginParameter* param = owner->getParameterForComponent (name))
+                        {
+                            param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (value));
+                        }
+                        //updateParameter(name, static_cast<float>(value), LatticeProcessor::NotifyHost);
+                    };
+                    return choc::value::createString("Cabbage has received update info from webUI");
+                });
     }
   
     nwComp.setWindow(webView->getViewHandle());
-
+#endif
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
@@ -69,8 +105,13 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
 
 CabbageWebView::~CabbageWebView()
 {
-    server.getHttpServer().stop();
-    server.stopThread(-1);
+#if !Cabbage_IDE_Build
+    server->getHttpServer().stop();
+    if(server->stopThread(-1))
+        DBG("thread exited gracefully");
+    else
+        DBG("thread shat itself");
+#endif
 }
 
 void CabbageWebView::resized() 
@@ -80,5 +121,14 @@ void CabbageWebView::resized()
 
 void CabbageWebView::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {   
+    if(prop == CabbageIdentifierIds::jsonData)
+    {
+        auto data = JSON::toString(valueTree.getProperty(prop));
+        String jsCode = R"(sendDataToWebUI(`DATA`);)";
+
+        if(webView)
+            webView->evaluateJavascript(jsCode.replace("DATA", data).toStdString());
+        
+    }
     //handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 }

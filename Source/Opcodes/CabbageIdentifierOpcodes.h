@@ -57,7 +57,7 @@ struct CabbageOpcodes
     MYFLT* value = {};
     MYFLT lastValue = 0;
     MYFLT* str = {};
-    
+        
     static CabbageWidgetIdentifiers* getGlobalvariable(csnd::Csound* csound, CabbageWidgetIdentifiers** vt)
     {
         if (vt != nullptr)

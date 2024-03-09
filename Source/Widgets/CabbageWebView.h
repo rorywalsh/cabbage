@@ -21,9 +21,6 @@
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
 
-#if Cabbage_IDE_Build
-#include "../Utilities/CabbageHttpServer.h"
-#endif
 
 #ifdef WebUI
 #include "../../choc/gui/choc_WebView.h"
@@ -62,10 +59,10 @@ public:
     jassertfalse;
 #endif
 
-    void mouseDown(const MouseEvent &event) override
-    {
-        jassertfalse;
-    }
+//    void mouseDown(const MouseEvent &event) override
+//    {
+//        jassertfalse;
+//    }
 
 };
 
@@ -89,6 +86,7 @@ public:
     CabbageWebView (ValueTree wData, CabbagePluginEditor* _owner);
 	~CabbageWebView() override;
 
+    void startServer(std::string mountPoint);
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
@@ -97,7 +95,11 @@ public:
     void valueTreeParentChanged (ValueTree&) override {}
 
     ValueTree widgetData;
-    CabbageHttpServer server;
+#if !Cabbage_IDE_Build
+    std::unique_ptr<CabbageHttpServer> server;
+#endif
+    
+    
 	void resized() override;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageWebView)
 };

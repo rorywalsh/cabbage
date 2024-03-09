@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.190)
+	set(BUILD_VERSION 2.9.191)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -209,13 +209,6 @@ Source/Opcodes/CabbageProfilerOpcodes.cpp
 Source/Opcodes/CabbageProfilerOpcodes.h
 Source/Opcodes/CabbageIdentifierOpcodes.cpp
 Source/Opcodes/CabbageIdentifierOpcodes.h
-Source/Opcodes/websockets/_init_.c
-Source/Opcodes/websockets/common.c
-Source/Opcodes/websockets/common.h
-Source/Opcodes/websockets/get.c
-Source/Opcodes/websockets/get.h
-Source/Opcodes/websockets/set.c
-Source/Opcodes/websockets/set.h
 Source/Opcodes/opcodes.hpp
 Source/Standalone/CabbageStandaloneFilterApp.cpp
 Source/Standalone/CabbageStandaloneFilterWindow.h
@@ -327,8 +320,8 @@ Source/Widgets/CabbageXYPad.cpp
 Source/Widgets/CabbageXYPad.h
 Source/CabbageCommonHeaders.h
 Source/CabbageIds.h
-Source/Opcodes/CabbageSocketOpcodes.cpp
-Source/Opcodes/CabbageSocketOpcodes.h
+Source/Opcodes/CabbageWebUIOpcodes.cpp
+Source/Opcodes/CabbageWebUIOpcodes.h
 Source/Opcodes/CabbageMidiOpcodes.cpp
 Source/Opcodes/CabbageMidiOpcodes.h)
 
@@ -539,24 +532,10 @@ if(MSVC)
     include_directories("D:\\sourcecode\\csound\\include" "C:\\SDKs\\ASIOSDK2.3.3\\asiosdk_2.3.3_2019-06-14\\common")
 
     # vcpkg install libwebsockets:x64-windows-static
-    if(WEB_UI)
-        include_directories("C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\libwebsockets_x64-windows\\include"
-        "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\openssl_x64-windows\\include")
-        set(WEBSOCKETS_LIBRARY "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\libwebsockets_x64-windows-static\\lib\\websockets.lib")
-        set(ssl_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\openssl_x64-windows-static\\lib\\libssl.lib")
-        set(crypto_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\openssl_x64-windows-static\\lib\\libcrypto.lib")
-        set(uv_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\libuv_x64-windows-static\\lib\\uv_a.lib")
-        set(zlib_library "C:\\Users\\rory\\sourcecode\\vcpkg\\packages\\zlib_x64-windows-static\\lib\\zlib.lib")
-    endif()
 
     if(CabbagePro MATCHES 1)
         #  find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
-        if(WEB_UI)
-            # csound6 with latest API updates
-            set(CSOUND_LIBRARY "D:\\sourcecode\\csound\\build\\Release\\libcsound64.lib")
-        else()
-            set(CSOUND_LIBRARY "D:\\sourcecode\\csound\\build\\Release\\libcsound64.lib")
-        endif()
+        MESSAGE(FATAL_ERROR "-----------")
         set(EXTERNAL_LIBS "c:\\Program Files\\Csound6_x64\\lib\\sndfile.lib" "c:\\Program Files\\Csound6_x64\\lib\\opus.lib" "c:\\Program Files\\Csound6_x64\\lib\\syn123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmpghip-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\out123.lib" "c:\\Program Files\\Csound6_x64\\lib\\mpg123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmp3lame-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\FLAC.lib")    
     # else()
     find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
@@ -566,11 +545,6 @@ if(MSVC)
         ${JUCE_MODULES}
         ${CSOUND_LIBRARY}
         ${EXTERNAL_LIBS}
-        ${WEBSOCKETS_LIBRARY}
-        ${ssl_library}
-        ${crypto_library}
-        ${uv_library}
-        ${zlib_library}
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
@@ -580,29 +554,10 @@ elseif(APPLE)
     set(WEBKIT "-framework WebKit -framework CoreServices")
     if(CabbagePro MATCHES 0)
         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
-
-        if(WEB_UI)
-            # if we are using LWS we need to use the most recent build of Csound6
-            SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Users/rwalsh/sourcecode/csound/include")
-            set(CSOUND_LIBRARY "/Users/rwalsh/sourcecode/csound/build/libCsoundLib64.a") 
-            set(WEBSOCKETS_LIBRARY "/Volumes/SSD_Drive/Mac/libwebsockets/build/lib/libwebsockets.a")
-            include_directories("/Users/rwalsh/sourcecode/csound/include")
-            include_directories("/Users/rwalsh/sourcecode/csound/include")
-            include_directories("/Volumes/SSD_Drive/Mac/libwebsockets/build")
-            include_directories("/Volumes/SSD_Drive/Mac/libwebsockets/include")
-            set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile_uni/build/libsndfile.a")
-            set(LIB_FLAC "/Users/rwalsh/sourcecode/xiph_libs/libFLAC.a")
-            set(LIB_OGG "/Users/rwalsh/sourcecode/xiph_libs/libogg.a")
-            set(LIB_OPUS "/Users/rwalsh/sourcecode/xiph_libs/libopus.a")
-            set(LIB_VORBIS "/Users/rwalsh/sourcecode/xiph_libs/libvorbis.a")
-            set(LIB_VORBISENC "/Users/rwalsh/sourcecode/xiph_libs/libvorbisenc.a")
-            set(LIB_VORBIS_FILE "/Users/rwalsh/sourcecode/xiph_libs/libvorbisfile.a")
-        else()
-            SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64")
-            find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
-            "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64.framework")  
-            include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
-        endif()
+        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64")
+        find_library(CSOUND_LIBRARY NAMES CsoundLib64 HINTS /Library/Frameworks/CsoundLib64.framework/
+        "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64.framework")  
+        include_directories("/Library/Frameworks/CsoundLib64.framework/Headers")
 
         target_link_libraries(${PROJECT_NAME} 
     PRIVATE
@@ -616,7 +571,6 @@ elseif(APPLE)
         ${LIB_VORBISENC}
         ${LIB_VORBIS_FILE}
         ${WEBKIT}
-        ${WEBSOCKETS_LIBRARY}
     PUBLIC
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
@@ -643,7 +597,6 @@ elseif(APPLE)
             ${LIB_VORBISENC}
             ${LIB_VORBIS_FILE}
             ${WEBKIT}
-            ${WEBSOCKETS_LIBRARY}
         PUBLIC
             juce::juce_recommended_config_flags
             juce::juce_recommended_lto_flags

@@ -1,5 +1,9 @@
 #include "CabbageHttpServer.h"
 
+#if Cabbage_IDE_Build
+JUCE_IMPLEMENT_SINGLETON(CabbageHttpServer)
+#endif
+
 std::string dump_headers(const httplib::Headers& headers) {
     std::string s;
     char buf[BUFSIZ];
@@ -98,10 +102,7 @@ void CabbageHttpServer::start(std::string mp)
         mServer.stop();
     });
 
-//    mPortNumber = mServer.bind_to_any_port("127.0.0.1");
-    mPortNumber = 9095;
-    bool connected = mServer.bind_to_port("127.0.0.1", 9095);
-    
+    mPortNumber = mServer.bind_to_any_port("127.0.0.1");
     startThread();
 
     

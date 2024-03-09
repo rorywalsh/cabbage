@@ -391,27 +391,10 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<CabbageBTOpcode>((csnd::Csound*)getCsound()->GetCsound(), "cabbageBluetooth", "k", "SS", csnd::thread::ik);
 #endif
 
-#if WebUI
-    enum thread { i = 1, k = 2, ik = 3, a = 4, ia = 5 /*, ika = 3*/ };
-
-    csound->AppendOpcode("websocket_getArray_i", sizeof(WS_get), 3, thread::i, "i[]", "cS", (SUBR)websocket_get_init, noop_perf, NULL);
-    csound->AppendOpcode("websocket_getArray_i", sizeof(WS_get), 3, thread::i, "i[]", "iS", (SUBR)websocket_get_init, noop_perf, NULL);
-    csound->AppendOpcode("websocket_getArray_k", sizeof(WS_get), 3, thread::ik, "k[]", "cS", (SUBR)websocket_get_init, (SUBR)websocket_getArray_perf, NULL);
-    csound->AppendOpcode("websocket_getArray_k", sizeof(WS_get), 3, thread::ik, "k[]", "iS", (SUBR)websocket_get_init, (SUBR)websocket_getArray_perf, NULL);
-    csound->AppendOpcode("websocket_getString_i", sizeof(WS_get), 3, thread::i, "S", "cS", (SUBR)websocket_get_init, noop_perf, NULL);
-    csound->AppendOpcode("websocket_getString_i", sizeof(WS_get), 3, thread::i, "S", "iS", (SUBR)websocket_get_init, noop_perf, NULL);
-    csound->AppendOpcode("websocket_getString_k", sizeof(WS_get), 3, thread::ik, "S", "cS", (SUBR)websocket_get_init, (SUBR)websocket_getString_perf, NULL);
-    csound->AppendOpcode("websocket_getString_k", sizeof(WS_get), 3, thread::ik, "S", "iS", (SUBR)websocket_get_init, (SUBR)websocket_getString_perf, NULL);
-    csound->AppendOpcode("websocket_set_i", sizeof(WS_set), 3, thread::i, "", "cSi[]", (SUBR)websocket_set_init, noop_perf, NULL);
-    csound->AppendOpcode("websocket_set_i", sizeof(WS_set), 3, thread::i, "", "iSi[]", (SUBR)websocket_set_init, noop_perf, NULL);
-    csound->AppendOpcode("websocket_set_i", sizeof(WS_set), 3, thread::i, "", "cSS", (SUBR)websocket_set_init, noop_perf, NULL);
-    csound->AppendOpcode("websocket_set_i", sizeof(WS_set), 3, thread::i, "", "iSS", (SUBR)websocket_set_init, noop_perf, NULL);
-    csound->AppendOpcode("websocket_set_k", sizeof(WS_set), 3, thread::ik, "", "cSk[]", (SUBR)websocket_set_init, (SUBR)websocket_setArray_perf, NULL);
-    csound->AppendOpcode("websocket_set_k", sizeof(WS_set), 3, thread::ik, "", "iSk[]", (SUBR)websocket_set_init, (SUBR)websocket_setArray_perf, NULL);
-    csound->AppendOpcode("websocket_set_k", sizeof(WS_set), 3, thread::ik, "", "cSS", (SUBR)websocket_set_init, (SUBR)websocket_setString_perf, NULL);
-    csound->AppendOpcode("websocket_set_k", sizeof(WS_set), 3, thread::ik, "", "iSS", (SUBR)websocket_set_init, (SUBR)websocket_setString_perf, NULL);
-    
+#ifdef WebUI
+    csnd::plugin<CabbageWebSetScalar>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSet", "", "SSk", csnd::thread::ik);
 #endif
+
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);
 	csound->SetExternalMidiReadCallback(ReadMidiData);

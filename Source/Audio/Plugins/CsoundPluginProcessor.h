@@ -26,15 +26,11 @@
 #include "csdl.h"
 #include <cwindow.h>
 #include "../../Opcodes/opcodes.hpp"
-extern "C" {
-#include "../../Opcodes/websockets/get.h"
-#include "../../Opcodes/websockets/set.h"
-}
-
 #include "../../Opcodes/CabbageMidiOpcodes.h"
 #include "../../Opcodes/CabbageProfilerOpcodes.h"
-
-
+#ifdef WebUI
+#include "../../Opcodes/CabbageWebUIOpcodes.h"
+#endif
 #include "../../Opcodes/CabbageIdentifierOpcodes.h"
 //#include "../../Opcodes/CabbageFileReaderOpcodes.h"
 #include "../../Utilities/CabbageUtilities.h"

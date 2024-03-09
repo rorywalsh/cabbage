@@ -11,6 +11,12 @@ public:
        
     }
     
+    ~CabbageHttpServer() {
+#if Cabbage_IDE_Build
+        clearSingletonInstance();
+#endif
+    }
+    
     void changeMountPoint(std::string mp);
 
     void start(std::string mountPoint);
@@ -23,9 +29,13 @@ public:
 
     int getCurrentPort() { return mPortNumber; }
 
-
+#if Cabbage_IDE_Build
+    JUCE_DECLARE_SINGLETON(CabbageHttpServer, true)
+#endif
+    
 protected:
     void run() override;
+    
 
 private:
     httplib::Server          mServer;
