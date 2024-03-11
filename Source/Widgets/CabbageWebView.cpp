@@ -54,9 +54,6 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
 #endif
     if (!server->isRunning())
         server->start(mntPoint.getFullPathName().toStdString());
-
-        
-       
         
         const auto port = server->getCurrentPort();
         CabbageWidgetData::setNumProp(wData, CabbageIdentifierIds::serverport, port);
@@ -64,10 +61,25 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
         //this method will be called by the cabbageWebSend opcode. Users should register
         //an event listener in their html code to pick these up
         std::string js = R"(
-        function sendDataToWebUI(data){
-            event = new CustomEvent("dataFromCabbage", { detail: data});
-            window.dispatchEvent(event);
-        }
+            let cabbageHasLoadedWebView = false;
+            window.addEventListener("load", (event) => {
+                    console.log("page loaded")
+                    cabbageHasLoadedWebView = true;
+            });
+                  
+            window.addEventListener("cabbageChannelUpdate", function(e){
+                updateCabbageChannel({name:e.detail.name, value:e.detail.value});
+            });
+        
+            function sendDataToWebUI(data){
+              if(cabbageHasLoadedWebView){
+                  const obj = JSON.parse(data);
+                  //console.log(obj["name"]);
+                  event = new CustomEvent(obj["name"], { detail: obj["data"]});
+                  window.dispatchEvent(event);
+                }
+            }
+        
         )";
         
         webView->addInitScript(js);
@@ -77,7 +89,7 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
         
         webView->navigate("http://127.0.0.1:"+std::to_string(port)+"/"+file.toStdString()+"?port="+ std::to_string(port));
         
-        webView->bind("updateCabbageParameterValue", [this](const choc::value::ValueView &args) -> choc::value::Value {
+        webView->bind("updateCabbageChannel", [this](const choc::value::ValueView &args) -> choc::value::Value {
                     auto p = choc::json::toString(args);
                     var parsedJson;
 
@@ -88,6 +100,10 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
                         if (CabbagePluginParameter* param = owner->getParameterForComponent (name))
                         {
                             param->setValueNotifyingHost (param->getNormalisableRange().convertTo0to1 (value));
+                        }
+                        else
+                        {
+                            owner->sendChannelDataToCsound(name, value);
                         }
                         //updateParameter(name, static_cast<float>(value), LatticeProcessor::NotifyHost);
                     };
@@ -125,10 +141,15 @@ void CabbageWebView::valueTreePropertyChanged (ValueTree& valueTree, const Ident
     {
         auto data = JSON::toString(valueTree.getProperty(prop));
         String jsCode = R"(sendDataToWebUI(`DATA`);)";
+        auto newString = jsCode.replace("DATA", data);
+        //DBG(newString);
 
         if(webView)
-            webView->evaluateJavascript(jsCode.replace("DATA", data).toStdString());
+            webView->evaluateJavascript(newString.toStdString());
         
     }
-    //handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    else
+    {
+        handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    }
 }

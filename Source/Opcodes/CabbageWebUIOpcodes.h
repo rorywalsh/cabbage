@@ -27,8 +27,7 @@ struct CabbageWebOpcodes
             vt = (CabbageWidgetsValueTree**)csound->query_global_variable("cabbageWidgetsValueTree");
             *vt = new CabbageWidgetsValueTree();
             varData = *vt;
-        }
-        
+        }        
         
         for( int i = 0 ; i < varData->data.getNumChildren() ; i++){
             if(varData->data.getChild(i).getType() == Identifier(cabbageWidget))
@@ -39,11 +38,14 @@ struct CabbageWebOpcodes
     }
 };
 
-struct CabbageWebSetScalar : csnd::InPlug<3>
+//===============================================================================
+struct CabbageWebSendScalar : csnd::InPlug<4>
 {
     ValueTree valueTree;
     CabbageWidgetsValueTree** vt = nullptr;
     CabbageWidgetsValueTree* varData;
+    int trigger = 0;
+    
     int deinit(){
         varData = nullptr;
         vt = nullptr;
@@ -54,10 +56,74 @@ struct CabbageWebSetScalar : csnd::InPlug<3>
     int sendScalarToWebUI(bool init);
 };
 
-struct CabbageWebSetArray : csnd::InPlug<3>
+struct CabbageWebSendArray : csnd::InPlug<4>
 {
     ValueTree valueTree;
-//    int init(){        return sendToWebUI(true);    }
-//    int kperf(){       return sendToWebUI(false);   }
-//    int sendArrayToWebUI(bool init);
+    CabbageWidgetsValueTree** vt = nullptr;
+    CabbageWidgetsValueTree* varData;
+    int trigger = 0;
+    
+    int deinit(){
+        varData = nullptr;
+        vt = nullptr;
+        return OK;
+    }
+    int init(){        return sendArrayToWebUI(true);    }
+    int kperf(){       return sendArrayToWebUI(false);   }
+    int sendArrayToWebUI(bool init);
 };
+
+struct CabbageWebSendASig : csnd::InPlug<4>
+{
+    ValueTree valueTree;
+    CabbageWidgetsValueTree** vt = nullptr;
+    CabbageWidgetsValueTree* varData;
+    int trigger = 0;
+    
+    int deinit(){
+        varData = nullptr;
+        vt = nullptr;
+        return OK;
+    }
+    int init(){        return sendASigToWebUI(true);    }
+    int aperf(){       return sendASigToWebUI(false);   }
+    int sendASigToWebUI(bool init);
+};
+
+struct CabbageWebSendString : csnd::InPlug<4>
+{
+    ValueTree valueTree;
+    CabbageWidgetsValueTree** vt = nullptr;
+    CabbageWidgetsValueTree* varData;
+    int trigger = 0;
+    
+    int deinit(){
+        varData = nullptr;
+        vt = nullptr;
+        return OK;
+    }
+    int init(){        return sendStringToWebUI(true);    }
+    int kperf(){       return sendStringToWebUI(false);   }
+    int sendStringToWebUI(bool init);
+};
+
+struct CabbageWebSendTable : csnd::InPlug<4>
+{
+    ValueTree valueTree;
+    csnd::Table table;
+    CabbageWidgetsValueTree** vt = nullptr;
+    CabbageWidgetsValueTree* varData;
+    int trigger = 0;
+    
+    int deinit(){
+        varData = nullptr;
+        vt = nullptr;
+        return OK;
+    }
+    int init(){        return sendTableToWebUI(true);    }
+    int kperf(){       return sendTableToWebUI(false);   }
+    int sendTableToWebUI(bool init);
+};
+
+//======================================================================================
+

@@ -392,7 +392,18 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
 #endif
 
 #ifdef WebUI
-    csnd::plugin<CabbageWebSetScalar>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSet", "", "SSk", csnd::thread::ik);
+    csnd::plugin<CabbageWebSendScalar>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSend", "", "kSSk", csnd::thread::ik);
+    csnd::plugin<CabbageWebSendScalar>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSend", "", "SSi", csnd::thread::ik);
+    
+    csnd::plugin<CabbageWebSendASig>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSend", "", "SSa", csnd::thread::ia);
+    csnd::plugin<CabbageWebSendASig>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSend", "", "kSSa", csnd::thread::ia);
+    
+    
+    csnd::plugin<CabbageWebSendArray>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSendArray", "", "kSSk[]", csnd::thread::ik);
+    csnd::plugin<CabbageWebSendArray>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSendArray", "", "SSi[]", csnd::thread::i);
+    
+    csnd::plugin<CabbageWebSendTable>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSendTable", "", "kSSi", csnd::thread::ia);
+    csnd::plugin<CabbageWebSendTable>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSendTable", "", "SSi", csnd::thread::ia);
 #endif
 
 	csound->CreateMessageBuffer(0);
