@@ -90,7 +90,11 @@
             a channel. Csound can then send data to the <code>webview</code> in realtime over this channel. </p>
         <p>Each webview component uses a unique port number. This port number is sent as a URL parameter to each
             webview. The port number
-            can be queried using the <code>serverPort()</code> identifier.</p>
+            can be queried using the <code>serverPort()</code> identifier. You can mix native Cabbage widgets alongside
+            webviews, but they must not overlap. </p>
+        <p>Also, keep in mind that a plugin host knows nothing about the content of a webview. If you
+        wish to control plugins parameters with webview component, create native widgets in Cabbage first, make them invisible, and then control them
+        via the webview components. </p>
         <blockquote style="border-radius: 5px; padding:5px; font-size:16px;color:#ffffff;background-color:#0478aa">
             Note that all data sent to the <code>webview</code> from Csound is in the form of a JSON string. Working
             with extremely large strings can impair performance. Please keep when designing your instruments.

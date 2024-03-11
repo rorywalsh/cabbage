@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.193)
+	set(BUILD_VERSION 2.9.194)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -43,11 +43,6 @@ endif()
 
 set(USE_CUSTOM_STANDALONE 1)
 
-if(DEFINED WEB_UI)
-    set(WebUI 1)
-else()
-    set(WebUI 0)
-endif()
 
 if(NOT DEFINED Bluetooth)
     set(Bluetooth 0)
@@ -490,7 +485,7 @@ elseif("${PROJECT_NAME}" STREQUAL "Cabbage")
             JucePlugin_ProducesMidiOutput=1
             Cabbage_IDE_Build=${IS_IDE_Build}
             JUCE_DISPLAY_SPLASH_SCREEN=0
-            WebUI=${WebUI}
+            WebUI=1
             )
 else()
     target_compile_definitions(${PROJECT_NAME}
@@ -509,7 +504,7 @@ else()
         Use_Native_File_Browser=1
         JUCE_VST3_CAN_REPLACE_VST2=0
         JUCE_ASIO=1
-        WebUI=${WebUI}
+        WebUI=1
         Cabbage_IDE_Build=${IS_IDE_Build}
         JUCE_DISPLAY_SPLASH_SCREEN=0
         )

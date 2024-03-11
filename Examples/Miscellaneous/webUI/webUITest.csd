@@ -1,7 +1,7 @@
 <Cabbage>
 form size(800, 520), caption("Webview Examples"), pluginId("web2")
 webview bounds(0, 0, 800, 520), channel("webview1"), mountPoint(".")
-rslider bounds(-100, -100, 100, 100), range(0, 100, 0, 1, 1), channel("slider1"), automatable(0)
+rslider bounds(-100, -100, 100, 100), range(0, 100, 0, 1, 1), channel("slider1")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
