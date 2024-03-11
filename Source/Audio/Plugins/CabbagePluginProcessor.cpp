@@ -164,10 +164,6 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 
 	Logger::writeToLog("CabbagePluginProcessor::~CabbagePluginProcessor");
 
-#if !Cabbage_IDE_Build
-	server.getHttpServer().stop();
-	server.stopThread(-1);
-#endif
 }
 
 
