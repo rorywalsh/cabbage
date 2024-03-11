@@ -1,3 +1,6 @@
 [submodule "JUCE"]
 	path = JUCE
 	url = https://github.com/juce-framework/JUCE.git
+[submodule "choc"]
+	path = choc
+	url = https://github.com/Tracktion/choc.git

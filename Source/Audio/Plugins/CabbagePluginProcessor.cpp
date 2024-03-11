@@ -26,6 +26,7 @@
 #undef _CR
 #endif
 
+//==============================================================================
 
 char tmp_string[4096] = { 0 };
 
@@ -88,9 +89,9 @@ createPluginFilter() {
 CabbagePluginProcessor::CabbagePluginProcessor(const File& inputFile, BusesProperties ioBuses)
 	: CsoundPluginProcessor(inputFile, ioBuses),
 	cabbageWidgets("CabbageWidgetData"),
-	csdFile(inputFile)
+	csdFile(inputFile), lookAndFeel()
 {
-
+	LookAndFeel::setDefaultLookAndFeel(&lookAndFeel);
 	CabbageUtilities::debug("Cabbage Processor Constructor - Requested input channels:", getTotalNumInputChannels());
 	CabbageUtilities::debug("Cabbage Processor Constructor - Requested output channels:", getTotalNumOutputChannels());
 	createCsound(inputFile);
@@ -162,6 +163,11 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 	cabbageWidgets.removeAllChildren(nullptr);
 
 	Logger::writeToLog("CabbagePluginProcessor::~CabbagePluginProcessor");
+
+#if !Cabbage_IDE_Build
+	server.getHttpServer().stop();
+	server.stopThread(-1);
+#endif
 }
 
 

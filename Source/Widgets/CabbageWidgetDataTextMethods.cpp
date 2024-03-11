@@ -68,6 +68,8 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("saveAs"):
         case HashStringToInt ("presetBrowser"):
         case HashStringToInt ("protectedItems"):
+        case HashStringToInt ("serverPort"):
+        case HashStringToInt ("websocketPort"):
         case HashStringToInt ("range"):
         case HashStringToInt ("latched"):
         case HashStringToInt ("fontSize"):
@@ -80,6 +82,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("channelType"):
         case HashStringToInt ("file"):
         case HashStringToInt ("mode"):
+        case HashStringToInt ("mountPoint"):
 		case HashStringToInt ("style"):
         case HashStringToInt ("plant"):
         case HashStringToInt ("popupPostfix"):

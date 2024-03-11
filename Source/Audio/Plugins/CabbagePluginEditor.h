@@ -58,9 +58,16 @@
 #include "../../Widgets/CabbageCustomWidgets.h"
 #include "../../Widgets/CabbageEventSequencer.h"
 #include "../../Widgets/CabbageUnlockButton.h"
+#include "../../Widgets/CabbageWebView.h"
+
+
+
 
 
 class CabbagePluginEditor;
+#if Cabbage_IDE_Build
+class CabbageMainComponent;
+#endif
 
 //==============================================================================
 class CabbagePluginEditor
@@ -126,11 +133,12 @@ public:
     void insertStepper (ValueTree cabbageWidgetData) {ignoreUnused(cabbageWidgetData);}
     void insertMeter (const ValueTree& cabbageWidgetData);
     void insertPath (const ValueTree& cabbageWidgetData);
+    void insertWebView(const ValueTree& cabbageWidgetData);
     void insertPort (const ValueTree& cabbageWidgetData);
     void insertScrew (const ValueTree& cabbageWidgetData);
     void insertLight (const ValueTree& cabbageWidgetData);
 	void insertUnlockButton(const ValueTree& cabbageWidgetData);
-
+    void valueChanged (Value &value);
     
     void moveBehind(String thisComp, String otherComp);
     void addMouseListenerAndSetVisibility (Component* comp, ValueTree wData);
@@ -250,7 +258,7 @@ public:
     }
 
 	//=============================================================================
-    void valueChanged (Value &value);
+
 
     void addNewWidget (String widgetType, juce::Point<int> point, bool isPlant = false);
     //=============================================================================
@@ -384,7 +392,7 @@ private:
     //int xyPadIndex = 0;
     int consoleCount = 0;
     bool showScrollbars = false;
-    CabbageLookAndFeel2 lookAndFeel;
+    //
     int newlyAddedWidgetIndex = 10000;
 
     bool editModeEnabled = false;

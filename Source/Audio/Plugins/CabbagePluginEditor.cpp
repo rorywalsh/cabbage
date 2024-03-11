@@ -24,13 +24,17 @@
 #include <windows.h>
 #endif
 
+#if Cabbage_IDE_Build
+#include "../UI/GraphEditorPanel.h"
+#endif
 class CabbageCheckbox;
+
+
 
 //==============================================================================
 CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
     : AudioProcessorEditor (&p),
       cabbageForm(this),
-      lookAndFeel(),
     cabbageProcessor(p)
 #if Cabbage_IDE_Build
     , layoutEditor (cabbageProcessor.cabbageWidgets)
@@ -38,7 +42,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 {
     setName ("PluginEditor");
     cabbageProcessor.editorIsOpen = true;
-    setLookAndFeel (&lookAndFeel);
+    //setLookAndFeel (&lookAndFeel);
     customFont = cabbageProcessor.getCustomFont();
     customFontFile = cabbageProcessor.getCustomFontFile();
     viewportContainer = std::make_unique<ViewportContainer> ();
@@ -66,7 +70,7 @@ CabbagePluginEditor::CabbagePluginEditor (CabbagePluginProcessor& p)
 #endif
     resized();
 
-    tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
+   // tooltipWindow.getObject().setLookAndFeel(&lookAndFeel);
     if(cabbageProcessor.getCsound())
         cabbageProcessor.getCsound()->SetControlChannel ("IS_EDITOR_OPEN", 1.0);
 
@@ -101,6 +105,7 @@ void CabbagePluginEditor::valueChanged (Value &value)
     if(value.refersToSameSourceAs(isBypassedValue))
         cabbageProcessor.getCsound()->SetControlChannel("IS_BYPASSED", value.getValue() ? 1.0 : 0.0);
 }
+
 void CabbagePluginEditor::timerCallback()
 {
     if(cabbageProcessor.getCsound())
@@ -285,7 +290,7 @@ void CabbagePluginEditor::setupWindow (ValueTree widgetData)
     if (fontColourString != "")
         defaultFontColour = false;
 
-    lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);
+    //lookAndFeel.setColour(ScrollBar::backgroundColourId, backgroundColour);
     cabbageForm.setColour (backgroundColour);
     instrumentBounds.setXY(width, height);
     setSize (width, height);
@@ -429,6 +434,11 @@ void CabbagePluginEditor::insertWidget (const ValueTree& cabbageWidgetData)
 
     else if (widgetType == CabbageWidgetTypes::path)
         insertPath (cabbageWidgetData);
+
+    else if (widgetType == CabbageWidgetTypes::webview)
+        insertWebView(cabbageWidgetData);
+
+
     
     else if (widgetType == CabbageWidgetTypes::hrange
              || widgetType == CabbageWidgetTypes::vrange)
@@ -509,6 +519,14 @@ void CabbagePluginEditor::insertPath (const ValueTree& cabbageWidgetData)
     components.add (path = new CabbagePath (cabbageWidgetData, this));
     addToEditorAndMakeVisible (path, cabbageWidgetData);
     addMouseListenerAndSetVisibility (path, cabbageWidgetData);
+}
+
+void CabbagePluginEditor::insertWebView(const ValueTree& cabbageWidgetData)
+{
+    CabbageWebView* path;
+    components.add(path = new CabbageWebView(cabbageWidgetData, this));
+    addToEditorAndMakeVisible(path, cabbageWidgetData);
+    addMouseListenerAndSetVisibility(path, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertTextEditor (const ValueTree& cabbageWidgetData)

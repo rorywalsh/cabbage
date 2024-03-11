@@ -29,6 +29,11 @@
 
 class CabbagePluginParameter;
 
+
+
+//====================================================================================
+
+
 class CabbagePluginProcessor : public CsoundPluginProcessor,
 public Timer
 {
@@ -187,11 +192,15 @@ public:
         return this->processBlockListener.getTimeSinceLastBlock();
     }
 
-
+    CabbageHttpServer* getServer(){  return server.get();  };
 private:
 #if !Cabbage_IDE_Build
     PluginHostType pluginType;
 #endif
+ 
+private:   
+    CabbageLookAndFeel2 lookAndFeel;
+    std::unique_ptr<CabbageHttpServer> server;
     controlChannelInfo_s* csoundChanList{};
     String pluginName;
     File csdFile;

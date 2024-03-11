@@ -153,6 +153,8 @@ public:
 		node(n), type(t)
 	{
 		setSize(400, 300);
+		setResizable(false, false);
+
 
 		if (auto * ui = createProcessorEditor(*node->getProcessor(), type))
 			setContentOwned(ui, true);
