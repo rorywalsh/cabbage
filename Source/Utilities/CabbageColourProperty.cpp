@@ -35,7 +35,7 @@ void ColourPropertyComponent::paint (Graphics& g)
 
 
     const int textW = colourSettings == true ? 300 : jmin (200, getWidth() / 3);
-    const Rectangle<int> r (textW, 1, getWidth() - textW - 1, getHeight() - 3);
+    const juce::Rectangle<int> r (textW, 1, getWidth() - textW - 1, getHeight() - 3);
 
     g.drawFittedText (getName(),
                       3, r.getY(), r.getX() - 5, r.getHeight(),
@@ -110,7 +110,7 @@ ColourMultiPropertyComponent::ColourMultiPropertyComponent (String name, var col
 void ColourMultiPropertyComponent::resized()
 {
     const int textW = colourSettings == true ? 300 : jmin (200, getWidth() / 3);
-    const Rectangle<int> r (textW, 1, getWidth() - textW - 1, getHeight() - 3);
+    const juce::Rectangle<int> r (textW, 1, getWidth() - textW - 1, getHeight() - 3);
 
     viewport.setBounds (r);
     addColour.setBounds (4, 20, (textW / 2) - 4, 20);
@@ -168,7 +168,7 @@ void ColourMultiPropertyComponent::paint (Graphics& g)
 
 
     const int textW = colourSettings == true ? 300 : jmin (200, getWidth() / 3);
-    const Rectangle<int> r (textW, 1, getWidth() - textW - 1, 25 - 3);
+    const juce::Rectangle<int> r (textW, 1, getWidth() - textW - 1, 25 - 3);
 
     g.drawFittedText (getName(),
                       3, r.getY(), r.getX() - 5, r.getHeight(),

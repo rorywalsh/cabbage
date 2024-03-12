@@ -391,7 +391,6 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<CabbageBTOpcode>((csnd::Csound*)getCsound()->GetCsound(), "cabbageBluetooth", "k", "SS", csnd::thread::ik);
 #endif
 
-#ifdef WebUI
     csnd::plugin<CabbageWebSendScalar>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSend", "", "kSSk", csnd::thread::ik);
     csnd::plugin<CabbageWebSendScalar>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSend", "", "SSi", csnd::thread::ik);
     
@@ -404,7 +403,7 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     
     csnd::plugin<CabbageWebSendTable>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSendTable", "", "kSSi", csnd::thread::ia);
     csnd::plugin<CabbageWebSendTable>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSendTable", "", "SSi", csnd::thread::ia);
-#endif
+
 
 	csound->CreateMessageBuffer(0);
 	csound->SetExternalMidiInOpenCallback(OpenMidiInputDevice);

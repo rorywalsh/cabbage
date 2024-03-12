@@ -454,7 +454,7 @@ void FlatButtonLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int wid
     }
     else
     {
-        const Rectangle<int> bounds = getSliderLayout(slider).sliderBounds;
+        const juce::Rectangle<int> bounds = getSliderLayout(slider).sliderBounds;
         const float radius = jmin(bounds.getWidth() / 2, bounds.getHeight() / 2) - 2.0f;
         const float diameter = radius * 2.f;
         const float centreX = bounds.getX()+ bounds.getWidth() * 0.5f;
@@ -598,7 +598,7 @@ Slider::SliderLayout FlatButtonLookAndFeel::getSliderLayout(Slider& slider)
     else
         minYSpace = 15;
     
-    Rectangle<int> localBounds = slider.getLocalBounds();
+    juce::Rectangle<int> localBounds = slider.getLocalBounds();
     
     const int textBoxWidth = jmax(0, jmin(slider.getTextBoxWidth(), localBounds.getWidth() - minXSpace));
     const int textBoxHeight = jmax(0, jmin(slider.getTextBoxHeight(), localBounds.getHeight() - minYSpace));
@@ -647,12 +647,12 @@ Slider::SliderLayout FlatButtonLookAndFeel::getSliderLayout(Slider& slider)
     var bounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::valuetextboxbounds, var());
     if(bounds.isArray())
     {
-        layout.textBoxBounds = Rectangle<int>(bounds[0], bounds[1], bounds[2], bounds[3]);
+        layout.textBoxBounds = juce::Rectangle<int>(bounds[0], bounds[1], bounds[2], bounds[3]);
     }
     var sliderBounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::sliderbounds, var());
     if(sliderBounds.isArray())
     {
-        layout.sliderBounds = Rectangle<int>(sliderBounds[0], sliderBounds[1], sliderBounds[2], sliderBounds[3]);
+        layout.sliderBounds = juce::Rectangle<int>(sliderBounds[0], sliderBounds[1], sliderBounds[2], sliderBounds[3]);
     }
     
     return layout;

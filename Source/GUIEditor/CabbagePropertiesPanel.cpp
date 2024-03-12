@@ -667,7 +667,7 @@ Array<PropertyComponent*> CabbagePropertiesPanel::createColourChoosers (ValueTre
 Array<PropertyComponent*> CabbagePropertiesPanel::createPositionEditors (ValueTree valueTree)
 {
     Array<PropertyComponent*> comps;
-    Rectangle<int> bounds = CabbageWidgetData::getBounds (valueTree);
+    juce::Rectangle<int> bounds = CabbageWidgetData::getBounds (valueTree);
     comps.add (new TextPropertyComponent (Value (var (bounds.getX())), "X Position", 200, false));
     comps.add (new TextPropertyComponent (Value (var (bounds.getY())), "Y Position", 200, false));
     comps.add (new TextPropertyComponent (Value (var (bounds.getWidth())), "Width", 200, false));

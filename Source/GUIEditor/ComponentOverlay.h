@@ -65,7 +65,7 @@ private:
     CabbageLookAndFeel2 lookAndFeel;
     String interest;
     bool userAdjusting;
-    Rectangle<int> startBounds;
+    juce::Rectangle<int> startBounds;
     std::unique_ptr<ComponentBoundsConstrainer> resizeContainer;
     ResizableBorderComponent* resizer;
     ComponentLayoutEditor* layoutEditor;

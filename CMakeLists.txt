@@ -15,7 +15,7 @@ endif()
 
 
 if(NOT DEFINED BUILD_VERSION)
-	set(BUILD_VERSION 2.9.195)
+	set(BUILD_VERSION 2.9.196)
 endif()
 
 project(${PROJECT_NAME} VERSION ${BUILD_VERSION})
@@ -529,11 +529,11 @@ if(MSVC)
     # vcpkg install libwebsockets:x64-windows-static
 
     if(CabbagePro MATCHES 1)
-        #  find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
+        find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
         MESSAGE(FATAL_ERROR "-----------")
         set(EXTERNAL_LIBS "c:\\Program Files\\Csound6_x64\\lib\\sndfile.lib" "c:\\Program Files\\Csound6_x64\\lib\\opus.lib" "c:\\Program Files\\Csound6_x64\\lib\\syn123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmpghip-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\out123.lib" "c:\\Program Files\\Csound6_x64\\lib\\mpg123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmp3lame-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\FLAC.lib")    
-    # else()
-    find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
+    else()
+        find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
     endif()
     target_link_libraries(${PROJECT_NAME} 
     PRIVATE

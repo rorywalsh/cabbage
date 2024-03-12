@@ -29,7 +29,6 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
 {
     setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
     setLookAndFeel(nullptr);
-#if WebUI
     choc::ui::WebView::Options options;
     options.enableDebugMode = true;
     webView.reset(new choc::ui::WebView(options));
@@ -112,7 +111,6 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     }
   
     nwComp.setWindow(webView->getViewHandle());
-#endif
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..

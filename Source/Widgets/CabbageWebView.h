@@ -20,11 +20,8 @@
 #pragma once
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
-
-
-#ifdef WebUI
 #include "../../choc/gui/choc_WebView.h"
-#endif
+
 
 class NativeWindowComponent :
 #ifdef JUCE_WINDOWS
