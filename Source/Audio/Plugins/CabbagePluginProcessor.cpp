@@ -1508,7 +1508,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                 {
                     if(!i.identWithArgument)
                     {
-                        //any widgets taht break identifiers into unique entities must be parsed....
+                        //any widgets that break identifiers into unique entities must be parsed....
                         if(identifier.toString().containsIgnoreCase("colour"))
                         {
                             String colourTokens;

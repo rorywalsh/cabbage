@@ -83,7 +83,10 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
                 child->setTopLeftPosition(size[0], size[1]);
             }
             else
-                child->setBounds (CabbageWidgetData::getBounds (data));
+            {
+                DBG("Prop:" << prop.toString() << " - " << CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel) << " - " << CabbageWidgetData::getBounds(data).toString() << " - Visible:" << (CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible) == 1 ? "1" : "0"));
+                child->setBounds(CabbageWidgetData::getBounds(data));
+            }
         }
         else if (CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::allowboundsupdate) == 1)
         {
@@ -94,69 +97,66 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
         }
     }
 
-    if (pivotx != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivotx) || calledFromConstructor)
+    if (prop == CabbageIdentifierIds::pivotx)
     {
         pivotx = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivotx);
     }
-    
-    if (pivoty != CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty) || calledFromConstructor)
+    else if (prop == CabbageIdentifierIds::pivoty)
     {
         pivoty = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty);
     }
-
-    if ( rotate != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::rotate) || calledFromConstructor)
+    else if (prop == CabbageIdentifierIds::rotate)
     {
-        rotate = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::rotate);
-        child->setTransform (AffineTransform::rotation ( rotate, child->getX() + CabbageWidgetData::getNumProp (data,
-                                                         CabbageIdentifierIds::pivotx),
-                                                         child->getY() + CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::pivoty)));
+        rotate = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::rotate);
+        child->setTransform(AffineTransform::rotation(rotate, child->getX() + CabbageWidgetData::getNumProp(data,
+            CabbageIdentifierIds::pivotx),
+            child->getY() + CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty)));
     }
-
-    if ( toFront != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::tofront) || calledFromConstructor)
+    else if (prop == CabbageIdentifierIds::tofront)
     {
-        toFront = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::tofront);
-        CabbageWidgetData::setNumProp (data, CabbageIdentifierIds::tofront, 0);
+        toFront = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::tofront);
+        CabbageWidgetData::setNumProp(data, CabbageIdentifierIds::tofront, 0);
         child->toFront(true);
     }
-
-    if ( visible != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::visible) || calledFromConstructor)
+    else if (prop == CabbageIdentifierIds::visible)
     {
-        visible = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::visible);
-        child->setVisible ( visible == 1 ? true : false);
-        //child->setEnabled ( visible == 1 ? true : false);
-    }
+            visible = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible);
+            if (CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel).contains("btnSeq") && visible == 0)
+                jassertfalse;
 
-    if (text != CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text) || calledFromConstructor)
+            child->setVisible(visible == 1 ? true : false);
+    }
+    else if (prop == CabbageIdentifierIds::text)
     {
-        text = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::text);
+        text = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::text);
     }
-
-    if ( active != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::active) || calledFromConstructor)
+    else if (prop == CabbageIdentifierIds::active)
     {
         //string sequencer uses active to stop sequencing..
-        active = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::active);
+        active = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::active);
         if (CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::type) != "eventsequencer")
-        child->setEnabled ( active == 1 ? true : false);
-    }
+            child->setEnabled(active == 1 ? true : false);
 
-    if ( alpha != CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::alpha) || calledFromConstructor)
-    {
-        alpha = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::alpha);
-        child->setAlpha ( alpha);
     }
-
-    if ( file != CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::file) || calledFromConstructor)
+    else if (prop == CabbageIdentifierIds::alpha)
     {
-        file = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::file);
+        alpha = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha);
+        child->setAlpha(alpha);
+
     }
-
-    if( behind != CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::movebehind))
+    else if (prop == CabbageIdentifierIds::file)
     {
-        behind = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::movebehind);
+        file = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::file);
+
+    }
+    else if (prop == CabbageIdentifierIds::movebehind)
+    {
+        behind = CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::movebehind);
 #if !CLIConverter
-            if(editor != nullptr)
-                editor->moveBehind(CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::channel), behind);
+        if (editor != nullptr)
+            editor->moveBehind(CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel), behind);
 #endif
+
     }
     
     populateTextArrays (data);

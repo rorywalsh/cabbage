@@ -107,6 +107,13 @@ void CabbageButton::setLookAndFeelColours(ValueTree wData)
     repaint();
 }
 
+void CabbageButton::visibilityChanged()
+{
+	DBG(CabbageWidgetData::getStringProp(widgetData, CabbageIdentifierIds::channel));
+	jassert(isVisible());
+	
+}
+
 void CabbageButton::valueTreePropertyChanged(ValueTree& valueTree, const Identifier& prop)
 {
 
