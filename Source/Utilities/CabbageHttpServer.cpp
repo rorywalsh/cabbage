@@ -102,7 +102,7 @@ void CabbageHttpServer::start(std::string mp)
         mServer.stop();
     });
 
-    mPortNumber = mServer.bind_to_any_port("127.0.0.1");
+    mPortNumber = mServer.bind_to_any_port("0.0.0.0");
     startThread();
 
     

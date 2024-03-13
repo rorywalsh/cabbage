@@ -91,11 +91,17 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
         webView->navigate("http://127.0.0.1:"+std::to_string(port)+"/"+file.toStdString()+"?params="+ urlParams.toStdString());
         
         webView->bind("updateCabbageChannel", [this](const choc::value::ValueView &args) -> choc::value::Value {
-                    auto p = choc::json::toString(args);
+
+            auto p = choc::json::toString(args);
                     var parsedJson;
 
                     if (JSON::parse(p, parsedJson).wasOk()) {
+                        if(parsedJson[0].getDynamicObject())
+                        {
+                            DBG(parsedJson[0].getDynamicObject()->getProperties().size());
+                        }
                         auto p1 = parsedJson[0];
+                        
                         auto name = p1.getProperty("name", "NULL").toString();
                         double value = double(p1.getProperty("value", 0));
                         if (CabbagePluginParameter* param = owner->getParameterForComponent (name))

@@ -288,10 +288,8 @@
     <br>
     <script>
         var header = document.getElementsByClassName("sidebar");
-        console.log(header)
         var links = header[0].getElementsByClassName("navLink");
         for (var i = 0; i < links.length; i++) {
-            console.log('links')
             links[i].addEventListener("click", function () {
 
                 var current = document.getElementsByClassName("active");
@@ -335,7 +333,6 @@
         }
 
         window.addEventListener("webUISlider", (ev) => {
-            console.log(ev)
             slider2.value = Number(ev.detail);
         });
 
@@ -348,7 +345,6 @@
         });
 
         window.addEventListener("webUIDrawScrollingWaveform", (ev) => {
-            console.log(ev);
             drawWaveform(Number(ev.detail));
         });
         //===========================================================================
@@ -373,7 +369,6 @@
                 let x = 0;
                 let y = 0;
                 let ctx = notesCanvas.getContext("2d");
-                console.log(notes.length);
                 ctx.strokeStyle = '#0478aa';
                 ctx.fillStyle = '#333';
                 ctx.fillRect(0, 0, width, height);
@@ -431,7 +426,6 @@
                 audioSamples.push(level);
                 // remove first item in array
                 audioSamples.splice(0, 1);
-                console.log(audioSamples);
                 ctx.clearRect(0, 0, width, height);
                 ctx.fillStyle = '#303030';
                 ctx.fillRect(0, 0, width, height);

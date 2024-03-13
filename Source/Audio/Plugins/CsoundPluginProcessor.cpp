@@ -726,6 +726,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 		csound->SetStringChannel("USER_MUSIC_DIRECTORY", File::getSpecialLocation(File::userMusicDirectory).getFullPathName().replace("\\", "\\\\").toUTF8().getAddress());
 		csound->SetStringChannel("USER_APPLICATION_DATA_DIRECTORY", File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName().replace("\\", "\\\\").toUTF8().getAddress());
 		csound->SetStringChannel("USER_DOCUMENTS_DIRECTORY", File::getSpecialLocation(File::userDocumentsDirectory).getFullPathName().replace("\\", "\\\\").toUTF8().getAddress());
+        csound->SetStringChannel("COMMON_DOCUMENTS_DIRECTORY", File::getSpecialLocation(File::commonDocumentsDirectory).getFullPathName().replace("\\", "\\\\").toUTF8().getAddress());
     }
     else
     {
@@ -735,6 +736,7 @@ void CsoundPluginProcessor::initAllCsoundChannels (ValueTree cabbageData)
 		csound->SetStringChannel("USER_MUSIC_DIRECTORY", File::getSpecialLocation(File::userMusicDirectory).getFullPathName().toUTF8().getAddress());
 		csound->SetStringChannel("USER_APPLICATION_DATA_DIRECTORY", File::getSpecialLocation(File::userApplicationDataDirectory).getFullPathName().toUTF8().getAddress());
 		csound->SetStringChannel("USER_DOCUMENTS_DIRECTORY", File::getSpecialLocation(File::userDocumentsDirectory).getFullPathName().toUTF8().getAddress());
+        csound->SetStringChannel("COMMON_DOCUMENTS_DIRECTORY", File::getSpecialLocation(File::commonDocumentsDirectory).getFullPathName().toUTF8().getAddress());
     }
 
     csound->SetStringChannel ("LAST_FILE_DROPPED", const_cast<char*> (""));
