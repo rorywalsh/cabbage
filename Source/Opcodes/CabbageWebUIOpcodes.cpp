@@ -40,7 +40,11 @@ int CabbageWebSendScalar::sendScalarToWebUI(bool init)
             var v(new DynamicObject);
             v.getDynamicObject()->setProperty("name", eventName);
             v.getDynamicObject()->setProperty("data", value);
-            valueTree.setProperty("jsonData", v, nullptr);
+            //valueTree.setProperty("jsonData", v, nullptr);
+            MessageManager::callAsync([this, v]()
+            {
+                valueTree.setProperty("jsonData", v, nullptr);
+            });
         }
     }
     
@@ -94,7 +98,10 @@ int CabbageWebSendArray::sendArrayToWebUI(bool init)
             var v(new DynamicObject);
             v.getDynamicObject()->setProperty("name", eventName);
             v.getDynamicObject()->setProperty("data", array);
-            valueTree.setProperty("jsonData", v, nullptr);
+            MessageManager::callAsync([this, v]()
+            {
+                valueTree.setProperty("jsonData", v, nullptr);
+            });
         }
     }
     
@@ -148,7 +155,10 @@ int CabbageWebSendASig::sendASigToWebUI(bool init)
             var v(new DynamicObject);
             v.getDynamicObject()->setProperty("name", eventName);
             v.getDynamicObject()->setProperty("data", array);
-            valueTree.setProperty("jsonData", v, nullptr);
+            MessageManager::callAsync([this, v]()
+            {
+                valueTree.setProperty("jsonData", v, nullptr);
+            });
         }
     }
     
@@ -202,7 +212,10 @@ int CabbageWebSendTable::sendTableToWebUI(bool init)
             var v(new DynamicObject);
             v.getDynamicObject()->setProperty("name", eventName);
             v.getDynamicObject()->setProperty("data", array);
-            valueTree.setProperty("jsonData", v, nullptr);
+            MessageManager::callAsync([this, v]()
+            {
+                valueTree.setProperty("jsonData", v, nullptr);
+            });
         }
     }
     

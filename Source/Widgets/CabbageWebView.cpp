@@ -71,9 +71,10 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
             });
         
             function sendDataToWebUI(data){
+                console.log("web view is fucked")
               if(cabbageHasLoadedWebView){
                   const obj = JSON.parse(data);
-                  //console.log(obj["name"]);
+                  console.log(obj["name"]);
                   event = new CustomEvent(obj["name"], { detail: obj["data"]});
                   window.dispatchEvent(event);
                 }
