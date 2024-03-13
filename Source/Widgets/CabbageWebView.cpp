@@ -87,7 +87,8 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
         if(file.isEmpty())
             file = "index.html";
         
-        webView->navigate("http://127.0.0.1:"+std::to_string(port)+"/"+file.toStdString()+"?port="+ std::to_string(port));
+        auto urlParams = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::channel);
+        webView->navigate("http://127.0.0.1:"+std::to_string(port)+"/"+file.toStdString()+"?params="+ urlParams.toStdString());
         
         webView->bind("updateCabbageChannel", [this](const choc::value::ValueView &args) -> choc::value::Value {
                     auto p = choc::json::toString(args);
