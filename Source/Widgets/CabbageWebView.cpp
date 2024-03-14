@@ -61,17 +61,32 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
         //an event listener in their html code to pick these up
         std::string js = R"(
             let cabbageHasLoadedWebView = false;
+            class Cabbage{
+              constructor(){}
+  
+              setChannel(name, value){
+                updateCabbageChannel({name:name, value:value});
+              }
+  
+              addListener(name, callback){
+                  window.addEventListener(name, (ev) => {
+                        callback(JSON.parse(ev.detail));
+                  });
+              }
+            }
+
+            
             window.addEventListener("load", (event) => {
-                    console.log("page loaded")
+                    console.log("page loaded")              
                     cabbageHasLoadedWebView = true;
             });
                   
-            window.addEventListener("cabbageChannelUpdate", function(e){
-                updateCabbageChannel({name:e.detail.name, value:e.detail.value});
-            });
+
+            //window.addEventListener("cabbageChannelUpdate", function(e){
+            //    updateCabbageChannel({name:e.detail.name, value:e.detail.value});
+            //});
         
             function sendDataToWebUI(data){
-                console.log("web view is fucked")
               if(cabbageHasLoadedWebView){
                   const obj = JSON.parse(data);
                   console.log(obj["name"]);
@@ -103,6 +118,7 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
                         auto p1 = parsedJson[0];
                         
                         auto name = p1.getProperty("name", "NULL").toString();
+                        
                         double value = double(p1.getProperty("value", 0));
                         if (CabbagePluginParameter* param = owner->getParameterForComponent (name))
                         {

@@ -121,8 +121,6 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
     else if (prop == CabbageIdentifierIds::visible)
     {
             visible = CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::visible);
-            if (CabbageWidgetData::getStringProp(data, CabbageIdentifierIds::channel).contains("btnSeq") && visible == 0)
-                jassertfalse;
 
             child->setVisible(visible == 1 ? true : false);
     }

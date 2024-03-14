@@ -1,7 +1,7 @@
 <Cabbage>
-form size(800, 520), caption("Webview Examples"), pluginId("web2")
-webview bounds(0, 0, 800, 520), channel("webview1"), mountPoint(".")
-rslider bounds(-100, -100, 100, 100), range(0, 100, 0, 1, 1), channel("slider1")
+form size(800, 650), caption("Webview Examples"), pluginId("web2")
+webview bounds(0, 0, 800, 650), channel("webview1"), mountPoint(".")
+rslider bounds(-200, -680, 100, 100), range(0, 100, 0, 1, 1), channel("slider1")
 </Cabbage>
 <CsoundSynthesizer>
 <CsOptions>
@@ -78,8 +78,13 @@ instr 1
         
     elseif kPage == 6 then ;-------------------------------------------------------- Sending data to Csound page
             
-        
         aSig oscili .5, cabbageGetValue:k("slider1")*5
+        outall aSig
+        
+    elseif kPage == 7 then ;-------------------------------------------------------- XY Controller
+            
+        aMod oscili .5, cabbageGetValue:k("x")*5
+        aSig oscili aMod, cabbageGetValue:k("y")*5
         outall aSig
         
     endif
@@ -103,7 +108,7 @@ endin
 <CsScore>
 f1 0 1024 10 1 0.01 0.4 0.1 0.01
 f99 0 2048 10 1 ;dummy table for display purposes
-i1 0 100
+i1 0 z
 
 </CsScore>
 </CsoundSynthesizer>

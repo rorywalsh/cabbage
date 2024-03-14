@@ -73,11 +73,12 @@
 
     <div class="sidebar">
         <a class="navLink active" href="#webview">Webview</a>
+        <a class="navLink" href="#sendData">Sending data to Cabbage</a>
         <a class="navLink" href="#cabbageWebSend">cabbageWebSend</a>
         <a class="navLink" href="#cabbageWebSendArray">cabbageWebSendArray</a>
         <a class="navLink" href="#cabbageWebSendTable">cabbageWebSendTable</a>
         <a class="navLink" href="#scrollingWaveform">Scrolling Waveform</a>
-        <a class="navLink" href="#sendData">Sending data to Csound</a>
+        <a class="navLink" href="#xyController">Simple XY Controller</a>
     </div>
 
     <p id="webview">
@@ -87,17 +88,63 @@
             window.
             Content is served through an integrated live server. Like all Cabbage widgets, each <code>webview</code>
             widget must set
-            a channel. Csound can then send data to the <code>webview</code> in realtime over this channel. </p>
-        <p>Each webview component uses a unique port number. This port number is sent as a URL parameter to each
-            webview. The port number
-            can be queried using the <code>serverPort()</code> identifier. You can mix native Cabbage widgets alongside
-            webviews, but they must not overlap. </p>
-        <p>Also, keep in mind that a plugin host knows nothing about the content of a webview. If you
-        wish to control plugins parameters with webview component, create native widgets in Cabbage first, make them invisible, and then control them
-        via the webview components. </p>
+            a channel. All communication between Csound the <code>webview</code> will be conducted on this channel.
+        </p>
+        <p>Each webview component is passed the current channel as a URL parameter. This allows you to set up unique
+            channels for each webview. To query the parameter you can use this following JS code:
+            can be queried using the
+        <pre><code>
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+    let webviewChannel = params.get("params");
+            </code></pre>
+        </p>
         <blockquote style="border-radius: 5px; padding:5px; font-size:16px;color:#ffffff;background-color:#0478aa">
-            Note that all data sent to the <code>webview</code> from Csound is in the form of a JSON string. Working
-            with extremely large strings can impair performance. Please keep when designing your instruments.
+            <ul>
+                <li>You can mix native Cabbage widgets alongside webviews, but they must not overlap.</li><br>
+                <li>If you wish to control a plugin parameter with a webview component, create a native widget in
+                    Cabbage
+                    place it off-screen (see <code>slider1</code> in the Cabbage section of this instrument). Updates to
+                    its channel from the webview will notify the host DAW.</li>
+            </ul>
+        </blockquote>
+    </div>
+    </p>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <p id="sendData">
+    <div style="padding-left:220px;padding-top:10px;width:550px">
+        <h3>Sending data to Cabbage from a webview</h3>
+        To send data from a webview to Cabbage you must first create a new <code>Cabbage</code> class. This object will
+        manage all
+        communication between the <code>webview</code> and Cabbage. The <code>setChannel("name", value)</code> function
+        will send channel data to
+        Csound. This method will also update any plugins parameters that are associated with the given channel.
+        <div>
+            <input type="range" id="slider1" style="width:550px" oninput="sliderChange()"
+                onchange="sliderChange()"></input>
+        </div>
+        The slider change event classback looks like this:
+        <pre><code>
+        function sliderChange() {
+            if(cabbage)
+                cabbage.setChannel("slider1", slider1.value);
+        }
+        </code></pre>
+        <blockquote style="border-radius: 5px; padding:5px; font-size:16px;color:#ffffff;background-color:#0478aa">
+            For now only float values are supported by the setChannel() method.
         </blockquote>
     </div>
     </p>
@@ -123,22 +170,33 @@
         <code>cabbageWebSend [kTrig,], "webViewChannel", "customEventName", xValue</code>
         <p>
             This opcode will send data to the webview. It packs the data into a custom event and sends it to the
-            corresponding webview. To pick up the data, you can use an event listener:
+            corresponding webview. To pick up the data, create a new Cabbage class, and add a listener for the event you
+            wish to receive. The addListener() method takes the event name, and a callback function that will passed the
+            event data.
+        </p>
+        <p>In this instrument the output of an oscillator is sent to the "webUISlider" channel. The UI picks
+            up the value and uses it to move a range component.
         <pre><code>
-    window.addEventListener("nameOfCustomEvent", (ev) => {
-        //set the value of slider2 from Csound
-        slider2.value = ev.detail;
-    });
+        cabbage.addListener("webUISlider", (data) => {
+            slider2.value = data;
+        });
         </code></pre>
         You must be cautious when sending data to your webview. If you send on every k cycle you will most likely cause
         update problems and the graphics will inevitably start to struggle. Always use the <code>metro</code> opcode to
-        regulate the frequency of events.</p>
+        regulate the frequency of events.
+        </p>
         <div>
             <input type="range" id="slider2" style="width:550px""></input>
         </div>  
         <blockquote style=" border-radius: 5px; padding:5px; font-size:16px;color:#ffffff;background-color:#0478aa">
-            Note that the <code>cabbageWebSend</code> opcode can also send audio rate signals. Audio rate signals are
-            sent as an array of samples.
+            <ul>
+                <li>The <code>cabbageWebSend</code> opcode can also send initialisation and audio rate signals. Audio
+                    rate signals are
+                    sent as an array of samples. </li><br>
+                <li>The data passed to the addlistener() callback method can be be scalar, or an array. It is up to you
+                    to make sure you interpret the data correctly. </li>
+            </ul>
+
             </blockquote>
         </div>
         <br>
@@ -160,19 +218,19 @@
             <p>
                 This opcode will send array data to the webview. It packs the data into a custom event and sends it to
                 the
-                corresponding webview. To pick up the data, you can use an event listener:
+                corresponding webview. To pick up the data, you create a new listener:
             <pre><code>
-    let notes = [];
-    window.addEventListener("nameOfCustomEvent", (ev) => {
-        //set the value of slider2 from Csound
-        notes = JSON.parse(ev.detail);
+    cabbage.addListener("webUIDrawNoteArray", (data) => {
+        //pass array of notes to drawNoteArray method
+        drawNoteArray(data);
     });
         </code></pre>
             <div>
                 <canvas id="notesCanvas" width="550" height="150" style="border:1px solid grey"></canvas>
             </div>
             <p>
-                In the example above Csound generating a new set of notes every 16 beats.
+                In this example Csound is generating a new set of notes every 16 beats. The updated is array is then
+                sent to the webview.
             </p>
 
         </div>
@@ -196,8 +254,8 @@
             <p>
                 This opcode will send the contents of a table to the webview. It packs the data into a custom event and
                 sends it to
-                the corresponding webview. To pick up the data, you can use an event listener as in the previous
-                example.
+                the corresponding webview. To pick up the data, you must add a custom listener as shown in the previous
+                examples.
             </p>
             <canvas id="tableCanvas" width="550" height="150" style="border:1px solid grey"></canvas>
         </div>
@@ -222,7 +280,8 @@
         <p>
             The ubiquitous scrolling waveform display can be achieved by sending a sample on each k-cycle to the
             webview.
-            The webview picks up the sample and add it to the end of an existing array, while removing the first element
+            The webview picks up the sample and adds it to the end of an existing array, while removing the first
+            element
             from the array.
         </p>
         <p>
@@ -246,31 +305,20 @@
     <br>
     <br>
     <br>
-    <br>
-    <p id="sendData">
+    <p id="xyController">
     <div style="padding-left:220px;padding-top:10px;width:550px">
-        <h3>Sending data to Csound from a webview</h3>
-        To send data from the webview back to Csound you can create a new event named
-        <code>cabbageChannelUpdate</code>. This will send channel data to Csound, and update the plugin host if the
-        channel is associated with a parameter. For example, the slider below, when moved, will send its current value
-        to a channel named "slider1".
+        <h3>Simple XY Controller</h3>
+        <p>
+            XY Controllers are simple to build using a html5 canvas. In this example a `onmousemove` event is attached to the canvas. Each time it gets call it sends x and y position of the mouse
+            is sent to Csound.
+        </p>
         <div>
-            <input type="range" id="slider1" style="width:550px" oninput="sliderChange()"
-                onchange="sliderChange()"></input>
+            <canvas id="xyCanvas" onmousemove="draw(event)" width="300" height="300" style="border:1px solid grey"></canvas>
         </div>
-        The slider triggers the <code>sliderChange()</code> function which is defined as:
-        <pre><code>
-        function sliderChange() {
-            let event = new CustomEvent("cabbageChannelUpdate", {
-                detail: { name: "slider1", value: slider1.value },
-            });
-            window.dispatchEvent(event);
-        }
-        </code></pre>
-        <blockquote style="border-radius: 5px; padding:5px; font-size:16px;color:#ffffff;background-color:#0478aa">
-            The <code>cabbageChannelUpdate</code> event name is reserved. Please make sure you don't use that label for
-            other events.
-        </blockquote>
+        <p>
+            
+        </p>
+
     </div>
     <br>
     <br>
@@ -289,7 +337,24 @@
     <script>
         var header = document.getElementsByClassName("sidebar");
         var links = header[0].getElementsByClassName("navLink");
+
+        let mouseDown = 0;
+        let cabbage = new Cabbage();
+        window.onmousedown = () => {
+            ++mouseDown;
+            if (mouseDown) {
+                console.log('mouse button down')
+            }
+        }
+        window.onmouseup = () => {
+            --mouseDown;
+            if (mouseDown) {
+                console.log('mouse button down')
+            }
+        }
+
         for (var i = 0; i < links.length; i++) {
+            console.log('links')
             links[i].addEventListener("click", function () {
 
                 var current = document.getElementsByClassName("active");
@@ -309,50 +374,50 @@
                     case "Scrolling Waveform":
                         page = 5;
                         break;
-                    case "Sending data to Csound":
+                    case "Sending data to Cabbage":
                         page = 6;
+                        break;
+                    case "Simple XY Controller":
+                        page = 7;
                         break;
                     default:
                         page = 1;
                         break;
                 }
 
-                let event = new CustomEvent("cabbageChannelUpdate", {
-                    detail: { name: "currentPage", value: page }
-                });
-                window.dispatchEvent(event);
+                if (cabbage)
+                    cabbage.setChannel("currentPage", page)
+
             });
         }
 
 
         function sliderChange() {
-            let event = new CustomEvent("cabbageChannelUpdate", {
-                detail: { name: "slider1", value: slider1.value },
-            });
-            window.dispatchEvent(event);
+            if (cabbage)
+                cabbage.setChannel("slider1", slider1.value);
         }
 
-        window.addEventListener("webUISlider", (ev) => {
-            slider2.value = Number(ev.detail);
+        cabbage.addListener("webUISlider", (data) => {
+            slider2.value = Number(data);
         });
 
-        window.addEventListener("webUIDrawNoteArray", (ev) => {
-            drawNoteArray(JSON.parse(ev.detail));
+        cabbage.addListener("webUIDrawNoteArray", (data) => {
+            drawNoteArray(data);
         });
 
-        window.addEventListener("webUIDrawTable", (ev) => {
-            drawTable(JSON.parse(ev.detail));
+        cabbage.addListener("webUIDrawTable", (data) => {
+            drawTable(data);
         });
 
-        window.addEventListener("webUIDrawScrollingWaveform", (ev) => {
-            drawWaveform(Number(ev.detail));
+        cabbage.addListener("webUIDrawScrollingWaveform", (data) => {
+            drawWaveform(data);
         });
         //===========================================================================
         function remap(value, from1, to1, from2, to2, clamp = false) {
             return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
         }
 
-        console.clear();
+        //console.clear();
         let width = 550;
         let height = 150;
         var audioSamples = new Array(1000).fill(0);
@@ -360,6 +425,10 @@
         let notesCanvas = document.getElementById("notesCanvas");
         let tableCanvas = document.getElementById("tableCanvas");
         let waveformCanvas = document.getElementById("waveformCanvas");
+        let xyCanvas = document.getElementById("xyCanvas");
+        let xyCtx = xyCanvas.getContext("2d");
+        xyCtx.fillStyle = "#303030";
+        xyCtx.fillRect(0, 0, xyCanvas.width, xyCanvas.height);
 
         let level = 0;
 
@@ -369,6 +438,7 @@
                 let x = 0;
                 let y = 0;
                 let ctx = notesCanvas.getContext("2d");
+                console.log(notes.length);
                 ctx.strokeStyle = '#0478aa';
                 ctx.fillStyle = '#333';
                 ctx.fillRect(0, 0, width, height);
@@ -426,6 +496,7 @@
                 audioSamples.push(level);
                 // remove first item in array
                 audioSamples.splice(0, 1);
+                console.log(audioSamples);
                 ctx.clearRect(0, 0, width, height);
                 ctx.fillStyle = '#303030';
                 ctx.fillRect(0, 0, width, height);
@@ -441,6 +512,33 @@
                 ctx.stroke();
                 ctx.closePath();
             }
+        }
+
+        //let lastPos = {x:0, y:0}
+        function draw(evt) {
+            if (mouseDown) {
+                let ctx = xyCanvas.getContext("2d");
+                var pos = getMousePos(xyCanvas, evt);
+                // ctx.clearRect(0, 0, xyCanvas.width, xyCanvas.height);
+                xyCtx.fillStyle = "#303030";
+                xyCtx.fillRect(0, 0, xyCanvas.width, xyCanvas.height);
+                ctx.fillStyle = "#0478aa";
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 20, 0, 2 * Math.PI, false);
+                ctx.fill(); 
+                if(cabbage){
+                    cabbage.setChannel("x", pos.x)
+                    cabbage.setChannel("y", pos.y)
+                }
+            }
+        }
+
+        function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
         }
     </script>
 
