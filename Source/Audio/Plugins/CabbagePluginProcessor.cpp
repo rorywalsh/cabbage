@@ -1016,8 +1016,7 @@ void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInByt
     try{
 	
 		auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
-        setPluginState(jsonData, "", true); 
-		DBG(jsonData.dump(4));
+        setPluginState(jsonData, "", true);
     }
     catch (nlohmann::json::exception& e) {
         DBG(e.what());
@@ -1129,7 +1128,7 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
 				{
                     String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                          CabbageIdentifierIds::text);
-                    j[currentPresetName.toStdString()][channelName.toStdString()] = text.toRawUTF8();
+                    j[currentPresetName.toStdString()][channelName.toStdString()] = text.toStdString();
                 }
 				if (type == CabbageWidgetTypes::soundfiler) 
 				{
@@ -1258,7 +1257,7 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
         }
 #endif
         
-		DBG(j.dump(4));
+
 	for (nlohmann::ordered_json::iterator itA = j.begin(); itA != j.end(); ++itA)
 	{
 		if (String(itA.key()) == presetName || hostState == true)
@@ -1279,7 +1278,7 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
 
 				if (type == CabbageWidgetTypes::texteditor)
 				{
-					CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, presetData.value().get<std::string>());
+					CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::text, presetData.value().dump());
 				}
 				else if ((type == CabbageWidgetTypes::combobox && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::filetype).contains("snaps")) ||
                          type == CabbageWidgetTypes::presetbutton)
