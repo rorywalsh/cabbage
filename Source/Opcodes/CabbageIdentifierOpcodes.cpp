@@ -723,27 +723,6 @@ int GetCabbageValueWithTrigger::getAttribute()
             else
                 outargs[1] = 0;
         }
-<<<<<<< HEAD
-        //   
-        
-        if(*value != currentValue)
-        {
-            currentValue = *value;
-            outargs[1] = 1;
-        }
-        else
-        {
-            if(numberOfPasses == 2 && triggerOnPerfPass>0)
-            {
-                outargs[1] = 1;
-            }
-            else
-                outargs[1] = 0;
-        }
-        outargs[0] = currentValue;       
-        
-=======
->>>>>>> develop
     }
     
     return OK;

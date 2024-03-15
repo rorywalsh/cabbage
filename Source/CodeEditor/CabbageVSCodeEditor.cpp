@@ -23,7 +23,7 @@
 #include "../Application/CabbageDocumentWindow.h"
 
 //==============================================================================
-CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree)
+CabbageVSCodeEditorComponent::CabbageVSCodeEditorComponent (CabbageEditorContainer* owner, Component* statusBar, ValueTree valueTree)
     : Component ("VS Code Editor")
 
 {
@@ -58,12 +58,12 @@ CabbageCodeEditorComponent::CabbageCodeEditorComponent (CabbageEditorContainer* 
     
 }
 
-CabbageCodeEditorComponent::~CabbageCodeEditorComponent()
+CabbageVSCodeEditorComponent::~CabbageVSCodeEditorComponent()
 {
 
 }
 
-void CabbageCodeEditorComponent::loadContent(String content, int lineNumber, int delay)
+void CabbageVSCodeEditorComponent::loadContent(String content, int lineNumber, int delay)
 {
     
     
@@ -79,12 +79,12 @@ void CabbageCodeEditorComponent::loadContent(String content, int lineNumber, int
     
 }
 
-void CabbageCodeEditorComponent::resized()
+void CabbageVSCodeEditorComponent::resized()
 {
     nativeWindow.setBounds(0, 0, static_cast<int>(getWidth()), getHeight());
 }
 
-void CabbageCodeEditorComponent::insertSuggestion()
+void CabbageVSCodeEditorComponent::insertSuggestion()
 {
     //auto xmlDoc = XmlDocument(CabbageStrings::getOpcodesXml());
     
@@ -93,7 +93,7 @@ void CabbageCodeEditorComponent::insertSuggestion()
     //webView->evaluateJavascript(newSuggestion.toStdString());
 }
 
-void CabbageCodeEditorComponent::removeCurrentLine()
+void CabbageVSCodeEditorComponent::removeCurrentLine()
 {
     StringArray lines;
     lines.addLines(allContent);
@@ -101,14 +101,14 @@ void CabbageCodeEditorComponent::removeCurrentLine()
     loadContent(lines.joinIntoString("\n"), currentLineNumber, 100);
 }
 
-String CabbageCodeEditorComponent::getLineText(int line)
+String CabbageVSCodeEditorComponent::getLineText(int line)
 {
     StringArray lines;
     lines.addLines(allContent);
     return lines[line];
 }
 
-void CabbageCodeEditorComponent::insertCode(int lineNumber, String updatedText, bool, bool)
+void CabbageVSCodeEditorComponent::insertCode(int lineNumber, String updatedText, bool, bool)
 {
     StringArray lines;
     lines.addLines(allContent);
@@ -116,7 +116,7 @@ void CabbageCodeEditorComponent::insertCode(int lineNumber, String updatedText, 
     loadContent(lines.joinIntoString("\n"), lineNumber, 100);
 }
 
-void CabbageCodeEditorComponent::updateBoundsText (int lineNumber, String codeToInsert, bool shouldHighlight)
+void CabbageVSCodeEditorComponent::updateBoundsText (int lineNumber, String codeToInsert, bool shouldHighlight)
 {
     StringArray csdLines;
     csdLines.addLines (allContent);

@@ -16,7 +16,6 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
   02111-1307 USA
 */
-#ifdef JUCE_LINUX
 
 #include "CabbageCodeEditor.h"
 //#include "../Settings/CabbageSettings.h"
@@ -77,6 +76,15 @@ CabbageCodeEditorComponent::~CabbageCodeEditorComponent()
 {
     this->getDocument().removeListener(this);
     setLookAndFeel (nullptr);
+}
+
+void CabbageCodeEditorComponent::removeLine (int lineNumber)
+{
+    allowUpdateOfPluginGUI = true;
+    moveCaretTo (CodeDocument::Position (getDocument(), lineNumber, 5000), false);
+    moveCaretTo (CodeDocument::Position (getDocument(), lineNumber, 0), true);
+    getDocument().replaceSection (getHighlightedRegion().getStart(), getHighlightedRegion().getEnd(), "");
+
 }
 
 void CabbageCodeEditorComponent::updateColourScheme (bool isCsdFile)
@@ -401,14 +409,6 @@ void CabbageCodeEditorComponent::insertTextAtCaret (const String& textToInsert)
         insertMultiLineTextAtCaret (textToInsert);
 }
 
-void CabbageCodeEditorComponent::removeLine (int lineNumber)
-{
-    allowUpdateOfPluginGUI = true;
-    moveCaretTo (CodeDocument::Position (getDocument(), lineNumber, 5000), false);
-    moveCaretTo (CodeDocument::Position (getDocument(), lineNumber, 0), true);
-    getDocument().replaceSection (getHighlightedRegion().getStart(), getHighlightedRegion().getEnd(), "");
-
-}
 
 void CabbageCodeEditorComponent::removeSelectedText()
 {
@@ -1313,4 +1313,3 @@ StringArray CabbageCodeEditorComponent::getSelectedTextArray()
     return tempArray;
 }
 
-#endif

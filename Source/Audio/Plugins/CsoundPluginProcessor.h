@@ -43,11 +43,6 @@
 #include "../../Opcodes/CabbageBTOpcodes.h"
 #endif
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> develop
 //this class comes courtesy of @EyalAmir from TAP discord..
 class ProcessBlockTimeListener
 {

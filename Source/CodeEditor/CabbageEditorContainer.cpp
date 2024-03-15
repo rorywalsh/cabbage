@@ -29,19 +29,20 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* cabbageSettings
 
     if (isCsdFile)
     {
-#ifdef JUCE_LINUX
-        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
+#if VSCODE
+        editor.reset (new CabbageVSCodeEditorComponent (this, &statusBar, settings->valueTree));
 #else
-        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree));
+        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
 #endif
         addAndMakeVisible (editor.get());
     }
     else
     {
-#ifdef JUCE_LINUX
-        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &javaTokeniser));
-#else
+#if VSCODE
         editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree));
+        
+#else
+        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &javaTokeniser));
 #endif
         addAndMakeVisible (editor.get());
     }
@@ -79,12 +80,17 @@ CabbageEditorContainer::~CabbageEditorContainer()
 
 void CabbageEditorContainer::hide()
 {
+#ifdef VSCODE
     editor->nativeWindow.setVisible(false);
+#endif
 }
 void CabbageEditorContainer::show()
 {
     toFront(true);
-    editor->nativeWindow.setVisible(true);
+    
+#ifdef VSCODE
+    editor->nativeWindow.setVisible(false);
+#endif
 }
 void CabbageEditorContainer::setDefaultFont()
 {

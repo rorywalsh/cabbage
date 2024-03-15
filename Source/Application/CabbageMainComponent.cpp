@@ -858,9 +858,16 @@ void CabbageMainComponent::actionListenerCallback (const String& message)
     }
     else if (message.contains ("delete:"))
     {
+#ifdef VSCODE
         getCurrentCodeEditor()->removeCurrentLine();
+#else
+        getCurrentCodeEditor()->removeSelectedText();
+        saveDocument();
+        enableEditMode();
+#endif
     }
 }
+
 //=======================================================================================
 void CabbageMainComponent::updateCodeInEditor (CabbagePluginEditor* editor, bool replaceExistingLine, bool guiPropUpdate)
 {

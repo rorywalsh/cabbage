@@ -24,7 +24,7 @@
 #include "../CabbageCommonHeaders.h"
 #include "../Utilities/CabbageStrings.h"
 
-#ifdef JUCE_LINUX
+
 class CabbageEditorContainer;
 
 class CabbageCodeEditorComponent :
@@ -69,8 +69,9 @@ public:
     String getSelectedText();
     const StringArray getAllTextAsStringArray();
     const String getAllText();
-    const String getAllContent(){ return getDocument()->getAllContent(); }
+    const String getAllContent(){ return getDocument().getAllContent(); }
     StringArray getSelectedTextArray();
+    void removeLine (int lineNumber);
     StringArray keywordsArray;
 
     enum ArrowKeys
@@ -179,7 +180,6 @@ public:
     void zoomOut();
     bool deleteForwards (const bool moveInWholeWordSteps);
     bool deleteBackwards (const bool moveInWholeWordSteps);
-    void removeLine (int lineNumber);
 
     StringArray getIdentifiersFromString (String code);
     int findText (String text, bool forwards, bool caseSensitive, bool skipCurrentSelection);
@@ -314,5 +314,4 @@ struct CustomTextEditorKeyMapper
     }
 };
 
-#endif  //end if linux
 #endif  // CABBAGECODEEDITOR_H_INCLUDED
