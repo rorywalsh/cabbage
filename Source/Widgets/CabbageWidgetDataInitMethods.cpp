@@ -41,7 +41,7 @@ void CabbageWidgetData::setFormProperties (ValueTree widgetData, int ID)
     setProperty (widgetData, CabbageIdentifierIds::scrollbars, 0);
     setProperty (widgetData, CabbageIdentifierIds::titlebarcolour, Colour(57, 70, 76).toString());
     setProperty (widgetData, CabbageIdentifierIds::titlebargradient, 0.15f);
-    setProperty (widgetData, CabbageIdentifierIds::titlebarheight, 18.f);
+    setProperty (widgetData, CabbageIdentifierIds::titlebarheight, 24.f);
     setProperty (widgetData, CabbageIdentifierIds::style, "");
     setProperty (widgetData, CabbageIdentifierIds::channeltype, "number");
 	setProperty(widgetData, CabbageIdentifierIds::sidechain, 0);
@@ -235,9 +235,10 @@ void CabbageWidgetData::setWebViewProperties(ValueTree widgetData, int ID)
     setProperty(widgetData, CabbageIdentifierIds::left, 10);
     setProperty(widgetData, CabbageIdentifierIds::width, 30);
     setProperty(widgetData, CabbageIdentifierIds::height, 30);
-    setProperty(widgetData, CabbageIdentifierIds::type, "webview");
-    setProperty(widgetData, CabbageIdentifierIds::name, getProperty(widgetData, "name").toString() + String(ID));
+    setProperty(widgetData, CabbageIdentifierIds::name, "webview" + String(ID));
     setProperty(widgetData, CabbageIdentifierIds::visible, 1);
+    setProperty(widgetData, CabbageIdentifierIds::serverport, 8089);
+    setProperty(widgetData, CabbageIdentifierIds::websocketport, 8000);
 }
 
 void CabbageWidgetData::setPortProperties (ValueTree widgetData, int ID, const String type)

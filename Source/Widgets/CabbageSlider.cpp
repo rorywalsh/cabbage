@@ -163,9 +163,9 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     
     sliderBounds = CabbageWidgetData::getProperty(wData, CabbageIdentifierIds::sliderbounds);
 
-        
-    const File sliderImageFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider));
-    const File sliderBackgroundFile = File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgsliderbg));
+    auto csdFile = owner->getProcessor().getCsdFile();
+    const File sliderImageFile = File(csdFile).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgslider));
+    const File sliderBackgroundFile = File(csdFile).getParentDirectory().getChildFile(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::imgsliderbg));
     if (!isFilmStripSlider) {
         if (sliderImageFile.existsAsFile())
         {

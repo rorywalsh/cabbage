@@ -196,7 +196,7 @@ void CabbageSettingsWindow::RepoListBox::paintListBoxItem (int rowNumber, Graphi
         g.fillAll (Colours::white.withAlpha (.3f)); //CabbageSettings::getColourFromValueTree (owner->valueTree, CabbageColourIds::codeBackground, Colours::white));
 
     g.setColour (Colour (20, 20, 20));
-    g.drawFittedText (items[rowNumber], Rectangle<int> (width, height), Justification::left, 0);
+    g.drawFittedText (items[rowNumber], juce::Rectangle<int> (width, height), Justification::left, 0);
 }
 
 
@@ -401,7 +401,7 @@ void CabbageSettingsWindow::textPropertyComponentChanged (TextPropertyComponent*
 
 void CabbageSettingsWindow::resized()
 {
-    Rectangle<int> r (getLocalBounds());
+    juce::Rectangle<int> r (getLocalBounds());
     audioSettingsButton.setBounds (10, 10, 60, 60);
     miscSettingsButton.setBounds (10, 80, 60, 60);
     colourSettingsButton.setBounds (10, 150, 60, 60);
@@ -424,7 +424,7 @@ void CabbageSettingsWindow::resized()
 
 void CabbageSettingsWindow::paint (Graphics& g)
 {
-    Rectangle<int> r (getLocalBounds());   
+    juce::Rectangle<int> r (getLocalBounds());
 	g.fillAll (bgColour);
 	//lime green
     //g.fillAll (Colour (147, 210, 0));

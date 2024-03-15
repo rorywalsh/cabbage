@@ -29,6 +29,11 @@
 
 class CabbagePluginParameter;
 
+
+
+//====================================================================================
+
+
 class CabbagePluginProcessor : public CsoundPluginProcessor,
 public Timer
 {
@@ -187,11 +192,14 @@ public:
         return this->processBlockListener.getTimeSinceLastBlock();
     }
 
-
 private:
 #if !Cabbage_IDE_Build
     PluginHostType pluginType;
 #endif
+ 
+private:   
+    CabbageLookAndFeel2 lookAndFeel;
+
     controlChannelInfo_s* csoundChanList{};
     String pluginName;
     File csdFile;
@@ -206,7 +214,7 @@ private:
     OwnedArray<CabbagePluginParameter> parameters;
     Font customFont;
     File customFontFile;
-
+ 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CabbagePluginProcessor)
 
 };

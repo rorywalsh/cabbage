@@ -261,7 +261,7 @@ public:
                 content->centreWithSize(500, 550);
                 //content->setBounds (400, 400, 500, 550);
                 content->setToRecommendedSize();
-                Rectangle<int> r = Desktop::getInstance().getDisplays().getMainDisplay().totalArea;
+                juce::Rectangle<int> r = Desktop::getInstance().getDisplays().getMainDisplay().totalArea;
 
                 
 #if ! (JUCE_IOS || JUCE_ANDROID)
@@ -549,7 +549,7 @@ private:
                 auto extra = r.removeFromTop (itemHeight);
 
                 auto seperatorHeight = (itemHeight >> 1);
-                shouldMuteButton.setBounds (Rectangle<int> (extra.proportionOfWidth (0.35f), seperatorHeight,
+                shouldMuteButton.setBounds (juce::Rectangle<int> (extra.proportionOfWidth (0.35f), seperatorHeight,
                                                             extra.proportionOfWidth (0.60f), deviceSelector.getItemHeight()));
 
                 r.removeFromTop (seperatorHeight);
@@ -681,7 +681,7 @@ class StandaloneFilterWindow    : public DocumentWindow,
 public:
     //==============================================================================
     typedef StandalonePluginHolder::PluginInOuts PluginInOuts;
-    Rectangle<int> optionButtonBounds;
+    juce::Rectangle<int> optionButtonBounds;
     bool hasSettingsButtons = false;
     Typeface::Ptr customFont;
     //==============================================================================
@@ -726,6 +726,7 @@ public:
 #elif JUCE_MAC
         if(csdFile.existsAsFile() == false)
         {
+            const String filename(File::getSpecialLocation(File::currentExecutableFile).withFileExtension(String(".csd")).getFileName());
             csdFile = CabbageUtilities::getRealUserHomeDirectory().getFullPathName() + "/Library/" + String(CabbageManufacturer) + "/" + File::getSpecialLocation(File::currentExecutableFile).getFileNameWithoutExtension()+"/"+filename;
 
             if(!csdFile.existsAsFile() && (PluginHostType::getPluginLoadedAs() == AudioProcessor::wrapperType_AudioUnit))
@@ -747,7 +748,7 @@ public:
         
         csdLines.addLines(csdFile.loadFileAsString());
         int t = csdLines.size();
-        int titleBarHeight = 18;
+        int titleBarHeight = 22;
         
         for (const auto& line : csdLines)
         {
@@ -803,7 +804,7 @@ public:
        #else
         setContentOwned (new MainContentComponent (*this), true);
 
-        const auto windowScreenBounds = [this]() -> Rectangle<int>
+        const auto windowScreenBounds = [this]() -> juce::Rectangle<int>
         {
             const auto width = getWidth();
             const auto height = getHeight();
@@ -1078,7 +1079,7 @@ private:
             }
         }
 
-        Rectangle<int> getSizeToContainEditor() const
+        juce::Rectangle<int> getSizeToContainEditor() const
         {
             if (editor != nullptr)
                 return getLocalArea (editor.get(), editor->getLocalBounds());

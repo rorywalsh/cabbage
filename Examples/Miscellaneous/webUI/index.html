@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            font-family: "Lato", sans-serif;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        .sidebar {
+            margin: 0;
+            padding: 0;
+            width: 200px;
+            background-color: #f1f1f1;
+            position: fixed;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .sidebar a {
+            display: block;
+            color: black;
+            padding: 16px;
+            text-decoration: none;
+        }
+
+        .active {
+            background-color: #0478aa;
+            color: white;
+        }
+
+        .sidebar a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+
+        div.content {
+            margin-left: 200px;
+            padding: 1px 16px;
+            height: 1000px;
+        }
+
+        @media screen and (max-width: 700px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+
+            .sidebar a {
+                float: left;
+            }
+
+            div.content {
+                margin-left: 0;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .sidebar a {
+                text-align: center;
+                float: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <a class="navLink active" href="#webview">Webview</a>
+        <a class="navLink" href="#sendData">Sending data to Cabbage</a>
+        <a class="navLink" href="#cabbageWebSend">cabbageWebSend</a>
+        <a class="navLink" href="#cabbageWebSendArray">cabbageWebSendArray</a>
+        <a class="navLink" href="#cabbageWebSendTable">cabbageWebSendTable</a>
+        <a class="navLink" href="#scrollingWaveform">Scrolling Waveform</a>
+        <a class="navLink" href="#xyController">Simple XY Controller</a>
+    </div>
+
+    <p id="webview">
+    <div style="padding-left:220px;padding-top:0px;width:550px">
+        <h3>The webview widget</code></h3>
+        <p>The <code>webview</code> widget in Cabbage will let you display web content directly within your plugin
+            window.
+            Content is served through an integrated live server. Like all Cabbage widgets, each <code>webview</code>
+            widget must set
+            a channel. All communication between Csound the <code>webview</code> will be conducted on this channel.
+        </p>
+        <p>Each webview component is passed the current channel as a URL parameter. This allows you to set up unique
+            channels for each webview. To query the parameter you can use this following JS code:
+            can be queried using the
+        <pre><code>
+    const url = new URL(window.location.href);
+    const params = url.searchParams;
+    let webviewChannel = params.get("params");
+            </code></pre>
+        </p>
+        <blockquote style="border-radius: 5px; padding:5px; font-size:16px;color:#ffffff;background-color:#0478aa">
+            <ul>
+                <li>You can mix native Cabbage widgets alongside webviews, but they must not overlap.</li><br>
+                <li>If you wish to control a plugin parameter with a webview component, create a native widget in
+                    Cabbage
+                    place it off-screen (see <code>slider1</code> in the Cabbage section of this instrument). Updates to
+                    its channel from the webview will notify the host DAW.</li>
+            </ul>
+        </blockquote>
+    </div>
+    </p>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <p id="sendData">
+    <div style="padding-left:220px;padding-top:10px;width:550px">
+        <h3>Sending data to Cabbage from a webview</h3>
+        To send data from a webview to Cabbage you must first create a new <code>Cabbage</code> class. This object will
+        manage all
+        communication between the <code>webview</code> and Cabbage. The <code>setChannel("name", value)</code> function
+        will send channel data to
+        Csound. This method will also update any plugins parameters that are associated with the given channel.
+        <div>
+            <input type="range" id="slider1" style="width:550px" oninput="sliderChange()"
+                onchange="sliderChange()"></input>
+        </div>
+        The slider change event classback looks like this:
+        <pre><code>
+        function sliderChange() {
+            if(cabbage)
+                cabbage.setChannel("slider1", slider1.value);
+        }
+        </code></pre>
+        <blockquote style="border-radius: 5px; padding:5px; font-size:16px;color:#ffffff;background-color:#0478aa">
+            For now only float values are supported by the setChannel() method.
+        </blockquote>
+    </div>
+    </p>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <p id="cabbageWebSend">
+    <div style="padding-left:220px;padding-top:10px;width:550px">
+        <h3>The cabbageWebSend opcode</h3>
+        <code>cabbageWebSend [kTrig,], "webViewChannel", "customEventName", xValue</code>
+        <p>
+            This opcode will send data to the webview. It packs the data into a custom event and sends it to the
+            corresponding webview. To pick up the data, create a new Cabbage class, and add a listener for the event you
+            wish to receive. The addListener() method takes the event name, and a callback function that will passed the
+            event data.
+        </p>
+        <p>In this instrument the output of an oscillator is sent to the "webUISlider" channel. The UI picks
+            up the value and uses it to move a range component.
+        <pre><code>
+        cabbage.addListener("webUISlider", (data) => {
+            slider2.value = data;
+        });
+        </code></pre>
+        You must be cautious when sending data to your webview. If you send on every k cycle you will most likely cause
+        update problems and the graphics will inevitably start to struggle. Always use the <code>metro</code> opcode to
+        regulate the frequency of events.
+        </p>
+        <div>
+            <input type="range" id="slider2" style="width:550px""></input>
+        </div>  
+        <blockquote style=" border-radius: 5px; padding:5px; font-size:16px;color:#ffffff;background-color:#0478aa">
+            <ul>
+                <li>The <code>cabbageWebSend</code> opcode can also send initialisation and audio rate signals. Audio
+                    rate signals are
+                    sent as an array of samples. </li><br>
+                <li>The data passed to the addlistener() callback method can be be scalar, or an array. It is up to you
+                    to make sure you interpret the data correctly. </li>
+            </ul>
+
+            </blockquote>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <p id="cabbageWebSendArray">
+        <div style="padding-left:220px;padding-top:10px;width:550px">
+            <h3>The cabbageWebSendArray opcode</h3>
+            <code>cabbageWebSendArray [kTrig,], "webViewChannel", "customEventName", kArray[]</code>
+            <p>
+                This opcode will send array data to the webview. It packs the data into a custom event and sends it to
+                the
+                corresponding webview. To pick up the data, you create a new listener:
+            <pre><code>
+    cabbage.addListener("webUIDrawNoteArray", (data) => {
+        //pass array of notes to drawNoteArray method
+        drawNoteArray(data);
+    });
+        </code></pre>
+            <div>
+                <canvas id="notesCanvas" width="550" height="150" style="border:1px solid grey"></canvas>
+            </div>
+            <p>
+                In this example Csound is generating a new set of notes every 16 beats. The updated is array is then
+                sent to the webview.
+            </p>
+
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <p id="cabbageWebSendTable">
+        <div style="padding-left:220px;padding-top:10px;width:550px">
+            <h3>The cabbageWebSendTable opcode</h3>
+            <code>cabbageWebSendTable [kTrig,], "webViewChannel", "customEventName", iTableNumber</code>
+            <p>
+                This opcode will send the contents of a table to the webview. It packs the data into a custom event and
+                sends it to
+                the corresponding webview. To pick up the data, you must add a custom listener as shown in the previous
+                examples.
+            </p>
+            <canvas id="tableCanvas" width="550" height="150" style="border:1px solid grey"></canvas>
+        </div>
+
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <p id="scrollingWaveform">
+    <div style="padding-left:220px;padding-top:10px;width:550px">
+        <h3>Scrolling waveforms</h3>
+        <p>
+            The ubiquitous scrolling waveform display can be achieved by sending a sample on each k-cycle to the
+            webview.
+            The webview picks up the sample and adds it to the end of an existing array, while removing the first
+            element
+            from the array.
+        </p>
+        <p>
+            It is the constant adding and removing of a single sample to the end and start of the array on each k-cycle
+            that make it appear to scroll across the screen.
+        </p>
+        <div>
+            <canvas id="waveformCanvas" width="550" height="150" style="border:1px solid grey"></canvas>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <p id="xyController">
+    <div style="padding-left:220px;padding-top:10px;width:550px">
+        <h3>Simple XY Controller</h3>
+        <p>
+            XY Controllers are simple to build using a html5 canvas. In this example a `onmousemove` event is attached to the canvas. Each time it gets call it sends x and y position of the mouse
+            is sent to Csound.
+        </p>
+        <div>
+            <canvas id="xyCanvas" onmousemove="draw(event)" width="300" height="300" style="border:1px solid grey"></canvas>
+        </div>
+        <p>
+            
+        </p>
+
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <script>
+        var header = document.getElementsByClassName("sidebar");
+        var links = header[0].getElementsByClassName("navLink");
+
+        let mouseDown = 0;
+        let cabbage = new Cabbage();
+        window.onmousedown = () => {
+            ++mouseDown;
+            if (mouseDown) {
+                console.log('mouse button down')
+            }
+        }
+        window.onmouseup = () => {
+            --mouseDown;
+            if (mouseDown) {
+                console.log('mouse button down')
+            }
+        }
+
+        for (var i = 0; i < links.length; i++) {
+            console.log('links')
+            links[i].addEventListener("click", function () {
+
+                var current = document.getElementsByClassName("active");
+                current[0].className = current[0].className.replace(" active", "");
+                this.className += " active";
+                let page = 1
+                switch (this.innerHTML) {
+                    case "cabbageWebSend":
+                        page = 2;
+                        break;
+                    case "cabbageWebSendArray":
+                        page = 3;
+                        break;
+                    case "cabbageWebSendTable":
+                        page = 4;
+                        break;
+                    case "Scrolling Waveform":
+                        page = 5;
+                        break;
+                    case "Sending data to Cabbage":
+                        page = 6;
+                        break;
+                    case "Simple XY Controller":
+                        page = 7;
+                        break;
+                    default:
+                        page = 1;
+                        break;
+                }
+
+                if (cabbage)
+                    cabbage.setChannel("currentPage", page)
+
+            });
+        }
+
+
+        function sliderChange() {
+            if (cabbage)
+                cabbage.setChannel("slider1", slider1.value);
+        }
+
+        cabbage.addListener("webUISlider", (data) => {
+            slider2.value = Number(data);
+        });
+
+        cabbage.addListener("webUIDrawNoteArray", (data) => {
+            drawNoteArray(data);
+        });
+
+        cabbage.addListener("webUIDrawTable", (data) => {
+            drawTable(data);
+        });
+
+        cabbage.addListener("webUIDrawScrollingWaveform", (data) => {
+            drawWaveform(data);
+        });
+        //===========================================================================
+        function remap(value, from1, to1, from2, to2, clamp = false) {
+            return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+        }
+
+        //console.clear();
+        let width = 550;
+        let height = 150;
+        var audioSamples = new Array(1000).fill(0);
+
+        let notesCanvas = document.getElementById("notesCanvas");
+        let tableCanvas = document.getElementById("tableCanvas");
+        let waveformCanvas = document.getElementById("waveformCanvas");
+        let xyCanvas = document.getElementById("xyCanvas");
+        let xyCtx = xyCanvas.getContext("2d");
+        xyCtx.fillStyle = "#303030";
+        xyCtx.fillRect(0, 0, xyCanvas.width, xyCanvas.height);
+
+        let level = 0;
+
+
+        function drawNoteArray(notes) {
+            if (notesCanvas !== null) {
+                let x = 0;
+                let y = 0;
+                let ctx = notesCanvas.getContext("2d");
+                console.log(notes.length);
+                ctx.strokeStyle = '#0478aa';
+                ctx.fillStyle = '#333';
+                ctx.fillRect(0, 0, width, height);
+                ctx.beginPath();
+                ctx.moveTo(0, height / 2);
+
+                for (let i = 0; i < notes.length; i++) {
+                    x = ((i * width) / notes.length);
+                    if (notes[i] > 0) {
+                        y = ((notes[i] - 48) / 32 * height)
+                        ctx.fillStyle = '#0478aa'
+                        ctx.fillRect(x, height - y, width / 8, height);
+                        ctx.stroke();
+                    }
+                }
+                ctx.closePath();
+            }
+        }
+
+        function drawTable(tableData) {
+            if (tableCanvas !== null) {
+                let ctx = tableCanvas.getContext("2d");
+                ctx.strokeStyle = '#0478aa';
+                ctx.fillStyle = '#303030';
+                ctx.fillRect(0, 0, width, height);
+
+
+                ctx.clearRect(0, 0, width, height);
+                ctx.fillStyle = '#303030';
+                ctx.fillRect(0, 0, width, height);
+
+                ctx.beginPath();
+                ctx.lineWidth = 5;
+
+                ctx.moveTo(0, height / 2);
+                // loop through all the previous levels
+                for (i = 0; i < tableData.length; i++) {
+                    x = ((i * width) / tableData.length);
+                    y = ((tableData[i] * height / 2) + height / 2);
+                    ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.closePath();
+            }
+        }
+
+        function drawWaveform(sampleAmp) {
+            if (waveformCanvas !== null) {
+                let ctx = waveformCanvas.getContext("2d");
+                ctx.strokeStyle = '#0478aa';
+                ctx.fillStyle = '#303030';
+                ctx.fillRect(0, 0, width, height);
+                var level = sampleAmp;
+                // add new level to end of array
+                audioSamples.push(level);
+                // remove first item in array
+                audioSamples.splice(0, 1);
+                console.log(audioSamples);
+                ctx.clearRect(0, 0, width, height);
+                ctx.fillStyle = '#303030';
+                ctx.fillRect(0, 0, width, height);
+
+                ctx.beginPath();
+                ctx.moveTo(0, height / 2);
+                // loop through all the previous levels
+                for (i = 0; i < audioSamples.length; i++) {
+                    x = ((i * width) / audioSamples.length);
+                    y = ((audioSamples[i] * height / 2) + height / 2);
+                    ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+                ctx.closePath();
+            }
+        }
+
+        //let lastPos = {x:0, y:0}
+        function draw(evt) {
+            if (mouseDown) {
+                let ctx = xyCanvas.getContext("2d");
+                var pos = getMousePos(xyCanvas, evt);
+                // ctx.clearRect(0, 0, xyCanvas.width, xyCanvas.height);
+                xyCtx.fillStyle = "#303030";
+                xyCtx.fillRect(0, 0, xyCanvas.width, xyCanvas.height);
+                ctx.fillStyle = "#0478aa";
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 20, 0, 2 * Math.PI, false);
+                ctx.fill(); 
+                if(cabbage){
+                    cabbage.setChannel("x", pos.x)
+                    cabbage.setChannel("y", pos.y)
+                }
+            }
+        }
+
+        function getMousePos(canvas, evt) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: evt.clientX - rect.left,
+                y: evt.clientY - rect.top
+            };
+        }
+    </script>
+
+</body>
+
+</html>

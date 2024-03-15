@@ -26,11 +26,11 @@
 #include "csdl.h"
 #include <cwindow.h>
 #include "../../Opcodes/opcodes.hpp"
-
 #include "../../Opcodes/CabbageMidiOpcodes.h"
 #include "../../Opcodes/CabbageProfilerOpcodes.h"
-
-
+#ifdef WebUI
+#include "../../Opcodes/CabbageWebUIOpcodes.h"
+#endif
 #include "../../Opcodes/CabbageIdentifierOpcodes.h"
 //#include "../../Opcodes/CabbageFileReaderOpcodes.h"
 #include "../../Utilities/CabbageUtilities.h"
@@ -43,6 +43,11 @@
 #include "../../Opcodes/CabbageBTOpcodes.h"
 #endif
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> develop
 //this class comes courtesy of @EyalAmir from TAP discord..
 class ProcessBlockTimeListener
 {
@@ -73,7 +78,7 @@ public:
         const BusesProperties& ioBuses);
 	~CsoundPluginProcessor() override;
 
-    std::atomic_bool canUpdate;
+
     void destroyCsoundGlobalVars();
     void createCsoundGlobalVars(const ValueTree& cabbageData);
 	bool supportsSidechain = false;
@@ -317,14 +322,14 @@ public:
     {
     public:
         float yScale = 0.f;
-        int windid = 0, min = 0, max = 0, size = 0;
+        int windid = 0, min1 = 0, max1 = 0, size = 0;
         String caption = {}, variableName = {};
 
         SignalDisplay (String _caption, int _id, float _scale, int _min, int _max, int _size):
             yScale (_scale),
             windid (_id),
-            min (_min),
-            max (_max),
+            min1 (_min),
+            max1 (_max),
             size (_size),
             caption (_caption)
         {}
@@ -388,9 +393,12 @@ public:
         return polling;
     }
     
+    bool wasRecompiled() { return recompiledOnPrepareToPlay;   }
+    void resetRecompiled() { recompiledOnPrepareToPlay = false; }
     ProcessBlockTimeListener processBlockListener;
 private:
     //==============================================================================
+    bool recompiledOnPrepareToPlay = false;
     int polling = 1;
     MidiBuffer midiOutputBuffer;
     int guiCycles = 0;
@@ -413,7 +421,6 @@ private:
     File csdFile = {}, csdFilePath = {};
     std::unique_ptr<Csound> csound;
     std::unique_ptr<FileLogger> fileLogger;
-
 //    int busIndex = 0;
     bool disableLogging = false;
 	int preferredLatency = 32;

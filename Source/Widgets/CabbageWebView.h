@@ -20,68 +20,49 @@
 #pragma once
 #include "../CabbageCommonHeaders.h"
 #include "CabbageWidgetBase.h"
+#include "../../choc/gui/choc_WebView.h"
 
 
-#include "../httplib.h"
-
-
-
-class HttpServer : public Thread
+class NativeWindowComponent :
+#ifdef JUCE_WINDOWS
+    public HWNDComponent
+#elif JUCE_MAC
+    public NSViewComponent
+#else
+    public XEmbedComponent
+#endif
 {
 public:
-	HttpServer() : Thread("HttpServer")
-	{
-	}
+    NativeWindowComponent() = default;
+#if defined(JUCE_WINDOWS) || defined(JUCE_MAC)
+    ~NativeWindowComponent() override
+    {
+#ifdef JUCE_WINDOWS
+        setHWND(nullptr);
+#elif JUCE_MAC
+        setView(nullptr);
+#endif
+    }
 
-	void start(int portNumber)
-	{
-		mPortNumber = portNumber;
-		if (mServer.set_mount_point("/", "C://Users//rory//OneDrive//Csoundfiles"))
-			DBG("success");
+    void setWindow(void* view)
+    {
+#ifdef JUCE_WINDOWS
+        setHWND(view);
+#elif JUCE_MAC
+        setView(view);
+#endif
+    }
+#else
+    jassertfalse;
+#endif
 
-		mServer.Post("/login", [this](const httplib::Request& req, httplib::Response& res)
-		{
-			jassertfalse;
-		});
+//    void mouseDown(const MouseEvent &event) override
+//    {
+//        jassertfalse;
+//    }
 
-		// ...
-
-		mServer.Get("/logout", [this](const httplib::Request& req, httplib::Response& res)
-		{
-			jassertfalse;
-		});
-
-		startThread();
-	}
-
-	void stop()
-	{
-		mServer.stop();
-	}
-
-	void test() {
-		mServer.Get("/index.html", [&](const httplib::Request& req, httplib::Response& res) {
-			if (req.has_param("parameter1")) {
-				auto value1 = req.get_param_value("parameter1");
-			}
-		});
-	}
-
-	bool isRunning() const noexcept
-	{
-		return isThreadRunning();
-	}
-
-protected:
-	void run() override
-	{
-		mServer.listen("127.0.0.1", mPortNumber);
-	}
-
-protected:
-	httplib::Server          mServer;
-	int                      mPortNumber;
 };
+
 
 
 class CabbageWebView : public Component, public ValueTree::Listener, public CabbageWidgetBase
@@ -90,13 +71,19 @@ class CabbageWebView : public Component, public ValueTree::Listener, public Cabb
     float rotate, corners;
     int pivotx, pivoty;
 	CabbagePluginEditor* owner;
-	HttpServer server;
-	std::unique_ptr<WebBrowserComponent> webView;
+
+    NativeWindowComponent nwComp;
+
+#if WebUI
+	std::unique_ptr<choc::ui::WebView> webView;
+#endif
+
 public:
 
     CabbageWebView (ValueTree wData, CabbagePluginEditor* _owner);
-    ~CabbageWebView() override {}
+	~CabbageWebView() override;
 
+    void startServer(std::string mountPoint);
     //ValueTree::Listener virtual methods....
     void valueTreePropertyChanged (ValueTree& valueTree, const Identifier&) override;
     void valueTreeChildAdded (ValueTree&, ValueTree&)override {}
@@ -105,11 +92,12 @@ public:
     void valueTreeParentChanged (ValueTree&) override {}
 
     ValueTree widgetData;
-
+#if !Cabbage_IDE_Build
+    std::unique_ptr<CabbageHttpServer> server;
+#endif
+    
+    
 	void resized() override;
-
-
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageWebView)
 };
 

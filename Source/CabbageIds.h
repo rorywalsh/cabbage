@@ -435,6 +435,7 @@ public:
         add ("rowPrefix");
         add ("colPrefix");
 		add ("sidechain");
+        add ("urlParams");
         add ("populate");		
         add ("keyWidth");
         add ("pluginId");
@@ -676,6 +677,7 @@ namespace CabbageIdentifierIds
     static const Identifier increment = "increment";
     static const Identifier isparent = "isparent";
     static const Identifier items = "items";
+    static const Identifier jsonData = "jsonData";
     static const Identifier keypressbaseoctave = "keypressBaseOctave";
     static const Identifier keyseparatorcolour = "keySeparatorColour";
     static const Identifier keywidth = "keyWidth";
@@ -687,6 +689,7 @@ namespace CabbageIdentifierIds
     static const Identifier latency = "latency";
     static const Identifier linethickness = "lineThickness";
     static const Identifier logger = "logger";
+    static const Identifier mountPoint = "mountPoint";
     static const Identifier macrostrings = "macrostrings";
     static const Identifier markercolour = "markerColour";
     static const Identifier markerend = "markerEnd";
@@ -741,6 +744,8 @@ namespace CabbageIdentifierIds
     static const Identifier popup = "popup";
     static const Identifier pos = "pos";
     static const Identifier points = "points";
+    static const Identifier serverport = "serverPort";
+    static const Identifier websocketport = "websocketPort";
     static const Identifier position = "position";
     static const Identifier popuppostfix = "popupPostfix";
     static const Identifier popupprefix = "popupPrefix";
@@ -865,6 +870,7 @@ namespace CabbageIdentifierIds
     static const String timeSigDenom = "TIME_SIG_DENOM";
     static const String timeSigNum = "TIME_SIG_NUM";
     static const String updaterate = "updaterate";
+    static const String urlParams = "urlParams";
     
 }
 
@@ -1133,8 +1139,9 @@ static const char* const CsoundKeywords[] =
     "strindex", "strindexk", "strlen", "strlenk", "strlower", "strlowerk", "strrindex", "strrindexk", "strsub", "strsubk", "strupper", "strupperk", "stsend", "sumarray", "syncloop", "syncphasor", "system", "system_i",
     "tab2pvs", "tab_i", "tabifd", "table3kt", "tablefilter", "tablefilteri", "tableshuffle", "tableshufflei", "tabmorph", "tabmorpha", "tabmorphak", "tabmorphi", "tabplay", "tabsum", "tabw", "tabw_i", "tb0", "tb0_init",
     "tb1", "tb10", "tb11", "tb12", "tb13", "tb14", "tb15", "tb1_init", "tb2", "tb2_init", "tb3", "tb4", "tb5", "tb6", "tb7", "tb8", "tb9", "temposcal", "trandom", "transegb", "transegr", "trcross", "trfilter", "trhighest",
-    "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "valuePostfix", "valuePrefix", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i", "NoteColour", "blackNoteLength", "blackNoteWidth",
-    "vmultv_i", "vosim", "ballColour", "vphaseseg", "markerStart", "trackerOutsideRadius", "markerThickness", "markerEnd", "repeatInterval", "cabbageMidiListener", "keyDownColour", "cabbageMidiSender", "cabbageMidiFileInfo", "userFolder", "factoryFolder", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", "then", "while", "od", "do", "endwhile", "trigexpseg", "triglinseg", "cabbageSetStateValue", "cabbageGetStateValue",  "cabbageWriteStateValue", "cabbageWriteStateData", "cabbageReadStateData", "cabbageChannelStateRecall", "cabbageGetWidgetChannels", "cabbageChannelStateSave", "cabbageSetValue", "cabbageGetFile", "cabbageCopyFile", "cabbageFindFiles", "cabbageGetValue", "cabbageGet", "cabbageSet", "cabbageGetCurrentWidget", "guiMode", "cabbageCreate", "showsSrubber", "titleBarColour", "FLslidBnkGetHandle", "K35_hpf", "K35_lpf", "OSCbundle", "OSCcount", "OSCinitM", "OSCraw", "OSCsend_lo", "S", "a", "allpole", "ampmidicurve", "apoleparams", "arduinoRead", "arduinoStart", "arduinoStop", "balance2", "beadsynt", "beosc", "bob", "bpf", "bpfcos", "cbrt", "chngeta", "chngeti", "chngetk", "chngetks", "chngets", "chnseta", "chnseti", "chnsetk", "chnsetks", "chnsets", "cmp", "cntCreate", "cntCycles", "cntRead", "cntReset", "cntState", "count", "count_i", "dct", "dctinv", "deinterleave", "diode_ladder", "dot", "faustdsp", "faustplay", "fmanal", "fmax", "fmin", "fmod", "ftaudio", "ftexists", "ftom", "ftprint", "ftset", "ftslice", "ftslicei", "getftargs", "getrowlin", "gtf", "hilbert2", "hypot", "i", "interleave", "k", "lag", "lagud", "lastcycle", "limit1", "lincos", "linlin", "loscil3phs", "loscilphs", "lpcanal", "lpcfilter", "lufs", "metro2", "mfb", "midiarp", "midichannelaftertouch", "midicontrolchange", "midiout_i", "midipolyaftertouch", "midiprogramchange", "moogvcf", "mtof", "mton", "nstrstr", "ntof", "ntom", "nxtpow2", "p", "pchtom", "pows", "printarray", "println", "printsk", "pvsbandwidth", "pvscfs", "pvslpc", "pvstrace", "randc", "reshapearray", "resonbnk", "rndseed", "sc_lag", "sc_lagud", "sc_phasor", "sc_trig", "schedulek", "select", "slicearray_i", "sorta", "sortd", "squinewave", "sterrain", "string2array", "strstrip", "tab2array", "tabrowlin", "trighold", "trigphasor", "trim", "trim_i", "tvconv", "vps", "websocket", "xyscale", "zdf_1pole", "zdf_1pole_mode", "zdf_2pole", "zdf_2pole_mode", "zdf_ladder", "readOnly", "doubleClickTogglesEdit", "caretColour", "valueTextBox","showScrubber", "scrollbars", "sort", "textBoxOutlineColour", "filmstrip", "valueTextBoxBounds", "sliderBounds", "keySeparatorColour", "protectedItems" "blackNoteColour","whiteNoteColour", "markerColour", "mouseInteraction", "backgroundColour","presetIgnore", "increment", "keypressBaseOctave", "radioGroup", "imgFile", "nslider","cabbageGetFileExtension", "cabbageGetFileNoExtension", "cabbageGetFilePath", "cabbageGetFilename", "cabbageChanged", "cabbageMidiInfo", "cabbageMidiReader", "vmeter", "hmeter", "defaultValue", "keyWidthScale", "keyWidth",  "presetNameAsText", "skew", "cabbageProfilerStart",  "cabbageProfilerStop",  "cabbageProfilerPrint",
+    "trlowest", "trmix", "trscale", "trshift", "trsplit", "unwrap", "urandom", "vactrol", "vadd_i", "vaddv_i", "vaget", "valuePostfix", "valuePrefix", "vaset", "vbap", "vbapg", "vbapgmove", "vbapmove", "vdel_k", "vdivv_i", "vexp_i", "vexpv_i", "vmult_i", "NoteColour", "blackNoteLength", "blackNoteWidth", "urlParams",
+    "vmultv_i", "vosim", "ballColour", "vphaseseg", "markerStart", "trackerOutsideRadius", "markerThickness", "markerEnd", "repeatInterval", "cabbageMidiListener", "keyDownColour", "cabbageMidiSender", "cabbageMidiFileInfo", "userFolder", "factoryFolder", "vpow_i", "vpowv_i", "vsubv_i", "vtable1k", "wiiconnect", "wiidata", "wiirange", "wiisend", "window", "writescratch", "zkwm", "then", "while", "od", "do", "endwhile", "trigexpseg", "triglinseg", "cabbageSetStateValue", "cabbageGetStateValue",  "cabbageWriteStateValue", "cabbageWriteStateData", "cabbageReadStateData", "cabbageChannelStateRecall", "cabbageGetWidgetChannels", "cabbageChannelStateSave", "cabbageSetValue", "cabbageGetFile", "cabbageCopyFile", "cabbageFindFiles", "cabbageGetValue", "cabbageGet", "cabbageSet", "cabbageGetCurrentWidget", "guiMode", "cabbageCreate", "showsSrubber", "titleBarColour", "FLslidBnkGetHandle", "K35_hpf", "K35_lpf", "OSCbundle", "OSCcount", "OSCinitM", "OSCraw", "OSCsend_lo", "S", "a", "allpole", "ampmidicurve", "apoleparams", "arduinoRead", "arduinoStart", "arduinoStop", "balance2", "beadsynt", "beosc", "bob", "bpf", "bpfcos", "cbrt", "chngeta", "chngeti", "chngetk", "chngetks", "chngets", "chnseta", "chnseti", "chnsetk", "chnsetks", "chnsets", "cmp", "cntCreate", "cntCycles", "cntRead", "cntReset", "cntState", "count", "count_i", "dct", "dctinv", "deinterleave", "diode_ladder", "dot", "faustdsp", "faustplay", "fmanal", "fmax", "fmin", "fmod", "ftaudio", "ftexists", "ftom", "ftprint", "ftset", "ftslice", "ftslicei", "getftargs", "getrowlin", "gtf", "hilbert2", "hypot", "i", "interleave", "k", "lag", "lagud", "lastcycle", "limit1", "lincos", "linlin", "loscil3phs", "loscilphs", "lpcanal", "lpcfilter", "lufs", "metro2", "mfb", "midiarp", "midichannelaftertouch", "midicontrolchange", "midiout_i", "midipolyaftertouch", "midiprogramchange", "moogvcf", "mtof", "mton", "nstrstr", "ntof", "ntom", "nxtpow2", "p", "pchtom", "pows", "printarray", "println", "printsk", "pvsbandwidth", "pvscfs", "pvslpc", "pvstrace", "randc", "reshapearray", "resonbnk", "rndseed", "sc_lag", "sc_lagud", "sc_phasor", "sc_trig", "schedulek", "select", "slicearray_i", "sorta", "sortd", "squinewave", "sterrain", "string2array", "strstrip", "tab2array", "tabrowlin", "trighold", "trigphasor", "trim", "trim_i", "tvconv", "vps", "websocket", "xyscale", "zdf_1pole", "zdf_1pole_mode", "zdf_2pole", "zdf_2pole_mode", "zdf_ladder", "readOnly", "doubleClickTogglesEdit", "caretColour", "valueTextBox","showScrubber", "scrollbars", "sort", "textBoxOutlineColour", "filmstrip", 
+        "valueTextBoxBounds", "sliderBounds", "keySeparatorColour", "protectedItems" "blackNoteColour","whiteNoteColour", "markerColour", "mouseInteraction", "backgroundColour","presetIgnore", "increment", "keypressBaseOctave", "radioGroup", "imgFile", "nslider","cabbageGetFileExtension", "cabbageGetFileNoExtension", "cabbageGetFilePath", "cabbageGetFilename", "cabbageChanged", "cabbageMidiInfo", "cabbageMidiReader", "vmeter", "hmeter", "defaultValue", "keyWidthScale", "keyWidth",  "presetNameAsText", "skew", "cabbageProfilerStart",  "cabbageProfilerStop",  "cabbageProfilerPrint", "cabbageWebSend", "cabbageWebSendArray", "cabbageWebSendTable", "outall",
     nullptr
 };
 #endif  // CABBAGECOMMANDIDS_H_INCLUDED

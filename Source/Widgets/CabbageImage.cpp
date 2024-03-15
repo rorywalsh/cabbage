@@ -96,7 +96,6 @@ void CabbageImage::paint (Graphics& g)
 
             if (result.failed())
             {
-                DBG(result.getErrorMessage());
                 shader.reset();
             }
 

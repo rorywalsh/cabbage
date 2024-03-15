@@ -26,6 +26,7 @@
 #undef _CR
 #endif
 
+//==============================================================================
 
 char tmp_string[4096] = { 0 };
 
@@ -88,9 +89,9 @@ createPluginFilter() {
 CabbagePluginProcessor::CabbagePluginProcessor(const File& inputFile, BusesProperties ioBuses)
 	: CsoundPluginProcessor(inputFile, ioBuses),
 	cabbageWidgets("CabbageWidgetData"),
-	csdFile(inputFile)
+	csdFile(inputFile), lookAndFeel()
 {
-
+	LookAndFeel::setDefaultLookAndFeel(&lookAndFeel);
 	CabbageUtilities::debug("Cabbage Processor Constructor - Requested input channels:", getTotalNumInputChannels());
 	CabbageUtilities::debug("Cabbage Processor Constructor - Requested output channels:", getTotalNumOutputChannels());
 	createCsound(inputFile);
@@ -162,6 +163,7 @@ CabbagePluginProcessor::~CabbagePluginProcessor()
 	cabbageWidgets.removeAllChildren(nullptr);
 
 	Logger::writeToLog("CabbagePluginProcessor::~CabbagePluginProcessor");
+
 }
 
 
@@ -181,8 +183,7 @@ void CabbagePluginProcessor::timerCallback()
     
     if(pollingChannels() == 0)
     {
-        if(this->canUpdate.load())
-            getIdentifierDataFromCsound();
+        getIdentifierDataFromCsound();
     }
     
     
@@ -1013,9 +1014,9 @@ void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData)
 void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInBytes) 
 {
     try{
-	auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
+	
+		auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
         setPluginState(jsonData, "", true);
-        
     }
     catch (nlohmann::json::exception& e) {
         DBG(e.what());
@@ -1127,7 +1128,7 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
 				{
                     String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
                                                                          CabbageIdentifierIds::text);
-                    j[currentPresetName.toStdString()][channelName.toStdString()] = text.toRawUTF8();
+                    j[currentPresetName.toStdString()][channelName.toStdString()] = text.toStdString();
                 }
 				if (type == CabbageWidgetTypes::soundfiler) 
 				{
@@ -1256,7 +1257,7 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
         }
 #endif
         
-		DBG(j.dump(4));
+
 	for (nlohmann::ordered_json::iterator itA = j.begin(); itA != j.end(); ++itA)
 	{
 		if (String(itA.key()) == presetName || hostState == true)
@@ -1289,9 +1290,9 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
 				}
 				else if ((type == CabbageWidgetTypes::combobox || type == CabbageWidgetTypes::listbox) && CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::channeltype) == "string")
 				{
-					const String test = presetData.value().dump();
-					const String stringComboItem = csdFile.getParentDirectory().getChildFile(presetData.value().dump()).existsAsFile() ?
-						csdFile.getParentDirectory().getChildFile(presetData.value().dump()).getFileNameWithoutExtension() : presetData.value().dump();
+					const String test = presetData.value().get<std::string>();
+					const String stringComboItem = csdFile.getParentDirectory().getChildFile(presetData.value().get<std::string>()).existsAsFile() ?
+						csdFile.getParentDirectory().getChildFile(presetData.value().get<std::string>()).getFileNameWithoutExtension() : presetData.value().get<std::string>();
 
 					if (type == CabbageWidgetTypes::combobox)
 						CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem); //IMPORTANT: - updates the combobox text..
@@ -1506,7 +1507,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
                 {
                     if(!i.identWithArgument)
                     {
-                        //any widgets taht break identifiers into unique entities must be parsed....
+                        //any widgets that break identifiers into unique entities must be parsed....
                         if(identifier.toString().containsIgnoreCase("colour"))
                         {
                             String colourTokens;
@@ -1858,6 +1859,8 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
 
 void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
+	//getCsound()->Message("CABBAGE: prepareToPlay() called by host\n");
+
 	bool csoundRecompiled = false;
 	String jsonStateData;
 
@@ -1879,21 +1882,15 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 
 	//samplingRate = sampleRate;
 	CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
-	
-	csoundRecompiled = true;
+
 	if (sampleRate != samplingRate)
 	{
+        samplingRate = sampleRate;
+        CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
 		initAllCsoundChannels(cabbageWidgets);
 	}
 	
 #endif
-
-	//DBG(cabbageWidgets.toXmlString());
-	if (sampleRate != samplingRate && csoundRecompiled == false) {
-		samplingRate = sampleRate;
-		CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
-		initAllCsoundChannels(cabbageWidgets);
-	}
 
 	if (getCsound())
 	{
@@ -1905,6 +1902,18 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 			pdClass->data = jsonStateData.toStdString();
 		}
 	}
+
+
+	//some host call prepareToPlay multiple times, this can cause channel changed events to be missed. 
+	if (wasRecompiled())
+	{
+		initAllCsoundChannels(cabbageWidgets);
+		//setPluginState(hostStateData, "", true);
+		resetRecompiled();
+	}
+
+	
+	
 
 }
 

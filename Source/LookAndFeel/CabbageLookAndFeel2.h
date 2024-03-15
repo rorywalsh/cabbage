@@ -83,17 +83,17 @@ public:
     
     void drawPopupMenuBackground (Graphics& g, int width, int height) override;
 
-    void drawPopupMenuItemWithOptions (Graphics& g, const Rectangle<int>& area,
+    void drawPopupMenuItemWithOptions (Graphics& g, const juce::Rectangle<int>& area,
                                                        bool isHighlighted,
                                                        const PopupMenu::Item& item,
                                        const PopupMenu::Options&) override;
     
-    void drawPopupMenuItem (Graphics&, const Rectangle<int>& area,
+    void drawPopupMenuItem (Graphics&, const juce::Rectangle<int>& area,
                             bool isSeparator, bool isActive, bool isHighlighted, bool isTicked, bool hasSubMenu,
                             const String& text, const String& shortcutKeyText,
                             const Drawable* icon, const Colour* textColour) override;
 
-    void drawAlertBox (Graphics& g, AlertWindow& alert, const Rectangle<int>& textArea, TextLayout& textLayout) override;
+    void drawAlertBox (Graphics& g, AlertWindow& alert, const juce::Rectangle<int>& textArea, TextLayout& textLayout) override;
     Image drawCheckMark(Colour colour);
 
     static void drawFromSVG (Graphics& g, File svgFile, int x, int y, int newWidth, int newHeight, AffineTransform affine);

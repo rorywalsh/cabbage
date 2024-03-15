@@ -31,7 +31,7 @@ void PropertyPanelLookAndFeel::drawPropertyPanelSectionHeader(Graphics& g, const
     auto buttonSize = height * 0.75f;
     auto buttonIndent = (height - buttonSize) * 0.5f;
 
-    drawTreeviewPlusMinusBox (g, Rectangle<float> (buttonIndent, buttonIndent, buttonSize, buttonSize), panelBGcolour, isOpen, false);
+    drawTreeviewPlusMinusBox (g, juce::Rectangle<float> (buttonIndent, buttonIndent, buttonSize, buttonSize), panelBGcolour, isOpen, false);
 
     auto textX = (int)(buttonIndent * 2.0f + buttonSize + 2.0f);
 

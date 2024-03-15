@@ -57,7 +57,7 @@ struct CabbageOpcodes
     MYFLT* value = {};
     MYFLT lastValue = 0;
     MYFLT* str = {};
-    
+        
     static CabbageWidgetIdentifiers* getGlobalvariable(csnd::Csound* csound, CabbageWidgetIdentifiers** vt)
     {
         if (vt != nullptr)
@@ -236,60 +236,6 @@ struct GetCabbageStringValueWithTrigger : csnd::Plugin<2, 2>
     int getAttribute(bool init);
 };
 
-struct CabbageValueChanged : csnd::Plugin<2, 3>
-{
-    MYFLT* value;
-    int mode = 2;
-    MYFLT oldValue[1024] = {0};
-    bool firstPerfPass = true;
-    std::vector<STRINGDAT> currentStrings;
-    int init()
-    {
-        firstPerfPass = true;
-        csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
-        currentStrings.resize(inputArgs.len());
-        for(int i = 0 ; i < currentStrings.size() ; i++ ){
-            if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
-                                                         CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-            {
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
-                currentStrings[i].size = ((STRINGDAT*)value)->size;
-            }
-        }
-        return OK;
-    }
-    int kperf(){ return getAttribute(); }
-    int deinit(){  currentStrings.clear(); return OK; }
-    int getAttribute();
-};
-
-struct CabbageValueChangedIndex : csnd::Plugin<2, 3>
-{
-    MYFLT* value;
-    int mode = 2;
-    bool firstPerfPass;
-    MYFLT oldValue[1024] ={0};
-    std::vector<STRINGDAT> currentStrings;
-    int init()
-    {
-        firstPerfPass = true;
-        csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
-        currentStrings.resize(inputArgs.len());
-        for(int i = 0 ; i < currentStrings.size() ; i++ ){
-            if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
-                                                         CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
-            {
-                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
-                currentStrings[i].size = ((STRINGDAT*)value)->size;
-            }
-        }
-        return OK;
-    }
-    int kperf(){ return getAttribute(); }
-    int deinit(){  currentStrings.clear(); return OK; }
-    int getAttribute();
-};
-
 struct GetCabbageStringValueArrayWithTrigger : csnd::Plugin<2, 1>
 {
     MYFLT* value;
@@ -328,7 +274,61 @@ struct GetCabbageValueArrayWithTrigger : csnd::Plugin<2, 1>
     int getAttribute();
 };
 
+//===============================================================================================================
 
+struct CabbageValueChanged : csnd::Plugin<2, 3>
+{
+    MYFLT* value;
+    int mode = 2;
+    MYFLT oldValue[1024] = { 0 };
+    bool firstPerfPass = true;
+    std::vector<STRINGDAT> currentStrings;
+    int init()
+    {
+        firstPerfPass = true;
+        csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
+        currentStrings.resize(inputArgs.len());
+        for (int i = 0; i < currentStrings.size(); i++) {
+            if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+            {
+                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                currentStrings[i].size = ((STRINGDAT*)value)->size;
+            }
+        }
+        return OK;
+    }
+    int kperf() { return getAttribute(); }
+    int deinit() { currentStrings.clear(); return OK; }
+    int getAttribute();
+};
+
+struct CabbageValueChangedIndex : csnd::Plugin<2, 3>
+{
+    MYFLT* value;
+    int mode = 2;
+    bool firstPerfPass;
+    MYFLT oldValue[1024] = { 0 };
+    std::vector<STRINGDAT> currentStrings;
+    int init()
+    {
+        firstPerfPass = true;
+        csnd::Vector<STRINGDAT>& inputArgs = inargs.vector_data<STRINGDAT>(0);
+        currentStrings.resize(inputArgs.len());
+        for (int i = 0; i < currentStrings.size(); i++) {
+            if (csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, inputArgs[i].data,
+                CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
+            {
+                currentStrings[i].data = csound->strdup(((STRINGDAT*)value)->data);
+                currentStrings[i].size = ((STRINGDAT*)value)->size;
+            }
+        }
+        return OK;
+    }
+    int kperf() { return getAttribute(); }
+    int deinit() { currentStrings.clear(); return OK; }
+    int getAttribute();
+};
 
 //================================================================================================================
 struct CreateCabbageWidget : csnd::InPlug<2>

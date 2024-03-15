@@ -34,7 +34,10 @@ public:
     public:
         bool toggleEditOnDoubleClick = false;
         
-        explicit CustomTextEditor (CabbageTextEditor* _owner): TextEditor (""), owner (_owner) {}
+        explicit CustomTextEditor (CabbageTextEditor* _owner): TextEditor (""), owner (_owner)
+        {
+            
+        }
         ~CustomTextEditor() override {}
 
         void addPopupMenuItems (PopupMenu& menuToAddTo, const MouseEvent* mouseClickEvent) override
@@ -59,6 +62,7 @@ public:
             }
         }
         
+
         void performPopupMenuAction (int menuItemID) override
         {
             if (menuItemID == 1)

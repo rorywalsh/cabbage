@@ -38,7 +38,7 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
 
     const int readOnly = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::readonly);
     textEditor.setReadOnly(readOnly == 1 ? true : false);
-    
+
 
     int fontSize = CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::fontsize);
     const String font = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::typeface);
@@ -66,6 +66,8 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
     
     textEditor.toggleEditOnDoubleClick = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::doubleclicktogglesedit);
     
+    
+    
     addAndMakeVisible (textEditor);
     textEditor.setMultiLine (isMultiline);
     const bool showScrollbars = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::scrollbars);
@@ -92,6 +94,8 @@ CabbageTextEditor::CabbageTextEditor (ValueTree wData, CabbagePluginEditor* _own
         textEditor.setText (getCurrentText(widgetData), dontSendNotification);
 
     setWantsKeyboardFocus(false);
+    
+
 }
 
 void CabbageTextEditor::textEditorReturnKeyPressed (TextEditor&)
@@ -113,7 +117,7 @@ void CabbageTextEditor::sendTextToCsound()
     strings.removeDuplicates (false);
     stringIndex = strings.size() - 1;
     setWidgetText (textEditor.getText());
-    CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::text, getText());
+    CabbageWidgetData::setStringProp (widgetData, CabbageIdentifierIds::text, textEditor.getText());
     owner->sendChannelStringDataToCsound (getChannel(), textEditor.getText());
 //    textEditor.applyFontToAllText(userFont);
 }

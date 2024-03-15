@@ -162,7 +162,7 @@ void CabbageLookAndFeel2::drawTooltip(Graphics& g, const String& text, int width
 #endif
 
     LookAndFeelHelpers::layoutTooltipText(text, findColour(TooltipWindow::textColourId))
-        .draw(g, Rectangle<float>((float)width, (float)height));
+        .draw(g, juce::Rectangle<float>((float)width, (float)height));
 }
 
 
@@ -189,7 +189,6 @@ void CabbageLookAndFeel2::drawComboBox(Graphics& g, int width, int height, bool 
     g.fillRoundedRectangle(0, 0, width, height, corners);
 
     // Border outline
-    DBG(box.findColour(ComboBox::outlineColourId).toDisplayString(true));
     g.setColour(box.findColour(ComboBox::outlineColourId));
     float borderWidth = CabbageUtilities::getBorderWidth();
     g.drawRoundedRectangle(borderWidth / 2, borderWidth / 2, width - borderWidth,
@@ -247,7 +246,7 @@ Image CabbageLookAndFeel2::drawCheckMark(Colour colour)
     return img;
 }
 
-void CabbageLookAndFeel2::drawPopupMenuItemWithOptions (Graphics& g, const Rectangle<int>& area,
+void CabbageLookAndFeel2::drawPopupMenuItemWithOptions (Graphics& g, const juce::Rectangle<int>& area,
                                                    bool isHighlighted,
                                                    const PopupMenu::Item& item,
                                                    const PopupMenu::Options& box)
@@ -277,7 +276,7 @@ void CabbageLookAndFeel2::drawPopupMenuItemWithOptions (Graphics& g, const Recta
                        &colour);
 }
 //======== Popup Menu Items ===========================================================================
-void CabbageLookAndFeel2::drawPopupMenuItem(Graphics& g, const Rectangle<int>& area,
+void CabbageLookAndFeel2::drawPopupMenuItem(Graphics& g, const juce::Rectangle<int>& area,
     const bool isSeparator, const bool isActive,
     const bool isHighlighted, const bool isTicked,
     const bool hasSubMenu, const String& text,
@@ -634,7 +633,7 @@ void CabbageLookAndFeel2::drawRotarySlider(Graphics& g, int x, int y, int width,
                     image = ImageCache::getFromFile(imgSlider);
                     image = image.rescaled(slider.getWidth(), slider.getHeight());
                     std::unique_ptr<Drawable> drawable(Drawable::createFromImageFile(imgSlider));
-                    drawable->setTransformToFit(Rectangle<float>(0, 0, slider.getWidth(), slider.getWidth()), RectanglePlacement::centred);
+                    drawable->setTransformToFit(juce::Rectangle<float>(0, 0, slider.getWidth(), slider.getWidth()), RectanglePlacement::centred);
                     drawable->draw(g, 1.f, AffineTransform::rotation(angle,
                         slider.getWidth() / 2, slider.getWidth() / 2));
                     //g.drawImage(image, rx, ry, diameter, diameter, 0, 0, slider.getWidth(), slider.getHeight(), false);
@@ -753,7 +752,7 @@ Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
     else
         minYSpace = 15;
 
-    Rectangle<int> localBounds = slider.getLocalBounds();
+    juce::Rectangle<int> localBounds = slider.getLocalBounds();
 
     const int textBoxWidth = jmax(0, jmin(slider.getTextBoxWidth(), localBounds.getWidth() - minXSpace));
     const int textBoxHeight = jmax(0, jmin(slider.getTextBoxHeight(), localBounds.getHeight() - minYSpace));
@@ -802,12 +801,12 @@ Slider::SliderLayout CabbageLookAndFeel2::getSliderLayout(Slider& slider)
     var bounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::valuetextboxbounds, var());
     if(bounds.isArray())
     {
-        layout.textBoxBounds = Rectangle<int>(bounds[0], bounds[1], bounds[2], bounds[3]);
+        layout.textBoxBounds = juce::Rectangle<int>(bounds[0], bounds[1], bounds[2], bounds[3]);
     }
     var sliderBounds = slider.getProperties().getWithDefault(CabbageIdentifierIds::sliderbounds, var());
     if(sliderBounds.isArray())
     {
-        layout.sliderBounds = Rectangle<int>(sliderBounds[0], sliderBounds[1], sliderBounds[2], sliderBounds[3]);
+        layout.sliderBounds = juce::Rectangle<int>(sliderBounds[0], sliderBounds[1], sliderBounds[2], sliderBounds[3]);
     }
     
     return layout;
@@ -1237,7 +1236,7 @@ void CabbageLookAndFeel2::drawFromSVG(Graphics& g, File svgFile, int x, int y, i
         if (svg != nullptr)
         {
             drawable = Drawable::createFromSVG(*svg);
-            drawable->setTransformToFit(Rectangle<float>(x, y, newWidth, newHeight), RectanglePlacement::stretchToFit);
+            drawable->setTransformToFit(juce::Rectangle<float>(x, y, newWidth, newHeight), RectanglePlacement::stretchToFit);
             drawable->draw(g, 1.f, affine);
         }
     }
@@ -1245,7 +1244,7 @@ void CabbageLookAndFeel2::drawFromSVG(Graphics& g, File svgFile, int x, int y, i
 
 void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
                                           AlertWindow& alert,
-                                          const Rectangle<int>& textArea,
+                                          const juce::Rectangle<int>& textArea,
                                           TextLayout& textLayout)
 {
     g.fillAll (Colour::fromString("2ff52636a"));
@@ -1279,7 +1278,7 @@ void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
         if (svg != nullptr)
         {
             drawable = Drawable::createFromSVG (*svg);
-            Rectangle<float> rect (20, 20, 80, 80);//alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).withHeight(130).toFloat());
+            juce::Rectangle<float> rect (20, 20, 80, 80);//alert.getLocalBounds().removeFromLeft (iconSpaceUsed - 20).withHeight(130).toFloat());
             drawable->setTransformToFit (rect, RectanglePlacement::stretchToFit);
             drawable->draw (g, 1.f, AffineTransform());
         }
@@ -1287,7 +1286,7 @@ void CabbageLookAndFeel2::drawAlertBox (Graphics& g,
     
     
     g.setColour (alert.findColour (AlertWindow::textColourId));
-    textLayout.draw (g, Rectangle<int> (textArea.getX() + iconSpaceUsed - 50,
+    textLayout.draw (g, juce::Rectangle<int> (textArea.getX() + iconSpaceUsed - 50,
                                         textArea.getY(),
                                         textArea.getWidth() - iconSpaceUsed - 40,
                                         textArea.getHeight()).toFloat());
@@ -1346,7 +1345,7 @@ void CabbageLookAndFeel2::drawLabel(Graphics& g, Label& label)
         g.setColour(label.findColour(Label::textColourId).withMultipliedAlpha(alpha));
         g.setFont(font);
 
-        Rectangle<int> textArea(label.getBorderSize().subtractedFrom(label.getLocalBounds()));
+        juce::Rectangle<int> textArea(label.getBorderSize().subtractedFrom(label.getLocalBounds()));
 
         g.drawFittedText(label.getText(), textArea, label.getJustificationType(),
             jmax(1, (int)(textArea.getHeight() / font.getHeight())),
