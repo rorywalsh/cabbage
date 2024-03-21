@@ -601,17 +601,26 @@ elseif(APPLE)
         # endif()
     endif()
 
-else()
+else() # linux
     include_directories("/usr/local/include/csound")
     include_directories("/usr/include/csound")
     find_library(CSOUND_LIBRARY NAMES csound64)
     find_library(LIBSNDFILE_LIBRARY NAMES sndfile libsndfile-1 libsndfile)
     add_compile_options(-j4)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules (gtk3 REQUIRED gtk+-3.0 IMPORTED_TARGET)
+    pkg_check_modules (webkit2 REQUIRED webkit2gtk-4.0 IMPORTED_TARGET)
+
+    # not sure why the libwebkit headers aren't found
+    include_directories("/usr/include/webkitgtk-4.0/")
+
     target_link_libraries(${PROJECT_NAME} 
     PRIVATE
         ${JUCE_MODULES}
         ${CSOUND_LIBRARY}
     PUBLIC
+        PkgConfig::gtk3 
+        PkgConfig::webkit2
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)

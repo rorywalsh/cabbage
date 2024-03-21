@@ -202,7 +202,8 @@ if platform.system() == "Linux" and installLinuxDeps is True:
     os.system('sudo apt-get install flex')
     os.system('sudo apt-get install bison')
     os.system('sudo apt-get update')
-    os.system('sudo apt-get install libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev')
+    os.system('sudo apt-get install -y libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev')
+    os.system('sudo apt-get install -y libjavascriptcoregtk-4.0-18 libjavascriptcoregtk-4.0-dev')
 # ==============================================================================================
 if platform.system() == "Windows" and os.path.exists("CabbageInstall"):
     os.system('rm -rf CabbageInstall')
