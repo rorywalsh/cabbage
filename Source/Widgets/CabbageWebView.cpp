@@ -21,10 +21,9 @@
 #include "../Audio/Plugins/CabbagePluginEditor.h"
 
 
-
 CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     : widgetData (wData),
-    CabbageWidgetBase(o), nwComp(),
+    CabbageWidgetBase(o),
     owner(o)
 {
     setName(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::name));
@@ -33,8 +32,10 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
     options.enableDebugMode = true;
     webView.reset(new choc::ui::WebView(options));
 
-    addAndMakeVisible(nwComp);
-        
+    nativeWindow = std::make_unique<NativeWindowComponent>(webView->getViewHandle());
+    addAndMakeVisible(nativeWindow.get());
+
+
     const String mntDir = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::mountPoint);
     File mntPoint(File(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::csdfile)).getParentDirectory().getChildFile(mntDir));
     
@@ -134,7 +135,7 @@ CabbageWebView::CabbageWebView (ValueTree wData, CabbagePluginEditor* o)
                 });
     }
   
-    nwComp.setWindow(webView->getViewHandle());
+
     setName (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::name));
     widgetData.addListener (this);              //add listener to valueTree so it gets notified when a widget's property changes
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
@@ -154,7 +155,7 @@ CabbageWebView::~CabbageWebView()
 
 void CabbageWebView::resized() 
 {
-    nwComp.setBounds(getLocalBounds());       
+    nativeWindow->setBounds(getLocalBounds());
 }
 
 void CabbageWebView::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)

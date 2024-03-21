@@ -22,7 +22,6 @@
 #include "CabbageWidgetBase.h"
 #include "../../choc/gui/choc_WebView.h"
 
-
 class CabbageWebView : public Component, public ValueTree::Listener, public CabbageWidgetBase
 {
 
@@ -30,7 +29,7 @@ class CabbageWebView : public Component, public ValueTree::Listener, public Cabb
     int pivotx, pivoty;
 	CabbagePluginEditor* owner;
 
-    NativeWindowComponent nwComp;
+    std::unique_ptr<NativeWindowComponent> nativeWindow;
 
 #if WebUI
 	std::unique_ptr<choc::ui::WebView> webView;
@@ -58,4 +57,3 @@ public:
 	void resized() override;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CabbageWebView)
 };
-

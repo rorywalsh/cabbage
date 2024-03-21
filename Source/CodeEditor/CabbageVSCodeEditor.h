@@ -25,7 +25,6 @@
 #include "../Utilities/CabbageStrings.h"
 #include "../../choc/gui/choc_WebView.h"
 
-#ifndef JUCE_LINUX
 
 class CabbageEditorContainer;
 
@@ -38,7 +37,7 @@ public:
     ~CabbageVSCodeEditorComponent() override;
     void hide();
     void resized() override;
-    NativeWindowComponent nativeWindow;
+    std::unique_ptr<NativeWindowComponent> nativeWindow;
     void loadContent(String content, int lineNumber=0, int delay=1000);
     void updateColourScheme(bool isCsdFile=true){  }
     void setFont(Font f){  }
@@ -82,5 +81,5 @@ private:
     int currentLineNumber = 0;
 };
 
-#endif
+
 #endif  // CABBAGEVSCODEEDITOR_H_INCLUDED

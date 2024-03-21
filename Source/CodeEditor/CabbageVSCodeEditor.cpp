@@ -17,6 +17,7 @@
   02111-1307 USA
 */
 
+
 #include "CabbageVSCodeEditor.h"
 //#include "../Settings/CabbageSettings.h"
 //#include "../Utilities/CabbageUtilities.h"
@@ -35,9 +36,10 @@ CabbageVSCodeEditorComponent::CabbageVSCodeEditorComponent (CabbageEditorContain
     webView->setHTML(vscode.loadFileAsString().toStdString());
     
     auto v = webView->getViewHandle();
-    nativeWindow.setBounds(0, 0, 400, 400);
-    nativeWindow.setWindow(v);
-    addAndMakeVisible(nativeWindow);
+    nativeWindow = std::make_unique<NativeWindowComponent>(v);
+    nativeWindow->setBounds(0, 0, 400, 400);
+    nativeWindow->setWindow(v);
+    addAndMakeVisible(nativeWindow.get());
     
     webView->bind("textHasChanged", [this](const choc::value::ValueView& args) -> choc::value::Value
         {
@@ -81,7 +83,7 @@ void CabbageVSCodeEditorComponent::loadContent(String content, int lineNumber, i
 
 void CabbageVSCodeEditorComponent::resized()
 {
-    nativeWindow.setBounds(0, 0, static_cast<int>(getWidth()), getHeight());
+    nativeWindow->setBounds(0, 0, static_cast<int>(getWidth()), getHeight());
 }
 
 void CabbageVSCodeEditorComponent::insertSuggestion()

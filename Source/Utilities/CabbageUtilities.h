@@ -71,8 +71,14 @@ class NativeWindowComponent :
 #endif
 {
 public:
-    NativeWindowComponent() = default;
-#if defined(JUCE_WINDOWS) || defined(JUCE_MAC)
+    NativeWindowComponent(void* view)
+#ifdef JUCE_LINUX
+:XEmbedComponent(view)
+#endif
+    {
+        setWindow(view);
+    }
+
     ~NativeWindowComponent() override
     {
 #ifdef JUCE_WINDOWS
@@ -88,11 +94,12 @@ public:
         setHWND(view);
 #elif JUCE_MAC
         setView(view);
+#else
+
 #endif
     }
-#else
-    jassertfalse;
-#endif
+
+    //jassertfalse;
 
 //    void mouseDown(const MouseEvent &event) override
 //    {
