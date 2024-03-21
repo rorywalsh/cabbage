@@ -29,10 +29,13 @@ struct CabbageWebOpcodes
             varData = *vt;
         }        
         
-        for( int i = 0 ; i < varData->data.getNumChildren() ; i++){
-            if(varData->data.getChild(i).getType() == Identifier(cabbageWidget))
-                return varData->data.getChild(i);
-        }
+
+        return varData->data.getChildWithName(Identifier(cabbageWidget));
+
+        //for( int i = 0 ; i < varData->data.getNumChildren() ; i++){
+        //    if(varData->data.getChild(i).getType() == Identifier(cabbageWidget))
+        //        return varData->data.getChild(i);
+        //}
         
         return ValueTree("null");
     }
@@ -41,7 +44,6 @@ struct CabbageWebOpcodes
 //===============================================================================
 struct CabbageWebSendScalar : csnd::InPlug<4>
 {
-    ValueTree valueTree;
     CabbageWidgetsValueTree** vt = nullptr;
     CabbageWidgetsValueTree* varData;
     int trigger = 0;
@@ -58,7 +60,6 @@ struct CabbageWebSendScalar : csnd::InPlug<4>
 
 struct CabbageWebSendArray : csnd::InPlug<4>
 {
-    ValueTree valueTree;
     CabbageWidgetsValueTree** vt = nullptr;
     CabbageWidgetsValueTree* varData;
     int trigger = 0;
@@ -75,7 +76,6 @@ struct CabbageWebSendArray : csnd::InPlug<4>
 
 struct CabbageWebSendASig : csnd::InPlug<4>
 {
-    ValueTree valueTree;
     CabbageWidgetsValueTree** vt = nullptr;
     CabbageWidgetsValueTree* varData;
     int trigger = 0;
@@ -92,7 +92,6 @@ struct CabbageWebSendASig : csnd::InPlug<4>
 
 struct CabbageWebSendString : csnd::InPlug<4>
 {
-    ValueTree valueTree;
     CabbageWidgetsValueTree** vt = nullptr;
     CabbageWidgetsValueTree* varData;
     int trigger = 0;
@@ -109,7 +108,6 @@ struct CabbageWebSendString : csnd::InPlug<4>
 
 struct CabbageWebSendTable : csnd::InPlug<4>
 {
-    ValueTree valueTree;
     csnd::Table table;
     CabbageWidgetsValueTree** vt = nullptr;
     CabbageWidgetsValueTree* varData;

@@ -4,15 +4,16 @@
 #include "httplib.h"
 
 
-class CabbageHttpServer : public Thread
+class CabbageHttpServer : public Thread, public DeletedAtShutdown
 {
 public:
-    CabbageHttpServer() : Thread("HttpServer") {
+    CabbageHttpServer() : Thread("HttpServer"), DeletedAtShutdown() {
        
     }
     
     ~CabbageHttpServer() {
 #if Cabbage_IDE_Build
+        stopThread(100);
         clearSingletonInstance();
 #endif
     }

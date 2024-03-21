@@ -11,6 +11,7 @@
 int CabbageWebSendScalar::sendScalarToWebUI(bool init)
 {
     String cabbageWidget = {}, eventName = {};
+    ValueTree valueTree("null");
 
     if (in_count() == 3)
     {
@@ -25,11 +26,12 @@ int CabbageWebSendScalar::sendScalarToWebUI(bool init)
         eventName = args.str_data(2).data;
     }
         
-    if(init)
+    if (init)
     {
         csound->plugin_deinit(this);
-        valueTree = CabbageWebOpcodes::assignValueTree(vt, csound, cabbageWidget);
     }
+
+    valueTree = CabbageWebOpcodes::assignValueTree(vt, csound, cabbageWidget);
     
     if(trigger)
     {
@@ -41,7 +43,7 @@ int CabbageWebSendScalar::sendScalarToWebUI(bool init)
             v.getDynamicObject()->setProperty("name", eventName);
             v.getDynamicObject()->setProperty("data", value);
             //valueTree.setProperty("jsonData", v, nullptr);
-            MessageManager::callAsync([this, v]()
+            MessageManager::callAsync([valueTree, v]() mutable
             {
                 valueTree.setProperty("jsonData", v, nullptr);
             });
@@ -58,6 +60,7 @@ int CabbageWebSendScalar::sendScalarToWebUI(bool init)
 int CabbageWebSendArray::sendArrayToWebUI(bool init)
 {
     String cabbageWidget = {}, eventName = {};
+    ValueTree valueTree("null");
 
     if (in_count() == 3)
     {
@@ -72,11 +75,12 @@ int CabbageWebSendArray::sendArrayToWebUI(bool init)
         eventName = args.str_data(2).data;
     }
         
-    if(init)
+    if (init)
     {
         csound->plugin_deinit(this);
-        valueTree = CabbageWebOpcodes::assignValueTree(vt, csound, cabbageWidget);
     }
+
+    valueTree = CabbageWebOpcodes::assignValueTree(vt, csound, cabbageWidget);
     
     if(trigger)
     {
@@ -98,7 +102,7 @@ int CabbageWebSendArray::sendArrayToWebUI(bool init)
             var v(new DynamicObject);
             v.getDynamicObject()->setProperty("name", eventName);
             v.getDynamicObject()->setProperty("data", array);
-            MessageManager::callAsync([this, v]()
+            MessageManager::callAsync([valueTree, v]() mutable
             {
                 valueTree.setProperty("jsonData", v, nullptr);
             });
@@ -114,6 +118,7 @@ int CabbageWebSendArray::sendArrayToWebUI(bool init)
 int CabbageWebSendASig::sendASigToWebUI(bool init)
 {
     String cabbageWidget = {}, eventName = {};
+    ValueTree valueTree("null");
 
     if (in_count() == 3)
     {
@@ -128,11 +133,12 @@ int CabbageWebSendASig::sendASigToWebUI(bool init)
         eventName = args.str_data(2).data;
     }
         
-    if(init)
+    if (init)
     {
         csound->plugin_deinit(this);
-        valueTree = CabbageWebOpcodes::assignValueTree(vt, csound, cabbageWidget);
     }
+
+    valueTree = CabbageWebOpcodes::assignValueTree(vt, csound, cabbageWidget);
     
     if(trigger)
     {
@@ -155,7 +161,7 @@ int CabbageWebSendASig::sendASigToWebUI(bool init)
             var v(new DynamicObject);
             v.getDynamicObject()->setProperty("name", eventName);
             v.getDynamicObject()->setProperty("data", array);
-            MessageManager::callAsync([this, v]()
+            MessageManager::callAsync([valueTree, v]() mutable
             {
                 valueTree.setProperty("jsonData", v, nullptr);
             });
@@ -171,7 +177,9 @@ int CabbageWebSendASig::sendASigToWebUI(bool init)
 //===========================================================================================
 int CabbageWebSendTable::sendTableToWebUI(bool init)
 {
-    String cabbageWidget = {}, eventName = {};
+    //creating local VT here due to issues with lambda function..
+    ValueTree valueTree("null");
+    String cabbageWidget = {}, eventName = "null";
 
     if (in_count() == 3)
     {
@@ -186,18 +194,19 @@ int CabbageWebSendTable::sendTableToWebUI(bool init)
         eventName = args.str_data(2).data;
     }
         
-    if(init)
+    if (init)
     {
         csound->plugin_deinit(this);
         table.init(csound, args(in_count() == 3 ? 2 : 3));
-        valueTree = CabbageWebOpcodes::assignValueTree(vt, csound, cabbageWidget);
     }
+    
+    valueTree = CabbageWebOpcodes::assignValueTree(vt, csound, cabbageWidget);    
     
     if(trigger)
     {
         if(valueTree.getType() != Identifier("null"))
         {
-            //      const MessageManagerLock mmLock;
+            //const MessageManagerLock mmLock;
             String array = "[";
             int index = 0;
             for (auto v : table)
@@ -212,10 +221,12 @@ int CabbageWebSendTable::sendTableToWebUI(bool init)
             var v(new DynamicObject);
             v.getDynamicObject()->setProperty("name", eventName);
             v.getDynamicObject()->setProperty("data", array);
-            MessageManager::callAsync([this, v]()
+            MessageManager::callAsync([valueTree, v]() mutable
             {
                 valueTree.setProperty("jsonData", v, nullptr);
             });
+            
+
         }
     }
     
@@ -230,25 +241,25 @@ int CabbageWebSendString::sendStringToWebUI(bool init)
 {
     String cabbageWidget(args.str_data(0).data);
     
-    if(init)
-    {
-        csound->plugin_deinit(this);
-        valueTree = CabbageWebOpcodes::assignValueTree(vt, csound, cabbageWidget);
-    }
-
-    if(valueTree.getType() != Identifier("null"))
-    {
-//      const MessageManagerLock mmLock;
-        auto value = String(args.str_data(2).data);
-//        Identifier prop(args.str_data(1).data);
-//        var v(new DynamicObject);
-//        v.getDynamicObject()->setProperty(prop, value);
-//        valueTree.setProperty("jsonData", v, nullptr);
-    }
-        
-    
-    if(valueTree.getType() == Identifier("null") && init)
-        csound->message("Could not find widget with channel name:" + cabbageWidget.toStdString());
-    
+//    if(init)
+//    {
+//        csound->plugin_deinit(this);
+//        valueTree = CabbageWebOpcodes::assignValueTree(vt, csound, cabbageWidget);
+//    }
+//
+//    if(valueTree.getType() != Identifier("null"))
+//    {
+////      const MessageManagerLock mmLock;
+//        auto value = String(args.str_data(2).data);
+////        Identifier prop(args.str_data(1).data);
+////        var v(new DynamicObject);
+////        v.getDynamicObject()->setProperty(prop, value);
+////        valueTree.setProperty("jsonData", v, nullptr);
+//    }
+//        
+//    
+//    if(valueTree.getType() == Identifier("null") && init)
+//        csound->message("Could not find widget with channel name:" + cabbageWidget.toStdString());
+//    
     return OK;
 }

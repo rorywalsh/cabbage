@@ -401,8 +401,8 @@ bool CsoundPluginProcessor::setupAndCompileCsound(File currentCsdFile, File file
     csnd::plugin<CabbageWebSendArray>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSendArray", "", "kSSk[]", csnd::thread::ik);
     csnd::plugin<CabbageWebSendArray>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSendArray", "", "SSi[]", csnd::thread::i);
     
-    csnd::plugin<CabbageWebSendTable>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSendTable", "", "kSSi", csnd::thread::ia);
-    csnd::plugin<CabbageWebSendTable>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSendTable", "", "SSi", csnd::thread::ia);
+    csnd::plugin<CabbageWebSendTable>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSendTable", "", "kSSi", csnd::thread::ik);
+    csnd::plugin<CabbageWebSendTable>((csnd::Csound*) getCsound()->GetCsound(), "cabbageWebSendTable", "", "SSi", csnd::thread::i);
 
 
 #if Bluetooth
