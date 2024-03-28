@@ -1878,9 +1878,6 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 	}
 
 
-#if !Cabbage_IDE_Build && !Cabbage_Lite
-
-	//samplingRate = sampleRate;
 	CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
 
 	if (sampleRate != samplingRate)
@@ -1889,8 +1886,6 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
         CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
 		initAllCsoundChannels(cabbageWidgets);
 	}
-	
-#endif
 
 	if (getCsound())
 	{

@@ -1135,10 +1135,12 @@ void CsoundPluginProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
 
         }
     }
+#if Cabbage_IDE_Build == 0
     if (preferredLatency == -1)
         this->setLatencySamples(0);
     else
 	    this->setLatencySamples(preferredLatency == 0 ? csound->GetKsmps() : preferredLatency);
+#endif
 }
 
 void CsoundPluginProcessor::releaseResources()
