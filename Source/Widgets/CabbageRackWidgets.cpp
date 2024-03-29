@@ -136,7 +136,7 @@ void CabbageScrew::paint (Graphics& g)
 //==============================================================================
 void CabbageScrew::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    handleCommonUpdates (this, valueTree, false, prop);
+    handleCommonUpdates (this, valueTree, prop);
     repaint();
 }
 
@@ -360,7 +360,7 @@ void CabbagePort::paint (Graphics& g)
 //==============================================================================
 void CabbagePort::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
 {
-    handleCommonUpdates (this, valueTree, false, prop);
+    handleCommonUpdates (this, valueTree,  prop);
     repaint();
 }
 
@@ -392,7 +392,7 @@ void CabbageLight::valueTreePropertyChanged (ValueTree& valueTree, const Identif
         CabbageUtilities::debug(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value));
         mainColour = mainColour.withAlpha(CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::value));
     }
-    handleCommonUpdates (this, valueTree, false, prop);
+    handleCommonUpdates (this, valueTree, prop);
     repaint();
 }
 

@@ -131,7 +131,7 @@ public:
         file = val;
     }
     void initialiseCommonAttributes (Component* child, ValueTree valueTree);                        //handles simple attributes on initialisation
-    void handleCommonUpdates (Component* child, ValueTree data, bool calledFromConstructor, const Identifier& prop); //handles all updates from ident channel message
+    void handleCommonUpdates (Component* child, ValueTree data, const Identifier& prop); //handles all updates from ident channel message
 
     //see below file for implementation
     template< typename Type >

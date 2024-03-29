@@ -90,5 +90,5 @@ void CabbageCsoundConsole::valueTreePropertyChanged (ValueTree& valueTree, const
     setMonospaced(valueTree);
     lookAndFeelChanged();
     repaint();
-    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
 }

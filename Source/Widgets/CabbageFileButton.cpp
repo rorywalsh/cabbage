@@ -337,7 +337,7 @@ void CabbageFileButton::valueTreePropertyChanged (ValueTree& valueTree, const Id
 {
     DBG(getChannel());
     setLookAndFeelColours (valueTree);
-    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     setButtonText (getText());
     if( mode == "file" || mode == "save" || mode == "directory")
         setFile(valueTree);

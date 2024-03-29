@@ -89,7 +89,7 @@ void CabbageCheckbox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
     else
     {
-        handleCommonUpdates (this, valueTree, false, prop);
+        handleCommonUpdates (this, valueTree, prop);
         setColour (TextButton::ColourIds::textColourOffId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
         setColour (TextButton::ColourIds::textColourOnId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::onfontcolour)));
         setColour (TextButton::buttonColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));

@@ -213,7 +213,7 @@ void CabbageSoundfiler::valueTreePropertyChanged (ValueTree& valueTree, const Id
     soundfiler.setScrubberPos (CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::scrubberposition));
     soundfiler.setWaveformColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));
     soundfiler.setBackgroundColour (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::tablebackgroundcolour));
-    handleCommonUpdates (this, valueTree, false, prop);      //handle common updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, prop);      //handle common updates such as bounds, alpha, rotation, visible, etc
     soundfiler.repaint();
     repaint();
 

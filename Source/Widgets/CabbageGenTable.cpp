@@ -257,7 +257,7 @@ void CabbageGenTable::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             table.setTableColours (tableColours);
         }
 
-        handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+        handleCommonUpdates (this, valueTree, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     }
 
 }

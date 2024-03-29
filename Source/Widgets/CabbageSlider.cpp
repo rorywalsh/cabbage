@@ -754,7 +754,7 @@ void CabbageSlider::valueTreePropertyChanged(ValueTree& valueTree, const Identif
         getSlider().getProperties().set("trackerouterradius", CabbageWidgetData::getNumProp(valueTree, CabbageIdentifierIds::trackeroutsideradius));
 
         
-        handleCommonUpdates(this, valueTree, false, prop);
+        handleCommonUpdates(this, valueTree, prop);
         
         if(prop == CabbageIdentifierIds::left || prop == CabbageIdentifierIds::top ||
            prop == CabbageIdentifierIds::width || prop == CabbageIdentifierIds::height ||

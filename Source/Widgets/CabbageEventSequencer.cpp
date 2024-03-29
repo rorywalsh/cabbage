@@ -337,7 +337,7 @@ void CabbageEventSequencer::valueTreePropertyChanged (ValueTree& valueTree, cons
     else
     {
         repaint();
-        handleCommonUpdates(this, valueTree, false, prop);      //handle common updates such as bounds, alpha, rotation, visible, etc
+        handleCommonUpdates(this, valueTree, prop);      //handle common updates such as bounds, alpha, rotation, visible, etc
         setColours(valueTree);
 
     }

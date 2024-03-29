@@ -169,7 +169,7 @@ void CabbageXYPad::valueTreePropertyChanged (ValueTree& valueTree, const Identif
 {
     if (prop != CabbageIdentifierIds::valuex && prop != CabbageIdentifierIds::valuey) //not updating xy values here...
     {
-        handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+        handleCommonUpdates (this, valueTree, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
         fontColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour));
         textColour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::textcolour));
         colour = Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour));

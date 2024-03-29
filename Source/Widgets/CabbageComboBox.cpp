@@ -550,7 +550,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
             addItemsToCombobox (valueTree);
         }
         
-        handleCommonUpdates(this, valueTree, false, prop);
+        handleCommonUpdates(this, valueTree, prop);
     }
 
     repaint();

@@ -208,7 +208,7 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     cropx = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropx);
     cropwidth = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropwidth);
     cropheight = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropheight);
-    handleCommonUpdates (this, valueTree, false, prop);
+    handleCommonUpdates (this, valueTree, prop);
     
     if (prop == CabbageIdentifierIds::svgElement)
         svgElement = createSVG(valueTree);

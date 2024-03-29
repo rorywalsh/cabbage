@@ -377,7 +377,7 @@ void CabbagePresetButton::valueTreePropertyChanged (ValueTree& valueTree, const 
         setButtonText (getText());
         setTooltip(getCurrentPopupText(valueTree));
 
-        handleCommonUpdates(this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+        handleCommonUpdates(this, valueTree, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     }
 
 }

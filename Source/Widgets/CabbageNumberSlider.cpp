@@ -132,7 +132,7 @@ void CabbageNumberSlider::valueTreePropertyChanged (ValueTree& valueTree, const 
         slider.setColour (Slider::textBoxBackgroundColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::colour)));
         slider.setColour (Slider::textBoxOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::outlinecolour)));
         slider.setColour (Slider::textBoxTextColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)));
-        handleCommonUpdates (this, valueTree, false, prop);      //handle common updates such as bounds, alpha, rotation, visible, etc
+        handleCommonUpdates (this, valueTree, prop);      //handle common updates such as bounds, alpha, rotation, visible, etc
         align = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::align);
         label.setText (getText(), dontSendNotification);
         const int fontSize = (CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::fontsize) == -1 ? CabbageWidgetData::getNumProp(widgetData, CabbageIdentifierIds::height) - 10 :

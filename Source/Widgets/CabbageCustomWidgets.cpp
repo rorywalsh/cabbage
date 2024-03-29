@@ -39,7 +39,7 @@ void DemoCabbageWidget::valueTreePropertyChanged (ValueTree& valueTree, const Id
     }
     else
     {
-        handleCommonUpdates (this, valueTree, false, prop);      //handle common updates such as bounds, alpha, rotation, visible, etc
+        handleCommonUpdates (this, valueTree, prop);      //handle common updates such as bounds, alpha, rotation, visible, etc
     }
 }
 //add any new custom widgets here to avoid having to edit makefiles and projects
@@ -119,6 +119,6 @@ void CabbageMeter::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     else
     {
         overlayRect.colour = Colour::fromString (CabbageWidgetData::getProperty (valueTree, CabbageIdentifierIds::overlaycolour).toString());
-        handleCommonUpdates (this, valueTree, false, prop);      //handle common updates such as bounds, alpha, rotation, visible, etc
+        handleCommonUpdates (this, valueTree, prop);      //handle common updates such as bounds, alpha, rotation, visible, etc
     }
 }

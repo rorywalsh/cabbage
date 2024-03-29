@@ -57,14 +57,15 @@ void CabbageWidgetBase::initialiseCommonAttributes (Component* child, ValueTree 
     lineNumber = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::linenumber);
     child->getProperties().set (CabbageIdentifierIds::linenumber, lineNumber);
     populateTextArrays (data);
+    child->setTransform(AffineTransform::rotation(rotate, child->getX() + CabbageWidgetData::getNumProp(data,
+        CabbageIdentifierIds::pivotx),
+        child->getY() + CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::pivoty)));
+    child->setAlpha(CabbageWidgetData::getNumProp(data, CabbageIdentifierIds::alpha));
     //now initialise everything that can be updated using ident channels
-    handleCommonUpdates (child, data, true, Identifier());
 }
 
-void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, bool calledFromConstructor, const Identifier& prop)
+void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, const Identifier& prop)
 {
-    if (calledFromConstructor == false)
-    {
         if (editor != nullptr && editor->isEditModeEnabled() == false)
         {
             if(prop == CabbageIdentifierIds::bounds){
@@ -95,7 +96,7 @@ void CabbageWidgetBase::handleCommonUpdates (Component* child, ValueTree data, b
                 editor->updateLayoutEditorFrames();
 #endif
         }
-    }
+
 
     if (prop == CabbageIdentifierIds::pivotx)
     {

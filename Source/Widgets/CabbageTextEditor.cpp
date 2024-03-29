@@ -162,7 +162,7 @@ void CabbageTextEditor::valueTreePropertyChanged (ValueTree& valueTree, const Id
     textEditor.setColour (TextEditor::highlightColourId, Colour::fromString (CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::fontcolour)).contrasting (.5f));
     lookAndFeelChanged();
     repaint();
-    handleCommonUpdates (this, valueTree, false, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
+    handleCommonUpdates (this, valueTree, prop);      //handle comon updates such as bounds, alpha, rotation, visible, etc
     
     const String filename = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::file);
     const File textFile(File::getCurrentWorkingDirectory().getChildFile(filename).getFullPathName());
