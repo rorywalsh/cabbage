@@ -67,6 +67,7 @@ String CabbageWidgetData::getCabbageCodeForIdentifier(ValueTree widgetData, Stri
         case HashStringToInt ("sort"):
         case HashStringToInt ("saveAs"):
         case HashStringToInt ("presetBrowser"):
+        case HashStringToInt ("presetIgnore"):
         case HashStringToInt ("protectedItems"):
         case HashStringToInt ("serverPort"):
         case HashStringToInt ("websocketPort"):
