@@ -208,6 +208,8 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
     cropx = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropx);
     cropwidth = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropwidth);
     cropheight = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::cropheight);
+    
+    
     handleCommonUpdates (this, valueTree, prop);
     
     if (prop == CabbageIdentifierIds::svgElement)
@@ -217,6 +219,9 @@ void CabbageImage::valueTreePropertyChanged (ValueTree& valueTree, const Identif
         glShaderCode = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::glshader);
         owner->setOpenGLForShader();
     }
+    else if (prop == CabbageIdentifierIds::corners)
+        corners = CabbageWidgetData::getNumProp (valueTree, CabbageIdentifierIds::corners);
+        
     repaint();
 }
 
