@@ -25,8 +25,37 @@
 #include "CabbageVSCodeEditor.h"
 #include "CabbageOutputConsole.h"
 #include "JavascriptCodeTokeniser.h"
+#include <type_traits>
 
 class CabbageMainComponent;
+
+
+class CabbageCodeEditor
+{
+    std::unique_ptr<CabbageCodeEditorComponent> editor;
+    std::unique_ptr<CabbageVSCodeEditorComponent> vsEditor;
+    
+public:
+    template <typename T>
+    T getEditor(){
+        if(std::is_same_v<T, CabbageCodeEditorComponent>){
+            if(editor != nullptr)
+                return editor;
+            else{
+                editor = std::make_unique<CabbageCodeEditorComponent>();
+                return editor;
+            }
+        }
+        else if(std::is_same_v<T, CabbageVSCodeEditorComponent>){
+            if(vsEditor != nullptr)
+                return vsEditor;
+            else{
+                vsEditor = std::make_unique<CabbageVSCodeEditorComponent>();
+                return vsEditor;
+            }
+        }
+    }
+};
 
 class CabbageEditorContainer : public Component
 {

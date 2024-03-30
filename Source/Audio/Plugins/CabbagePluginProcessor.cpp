@@ -1123,7 +1123,8 @@ String CabbagePluginProcessor::addPluginPreset(String presetName,  const String&
             const var value = CabbageWidgetData::getProperty(cabbageWidgets.getChild(i), CabbageIdentifierIds::value);
             
             //only write values for widgets that have channels
-            if (channelName.isNotEmpty()) {
+            if (channelName.isNotEmpty()) 
+            {
                 if (type == CabbageWidgetTypes::texteditor)
 				{
                     String text = CabbageWidgetData::getStringProp(cabbageWidgets.getChild(i),
@@ -1298,6 +1299,7 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
 						CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem); //IMPORTANT: - updates the combobox text..
 
 					CabbageWidgetData::setStringProp(valueTree, CabbageIdentifierIds::value, stringComboItem);
+                    getCsound()->SetStringChannel(channelName.toUTF8().getAddress(), stringComboItem.toUTF8().getAddress());
 
 				}
 				else if (type == CabbageWidgetTypes::filebutton)

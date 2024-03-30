@@ -137,7 +137,7 @@ CabbageComboBox::CabbageComboBox (ValueTree wData, CabbagePluginEditor* _owner)
         }
         else
         {
-            DBG(getValue());
+ 
             owner->sendChannelDataToCsound (getChannel(), getValue());
             setSelectedItemIndex (getValue() - 1, dontSendNotification);
         }
