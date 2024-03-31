@@ -993,14 +993,15 @@ AudioProcessorEditor* CabbagePluginProcessor::createEditor() {
 void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData) 
 {
     try{
-	auto j = nlohmann::json::parse(addPluginPreset("CABBAGE_PRESETS", "", false).toStdString());
+        auto j = nlohmann::json::parse(addPluginPreset("CABBAGE_PRESETS", "", false).toStdString());
 
-	nlohmann::json k, l;
-	l["dummy"] = "dummy";
-	k["daw state"] = j;
-	k["dummy"] = l;
+        nlohmann::json k, l;
+        l["dummy"] = "dummy";
+        k["daw state"] = j;
+        k["dummy"] = l;
 
-	MemoryOutputStream(destData, true).writeString(k.dump(4));
+        MemoryOutputStream(destData, true).writeString(k.dump(4));
+        hostStateData = k;
     }
     catch (nlohmann::json::exception& e) {
         DBG(e.what());
@@ -1017,6 +1018,7 @@ void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInByt
 	
 		auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
         setPluginState(jsonData, "", true);
+        hostStateData = jsonData;
     }
     catch (nlohmann::json::exception& e) {
         DBG(e.what());
@@ -1901,11 +1903,12 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 	}
 
 
-	//some host call prepareToPlay multiple times, this can cause channel changed events to be missed. 
+	//some host call prepareToPlay multiple times, this will trigger Csound to recompile.
+    //when it does, we need to reinstate the current session state...
 	if (wasRecompiled())
 	{
 		initAllCsoundChannels(cabbageWidgets);
-		//setPluginState(hostStateData, "", true);
+		setPluginState(hostStateData, "", true);
 		resetRecompiled();
 	}
 

@@ -210,7 +210,7 @@ private:
     OwnedArray<XYPadAutomator> xyAutomators;
 	int samplingRate = 44100;
 	int screenWidth{}, screenHeight{};
-
+    nlohmann::ordered_json hostStateData;
     OwnedArray<CabbagePluginParameter> parameters;
     Font customFont;
     File customFontFile;
