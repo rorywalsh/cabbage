@@ -196,7 +196,11 @@ public:
 	CabbagePluginEditor* getCabbagePluginEditor();
 	CabbagePluginProcessor* getCabbagePluginProcessor();
 	CabbageOutputConsole* getCurrentOutputConsole();
-	CabbageCodeEditorComponent* getCurrentCodeEditor();
+#if VSCODE
+	CabbageVSCodeEditorComponent* getCurrentCodeEditor();
+#else
+    CabbageCodeEditorComponent* getCurrentCodeEditor();
+#endif
 	CabbageEditorContainer* getCurrentEditorContainer();
 	CabbageEditorContainer* getEditorContainer(int index);
 	GraphDocumentComponent* getGraphComponent(){	return graphComponent;	}

@@ -115,9 +115,12 @@ public:
     int getStatusBarPosition();
     void hideOutputConsole();
 
-
+#if VSCODE
+    std::unique_ptr<CabbageVSCodeEditorComponent> editor;
+#else
     std::unique_ptr<CabbageCodeEditorComponent> editor;
-
+#endif
+    
     std::unique_ptr<CabbageOutputConsole> outputConsole;
     StatusBar statusBar;
     CodeDocument csoundDocument;

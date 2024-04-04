@@ -933,7 +933,7 @@ void CabbageMainComponent::timerCallback()
 
           const String csoundOutputString = getFilterGraph()->getCsoundOutput (nodeId);
 
-          if (csoundOutputString.length() > 0)
+          if (csoundOutputString.length() > 0 && getCurrentOutputConsole())
                 getCurrentOutputConsole()->setText (csoundOutputString);
 
         }
@@ -1210,6 +1210,15 @@ CabbageEditorContainer* CabbageMainComponent::getEditorContainer(int index)
 	return nullptr;
 }
 //==================================================================================
+#if VSCODE
+CabbageVSCodeEditorComponent* CabbageMainComponent::getCurrentCodeEditor()
+{
+    if (getCurrentEditorContainer())
+        return getCurrentEditorContainer()->editor.get();
+    else
+        return nullptr;
+}
+#else
 CabbageCodeEditorComponent* CabbageMainComponent::getCurrentCodeEditor()
 {
     if (getCurrentEditorContainer())
@@ -1217,7 +1226,7 @@ CabbageCodeEditorComponent* CabbageMainComponent::getCurrentCodeEditor()
     else
         return nullptr;
 }
-
+#endif
 //==================================================================================
 CabbageOutputConsole* CabbageMainComponent::getCurrentOutputConsole()
 {
@@ -1911,7 +1920,9 @@ void CabbageMainComponent::closeDocument()
 //==================================================================================
 void CabbageMainComponent::removeEditor()
 {
-    cabbageSettings->getUserSettings()->setValue ("FontSizeConsole", getCurrentEditorContainer()->outputConsole.get()->getFontSize());
+    if(getCurrentOutputConsole())
+        cabbageSettings->getUserSettings()->setValue ("FontSizeConsole", getCurrentOutputConsole()->getFontSize());
+    
     editorAndConsole.removeObject (getCurrentEditorContainer());
     fileTabs.remove (currentFileIndex);
     currentFileIndex = (currentFileIndex > 0 ? currentFileIndex - 1 : 0);
@@ -2027,7 +2038,8 @@ int CabbageMainComponent::testFileForErrors (String file)
         if (exitCode == 1)
         {
             process.start ("csound " + file);
-            this->getCurrentOutputConsole()->setText (process.readAllProcessOutput());
+            if(getCurrentOutputConsole())
+                getCurrentOutputConsole()->setText (process.readAllProcessOutput());
             stopCsoundForNode (file);
             return 1;
         }
@@ -2164,7 +2176,8 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
 
             //getCurrentCsdFile().getParentDirectory().setAsCurrentWorkingDirectory();
             //this will create or update plugin...
-            this->getCurrentOutputConsole()->setText("\n/*============================================================*/\n");
+            if(getCurrentOutputConsole())
+                getCurrentOutputConsole()->setText("\n/*============================================================*/\n");
             graphComponent->createNewPlugin(FilterGraph::getPluginDescriptor(node, getCurrentCsdFile().getFullPathName()), pluginNodePos);
 
 
@@ -2191,7 +2204,8 @@ void CabbageMainComponent::runCsoundForNode (String file, int fileTabIndex)
             if(warnings.size()>0)
             {
                 Timer::callAfterDelay(1000, [warnings, this](){
-                    this->getCurrentOutputConsole()->setText("/*"+ warnings.joinIntoString("\n") + "\n*/\n");
+                    if(getCurrentOutputConsole())
+                    getCurrentOutputConsole()->setText("/*"+ warnings.joinIntoString("\n") + "\n*/\n");
                 });
             }
         }

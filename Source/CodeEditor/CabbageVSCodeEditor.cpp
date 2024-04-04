@@ -32,7 +32,7 @@ CabbageVSCodeEditorComponent::CabbageVSCodeEditorComponent (CabbageEditorContain
     choc::ui::WebView::Options options;
     options.enableDebugMode = true;
     webView.reset(new choc::ui::WebView(options));
-    File vscode("~/sourcecode/vscode.html");
+    File vscode("/Users/rwalsh/sourcecode/cabbage/Source/CodeEditor/vscode.html");
     webView->setHTML(vscode.loadFileAsString().toStdString());
     
     auto v = webView->getViewHandle();
@@ -67,13 +67,10 @@ CabbageVSCodeEditorComponent::~CabbageVSCodeEditorComponent()
 
 void CabbageVSCodeEditorComponent::loadContent(String content, int lineNumber, int delay)
 {
-    
-    
     Timer::callAfterDelay(delay, [this, lineNumber, delay, content]()
     {
         auto jsCode = "updateText(`" + content + "`, " + String(lineNumber+1) +");";
         webView->evaluateJavascript(jsCode.toStdString());
-        insertSuggestion();
     });
     
     currentLineNumber = lineNumber;
@@ -81,18 +78,15 @@ void CabbageVSCodeEditorComponent::loadContent(String content, int lineNumber, i
     
 }
 
+void CabbageVSCodeEditorComponent::scrollToLine(int line)
+{
+    auto jsCode = "scrollToLine("+String(line+1)+");";
+    webView->evaluateJavascript(jsCode.toStdString());
+}
+
 void CabbageVSCodeEditorComponent::resized()
 {
     nativeWindow->setBounds(0, 0, static_cast<int>(getWidth()), getHeight());
-}
-
-void CabbageVSCodeEditorComponent::insertSuggestion()
-{
-    //auto xmlDoc = XmlDocument(CabbageStrings::getOpcodesXml());
-    
-
-
-    //webView->evaluateJavascript(newSuggestion.toStdString());
 }
 
 void CabbageVSCodeEditorComponent::removeCurrentLine()
@@ -137,3 +131,43 @@ void CabbageVSCodeEditorComponent::updateBoundsText (int lineNumber, String code
 
 }
 
+void CabbageVSCodeEditorComponent::parseTextForInstrumentsAndRegions()    //this is called on a separate thread..
+{
+    StringArray csdArray;
+    csdArray.addLines (allContent);
+    
+   
+    instrumentsAndRegions.clear();
+
+    for (int i = 0 ; i < csdArray.size() ; i++)
+    {
+        if (csdArray[i].indexOf ("<Cabbage>") != -1)
+        {
+            instrumentsAndRegions.set ("<Cabbage>", i);
+        }
+        else if (csdArray[i].indexOf ("<CsoundSynthesiser>") != -1 ||
+                 csdArray[i].indexOf ("<CsoundSynthesizer>") != -1)
+        {
+            instrumentsAndRegions.set ("<CsoundSynthesizer>", i);
+        }
+
+        else if ( csdArray[i].indexOf (";- Region:") != -1 || csdArray[i].indexOf ("//#") != -1)
+        {
+            const String region = csdArray[i].replace (";- Region:", "").replace("//#", "");
+            instrumentsAndRegions.set (region, i);
+        }
+
+
+        else if ((csdArray[i].indexOf ("instr ") != -1 || csdArray[i].indexOf ("instr    ") != -1) &&
+                 csdArray[i].substring (0, csdArray[i].indexOf ("instr")).isEmpty())
+        {
+            int commentInLine = csdArray[i].indexOf (";");
+            String line = csdArray[i];
+            String instrumentNameOrNumber = line.substring (csdArray[i].indexOf ("instr") + 6, commentInLine == -1 ? 1024 : commentInLine);
+            const String identifier = "instr " + instrumentNameOrNumber.trim();
+
+            if (identifier.isNotEmpty())
+                instrumentsAndRegions.set (identifier, i);
+        }
+    }
+}

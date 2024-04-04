@@ -35,11 +35,16 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* cabbageSettings
         editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
 #endif
         addAndMakeVisible (editor.get());
+        outputConsole.reset (new CabbageOutputConsole (settings->valueTree, consoleDocument));
+        outputConsole->setVisible (true);
+        addAndMakeVisible (outputConsole.get());
+        const int fontSizeConsole = settings->getUserSettings()->getIntValue("FontSizeConsole", 14);
+        outputConsole->setFontSize (fontSizeConsole);
     }
     else
     {
 #if VSCODE
-        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree));
+        editor.reset (new CabbageVSCodeEditorComponent (this, &statusBar, settings->valueTree));
         
 #else
         editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &javaTokeniser));
@@ -47,16 +52,14 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* cabbageSettings
         addAndMakeVisible (editor.get());
     }
 
-    outputConsole.reset (new CabbageOutputConsole (settings->valueTree, consoleDocument));
-    addAndMakeVisible (outputConsole.get());
+
 
     //editor->setLineNumbersShown (true);
     editor->addMouseListener (this, true);
     setDefaultFont();
     editor->setVisible (true);
-    outputConsole->setVisible (true);
-    const int fontSizeConsole = settings->getUserSettings()->getIntValue("FontSizeConsole", 14);
-    outputConsole->setFontSize (fontSizeConsole);
+    
+
     statusBar.addMouseListener (this, true);
 
     const int width = settings->getUserSettings()->getIntValue ("IDE_LastKnownWidth");
@@ -81,15 +84,14 @@ CabbageEditorContainer::~CabbageEditorContainer()
 void CabbageEditorContainer::hide()
 {
 #ifdef VSCODE
-    editor->nativeWindow.setVisible(false);
+    editor->nativeWindow->setVisible(false);
 #endif
 }
 void CabbageEditorContainer::show()
 {
     toFront(true);
-    
 #ifdef VSCODE
-    editor->nativeWindow.setVisible(false);
+    editor->nativeWindow->setVisible(true);
 #endif
 }
 void CabbageEditorContainer::setDefaultFont()
@@ -123,7 +125,8 @@ void CabbageEditorContainer::setDefaultFont()
 void CabbageEditorContainer::hideOutputConsole()
 {
     statusBar.setBounds (0, getHeight() - statusBar.getHeight(), getWidth(), statusBar.getHeight());
-    outputConsole->setBounds (0, getHeight(), getWidth(), 0);
+    if(outputConsole)
+        outputConsole->setBounds (0, getHeight(), getWidth(), 0);
 }
 
 CabbageMainComponent* CabbageEditorContainer::getContentComponent()
@@ -134,14 +137,16 @@ CabbageMainComponent* CabbageEditorContainer::getContentComponent()
 void CabbageEditorContainer::openFile (File file)
 {
     editor->setVisible (true);
-    outputConsole->setVisible (true);
+    if(outputConsole)
+        outputConsole->setVisible (true);
     editor->loadContent (file.loadFileAsString());
 }
 
 void CabbageEditorContainer::updateLookAndFeel()
 {
     editor->updateColourScheme (isCsdFile);
-    outputConsole->updateColourScheme();
+    if(outputConsole)
+        outputConsole->updateColourScheme();
 }
 
 int CabbageEditorContainer::getStatusBarPosition()
@@ -187,16 +192,25 @@ void CabbageEditorContainer::mouseDrag (const MouseEvent& e)
 void CabbageEditorContainer::resized()
 {
     juce::Rectangle<int> rect = getLocalBounds();
-    editor->setBounds (rect.removeFromTop (statusBar.getY()));
-    rect.removeFromTop (statusBar.getHeight());
-    outputConsole->setBounds (rect.withHeight (rect.getHeight() - statusBar.getHeight() * 2));
+    if(isCsdFile)
+    {
+        editor->setBounds (rect.removeFromTop (statusBar.getY()));
+        rect.removeFromTop (statusBar.getHeight());
+        if(outputConsole)
+            outputConsole->setBounds (rect.withHeight (rect.getHeight() - statusBar.getHeight() * 2));
+    }
+    else
+    {
+        editor->setBounds (rect);
+    }
 
 }
 
 void CabbageEditorContainer::updateEditorColourScheme() //called when users update the colours in the settings window..
 {
     editor->updateColourScheme();
-    outputConsole->updateColourScheme();
+    if(outputConsole)
+        outputConsole->updateColourScheme();
     statusBar.repaint();
 }
 

@@ -26,6 +26,9 @@
 #pragma warning(disable: 4305)
 #endif
 
+
+#define VSCODE 1
+
 #define CABBAGE_VERSION "Cabbage(64bit) v2.1.06beta"
 #include "./Settings/CabbageSettings.h"
 #include "LookAndFeel/CabbageIDELookAndFeel.h"

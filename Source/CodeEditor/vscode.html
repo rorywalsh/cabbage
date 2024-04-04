@@ -153,9 +153,9 @@
                 textHasChanged(editor.getValue());
             })
 
-            var myBinding = editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_Y, function () {
-                alert('CMD + Y pressed!');
-            });
+            // var myBinding = editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_Z, function () {
+            //     console.log('CMD + Z pressed!');
+            // });
 
             editor.onDidChangeModelContent(function (e) {
                 if (e.isFlush) {
@@ -164,6 +164,7 @@
                     //updatePropertiesCallback(JSON.parse(editor.getValue()));
                     console.log(editor.getModel().getValue());
                     textHasChanged(editor.getValue());
+                    editor.pushUndoStop();
                 }
 
                 console.log("text changed");
@@ -11483,43 +11484,28 @@
         });//end of require
 
         window.addEventListener('keydown', function (event) {
-            if (event.keyCode === 80 && (event.ctrlKey || event.metaKey) && !event.altKey && (!event.shiftKey || window.chrome || window.opera)) {
-                event.preventDefault();
-                if (event.stopImmediatePropagation) {
-                    event.stopImmediatePropagation();
-                } else {
-                    event.stopPropagation();
-                }
-                updatePropertiesEditorCallback('hide editor');
-                return;
-            } else if (event.keyCode === 83 && (event.ctrlKey || event.metaKey) && !event.altKey && (!event.shiftKey || window.chrome || window.opera)) {
-                event.preventDefault();
-                if (event.stopImmediatePropagation) {
-                    event.stopImmediatePropagation();
-                } else {
-                    event.stopPropagation();
-                }
-
-
-                updatePropertiesEditorCallback('save');
-                return;
-            }
-            else if (event.keyCode === 81)
-                console.log(editor);
-            else if ((event.metaKey || event.ctrlKey) && event.key === 'c') {
-                console.log('’Cmd+c’ was pressed')
+            if ((event.metaKey || event.ctrlKey) && event.key === 'c') {
+                console.log('’Cmd+c’ was pressed');
                 editor.trigger('source', 'editor.action.clipboardCopyAction');
             }
             else if ((event.metaKey || event.ctrlKey) && event.key === 'v') {
-                console.log('’Cmd+v’ was pressed')
+                console.log('’Cmd+v’ was pressed');
                 editor.trigger('source', 'editor.action.clipboardPasteAction');
             }
             else if ((event.metaKey || event.ctrlKey) && event.key === 'x') {
-                console.log('’Cmd+x’ was pressed')
+                console.log('’Cmd+x’ was pressed');
                 editor.trigger('source', 'editor.action.clipboardCutAction');
             }
-
+            else if (event.key === 'z' && (event.ctrlKey || event.metaKey) && !event.altKey && (!event.shiftKey || window.chrome || window.opera)){
+                console.log('’Cmd+z’ was pressed');
+                editor.trigger('source', 'undo');
+            }
         }, true);
+
+        function scrollToLine(line) {
+            editor.revealLine(line);
+            editor.setPosition({ lineNumber: line, column: 0 })
+        }
 
         function updateText(txt, line) {
             console.log("should be updating the text");
@@ -11539,9 +11525,7 @@
 
             editor.revealLine(line);
             editor.setPosition({ lineNumber: line, column: 0 })
-            //updatePropertiesCallback(JSON.parse(editor.getValue()));
-            //textHasChanged(txt);
-            console.log(txt);
+            // console.log(txt);
         }
 
 

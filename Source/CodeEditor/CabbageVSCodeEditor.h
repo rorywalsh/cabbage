@@ -50,11 +50,11 @@ public:
     void redo(){ jassertfalse; }
     void undo(){ jassertfalse; }
     void selectAll(){ jassertfalse; }
-    void parseTextForInstrumentsAndRegions(){ }
+    void parseTextForInstrumentsAndRegions();
     void insertCode(int lineNumber, String updatedText, bool, bool);
     void updateBoundsText (int lineNumber, String codeToInsert, bool shouldHighlight);
     void highlightLine(int number);
-    void scrollToLine(int line){ jassertfalse; }
+    void scrollToLine(int line);
     String getAllText(){    return allContent; }
     String getLineText(int line);
     int getCaretPos(){     jassertfalse;   return -1; }
