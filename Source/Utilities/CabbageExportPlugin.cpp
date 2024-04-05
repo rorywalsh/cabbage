@@ -146,30 +146,54 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         else
         {
             
-            FileChooser fc("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*." + fileExtension,
-                           CabbageUtilities::shouldUseNativeBrowser());
+            fileBrowser = std::make_unique<FileChooser>("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*." + fileExtension, CabbageUtilities::shouldUseNativeBrowser());
             
-            if (fc.browseForFileToSave(false))
-            {
-                outputFile = fc.getResult();
-                if (fc.getResult().existsAsFile())
-                {
-                    const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?",
-                                                                          &lookAndFeel);
-
-                    if (result == 1)
-                    {
-                        File oldFile(fc.getResult().getFullPathName());
-                        oldFile.moveToTrash();
-                        writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type,
-                                              encrypt);
-                    }
-                }
-                else
-                    writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type,
-                                          encrypt);
-
-            }
+            fileBrowser->launchAsync(FileBrowserComponent::saveMode,
+                         [this, outputFile, csdFile, VSTData, fileExtension, pluginId, type, encrypt](const FileChooser& fc) mutable
+                         {
+                             if (fc.getResults().size() > 0)
+                             {
+                                 outputFile = fc.getResult();
+                                 if (fc.getResult().existsAsFile())
+                                 {
+                                     const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?", &lookAndFeel);
+                 
+                                     if (result == 1)
+                                     {
+                                         File oldFile(fc.getResult().getFullPathName());
+                                         oldFile.moveToTrash();
+                                         writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type, encrypt);
+                                     }
+                                 }
+                                 else
+                                     writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type, encrypt);
+                             }
+                             fileBrowser = nullptr;
+                         },
+            nullptr);
+//            FileChooser fc("Save file as..", csdFile.getParentDirectory().getFullPathName(), "*." + fileExtension,
+//                           CabbageUtilities::shouldUseNativeBrowser());
+//            
+//            if (fc.browseForFileToSave(false))
+//            {
+//                outputFile = fc.getResult();
+//                if (fc.getResult().existsAsFile())
+//                {
+//                    const int result = CabbageUtilities::showYesNoMessage("Do you wish to overwrite\nexiting file?",
+//                                                                          &lookAndFeel);
+//
+//                    if (result == 1)
+//                    {
+//                        File oldFile(fc.getResult().getFullPathName());
+//                        oldFile.moveToTrash();
+//                        writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type,
+//                                              encrypt);
+//                    }
+//                }
+//                else
+//                    writePluginFileToDisk(fc.getResult(), csdFile, VSTData, fileExtension, pluginId, type,
+//                                          encrypt);
+//            }
         }
     }
     
