@@ -27,7 +27,7 @@
 #endif
 
 
-#define VSCODE 1
+//#define VSCODE 1
 
 #define CABBAGE_VERSION "Cabbage(64bit) v2.1.06beta"
 #include "./Settings/CabbageSettings.h"
