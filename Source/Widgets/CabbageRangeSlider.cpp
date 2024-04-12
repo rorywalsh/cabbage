@@ -47,7 +47,8 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
 
     min = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
     max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
-
+    
+    
     decimalPlaces = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces);
     sliderIncrement = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     sliderSkew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
@@ -55,7 +56,9 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
     slider.setRange (min, max, sliderIncrement);
     slider.setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     slider.setSkewFactor (sliderSkew);
+    slider.setMinMax(minValue, maxValue);
     slider.setMinAndMaxValues (minValue, maxValue);
+    
 
     addAndMakeVisible (&textLabel);
     textLabel.setVisible (false);
@@ -235,42 +238,49 @@ RangeSlider::~RangeSlider ()
 
 void RangeSlider::mouseDown (const MouseEvent& event)
 {
-    if (getSliderStyle() == Slider::TwoValueHorizontal)
+    if(event.getNumberOfClicks() == 2)
     {
-        const float currentMouseX = event.getPosition().getX();
-        const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
-        xMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getWidth();
-        xMaxAtThumbDown = valueToProportionOfLength (getMaxValue()) * getWidth();
-
-        if (currentMouseX > xMinAtThumbDown + thumbRadius && currentMouseX < xMaxAtThumbDown - thumbRadius)
-        {
-            mouseDragBetweenThumbs = true;
-        }
-        else
-        {
-            mouseDragBetweenThumbs = false;
-            Slider::mouseDown (event);
-        }
+        this->setMinAndMaxValues (min, max, sendNotification);
     }
     else
     {
-        const float currentMouseY = getHeight() - event.getPosition().getY();
-        const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
-        yMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getHeight();
-        yMaxAtThumbDown = valueToProportionOfLength (getMaxValue()) * getHeight();
-
-        if (currentMouseY > yMinAtThumbDown + thumbRadius && currentMouseY < yMaxAtThumbDown - thumbRadius)
+        if (getSliderStyle() == Slider::TwoValueHorizontal)
         {
-            mouseDragBetweenThumbs = true;
+            const float currentMouseX = event.getPosition().getX();
+            const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
+            xMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getWidth();
+            xMaxAtThumbDown = valueToProportionOfLength (getMaxValue()) * getWidth();
+
+            if (currentMouseX > xMinAtThumbDown + thumbRadius && currentMouseX < xMaxAtThumbDown - thumbRadius)
+            {
+                mouseDragBetweenThumbs = true;
+            }
+            else
+            {
+                mouseDragBetweenThumbs = false;
+                Slider::mouseDown (event);
+            }
         }
         else
         {
-            mouseDragBetweenThumbs = false;
-            Slider::mouseDown (event);
+            const float currentMouseY = getHeight() - event.getPosition().getY();
+            const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
+            yMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getHeight();
+            yMaxAtThumbDown = valueToProportionOfLength (getMaxValue()) * getHeight();
+
+            if (currentMouseY > yMinAtThumbDown + thumbRadius && currentMouseY < yMaxAtThumbDown - thumbRadius)
+            {
+                mouseDragBetweenThumbs = true;
+            }
+            else
+            {
+                mouseDragBetweenThumbs = false;
+                Slider::mouseDown (event);
+            }
+
         }
-
     }
-
+    
     owner->showPopup (1000);
 }
 

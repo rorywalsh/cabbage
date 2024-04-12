@@ -32,10 +32,11 @@ class RangeSlider  : public Slider
     CabbageRangeSlider* owner;
 public:
     explicit RangeSlider (CabbageRangeSlider* owner);
-
+    void setMinMax(double mi, double ma){   min = mi;   max = ma;   }
     ~RangeSlider() override;
 
 private:
+    double min = 0, max = 0;
     void mouseDown (const MouseEvent& event) override;
     void mouseExit (const MouseEvent& event) override;
     void mouseDrag (const MouseEvent& event) override;
