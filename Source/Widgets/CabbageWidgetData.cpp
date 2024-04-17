@@ -1482,6 +1482,13 @@ Colour CabbageWidgetData::getColourFromText (String text)
             colour = Colours::white.withAlpha (1.f);
         else if(strTokens[0].getIntValue() > 0 && strTokens[0].getIntValue() <=255)
             colour = Colour(strTokens[0].trim().getIntValue(), strTokens[0].trim().getIntValue(), strTokens[0].trim().getIntValue());
+        else if(strTokens[0].trim().substring(0, 1) == "#")
+        {
+            if(strTokens[0].trim().length() == 7)
+                colour = Colour::fromString ("#ff"+strTokens[0].trim().substring(1));
+            else
+                colour = Colour::fromString (strTokens[0].trim());
+        }
         else
             colour = Colours::findColourForName (strTokens[0].trim(), Colours::white);
     }
