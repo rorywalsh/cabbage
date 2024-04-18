@@ -1653,60 +1653,59 @@ const File CabbageMainComponent::openFile (String filename, bool updateRecentFil
 //==================================================================================
 void CabbageMainComponent::launchHelpfile (String type)
 {
-    jassertfalse;
-//    String url = "";
-//    String keyword = "";
-//    if (getCurrentCodeEditor())
-//    {
-//        CodeDocument::Position pos1, pos2;
-//        pos1 = getCurrentCodeEditor()->getDocument().findWordBreakBefore(getCurrentCodeEditor()->getCaretPos());
-//        pos2 = getCurrentCodeEditor()->getDocument().findWordBreakAfter(getCurrentCodeEditor()->getCaretPos());
-//        keyword = getCurrentCodeEditor()->getDocument().getTextBetween(pos1, pos2).trim();
-//    }
-//    const String csoundHelpDir = cabbageSettings->getUserSettings()->getValue ("CsoundManualDir");
-//    const String cabbageHelpDir = cabbageSettings->getUserSettings()->getValue ("CabbageManualDir");
-//
-//
-//    if (type == "context")
-//    {
-//        CabbageControlWidgetStrings controlWidgets;
-//        CabbageLayoutWidgetStrings layoutWidgets;
-//
-//        if (controlWidgets.contains (keyword) || layoutWidgets.contains (keyword))
-//        {
-//            if (keyword.contains ("slider"))
-//                url = cabbageHelpDir + "/docs/sliders/index.html";
-//            else if (keyword == "filebutton")
-//                url = cabbageHelpDir + "/docs/filebutton/index.html";
-//            else if (keyword == "infobutton")
-//                url = cabbageHelpDir + "/docs/infobutton/index.html";
-//            else
-//                url = cabbageHelpDir + "/docs/" + keyword + "/index.html";
-//        }
-//        else
-//            url = csoundHelpDir + "/" + keyword +".html";
-//    }
-//    else if (type == "csound")
-//        url = csoundHelpDir + "/index.html";
-//
-//    else
-//        url = cabbageHelpDir + "/index.html";
-//
-//    if (File (url).existsAsFile())
-//    {
-//        URL urlHelp (url);
-//        ChildProcess process;
-//        File temp (urlHelp.toString (false));
-//#ifdef LINUX
-//
-//        if (!process.start (String ("xdg-open " + urlHelp.toString (false)).toUTF8()))
-//            CabbageUtilities::showMessage ("Couldn't show file, see 'Set Csound manual directory' in Options->Preferences", &getLookAndFeel());
-//
-//#else
-//        urlHelp.launchInDefaultBrowser();
-//#endif
-//
-//    }
+    String url = "";
+    String keyword = "";
+    if (getCurrentCodeEditor())
+    {
+        CodeDocument::Position pos1, pos2;
+        pos1 = getCurrentCodeEditor()->getDocument().findWordBreakBefore(getCurrentCodeEditor()->getCaretPos());
+        pos2 = getCurrentCodeEditor()->getDocument().findWordBreakAfter(getCurrentCodeEditor()->getCaretPos());
+        keyword = getCurrentCodeEditor()->getDocument().getTextBetween(pos1, pos2).trim();
+    }
+    const String csoundHelpDir = cabbageSettings->getUserSettings()->getValue ("CsoundManualDir");
+    const String cabbageHelpDir = cabbageSettings->getUserSettings()->getValue ("CabbageManualDir");
+
+
+    if (type == "context")
+    {
+        CabbageControlWidgetStrings controlWidgets;
+        CabbageLayoutWidgetStrings layoutWidgets;
+
+        if (controlWidgets.contains (keyword) || layoutWidgets.contains (keyword))
+        {
+            if (keyword.contains ("slider"))
+                url = cabbageHelpDir + "/docs/sliders/index.html";
+            else if (keyword == "filebutton")
+                url = cabbageHelpDir + "/docs/filebutton/index.html";
+            else if (keyword == "infobutton")
+                url = cabbageHelpDir + "/docs/infobutton/index.html";
+            else
+                url = cabbageHelpDir + "/docs/" + keyword + "/index.html";
+        }
+        else
+            url = csoundHelpDir + "/" + keyword +".html";
+    }
+    else if (type == "csound")
+        url = csoundHelpDir + "/index.html";
+
+    else
+        url = cabbageHelpDir + "/index.html";
+
+    if (File (url).existsAsFile())
+    {
+        URL urlHelp (url);
+        ChildProcess process;
+        File temp (urlHelp.toString (false));
+#ifdef LINUX
+
+        if (!process.start (String ("xdg-open " + urlHelp.toString (false)).toUTF8()))
+            CabbageUtilities::showMessage ("Couldn't show file, see 'Set Csound manual directory' in Options->Preferences", &getLookAndFeel());
+
+#else
+        urlHelp.launchInDefaultBrowser();
+#endif
+
+    }
 }
 
 //==================================================================================
