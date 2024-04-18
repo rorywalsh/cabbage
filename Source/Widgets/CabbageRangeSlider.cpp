@@ -47,23 +47,49 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
 
     min = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
     max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
-    
-    
+
     decimalPlaces = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::decimalplaces);
     sliderIncrement = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::increment);
     sliderSkew = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::sliderskew);
+    shouldShowTextBox = CabbageWidgetData::getNumProp(wData, CabbageIdentifierIds::valuetextbox);
 
+    slider.onValueChange = [this] {
+        if (shouldShowTextBox){
+            minValueLabel.setText(String(slider.getMinValue()), dontSendNotification);
+            maxValueLabel.setText(String(slider.getMaxValue()), dontSendNotification);
+        }
+    };
+    
     slider.setRange (min, max, sliderIncrement);
     slider.setTextBoxStyle (Slider::NoTextBox, false, 0, 0);
     slider.setSkewFactor (sliderSkew);
-    slider.setMinMax(minValue, maxValue);
     slider.setMinAndMaxValues (minValue, maxValue);
-    
 
     addAndMakeVisible (&textLabel);
     textLabel.setVisible (false);
 
-
+    addAndMakeVisible (&minValueLabel);
+    minValueLabel.setText(String(min), dontSendNotification);
+    minValueLabel.setVisible (shouldShowTextBox ? true : false);
+    minValueLabel.setJustificationType(Justification::centred);
+    minValueLabel.setEditable(true);
+    
+    addAndMakeVisible (&maxValueLabel);
+    maxValueLabel.setVisible (shouldShowTextBox ? true : false);
+    maxValueLabel.setText(String(max), dontSendNotification);
+    maxValueLabel.setJustificationType(Justification::centred);
+    maxValueLabel.setEditable(true);
+    
+    minValueLabel.onTextChange = [this] {
+        const float newMinValue = minValueLabel.getText().getFloatValue() >= slider.getMaxValue() ? slider.getMaxValue() : minValueLabel.getText().getFloatValue();
+        slider.setMinAndMaxValues (newMinValue, slider.getMaxValue(), sendNotification);
+    };
+    
+    maxValueLabel.onTextChange = [this] {
+        const float newMaxValue = maxValueLabel.getText().getFloatValue() <= slider.getMinValue() ? slider.getMinValue() : maxValueLabel.getText().getFloatValue();
+        slider.setMinAndMaxValues (slider.getMinValue(), newMaxValue, sendNotification);
+    };
+    
     setLookAndFeelColours (widgetData);
     createPopupBubble();
 
@@ -163,6 +189,16 @@ void CabbageRangeSlider::setLookAndFeelColours (ValueTree wData)
     slider.setColour (Slider::rotarySliderOutlineColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::outlinecolour)));
 
 
+    minValueLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
+    minValueLabel.setColour(Label::outlineColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textboxoutlinecolour)));
+    minValueLabel.setColour(Label::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textboxcolour)));
+    minValueLabel.lookAndFeelChanged();
+    
+    maxValueLabel.setColour(Label::textColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::fontcolour)));
+    maxValueLabel.setColour(Label::backgroundColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textboxcolour)));
+    maxValueLabel.setColour(Label::outlineColourId, Colour::fromString(CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::textboxoutlinecolour)));
+    maxValueLabel.lookAndFeelChanged();
+    
     slider.setColour (TextEditor::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::fontcolour)));
     textLabel.setColour (Label::textColourId, Colour::fromString (CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::textcolour)));
 
@@ -179,28 +215,106 @@ void CabbageRangeSlider::setLookAndFeelColours (ValueTree wData)
 
 void CabbageRangeSlider::resized()
 {
+    int valueBoxWidth = 0;
+    if(shouldShowTextBox)
+    {
+        if (isVertical)
+        {
+            float minWidth = minValueLabel.getFont().getStringWidthFloat ("-----") + 10.f;
+            valueBoxWidth = minWidth;
+            minValueLabel.setBounds(0, 0, getWidth(), 20);
+            float maxWidth = maxValueLabel.getFont().getStringWidthFloat ("-----") + 10.f;
+            maxValueLabel.setBounds(0, getHeight()-20, maxWidth, 20);
+
+        }
+        else
+        {
+            float minWidth = minValueLabel.getFont().getStringWidthFloat ("-----") + 10.f;
+            valueBoxWidth = minWidth;
+            minValueLabel.setBounds(0, getHeight()*.2, minWidth, getHeight()*.5);
+            float maxWidth = maxValueLabel.getFont().getStringWidthFloat ("-----") + 10.f;
+            maxValueLabel.setBounds(getWidth()-maxWidth, getHeight()*.2, maxWidth, getHeight()*.5);
+        }
+    }
+    
     if (getText().isNotEmpty())
     {
         if (isVertical)
         {
-            textLabel.setBounds (0, getHeight() - 20, getWidth(), 20);
+            
             textLabel.setJustificationType (Justification::centred);
             textLabel.setText (getText(), dontSendNotification);
             textLabel.setVisible (true);
-            slider.setBounds (0, 4, getWidth(), getHeight() - 20);
+            if(shouldShowTextBox)
+            {
+                auto currentBounds = minValueLabel.getBounds();
+                minValueLabel.setBounds(0, getHeight()-40, getWidth(), 20);
+                currentBounds = maxValueLabel.getBounds();
+                maxValueLabel.setBounds(0, 0, getWidth(), 20);
+                textLabel.setBounds (0, getHeight()-20, getWidth(), 20);
+                //slider.setBounds (width, getHeight()/2, getWidth() - (width * 1.10), getHeight()/2);
+            }
+            else
+            {
+                textLabel.setBounds (0, getHeight()-20, getWidth(), 20);
+                //slider.setBounds (width, 0, getWidth() - (width * 1.10), getHeight());
+            }
         }
         else
         {
-            float width = textLabel.getFont().getStringWidthFloat (getText()) + 10.f;
-            textLabel.setBounds (0, 0, width, getHeight());
             textLabel.setText (getText(), dontSendNotification);
             textLabel.setVisible (true);
-            slider.setBounds (width, 0, getWidth() - (width * 1.10), getHeight());
-        }
+            float width = textLabel.getFont().getStringWidthFloat (getText()) + 10.f;
+            if(shouldShowTextBox)
+            {
+                auto currentBounds = minValueLabel.getBounds();
+                minValueLabel.setBounds(currentBounds.withHeight(getHeight()/2).withY(getHeight()/2));
+                currentBounds = maxValueLabel.getBounds();
+                maxValueLabel.setBounds(currentBounds.withHeight(getHeight()/2).withY(getHeight()/2));
+                textLabel.setBounds (getWidth()*0.5-width*.5, 0, width, getHeight()/2);
+                //slider.setBounds (width, getHeight()/2, getWidth() - (width * 1.10), getHeight()/2);
+            }
+            else
+            {
+                textLabel.setBounds (0, 0, width, getHeight());
+                //slider.setBounds (width, 0, getWidth() - (width * 1.10), getHeight());
+            }
 
+            
+        }
     }
-    else
-        slider.setBounds (getLocalBounds());
+
+    if(isVertical)
+    {
+        if(shouldShowTextBox)
+        {
+            auto area = getLocalBounds();
+            area.removeFromTop(20);
+            area.removeFromBottom(getText().isNotEmpty() ? 40 : 20);
+            slider.setBounds (area);
+        }
+        else
+            slider.setBounds (getLocalBounds().withHeight(getHeight()-20));
+    }
+    else{
+        if(shouldShowTextBox)
+        {
+            auto area = getLocalBounds();
+            area.removeFromLeft(valueBoxWidth);
+            area.removeFromRight(valueBoxWidth);
+            if(shouldShowTextBox)
+            {
+                slider.setBounds (area.removeFromTop(getHeight()/2).withY(getHeight()/2));
+            }
+            else
+                slider.setBounds (area);
+        }
+        else
+            slider.setBounds (getLocalBounds());
+    }
+
+    
+        
 }
 
 void CabbageRangeSlider::valueTreePropertyChanged (ValueTree& valueTree, const Identifier& prop)
@@ -238,49 +352,42 @@ RangeSlider::~RangeSlider ()
 
 void RangeSlider::mouseDown (const MouseEvent& event)
 {
-    if(event.getNumberOfClicks() == 2)
+    if (getSliderStyle() == Slider::TwoValueHorizontal)
     {
-        this->setMinAndMaxValues (min, max, sendNotification);
-    }
-    else
-    {
-        if (getSliderStyle() == Slider::TwoValueHorizontal)
-        {
-            const float currentMouseX = event.getPosition().getX();
-            const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
-            xMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getWidth();
-            xMaxAtThumbDown = valueToProportionOfLength (getMaxValue()) * getWidth();
+        const float currentMouseX = event.getPosition().getX();
+        const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
+        xMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getWidth();
+        xMaxAtThumbDown = valueToProportionOfLength (getMaxValue()) * getWidth();
 
-            if (currentMouseX > xMinAtThumbDown + thumbRadius && currentMouseX < xMaxAtThumbDown - thumbRadius)
-            {
-                mouseDragBetweenThumbs = true;
-            }
-            else
-            {
-                mouseDragBetweenThumbs = false;
-                Slider::mouseDown (event);
-            }
+        if (currentMouseX > xMinAtThumbDown + thumbRadius && currentMouseX < xMaxAtThumbDown - thumbRadius)
+        {
+            mouseDragBetweenThumbs = true;
         }
         else
         {
-            const float currentMouseY = getHeight() - event.getPosition().getY();
-            const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
-            yMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getHeight();
-            yMaxAtThumbDown = valueToProportionOfLength (getMaxValue()) * getHeight();
-
-            if (currentMouseY > yMinAtThumbDown + thumbRadius && currentMouseY < yMaxAtThumbDown - thumbRadius)
-            {
-                mouseDragBetweenThumbs = true;
-            }
-            else
-            {
-                mouseDragBetweenThumbs = false;
-                Slider::mouseDown (event);
-            }
-
+            mouseDragBetweenThumbs = false;
+            Slider::mouseDown (event);
         }
     }
-    
+    else
+    {
+        const float currentMouseY = getHeight() - event.getPosition().getY();
+        const int thumbRadius = getLookAndFeel().getSliderThumbRadius (*this);
+        yMinAtThumbDown = valueToProportionOfLength (getMinValue()) * getHeight();
+        yMaxAtThumbDown = valueToProportionOfLength (getMaxValue()) * getHeight();
+
+        if (currentMouseY > yMinAtThumbDown + thumbRadius && currentMouseY < yMaxAtThumbDown - thumbRadius)
+        {
+            mouseDragBetweenThumbs = true;
+        }
+        else
+        {
+            mouseDragBetweenThumbs = false;
+            Slider::mouseDown (event);
+        }
+
+    }
+
     owner->showPopup (1000);
 }
 
