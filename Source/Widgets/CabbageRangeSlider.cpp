@@ -231,9 +231,9 @@ void CabbageRangeSlider::resized()
         {
             float minWidth = minValueLabel.getFont().getStringWidthFloat ("-----") + 10.f;
             valueBoxWidth = minWidth;
-            minValueLabel.setBounds(0, getHeight()*.2, minWidth, getHeight()*.5);
+            minValueLabel.setBounds(0, getHeight()*.5, minWidth, getHeight()*.5);
             float maxWidth = maxValueLabel.getFont().getStringWidthFloat ("-----") + 10.f;
-            maxValueLabel.setBounds(getWidth()-maxWidth, getHeight()*.2, maxWidth, getHeight()*.5);
+            maxValueLabel.setBounds(getWidth()-maxWidth, getHeight()*.5, maxWidth, getHeight()*.5);
         }
     }
     
