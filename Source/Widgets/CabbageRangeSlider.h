@@ -58,8 +58,9 @@ class CabbageRangeSlider  : public Component, public ValueTree::Listener, public
     RangeSlider slider;
     Label textLabel;
     Label minValueLabel, maxValueLabel;
-    bool shouldShowTextBox;
-    bool isVertical; 
+    bool shouldShowTextBox = false;
+    bool isVertical = false;
+
     
     bool shouldDisplayPopup;
     float minValue, maxValue, min, max, decimalPlaces, sliderIncrement, sliderSkew;

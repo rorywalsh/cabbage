@@ -55,8 +55,8 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
 
     slider.onValueChange = [this] {
         if (shouldShowTextBox){
-            minValueLabel.setText(String(slider.getMinValue()), dontSendNotification);
-            maxValueLabel.setText(String(slider.getMaxValue()), dontSendNotification);
+            minValueLabel.setText(String(slider.getMinValue(), decimalPlaces), dontSendNotification);
+            maxValueLabel.setText(String(slider.getMaxValue(), decimalPlaces), dontSendNotification);
         }
     };
     
@@ -222,9 +222,9 @@ void CabbageRangeSlider::resized()
         {
             float minWidth = minValueLabel.getFont().getStringWidthFloat ("-----") + 10.f;
             valueBoxWidth = minWidth;
-            minValueLabel.setBounds(0, 0, getWidth(), 20);
+            maxValueLabel.setBounds(0, 0, getWidth(), 20);
             float maxWidth = maxValueLabel.getFont().getStringWidthFloat ("-----") + 10.f;
-            maxValueLabel.setBounds(0, getHeight()-20, maxWidth, 20);
+            minValueLabel.setBounds(0, getHeight()-20, maxWidth, 20);
 
         }
         else
@@ -297,9 +297,9 @@ void CabbageRangeSlider::resized()
             slider.setBounds (getLocalBounds().withHeight(getHeight()-20));
     }
     else{
+        auto area = getLocalBounds();
         if(shouldShowTextBox)
         {
-            auto area = getLocalBounds();
             area.removeFromLeft(valueBoxWidth);
             area.removeFromRight(valueBoxWidth);
             if(shouldShowTextBox)
@@ -310,7 +310,14 @@ void CabbageRangeSlider::resized()
                 slider.setBounds (area);
         }
         else
-            slider.setBounds (getLocalBounds());
+        {
+            if(getText().isEmpty())
+                slider.setBounds (getLocalBounds());
+            else{
+                float width = textLabel.getFont().getStringWidthFloat (getText()) + 10.f;
+                slider.setBounds(area.removeFromRight(getWidth()-width));
+            }
+        }
     }
 
     
