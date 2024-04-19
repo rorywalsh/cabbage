@@ -45,6 +45,8 @@ CabbageRangeSlider::CabbageRangeSlider (ValueTree wData, CabbagePluginEditor* _o
     minValue = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::minvalue);
     maxValue = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::maxvalue);
 
+    slider.setMinMax(minValue, maxValue);
+    
     min = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::min);
     max = CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::max);
 
@@ -135,6 +137,7 @@ void CabbageRangeSlider::setSliderValues (ValueTree wData)
     slider.setSkewFactor (sliderSkew);
 
     slider.setMinAndMaxValues (minValue, maxValue, dontSendNotification);
+
     owner->sendChannelDataToCsound(getChannelArray()[0], minValue);
     owner->sendChannelDataToCsound(getChannelArray()[1], maxValue);
 }
@@ -359,6 +362,12 @@ RangeSlider::~RangeSlider ()
 
 void RangeSlider::mouseDown (const MouseEvent& event)
 {
+    if(event.getNumberOfClicks() == 2)
+    {
+        this->setMinAndMaxValues (min, max, sendNotification);
+        return;
+    }
+    
     if (getSliderStyle() == Slider::TwoValueHorizontal)
     {
         const float currentMouseX = event.getPosition().getX();
