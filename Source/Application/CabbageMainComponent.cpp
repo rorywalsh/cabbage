@@ -1155,8 +1155,8 @@ void CabbageMainComponent::createEditorForFilterGraphNode (juce::Point<int> posi
             if(shouldRecord == true)
             {
                 String time = Time::getCurrentTime().formatted("_%Y%m%d_%H%M%S");
-                
-                const String filename = getCurrentCsdFile().getFullPathName().substring(0, getCurrentCsdFile().getFullPathName().indexOf("."))+time+".wav";
+                File documentDir = File::getSpecialLocation(File::SpecialLocationType::userDocumentsDirectory);
+                String filename = documentDir.getChildFile((getCurrentCsdFile().getFileNameWithoutExtension()+time+".wav")).getFullPathName();
                 cabbagePlugin->startRecording(filename, bitDepth);
                 factory.startRecordingTimer(false);
             }
