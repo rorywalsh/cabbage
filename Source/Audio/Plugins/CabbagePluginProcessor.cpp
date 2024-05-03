@@ -1495,6 +1495,8 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
     
     identData = *pd;
     
+    CriticalSection::ScopedLockType scopedLock(identData->data.getLock());
+
     for(auto && i : identData->data)
     {
         if(i.identifier.getCharPointer().getAddress() != nullptr)
@@ -1916,12 +1918,3 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
 	
 
 }
-
-
-
-
-
-
-
-
-
