@@ -973,10 +973,7 @@ int SetCabbageValueIdentifier::setAttribute(bool init)
     
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
-    //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
-    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
 
-    
     int trigger = int(args[2]);
 
     if(trigger == 0 || args.str_data(0).size == 0)
@@ -991,7 +988,9 @@ int SetCabbageValueIdentifier::setAttribute(bool init)
         {
             *value = args[1];
         }
-        
+
+        //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
+        CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
         data.args = args[1];
         varData->data.add(data);
 
@@ -1013,7 +1012,6 @@ int SetCabbageValueIdentifierITime::setAttribute(bool init)
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
     //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
-    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
     if(args.str_data(0).size == 0)
         return OK;
     
@@ -1026,6 +1024,7 @@ int SetCabbageValueIdentifierITime::setAttribute(bool init)
         *value = args[1];
     }
     
+    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
     data.args = args[1];
     varData->data.add(data);
       
@@ -1048,7 +1047,6 @@ int SetCabbageValueIdentifierSArgs::setAttribute(bool init)
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
     //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
-    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
     
     int trigger = int(args[2]);
     
@@ -1072,6 +1070,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(bool init)
             stringdat->size = strlen(args.str_data(1).data) + 1;
         }
         
+        CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
         data.args = args.str_data(1).data;
         varData->data.add(data);
         
@@ -1091,7 +1090,6 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(bool init)
     vt = (CabbageWidgetIdentifiers**)csound->query_global_variable("cabbageWidgetData");
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
     //this is k-rate only so set init back to true in order to get the correct channel name on each k-cycle
-    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
     
     
     if(args.str_data(0).size == 0)
@@ -1099,6 +1097,8 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(bool init)
     
     varData->data.getLock().enter();
     //varData->canRead.store(false);
+    
+    CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
     data.args = args.str_data(1).data;
     varData->data.add(data);
     
