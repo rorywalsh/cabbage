@@ -86,14 +86,14 @@ public:
     static void setEventSequencerProperties (ValueTree widgetData, int ID);
     static void setPathProperties (ValueTree widgetData, int ID);
     //============================================================================
-    static float getNumProp (ValueTree widgetData, Identifier prop);
-    static void setNumProp (ValueTree widgetData, Identifier prop, float val);
-    static void setStringProp (ValueTree widgetData, Identifier prop, const String val);
-    static String getStringProp (ValueTree widgetData, Identifier prop);
+    static float getNumProp (ValueTree widgetData, const Identifier& prop);
+    static void setNumProp (ValueTree widgetData, const Identifier& prop, float val);
+    static void setStringProp (ValueTree widgetData, const Identifier& prop, const String val);
+    static String getStringProp (ValueTree widgetData, const Identifier& prop);
     static juce::Rectangle<int> getBounds (ValueTree widgetData);
     static void setBounds (ValueTree widgetData,juce::Rectangle<int> rect);
-    static void setProperty (ValueTree widgetData, Identifier name, const var& value, ValueTree::Listener *listenerToExclude = nullptr);
-    static var getProperty (ValueTree widgetData, Identifier name);
+    static void setProperty (ValueTree widgetData, const Identifier& name, const var& value, ValueTree::Listener *listenerToExclude = nullptr);
+    static var getProperty (ValueTree widgetData, const Identifier& name);
     //============================================================================
     static IdentifiersAndParameters getSetofIdentifiersAndParameters (String lineOfText);
     static var getVarArrayFromTokens (StringArray strTokens);
