@@ -76,16 +76,20 @@ struct CabbageOpcodes
     CabbageWidgetIdentifiers::IdentifierData getValueIdentData(csnd::Param<N>& args, bool init, int nameIndex, int identIndex)
     {
         CabbageWidgetIdentifiers::IdentifierData identData;
+        identData.identifier = CabbageIdentifierIds::value;
+
         if(init)
         {
             if(args.str_data(nameIndex).size == 0)
                 name = {};
             else
+            {
                 name = args.str_data(nameIndex).data;
+                if (name != nullptr && name[0] != 0)
+                    identData.name = name;
+            }
         }
 
-        identData.identifier = CabbageIdentifierIds::value;
-        identData.name = name;
         identData.isValid = true;
         return identData;
     }
@@ -500,5 +504,3 @@ struct CabbageCopyFile : csnd::InPlug<64>
     int deinit(){ return OK;  }
     int copyFiles();
 };
-
-
