@@ -1507,7 +1507,7 @@ void CabbagePluginProcessor::getIdentifierDataFromCsound()
 			auto child = cabbageWidgets.getChildWithName(name);
             if(child.isValid())
             {
-                const String widgetType(CabbageWidgetData::getStringProp(child, "type"));
+                const String widgetType(CabbageWidgetData::getStringProp(child, CabbageIdentifierIds::type));
 
                 if(!i.args.isUndefined())
                 {
