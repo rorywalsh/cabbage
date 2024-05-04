@@ -1347,7 +1347,7 @@ void CabbageWidgetData::setRange (StringArray strTokens, ValueTree widgetData, S
 
 //=========================================================================
 // retrieve/set widget tree data
-float CabbageWidgetData::getNumProp (ValueTree widgetData, Identifier prop)
+float CabbageWidgetData::getNumProp (ValueTree widgetData, const Identifier& prop)
 {
     var props = getProperty (widgetData, prop);
 
@@ -1358,7 +1358,7 @@ float CabbageWidgetData::getNumProp (ValueTree widgetData, Identifier prop)
 }
 
 
-String CabbageWidgetData::getStringProp (ValueTree widgetData, Identifier prop)
+String CabbageWidgetData::getStringProp (ValueTree widgetData, const Identifier& prop)
 {
     var strings = getProperty (widgetData, prop);
 
@@ -1371,17 +1371,17 @@ String CabbageWidgetData::getStringProp (ValueTree widgetData, Identifier prop)
 
 }
 
-void CabbageWidgetData::setNumProp (ValueTree widgetData, Identifier prop, float val)
+void CabbageWidgetData::setNumProp (ValueTree widgetData, const Identifier& prop, float val)
 {
     setProperty (widgetData, prop, val);
 }
 
-void CabbageWidgetData::setStringProp (ValueTree widgetData, Identifier name, const String value)
+void CabbageWidgetData::setStringProp (ValueTree widgetData, const Identifier& name, const String value)
 {
     widgetData.setProperty (name, value, 0);
 }
 
-void CabbageWidgetData::setProperty (ValueTree widgetData, Identifier name, const var& value, ValueTree::Listener *listenerToExclude)
+void CabbageWidgetData::setProperty (ValueTree widgetData, const Identifier& name, const var& value, ValueTree::Listener *listenerToExclude)
 {
     Array<var>* array = value.getArray();
 
@@ -1405,7 +1405,7 @@ void CabbageWidgetData::setProperty (ValueTree widgetData, Identifier name, cons
         widgetData.setProperty (name, value, 0);
 }
 
-var CabbageWidgetData::getProperty (ValueTree widgetData, Identifier name)
+var CabbageWidgetData::getProperty (ValueTree widgetData, const Identifier& name)
 {
     return widgetData.getProperty (name);
 }

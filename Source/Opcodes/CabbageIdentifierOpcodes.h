@@ -30,6 +30,8 @@ public:
 class CabbageWidgetIdentifiers
 {
 public:
+    static Identifier getIdentifier(std::string name);
+
     struct IdentifierData
     {
         Identifier identifier, name;
@@ -76,16 +78,20 @@ struct CabbageOpcodes
     CabbageWidgetIdentifiers::IdentifierData getValueIdentData(csnd::Param<N>& args, bool init, int nameIndex, int identIndex)
     {
         CabbageWidgetIdentifiers::IdentifierData identData;
+        identData.identifier = CabbageIdentifierIds::value;
+
         if(init)
         {
             if(args.str_data(nameIndex).size == 0)
                 name = {};
             else
+            {
                 name = args.str_data(nameIndex).data;
+                if (name != nullptr && name[0] != 0)
+                    identData.name = CabbageWidgetIdentifiers::getIdentifier(name);
+            }
         }
 
-        identData.identifier = CabbageIdentifierIds::value;
-        identData.name = name;
         identData.isValid = true;
         return identData;
     }
@@ -110,9 +116,9 @@ struct CabbageOpcodes
         }
         
         if(String(name).isNotEmpty())
-            identData.name = name;
+            identData.name = CabbageWidgetIdentifiers::getIdentifier(name);
         if(String(identifier).isNotEmpty())
-            identData.identifier = Identifier(identifier);
+            identData.identifier = CabbageWidgetIdentifiers::getIdentifier(identifier);
         
         identData.isValid = true;
         return identData;
@@ -124,7 +130,7 @@ struct CabbageOpcodes
         {
             CabbageWidgetIdentifiers::IdentifierData updateData;
             updateData.identifier = CabbageIdentifierIds::update;
-            updateData.name = name;
+            updateData.name = CabbageWidgetIdentifiers::getIdentifier(name);
             updateData.args = value;
             varData->data.add(updateData);
         }
@@ -500,5 +506,3 @@ struct CabbageCopyFile : csnd::InPlug<64>
     int deinit(){ return OK;  }
     int copyFiles();
 };
-
-
