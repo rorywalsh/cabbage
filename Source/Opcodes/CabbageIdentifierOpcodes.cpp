@@ -15,6 +15,17 @@
 #include "filesystem.hpp"
 
 
+static std::unordered_map<std::string, Identifier> identifierMap;
+
+
+Identifier CabbageWidgetIdentifiers::getIdentifier(std::string name)
+{
+    if (identifierMap.find(name) == identifierMap.end())
+        identifierMap[name] = Identifier(name);
+    return identifierMap[name];
+}
+
+
 //====================================================================================================
 int CreateCabbageWidget::createWidget()
 {

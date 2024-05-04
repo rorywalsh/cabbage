@@ -30,6 +30,8 @@ public:
 class CabbageWidgetIdentifiers
 {
 public:
+    static Identifier getIdentifier(std::string name);
+
     struct IdentifierData
     {
         Identifier identifier, name;
@@ -86,7 +88,7 @@ struct CabbageOpcodes
             {
                 name = args.str_data(nameIndex).data;
                 if (name != nullptr && name[0] != 0)
-                    identData.name = name;
+                    identData.name = CabbageWidgetIdentifiers::getIdentifier(name);
             }
         }
 
@@ -114,9 +116,9 @@ struct CabbageOpcodes
         }
         
         if(String(name).isNotEmpty())
-            identData.name = name;
+            identData.name = CabbageWidgetIdentifiers::getIdentifier(name);
         if(String(identifier).isNotEmpty())
-            identData.identifier = Identifier(identifier);
+            identData.identifier = CabbageWidgetIdentifiers::getIdentifier(identifier);
         
         identData.isValid = true;
         return identData;
@@ -128,7 +130,7 @@ struct CabbageOpcodes
         {
             CabbageWidgetIdentifiers::IdentifierData updateData;
             updateData.identifier = CabbageIdentifierIds::update;
-            updateData.name = name;
+            updateData.name = CabbageWidgetIdentifiers::getIdentifier(name);
             updateData.args = value;
             varData->data.add(updateData);
         }
