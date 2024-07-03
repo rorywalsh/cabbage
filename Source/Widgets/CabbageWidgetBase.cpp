@@ -44,7 +44,6 @@ void CabbageWidgetBase::initialiseCommonAttributes (Component* child, ValueTree 
     pivotx = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::pivotx);
     pivoty = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::pivoty);
     visible = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::visible);
-    child->setVisible(visible == 1 ? true : false);
     active = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::active);
     channel = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::channel);
     child->setEnabled(active == 1 ? true : false);
