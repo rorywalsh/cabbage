@@ -37,9 +37,10 @@ int main (int argc, char* argv[])
     
     std::cout << "Usage: CLIConverter --export-TYPE=\"name of csd file\" --destination=\"some absolute or relative dir\"\n";
     std::cout << "If you leave out the destination, exports will be placed into the same folder as the csd file\n\n";
+    std::cout << "Type can be one of the following: VST, VSTi, VST3, VST3i, AUMIDIFx, AUi, and AU";
 
     
-    for( int i = 0 ; i < argc ; i++)
+    for( int i = 1 ; i < argc ; i++)
     {
         args.append(argv[i], 1000);
     }

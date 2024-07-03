@@ -215,69 +215,77 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
 }
 
 
-void PluginExporter::writePluginFileToDisk (File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type,  bool encrypt)
+void PluginExporter::writePluginFileToDisk(File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type, bool encrypt)
 {
-    
-//#if !CLIConverter
-    File exportedPlugin (fc.withFileExtension (fileExtension).getFullPathName());
-//#else
-//    File exportedPlugin (fc.withFileExtension (fileExtension).getFullPathName().replace("/CLIConverter", ""));
-//#endif
-    
-    
-    //vcv rack export is the same on all platforms..
-    if(type=="VCVRack")
+
+    //#if !CLIConverter
+    File exportedPlugin(fc.withFileExtension(fileExtension).getFullPathName());
+    //#else
+    //    File exportedPlugin (fc.withFileExtension (fileExtension).getFullPathName().replace("/CLIConverter", ""));
+    //#endif
+
+
+        //vcv rack export is the same on all platforms..
+    if (type == "VCVRack")
     {
-        if(!VSTData.copyDirectoryTo(exportedPlugin))
+        if (!VSTData.copyDirectoryTo(exportedPlugin))
             jassertfalse;
-        File rackCsdFile(exportedPlugin.getFullPathName()+"/"+exportedPlugin.getFileName()+".csd");
+        File rackCsdFile(exportedPlugin.getFullPathName() + "/" + exportedPlugin.getFileName() + ".csd");
         //csdFile.moveFileTo(rackCsdFile);
         rackCsdFile.replaceWithText(csdFile.loadFileAsString());
-        File oldFile(exportedPlugin.getFullPathName()+"/CabbageRack.csd");
+        File oldFile(exportedPlugin.getFullPathName() + "/CabbageRack.csd");
         oldFile.deleteFile();
         //bundle all auxiliary files
         addFilesToPluginBundle(csdFile, exportedPlugin);
-        
-        File jsonFile(exportedPlugin.getFullPathName()+"/plugin.json");
+
+        File jsonFile(exportedPlugin.getFullPathName() + "/plugin.json");
         StringArray jsonLines;
         jsonLines.addLines(jsonFile.loadFileAsString());
-        
-        for ( int i = 0 ; i < jsonLines.size() ; i++)
+
+        for (int i = 0; i < jsonLines.size(); i++)
         {
             //replace slugs and name with plugin name
-            if(jsonLines[i].contains("\"slug\": \"CabbageRack\","))
+            if (jsonLines[i].contains("\"slug\": \"CabbageRack\","))
                 jsonLines.getReference(i) = "\"slug\": \"" + fc.getFileNameWithoutExtension() + "\",";
-            if(jsonLines[i].contains("\"name\": \"CabbageRack\","))
-                jsonLines.getReference(i) = "\"name\": \""+fc.getFileNameWithoutExtension()+"\",";
-            if(jsonLines[i].contains("\"brand\": \"CabbageRack\","))
-                jsonLines.getReference(i) = "\"brand\": \""+fc.getFileNameWithoutExtension()+"\",";
-            
+            if (jsonLines[i].contains("\"name\": \"CabbageRack\","))
+                jsonLines.getReference(i) = "\"name\": \"" + fc.getFileNameWithoutExtension() + "\",";
+            if (jsonLines[i].contains("\"brand\": \"CabbageRack\","))
+                jsonLines.getReference(i) = "\"brand\": \"" + fc.getFileNameWithoutExtension() + "\",";
+
         }
-        
+
         jsonFile.replaceWithText(jsonLines.joinIntoString("\n"));
-        
+
         return;
     }
-    
+
     //plugin files on OSX are bundles, so we need to recursively delete all files in bundle
     if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::OSX)
     {
-        if(File(exportedPlugin).exists() )
+        if (File(exportedPlugin).exists())
         {
-            if(!File(exportedPlugin).deleteRecursively())
+            if (!File(exportedPlugin).deleteRecursively())
                 jassertfalse;
         }
     }
-    
+
 #if CLIConverter
-    if(exportedPlugin.existsAsFile())
+    if (exportedPlugin.existsAsFile())
         DBG("plugin exists");
 
     auto mkdir = "mkdir " + exportedPlugin.getParentDirectory().getFullPathName().toStdString();
     system(mkdir.c_str());
+
+#if JUCE_WINDOWS
+    if (VSTData.isDirectory())
+        VSTData.copyDirectoryTo(exportedPlugin);
+    else
+        VSTData.copyFileTo(exportedPlugin);
+#else
+
     auto command = "cp -Rf " + VSTData.getFullPathName().toStdString() + " " +exportedPlugin.getFullPathName().toStdString();
     system(command.c_str());
-    
+#endif
 #else
     if (!VSTData.copyFileTo (exportedPlugin))
     {
