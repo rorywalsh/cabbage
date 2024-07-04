@@ -304,7 +304,7 @@ if platform.system() == "Darwin":
         with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
             zip_ref.extractall(os.path.expanduser('~/SDKs/VST_SDK'))
 
-        url = "http://cabbageaudio.com/beta/heads.zip"
+        url = "https://cabbageaudio.com/beta/heads.zip"
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
@@ -346,7 +346,7 @@ elif platform.system() == "Windows":
         with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
             zip_ref.extractall('C:/SDKs/VST_SDK')
 
-        url = "http://cabbageaudio.com/beta/heads.zip"
+        url = "https://cabbageaudio.com/beta/heads.zip"
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
@@ -428,7 +428,7 @@ elif platform.system() == "Linux":
         with zipfile.ZipFile("vstsdk3611_22_10_2018_build_34.zip", 'r') as zip_ref:
             zip_ref.extractall(os.path.expanduser('~/SDKs/VST_SDK'))
 
-        url = "http://cabbageaudio.com/beta/heads.zip"
+        url = "https://cabbageaudio.com/beta/heads.zip"
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('heads.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("heads.zip", 'r') as zip_ref:
