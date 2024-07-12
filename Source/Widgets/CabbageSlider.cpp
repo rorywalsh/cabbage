@@ -211,7 +211,6 @@ CabbageSlider::CabbageSlider(ValueTree wData, CabbagePluginEditor* _owner)
     
     textLabel.setVisible(false);
     initialiseCommonAttributes(this, wData);
-    
     createPopupBubble();
     
     

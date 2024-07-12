@@ -35,7 +35,6 @@ CabbageWidgetBase::CabbageWidgetBase(CabbagePluginEditor* _owner): editor(_owner
     
 }
 
-//these methods need updating...
 void CabbageWidgetBase::initialiseCommonAttributes (Component* child, ValueTree data)
 {
     toFront = -99;
@@ -46,7 +45,6 @@ void CabbageWidgetBase::initialiseCommonAttributes (Component* child, ValueTree 
     visible = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::visible);
     active = CabbageWidgetData::getNumProp (data, CabbageIdentifierIds::active);
     channel = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::channel);
-    child->setEnabled(active == 1 ? true : false);
     file = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::file);
     tooltipText = CabbageWidgetData::getStringProp (data, CabbageIdentifierIds::popuptext);
     child->setBounds (CabbageWidgetData::getBounds (data));
