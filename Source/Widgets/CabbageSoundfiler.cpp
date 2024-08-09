@@ -51,7 +51,8 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
 
 
     Logger::writeToLog("CabbageSoundfiler::CabbageSoundfiler:\n\tCurrent file is:" + file);
-    soundfiler.setFile (File::getCurrentWorkingDirectory().getChildFile(file));
+    const String fullPath = File (getCsdFile()).getParentDirectory().getChildFile (file).getFullPathName();
+    soundfiler.setFile (fullPath);
     soundfiler.addChangeListener (this);
     
     auto displayType = CabbageWidgetData::getStringProp(wData, CabbageIdentifierIds::displaytype);
