@@ -990,7 +990,7 @@ int SetCabbageValueIdentifier::setAttribute(bool init)
     if(trigger == 0 || args.str_data(0).size == 0)
         return OK;
 
-    varData->data.getLock().enter();
+    CriticalSection::ScopedLockType scopedLock(varData->data.getLock());
     
     if(trigger == 1)
     {
@@ -1007,7 +1007,6 @@ int SetCabbageValueIdentifier::setAttribute(bool init)
 
     }
     
-    varData->data.getLock().exit();
     return OK;
 }
 
@@ -1026,7 +1025,7 @@ int SetCabbageValueIdentifierITime::setAttribute(bool init)
     if(args.str_data(0).size == 0)
         return OK;
     
-    varData->data.getLock().enter();
+    CriticalSection::ScopedLockType scopedLock(varData->data.getLock());
     
     //now update underlying Csound channel
     if(csound->get_csound()->GetChannelPtr(csound->get_csound(), &value, args.str_data(0).data,
@@ -1038,8 +1037,7 @@ int SetCabbageValueIdentifierITime::setAttribute(bool init)
     CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
     data.args = args[1];
     varData->data.add(data);
-      
-    varData->data.getLock().exit();
+    
 
     
     return OK;
@@ -1067,7 +1065,7 @@ int SetCabbageValueIdentifierSArgs::setAttribute(bool init)
     const String strValue = String(args.str_data(1).data);
 
     
-    varData->data.getLock().enter();
+    CriticalSection::ScopedLockType scopedLock(varData->data.getLock());
 
     //now update underlying Csound channel
     if(trigger == 1)
@@ -1087,7 +1085,6 @@ int SetCabbageValueIdentifierSArgs::setAttribute(bool init)
         
     }
     
-    varData->data.getLock().exit();
     return OK;
 }
 
@@ -1106,14 +1103,13 @@ int SetCabbageValueIdentifierSArgsITime::setAttribute(bool init)
     if(args.str_data(0).size == 0)
         return OK;
     
-    varData->data.getLock().enter();
+    CriticalSection::ScopedLockType scopedLock(varData->data.getLock());
     //varData->canRead.store(false);
     
     CabbageWidgetIdentifiers::IdentifierData data = getValueIdentData(args, true, 0, 1);
     data.args = args.str_data(1).data;
     varData->data.add(data);
     
-    varData->data.getLock().exit();
 
     return OK;
 }
@@ -1132,7 +1128,7 @@ int SetCabbageIdentifier::setAttribute(bool init)
     if(trigger == 0)
         return OK;
 
-    varData->data.getLock().enter();
+    CriticalSection::ScopedLockType scopedLock(varData->data.getLock());
 
     if(trigger == 1)
     {
@@ -1167,7 +1163,6 @@ int SetCabbageIdentifier::setAttribute(bool init)
         }
     }
 
-    varData->data.getLock().exit();
 
     return OK;
 }
@@ -1187,7 +1182,7 @@ int SetCabbageIdentifierArray::setAttribute(bool init)
         return OK;
     
 
-    varData->data.getLock().enter();
+    CriticalSection::ScopedLockType scopedLock(varData->data.getLock());
     csnd::Vector<MYFLT>& inputArgs = args.myfltvec_data(3);
     
     if(trigger == 1)
@@ -1215,7 +1210,6 @@ int SetCabbageIdentifierArray::setAttribute(bool init)
         }
     }
 
-    varData->data.getLock().exit();
     return OK;
 }
 
@@ -1241,7 +1235,7 @@ int SetCabbageIdentifierSArgs::setAttribute(bool init)
     if(trigger == 0)
         return OK;
     
-    varData->data.getLock().enter();
+    CriticalSection::ScopedLockType scopedLock(varData->data.getLock());
     
     //hack to trigger table update even if table number hasn't changed
     triggerTableUpdate(varData, data, 1);
@@ -1262,7 +1256,6 @@ int SetCabbageIdentifierSArgs::setAttribute(bool init)
     
     triggerTableUpdate(varData, data, 0);
     
-    varData->data.getLock().exit();
     return OK;
 }
 
@@ -1274,7 +1267,7 @@ int SetCabbageIdentifierITime::setAttribute(bool init)
     CabbageWidgetIdentifiers* varData = CabbageOpcodes::getGlobalvariable(csound, vt);
     CabbageWidgetIdentifiers::IdentifierData data = getIdentData(outargs, init, 0, 1);
     
-    varData->data.getLock().enter();
+    CriticalSection::ScopedLockType scopedLock(varData->data.getLock());
 
     //hack to trigger table update even if table number hasn't changed
     triggerTableUpdate(varData, data, 1);
@@ -1303,7 +1296,7 @@ int SetCabbageIdentifierITime::setAttribute(bool init)
     }
     
     triggerTableUpdate(varData, data, 0);
-    varData->data.getLock().exit();
+   
     return OK;
 }
 
@@ -1314,7 +1307,7 @@ int SetCabbageIdentifierITimeSArgs::setAttribute(bool init)
    
     CabbageWidgetIdentifiers::IdentifierData data = getIdentData(outargs, init, 0, 1);
     
-    varData->data.getLock().enter();
+    CriticalSection::ScopedLockType scopedLock(varData->data.getLock());
     triggerTableUpdate(varData, data, 1);
         
     
@@ -1342,7 +1335,6 @@ int SetCabbageIdentifierITimeSArgs::setAttribute(bool init)
     }
     
     triggerTableUpdate(varData, data, 0);
-    varData->data.getLock().exit();
 
     return OK;
 }

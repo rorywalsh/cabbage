@@ -94,7 +94,7 @@ public:
 
     
     //save and restore user plugin presets
-    String addPluginPreset(String presetName, const String& fileName, bool remove);
+    nlohmann::ordered_json addPluginPreset(String presetName, const String& fileName, bool remove);
     void setPluginState(nlohmann::ordered_json j, const String presetName, bool hostState = false);
     void restorePluginPreset(String presetName, String filename);
     
@@ -210,7 +210,6 @@ private:
     OwnedArray<XYPadAutomator> xyAutomators;
 	int samplingRate = 44100;
 	int screenWidth{}, screenHeight{};
-    nlohmann::ordered_json hostStateData;
     OwnedArray<CabbagePluginParameter> parameters;
     Font customFont;
     File customFontFile;

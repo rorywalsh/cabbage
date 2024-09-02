@@ -37,7 +37,6 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
     initialiseCommonAttributes (this, wData);   //initialise common attributes such as bounds, name, rotation, etc..
 
 
-
     soundfiler.setZoomFactor (CabbageWidgetData::getNumProp (wData, CabbageIdentifierIds::zoom));
 
 
@@ -49,7 +48,7 @@ CabbageSoundfiler::CabbageSoundfiler (ValueTree wData, CabbagePluginEditor* _own
     if (CabbageWidgetData::getProperty (wData, CabbageIdentifierIds::channel).size() == 0)
         soundfiler.setIsRangeSelectable (false);
 
-
+    DBG(CabbageWidgetData::getStringProp (wData, CabbageIdentifierIds::csdfile));
     Logger::writeToLog("CabbageSoundfiler::CabbageSoundfiler:\n\tCurrent file is:" + file);
     const String fullPath = File (getCsdFile()).getParentDirectory().getChildFile (file).getFullPathName();
     soundfiler.setFile (fullPath);
