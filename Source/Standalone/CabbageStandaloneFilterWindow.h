@@ -5,6 +5,7 @@
 
 #include "../CabbageIds.h"
 #include "../CabbageCommonHeaders.h"
+#include "../LookAndFeel/CabbageLookAndFeel2.h"
 
 //==============================================================================
 /**
@@ -534,7 +535,7 @@ private:
 
         void paint (Graphics& g) override
         {
-            g.fillAll (Colour(15, 15, 15));
+            g.fillAll (Colour(125, 125, 125));
         }
 
         void resized() override
@@ -684,6 +685,7 @@ public:
     juce::Rectangle<int> optionButtonBounds;
     bool hasSettingsButtons = false;
     Typeface::Ptr customFont;
+    LookAndFeel_V4 laf4;
     //==============================================================================
     /** Creates a window with a given title and colour.
         The settings object can be a PropertySet that the class should use to
@@ -790,6 +792,7 @@ public:
         setTitleBarButtonsRequired (DocumentWindow::minimiseButton | DocumentWindow::closeButton, false);
 
         Component::addAndMakeVisible (optionsButton);
+        optionsButton.setLookAndFeel(&laf4);
         optionsButton.addListener (this);
         optionsButton.setTriggeredOnMouseDown (true);
        #endif
@@ -984,6 +987,7 @@ private:
         {
         public:
             enum { height = 30 };
+            
 
             NotificationArea (Button::Listener* settingsButtonListener)
                 : notification ("notification", "Audio input is muted to avoid feedback loop"),
@@ -994,11 +998,7 @@ private:
                  #endif
             {
                 setOpaque (true);
-
                 notification.setColour (Label::textColourId, Colours::black);
-
-                settingsButton.addListener (settingsButtonListener);
-
                 addAndMakeVisible (notification);
                 addAndMakeVisible (settingsButton);
             }
