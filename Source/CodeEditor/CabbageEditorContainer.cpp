@@ -29,21 +29,12 @@ CabbageEditorContainer::CabbageEditorContainer (CabbageSettings* cabbageSettings
 
     if (isCsdFile)
     {
-#if VSCODE
-        editor.reset (new CabbageVSCodeEditorComponent (this, &statusBar, settings->valueTree));
-#else
         editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &csoundTokeniser));
-#endif
         addAndMakeVisible (editor.get());
     }
     else
     {
-#if VSCODE
-        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree));
-        
-#else
-        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &javaTokeniser));
-#endif
+        editor.reset (new CabbageCodeEditorComponent (this, &statusBar, settings->valueTree, csoundDocument, &javaTokeniser));  
         addAndMakeVisible (editor.get());
     }
 

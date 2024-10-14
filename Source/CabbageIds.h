@@ -541,7 +541,6 @@ namespace CabbageWidgetTypes
     static const String cvoutput = "cvoutput";
     static const String cvinput = "cvinput";
     static const String light = "light";
-    static const String webview = "webview";
 
     static const String infobutton = "infobutton";
     static const String json = "json";

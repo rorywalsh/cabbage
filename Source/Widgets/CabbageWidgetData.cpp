@@ -196,8 +196,6 @@ void CabbageWidgetData::setWidgetState (ValueTree widgetData, const String lineF
     else if (widgetType == CabbageWidgetTypes::eventsequencer)
         setEventSequencerProperties (widgetData, ID);
 
-    else if (widgetType == CabbageWidgetTypes::webview)
-        setWebViewProperties(widgetData, ID);
 
     //===============table==================//
     else if (widgetType == CabbageWidgetTypes::table)

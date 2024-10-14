@@ -434,11 +434,6 @@ void CabbagePluginEditor::insertWidget (const ValueTree& cabbageWidgetData)
 
     else if (widgetType == CabbageWidgetTypes::path)
         insertPath (cabbageWidgetData);
-
-    else if (widgetType == CabbageWidgetTypes::webview)
-        insertWebView(cabbageWidgetData);
-
-
     
     else if (widgetType == CabbageWidgetTypes::hrange
              || widgetType == CabbageWidgetTypes::vrange)
@@ -519,14 +514,6 @@ void CabbagePluginEditor::insertPath (const ValueTree& cabbageWidgetData)
     components.add (path = new CabbagePath (cabbageWidgetData, this));
     addToEditorAndMakeVisible (path, cabbageWidgetData);
     addMouseListenerAndSetVisibility (path, cabbageWidgetData);
-}
-
-void CabbagePluginEditor::insertWebView(const ValueTree& cabbageWidgetData)
-{
-    CabbageWebView* path;
-    components.add(path = new CabbageWebView(cabbageWidgetData, this));
-    addToEditorAndMakeVisible(path, cabbageWidgetData);
-    addMouseListenerAndSetVisibility(path, cabbageWidgetData);
 }
 
 void CabbagePluginEditor::insertTextEditor (const ValueTree& cabbageWidgetData)
