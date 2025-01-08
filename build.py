@@ -235,7 +235,7 @@ shouldVerifyDownload = True
 sys.stdout.write(YELLOW)
 if platform.system() == "Darwin":
     if not os.path.exists("CabbageManual"):
-        url = "https://cabbageaudio.com/beta/CabbageManual.zip"
+        url = "http://cabbageaudio.com/beta/CabbageManual.zip"
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('CabbageManual.zip', 'wb').write(r.content)       
         with zipfile.ZipFile("CabbageManual.zip", 'r') as zip_ref:
