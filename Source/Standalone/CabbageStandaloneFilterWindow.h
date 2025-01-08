@@ -998,7 +998,7 @@ private:
                  #endif
             {
                 setOpaque (true);
-                notification.setColour (Label::textColourId, Colours::black);
+                notification.setColour (Label::textColourId, Colours::black);	
                 addAndMakeVisible (notification);
                 addAndMakeVisible (settingsButton);
             }
