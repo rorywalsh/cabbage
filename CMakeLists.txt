@@ -308,8 +308,6 @@ Source/Widgets/CabbageWidgetBase.cpp
 Source/Widgets/CabbageWidgetBase.h
 Source/Widgets/CabbageWidgetData.cpp
 Source/Widgets/CabbageWidgetData.h
-Source/Widgets/CabbageWebView.cpp
-Source/Widgets/CabbageWebView.h
 Source/Widgets/CabbageWidgetDataInitMethods.cpp
 Source/Widgets/CabbageXYPad.cpp
 Source/Widgets/CabbageXYPad.h
@@ -364,8 +362,6 @@ set(IDE_SOURCES
     Source/Audio/UI/PluginWindow.h
     Source/CodeEditor/CabbageCodeEditor.cpp
     Source/CodeEditor/CabbageCodeEditor.h
-    Source/CodeEditor/CabbageVSCodeEditor.cpp
-    Source/CodeEditor/CabbageVSCodeEditor.h
     Source/CodeEditor/CabbageEditorContainer.cpp
     Source/CodeEditor/CabbageEditorContainer.h
     Source/CodeEditor/CabbageOutputConsole.h
@@ -545,7 +541,6 @@ if(MSVC)
         juce::juce_recommended_warning_flags)
 
 elseif(APPLE)
-    set(WEBKIT "-framework WebKit -framework CoreServices")
     if(CabbagePro MATCHES 0)
         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
         SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csound/build/CsoundLib64")
@@ -609,10 +604,6 @@ else() # linux
     add_compile_options(-j4)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules (gtk3 REQUIRED gtk+-3.0 IMPORTED_TARGET)
-    pkg_check_modules (webkit2 REQUIRED webkit2gtk-4.0 IMPORTED_TARGET)
-
-    # not sure why the libwebkit headers aren't found
-    include_directories("/usr/include/webkitgtk-4.0/")
 
     target_link_libraries(${PROJECT_NAME} 
     PRIVATE
@@ -620,7 +611,6 @@ else() # linux
         ${CSOUND_LIBRARY}
     PUBLIC
         PkgConfig::gtk3 
-        PkgConfig::webkit2
         juce::juce_recommended_config_flags
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
