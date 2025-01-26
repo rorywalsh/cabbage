@@ -78,6 +78,6 @@ optional arguments:
                         libxcursor-dev libxcomposite-dev mesa-common-dev
                         libasound2-dev freeglut3-dev libcurl4-gnutls-dev
                         libasound2-dev libsndfile1 libsndfile-dev libjack-dev
-                        flex bison libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev
+                        flex bison libwebkit2gtk-4.1-0 libwebkit2gtk-4.1-dev
   --license LICENSE     GPL by default
 ```
