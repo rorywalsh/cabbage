@@ -436,7 +436,7 @@ elif platform.system() == "Linux":
     else:
         print('Found VST SDK...')
 
-    if not os.path.exists('/usr/local/bin/csound'):
+    if not os.path.exists('/usr/local/bin/csound') and not os.path.exists('/usr/bin/csound'):
         os.chdir(rootDir)
         sys.stdout.write(RED)
         print('Did not find Csound. Downloading and installing to....')
@@ -455,8 +455,8 @@ elif platform.system() == "Linux":
     else:
         print('Found Csound... ')
         sys.stdout.write(RED)
-        print("Warning: Please make sure you are running the most up to date version of Csound. If you uninstall Csound")
-        print("and run this script again, it will automatically build and install the latest version of Csound")
+        print("Warning: Please make sure you are running the most up to date version of Csound 6. If you uninstall Csound")
+        print("and run this script again, it will automatically build and install the latest version of Csound 6")
         sys.stdout.write(RESET)
         print('')
 
