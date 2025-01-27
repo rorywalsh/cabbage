@@ -25,12 +25,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         
         String pluginFilename, fileExtension;
         File thisFile = File::getSpecialLocation (File::currentApplicationFile);
-#if defined(JUCE_LINUX)	
-        String currentApplicationDirectory = "/usr/bin";
-#else
         String currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
-#endif
-        
         
         if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Linux)
         {
