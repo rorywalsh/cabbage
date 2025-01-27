@@ -27,7 +27,10 @@ If you are on Linux you may need to install some additional dependencies. You ca
 
 `python build.py --config=Release --installLinuxDeps=True`
 
-You only have to do this once. You can drop the `--installLinuxDeps=True` from subsequent calls. Note that the CabbageRack interface that gets bundled with Cabbage when you run build.py was built on Ubuntu 18.04. If it does not work you will need to build it yourself. You can then drop the resulted CabbageRack folder into the `CabbageInstall` directory before installing. 
+You only have to do this once. You can drop the `--installLinuxDeps=True` from subsequent calls. Note that the CabbageRack interface that gets bundled with Cabbage when you run build.py was built on Ubuntu 18.04. If it does not work you will need to build it yourself. You can then drop the resulted CabbageRack folder into the `CabbageInstall` directory before installing.
+
+The build script will look for the `csound` executable in `/usr/bin` and `/usr/local/bin`; if it finds this it will assume you have the corresponding development files installed.
+(For Debian and Ubuntu, you can install the `libcsnd-dev` package.) If `csound` is not found, the latest Csound 6 will be built from source and installed into `/usr/local/bin`.
 
 _______
 
@@ -78,6 +81,6 @@ optional arguments:
                         libxcursor-dev libxcomposite-dev mesa-common-dev
                         libasound2-dev freeglut3-dev libcurl4-gnutls-dev
                         libasound2-dev libsndfile1 libsndfile-dev libjack-dev
-                        flex bison libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev
+                        flex bison libwebkit2gtk-4.1-0 libwebkit2gtk-4.1-dev
   --license LICENSE     GPL by default
 ```
