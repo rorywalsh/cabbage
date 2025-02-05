@@ -29,7 +29,6 @@ info = """
 print(info)
 rootDir = os.getcwd()
 sys.stdout.write(RESET)
-platformArch = os.popen('arch').read()
 
 def getVersionNumber():
     with open(rootDir+"/CMakeLists.txt", "rt") as inputFile:
@@ -89,11 +88,11 @@ parser.add_argument('--webUI', type=str,
 args = parser.parse_args()
 
 buildBtOpcode = 0
-if args.btOpcode is not None:
-    print('Bluetooth Enabled')
-    buildBtOpcode = 1
-else:
-    buildBtOpcode = 0
+# if args.btOpcode is not None:
+#     print('Bluetooth Enabled')
+#     buildBtOpcode = 1
+# else:
+#     buildBtOpcode = 0
 
 customStandaloneWrapper = 0
 if args.customStandalone is not None:
