@@ -996,10 +996,8 @@ void CabbagePluginProcessor::getStateInformation(MemoryBlock& destData)
         auto j = addPluginPreset("CABBAGE_PRESETS", "", false);
 
         nlohmann::json k, l;
-        l["dummy"] = "dummy";
         k["daw state"] = j;
-        k["dummy"] = l;
-
+		DBG(k.dump(4));
         MemoryOutputStream(destData, true).writeString(k.dump(4));
 
     }
@@ -1017,7 +1015,8 @@ void CabbagePluginProcessor::setStateInformation(const void* data, int sizeInByt
     try{
 	
 		auto jsonData = nlohmann::json::parse(MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readString().toStdString());
-        setPluginState(jsonData, "", true);
+		DBG(jsonData.dump(4));
+		setPluginState(jsonData, "", true);
     }
     catch (nlohmann::json::exception& e) {
         DBG(e.what());
@@ -1238,7 +1237,7 @@ nlohmann::ordered_json CabbagePluginProcessor::addPluginPreset(String presetName
 	if(fileName.isNotEmpty())
 		presetFile.replaceWithText(String(j.dump(4)));
 
-
+	DBG(j.dump(4));
     
 	return  j[currentPresetName.toStdString()];
 
@@ -1259,17 +1258,16 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
         }
 #endif
         
-
 	for (nlohmann::ordered_json::iterator itA = j.begin(); itA != j.end(); ++itA)
 	{
 		if (String(itA.key()) == presetName || hostState == true)
 		{
 			for (nlohmann::ordered_json::iterator presetData = itA->begin(); presetData != itA->end(); ++presetData)
 			{
-				if(presetData.key() == "dummy")
-                    return;
-                
+				//if(presetData.key() == "dummy")
+    //                break;
 
+				DBG(presetData.key());
 				ValueTree valueTree = CabbageWidgetData::getValueTreeForComponent(cabbageWidgets, presetData.key(), true);
 				const String type = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::type);
 				const String widgetName = CabbageWidgetData::getStringProp(valueTree, CabbageIdentifierIds::name);
@@ -1457,6 +1455,7 @@ void CabbagePluginProcessor::setPluginState(nlohmann::ordered_json j, const Stri
     }
     catch (nlohmann::json::exception& e) {
         DBG(e.what());
+		DBG(j.dump(4));
         jassertfalse;
     }
 }
@@ -1864,7 +1863,7 @@ void CabbagePluginProcessor::setCabbageParameter(String& channel, float value, V
 
 void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-	//getCsound()->Message("CABBAGE: prepareToPlay() called by host\n");
+	getCsound()->Message("CABBAGE: prepareToPlay() called by host\n");
 
 	bool csoundRecompiled = false;
 	String jsonStateData;
@@ -1885,9 +1884,7 @@ void CabbagePluginProcessor::prepareToPlay(double sampleRate, int samplesPerBloc
     //grab the current state of the plugin - state in this instance is the session state
     auto j = addPluginPreset("CABBAGE_PRESETS", "", false);
     nlohmann::json k, l;
-    l["dummy"] = "dummy";
     k["daw state"] = j;
-    k["dummy"] = l;
     
 	CsoundPluginProcessor::prepareToPlay(sampleRate, samplesPerBlock);
 
