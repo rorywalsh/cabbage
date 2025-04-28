@@ -43,6 +43,7 @@ public:
 
     bool adhocSign = false;
     
+    std::string extractFilePath(const std::string& input);
     
     String encodeString (File csdFile)
     {

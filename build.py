@@ -29,7 +29,6 @@ info = """
 print(info)
 rootDir = os.getcwd()
 sys.stdout.write(RESET)
-platformArch = os.popen('arch').read()
 
 def getVersionNumber():
     with open(rootDir+"/CMakeLists.txt", "rt") as inputFile:
@@ -69,7 +68,7 @@ parser.add_argument('--manufacturerCode', type=str,
                     help='A unique 4 character ID with an uppercase first character, i.e, "Cabb"')
 
 parser.add_argument('--installLinuxDeps', type=str,
-                    help='Set to False, set to True if you wish to download the following dependencies needed to build JUCE applications on Linux - libfreetype6-dev libx11-dev libstdc++6 libc++-dev libxinerama-dev libxrandr-dev libxcursor-dev libxcomposite-dev mesa-common-dev libasound2-dev freeglut3-dev libcurl4-gnutls-dev libasound2-dev libsndfile1 libsndfile-dev libjack-dev flex bison libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev')
+                    help='Set to False, set to True if you wish to download the following dependencies needed to build JUCE applications on Linux - libfreetype6-dev libx11-dev libstdc++6 libc++-dev libxinerama-dev libxrandr-dev libxcursor-dev libxcomposite-dev mesa-common-dev libasound2-dev freeglut3-dev libcurl4-gnutls-dev libasound2-dev libsndfile1 libsndfile-dev libjack-dev flex bison libwebkit2gtk-4.1-0 libwebkit2gtk-4.1-dev')
 
 parser.add_argument('--license', type=str,
                     help='GPL by default')
@@ -89,11 +88,11 @@ parser.add_argument('--webUI', type=str,
 args = parser.parse_args()
 
 buildBtOpcode = 0
-if args.btOpcode is not None:
-    print('Bluetooth Enabled')
-    buildBtOpcode = 1
-else:
-    buildBtOpcode = 0
+# if args.btOpcode is not None:
+#     print('Bluetooth Enabled')
+#     buildBtOpcode = 1
+# else:
+#     buildBtOpcode = 0
 
 customStandaloneWrapper = 0
 if args.customStandalone is not None:
@@ -202,7 +201,7 @@ if platform.system() == "Linux" and installLinuxDeps is True:
     os.system('sudo apt-get install flex')
     os.system('sudo apt-get install bison')
     os.system('sudo apt-get update')
-    os.system('sudo apt-get install -y libwebkit2gtk-4.0-37 libwebkit2gtk-4.0-dev')
+    os.system('sudo apt-get install -y libwebkit2gtk-4.1-0 libwebkit2gtk-4.1-dev')
     os.system('sudo apt-get install -y libjavascriptcoregtk-4.0-18 libjavascriptcoregtk-4.0-dev')
 # ==============================================================================================
 if platform.system() == "Windows" and os.path.exists("CabbageInstall"):
@@ -436,13 +435,13 @@ elif platform.system() == "Linux":
     else:
         print('Found VST SDK...')
 
-    if not os.path.exists('/usr/local/bin/csound'):
+    if not os.path.exists('/usr/local/bin/csound') and not os.path.exists('/usr/bin/csound'):
         os.chdir(rootDir)
         sys.stdout.write(RED)
         print('Did not find Csound. Downloading and installing to....')
         sys.stdout.write(RESET)
-        os.system('git clone https://github.com/csound/csound.git')
-        os.system('git checkout master')
+        os.system('git clone -b csound6 https://github.com/csound/csound.git')
+#        os.system('git checkout master')
         # os.system("sudo sed -i -- 's/#deb-src/deb-src/g' /etc/apt/sources.list && sudo sed -i -- 's/# deb-src/deb-src/g' /etc/apt/sources.list")
         # os.system('sudo apt-get update')
         os.system('sudo apt-get build-dep csound')
@@ -455,8 +454,8 @@ elif platform.system() == "Linux":
     else:
         print('Found Csound... ')
         sys.stdout.write(RED)
-        print("Warning: Please make sure you are running the most up to date version of Csound. If you uninstall Csound")
-        print("and run this script again, it will automatically build and install the latest version of Csound")
+        print("Warning: Please make sure you are running the most up to date version of Csound 6. If you uninstall Csound")
+        print("and run this script again, it will automatically build and install the latest version of Csound 6")
         sys.stdout.write(RESET)
         print('')
 

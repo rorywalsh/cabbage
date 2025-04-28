@@ -25,12 +25,7 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
         
         String pluginFilename, fileExtension;
         File thisFile = File::getSpecialLocation (File::currentApplicationFile);
-#if defined(JUCE_LINUX)	
-        String currentApplicationDirectory = "/usr/bin";
-#else
         String currentApplicationDirectory = thisFile.getParentDirectory().getFullPathName();
-#endif
-        
         
         if (CabbageUtilities::getTargetPlatform() == CabbageUtilities::TargetPlatformTypes::Linux)
         {
@@ -214,15 +209,28 @@ void PluginExporter::exportPlugin (String type, File csdFile, String pluginId, S
     
 }
 
+std::string PluginExporter::extractFilePath(const std::string& input) 
+{
+    std::string marker = "CLIConverter.exe\\=";
+    size_t pos = input.rfind(marker);
+    if (pos == std::string::npos) 
+    {
+        return input;
+    }
+    return input.substr(pos + marker.length());
+}
 
 void PluginExporter::writePluginFileToDisk(File fc, File csdFile, File VSTData, String fileExtension, String pluginId, String type, bool encrypt)
 {
-
-    //#if !CLIConverter
+    DBG(fc.getFullPathName());
+    // Ensure we remove CLIConvertor string if batch converting from command line
+    
+#if !CLIConverter
     File exportedPlugin(fc.withFileExtension(fileExtension).getFullPathName());
-    //#else
-    //    File exportedPlugin (fc.withFileExtension (fileExtension).getFullPathName().replace("/CLIConverter", ""));
-    //#endif
+#else
+    auto filePathAndName = extractFilePath(fc.withFileExtension(fileExtension).getFullPathName().toUTF8().getAddress());
+    File exportedPlugin (filePathAndName);
+#endif
 
 
         //vcv rack export is the same on all platforms..
@@ -270,17 +278,20 @@ void PluginExporter::writePluginFileToDisk(File fc, File csdFile, File VSTData, 
     }
 
 #if CLIConverter
-    if (exportedPlugin.existsAsFile())
-        DBG("plugin exists");
-
-    auto mkdir = "mkdir " + exportedPlugin.getParentDirectory().getFullPathName().toStdString();
-    system(mkdir.c_str());
+    //auto mkdir = "mkdir " + exportedPlugin.getParentDirectory().getFullPathName().toStdString();
+    //system(mkdir.c_str());
 
 #if JUCE_WINDOWS
     if (VSTData.isDirectory())
         VSTData.copyDirectoryTo(exportedPlugin);
     else
-        VSTData.copyFileTo(exportedPlugin);
+    {
+        if (VSTData.copyFileTo(exportedPlugin))
+        {
+            DBG("File appears to have copied Ok");
+        }
+
+    }
 #else
 
     auto command = "cp -Rf " + VSTData.getFullPathName().toStdString() + " " +exportedPlugin.getFullPathName().toStdString();
