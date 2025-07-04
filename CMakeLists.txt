@@ -543,7 +543,7 @@ if(CabbagePro MATCHES 1)
         if(NOT DEFINED LIB_OGG)
             message(FATAL_ERROR "LIB_OGG must be defined (path to libogg.a)")
         endif()
-    endif
+    endif()
 
     if(NOT DEFINED LIB_OPUS)
         message(FATAL_ERROR "LIB_OPUS must be defined (path to libopus.a)")
