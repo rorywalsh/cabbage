@@ -561,7 +561,7 @@ if(CabbagePro MATCHES 1)
         endif()
     endif()
 
-
+    include_directories(${CMAKE_INCLUDE_PATH})
 endif()
 
 if(MSVC)
