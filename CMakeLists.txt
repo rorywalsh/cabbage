@@ -561,9 +561,6 @@ if(CabbagePro MATCHES 1)
     endif()
 endif()
 
-            '-DLIB_LAME="c:\\Program Files\\Csound6_x64\\lib\\libmp3lame-static.lib" '
-            '-DLIB_FLAC="c:\\Program Files\\Csound6_x64\\lib\\FLAC.lib" '
-
 if(MSVC)
     # SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "C:/Program Files/Csound6_x64/include/csound")
     include_directories("C:\\Program Files\\Csound6_x64\\include\\csound" "C:\\SDKs\\ASIOSDK2.3.3\\asiosdk_2.3.3_2019-06-14\\common")
