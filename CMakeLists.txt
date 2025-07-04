@@ -549,12 +549,9 @@ if(CabbagePro MATCHES 1)
 
 
     if(APPLE)
-
         if(NOT DEFINED LIB_VORBIS)
             message(FATAL_ERROR "LIB_VORBIS must be defined (path to libvorbis.a)")
         endif()
-
-
 
         if(NOT DEFINED LIB_VORBISENC)
             message(FATAL_ERROR "LIB_VORBISENC must be defined (path to libvorbisenc.a)")
