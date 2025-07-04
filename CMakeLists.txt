@@ -525,8 +525,13 @@ if(MSVC)
     include_directories("C:\\Program Files\\Csound6_x64\\include\\csound" "C:\\SDKs\\ASIOSDK2.3.3\\asiosdk_2.3.3_2019-06-14\\common")
     if(CabbagePro MATCHES 1)
         # find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
-        set(CSOUND_LIBRARY "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
-        set(EXTERNAL_LIBS "c:\\Program Files\\Csound6_x64\\lib\\sndfile.lib" "c:\\Program Files\\Csound6_x64\\lib\\opus.lib" "c:\\Program Files\\Csound6_x64\\lib\\syn123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmpghip-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\out123.lib" "c:\\Program Files\\Csound6_x64\\lib\\mpg123.lib" "c:\\Program Files\\Csound6_x64\\lib\\libmp3lame-static.lib" "c:\\Program Files\\Csound6_x64\\lib\\FLAC.lib")    
+        if(NOT DEFINED CSOUND_LIBRARY)
+            message(FATAL_ERROR "CSOUND_LIBRARY must be defined (path to libcsound64.lib)")
+        endif()
+
+        if(NOT DEFINED EXTERNAL_LIBS)
+            message(FATAL_ERROR "There are multiple external libraries that must be defined, i.e, opus.lib, FLAC.lib, etc")
+        endif()
     else()
     find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
     endif()
@@ -567,53 +572,47 @@ elseif(APPLE)
     else()
     # Cabbage Pro
         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
-        # Include path
+
+        # Fail if required variables are not defined
         if(NOT DEFINED CMAKE_INCLUDE_PATH)
-            set(CMAKE_INCLUDE_PATH "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include" CACHE STRING "CMake include path")
+            message(FATAL_ERROR "CMAKE_INCLUDE_PATH must be defined")
         endif()
 
-        # Csound library
         if(NOT DEFINED CSOUND_LIBRARY)
-            set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/build/libCsoundLib64.a" CACHE FILEPATH "Path to libCsoundLib64.a")
+            message(FATAL_ERROR "CSOUND_LIBRARY must be defined (path to libCsoundLib64.a)")
         endif()
 
-        # Header include directory
-        include_directories("/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
-
-        # libsndfile
         if(NOT DEFINED LIB_SNDFILE)
-            set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile_uni/build/libsndfile.a" CACHE FILEPATH "Path to libsndfile.a")
+            message(FATAL_ERROR "LIB_SNDFILE must be defined (path to libsndfile.a)")
         endif()
 
-        # FLAC
         if(NOT DEFINED LIB_FLAC)
-            set(LIB_FLAC "/Users/rwalsh/sourcecode/xiph_libs/libFLAC.a" CACHE FILEPATH "Path to libFLAC.a")
+            message(FATAL_ERROR "LIB_FLAC must be defined (path to libFLAC.a)")
         endif()
 
-        # OGG
         if(NOT DEFINED LIB_OGG)
-            set(LIB_OGG "/Users/rwalsh/sourcecode/xiph_libs/libogg.a" CACHE FILEPATH "Path to libogg.a")
+            message(FATAL_ERROR "LIB_OGG must be defined (path to libogg.a)")
         endif()
 
-        # OPUS
         if(NOT DEFINED LIB_OPUS)
-            set(LIB_OPUS "/Users/rwalsh/sourcecode/xiph_libs/libopus.a" CACHE FILEPATH "Path to libopus.a")
+            message(FATAL_ERROR "LIB_OPUS must be defined (path to libopus.a)")
         endif()
 
-        # VORBIS
         if(NOT DEFINED LIB_VORBIS)
-            set(LIB_VORBIS "/Users/rwalsh/sourcecode/xiph_libs/libvorbis.a" CACHE FILEPATH "Path to libvorbis.a")
+            message(FATAL_ERROR "LIB_VORBIS must be defined (path to libvorbis.a)")
         endif()
 
-        # VORBISENC
         if(NOT DEFINED LIB_VORBISENC)
-            set(LIB_VORBISENC "/Users/rwalsh/sourcecode/xiph_libs/libvorbisenc.a" CACHE FILEPATH "Path to libvorbisenc.a")
+            message(FATAL_ERROR "LIB_VORBISENC must be defined (path to libvorbisenc.a)")
         endif()
 
-        # VORBISFILE
         if(NOT DEFINED LIB_VORBIS_FILE)
-            set(LIB_VORBIS_FILE "/Users/rwalsh/sourcecode/xiph_libs/libvorbisfile.a" CACHE FILEPATH "Path to libvorbisfile.a")
+            message(FATAL_ERROR "LIB_VORBIS_FILE must be defined (path to libvorbisfile.a)")
         endif()
+
+        # Apply the include path
+        include_directories(${CMAKE_INCLUDE_PATH})
+
 
         target_link_libraries(${PROJECT_NAME} 
         PRIVATE
