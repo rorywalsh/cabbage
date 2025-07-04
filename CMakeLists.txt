@@ -543,14 +543,13 @@ if(CabbagePro MATCHES 1)
         if(NOT DEFINED LIB_OGG)
             message(FATAL_ERROR "LIB_OGG must be defined (path to libogg.a)")
         endif()
+        if(NOT DEFINED LIB_VORBIS)
+            message(FATAL_ERROR "LIB_VORBIS must be defined (path to libvorbis.a)")
+        endif()
     endif()
 
     if(NOT DEFINED LIB_OPUS)
         message(FATAL_ERROR "LIB_OPUS must be defined (path to libopus.a)")
-    endif()
-
-    if(NOT DEFINED LIB_VORBIS)
-        message(FATAL_ERROR "LIB_VORBIS must be defined (path to libvorbis.a)")
     endif()
 
     if(NOT DEFINED LIB_VORBISENC)
@@ -572,9 +571,7 @@ if(MSVC)
             ${CSOUND_LIBRARY}
             ${LIB_SNDFILE}
             ${LIB_FLAC}
-            ${LIB_OGG}
             ${LIB_OPUS}
-            ${LIB_VORBIS}
             ${LIB_VORBISENC}
             ${LIB_VORBIS_FILE}
         PUBLIC
