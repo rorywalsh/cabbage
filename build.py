@@ -85,6 +85,9 @@ parser.add_argument('--customStandalone', type=str,
 parser.add_argument('--webUI', type=str,
                     help='')
 
+parser.add_argument('--extraFlags', type=str,
+                    help='')
+
 args = parser.parse_args()
 
 buildBtOpcode = 0
@@ -127,6 +130,12 @@ if args.manufacturer is not None:
     manufacturer = args.manufacturer
 else:
     manufacturer = "CabbageAudio"
+
+extraFlags = ""
+if args.extraFlags is not None:
+    extraFlags = args.extraFlags
+else:
+    configType = ""
 
 if args.project is not None:
     projects = [args.project]
@@ -515,8 +524,9 @@ for project in projects:
     print('')
 
     if platform.system() == "Darwin": # and 'arm64' in platformArch: 
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro)  + ' -DBluetooth='+str(buildBtOpcode)  + ' -DCustomStandalone='+str(customStandaloneWrapper) + ('' if buildWebUI == 0 else ' -DWEB_UI=1' ))
-        print('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro)  + ' -DBluetooth='+str(buildBtOpcode)  + ' -DCustomStandalone='+str(customStandaloneWrapper) + ('' if buildWebUI == 0 else ' -DWEB_UI=1' ))
+        buildCommand = 'cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" '+extraFlags+' -DCabbagePro='+str(buildPro)  + ' -DBluetooth='+str(buildBtOpcode)  + ' -DCustomStandalone='+str(customStandaloneWrapper) + ('' if buildWebUI == 0 else ' -DWEB_UI=1')
+        os.system(buildCommand)
+        print(buildCommand)
     # elif platform.system() == "Darwin":
     #     os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     #     print('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
