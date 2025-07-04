@@ -572,14 +572,15 @@ if(MSVC)
         target_link_libraries(${PROJECT_NAME} 
         PRIVATE
             ${JUCE_MODULES}
-            ${CSOUND_LIBRARY}
-            ${LIB_SNDFILE}
-            ${LIB_FLAC}
             ${LIB_SYN123}
+            ${LIB_MPG123}
             ${LIB_MPGHIP}
             ${LIB_OUT123}
-            ${LIB_MPG123}
             ${LIB_LAME}
+            ${LIB_OPUS}
+            ${LIB_SNDFILE}
+            ${LIB_FLAC}
+            ${CSOUND_LIBRARY}
         PUBLIC
             juce::juce_recommended_config_flags
             juce::juce_recommended_lto_flags
