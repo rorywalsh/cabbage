@@ -565,17 +565,55 @@ elseif(APPLE)
         juce::juce_recommended_lto_flags
         juce::juce_recommended_warning_flags)
     else()
+    # Cabbage Pro
         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
-        SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
-        set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/build/libCsoundLib64.a")   
+        # Include path
+        if(NOT DEFINED CMAKE_INCLUDE_PATH)
+            set(CMAKE_INCLUDE_PATH "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include" CACHE STRING "CMake include path")
+        endif()
+
+        # Csound library
+        if(NOT DEFINED CSOUND_LIBRARY)
+            set(CSOUND_LIBRARY "/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/build/libCsoundLib64.a" CACHE FILEPATH "Path to libCsoundLib64.a")
+        endif()
+
+        # Header include directory
         include_directories("/Volumes/SSD_Drive/Mac/csoundCabbagePro/csound/include")
-        set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile_uni/build/libsndfile.a")
-        set(LIB_FLAC "/Users/rwalsh/sourcecode/xiph_libs/libFLAC.a")
-        set(LIB_OGG "/Users/rwalsh/sourcecode/xiph_libs/libogg.a")
-        set(LIB_OPUS "/Users/rwalsh/sourcecode/xiph_libs/libopus.a")
-        set(LIB_VORBIS "/Users/rwalsh/sourcecode/xiph_libs/libvorbis.a")
-        set(LIB_VORBISENC "/Users/rwalsh/sourcecode/xiph_libs/libvorbisenc.a")
-        set(LIB_VORBIS_FILE "/Users/rwalsh/sourcecode/xiph_libs/libvorbisfile.a")
+
+        # libsndfile
+        if(NOT DEFINED LIB_SNDFILE)
+            set(LIB_SNDFILE "/Volumes/SSD_Drive/Mac/libsndfile_uni/build/libsndfile.a" CACHE FILEPATH "Path to libsndfile.a")
+        endif()
+
+        # FLAC
+        if(NOT DEFINED LIB_FLAC)
+            set(LIB_FLAC "/Users/rwalsh/sourcecode/xiph_libs/libFLAC.a" CACHE FILEPATH "Path to libFLAC.a")
+        endif()
+
+        # OGG
+        if(NOT DEFINED LIB_OGG)
+            set(LIB_OGG "/Users/rwalsh/sourcecode/xiph_libs/libogg.a" CACHE FILEPATH "Path to libogg.a")
+        endif()
+
+        # OPUS
+        if(NOT DEFINED LIB_OPUS)
+            set(LIB_OPUS "/Users/rwalsh/sourcecode/xiph_libs/libopus.a" CACHE FILEPATH "Path to libopus.a")
+        endif()
+
+        # VORBIS
+        if(NOT DEFINED LIB_VORBIS)
+            set(LIB_VORBIS "/Users/rwalsh/sourcecode/xiph_libs/libvorbis.a" CACHE FILEPATH "Path to libvorbis.a")
+        endif()
+
+        # VORBISENC
+        if(NOT DEFINED LIB_VORBISENC)
+            set(LIB_VORBISENC "/Users/rwalsh/sourcecode/xiph_libs/libvorbisenc.a" CACHE FILEPATH "Path to libvorbisenc.a")
+        endif()
+
+        # VORBISFILE
+        if(NOT DEFINED LIB_VORBIS_FILE)
+            set(LIB_VORBIS_FILE "/Users/rwalsh/sourcecode/xiph_libs/libvorbisfile.a" CACHE FILEPATH "Path to libvorbisfile.a")
+        endif()
 
         target_link_libraries(${PROJECT_NAME} 
         PRIVATE
