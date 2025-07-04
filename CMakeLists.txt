@@ -539,9 +539,11 @@ if(CabbagePro MATCHES 1)
         message(FATAL_ERROR "LIB_FLAC must be defined (path to libFLAC.a)")
     endif()
 
-    if(NOT DEFINED LIB_OGG)
-        message(FATAL_ERROR "LIB_OGG must be defined (path to libogg.a)")
-    endif()
+    if(APPLE)
+        if(NOT DEFINED LIB_OGG)
+            message(FATAL_ERROR "LIB_OGG must be defined (path to libogg.a)")
+        endif()
+    endif
 
     if(NOT DEFINED LIB_OPUS)
         message(FATAL_ERROR "LIB_OPUS must be defined (path to libopus.a)")
