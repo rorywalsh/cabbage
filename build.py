@@ -531,9 +531,7 @@ for project in projects:
     # elif platform.system() == "Darwin":
     #     os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     #     print('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
-    elif platform.system() == "Linux":        
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G "'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro)  + ' -DCustomStandalone='+str(customStandaloneWrapper))
-    elif platform.system() == "Windows": 
+    else:
         buildCommand = 'cmake -DCMAKE_BUILD_TYPE='+configType+'  -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" '+extraFlags+' -DCabbagePro='+str(buildPro)   + ' -DBluetooth='+str(buildBtOpcode)  + ' -DCustomStandalone='+str(customStandaloneWrapper)
         print(buildCommand)
         os.system(buildCommand)
