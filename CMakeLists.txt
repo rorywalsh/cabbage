@@ -520,30 +520,77 @@ endif()
         simpleble::simpleble)
 endif()
 
+if(CabbagePro MATCHES 1)
+    # find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
+    # Fail if required variables are not defined
+    if(NOT DEFINED CMAKE_INCLUDE_PATH)
+        message(FATAL_ERROR "CMAKE_INCLUDE_PATH must be defined")
+    endif()
+
+    if(NOT DEFINED CSOUND_LIBRARY)
+        message(FATAL_ERROR "CSOUND_LIBRARY must be defined (path to libCsoundLib64.a)")
+    endif()
+
+    if(NOT DEFINED LIB_SNDFILE)
+        message(FATAL_ERROR "LIB_SNDFILE must be defined (path to libsndfile.a)")
+    endif()
+
+    if(NOT DEFINED LIB_FLAC)
+        message(FATAL_ERROR "LIB_FLAC must be defined (path to libFLAC.a)")
+    endif()
+
+    if(NOT DEFINED LIB_OGG)
+        message(FATAL_ERROR "LIB_OGG must be defined (path to libogg.a)")
+    endif()
+
+    if(NOT DEFINED LIB_OPUS)
+        message(FATAL_ERROR "LIB_OPUS must be defined (path to libopus.a)")
+    endif()
+
+    if(NOT DEFINED LIB_VORBIS)
+        message(FATAL_ERROR "LIB_VORBIS must be defined (path to libvorbis.a)")
+    endif()
+
+    if(NOT DEFINED LIB_VORBISENC)
+        message(FATAL_ERROR "LIB_VORBISENC must be defined (path to libvorbisenc.a)")
+    endif()
+
+    if(NOT DEFINED LIB_VORBIS_FILE)
+        message(FATAL_ERROR "LIB_VORBIS_FILE must be defined (path to libvorbisfile.a)")
+    endif()
+endif()
+
 if(MSVC)
     # SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "C:/Program Files/Csound6_x64/include/csound")
     include_directories("C:\\Program Files\\Csound6_x64\\include\\csound" "C:\\SDKs\\ASIOSDK2.3.3\\asiosdk_2.3.3_2019-06-14\\common")
     if(CabbagePro MATCHES 1)
-        # find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
-        if(NOT DEFINED CSOUND_LIBRARY)
-            message(FATAL_ERROR "CSOUND_LIBRARY must be defined (path to libcsound64.lib)")
-        endif()
-
-        if(NOT DEFINED EXTERNAL_LIBS)
-            message(FATAL_ERROR "There are multiple external libraries that must be defined, i.e, opus.lib, FLAC.lib, etc")
-        endif()
+        target_link_libraries(${PROJECT_NAME} 
+        PRIVATE
+            ${JUCE_MODULES}
+            ${CSOUND_LIBRARY}
+            ${LIB_SNDFILE}
+            ${LIB_FLAC}
+            ${LIB_OGG}
+            ${LIB_OPUS}
+            ${LIB_VORBIS}
+            ${LIB_VORBISENC}
+            ${LIB_VORBIS_FILE}
+        PUBLIC
+            juce::juce_recommended_config_flags
+            juce::juce_recommended_lto_flags
+            juce::juce_recommended_warning_flags)
     else()
-    find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
+        find_library(CSOUND_LIBRARY NAMES csound64 HINTS "c:\\Program Files\\Csound6_x64\\lib")
+        target_link_libraries(${PROJECT_NAME} 
+        PRIVATE
+            ${JUCE_MODULES}
+            ${CSOUND_LIBRARY}
+        PUBLIC
+            juce::juce_recommended_config_flags
+            juce::juce_recommended_lto_flags
+            juce::juce_recommended_warning_flags)
     endif()
-    target_link_libraries(${PROJECT_NAME} 
-    PRIVATE
-        ${JUCE_MODULES}
-        ${CSOUND_LIBRARY}
-        ${EXTERNAL_LIBS}
-    PUBLIC
-        juce::juce_recommended_config_flags
-        juce::juce_recommended_lto_flags
-        juce::juce_recommended_warning_flags)
+       
 
 elseif(APPLE)
     if(CabbagePro MATCHES 0)
@@ -572,48 +619,6 @@ elseif(APPLE)
     else()
     # Cabbage Pro
         set(CMAKE_OSX_DEPLOYMENT_TARGET "10.13" CACHE STRING "Minimum OS X deployment version" FORCE)
-
-        # Fail if required variables are not defined
-        if(NOT DEFINED CMAKE_INCLUDE_PATH)
-            message(FATAL_ERROR "CMAKE_INCLUDE_PATH must be defined")
-        endif()
-
-        if(NOT DEFINED CSOUND_LIBRARY)
-            message(FATAL_ERROR "CSOUND_LIBRARY must be defined (path to libCsoundLib64.a)")
-        endif()
-
-        if(NOT DEFINED LIB_SNDFILE)
-            message(FATAL_ERROR "LIB_SNDFILE must be defined (path to libsndfile.a)")
-        endif()
-
-        if(NOT DEFINED LIB_FLAC)
-            message(FATAL_ERROR "LIB_FLAC must be defined (path to libFLAC.a)")
-        endif()
-
-        if(NOT DEFINED LIB_OGG)
-            message(FATAL_ERROR "LIB_OGG must be defined (path to libogg.a)")
-        endif()
-
-        if(NOT DEFINED LIB_OPUS)
-            message(FATAL_ERROR "LIB_OPUS must be defined (path to libopus.a)")
-        endif()
-
-        if(NOT DEFINED LIB_VORBIS)
-            message(FATAL_ERROR "LIB_VORBIS must be defined (path to libvorbis.a)")
-        endif()
-
-        if(NOT DEFINED LIB_VORBISENC)
-            message(FATAL_ERROR "LIB_VORBISENC must be defined (path to libvorbisenc.a)")
-        endif()
-
-        if(NOT DEFINED LIB_VORBIS_FILE)
-            message(FATAL_ERROR "LIB_VORBIS_FILE must be defined (path to libvorbisfile.a)")
-        endif()
-
-        # Apply the include path
-        include_directories(${CMAKE_INCLUDE_PATH})
-
-
         target_link_libraries(${PROJECT_NAME} 
         PRIVATE
             ${JUCE_MODULES}
