@@ -539,17 +539,18 @@ if(CabbagePro MATCHES 1)
         message(FATAL_ERROR "LIB_FLAC must be defined (path to libFLAC.a)")
     endif()
 
-    if(APPLE)
-        if(NOT DEFINED LIB_OGG)
-            message(FATAL_ERROR "LIB_OGG must be defined (path to libogg.a)")
-        endif()
+    if(NOT DEFINED LIB_OPUS)
+        message(FATAL_ERROR "LIB_OPUS must be defined (path to libopus.a)")
+    endif()
 
+    if(NOT DEFINED LIB_OGG)
+        message(FATAL_ERROR "LIB_OGG must be defined (path to libogg.a)")
+    endif()
+
+
+    if(APPLE)
         if(NOT DEFINED LIB_VORBIS)
             message(FATAL_ERROR "LIB_VORBIS must be defined (path to libvorbis.a)")
-        endif()
-
-        if(NOT DEFINED LIB_OPUS)
-            message(FATAL_ERROR "LIB_OPUS must be defined (path to libopus.a)")
         endif()
 
         if(NOT DEFINED LIB_VORBISENC)
@@ -571,14 +572,15 @@ if(MSVC)
         target_link_libraries(${PROJECT_NAME} 
         PRIVATE
             ${JUCE_MODULES}
-            ${CSOUND_LIBRARY}
-            ${LIB_SNDFILE}
-            ${LIB_FLAC}
             ${LIB_SYN123}
+            ${LIB_MPG123}
             ${LIB_MPGHIP}
             ${LIB_OUT123}
-            ${LIB_MPG123}
             ${LIB_LAME}
+            ${LIB_OPUS}
+            ${LIB_SNDFILE}
+            ${LIB_FLAC}
+            ${CSOUND_LIBRARY}
         PUBLIC
             juce::juce_recommended_config_flags
             juce::juce_recommended_lto_flags
