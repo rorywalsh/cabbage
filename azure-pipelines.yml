@@ -5,6 +5,12 @@
 trigger:
 - develop
 
+# Add this resources section
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: develop
 # We can run multiple jobs in parallel. For this project
 # I'm running Linux, Windows, and macOS jobs. For syntac details
 # see https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases
@@ -40,7 +46,7 @@ jobs:
   pool:
     vmImage: 'macOS-12'
   steps:
-  - checkout: self
+
   - script: |
      pip install requests
      python --version
