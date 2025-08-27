@@ -461,7 +461,7 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
 
                 if (s.containsOnly("0123456789.-"))
                 {
-                    currentValueAsText = stringItems[juce::roundToInt(s.getIntValue()-.25)];
+                    currentValueAsText = stringItems[juce::roundToInt(s.getIntValue()-.55)];
                 }
 
                 else
@@ -469,17 +469,19 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                     currentValueAsText = s;
                 }
                 
-
-                currentValueAsText = File(getCsdFile()).getParentDirectory().getChildFile (currentValueAsText).getFileNameWithoutExtension();
-                
-             
                 workingDir = CabbageWidgetData::getStringProp (valueTree, CabbageIdentifierIds::currentdir);
-                workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
+                if(workingDir.isNotEmpty())
+                {
+                    workingDir = CabbageUtilities::expandDirectoryMacro(workingDir);
+                    currentValueAsText = File(getCsdFile()).getParentDirectory().getChildFile (currentValueAsText).getFileNameWithoutExtension();
+                }
+                
                 int index = 0;
                 if (workingDir.isNotEmpty())
                     pluginDir = File(getCsdFile()).getParentDirectory().getChildFile (workingDir);
                 else
                     pluginDir = File(getCsdFile()).getParentDirectory();
+
                 
                 if(pluginDir.getChildFile(currentValueAsText).existsAsFile())
                 {
@@ -491,15 +493,16 @@ void CabbageComboBox::valueTreePropertyChanged (ValueTree& valueTree, const Iden
                 
 
                 //this index if different for strings and files?
-                if (index >= 0)
-                    setSelectedItemIndex (index, sendNotification);
+//                if (index >= 0 && index < this->getNumItems())
+//                    setSelectedItemIndex (index, sendNotification);
     
                 //can't update the channel value from here as it might update on the same cycle as a cabbageSetValue
                 //this in turn will update the string channel pointer and mess up further called to cabbageSetValue...
                 owner->sendChannelStringDataToCsound (getChannel(), currentValueAsText);
                 
                 currentItemIndex = index;
-                CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
+                if(currentValueAsText.isNotEmpty())
+                    CabbageWidgetData::setProperty (valueTree, CabbageIdentifierIds::value, currentValueAsText);
             }
         }
         else
