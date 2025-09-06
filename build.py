@@ -134,8 +134,6 @@ else:
 extraFlags = ""
 if args.extraFlags is not None:
     extraFlags = args.extraFlags
-else:
-    configType = ""
 
 if args.project is not None:
     projects = [args.project]
