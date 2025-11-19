@@ -5,7 +5,7 @@ Cabbage. A framework for developing audio plugins and standalone instruments usi
 
 _______
 
-## Building
+## Building. 
 
 Cabbage comprises of several different components. There is the main Cabbage IDE, as well as synth and effect plugin interface. Each component's build project is generated using CMake, which is in turned called by the `build.py` script which resides in the Cabbage root folder. In order to run the build script you will need to install [requests](https://pypi.org/project/requests/). You will need access to the internet the first time you run this script as it will need to download and install various SDKs, as well as some additional auxiliary interfaces such as CabbageRack and CsoundFMOD. 
 

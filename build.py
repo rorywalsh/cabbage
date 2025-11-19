@@ -85,6 +85,9 @@ parser.add_argument('--customStandalone', type=str,
 parser.add_argument('--webUI', type=str,
                     help='')
 
+parser.add_argument('--extraFlags', type=str,
+                    help='')
+
 args = parser.parse_args()
 
 buildBtOpcode = 0
@@ -127,6 +130,10 @@ if args.manufacturer is not None:
     manufacturer = args.manufacturer
 else:
     manufacturer = "CabbageAudio"
+
+extraFlags = ""
+if args.extraFlags is not None:
+    extraFlags = args.extraFlags
 
 if args.project is not None:
     projects = [args.project]
@@ -473,6 +480,7 @@ if not os.path.exists("JUCE/modules"):
     print('Cloning JUCE and applying patches....')
     os.system('git clone --depth 1 --branch 6.1.2 https://github.com/juce-framework/JUCE && cd JUCE')
     os.system('cd ..')
+    os.system('git apply ./patches/juce_mac_Windowing_snapshot.patch')
     os.system('git apply ./patches/StandaloneWrapper.patch')
     os.system('git apply ./patches/AUWrapper.patch')
     os.system('git apply ./patches/UtilityWrapper.patch')
@@ -515,15 +523,17 @@ for project in projects:
     print('')
 
     if platform.system() == "Darwin": # and 'arm64' in platformArch: 
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro)  + ' -DBluetooth='+str(buildBtOpcode)  + ' -DCustomStandalone='+str(customStandaloneWrapper) + ('' if buildWebUI == 0 else ' -DWEB_UI=1' ))
-        print('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro)  + ' -DBluetooth='+str(buildBtOpcode)  + ' -DCustomStandalone='+str(customStandaloneWrapper) + ('' if buildWebUI == 0 else ' -DWEB_UI=1' ))
+        buildCommand = 'cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" '+extraFlags+' -DCabbagePro='+str(buildPro)  + ' -DBluetooth='+str(buildBtOpcode)  + ' -DCustomStandalone='+str(customStandaloneWrapper) + ('' if buildWebUI == 0 else ' -DWEB_UI=1')
+        print(buildCommand)
+        os.system(buildCommand)
+
     # elif platform.system() == "Darwin":
     #     os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
     #     print('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro))
-    elif platform.system() == "Linux":        
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+' -DCMAKE_OSX_ARCHITECTURES="x86_64" -G "'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro)  + ' -DCustomStandalone='+str(customStandaloneWrapper))
-    elif platform.system() == "Windows": 
-        os.system('cmake -DCMAKE_BUILD_TYPE='+configType+'  -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" -DCabbagePro='+str(buildPro)   + ' -DBluetooth='+str(buildBtOpcode)  + ' -DCustomStandalone='+str(customStandaloneWrapper))
+    else:
+        buildCommand = 'cmake -DCMAKE_BUILD_TYPE='+configType+'  -G"'+generator+'" .. -DPROJECT_NAME="'+project+'" -DJucePlugin_Manufacturer="'+manufacturer+'" -DJucePlugin_ManufacturerCode='+manufacturerCode+' -DJucePlugin_Desc="'+pluginDescription+'" '+extraFlags+' -DCabbagePro='+str(buildPro)   + ' -DBluetooth='+str(buildBtOpcode)  + ' -DCustomStandalone='+str(customStandaloneWrapper)
+        print(buildCommand)
+        os.system(buildCommand)
     
     if executeBuild == True:
         sys.stdout.write(CYAN)
