@@ -21,6 +21,7 @@
 
 #include <memory>
 #include "CsoundPluginEditor.h"
+#include <cmath>
 
 //==============================================================================
 CsoundPluginProcessor::CsoundPluginProcessor (File selectedCsdFile, const BusesProperties& ioBuses)
@@ -1324,8 +1325,10 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
 			buffer.clear(channelsToClear, 0, buffer.getNumSamples());
 		}
 
-		for (int i = 0; i < numSamples; i++, ++csndIndex)
+        for (int i = 0; i < numSamples; i++, ++csndIndex)
 		{
+            // maintain an absolute sample counter so outgoing MIDI can be timestamped
+            globalSampleCounter.fetch_add(1);
 			if (csndIndex >= csdKsmps)
 			{
                 //don't call performKsmps here if we want 0 latency
@@ -1422,13 +1425,45 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
     }
 #if JucePlugin_ProducesMidiOutput
 
-	if (!midiOutputBuffer.isEmpty())
-	{
-		midiMessages.clear();
-		midiMessages.swapWith(midiOutputBuffer);
-	}
-	else
-		midiMessages.clear();
+    // Map absolute timestamps on outgoing messages into sample offsets for this block
+    midiMessages.clear();
+    if (!midiOutputBuffer.isEmpty())
+    {
+        MidiBuffer::Iterator it(midiOutputBuffer);
+        MidiMessage msg; int dummyPos = 0;
+        // compute block start absolute sample position. We incremented the
+        // globalSampleCounter at the start of every processed sample, so the
+        // block start is current counter minus number of samples processed in this
+        // block.
+        const long long blockEnd = globalSampleCounter.load();
+        const long long blockStart = blockEnd - (long long) numSamples;
+
+        while (it.getNextEvent(msg, dummyPos))
+        {
+            // prefer the timestamp stored in the MidiMessage (set by WriteMidiData)
+            const double ts = msg.getTimeStamp();
+            int posInBlock = 0;
+
+            if (ts > 0.0)
+            {
+                posInBlock = (int) (std::llround((long long) ts) - blockStart);
+            }
+            else
+            {
+                // fallback to the stored buffer position (likely 0)
+                posInBlock = dummyPos;
+            }
+
+            if (posInBlock < 0)
+                posInBlock = 0;
+            if (posInBlock >= numSamples)
+                posInBlock = numSamples - 1;
+
+            midiMessages.addEvent(msg, posInBlock);
+        }
+
+        midiOutputBuffer.clear();
+    }
 
 #endif
 }
@@ -1598,8 +1633,18 @@ int CsoundPluginProcessor::WriteMidiData (CSOUND* /*csound*/, void* _userData,
         CabbageUtilities::debug ("\n\nInvalid");
         return 0;
     }
-
+    // Capture an absolute sample position timestamp so we can accurately
+    // place the MIDI event into the host buffer later (in processSamples).
     MidiMessage message (mbuf, nbytes, 0);
+    // store absolute sample position as the message timestamp (if available)
+    // reading atomic globalSampleCounter gives a safe snapshot from audio thread
+    double absSamplePos = 0.0;
+    try {
+        absSamplePos = (double) userData->globalSampleCounter.load();
+    } catch (...) {
+        absSamplePos = 0.0;
+    }
+    message.setTimeStamp(absSamplePos);
     userData->midiOutputBuffer.addEvent (message, 0);
     return nbytes;
 }
