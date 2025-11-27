@@ -1429,6 +1429,10 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
     midiMessages.clear();
     if (!midiOutputBuffer.isEmpty())
     {
+        // midiOutputBuffer contains:
+        // 1. Future events queued from previous blocks
+        // 2. New events added by WriteMidiData during this block's sample processing
+        MidiBuffer futureEvents;  // Events for future blocks
         MidiBuffer::Iterator it(midiOutputBuffer);
         MidiMessage msg; int dummyPos = 0;
         // compute block start absolute sample position. We incremented the
@@ -1442,27 +1446,30 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
         {
             // prefer the timestamp stored in the MidiMessage (set by WriteMidiData)
             const double ts = msg.getTimeStamp();
-            int posInBlock = 0;
-
-            if (ts > 0.0)
+            long long eventSample = (ts > 0.0) ? std::llround(ts) : blockStart;
+            
+            if (eventSample < blockEnd)
             {
-                posInBlock = (int) (std::llround((long long) ts) - blockStart);
+                // Event belongs to this block or is in the past - send it now
+                int posInBlock = (int)(eventSample - blockStart);
+                if (posInBlock < 0) posInBlock = 0;
+                if (posInBlock >= numSamples) posInBlock = numSamples - 1;
+                midiMessages.addEvent(msg, posInBlock);
             }
             else
             {
-                // fallback to the stored buffer position (likely 0)
-                posInBlock = dummyPos;
+                // Event is in the future, keep it for next block
+                futureEvents.addEvent(msg, 0);
             }
-
-            if (posInBlock < 0)
-                posInBlock = 0;
-            if (posInBlock >= numSamples)
-                posInBlock = numSamples - 1;
-
-            midiMessages.addEvent(msg, posInBlock);
         }
 
+        // Replace buffer contents with only future events
+        // This works correctly because:
+        // - Events from previous blocks that belong to THIS block have been sent
+        // - Events from previous blocks that are still in the future are kept
+        // - New events added during THIS block are either sent or kept for future
         midiOutputBuffer.clear();
+        midiOutputBuffer.addEvents(futureEvents, 0, -1, 0);
     }
 
 #endif
