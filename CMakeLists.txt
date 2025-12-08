@@ -523,9 +523,9 @@ endif()
 if(CabbagePro MATCHES 1)
     # find_library(CSOUND_LIBRARY NAME libcsound64 HINTS "c:\\Program Files\\Csound6_x64\\lib\\libcsound64.lib")
     # Fail if required variables are not defined
-    if(NOT DEFINED CMAKE_INCLUDE_PATH)
-        message(FATAL_ERROR "CMAKE_INCLUDE_PATH must be defined")
-    endif()
+    # if(NOT DEFINED CMAKE_INCLUDE_PATH)
+    #    message(FATAL_ERROR "CMAKE_INCLUDE_PATH must be defined")
+    # endif()
 
     if(NOT DEFINED CSOUND_LIBRARY)
         message(FATAL_ERROR "CSOUND_LIBRARY must be defined (path to libCsoundLib64.a)")
