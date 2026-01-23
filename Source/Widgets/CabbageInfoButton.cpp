@@ -57,13 +57,24 @@ CabbageInfoButton::CabbageInfoButton (ValueTree wData, CabbagePluginEditor* _own
 
 //===============================================================================
 void CabbageInfoButton::buttonClicked (Button* button)
-{    
-    if (File(getCsdFile()).getParentDirectory().getChildFile (filename).existsAsFile() || filename.contains("http://") || filename.contains("https://"))
-    {
-        URL url (filename);
+{
+    // Handle URLs
+    if (filename.startsWith("http://") || filename.startsWith("https://")) {
+        URL url(filename);
         url.launchInDefaultBrowser();
+        return;
     }
-
+    
+    // Handle local files
+    const auto fullPath = File(getCsdFile()).getParentDirectory().getChildFile(filename);
+    
+    if (fullPath.existsAsFile()) {
+        // This is the simplest cross-platform approach
+        fullPath.startAsProcess();
+    }
+    else {
+        // Error handling
+    }
 }
 
 //===============================================================================
@@ -83,3 +94,4 @@ void CabbageInfoButton::valueTreePropertyChanged (ValueTree& valueTree, const Id
 
     setButtonText (getText());
 }
+
