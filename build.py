@@ -289,7 +289,7 @@ if platform.system() == "Darwin":
     if not os.path.exists('/Library/Frameworks/CsoundLib64.framework') and buildPro==0:
         print("================== Installing Csound ========================")
         # url = 'https://github.com/csound/csound/releases/download/6.18.0/Csound-MacOS-universal-6.17.0.dmg'
-        url = 'https://github.com/csound/csound/releases/download/6.17.0/csound-MacOS_x86_64-6.17.0.dmg'
+        url = 'https://github.com/csound/csound/releases/download/6.18.1/Csound-MacOS-universal-6.18.1.dmg'
         r = requests.get(url, allow_redirects=True, verify=shouldVerifyDownload)
         open('Csound-MacOS-universal-6.18.0.dmg', 'wb').write(r.content)  
         os.system('hdiutil attach '+rootDir+'/Csound-MacOS-universal-6.18.0.dmg')
