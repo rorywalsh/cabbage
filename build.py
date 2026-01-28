@@ -297,6 +297,7 @@ if platform.system() == "Darwin":
         os.chdir(rootDir+'/Csound')
         os.system('sudo installer -pkg csound-MacOS-universal-6.18.0.pkg -target /')
         os.system('sudo install_name_tool -id /Library/Frameworks/CsoundLib64.framework/CsoundLib64  /Library/Frameworks/CsoundLib64.framework/CsoundLib64')
+        os.system('sudo sed -i \'s|opaddr|opadr|g\' /Library/Frameworks/CsoundLib64.framework/Headers/plugin.h')
     else:
         print("Found Csound...")
 
