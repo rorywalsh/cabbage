@@ -21,6 +21,7 @@
 #define PLUGINPROCESSOR_H_INCLUDED
 
 #include "JuceHeader.h"
+#include <atomic>
 #include <csound.hpp>
 #include <csdebug.h>
 #include "csdl.h"
@@ -396,6 +397,7 @@ private:
     bool recompiledOnPrepareToPlay = false;
     int polling = 1;
     MidiBuffer midiOutputBuffer;
+    std::atomic<long long> globalSampleCounter {0};
     int guiCycles = 0;
     int guiRefreshRate = 128;
     MidiBuffer midiBuffer = {};

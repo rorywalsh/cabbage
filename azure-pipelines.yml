@@ -44,7 +44,7 @@ jobs:
 - job: macOS
   timeoutInMinutes: 100
   pool:
-    vmImage: 'macOS-13'
+    vmImage: 'macos-latest'
   steps:
 
   - script: |
