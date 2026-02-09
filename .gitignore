@@ -11,3 +11,5 @@ CabbageManual
 Source/Opcodes/CabbageBTOpcodes.*
 Source/Utilities/encrypt.h
 csound
+# macOS AppleDouble files
+._*
