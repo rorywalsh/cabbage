@@ -1647,7 +1647,7 @@ int CsoundPluginProcessor::WriteMidiData (CSOUND* csound, void* _userData,
     // reading atomic globalSampleCounter gives a safe snapshot from audio thread
     double absSamplePos = 0.0;
     try {
-        absSamplePos = double(csound->GetKcounter() * csound->GetKsmps() - userData->globalSampleCounter.load());
+        absSamplePos = double(csoundGetKcounter(csound) * csound->GetKsmps() - userData->globalSampleCounter.load());
     } catch (...) {
         absSamplePos = 0.0;
     }
@@ -1716,6 +1716,7 @@ int CsoundPluginProcessor::exitGraphCallback (CSOUND* csound)
     ignoreUnused(csound);
     return 0;
 }
+
 
 
 
