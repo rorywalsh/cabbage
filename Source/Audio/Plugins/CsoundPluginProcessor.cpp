@@ -1630,7 +1630,7 @@ int CsoundPluginProcessor::OpenMidiOutputDevice (CSOUND* csound, void** userData
 // Write MIDI data to plugin's MIDI output. Each time Csound outputs a midi message this
 // method should be called. Note: you must have -Q set in your CsOptions
 //==============================================================================
-int CsoundPluginProcessor::WriteMidiData (CSOUND* /*csound*/, void* _userData,
+int CsoundPluginProcessor::WriteMidiData (CSOUND* csound, void* _userData,
                                           const unsigned char* mbuf, int nbytes)
 {
     auto* userData = static_cast<CsoundPluginProcessor*>(_userData);
@@ -1647,7 +1647,7 @@ int CsoundPluginProcessor::WriteMidiData (CSOUND* /*csound*/, void* _userData,
     // reading atomic globalSampleCounter gives a safe snapshot from audio thread
     double absSamplePos = 0.0;
     try {
-        absSamplePos = (double) userData->globalSampleCounter.load();
+        absSamplePos = double(csound->GetKcounter() * csound->GetKsmps() - userData->globalSampleCounter.load());
     } catch (...) {
         absSamplePos = 0.0;
     }
@@ -1716,6 +1716,7 @@ int CsoundPluginProcessor::exitGraphCallback (CSOUND* csound)
     ignoreUnused(csound);
     return 0;
 }
+
 
 
 
