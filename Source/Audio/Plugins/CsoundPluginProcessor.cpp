@@ -1435,10 +1435,7 @@ void CsoundPluginProcessor::processSamples(AudioBuffer< Type >& buffer, MidiBuff
         MidiBuffer futureEvents;  // Events for future blocks
         MidiBuffer::Iterator it(midiOutputBuffer);
         MidiMessage msg; int dummyPos = 0;
-        // compute block start absolute sample position. We incremented the
-        // globalSampleCounter at the start of every processed sample, so the
-        // block start is current counter minus number of samples processed in this
-        // block.
+        // compute block start absolute sample position. 
         const long long blockEnd = globalSampleCounter.load();
         const long long blockStart = blockEnd - (long long) numSamples;
 
@@ -1647,7 +1644,7 @@ int CsoundPluginProcessor::WriteMidiData (CSOUND* csound, void* _userData,
     // reading atomic globalSampleCounter gives a safe snapshot from audio thread
     double absSamplePos = 0.0;
     try {
-        absSamplePos = double(csoundGetCurrentTimeSamples(csound) * csoundGetKsmps(csound) - userData->globalSampleCounter.load());
+        absSamplePos = double(csoundGetCurrentTimeSamples(csound) - userData->globalSampleCounter.load());
     } catch (...) {
         absSamplePos = 0.0;
     }
