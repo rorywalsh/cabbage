@@ -36,7 +36,7 @@ _______
 
 ## Installing
 
-If you successfully built Cabbage using the build.py script you will find platform installers in the `Installers` folder. Simply double click teh Windows or MacOS installers to install locally. If you are on Linux, cd to the `Installers/Linux` directory and run the following:
+If you successfully built Cabbage using the build.py script you will find platform installers in the `Installers` folder. Simply double click the Windows or MacOS installers to install locally. If you are on Linux, cd to the `Installers/Linux` directory and run the following:
 
 `chmod +x installCabbage.sh`
 `./installCabbage.sh`
