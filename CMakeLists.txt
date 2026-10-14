@@ -18,7 +18,28 @@ if(APPLE)
     # CABBAGE_PRO_ARCH_PLACEHOLDER
     set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "" FORCE)
     if(NOT DEFINED CMAKE_OSX_DEPLOYMENT_TARGET)
-        set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum macOS deployment target")
+        # Newer Xcode SDKs reject old deployment targets (Xcode 26+ requires
+        # a minimum of 12.0; older toolchains still accept 10.15). Probe the
+        # active toolchain so the default works everywhere; an explicit
+        # -DCMAKE_OSX_DEPLOYMENT_TARGET always wins (see guard above).
+        # To raise the floor for a future Xcode, adjust the threshold below.
+        set(CABBAGE_XCODE_MAJOR 0)
+        execute_process(
+            COMMAND xcodebuild -version
+            OUTPUT_VARIABLE CABBAGE_XCODE_VERSION_OUTPUT
+            ERROR_QUIET
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        if(CABBAGE_XCODE_VERSION_OUTPUT MATCHES "Xcode ([0-9]+)")
+            set(CABBAGE_XCODE_MAJOR "${CMAKE_MATCH_1}")
+        endif()
+        unset(CABBAGE_XCODE_VERSION_OUTPUT)
+        if(CABBAGE_XCODE_MAJOR GREATER_EQUAL 26)
+            set(CMAKE_OSX_DEPLOYMENT_TARGET "12.0" CACHE STRING "Minimum macOS deployment target")
+        else()
+            set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "Minimum macOS deployment target")
+        endif()
+        unset(CABBAGE_XCODE_MAJOR)
     endif()
     if(NOT CMAKE_GENERATOR STREQUAL "Xcode")
         message(FATAL_ERROR "Xcode generator is required on macOS. Please use: cmake -G Xcode ...")
@@ -246,8 +267,8 @@ set(CABBAGE_OPCODE_SOURCES
     "${CMAKE_SOURCE_DIR}/src/opcodes/CabbageFileOpcodes.h"
     "${CMAKE_SOURCE_DIR}/src/opcodes/CabbageSendMessageOpcode.cpp"
     "${CMAKE_SOURCE_DIR}/src/opcodes/CabbageSendMessageOpcode.h"
-    "${CMAKE_SOURCE_DIR}/src/opcodes/CabbageGetWidgesOpcodes.h"
-    "${CMAKE_SOURCE_DIR}/src/opcodes/CabbageGetWidgesOpcodes.cpp"
+    "${CMAKE_SOURCE_DIR}/src/opcodes/CabbageGetWidgetIdsOpcodes.h"
+    "${CMAKE_SOURCE_DIR}/src/opcodes/CabbageGetWidgetIdsOpcodes.cpp"
     "${CMAKE_SOURCE_DIR}/src/opcodes/CabbageJsonOpcodes.h"
     "${CMAKE_SOURCE_DIR}/src/opcodes/CabbageJsonOpcodes.cpp"
     "${CMAKE_SOURCE_DIR}/src/opcodes/CabbageARAOpcodes.h"

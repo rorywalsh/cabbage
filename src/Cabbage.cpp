@@ -177,7 +177,11 @@ void Engine::addOpcodes()
     csnd::plugin<CabbageCreateFileName>((csnd::Csound *)getCsound()->GetCsound(), "cabbageCreateFileName", "S", "SS", csnd::thread::i);
     csnd::plugin<CabbageJoinPath>((csnd::Csound *)getCsound()->GetCsound(), "cabbageJoinPath", "S", "SW", csnd::thread::i);
 
-    csnd::plugin<CabbageGetWidgets>((csnd::Csound *)getCsound()->GetCsound(), "cabbageGetWidgets", "S[]", "", csnd::thread::i);
+    csnd::plugin<CabbageGetWidgetIds>((csnd::Csound *)getCsound()->GetCsound(), "cabbageGetWidgetIds", "S[]", "", csnd::thread::i);
+    csnd::plugin<CabbageGetWidgetIdsFiltered>((csnd::Csound *)getCsound()->GetCsound(), "cabbageGetWidgetIds", "S[]", "SS", csnd::thread::i);
+    csnd::plugin<CabbageGetWidget>((csnd::Csound *)getCsound()->GetCsound(), "cabbageGetWidget", "S", "S", csnd::thread::i);
+    // Deprecated alias: cabbageGetWidgets returned ids only; use cabbageGetWidgetIds.
+    csnd::plugin<CabbageGetWidgetIds>((csnd::Csound *)getCsound()->GetCsound(), "cabbageGetWidgets", "S[]", "", csnd::thread::i);
 
 #if LATTICE_HAS_ARA || defined(CabbageApp)
     csnd::plugin<CabbageAraGetNum>((csnd::Csound *)getCsound()->GetCsound(), "cabbageAraGet", "i", "S", csnd::thread::i);
