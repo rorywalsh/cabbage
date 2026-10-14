@@ -656,12 +656,135 @@ TEST_CASE("Test cabbageJson functional syntax", "[CabbageApp]")
 }
 
 //==============================================================================
-// TEST: struct trigger outputs (CabbageNumTrig / CabbageStrTrig) must behave
-// identically to the legacy multi-output forms of cabbageGetValue. The CSD
-// reads both forms side by side from the same channels and publishes a
-// per-cycle mismatch count; any drift shows up as a non-zero error count.
+// TEST: cabbageGetWidgetIds (all + filtered), deprecated cabbageGetWidgets
+// alias, and cabbageGetWidget (single JSON). The CSD queries at init, then
+// publishes counts/strings on the first k-cycle for assertion here.
 //==============================================================================
-TEST_CASE("Struct trigger overloads match legacy cabbageGetValue forms", "[CabbageApp][TrigStructs]")
+TEST_CASE("Test cabbageGetWidgetIds and cabbageGetWidget opcodes", "[CabbageApp]")
+{
+    ensureValidSettingsFileExists();
+
+    const char* args[] = {"CabbageApp"};
+    auto app = std::make_unique<CabbageAudioApp>(1, const_cast<char**>(args));
+    REQUIRE(app != nullptr);
+
+    int nInputChannels = 2;
+    int nOutputChannels = 2;
+    int nBufferFrames = 512;
+    float **buffer = new float*[nOutputChannels];
+    for (unsigned int ch = 0; ch < nOutputChannels; ++ch)
+    {
+        buffer[ch] = new float[nBufferFrames];
+        memset(buffer[ch], 0, nBufferFrames * sizeof(float));
+    }
+
+    std::string csdContent = TestCsdFiles::widgetIdsAndWidget;
+    std::filesystem::path tempPath = std::filesystem::temp_directory_path() / ("test_widgetIds_" + std::to_string(std::time(nullptr)) + ".csd");
+    std::ofstream tempFile(tempPath);
+    tempFile << csdContent;
+    tempFile.close();
+
+    std::string filePath = tempPath.string();
+    app->setCsoundFile(filePath);
+    REQUIRE(std::filesystem::exists(filePath));
+
+    struct CallbackData {
+        std::string channel;
+        std::string json;
+    };
+    std::vector<CallbackData> callbackMessages;
+
+    app->initialiseCabbage();
+    requireWidgetsResolved(app.get());
+
+    if (app->processor) {
+        app->processor->setCabbageIsReady();
+        app->processor->hostCallback = [&callbackMessages, &app](CabbageOpcodeData data) {
+            CallbackData captured;
+            captured.channel = data.channel;
+            captured.json = data.cabbageJson.dump();
+            callbackMessages.push_back(captured);
+            app->hostCallback(data);
+        };
+    }
+
+    auto startTime = std::chrono::steady_clock::now();
+    auto endTime = startTime + std::chrono::seconds(3);
+    int iterationCount = 0;
+    const int maxIterations = 100;
+    while (std::chrono::steady_clock::now() < endTime && iterationCount < maxIterations)
+    {
+        if (app->processor) {
+            app->processor->process(buffer, buffer, nBufferFrames);
+        }
+        try {
+            app->onIdle();
+        } catch (...) {
+            break;
+        }
+        iterationCount++;
+        std::this_thread::sleep_for(std::chrono::milliseconds(30));
+    }
+    REQUIRE(iterationCount > 0);
+
+    auto lastJsonFor = [&](const std::string& ch) -> nlohmann::json {
+        for (auto it = callbackMessages.rbegin(); it != callbackMessages.rend(); ++it)
+        {
+            if (it->channel == ch)
+                return nlohmann::json::parse(it->json);
+        }
+        return nullptr;
+    };
+    auto numFor = [&](const std::string& ch) -> double {
+        auto j = lastJsonFor(ch);
+        REQUIRE(!j.is_null());
+        return j.value("value", 0.0);
+    };
+    auto strFor = [&](const std::string& ch) -> std::string {
+        auto j = lastJsonFor(ch);
+        REQUIRE(!j.is_null());
+        REQUIRE(j.contains("label"));
+        return j["label"].value("text", std::string(""));
+    };
+
+    // all ids, flattened: MainForm (default form id), widA, widB, widC,
+    // grp (top-level id), childKnob (nested child)
+    CHECK(numFor("res_allCount") == 6.0);
+    CHECK(strFor("res_allIds") == "MainForm,widA,widB,widC,grp,childKnob,");
+    // exact + glob type filters
+    CHECK(numFor("res_rotCount") == 3.0);
+    CHECK(numFor("res_globCount") == 3.0);
+    // channel-id glob (grp has no channels entry, childKnob does not match)
+    CHECK(numFor("res_widCount") == 3.0);
+    // nested dot-notation colour filter
+    CHECK(numFor("res_colCount") == 1.0);
+    // single widget JSON contains its id and type
+    const std::string widgetJson = strFor("res_json");
+    CHECK(widgetJson.find("widA") != std::string::npos);
+    CHECK(widgetJson.find("rotarySlider") != std::string::npos);
+    // unknown id degrades to an empty string
+    CHECK(strFor("res_miss") == "");
+
+    app->addMessageToQueue(CabbageAudioApp::CommandType::StopAudio);
+    app->onIdle();
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    for (unsigned int ch = 0; ch < nOutputChannels; ++ch) {
+        delete[] buffer[ch];
+    }
+    delete[] buffer;
+    std::filesystem::remove(tempPath);
+}
+
+//==============================================================================
+// TEST: struct trigger outputs for cabbageGetValue (CabbageNumTrig /
+// CabbageStrTrig). Trigger history lives in the process-wide memo shared with
+// the legacy forms, so a side-by-side pairing would let only the first reader
+// of each key observe the edge; the struct forms are therefore the sole
+// readers here and are checked against independently computed expectations,
+// with per-cycle mismatches published as a non-zero error count.
+//==============================================================================
+TEST_CASE("Struct cabbageGetValue forms follow shared trigger semantics", "[CabbageApp][TrigStructs]")
 {
     ensureValidSettingsFileExists();
 
@@ -739,13 +862,11 @@ TEST_CASE("Struct trigger overloads match legacy cabbageGetValue forms", "[Cabba
     REQUIRE(iterationCount > 0);
 
     REQUIRE(lastNumFor("tsCycles") >= 1500);
-    // per-cycle equality of value+trigger, legacy vs struct
+    // struct val+trig matches the independently computed expectation
     CHECK(lastNumFor("tsNumErr") == 0.0);
     CHECK(lastNumFor("tsStrErr") == 0.0);
-    // both forms actually fired triggers (channel value/string changes)
-    CHECK(lastNumFor("tsNumTrigLegacy") > 0.0);
+    // the struct forms actually fired triggers (channel value/string changes)
     CHECK(lastNumFor("tsNumTrigStruct") > 0.0);
-    CHECK(lastNumFor("tsStrTrigLegacy") > 0.0);
     CHECK(lastNumFor("tsStrTrigStruct") > 0.0);
 
     app->addMessageToQueue(CabbageAudioApp::CommandType::StopAudio);

@@ -254,10 +254,13 @@ i1 0 1
 
 )";
 
-// Side-by-side legacy (kVal, kTrig) vs struct (res:CabbageNumTrig /
-// res:CabbageStrTrig) outputs for cabbageGetValue. Both forms are read in the
-// same instrument from the same channels, so any semantic drift shows up as a
-// non-zero error count published via cabbageSetValue.
+// Struct-only coverage for the cabbageGetValue trigger forms
+// (res:CabbageNumTrig / res:CabbageStrTrig). Trigger history lives in the
+// process-wide memo shared with the legacy forms, so a side-by-side pairing
+// would let only the first reader of each key observe the edge; the struct
+// forms are therefore the SOLE readers here and are checked against
+// independently computed expectations (unseen key fires iff non-zero /
+// non-empty, then on change only). Mismatches publish via cabbageSetValue.
 const std::string trigStructs = R"(
 <Cabbage>[
 {"type": "form", "caption": "Trig Structs", "size": {"width": 360.0, "height": 200.0}, "guiMode": "queue", "pluginId": "def1"},
@@ -291,29 +294,48 @@ instr 1
     Stmp = kCnt % 8 < 4 ? "hello" : "world"
     chnset Stmp, "tsStr"
 
-    ; --- cabbageGetValue num: legacy vs struct
-    kLegVal, kLegTrig cabbageGetValue "tsIn"
+    ; --- struct forms are the SOLE readers: a second (legacy) reader on
+    ; the same channel would consume the shared-memo edge first
     numRes:CabbageNumTrig cabbageGetValue "tsIn"
+    strRes:CabbageStrTrig cabbageGetValue "tsStr"
+
+    ; --- independent expectation under shared-memo semantics.
+    ; k-rate S variables do not track across cycles (a plain S copy does
+    ; not re-execute), so the string expectation is derived purely from
+    ; the k-cycle counter: Stmp reads "hello" exactly when kCnt % 8 < 4,
+    ; hence an edge lands on kCnt % 8 == 0 or 4. kFirst marks the first
+    ; k-cycle, where the unseen memo key fires because "hello" is
+    ; non-empty — mirroring the numeric expectation below.
+    kFirst init 1
+    kPrevPhas init -1
+    kExpNumTrig = 0
+    if kFirst == 1 && kPhas != 0 then
+        kExpNumTrig = 1
+    elseif kFirst == 0 && kPhas != kPrevPhas then
+        kExpNumTrig = 1
+    endif
+    kMod8 = kCnt % 8
+    kExpStrTrig = 0
+    if kFirst == 1 && strcmpk(Stmp, "") != 0 then
+        kExpStrTrig = 1
+    elseif kFirst == 0 && (kMod8 == 0 || kMod8 == 4) then
+        kExpStrTrig = 1
+    endif
+
     kNumErr init 0
-    if kLegVal != numRes.val || kLegTrig != numRes.trig then
+    if numRes.val != kPhas || numRes.trig != kExpNumTrig then
         kNumErr = kNumErr + 1
     endif
-
-    ; --- cabbageGetValue str: legacy vs struct
-    SLegVal, kStrLegTrig cabbageGetValue "tsStr"
-    strRes:CabbageStrTrig cabbageGetValue "tsStr"
     kStrErr init 0
-    if kStrLegTrig != strRes.trig || strcmpk(SLegVal, strRes.val) != 0 then
+    if strcmpk(strRes.val, Stmp) != 0 || strRes.trig != kExpStrTrig then
         kStrErr = kStrErr + 1
     endif
+    kFirst = 0
+    kPrevPhas = kPhas
 
-    ; every form must actually fire (drives the > 0 assertions)
-    kNumTrigLegacy init 0
-    kNumTrigLegacy = kNumTrigLegacy + kLegTrig
+    ; the struct forms must actually fire (drives the > 0 assertions)
     kNumTrigStruct init 0
     kNumTrigStruct = kNumTrigStruct + numRes.trig
-    kStrTrigLegacy init 0
-    kStrTrigLegacy = kStrTrigLegacy + kStrLegTrig
     kStrTrigStruct init 0
     kStrTrigStruct = kStrTrigStruct + strRes.trig
 
@@ -322,9 +344,7 @@ instr 1
 
     cabbageSetValue "tsNumErr", kNumErr
     cabbageSetValue "tsStrErr", kStrErr
-    cabbageSetValue "tsNumTrigLegacy", kNumTrigLegacy
     cabbageSetValue "tsNumTrigStruct", kNumTrigStruct
-    cabbageSetValue "tsStrTrigLegacy", kStrTrigLegacy
     cabbageSetValue "tsStrTrigStruct", kStrTrigStruct
     cabbageSetValue "tsCycles", kCycles
 endin
@@ -408,6 +428,65 @@ endin
 <CsScore>
 i1 0 10
 i2 1 1
+</CsScore>
+</CsoundSynthesizer>
+
+)";
+const std::string widgetIdsAndWidget = R"(
+<Cabbage>[
+{"type": "form", "caption": "Widget Ids Example", "size": {"width": 360.0, "height": 460.0}, "guiMode": "queue", "pluginId": "def1"},
+{"type": "rotarySlider", "bounds": {"left": 20.0, "top": 20.0, "width": 80.0, "height": 80.0}, "channels": [{"event": "valueChanged", "id": "widA", "range": {"min": 0.0, "max": 1.0, "defaultValue": 0.0, "skew": 1.0, "increment": 0.001}}]},
+{"type": "rotarySlider", "bounds": {"left": 100.0, "top": 20.0, "width": 80.0, "height": 80.0}, "channels": [{"event": "valueChanged", "id": "widB", "range": {"min": 0.0, "max": 1.0, "defaultValue": 0.0, "skew": 1.0, "increment": 0.001}}]},
+{"type": "button", "bounds": {"left": 180.0, "top": 20.0, "width": 117.0, "height": 30.0}, "channels": [{"id": "widC", "event": "valueChanged"}], "style": {"off": {"backgroundColor": "#993d00", "textColor": "#ffffff"}}},
+{"type": "groupBox", "id": "grp", "bounds": {"left": 20.0, "top": 120.0, "width": 320.0, "height": 120.0}, "children": [
+{"type": "rotarySlider", "bounds": {"left": 20.0, "top": 20.0, "width": 80.0, "height": 80.0}, "channels": [{"event": "valueChanged", "id": "childKnob", "range": {"min": 0.0, "max": 1.0, "defaultValue": 0.0, "skew": 1.0, "increment": 0.001}}]}
+]}
+]</Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d
+</CsOptions>
+<CsInstruments>
+ksmps = 32
+nchnls = 2
+0dbfs = 1
+
+instr 1
+    ids:S[] = cabbageGetWidgetIds()
+    rot:S[] = cabbageGetWidgetIds("type", "rotarySlider")
+    glob:S[] = cabbageGetWidgetIds("type", "*Slider")
+    wid:S[] = cabbageGetWidgetIds("channels.0.id", "wid*")
+    col:S[] = cabbageGetWidgetIds("style.off.backgroundColor", "#99*")
+    json:S = cabbageGetWidget("widA")
+    miss:S = cabbageGetWidget("noSuchWidget")
+
+    count:i = lenarray(ids)
+    cabbageSetValue("res_allCount", count)
+    joined:S = ""
+    idx:i = 0
+    while idx < count do
+        joined = strcat(joined, ids[idx])
+        joined = strcat(joined, ",")
+        idx += 1
+    od
+    cabbageSet("res_allIds", "label.text", joined)
+
+    rotCount:i = lenarray(rot)
+    cabbageSetValue("res_rotCount", rotCount)
+    globCount:i = lenarray(glob)
+    cabbageSetValue("res_globCount", globCount)
+    widCount:i = lenarray(wid)
+    cabbageSetValue("res_widCount", widCount)
+    colCount:i = lenarray(col)
+    cabbageSetValue("res_colCount", colCount)
+
+    cabbageSet("res_json", "label.text", json)
+    cabbageSet("res_miss", "label.text", miss)
+endin
+
+</CsInstruments>
+<CsScore>
+i1 0 1
 </CsScore>
 </CsoundSynthesizer>
 

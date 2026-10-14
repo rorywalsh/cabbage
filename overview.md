@@ -138,7 +138,8 @@ Prerequisite: Csound 7 installed where `cmake/FindCSOUND.cmake` can find it
   `cmake -S . -B build -DBUILD_ALL_TARGETS=True -DCMAKE_BUILD_TYPE=Release`
 * macOS: the Xcode generator is mandatory
   (`-G Xcode`, enforced by `FATAL_ERROR` otherwise); deployment target
-  defaults to 10.15.
+  defaults to 10.15, or 12.0 on Xcode 26+ (whose SDKs reject anything older).
+  Pass `-DCMAKE_OSX_DEPLOYMENT_TARGET=<ver>` to override.
 * Tests (needs a `vscabbage` checkout for widget fixtures):
   `cmake -S . -B build-tests -DCABBAGE_BUILD_TARGET=CabbageTests
   -DTEST_VSCABBAGE_DIR=<path-to-vscabbage>/src`
