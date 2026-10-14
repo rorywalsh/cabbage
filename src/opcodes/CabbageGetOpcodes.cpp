@@ -71,6 +71,7 @@ int CabbageGetValue::getValue(int /*init*/)
     if (in_count() == 0)
         return NOTOK;
 
+    cs_float *value = nullptr;
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), (void **)&value, inargs.str_data(0).data,
                                             CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
@@ -82,35 +83,23 @@ int CabbageGetValue::getValue(int /*init*/)
 
 //=====================================================================================
 // k1, kTrig cabbageGetValue "channel"
+// Stateless: trigger history lives in the shared numeric checkTriggerChanged
+// memo, keyed by channel, so this form is safe inside k-rate loops over
+// multiple channels (a single instance is re-invoked once per iteration).
+// NOTE: the former triggerOnPerfPass/numberOfPasses inputs were unreachable
+// (this signature carries a single S input) and have been removed.
 //=====================================================================================
 int CabbageGetValueWithTrigger::getValue(int /*mode*/)
 {
     if (in_count() == 0)
         return NOTOK;
 
-    if (in_count() > 1)
-        triggerOnPerfPass = inargs[1];
-
+    cs_float *value = nullptr;
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), (void **)&value, inargs.str_data(0).data,
                                             CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
-        numberOfPasses = (numberOfPasses < 3 ? numberOfPasses + 1 : 3);
-
-        if (*value != currentValue)
-        {
-            currentValue = *value;
-            outargs[1] = 1;
-            outargs[0] = currentValue;
-        }
-        else
-        {
-            if (numberOfPasses == 2 && triggerOnPerfPass > 0) // test first k-pass
-            {
-                outargs[1] = 1;
-            }
-            else
-                outargs[1] = 0;
-        }
+        outargs[0] = *value;
+        outargs[1] = checkTriggerChanged(inargs.str_data(0).data, *value) ? 1 : 0;
     }
 
     return IS_OK;
@@ -128,16 +117,15 @@ int CabbageGetValueStruct::getValue(int /*mode*/)
     if (out == nullptr)
         return NOTOK;
 
+    cs_float *value = nullptr;
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), (void **)&value, inargs.str_data(0).data,
                                             CSOUND_CONTROL_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
         // Same trigger rule as the kk overload: fire whenever the channel
-        // value differs from the previously seen one.
-        const cs_float trig = (*value != currentValue) ? 1 : 0;
-        if (trig)
-            currentValue = *value;
+        // value differs from the memoised one for this channel.
+        const cs_float trig = checkTriggerChanged(inargs.str_data(0).data, *value) ? 1 : 0;
 
-        out->members[0]->value = currentValue;
+        out->members[0]->value = *value;
         out->members[1]->value = trig;
     }
 
@@ -152,6 +140,7 @@ int CabbageGetValueString::getValue(int /*rate*/)
     if (in_count() == 0)
         return NOTOK;
 
+    cs_float *value = nullptr;
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), (void **)&value, inargs.str_data(0).data,
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
@@ -159,51 +148,27 @@ int CabbageGetValueString::getValue(int /*rate*/)
         if (channelString == nullptr)
             channelString = "";
 
-        if (currentString == nullptr)
-        {
-            currentString = csound->strdup(const_cast<char *>(channelString));
-        }
-        else if (strcmp(currentString, channelString) != 0)
-        {
-            csound->free(currentString);
-            currentString = csound->strdup(const_cast<char *>(channelString));
-        }
-
         // The output must own its buffer: aliasing the channel's STRINGDAT
         // here makes Csound free channel memory at teardown, corrupting the
         // heap on the next recompile (0xC0000374). Always emit an owned copy.
-        const char *outText = currentString != nullptr ? currentString : "";
-        outargs.str_data(0).data = csound->strdup(const_cast<char *>(outText));
-        outargs.str_data(0).size = int(strlen(outText)) + 1;
+        outargs.str_data(0).data = csound->strdup(const_cast<char *>(channelString));
+        outargs.str_data(0).size = int(strlen(channelString)) + 1;
     }
 
-    return IS_OK;
-}
-
-int CabbageGetValueString::deinit()
-{
-    if (currentString != nullptr)
-    {
-        csound->free(currentString);
-        currentString = nullptr;
-    }
     return IS_OK;
 }
 
 //=====================================================================================
 // SOut, kTrig cabbageGetValue "channel"
 //=====================================================================================
-int CabbageGetValueStringWithTrigger::getValue(int rate)
+int CabbageGetValueStringWithTrigger::getValue(int /*rate*/)
 {
     if (in_count() == 0)
         return NOTOK;
 
-    int trigOnInit = 0;
     std::string channel = inargs.str_data(0).data;
 
-    if (in_count() == 2)
-        trigOnInit = inargs[1];
-
+    cs_float *value = nullptr;
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), (void **)&value, channel.c_str(),
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) == CSOUND_SUCCESS)
     {
@@ -211,45 +176,21 @@ int CabbageGetValueStringWithTrigger::getValue(int rate)
         if (channelString == nullptr)
             channelString = "";
 
-        if (currentString == nullptr)
-        {
-            currentString = csound->strdup(const_cast<char *>(channelString));
-        }
-        else if (strcmp(currentString, channelString) != 0)
-        {
-            csound->free(currentString);
-            currentString = csound->strdup(const_cast<char *>(channelString));
-            outargs[1] = 1;
-        }
-        else
-        {
-            if (trigOnInit && rate != CabbageOpcodeData::PassType::Init)
-                outargs[1] = 1;
-            else
-                outargs[1] = 0;
-        }
+        // Shared trigger memo, keyed by channel (same as cabbageGet Sk):
+        // loop-safe, unlike the former per-instance cache.
+        // NOTE: the former trigOnInit second input was unreachable (this
+        // signature carries a single S input) and has been removed.
+        outargs[1] = checkTriggerChanged(channel, channelString) ? 1 : 0;
 
-        // Owned copy: the output must never alias currentString, which this
-        // instance frees on change/deinit (see CabbageGetValueString above).
-        const char *outText = currentString != nullptr ? currentString : "";
-        outargs.str_data(0).data = csound->strdup(const_cast<char *>(outText));
-        outargs.str_data(0).size = int(strlen(outText)) + 1;
+        // Owned copy (see CabbageGetValueString above).
+        outargs.str_data(0).data = csound->strdup(const_cast<char *>(channelString));
+        outargs.str_data(0).size = int(strlen(channelString)) + 1;
     }
     else
     {
         return NOTOK;
     }
 
-    return IS_OK;
-}
-
-int CabbageGetValueStringWithTrigger::deinit()
-{
-    if (currentString != nullptr)
-    {
-        csound->free(currentString);
-        currentString = nullptr;
-    }
     return IS_OK;
 }
 
@@ -265,6 +206,7 @@ int CabbageGetValueStringStruct::kperf()
     if (out == nullptr)
         return NOTOK;
 
+    cs_float *value = nullptr;
     if (csound->get_csound()->GetChannelPtr(csound->get_csound(), (void **)&value, inargs.str_data(0).data,
                                             CSOUND_STRING_CHANNEL | CSOUND_OUTPUT_CHANNEL) != CSOUND_SUCCESS)
         return NOTOK;
@@ -273,33 +215,15 @@ int CabbageGetValueStringStruct::kperf()
     if (channelString == nullptr)
         channelString = (char *)"";
 
-    cs_float trig = 0;
-    if (currentString == nullptr)
-    {
-        // First perf call primes the cache with a trigger of 0, matching the
-        // Sk overload exactly (which runs k-rate only).
-        currentString = csound->strdup(channelString);
-    }
-    else if (strcmp(currentString, channelString) != 0)
-    {
-        csound->free(currentString);
-        currentString = csound->strdup(channelString);
-        trig = 1;
-    }
+    // Shared trigger memo, keyed by channel (same memo as the Sk overload,
+    // so both agree edge-for-edge). First sight of a non-empty string fires,
+    // matching the cabbageGet Sk convention.
+    std::string channel = inargs.str_data(0).data;
+    const cs_float trig = checkTriggerChanged(channel, channelString) ? 1 : 0;
 
-    cabbageWriteStrMember(csound->get_csound(), out, 0, currentString);
+    cabbageWriteStrMember(csound->get_csound(), out, 0, channelString);
     out->members[1]->value = trig;
 
-    return IS_OK;
-}
-
-int CabbageGetValueStringStruct::deinit()
-{
-    if (currentString != nullptr)
-    {
-        csound->free(currentString);
-        currentString = nullptr;
-    }
     return IS_OK;
 }
 

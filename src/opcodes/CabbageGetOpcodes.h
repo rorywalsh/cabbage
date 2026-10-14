@@ -54,7 +54,6 @@ struct CabbageDumpWithTrigger : csnd::InPlug<3>
 
 struct CabbageGetValue : csnd::Plugin<1, 1>
 {
-    cs_float *value;
     int init() { return getValue(CabbageOpcodeData::PassType::Init); };
     int kperf() { return getValue(CabbageOpcodeData::PassType::Perf); };
     int getValue(int init);
@@ -62,10 +61,6 @@ struct CabbageGetValue : csnd::Plugin<1, 1>
 
 struct CabbageGetValueWithTrigger : csnd::Plugin<2, 1>
 {
-    cs_float *value;
-    cs_float currentValue = 0;
-    int numberOfPasses = 0;
-    int triggerOnPerfPass = 0;
     int init() { return getValue(CabbageOpcodeData::PassType::Init); };
     int kperf() { return getValue(CabbageOpcodeData::PassType::Perf); };
     int getValue(int init);
@@ -73,34 +68,27 @@ struct CabbageGetValueWithTrigger : csnd::Plugin<2, 1>
 
 struct CabbageGetValueString : csnd::Plugin<1, 1>
 {
-    char *currentString = {};
-    cs_float *value;
     int init() { return getValue(CabbageOpcodeData::PassType::Init); };
     int kperf() { return getValue(CabbageOpcodeData::PassType::Perf); };
-    int deinit();
     int getValue(int init);
 };
 
 struct CabbageGetValueStringWithTrigger : csnd::Plugin<2, 1>
 {
-    char *currentString = {};
-    cs_float *value;
     int init() { return getValue(CabbageOpcodeData::PassType::Init); };
     int kperf() { return getValue(CabbageOpcodeData::PassType::Perf); };
-    int deinit();
     int getValue(int init);
 };
 
 // res:CabbageNumTrig cabbageGetValue "channel"
 // Struct overload of the kk trigger form: res.val/res.trig replace kVal/kTrig.
-// Trigger rule identical to CabbageGetValueWithTrigger.
+// NOTE: stateless by necessity (see CabbageJsonOpcodes.h): trigger history
+// lives in the shared numeric checkTriggerChanged memo, keyed by channel,
+// so this form is safe inside k-rate loops over multiple channels.
 struct CabbageGetValueStruct : csnd::Plugin<1, 1>
 {
-    cs_float *value = nullptr;
-    cs_float currentValue = 0;
     int init()
     {
-        currentValue = 0;
         return getValue(CabbageOpcodeData::PassType::Init);
     };
     int kperf() { return getValue(CabbageOpcodeData::PassType::Perf); };
@@ -108,15 +96,14 @@ struct CabbageGetValueStruct : csnd::Plugin<1, 1>
 };
 
 // res:CabbageStrTrig cabbageGetValue "channel"
-// Struct overload of the Sk trigger form. Like its legacy sibling this runs
-// at k-rate only (no init pass): the first perf call primes currentString
-// with a trigger of 0, exactly as the Sk form does.
+// Struct overload of the Sk trigger form. Trigger history lives in the
+// shared checkTriggerChanged memo, keyed by channel — the same memo the Sk
+// form uses, so both agree edge-for-edge (safe in k-rate loops). First
+// sight of a non-empty string fires, matching the cabbageGet Sk convention;
+// an empty channel stays silent.
 struct CabbageGetValueStringStruct : csnd::Plugin<1, 1>
 {
-    char *currentString = nullptr;
-    cs_float *value = nullptr;
     int kperf();
-    int deinit();
 };
 
 struct CabbageGetMYFLT : csnd::Plugin<1, 2>, CabbageOpcodes<2>

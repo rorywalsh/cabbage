@@ -64,6 +64,27 @@ inline bool checkTriggerChanged(const std::string &key, const std::string &newRe
     return changed;
 }
 
+// Numeric counterpart of the above, for value getters such as the trigger
+// forms of cabbageGetValue. Uses exact != comparison, matching the previous
+// per-instance currentValue logic. An unseen key behaves like a freshly
+// zero-initialised instance: it reports changed iff newValue != 0.
+inline bool checkTriggerChanged(const std::string &key, MYFLT newValue)
+{
+    struct NumericTriggerMemo
+    {
+        std::mutex mutex;
+        std::map<std::string, MYFLT> lastValues; // key: channel
+    };
+    static NumericTriggerMemo memo;
+    std::lock_guard<std::mutex> lock(memo.mutex);
+    if (memo.lastValues.size() > 4096)
+        memo.lastValues.clear();
+    auto it = memo.lastValues.find(key);
+    const bool changed = (it == memo.lastValues.end()) ? (newValue != 0) : (it->second != newValue);
+    memo.lastValues[key] = newValue;
+    return changed;
+}
+
 struct CabbageOpcodeData
 {
     enum MessageType
