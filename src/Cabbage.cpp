@@ -639,7 +639,10 @@ void Engine::processCsoundMessages()
             opcodeData.enqueue(data);
         }
 
-        lattice::logDebug << message; // Log the message
+        // Csound console output (printf/printks/opcode messages) is user program
+        // output, not backend diagnostics: log at info level so it always
+        // reaches the frontend, independent of the logVerbose setting.
+        lattice::logInfo << message;
         csound->PopFirstMessage();   // Remove from queue
     }
 }
