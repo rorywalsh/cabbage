@@ -1,4 +1,4 @@
-# Cabbage3
+# Cabbage3 (https://cabbageaudio.com/)
 
 This repository contains the **Cabbage3** project. This is the canonical home for Cabbage 3 development (previously at `rorywalsh/cabbage3`, now archived).
 
@@ -30,4 +30,4 @@ Valid targets are:
 
 ### Getting started with Cabbage3
 
-Temporary docs for Cabbage 3 are available [here](https://rorywalsh.github.io/cabbage3docs/docs/intro). These docs will be merged with the main Cabbage website when the first release is made public. 
+Temporary docs for Cabbage 3 are available [here](https://cabbageaudio.com/docs/). These docs will be merged with the main Cabbage website when the first release is made public. 
