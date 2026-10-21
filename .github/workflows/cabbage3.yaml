@@ -2,7 +2,7 @@ name: cabbage3-build
 
 #Current Csound7 release...
 env:
-  CSOUND_TAG: "7.0.0-beta.18"
+  CSOUND_TAG: "7.0.0"
 
 
 on:
