@@ -168,7 +168,10 @@ std::string Utils::getJsonWithLineNumbers(const std::string &json_str)
 {
     try
     {
-        auto j = nlohmann::json::parse(json_str);
+        // Format JSONC too, so a commented document still gets useful
+        // line-numbered output in parse-error logs.
+        auto j = nlohmann::json::parse(json_str, nullptr, /*allow_exceptions=*/true,
+                                       /*ignore_comments=*/true);
         return getJsonWithLineNumbers(j);
     }
     catch (nlohmann::json::parse_error &e)
@@ -473,7 +476,9 @@ std::optional<nlohmann::json> File::parseCabbageSection(const std::string &csdFi
 
     // Parse without throwing — invalid JSON returns a discarded value instead of raising
     // a parse_error exception (which would cause debuggers to break on first-chance throws).
-    auto result = nlohmann::json::parse(cabbageContents, nullptr, /*allow_exceptions=*/false);
+    // JSONC-style comments are accepted inside the Cabbage section.
+    auto result = nlohmann::json::parse(cabbageContents, nullptr, /*allow_exceptions=*/false,
+                                        /*ignore_comments=*/true);
     if (result.is_discarded())
     {
         std::cerr << "Error parsing Cabbage JSON section in: " << csdFile << std::endl;
@@ -817,61 +822,150 @@ std::string File::getCsdFileAndPath(std::string csdFile)
     return joinPath(newPath, binaryFileName + ".csd");
 }
 
-// Function to crudely extract the props object from a corresponding JS file...
+namespace
+{
+// Returns the offset just past the '}' matching the '{' at openBracePos.
+// Braces inside strings and comments are ignored so that JSONC comments (and
+// string values containing braces) don't confuse the extraction. Returns
+// std::string::npos when the braces are unbalanced.
+size_t findMatchingBrace(const std::string &text, size_t openBracePos)
+{
+    enum class State
+    {
+        Normal,
+        DoubleQuoted,
+        SingleQuoted,
+        TemplateLiteral,
+        LineComment,
+        BlockComment
+    };
+
+    State state = State::Normal;
+    int depth = 0;
+
+    for (size_t i = openBracePos; i < text.size(); ++i)
+    {
+        const char c = text[i];
+        const char next = (i + 1 < text.size()) ? text[i + 1] : '\0';
+
+        switch (state)
+        {
+            case State::Normal:
+                if (c == '"')
+                    state = State::DoubleQuoted;
+                else if (c == '\'')
+                    state = State::SingleQuoted;
+                else if (c == '`')
+                    state = State::TemplateLiteral;
+                else if (c == '/' && next == '/')
+                {
+                    state = State::LineComment;
+                    ++i;
+                }
+                else if (c == '/' && next == '*')
+                {
+                    state = State::BlockComment;
+                    ++i;
+                }
+                else if (c == '{')
+                {
+                    ++depth;
+                }
+                else if (c == '}')
+                {
+                    --depth;
+                    if (depth == 0)
+                        return i + 1;
+                }
+                break;
+
+            case State::DoubleQuoted:
+                if (c == '\\')
+                    ++i;
+                else if (c == '"')
+                    state = State::Normal;
+                break;
+
+            case State::SingleQuoted:
+                if (c == '\\')
+                    ++i;
+                else if (c == '\'')
+                    state = State::Normal;
+                break;
+
+            case State::TemplateLiteral:
+                // Template expressions (${...}) are treated as literal text.
+                // That is enough for brace matching; anything non-JSON is
+                // rejected by the parser below.
+                if (c == '\\')
+                    ++i;
+                else if (c == '`')
+                    state = State::Normal;
+                break;
+
+            case State::LineComment:
+                if (c == '\n')
+                    state = State::Normal;
+                break;
+
+            case State::BlockComment:
+                if (c == '*' && next == '/')
+                {
+                    state = State::Normal;
+                    ++i;
+                }
+                break;
+        }
+    }
+
+    return std::string::npos;
+}
+} // namespace
+
+// Function to extract the props object from a corresponding JS file...
 // this could be rewritten using ducktapeJS or some other JS parser...
 // Note that this won't work with classes that extend other class as the prop
 // object might not be found...
 nlohmann::json File::extractPropsFromJS(const std::string &jsContent)
 {
-    std::string propsKey = "this.props =";
-    size_t propsPos = jsContent.find(propsKey);
+    const std::string propsKey = "this.props =";
+    const size_t propsPos = jsContent.find(propsKey);
 
     if (propsPos != std::string::npos)
     {
         // Start of the actual props object (after "this.props =")
-        size_t start = jsContent.find('{', propsPos);
+        const size_t start = jsContent.find('{', propsPos);
         if (start == std::string::npos)
         {
             std::cerr << "No opening brace for props found." << std::endl;
             return {};
         }
 
-        // Manual brace matching
-        int braceCount = 1;
-        size_t end = start + 1;
+        // Find the matching close brace while skipping strings and comments.
+        const size_t end = findMatchingBrace(jsContent, start);
 
-        while (end < jsContent.size() && braceCount > 0)
-        {
-            if (jsContent[end] == '{')
-            {
-                ++braceCount;
-            }
-            else if (jsContent[end] == '}')
-            {
-                --braceCount;
-            }
-            ++end;
-        }
-
-        // If we exited and braceCount is not zero, something went wrong
-        if (braceCount != 0)
+        // If we exited and end is npos, something went wrong
+        if (end == std::string::npos)
         {
             std::cerr << "Mismatched braces in the props object." << std::endl;
             return {};
         }
 
         // Extract the props object string
-        std::string propsString = jsContent.substr(start, end - start);
+        const std::string propsString = jsContent.substr(start, end - start);
 
-        // Parse the props string into a JSON object using nlohmann::json
+        // Parse the props string into a JSON object using nlohmann::json.
+        // Widget descriptors are JS source, so allow JSONC-style comments
+        // inside the props object.
         try
         {
-            return nlohmann::json::parse(propsString);
+            return nlohmann::json::parse(propsString, nullptr, /*allow_exceptions=*/true,
+                                         /*ignore_comments=*/true);
         }
         catch (const nlohmann::json::parse_error &e)
         {
             lattice::logError << "JSON parse error: " << e.what() << "\nOffending JSON:\n"
-                             << cabbage::Utils::getJsonWithLineNumbers(propsString);
+                              << cabbage::Utils::getJsonWithLineNumbers(propsString);
             return {};
         }
     }

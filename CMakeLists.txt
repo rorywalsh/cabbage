@@ -420,6 +420,7 @@ if (CabbageTests STREQUAL "${CABBAGE_BUILD_TARGET}")
     # Create test executable
     add_executable(${PROJECT_NAME}
         "${CMAKE_SOURCE_DIR}/tests/CabbageAppTests.cpp"
+        "${CMAKE_SOURCE_DIR}/tests/JsoncParsingTests.cpp"
         "${CMAKE_SOURCE_DIR}/tests/TestCsdFiles.h"
         ${CABBAGE_TEST_SOURCES}
         ${CABBAGE_OPCODE_SOURCES}

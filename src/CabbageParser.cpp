@@ -162,7 +162,8 @@ std::string Parser::parseContent(const std::string &content, std::vector<nlohman
     std::string errorMessage;
     try
     {
-        auto jsonRoot = nlohmann::json::parse(content, nullptr, /*allow_exceptions=*/false);
+        auto jsonRoot = nlohmann::json::parse(content, nullptr, /*allow_exceptions=*/false,
+                                              /*ignore_comments=*/true);
         if (jsonRoot.is_discarded())
         {
             errorMessage = "JSON Parse Error: invalid or malformed Cabbage JSON";
