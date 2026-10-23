@@ -6,6 +6,58 @@
 
 message(STATUS "Using custom FindCSOUND.cmake")
 
+# Prefer Csound's installed CMake package when available. The official Windows
+# and macOS installers ship CsoundConfig.cmake, which knows the current library
+# naming and layout (csound7_64/lib64 on Windows, CsoundLib64.framework on macOS).
+set(_csound_config_hints
+    "$ENV{ProgramFiles}/Csound7/cmake"
+    "$ENV{ProgramW6432}/Csound7/cmake"
+    "/Applications/Csound/CsoundLib64.framework/Resources/cmake"
+    "$ENV{HOME}/Applications/Csound/CsoundLib64.framework/Resources/cmake"
+    "/usr/local/share/csound"
+    "/usr/share/csound"
+)
+foreach(_prefix IN LISTS CMAKE_PREFIX_PATH)
+    list(APPEND _csound_config_hints "${_prefix}/share/csound")
+endforeach()
+find_package(Csound CONFIG QUIET HINTS ${_csound_config_hints})
+unset(_csound_config_hints)
+unset(_prefix)
+
+if(TARGET Csound::Csound)
+    message(STATUS "Using Csound CMake package from ${Csound_DIR} (Csound::Csound)")
+    set(CSOUND_FOUND TRUE)
+    set(CSOUND_LIBRARY Csound::Csound)
+    set(CSOUND_LIBRARIES Csound::Csound)
+    if(DEFINED Csound_VERSION)
+        set(CSOUND_VERSION "${Csound_VERSION}")
+    endif()
+
+    if(APPLE)
+        # Cabbage's Apple targets link ${CSOUND_FRAMEWORK}.
+        set(CSOUND_FRAMEWORK Csound::Csound)
+    endif()
+
+    # Keep the legacy include variables populated for callers that use them
+    # directly. The imported target also propagates these when linked.
+    get_target_property(_csound_backing_targets Csound::Csound INTERFACE_LINK_LIBRARIES)
+    if(_csound_backing_targets)
+        list(GET _csound_backing_targets 0 _csound_backing_target)
+        if(TARGET "${_csound_backing_target}")
+            get_target_property(_csound_include_dirs "${_csound_backing_target}" INTERFACE_INCLUDE_DIRECTORIES)
+            if(_csound_include_dirs)
+                set(CSOUND_INCLUDE_DIR "${_csound_include_dirs}")
+                set(CSOUND_INCLUDE_DIRS "${_csound_include_dirs}")
+            endif()
+            unset(_csound_include_dirs)
+        endif()
+        unset(_csound_backing_target)
+    endif()
+    unset(_csound_backing_targets)
+
+    return()
+endif()
+
 if(APPLE)
 
     unset(CSOUND_INCLUDE_DIR CACHE)
@@ -31,6 +83,8 @@ if(APPLE)
     find_library(CSOUND_LIBRARY
         NAMES CsoundLib64
         HINTS
+            /Applications/Csound
+            "$ENV{HOME}/Applications/Csound"
             /Applications/Csound/CsoundLib64.framework/
             "$ENV{HOME}/Applications/Csound/CsoundLib64.framework"
             ${CSOUND_LIBRARY_DIR_HINT}
