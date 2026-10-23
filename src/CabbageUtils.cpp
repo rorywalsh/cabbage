@@ -904,7 +904,7 @@ size_t findMatchingBrace(const std::string &text, size_t openBracePos)
                 break;
 
             case State::LineComment:
-                if (c == '\n')
+                if (c == '\n' || c == '\r')
                     state = State::Normal;
                 break;
 
