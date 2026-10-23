@@ -284,13 +284,13 @@ jobs:
 
       - name: Put Csound DLL location on PATH
         # The test executable (and discovery run at build time) loads
-        # csound64.dll at startup; without its directory on PATH Windows
+        # csound7_64.dll at startup; without its directory on PATH Windows
         # fails with 0xC0000135 STATUS_DLL_NOT_FOUND. Applies to all later
         # steps via GITHUB_PATH.
         shell: pwsh
         run: |
-          $dll = Get-ChildItem -Path "C:\Program Files\Csound7" -Recurse -Filter "csound64.dll" -File | Select-Object -First 1
-          if (-not $dll) { Write-Error "csound64.dll not found under C:\Program Files\Csound7"; exit 1 }
+          $dll = Get-ChildItem -Path "C:\Program Files\Csound7" -Recurse -Filter "csound7_64.dll" -File | Select-Object -First 1
+          if (-not $dll) { Write-Error "csound7_64.dll not found under C:\Program Files\Csound7"; exit 1 }
           Write-Host "Found $($dll.FullName)"
           $dll.DirectoryName >> $env:GITHUB_PATH
 
