@@ -45,7 +45,7 @@ elseif(WIN32)
     )
 
     find_library(CSOUND_LIBRARY 
-        NAMES csound64 
+        NAMES csound7_64 
         HINTS 
             "c:\\Program Files\\Csound7\\lib")
 
