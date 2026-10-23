@@ -40,14 +40,24 @@ if(APPLE)
 elseif(WIN32)
 
     find_path(CSOUND_INCLUDE_DIR csound.h
-        HINTS "C:\\Program Files\\Csound7\\include\\csound"
-        ${CSOUND_INCLUDE_DIR_HINT}
+        PATH_SUFFIXES csound
+        HINTS
+            "$ENV{ProgramFiles}/Csound7/include"
+            "$ENV{ProgramW6432}/Csound7/include"
+            ${CSOUND_INCLUDE_DIR_HINT}
     )
 
-    find_library(CSOUND_LIBRARY 
-        NAMES csound7_64 
-        HINTS 
-            "c:\\Program Files\\Csound7\\lib")
+    # Csound 7 uses csound7_64.lib, and the official Windows build enables
+    # USE_LIB64 so the import library is installed under lib64. Older builds
+    # used csound64.lib in lib, so accept both names and locations.
+    find_library(CSOUND_LIBRARY
+        NAMES csound7_64 csound64
+        PATH_SUFFIXES lib lib64 bin
+        HINTS
+            "$ENV{ProgramFiles}/Csound7"
+            "$ENV{ProgramW6432}/Csound7"
+            ${CSOUND_LIBRARY_DIR_HINT}
+    )
 
 else() # LINUX
 

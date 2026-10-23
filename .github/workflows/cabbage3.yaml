@@ -289,8 +289,10 @@ jobs:
         # steps via GITHUB_PATH.
         shell: pwsh
         run: |
-          $dll = Get-ChildItem -Path "C:\Program Files\Csound7" -Recurse -Filter "csound7_64.dll" -File | Select-Object -First 1
-          if (-not $dll) { Write-Error "csound7_64.dll not found under C:\Program Files\Csound7"; exit 1 }
+          Write-Host "Csound libraries found:"
+          Get-ChildItem -Path "C:\Program Files\Csound7" -Recurse -Filter "*.lib" -File | Select-Object -ExpandProperty FullName
+          $dll = Get-ChildItem -Path "C:\Program Files\Csound7" -Recurse -File | Where-Object { $_.Name -in @("csound7_64.dll", "csound64.dll") } | Select-Object -First 1
+          if (-not $dll) { Write-Error "Neither csound7_64.dll nor csound64.dll found under C:\Program Files\Csound7"; exit 1 }
           Write-Host "Found $($dll.FullName)"
           $dll.DirectoryName >> $env:GITHUB_PATH
 
