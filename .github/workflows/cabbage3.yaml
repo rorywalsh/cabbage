@@ -401,7 +401,7 @@ jobs:
       - name: Install Csound
         shell: pwsh
         run: |
-          Start-Process -FilePath ".\csound-7-arm.exe" -ArgumentList "/VERYSILENT" -Wait -Verb RunAs
+          Start-Process -FilePath ".\csound-7-arm.exe" -ArgumentList '/VERYSILENT /DIR="C:\Program Files\Csound7"' -Wait -Verb RunAs
 
       - name: Wait for Installation to Complete
         shell: pwsh
