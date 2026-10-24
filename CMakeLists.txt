@@ -128,9 +128,22 @@ if(NOT DEFINED CABBAGE_BUILD_TARGET)
             list(APPEND _ARA_ARGS -DLATTICE_ENABLE_ARA=ON)
         endif()
 
+        # Forward the generator platform/toolset (e.g. -A ARM64) so every
+        # sub-build targets the same architecture as the top-level configure.
+        # Without it the child falls back to the generator default, and the
+        # VST3 Contents/<arch>-win folder is derived from the wrong arch.
+        set(_PLATFORM_ARGS)
+        if(CMAKE_GENERATOR_PLATFORM)
+            list(APPEND _PLATFORM_ARGS -A ${CMAKE_GENERATOR_PLATFORM})
+        endif()
+        if(CMAKE_GENERATOR_TOOLSET)
+            list(APPEND _PLATFORM_ARGS -T ${CMAKE_GENERATOR_TOOLSET})
+        endif()
+
         # Run CMake configuration for the current target - this needs to be a little verbose for GH actions
         execute_process(
             COMMAND ${CMAKE_COMMAND}
+                ${_PLATFORM_ARGS}
                 -DCABBAGE_BUILD_TARGET=${target}
                 -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
                 -DFETCHCONTENT_BASE_DIR=${FETCHCONTENT_BASE_DIR}

@@ -512,6 +512,21 @@ jobs:
         run: |
           cmake -S . -B build -A ARM64 -DBUILD_ALL_TARGETS=ON -DCMAKE_BUILD_TYPE=Release
 
+      - name: Verify ARM64 VST3 bundle layout
+        shell: pwsh
+        run: |
+          foreach ($n in "CabbagePluginEffect","CabbagePluginSynth") {
+            $b = "build/$n/${n}_assets/VST3/Release/$n.vst3"
+            Get-ChildItem $b -Recurse | ForEach-Object { Write-Host $_.FullName }
+            $bin = Get-ChildItem "$b/Contents" -Recurse -Filter "$n.vst3" -File | Select-Object -First 1
+            if (-not $bin) { Write-Error "No binary in $b"; exit 1 }
+            if ($bin.Directory.Name -ne "arm64-win") { Write-Error "Wrong arch folder: $($bin.Directory.Name)"; exit 1 }
+            $fs = [IO.File]::OpenRead($bin.FullName); $br = New-Object IO.BinaryReader($fs)
+            $fs.Position = 0x3C; $pe = $br.ReadInt32(); $fs.Position = $pe + 4; $m = $br.ReadUInt16(); $fs.Close()
+            Write-Host "$n machine = 0x$($m.ToString('X'))"
+            if ($m -ne 0xAA64) { Write-Error "$n is not ARM64"; exit 1 }
+          }
+
       - name: Zip the Windows app artifacts
         shell: pwsh
         run: |
