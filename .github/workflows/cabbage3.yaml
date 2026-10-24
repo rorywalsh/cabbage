@@ -367,4 +367,167 @@ jobs:
           name: CabbageBundle-windows
           path: build\CabbageBundle.zip
 
+  windows_arm_build:
+    name: Windows ARM build
+    runs-on: windows-11-arm
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+          submodules: true
+
+      - name: Download and Extract Csound
+        shell: pwsh
+        run: |
+          # Csound ships a dedicated Windows ARM64 installer
+          Invoke-WebRequest -Uri "https://github.com/csound/csound/releases/download/${{ env.CSOUND_TAG }}/csound-windows-arm64-installer-${{ env.CSOUND_TAG }}.zip" -OutFile "csound7-arm.zip"
+          Expand-Archive -Path "csound7-arm.zip" -DestinationPath "csound7-arm" -Force
+
+          Write-Host "Contents of csound7-arm (for debug):"
+          Get-ChildItem -Path "csound7-arm" -Recurse | ForEach-Object { Write-Host $_.FullName }
+
+          # The ARM64 installer zip contains a single .exe installer
+          $exe = Get-ChildItem -Path "csound7-arm" -Recurse -Filter "*.exe" -File | Select-Object -First 1
+
+          if (-not $exe) {
+            Write-Error "No .exe installer found in csound7-arm folder!"
+            exit 1
+          }
+
+          Write-Host "Found installer: $($exe.FullName)"
+          Copy-Item -Path $exe.FullName -Destination ".\csound-7-arm.exe" -Force
+
+      - name: Install Csound
+        shell: pwsh
+        run: |
+          Start-Process -FilePath ".\csound-7-arm.exe" -ArgumentList "/VERYSILENT" -Wait -Verb RunAs
+
+      - name: Wait for Installation to Complete
+        shell: pwsh
+        run: |
+          Start-Sleep -Seconds 5
+
+      - name: Verify Csound
+        shell: pwsh
+        run: |
+          # Csound 7.0.0's Windows package was rebuilt with USE_LIB64 and
+          # "csound7_64" library names. Older installers used lib\csound64.
+          # Accept both layouts so an upstream repackage doesn't break this job.
+          $root = "C:\Program Files\Csound7"
+          if (-not (Test-Path $root)) {
+            Write-Error "Csound is not installed at $root"
+            exit 1
+          }
+
+          Get-ChildItem $root
+          Get-ChildItem (Join-Path $root "bin") -ErrorAction SilentlyContinue
+          Get-ChildItem (Join-Path $root "lib") -ErrorAction SilentlyContinue
+          Get-ChildItem (Join-Path $root "include\csound") -ErrorAction SilentlyContinue
+
+          $dll = Get-ChildItem -Path $root -Recurse -File |
+            Where-Object { $_.Name -in @("csound7_64.dll", "csound64.dll") } |
+            Select-Object -First 1
+          if (-not $dll) {
+            Write-Error "No Csound DLL found under $root"
+            exit 1
+          }
+
+          $lib = Get-ChildItem -Path $root -Recurse -File |
+            Where-Object { $_.Name -in @("csound7_64.lib", "libcsound7_64.lib", "csound64.lib", "libcsound64.lib") } |
+            Select-Object -First 1
+          if (-not $lib) {
+            Write-Error "No Csound import library found under $root"
+            exit 1
+          }
+
+          Write-Host "Found Csound DLL: $($dll.FullName)"
+          Write-Host "Found Csound import library: $($lib.FullName)"
+
+      - name: Put Csound DLL location on PATH
+        # The test executable (and discovery run at build time) loads
+        # csound7_64.dll at startup; without its directory on PATH Windows
+        # fails with 0xC0000135 STATUS_DLL_NOT_FOUND. Applies to all later
+        # steps via GITHUB_PATH.
+        shell: pwsh
+        run: |
+          Write-Host "Csound libraries found:"
+          Get-ChildItem -Path "C:\Program Files\Csound7" -Recurse -Filter "*.lib" -File | Select-Object -ExpandProperty FullName
+          $dll = Get-ChildItem -Path "C:\Program Files\Csound7" -Recurse -File | Where-Object { $_.Name -in @("csound7_64.dll", "csound64.dll") } | Select-Object -First 1
+          if (-not $dll) { Write-Error "Neither csound7_64.dll nor csound64.dll found under C:\Program Files\Csound7"; exit 1 }
+          Write-Host "Found $($dll.FullName)"
+          $dll.DirectoryName >> $env:GITHUB_PATH
+
+      - name: Checkout vscabbage (widget sources for tests)
+        uses: actions/checkout@v1
+        with:
+          repository: rorywalsh/vscabbage
+          ref: develop
+          path: vscabbage
+          fetch-depth: 1
+
+      - name: Configure tests
+        # The vscabbage checkout location varies by runner/action version, so
+        # resolve it dynamically and fail fast when the widget sources are
+        # missing — otherwise tests run against the backend placeholder and
+        # segfault on missing widgets instead of failing cleanly.
+        shell: pwsh
+        run: |
+          $ws = "${{ github.workspace }}"
+          $vsrc = @("$ws/vscabbage/src", "$ws/../vscabbage/src") | Where-Object { Test-Path "$_/cabbage/widgets" } | Select-Object -First 1
+          if (-not $vsrc) { Write-Error "vscabbage widget sources not found under $ws"; exit 1 }
+          Write-Host "Using vscabbage sources: $vsrc"
+          cmake -S . -B build-tests -A ARM64 -DCABBAGE_BUILD_TARGET=CabbageTests -DTEST_VSCABBAGE_DIR="$vsrc" -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build tests
+        # RelWithDebInfo (not Release) so a debugger backtrace has symbols.
+        shell: pwsh
+        run: cmake --build build-tests --config RelWithDebInfo
+
+      - name: Run unit tests (incl. stdin onFileChanged resave tests)
+        # Each Catch2 TEST_CASE is its own ctest test (see
+        # catch_discover_tests in CMakeLists): progress streams per case and
+        # --timeout turns a hung case into a reported Timeout while the rest
+        # still run.
+        timeout-minutes: 15
+        shell: pwsh
+        run: ctest --test-dir build-tests -C RelWithDebInfo --output-on-failure --timeout 180
+
+      - name: Rerun suite under cdb for a Windows backtrace
+        # Runs only when earlier steps failed. Zero cost on green runs.
+        # Needs the PDBs from the RelWithDebInfo tests build above.
+        if: failure()
+        timeout-minutes: 10
+        shell: pwsh
+        run: |
+          $exe = ".\build-tests\RelWithDebInfo\CabbageTests.exe"
+          if (-not (Test-Path $exe)) { Write-Warning "Test binary not found, skipping backtrace"; exit 0 }
+          $cdb = "C:\Program Files (x86)\Windows Kits\10\Debuggers\arm64\cdb.exe"
+          if (-not (Test-Path $cdb)) { $cdb = "C:\Program Files (x86)\Windows Kits\10\Debuggers\x64\cdb.exe" }
+          if (-not (Test-Path $cdb)) { Write-Warning "cdb not found, skipping backtrace"; exit 0 }
+          & $cdb -c ".symfix+ C:\symcache;g;k100;q" $exe 2>&1 | Select-Object -Last 60
+
+      - name: Configure build
+        shell: cmd
+        run: |
+          cmake -S . -B build -A ARM64 -DBUILD_ALL_TARGETS=ON -DCMAKE_BUILD_TYPE=Release
+
+      - name: Zip the Windows app artifacts
+        shell: pwsh
+        run: |
+          cd build
+          Compress-Archive -Path @(
+            "CabbagePluginEffect/CabbagePluginEffect_assets/VST3/Release/CabbagePluginEffect.vst3",
+            "CabbagePluginSynth/CabbagePluginSynth_assets/VST3/Release/CabbagePluginSynth.vst3",
+            "CabbagePluginEffectARA/CabbagePluginEffectARA_assets/VST3/Release/CabbagePluginEffectARA.vst3",
+            "CabbagePluginSynthARA/CabbagePluginSynthARA_assets/VST3/Release/CabbagePluginSynthARA.vst3",
+            "CabbageApp/Release/CabbageApp.exe"
+          ) -DestinationPath CabbageBundle.zip
+
+      - name: Upload Windows app artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CabbageBundle-windows-arm
+          path: build\CabbageBundle.zip
+
 
