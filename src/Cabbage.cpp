@@ -333,6 +333,7 @@ bool Engine::setupCsound()
         csCompileResult = csound->Compile(csdFile.c_str());
 #endif
         setReservedChannels();
+        lattice::logDebug << "setupCsound: Compile done (result=" << csCompileResult << "), calling Start()...";
         // No check for i-time errors and instr0 issues
         if (csound->Start() == CSOUND_SUCCESS && csdCompiledWithoutError())
         {

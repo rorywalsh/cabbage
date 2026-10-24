@@ -176,6 +176,18 @@ void CabbageProcessor::initialiseAudioEngine()
         addChannels(channelConfig);
     }
 
+    // Configure the file logger before setupCsound() so diagnostics emitted
+    // during Csound compile/start (which can hang) are captured to disk.
+    if (!isReinit)
+    {
+        if (auto json = cabbage::File::parseCabbageSection(cabbage::File::getCsdFileAndPath()))
+        {
+#ifndef CabbageApp
+            configureLogger(*json);
+#endif
+        }
+    }
+
     if (isReinit)
     {
         // Snapshot all live Csound channel values before we destroy the engine
@@ -213,9 +225,6 @@ void CabbageProcessor::initialiseAudioEngine()
 
         if (auto json = cabbage::File::parseCabbageSection(cabbage::File::getCsdFileAndPath()))
         {
-#ifndef CabbageApp
-            configureLogger(*json);
-#endif
             auto w = cabbage::Utils::getFormProperty<int>(*json, "size.width");
             auto h = cabbage::Utils::getFormProperty<int>(*json, "size.height");
             if (w.has_value() && h.has_value())

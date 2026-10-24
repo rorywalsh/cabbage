@@ -130,6 +130,10 @@ int main(int argc, char* argv[]) {
     
     logBinaryIdentity(argc > 0 ? argv[0] : nullptr);
 
+    // Enable console (stdout) logging. The standalone app is launched by the
+    // VS Code frontend, which reads backend stdout; plugins leave this off.
+    lattice::Logger::getInstance().setConsoleLogging(true);
+
     // Create an instance of CabbageAudioApp
     appInstance = new CabbageAudioApp(argc, argv);
 
