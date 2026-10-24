@@ -49,9 +49,11 @@ namespace {
         std::string getPluginId() {
             try {
                 const std::string cabbageJson(cabbage::File::getCabbageSection(cabbage::File::getCsdFileAndPath()));
-                if (nlohmann::json::accept(cabbageJson))
+                // The Cabbage section is JSONC: allow comments.
+                if (nlohmann::json::accept(cabbageJson, /*ignore_comments=*/true))
                 {
-                    auto json = nlohmann::json::parse(cabbageJson);
+                    auto json = nlohmann::json::parse(cabbageJson, nullptr, /*allow_exceptions=*/true,
+                                                      /*ignore_comments=*/true);
 
                     // New format: {"widgets": [...], "pluginId": "..."}
                     if (json.is_object())
