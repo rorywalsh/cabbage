@@ -110,8 +110,40 @@ std::vector<nlohmann::json> Parser::parseCsdForWidgets(const std::string &csdFil
     if (std::regex_search(content, cabbageMatch, cabbageRegex))
     {
         std::string cabbageContent = cabbageMatch[1].str();
-        std::regex formRegex(R"("type"\s*:\s*"form")");
-        bool foundFormWidget = std::regex_search(cabbageContent, formRegex);
+
+        // Route on the parsed document rather than raw text. JSONC comments may
+        // sit between the key, colon and value, e.g. "type" /* form */ : "form",
+        // which a "type"\s*:\s*"form" regex cannot see. Parsing here also avoids
+        // matching "type": "form" when it only appears inside a comment/string.
+        const auto parsedCabbage = nlohmann::json::parse(cabbageContent, nullptr,
+                                                         /*allow_exceptions=*/false,
+                                                         /*ignore_comments=*/true);
+
+        const nlohmann::json *widgetArray = nullptr;
+        if (!parsedCabbage.is_discarded())
+        {
+            if (parsedCabbage.is_array())
+            {
+                widgetArray = &parsedCabbage;
+            }
+            else if (parsedCabbage.is_object() && parsedCabbage.contains("widgets") &&
+                     parsedCabbage["widgets"].is_array())
+            {
+                widgetArray = &parsedCabbage["widgets"];
+            }
+        }
+
+        bool foundFormWidget = false;
+        if (widgetArray)
+        {
+            foundFormWidget = std::any_of(widgetArray->begin(), widgetArray->end(),
+                                          [](const nlohmann::json &widget)
+                                          {
+                                              return widget.is_object() && widget.contains("type") &&
+                                                     widget["type"].is_string() &&
+                                                     widget["type"].get<std::string>() == "form";
+                                          });
+        }
 
         if (foundFormWidget)
         {
@@ -123,7 +155,10 @@ std::vector<nlohmann::json> Parser::parseCsdForWidgets(const std::string &csdFil
             std::regex includeRegex(R"(#include\s*\"([^\"]+\.json)\")");
             std::smatch includeMatch;
 
-            if (std::regex_search(cabbageContent, includeMatch, includeRegex))
+            // A valid JSON section without a form is a sidecar-backed document,
+            // not an include directive. Only plain-text sections can #include.
+            if (parsedCabbage.is_discarded() &&
+                std::regex_search(cabbageContent, includeMatch, includeRegex))
             {
                 std::string includeFilename = includeMatch[1].str();
                 std::filesystem::path includePath(includeFilename);
