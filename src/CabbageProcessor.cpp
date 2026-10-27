@@ -235,6 +235,19 @@ void CabbageProcessor::initialiseAudioEngine()
                 cabbage.setControlChannel("WINDOW_HEIGHT", h.value());
                 cabbage.setControlChannel("SCREEN_HEIGHT", h.value());
             }
+
+            // Where should the plugin UI get its DPI scale factor from?
+            // "host" (default) uses the scale factor sent by the host and falls
+            // back to the OS reported DPI. "os" always uses the OS reported
+            // DPI and ignores whatever the host sends.
+            if (auto scaleSource =
+                    cabbage::Utils::getFormProperty<std::string>(*json, "scaleSource"))
+            {
+                if (scaleSource.value() == "os")
+                    setScaleSource(lattice::Processor::ScaleSource::OS);
+                else
+                    setScaleSource(lattice::Processor::ScaleSource::Host);
+            }
         }
 
     }
