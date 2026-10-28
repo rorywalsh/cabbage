@@ -81,7 +81,7 @@ set(FETCHCONTENT_UPDATES_DISCONNECTED_LATTICE ON)
 FetchContent_Declare(
     lattice
     GIT_REPOSITORY https://github.com/rorywalsh/lattice.git
-    GIT_TAG 28af718a1d8f0d59fad0d6dc6ac95a0e6aaaa038
+    GIT_TAG a3bc980d5b77c5855a5d544a02c46de9b6aafebf
 )
 
 FetchContent_Declare(
