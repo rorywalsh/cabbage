@@ -248,6 +248,12 @@ void CabbageProcessor::initialiseAudioEngine()
                 else
                     setScaleSource(lattice::Processor::ScaleSource::Host);
             }
+
+            // The form's background colour paints the webview host window (see
+            // guiSetParent) so the pre-content flash matches the form instead of
+            // white/black. The form widget reads style.backgroundColor.
+            if (auto c = cabbage::Utils::getFormProperty<std::string>(*json, "style.backgroundColor"))
+                setEditorBackgroundColour(c.value());
         }
 
     }
