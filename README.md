@@ -30,4 +30,4 @@ Valid targets are:
 
 ### Getting started with Cabbage3
 
-Temporary docs for Cabbage 3 are available [here](https://cabbageaudio.com/docs/). These docs will be merged with the main Cabbage website when the first release is made public. 
+Docs for Cabbage 3 are available [here](https://cabbageaudio.com/docs/). These docs will be merged with the main Cabbage website when the first release is made public. 
