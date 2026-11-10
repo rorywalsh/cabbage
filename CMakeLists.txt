@@ -90,6 +90,16 @@ set(PRO_EXTRA_LIBS "")
 # ----------------------------
 if(NOT DEFINED CABBAGE_BUILD_TARGET)
 
+    # This branch only orchestrates the per-target sub-builds and then returns,
+    # so it never reaches the project() call further down. Without one, CMake
+    # never runs FindMakeProgram(), leaves the detected Ninja version empty and
+    # fails at generate time with:
+    #   The detected version of Ninja () is less than the version of Ninja
+    #   required by CMake (1.3).
+    # Makefiles never check the version, which is why this only shows up when
+    # configuring the super-build with -G Ninja.
+    project(Cabbage3SuperBuild NONE)
+
     set(CABBAGE_BUILD_TARGETS CabbageApp CabbagePluginEffect CabbagePluginSynth CabbagePluginEffectARA CabbagePluginSynthARA CabbagePluginEffectAUv2 CabbagePluginSynthAUv2 CabbagePluginMidiFxAUv2 CabbageTests)
     message(STATUS "No CABBAGE_BUILD_TARGET specified. Building all targets.")
 
@@ -98,7 +108,7 @@ if(NOT DEFINED CABBAGE_BUILD_TARGET)
     # Configure and build each target separately
     foreach(target IN LISTS CABBAGE_BUILD_TARGETS)
         # Skip AU targets on non-Apple platforms
-        if((target STREQUAL "CabbagePluginEffectAUv2" OR target STREQUAL "CabbagePluginSynthAUv2") AND NOT APPLE)
+        if((target STREQUAL "CabbagePluginEffectAUv2" OR target STREQUAL "CabbagePluginSynthAUv2" OR target STREQUAL "CabbagePluginMidiFxAUv2") AND NOT APPLE)
             message(STATUS "Skipping ${target} on non-Apple platform")
             continue()
         endif()
