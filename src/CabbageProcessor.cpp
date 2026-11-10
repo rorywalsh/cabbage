@@ -1758,9 +1758,10 @@ void CabbageProcessor::updateUI()
 //========================================================================================
 nlohmann::json CabbageProcessor::savePluginState()
 {
-    // Use the Engine utility function to save complete widget JSON data
-    // false = session save (DAW), checks persistence.session
-    return cabbage.saveWidgetJsonData(false);
+    // Save channel values + runtime property overrides (not full widget JSON).
+    // The CSD is the source of truth for layout/visuals, so re-exported GUI
+    // edits are picked up on reload while runtime cabbageSet mutations survive.
+    return cabbage.saveSessionState();
 }
 
 void CabbageProcessor::loadPluginState(nlohmann::json state)

@@ -1411,6 +1411,20 @@ void Engine::updateChannelCache(const CabbageOpcodeData &data)
     {
         dirtyIdentifierChannels.insert(data.channel);
     }
+
+    // Record runtime property overrides (identifier updates) so they can be
+    // persisted in the DAW session state. Only non-value keys are stored —
+    // channel values are captured separately as channel data.
+    if (data.type == CabbageOpcodeData::MessageType::Identifier)
+    {
+        auto overrideJson = data.cabbageJson;
+        overrideJson.erase("value");
+        if (!overrideJson.empty())
+        {
+            std::lock_guard<std::mutex> lock(runtimeOverridesMutex);
+            runtimeOverrides[data.channel].merge_patch(overrideJson);
+        }
+    }
 }
 
 bool Engine::isValueDifferent(const CabbageOpcodeData &data)
@@ -1796,6 +1810,28 @@ nlohmann::json Engine::saveWidgetChannelData(const std::unordered_set<std::strin
     return state;
 }
 
+nlohmann::json Engine::saveSessionState()
+{
+    // Channel values only — the CSD remains the source of truth for layout,
+    // labels, style, etc.
+    auto state = saveWidgetChannelData({}, true);
+
+    // Runtime property overrides applied via cabbageSet. These are the only
+    // widget properties that should survive a reload, since they were mutated
+    // at runtime rather than authored in the CSD.
+    nlohmann::json overrides = nlohmann::json::object();
+    {
+        std::lock_guard<std::mutex> lock(runtimeOverridesMutex);
+        for (const auto &[channel, mutation] : runtimeOverrides)
+        {
+            if (!mutation.empty())
+                overrides[channel] = mutation;
+        }
+    }
+    state["cabbageRuntimeOverrides"] = overrides;
+    return state;
+}
+
 void Engine::loadWidgetState(const nlohmann::json &state, bool isPresetLoad)
 {
     // Debug: log incoming state for string channels
@@ -1817,6 +1853,13 @@ void Engine::loadWidgetState(const nlohmann::json &state, bool isPresetLoad)
             }
         }
     }
+
+    // Runtime property overrides (cabbageSet mutations) saved alongside the
+    // session state. Applied over the freshly-parsed CSD widgets below.
+    const nlohmann::json savedOverrides =
+        state.contains("cabbageRuntimeOverrides") && state["cabbageRuntimeOverrides"].is_object()
+            ? state["cabbageRuntimeOverrides"]
+            : nlohmann::json::object();
 
     // Check if we have the widget state
     if (!state.contains("cabbageWidgetsState")) {
@@ -1962,6 +2005,51 @@ void Engine::loadWidgetState(const nlohmann::json &state, bool isPresetLoad)
                     }
                 }
             }
+        }
+
+        // Apply runtime property overrides recorded from cabbageSet. These are
+        // merged over the freshly-parsed CSD widgets so authoring edits (layout,
+        // labels, style) win while runtime cabbageSet mutations are preserved.
+        if (savedOverrides.is_object() && !savedOverrides.empty())
+        {
+            for (auto &widget : widgets)
+            {
+                if (!widget.is_object())
+                    continue;
+
+                std::vector<std::string> ids;
+                if (widget.contains("id") && widget["id"].is_string())
+                    ids.push_back(cabbage::Parser::removeQuotes(widget["id"].get<std::string>()));
+                if (widget.contains("channels") && widget["channels"].is_array())
+                {
+                    for (const auto &ch : widget["channels"])
+                    {
+                        if (ch.is_object() && ch.contains("id") && ch["id"].is_string())
+                            ids.push_back(cabbage::Parser::removeQuotes(ch["id"].get<std::string>()));
+                    }
+                }
+
+                for (const auto &id : ids)
+                {
+                    auto overrideIt = savedOverrides.find(id);
+                    if (overrideIt != savedOverrides.end() && overrideIt.value().is_object())
+                        cabbage::Parser::mergeJsonProperties(widget, overrideIt.value());
+                }
+            }
+        }
+    }
+
+    // Persist the applied overrides back into the engine so they survive a
+    // subsequent save even when the instrument does not re-trigger cabbageSet.
+    if (savedOverrides.is_object() && !savedOverrides.empty())
+    {
+        std::lock_guard<std::mutex> lock(runtimeOverridesMutex);
+        for (auto it = savedOverrides.begin(); it != savedOverrides.end(); ++it)
+        {
+            if (it.value().is_object())
+                runtimeOverrides[it.key()].merge_patch(it.value());
+            else
+                runtimeOverrides[it.key()] = it.value();
         }
     }
 
