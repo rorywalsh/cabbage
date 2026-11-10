@@ -235,6 +235,11 @@ class Engine
     // Widgets in fullJsonIds get full JSON; others get channel data only. If allChannelDataOnly=true, all get channel data.
     nlohmann::json saveWidgetChannelData(const std::unordered_set<std::string>& fullJsonIds, bool allChannelDataOnly);
 
+    // Save DAW session state: channel values + runtime property overrides. This
+    // deliberately omits full widget JSON so CSD edits (layout, labels, style)
+    // are picked up on reload while runtime cabbageSet mutations are preserved.
+    nlohmann::json saveSessionState();
+
     // Load complete widget state from JSON and update all systems
     // isPresetLoad: true for DAW preset loads (checks persistence.preset), false for session loads (checks persistence.session)
     void loadWidgetState(const nlohmann::json &state, bool isPresetLoad = true);
@@ -295,6 +300,11 @@ class Engine
     // and vice versa. Both sets are cleared on every flushChannelCache().
     std::unordered_set<std::string> dirtyValueChannels;
     std::unordered_set<std::string> dirtyIdentifierChannels;
+    // Runtime property overrides applied via cabbageSet (identifier path), keyed by
+    // channel id. Persisted in the DAW session state so cabbageSet mutations survive
+    // a reload while CSD edits always win.
+    std::unordered_map<std::string, nlohmann::json> runtimeOverrides;
+    mutable std::mutex runtimeOverridesMutex;
     std::atomic<long long> totalSamplesCounter {0};
     bool csoundOutputEnabled = false;
 };
