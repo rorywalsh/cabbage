@@ -3,6 +3,12 @@ name: cabbage3-build
 #Current Csound7 release...
 env:
   CSOUND_TAG: "7.0.0"
+  # Every job builds through `cmake --build`, which honours this variable and
+  # passes it down to the per-target execute_process() builds in
+  # CMakeLists.txt. Without it each target compiles single-threaded, which is
+  # why the "Configure build" steps used to take 15-30 minutes on 4-core
+  # runners.
+  CMAKE_BUILD_PARALLEL_LEVEL: "4"
 
 
 on:
@@ -10,6 +16,16 @@ on:
     branches:
       - main
       - develop
+    # Docs-only changes don't need four platform builds.
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+
+# A new push to the same branch supersedes the previous run instead of
+# queueing behind it. Safe here: this workflow only produces artifacts.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   macos_build:
@@ -17,7 +33,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
           submodules: true
@@ -138,7 +154,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
           submodules: true
@@ -175,7 +191,7 @@ jobs:
           sudo make install
 
       - name: Checkout vscabbage (widget sources for tests)
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
         with:
           repository: rorywalsh/vscabbage
           ref: develop
@@ -193,7 +209,7 @@ jobs:
           elif [ -d "$WS/../vscabbage/src/cabbage/widgets" ]; then VSCABBAGE_SRC="$WS/../vscabbage/src";
           else echo "::error::vscabbage widget sources not found under $WS"; exit 1; fi
           echo "Using vscabbage sources: $VSCABBAGE_SRC"
-          cmake -G "Unix Makefiles" -B build-tests -S . \
+          cmake -G Ninja -B build-tests -S . \
             -DCMAKE_BUILD_TYPE=RelWithDebInfo \
             -DCABBAGE_BUILD_TARGET=CabbageTests \
             -DTEST_VSCABBAGE_DIR="$VSCABBAGE_SRC" \
@@ -222,7 +238,7 @@ jobs:
 
       - name: Configure CMake
         run: |
-          cmake -G "Unix Makefiles" -B build \
+          cmake -G Ninja -B build \
             -DCMAKE_BUILD_TYPE=Release \
             -DBUILD_ALL_TARGETS=ON \
             -DCMAKE_C_COMPILER=$(which gcc) \
@@ -249,7 +265,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
           submodules: true
@@ -297,7 +313,7 @@ jobs:
           $dll.DirectoryName >> $env:GITHUB_PATH
 
       - name: Checkout vscabbage (widget sources for tests)
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
         with:
           repository: rorywalsh/vscabbage
           ref: develop
@@ -372,7 +388,7 @@ jobs:
     runs-on: windows-11-arm
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
         with:
           fetch-depth: 1
           submodules: true
@@ -459,7 +475,7 @@ jobs:
           $dll.DirectoryName >> $env:GITHUB_PATH
 
       - name: Checkout vscabbage (widget sources for tests)
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
         with:
           repository: rorywalsh/vscabbage
           ref: develop
