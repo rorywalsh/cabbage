@@ -710,10 +710,6 @@ void CabbageProcessor::process(float **inputs, float **outputs, std::size_t bloc
     if (!processingEnabled.load(std::memory_order_relaxed))
         return;
 
-#if LATTICE_HAS_ARA
-    flushAraEvents();
-#endif
-
     // Try to acquire a shared lock without blocking. If prepareToPlay() holds the
     // exclusive lock (rebuilding Csound due to an SR change) we must not touch any
     // Csound state — return silence for this block and try again next time.
@@ -1014,6 +1010,12 @@ void CabbageProcessor::onIdle()
         return;
 
 #if LATTICE_HAS_ARA
+    // Flush queued ARA UI/lifecycle events to the webview. Runs on the idle
+    // thread (~60 Hz), never the audio thread: sendWebViewMessage() serialises
+    // JSON and writes to the webview SPSC queue, which allocates. ARA events are
+    // editor/lifecycle notifications only, so <=16 ms delivery latency is fine.
+    flushAraEvents();
+
     // Retry pending sources that were accessible but not yet analysed.
     // Use isMyAudioSource() first to avoid analysing sources from other instances
     // (araAccessibleSources is populated by the shared document controller, so it
