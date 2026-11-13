@@ -1,0 +1,140 @@
+name: tests
+
+# Fast PR gate. Runs the Catch2 suite against a hosted backend on the platforms
+# where Csound installs from a package (macOS pkg / Windows installer). Linux
+# and Windows ARM are still exercised by cabbage3.yaml on push to main/develop;
+# they are kept out of the PR gate because Linux builds Csound from source,
+# which dominates PR wall-clock time.
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CSOUND_TAG: "7.0.0"
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - windows-latest
+    steps:
+      - name: Checkout cabbage
+        uses: actions/checkout@v4
+
+      - name: Install Csound (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          curl -L -o csound-7.zip "https://github.com/csound/csound/releases/download/${{ env.CSOUND_TAG }}/csound-macos-${{ env.CSOUND_TAG }}.zip"
+          unzip -o csound-7.zip -d csound-7
+          PKG=$(find csound-7 -name "*.pkg" | head -n 1)
+          echo "Found pkg: $PKG"
+          chmod +x "$PKG"
+          sudo installer -pkg "$PKG" -target /
+
+      - name: Install Csound (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -Uri "https://github.com/csound/csound/releases/download/${{ env.CSOUND_TAG }}/csound-windows-${{ env.CSOUND_TAG }}.zip" -OutFile "csound7.zip"
+          Expand-Archive -Path "csound7.zip" -DestinationPath "csound7" -Force
+
+          $exe = Get-ChildItem -Path "csound7" -Recurse -Filter "*windows*x86*64*.exe" -File | Select-Object -First 1
+          if (-not $exe) {
+            $exe = Get-ChildItem -Path "csound7" -Recurse -Filter "*.exe" -File | Select-Object -First 1
+          }
+          if (-not $exe) {
+            Write-Error "No Csound installer found in csound7 folder"
+            exit 1
+          }
+          Copy-Item -Path $exe.FullName -Destination ".\csound-7.exe" -Force
+          Start-Process -FilePath ".\csound-7.exe" -ArgumentList "/VERYSILENT" -Wait -Verb RunAs
+          Start-Sleep -Seconds 5
+
+      - name: Put Csound on PATH (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $dll = Get-ChildItem -Path "C:\Program Files\Csound7" -Recurse -File |
+            Where-Object { $_.Name -in @("csound7_64.dll", "csound64.dll") } |
+            Select-Object -First 1
+          if (-not $dll) {
+            Write-Error "No Csound DLL found under C:\Program Files\Csound7"
+            exit 1
+          }
+          Write-Host "Found Csound DLL: $($dll.FullName)"
+          $dll.DirectoryName >> $env:GITHUB_PATH
+
+      - name: Checkout vscabbage (widget sources for tests)
+        uses: actions/checkout@v4
+        with:
+          repository: rorywalsh/vscabbage
+          ref: develop
+          path: vscabbage
+          fetch-depth: 1
+
+      - name: Configure tests (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          CC_PATH=$(which clang)
+          CXX_PATH=$(which clang++)
+          cmake -GXcode -B build-tests \
+            -DCMAKE_OSX_DEPLOYMENT_TARGET="11.0" \
+            -DCMAKE_C_COMPILER=$CC_PATH \
+            -DCMAKE_CXX_COMPILER=$CXX_PATH \
+            -DCMAKE_OBJC_COMPILER=$CC_PATH \
+            -DCMAKE_OBJCXX_COMPILER=$CXX_PATH \
+            -DCABBAGE_BUILD_TARGET=CabbageTests \
+            -DTEST_VSCABBAGE_DIR="$(pwd)/vscabbage/src"
+
+      - name: Configure tests (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $ws = "${{ github.workspace }}"
+          $vsrc = @("$ws/vscabbage/src", "$ws/../vscabbage/src") |
+            Where-Object { Test-Path "$_/cabbage/widgets" } |
+            Select-Object -First 1
+          if (-not $vsrc) {
+            Write-Error "vscabbage widget sources not found under $ws"
+            exit 1
+          }
+          Write-Host "Using vscabbage sources: $vsrc"
+          cmake -S . -B build-tests `
+            -DCABBAGE_BUILD_TARGET=CabbageTests `
+            -DTEST_VSCABBAGE_DIR="$vsrc" `
+            -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build tests (macOS)
+        if: runner.os == 'macOS'
+        timeout-minutes: 30
+        run: cmake --build build-tests --config Debug
+
+      - name: Build tests (Windows)
+        if: runner.os == 'Windows'
+        timeout-minutes: 30
+        shell: pwsh
+        run: cmake --build build-tests --config RelWithDebInfo
+
+      - name: Run tests (macOS)
+        if: runner.os == 'macOS'
+        timeout-minutes: 15
+        run: ctest --test-dir build-tests -C Debug --output-on-failure --timeout 180
+
+      - name: Run tests (Windows)
+        if: runner.os == 'Windows'
+        timeout-minutes: 15
+        shell: pwsh
+        run: ctest --test-dir build-tests -C RelWithDebInfo --output-on-failure --timeout 180
