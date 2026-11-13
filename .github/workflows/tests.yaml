@@ -85,6 +85,18 @@ jobs:
           path: vscabbage
           fetch-depth: 1
 
+      # CMake fetches ~600 MB of dependencies (Catch2, rtaudio, rtmidi, lattice,
+      # CLAP, …) into build-tests/_deps during configure. Restoring that tree
+      # skips the clones and lets the build reuse the dependency objects. The
+      # key only changes when Dependencies.cmake changes.
+      - name: Cache CMake FetchContent dependencies
+        uses: actions/cache@v4
+        with:
+          path: build-tests/_deps
+          key: deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('cmake/Dependencies.cmake') }}
+          restore-keys: |
+            deps-${{ runner.os }}-${{ runner.arch }}-
+
       - name: Configure tests (macOS)
         if: runner.os == 'macOS'
         run: |
