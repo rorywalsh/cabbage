@@ -60,6 +60,14 @@ jobs:
       # - name: Set up Xcode path
       #   run: sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer
 
+      - name: Cache CMake FetchContent dependencies (tests)
+        uses: actions/cache@v4
+        with:
+          path: build/_deps
+          key: deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('cmake/Dependencies.cmake') }}
+          restore-keys: |
+            deps-${{ runner.os }}-${{ runner.arch }}-
+
       - name: Configure CMake (tests only)
         run: |
           git clone https://github.com/rorywalsh/vscabbage.git
@@ -198,6 +206,14 @@ jobs:
           path: vscabbage
           fetch-depth: 1
 
+      - name: Cache CMake FetchContent dependencies (tests)
+        uses: actions/cache@v4
+        with:
+          path: build-tests/_deps
+          key: deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('cmake/Dependencies.cmake') }}
+          restore-keys: |
+            deps-${{ runner.os }}-${{ runner.arch }}-
+
       - name: Configure tests
         # The vscabbage checkout location varies by runner/action version, so
         # resolve it dynamically and fail fast when the widget sources are
@@ -319,6 +335,14 @@ jobs:
           ref: develop
           path: vscabbage
           fetch-depth: 1
+
+      - name: Cache CMake FetchContent dependencies (tests)
+        uses: actions/cache@v4
+        with:
+          path: build-tests/_deps
+          key: deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('cmake/Dependencies.cmake') }}
+          restore-keys: |
+            deps-${{ runner.os }}-${{ runner.arch }}-
 
       - name: Configure tests
         # The vscabbage checkout location varies by runner/action version, so
@@ -481,6 +505,14 @@ jobs:
           ref: develop
           path: vscabbage
           fetch-depth: 1
+
+      - name: Cache CMake FetchContent dependencies (tests)
+        uses: actions/cache@v4
+        with:
+          path: build-tests/_deps
+          key: deps-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('cmake/Dependencies.cmake') }}
+          restore-keys: |
+            deps-${{ runner.os }}-${{ runner.arch }}-
 
       - name: Configure tests
         # The vscabbage checkout location varies by runner/action version, so
