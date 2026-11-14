@@ -12,7 +12,7 @@ instead of stalling the whole binary.
 
 | File | Cases | Tag | What it needs |
 |---|---|---|---|
-| `CabbageAppTests.cpp` | 14 | `[CabbageApp]`, `[CabbageApp][TrigStructs]`, `[CabbageAudioApp::AudioConfig]`, `[CabbageAudioApp]` | Csound + a vscabbage checkout (widget sources) |
+| `CabbageAppTests.cpp` | 16 | `[CabbageApp]`, `[CabbageApp][TrigStructs]`, `[CabbageAudioApp::AudioConfig]`, `[CabbageAudioApp]` | Csound + a vscabbage checkout (widget sources) |
 | `JsoncParsingTests.cpp` | 7 | `[JSONC]` | Csound; one case also needs vscabbage |
 | `TestCsdFiles.h` | — | — | Embedded `.csd` fixtures (no files needed at runtime) |
 | `FileBrowseStub.cpp` | — | — | Stubs the native file dialog |
@@ -65,7 +65,7 @@ Windows ARM:
 
 ---
 
-## `CabbageAppTests.cpp` — 14 cases
+## `CabbageAppTests.cpp` — 16 cases
 
 ### 1. `Basic CabbageApp construction and functionality`
 Builds an app with `--file test.csd`. Sections cover: audio-device scanning does not throw;
@@ -143,6 +143,19 @@ Exercises the exact stdin payload the extension sends on save:
 5. Malformed/hostile JSON (bad text, empty, missing/typed file name, unknown command) →
    caught without throwing and without queueing.
 
+### 15. `cabbageSetValue/cabbageGetValue value round-trip`
+Loads `valueRoundTrip` (nine numeric widget types). `instr 1` writes a distinct in-range
+value to each channel with `cabbageSetValue` at init; `instr 2` reads them back with
+`cabbageGetValue` at both i-time and k-time and publishes per-rate mismatch counts. Both
+`res_iErr` and `res_kErr` must stay zero after ≥600 k-cycles.
+
+### 16. `cabbageSet/cabbageGet property round-trip`
+Loads `propertyRoundTrip`. `instr 1` sets `bounds.left` (numeric) and `label.text` (string)
+properties with `cabbageSet` at init; `instr 2` reads them back with `cabbageGet` at i-time
+(numeric + string) and k-time (numeric), publishing per-rate mismatch counts that must stay
+zero. String property reads are i-time (the plain `S` form); k-time string reads use the
+`Sk`/struct trigger forms, covered separately by `trigStructsSolo`.
+
 ---
 
 ## `JsoncParsingTests.cpp` — 7 cases
@@ -191,6 +204,8 @@ When `TEST_VSCABBAGE_DIR` is defined, parses the real
 | `widgetIdsAndWidget` | `cabbageGetWidgetIds`/`cabbageGetWidget` |
 | `trigStructs` | struct `cabbageGetValue` triggers |
 | `trigStructsSolo` | struct `cabbageGet`/`cabbageJsonGet` triggers |
+| `valueRoundTrip` | `cabbageSetValue`/`cabbageGetValue` round-trip |
+| `propertyRoundTrip` | `cabbageSet`/`cabbageGet` property round-trip |
 
 ## Adding a test
 

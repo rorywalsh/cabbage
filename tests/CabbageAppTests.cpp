@@ -1321,6 +1321,194 @@ TEST_CASE("stdin onFileChanged is handled without crashing", "[CabbageApp]")
     std::cout << "\n==================== END TEST: stdin onFileChanged ====================\n";
 }
 
+//==============================================================================
+// TEST: cabbageSetValue / cabbageGetValue round-trip across a spread of widget
+// types. Values are written at init time (instr 1) and read back at i-time and
+// k-time (instr 2), which publishes a mismatch count per rate. Both counts must
+// stay zero.
+//==============================================================================
+TEST_CASE("cabbageSetValue/cabbageGetValue value round-trip", "[CabbageApp]")
+{
+    ensureValidSettingsFileExists();
+
+    const char* args[] = {"CabbageApp"};
+    auto app = std::make_unique<CabbageAudioApp>(1, const_cast<char**>(args));
+    REQUIRE(app != nullptr);
+
+    int nOutputChannels = 2;
+    int nBufferFrames = 512;
+    float** buffer = new float*[nOutputChannels];
+    for (unsigned int ch = 0; ch < nOutputChannels; ++ch)
+    {
+        buffer[ch] = new float[nBufferFrames];
+        memset(buffer[ch], 0, nBufferFrames * sizeof(float));
+    }
+
+    std::string csdContent = TestCsdFiles::valueRoundTrip;
+    std::filesystem::path tempPath = std::filesystem::temp_directory_path() /
+                                     ("test_valueRoundTrip_" + std::to_string(std::time(nullptr)) + ".csd");
+    {
+        std::ofstream tempFile(tempPath);
+        tempFile << csdContent;
+    }
+
+    app->setCsoundFile(tempPath.string());
+    REQUIRE(std::filesystem::exists(tempPath));
+
+    app->initialiseCabbage();
+    requireWidgetsResolved(app.get());
+
+    if (app->processor)
+        app->processor->setCabbageIsReady();
+
+    std::vector<std::pair<std::string, double>> captured;
+    app->processor->hostCallback = [&](CabbageOpcodeData data) {
+        try
+        {
+            captured.emplace_back(data.channel, data.cabbageJson.value("value", 0.0));
+        }
+        catch (...) {}
+        app->hostCallback(data);
+    };
+
+    auto lastNumFor = [&](const std::string& ch) -> double {
+        for (auto it = captured.rbegin(); it != captured.rend(); ++it)
+        {
+            if (it->first == ch)
+                return it->second;
+        }
+        return -1.0;
+    };
+
+    auto startTime = std::chrono::steady_clock::now();
+    auto endTime = startTime + std::chrono::seconds(10);
+    int iterationCount = 0;
+    const int maxIterations = 2000;
+    while (std::chrono::steady_clock::now() < endTime && iterationCount < maxIterations &&
+           lastNumFor("res_cycles") < 600)
+    {
+        app->processor->process(buffer, buffer, nBufferFrames);
+        try
+        {
+            app->onIdle();
+        }
+        catch (...)
+        {
+            break;
+        }
+        iterationCount++;
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+    }
+    REQUIRE(iterationCount > 0);
+    REQUIRE(lastNumFor("res_cycles") >= 600);
+
+    CHECK(lastNumFor("res_iErr") == 0.0);
+    CHECK(lastNumFor("res_kErr") == 0.0);
+
+    app->addMessageToQueue(CabbageAudioApp::CommandType::StopAudio);
+    app->onIdle();
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    for (unsigned int ch = 0; ch < nOutputChannels; ++ch)
+        delete[] buffer[ch];
+    delete[] buffer;
+    std::filesystem::remove(tempPath);
+}
+
+//==============================================================================
+// TEST: cabbageSet / cabbageGet property round-trip. Numeric (bounds.left) and
+// string (label.text) properties are written at init time (instr 1) and read
+// back at i-time (instr 2); numeric properties are additionally read at k-time.
+// Mismatches are published per rate and must stay zero.
+//==============================================================================
+TEST_CASE("cabbageSet/cabbageGet property round-trip", "[CabbageApp]")
+{
+    ensureValidSettingsFileExists();
+
+    const char* args[] = {"CabbageApp"};
+    auto app = std::make_unique<CabbageAudioApp>(1, const_cast<char**>(args));
+    REQUIRE(app != nullptr);
+
+    int nOutputChannels = 2;
+    int nBufferFrames = 512;
+    float** buffer = new float*[nOutputChannels];
+    for (unsigned int ch = 0; ch < nOutputChannels; ++ch)
+    {
+        buffer[ch] = new float[nBufferFrames];
+        memset(buffer[ch], 0, nBufferFrames * sizeof(float));
+    }
+
+    std::string csdContent = TestCsdFiles::propertyRoundTrip;
+    std::filesystem::path tempPath = std::filesystem::temp_directory_path() /
+                                     ("test_propertyRoundTrip_" + std::to_string(std::time(nullptr)) + ".csd");
+    {
+        std::ofstream tempFile(tempPath);
+        tempFile << csdContent;
+    }
+
+    app->setCsoundFile(tempPath.string());
+    REQUIRE(std::filesystem::exists(tempPath));
+
+    app->initialiseCabbage();
+    requireWidgetsResolved(app.get());
+
+    if (app->processor)
+        app->processor->setCabbageIsReady();
+
+    std::vector<std::pair<std::string, double>> captured;
+    app->processor->hostCallback = [&](CabbageOpcodeData data) {
+        try
+        {
+            captured.emplace_back(data.channel, data.cabbageJson.value("value", 0.0));
+        }
+        catch (...) {}
+        app->hostCallback(data);
+    };
+
+    auto lastNumFor = [&](const std::string& ch) -> double {
+        for (auto it = captured.rbegin(); it != captured.rend(); ++it)
+        {
+            if (it->first == ch)
+                return it->second;
+        }
+        return -1.0;
+    };
+
+    auto startTime = std::chrono::steady_clock::now();
+    auto endTime = startTime + std::chrono::seconds(10);
+    int iterationCount = 0;
+    const int maxIterations = 2000;
+    while (std::chrono::steady_clock::now() < endTime && iterationCount < maxIterations &&
+           lastNumFor("res_cycles") < 600)
+    {
+        app->processor->process(buffer, buffer, nBufferFrames);
+        try
+        {
+            app->onIdle();
+        }
+        catch (...)
+        {
+            break;
+        }
+        iterationCount++;
+        std::this_thread::sleep_for(std::chrono::milliseconds(2));
+    }
+    REQUIRE(iterationCount > 0);
+    REQUIRE(lastNumFor("res_cycles") >= 600);
+
+    CHECK(lastNumFor("res_iErr") == 0.0);
+    CHECK(lastNumFor("res_kErr") == 0.0);
+
+    app->addMessageToQueue(CabbageAudioApp::CommandType::StopAudio);
+    app->onIdle();
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    for (unsigned int ch = 0; ch < nOutputChannels; ++ch)
+        delete[] buffer[ch];
+    delete[] buffer;
+    std::filesystem::remove(tempPath);
+}
+
 void ensureValidSettingsFileExists() {
     std::string settingsPath = cabbage::File::getSettingsFile();
     if(std::filesystem::exists(settingsPath))
