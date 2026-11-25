@@ -136,10 +136,13 @@ jobs:
           zip -r CabbageBundle.zip \
             CabbagePluginSynth/CabbagePluginSynth_assets/Release/CabbagePluginSynth.vst3 \
             CabbagePluginEffect/CabbagePluginEffect_assets/Release/CabbagePluginEffect.vst3 \
+            CabbagePluginSynth/CabbagePluginSynth_assets/Release/CabbagePluginSynth.clap \
+            CabbagePluginEffect/CabbagePluginEffect_assets/Release/CabbagePluginEffect.clap \
             CabbagePluginSynthARA/CabbagePluginSynthARA_assets/Release/CabbagePluginSynthARA.vst3 \
             CabbagePluginEffectARA/CabbagePluginEffectARA_assets/Release/CabbagePluginEffectARA.vst3 \
             CabbagePluginSynthAUv2/CabbagePluginSynthAUv2_assets/Release/CabbagePluginSynthAUv2.component \
             CabbagePluginEffectAUv2/CabbagePluginEffectAUv2_assets/Release/CabbagePluginEffectAUv2.component \
+            CabbagePluginMidiFxAUv2/CabbagePluginMidiFxAUv2_assets/Release/CabbagePluginMidiFxAUv2.component \
             CabbageApp/Release/CabbageApp
 
 
@@ -372,6 +375,8 @@ jobs:
           Compress-Archive -Path @(
             "CabbagePluginEffect/CabbagePluginEffect_assets/VST3/Release/CabbagePluginEffect.vst3",
             "CabbagePluginSynth/CabbagePluginSynth_assets/VST3/Release/CabbagePluginSynth.vst3",
+            "CabbagePluginEffect/CabbagePluginEffect_assets/CLAP/Release/CabbagePluginEffect.clap",
+            "CabbagePluginSynth/CabbagePluginSynth_assets/CLAP/Release/CabbagePluginSynth.clap",
             "CabbagePluginEffectARA/CabbagePluginEffectARA_assets/VST3/Release/CabbagePluginEffectARA.vst3",
             "CabbagePluginSynthARA/CabbagePluginSynthARA_assets/VST3/Release/CabbagePluginSynthARA.vst3",
             "CabbageApp/Release/CabbageApp.exe"
@@ -556,6 +561,8 @@ jobs:
           Compress-Archive -Path @(
             "CabbagePluginEffect/CabbagePluginEffect_assets/VST3/Release/CabbagePluginEffect.vst3",
             "CabbagePluginSynth/CabbagePluginSynth_assets/VST3/Release/CabbagePluginSynth.vst3",
+            "CabbagePluginEffect/CabbagePluginEffect_assets/CLAP/Release/CabbagePluginEffect.clap",
+            "CabbagePluginSynth/CabbagePluginSynth_assets/CLAP/Release/CabbagePluginSynth.clap",
             "CabbagePluginEffectARA/CabbagePluginEffectARA_assets/VST3/Release/CabbagePluginEffectARA.vst3",
             "CabbagePluginSynthARA/CabbagePluginSynthARA_assets/VST3/Release/CabbagePluginSynthARA.vst3",
             "CabbageApp/Release/CabbageApp.exe"
