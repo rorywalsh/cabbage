@@ -32,7 +32,7 @@ jobs:
           - windows-latest
     steps:
       - name: Checkout cabbage
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Install Csound (macOS)
         if: runner.os == 'macOS'
@@ -78,7 +78,7 @@ jobs:
           $dll.DirectoryName >> $env:GITHUB_PATH
 
       - name: Checkout vscabbage (widget sources for tests)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: rorywalsh/vscabbage
           ref: develop

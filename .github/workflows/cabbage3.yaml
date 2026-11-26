@@ -33,7 +33,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
           submodules: true
@@ -147,7 +147,7 @@ jobs:
 
 
       - name: Upload macOS app artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with: 
           name: CabbageBundle-macos
           path: build/CabbageBundle.zip
@@ -160,7 +160,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
           submodules: true
@@ -197,7 +197,7 @@ jobs:
           sudo make install
 
       - name: Checkout vscabbage (widget sources for tests)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: rorywalsh/vscabbage
           ref: develop
@@ -263,7 +263,7 @@ jobs:
             CabbageApp/CabbageApp
 
       - name: Upload Linux artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: CabbageBundle-linux
           path: build/CabbageBundle.zip
@@ -273,7 +273,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
           submodules: true
@@ -321,7 +321,7 @@ jobs:
           $dll.DirectoryName >> $env:GITHUB_PATH
 
       - name: Checkout vscabbage (widget sources for tests)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: rorywalsh/vscabbage
           ref: develop
@@ -388,7 +388,7 @@ jobs:
           ) -DestinationPath CabbageBundle.zip
 
       - name: Upload Windows app artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: CabbageBundle-windows
           path: build\CabbageBundle.zip
@@ -398,7 +398,7 @@ jobs:
     runs-on: windows-11-arm
     steps:
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
           submodules: true
@@ -485,7 +485,7 @@ jobs:
           $dll.DirectoryName >> $env:GITHUB_PATH
 
       - name: Checkout vscabbage (widget sources for tests)
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: rorywalsh/vscabbage
           ref: develop
@@ -574,7 +574,7 @@ jobs:
           ) -DestinationPath CabbageBundle.zip
 
       - name: Upload Windows app artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: CabbageBundle-windows-arm
           path: build\CabbageBundle.zip
