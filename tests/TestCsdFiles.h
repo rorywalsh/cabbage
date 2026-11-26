@@ -491,4 +491,193 @@ i1 0 1
 </CsoundSynthesizer>
 
 )";
+// Value round-trip: cabbageSetValue writes each channel's control-channel
+// value at init time; a later instrument reads them back with cabbageGetValue
+// at both i-time and k-time and publishes mismatch counts. Values are chosen
+// to be exactly representable in float (0.25, 0.5, 0.75, 1, 2, 3) so the
+// comparisons need no epsilon.
+const std::string valueRoundTrip = R"(
+<Cabbage>[
+{"type": "form", "caption": "Value Round Trip", "size": {"width": 400.0, "height": 360.0}, "guiMode": "queue", "pluginId": "def1"},
+{"type": "rotarySlider", "bounds": {"left": 20.0, "top": 20.0, "width": 80.0, "height": 80.0}, "channels": [{"event": "valueChanged", "id": "rt1", "range": {"min": 0.0, "max": 1.0, "defaultValue": 0.0, "skew": 1.0, "increment": 0.001}}]},
+{"type": "horizontalSlider", "bounds": {"left": 120.0, "top": 20.0, "width": 200.0, "height": 40.0}, "channels": [{"event": "valueChanged", "id": "hs1", "range": {"min": 0.0, "max": 1.0, "defaultValue": 0.0, "skew": 1.0, "increment": 0.001}}]},
+{"type": "verticalSlider", "bounds": {"left": 340.0, "top": 20.0, "width": 40.0, "height": 120.0}, "channels": [{"event": "valueChanged", "id": "vs1", "range": {"min": 0.0, "max": 1.0, "defaultValue": 0.0, "skew": 1.0, "increment": 0.001}}]},
+{"type": "numberSlider", "bounds": {"left": 20.0, "top": 120.0, "width": 200.0, "height": 40.0}, "channels": [{"event": "valueChanged", "id": "ns1", "range": {"min": 0.0, "max": 10.0, "defaultValue": 0.0, "skew": 1.0, "increment": 0.001}}]},
+{"type": "button", "bounds": {"left": 240.0, "top": 120.0, "width": 80.0, "height": 30.0}, "channels": [{"id": "bt1", "event": "valueChanged", "range": {"min": 0.0, "max": 1.0, "defaultValue": 0.0}}]},
+{"type": "checkBox", "bounds": {"left": 20.0, "top": 180.0, "width": 120.0, "height": 30.0}, "channels": [{"id": "cb1", "event": "valueChanged", "range": {"min": 0.0, "max": 1.0, "defaultValue": 0.0}}]},
+{"type": "optionButton", "bounds": {"left": 160.0, "top": 180.0, "width": 100.0, "height": 30.0}, "channels": [{"id": "ob1", "event": "valueChanged", "range": {"min": 0.0, "max": 2.0, "defaultValue": 0.0}}], "items": ["a", "b", "c"]},
+{"type": "comboBox", "bounds": {"left": 280.0, "top": 180.0, "width": 120.0, "height": 30.0}, "channels": [{"id": "cm1", "event": "valueChanged", "range": {"min": 0.0, "max": 2.0, "defaultValue": 0.0}}], "items": ["a", "b", "c"]},
+{"type": "listBox", "bounds": {"left": 20.0, "top": 230.0, "width": 120.0, "height": 90.0}, "channels": [{"id": "lb1", "event": "valueChanged", "range": {"min": 0.0, "max": 2.0, "defaultValue": 0.0}}], "items": ["a", "b", "c"]}
+]</Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d
+</CsOptions>
+<CsInstruments>
+ksmps = 32
+nchnls = 2
+0dbfs = 1
+
+instr 1
+    ; set each channel to a distinct, in-range value at init time
+    cabbageSetValue "rt1", 0.25
+    cabbageSetValue "hs1", 0.5
+    cabbageSetValue "vs1", 0.75
+    cabbageSetValue "ns1", 3
+    cabbageSetValue "bt1", 1
+    cabbageSetValue "cb1", 1
+    cabbageSetValue "ob1", 2
+    cabbageSetValue "cm1", 1
+    cabbageSetValue "lb1", 2
+endin
+
+instr 2
+    ; --- i-time reads ---
+    iErr init 0
+    iRt cabbageGetValue "rt1"
+    iErr += (iRt != 0.25 ? 1 : 0)
+    iHs cabbageGetValue "hs1"
+    iErr += (iHs != 0.5 ? 1 : 0)
+    iVs cabbageGetValue "vs1"
+    iErr += (iVs != 0.75 ? 1 : 0)
+    iNs cabbageGetValue "ns1"
+    iErr += (iNs != 3 ? 1 : 0)
+    iBt cabbageGetValue "bt1"
+    iErr += (iBt != 1 ? 1 : 0)
+    iCb cabbageGetValue "cb1"
+    iErr += (iCb != 1 ? 1 : 0)
+    iOb cabbageGetValue "ob1"
+    iErr += (iOb != 2 ? 1 : 0)
+    iCm cabbageGetValue "cm1"
+    iErr += (iCm != 1 ? 1 : 0)
+    iLb cabbageGetValue "lb1"
+    iErr += (iLb != 2 ? 1 : 0)
+    cabbageSetValue "res_iErr", iErr
+
+    ; --- k-time reads (same checks every k-cycle) ---
+    kErr init 0
+    kRt cabbageGetValue "rt1"
+    kErr += (kRt != 0.25 ? 1 : 0)
+    kHs cabbageGetValue "hs1"
+    kErr += (kHs != 0.5 ? 1 : 0)
+    kVs cabbageGetValue "vs1"
+    kErr += (kVs != 0.75 ? 1 : 0)
+    kNs cabbageGetValue "ns1"
+    kErr += (kNs != 3 ? 1 : 0)
+    kBt cabbageGetValue "bt1"
+    kErr += (kBt != 1 ? 1 : 0)
+    kCb cabbageGetValue "cb1"
+    kErr += (kCb != 1 ? 1 : 0)
+    kOb cabbageGetValue "ob1"
+    kErr += (kOb != 2 ? 1 : 0)
+    kCm cabbageGetValue "cm1"
+    kErr += (kCm != 1 ? 1 : 0)
+    kLb cabbageGetValue "lb1"
+    kErr += (kLb != 2 ? 1 : 0)
+
+    kCycles init 0
+    kCycles += 1
+    cabbageSetValue "res_kErr", kErr
+    cabbageSetValue "res_cycles", kCycles
+endin
+
+</CsInstruments>
+<CsScore>
+i1 0 0.1
+i2 0.5 10
+</CsScore>
+</CsoundSynthesizer>
+
+)";
+
+// Property round-trip: cabbageSet writes widget-JSON properties at init time;
+// a later instrument reads them back with cabbageGet at i-time (numeric and
+// string) and k-time (numeric). String property reads use the i-time S form;
+// k-time string reads go through the trigger (Sk) form and are covered by
+// trigStructsSolo, so they are not repeated here.
+const std::string propertyRoundTrip = R"(
+<Cabbage>[
+{"type": "form", "caption": "Property Round Trip", "size": {"width": 400.0, "height": 360.0}, "guiMode": "queue", "pluginId": "def2"},
+{"type": "rotarySlider", "bounds": {"left": 20.0, "top": 20.0, "width": 80.0, "height": 80.0}, "channels": [{"event": "valueChanged", "id": "prt", "range": {"min": 0.0, "max": 1.0, "defaultValue": 0.0}}], "label": {"text": "A"}},
+{"type": "horizontalSlider", "bounds": {"left": 120.0, "top": 20.0, "width": 200.0, "height": 40.0}, "channels": [{"event": "valueChanged", "id": "phs", "range": {"min": 0.0, "max": 1.0, "defaultValue": 0.0}}], "label": {"text": "B"}},
+{"type": "verticalSlider", "bounds": {"left": 340.0, "top": 20.0, "width": 40.0, "height": 120.0}, "channels": [{"event": "valueChanged", "id": "pvs", "range": {"min": 0.0, "max": 1.0, "defaultValue": 0.0}}], "label": {"text": "C"}},
+{"type": "checkBox", "bounds": {"left": 20.0, "top": 120.0, "width": 120.0, "height": 30.0}, "channels": [{"id": "pcb", "event": "valueChanged", "range": {"min": 0.0, "max": 1.0, "defaultValue": 0.0}}], "label": {"text": "D"}},
+{"type": "label", "bounds": {"left": 20.0, "top": 170.0, "width": 200.0, "height": 30.0}, "channels": [{"id": "plbl"}], "label": {"text": "E"}}
+]</Cabbage>
+<CsoundSynthesizer>
+<CsOptions>
+-n -d
+</CsOptions>
+<CsInstruments>
+ksmps = 32
+nchnls = 2
+0dbfs = 1
+
+instr 1
+    ; set numeric (bounds.left) and string (label.text) properties at init time
+    cabbageSet "prt", "bounds.left", 111
+    cabbageSet "prt", "label.text", "newA"
+    cabbageSet "phs", "bounds.left", 222
+    cabbageSet "phs", "label.text", "newB"
+    cabbageSet "pvs", "bounds.left", 333
+    cabbageSet "pvs", "label.text", "newC"
+    cabbageSet "pcb", "bounds.left", 444
+    cabbageSet "pcb", "label.text", "newD"
+    cabbageSet "plbl", "bounds.left", 555
+    cabbageSet "plbl", "label.text", "newE"
+endin
+
+instr 2
+    ; --- i-time reads ---
+    iErr init 0
+    iRl cabbageGet "prt", "bounds.left"
+    iErr += (iRl != 111 ? 1 : 0)
+    iHl cabbageGet "phs", "bounds.left"
+    iErr += (iHl != 222 ? 1 : 0)
+    iVl cabbageGet "pvs", "bounds.left"
+    iErr += (iVl != 333 ? 1 : 0)
+    iCl cabbageGet "pcb", "bounds.left"
+    iErr += (iCl != 444 ? 1 : 0)
+    iLl cabbageGet "plbl", "bounds.left"
+    iErr += (iLl != 555 ? 1 : 0)
+    SRt cabbageGet "prt", "label.text"
+    iErr += (strcmp(SRt, "newA") != 0 ? 1 : 0)
+    SHs cabbageGet "phs", "label.text"
+    iErr += (strcmp(SHs, "newB") != 0 ? 1 : 0)
+    SVs cabbageGet "pvs", "label.text"
+    iErr += (strcmp(SVs, "newC") != 0 ? 1 : 0)
+    SCb cabbageGet "pcb", "label.text"
+    iErr += (strcmp(SCb, "newD") != 0 ? 1 : 0)
+    SLb cabbageGet "plbl", "label.text"
+    iErr += (strcmp(SLb, "newE") != 0 ? 1 : 0)
+    cabbageSetValue "res_iErr", iErr
+
+    ; --- k-time reads (numeric only) ---
+    kErr init 0
+    kRl cabbageGet "prt", "bounds.left"
+    kErr += (kRl != 111 ? 1 : 0)
+    kHl cabbageGet "phs", "bounds.left"
+    kErr += (kHl != 222 ? 1 : 0)
+    kVl cabbageGet "pvs", "bounds.left"
+    kErr += (kVl != 333 ? 1 : 0)
+    kCl cabbageGet "pcb", "bounds.left"
+    kErr += (kCl != 444 ? 1 : 0)
+    kLl cabbageGet "plbl", "bounds.left"
+    kErr += (kLl != 555 ? 1 : 0)
+
+    kCycles init 0
+    kCycles += 1
+    cabbageSetValue "res_kErr", kErr
+    cabbageSetValue "res_cycles", kCycles
+endin
+
+</CsInstruments>
+<CsScore>
+i1 0 0.1
+i2 0.5 10
+</CsScore>
+</CsoundSynthesizer>
+
+)";
+
 } // namespace TestCsdFiles
