@@ -154,7 +154,10 @@ jobs:
 
   linux_build:
     name: Linux build
-    runs-on: ubuntu-latest
+    # Build on the oldest glibc we support. The vscabbage VSIX reuses this
+    # bundle, so binaries built on ubuntu-latest (glibc 2.43) would refuse to
+    # start on Ubuntu 22.04 (glibc 2.35) and 24.04 (glibc 2.39).
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
@@ -253,6 +256,8 @@ jobs:
           zip -r CabbageBundle.zip \
             CabbagePluginEffect/CabbagePluginEffect_assets/CabbagePluginEffect.vst3 \
             CabbagePluginSynth/CabbagePluginSynth_assets/CabbagePluginSynth.vst3 \
+            CabbagePluginEffect/CabbagePluginEffect_assets/CabbagePluginEffect.clap \
+            CabbagePluginSynth/CabbagePluginSynth_assets/CabbagePluginSynth.clap \
             CabbagePluginEffectARA/CabbagePluginEffectARA_assets/CabbagePluginEffectARA.vst3 \
             CabbagePluginSynthARA/CabbagePluginSynthARA_assets/CabbagePluginSynthARA.vst3 \
             CabbageApp/CabbageApp
