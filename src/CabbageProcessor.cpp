@@ -733,6 +733,16 @@ void CabbageProcessor::process(float **inputs, float **outputs, std::size_t bloc
     // only process audio if Csound has compiled successfully.
     if (cabbage.csdCompiledWithoutError())
     {
+        // totalNumInputs/totalNumOutputs are the instrument's channel counts:
+        // they size the Csound spin/spout buffers and set the interleave
+        // stride, so they must not be clamped. actualNumInputs/actualNumOutputs
+        // are the hardware channel counts (set by setActualChannelCounts in the
+        // standalone app); when the hardware provides fewer inputs than the
+        // instrument, we up-mix by repeating the last available channel so
+        // stereo instruments don't read uninitialised spin-buffer slots (noise).
+        const int hwInputs  = actualNumInputs  > 0 ? actualNumInputs  : totalNumInputs;
+        const int hwOutputs = actualNumOutputs > 0 ? actualNumOutputs : totalNumOutputs;
+
         for (int i = 0; i < static_cast<int>(blockSize); i++, ++csndIndex)
         {
             if (csndIndex >= cabbage.getKsmps())
@@ -752,9 +762,10 @@ void CabbageProcessor::process(float **inputs, float **outputs, std::size_t bloc
                 for (int channel = 0; channel < totalNumOutputs; channel++)
                 {
                     pos = csndIndex * totalNumOutputs;
-                    cabbage.setSpIn(channel + pos, inputs[channel][i]);
-                    // outputs[channel][i] = inputs[channel][i] + cabbage.getSpOut(channel + pos);
-                    outputs[channel][i] = cabbage.getSpOut(channel + pos);
+                    const int srcChannel = (hwInputs > 0 && channel >= hwInputs) ? hwInputs - 1 : channel;
+                    cabbage.setSpIn(channel + pos, (hwInputs > 0) ? inputs[srcChannel][i] : 0.0f);
+                    if (channel < hwOutputs)
+                        outputs[channel][i] = cabbage.getSpOut(channel + pos);
                 }
             }
             else
@@ -763,7 +774,8 @@ void CabbageProcessor::process(float **inputs, float **outputs, std::size_t bloc
                 for (int inputChannel = 0; inputChannel < totalNumInputs; inputChannel++)
                 {
                     pos = csndIndex * totalNumInputs; // Position in interleaved array
-                    cabbage.setSpIn(inputChannel + pos, inputs[inputChannel][i]);
+                    const int srcChannel = (hwInputs > 0 && inputChannel >= hwInputs) ? hwInputs - 1 : inputChannel;
+                    cabbage.setSpIn(inputChannel + pos, (hwInputs > 0) ? inputs[srcChannel][i] : 0.0f);
                 }
 
                 // Process outputs
@@ -771,7 +783,8 @@ void CabbageProcessor::process(float **inputs, float **outputs, std::size_t bloc
                 {
                     pos = csndIndex * totalNumOutputs; // Position in interleaved array
                     // Fill output buffer from Csound's processed output
-                    outputs[outputChannel][i] = cabbage.getSpOut(outputChannel + pos);
+                    if (outputChannel < hwOutputs)
+                        outputs[outputChannel][i] = cabbage.getSpOut(outputChannel + pos);
                 }
             }
         }
@@ -785,8 +798,9 @@ void CabbageProcessor::process(float **inputs, float **outputs, std::size_t bloc
         //        cabbage.displayAndClearCompileErrors();
 
         // zero outputs so we don't get unwanted signal when csound fails
+        const int hwOutputs = actualNumOutputs > 0 ? actualNumOutputs : totalNumOutputs;
         for (int i = 0; i < static_cast<int>(blockSize); i++)
-            for (int channel = 0; channel < totalNumOutputs; channel++)
+            for (int channel = 0; channel < hwOutputs; channel++)
                 outputs[channel][i] = 0;
     }
 }
@@ -1873,18 +1887,20 @@ void CabbageProcessor::setParameter(int paramId, double value)
 //========================================================================================
 void CabbageProcessor::setActualChannelCounts(int inputs, int outputs)
 {
+    // Record the hardware channel counts. The instrument counts (totalNumInputs/
+    // totalNumOutputs) stay at nchnls/nchnls_i so the Csound spin/spout interleave
+    // stride remains correct; process() up-mixes missing input channels and skips
+    // missing output channels instead of clamping the instrument counts.
     if (inputs < totalNumInputs)
-    {
-        lattice::logDebug << "Reducing input channels from " << totalNumInputs << " to " << inputs
-                         << " (audio device limitation)";
-        totalNumInputs = inputs;
-    }
+        lattice::logDebug << "Hardware input channels (" << inputs
+                          << ") fewer than instrument (" << totalNumInputs
+                          << ") — up-mixing mono to match";
     if (outputs < totalNumOutputs)
-    {
-        lattice::logDebug << "Reducing output channels from " << totalNumOutputs << " to " << outputs
-                         << " (audio device limitation)";
-        totalNumOutputs = outputs;
-    }
+        lattice::logDebug << "Hardware output channels (" << outputs
+                          << ") fewer than instrument (" << totalNumOutputs << ")";
+
+    actualNumInputs = inputs;
+    actualNumOutputs = outputs;
     matchingNumInputsOutputs = totalNumInputs == totalNumOutputs;
 }
 #endif
