@@ -249,6 +249,21 @@ void CabbageProcessor::initialiseAudioEngine()
                     setScaleSource(lattice::Processor::ScaleSource::Host);
             }
 
+            // Standalone-only: what to feed the input channels the audio device
+            // does not provide. "duplicate" (default) repeats the last available
+            // hardware channel so a mono device drives a stereo instrument;
+            // "zero" leaves the extra channels silent (mono stays mono).
+            if (auto monoToStereo =
+                    cabbage::Utils::getTopLevelProperty<std::string>(*json, "monoToStereo"))
+            {
+                const auto mode = monoToStereo.value();
+                if (mode == "zero" || mode == "duplicate")
+                    zeroExtraInputChannels = (mode == "zero");
+                else
+                    lattice::logWarning << "monoToStereo must be \"duplicate\" or \"zero\", got \""
+                                        << mode << "\" — using \"duplicate\"";
+            }
+
             // The form's background colour paints the webview host window (see
             // guiSetParent) so the pre-content flash matches the form instead of
             // white/black. The form widget reads style.backgroundColor.
@@ -738,10 +753,21 @@ void CabbageProcessor::process(float **inputs, float **outputs, std::size_t bloc
         // stride, so they must not be clamped. actualNumInputs/actualNumOutputs
         // are the hardware channel counts (set by setActualChannelCounts in the
         // standalone app); when the hardware provides fewer inputs than the
-        // instrument, we up-mix by repeating the last available channel so
-        // stereo instruments don't read uninitialised spin-buffer slots (noise).
+        // instrument, the missing slots are filled per "monoToStereo" instead of
+        // leaving uninitialised spin-buffer slots (noise).
         const int hwInputs  = actualNumInputs  > 0 ? actualNumInputs  : totalNumInputs;
         const int hwOutputs = actualNumOutputs > 0 ? actualNumOutputs : totalNumOutputs;
+        // Missing input channels are either filled by repeating the last
+        // available hardware channel (mono → stereo) or left silent, depending
+        // on the instrument's "monoToStereo" property.
+        auto readInput = [&](int channel, int sample) -> float
+        {
+            if (channel < hwInputs)
+                return inputs[channel][sample];
+            if (hwInputs > 0 && !zeroExtraInputChannels)
+                return inputs[hwInputs - 1][sample];
+            return 0.0f;
+        };
 
         for (int i = 0; i < static_cast<int>(blockSize); i++, ++csndIndex)
         {
@@ -762,8 +788,7 @@ void CabbageProcessor::process(float **inputs, float **outputs, std::size_t bloc
                 for (int channel = 0; channel < totalNumOutputs; channel++)
                 {
                     pos = csndIndex * totalNumOutputs;
-                    const int srcChannel = (hwInputs > 0 && channel >= hwInputs) ? hwInputs - 1 : channel;
-                    cabbage.setSpIn(channel + pos, (hwInputs > 0) ? inputs[srcChannel][i] : 0.0f);
+                    cabbage.setSpIn(channel + pos, readInput(channel, i));
                     if (channel < hwOutputs)
                         outputs[channel][i] = cabbage.getSpOut(channel + pos);
                 }
@@ -774,8 +799,7 @@ void CabbageProcessor::process(float **inputs, float **outputs, std::size_t bloc
                 for (int inputChannel = 0; inputChannel < totalNumInputs; inputChannel++)
                 {
                     pos = csndIndex * totalNumInputs; // Position in interleaved array
-                    const int srcChannel = (hwInputs > 0 && inputChannel >= hwInputs) ? hwInputs - 1 : inputChannel;
-                    cabbage.setSpIn(inputChannel + pos, (hwInputs > 0) ? inputs[srcChannel][i] : 0.0f);
+                    cabbage.setSpIn(inputChannel + pos, readInput(inputChannel, i));
                 }
 
                 // Process outputs
@@ -1880,24 +1904,25 @@ void CabbageProcessor::setParameter(int paramId, double value)
 
 #ifdef CabbageApp
 //========================================================================================
-// Update actual channel counts for standalone mode when audio device has fewer channels
-// than configured. This prevents buffer overruns when channelConfig specifies more
-// channels than the audio device supports. This method can only REDUCE channel counts,
-// never increase them.
+// Update actual channel counts for standalone mode when the audio device has fewer
+// channels than the instrument. The instrument counts are kept (they size the Csound
+// buffers and set the interleave stride); process() reconciles the two at runtime.
 //========================================================================================
 void CabbageProcessor::setActualChannelCounts(int inputs, int outputs)
 {
     // Record the hardware channel counts. The instrument counts (totalNumInputs/
     // totalNumOutputs) stay at nchnls/nchnls_i so the Csound spin/spout interleave
-    // stride remains correct; process() up-mixes missing input channels and skips
+    // stride remains correct; process() fills missing input channels and skips
     // missing output channels instead of clamping the instrument counts.
     if (inputs < totalNumInputs)
         lattice::logDebug << "Hardware input channels (" << inputs
-                          << ") fewer than instrument (" << totalNumInputs
-                          << ") — up-mixing mono to match";
+                          << ") fewer than instrument (" << totalNumInputs << ") — "
+                          << (zeroExtraInputChannels ? "leaving missing inputs silent"
+                                                     : "up-mixing mono to match");
     if (outputs < totalNumOutputs)
         lattice::logDebug << "Hardware output channels (" << outputs
-                          << ") fewer than instrument (" << totalNumOutputs << ")";
+                          << ") fewer than instrument (" << totalNumOutputs
+                          << ") — discarding extra outputs";
 
     actualNumInputs = inputs;
     actualNumOutputs = outputs;

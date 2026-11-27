@@ -84,12 +84,15 @@ There are **two** channel counts in the engine, and they must not be conflated:
   standalone app (the plugin path is driven by the DAW instead).
 
 When the hardware offers **fewer inputs** than the instrument (e.g. a stereo
-`ins` instrument on a single mono microphone), the engine **up-mixes** by
-repeating the last available channel: a mono signal feeds both L and R, so the
-stereo-processing instrument keeps working with no noise. Missing *outputs* are
-simply skipped. The instrument counts are never clamped — reducing them would
-break the spin-buffer stride and leave channels uninitialised (audible as
-noise). See `process()` / `setActualChannelCounts()` in `CabbageProcessor.*`.
+`ins` instrument on a single mono microphone), the engine fills the missing
+channels according to the instrument's top-level `monoToStereo` property:
+`"duplicate"` (default) repeats the last available channel so a mono signal
+feeds both L and R, while `"zero"` leaves the extra channels silent. The
+stereo-processing instrument keeps working either way with no noise. Missing
+*outputs* are simply skipped. The instrument counts are never clamped —
+reducing them would break the spin-buffer stride and leave channels
+uninitialised (audible as noise). See `process()` / `setActualChannelCounts()`
+in `CabbageProcessor.*`.
 
 ## Build targets (`CMakeLists.txt`, `CABBAGE_BUILD_TARGET`)
 

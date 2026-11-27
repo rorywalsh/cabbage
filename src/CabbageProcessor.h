@@ -240,6 +240,10 @@ private:
     int totalNumInputs = 0;
     int actualNumInputs = 0;   // hardware input channels (0 = unset → use totalNumInputs)
     int actualNumOutputs = 0;  // hardware output channels (0 = unset → use totalNumOutputs)
+    // Standalone mono-input handling: when the device has fewer input channels
+    // than the instrument, "duplicate" (default) repeats the last channel into
+    // the missing ones (mono → stereo); "zero" leaves the missing channels silent.
+    bool zeroExtraInputChannels = false;
     std::atomic<bool> isIdleRunning;
     std::thread idleThread;
     int idleCounter = 0;
