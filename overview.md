@@ -71,6 +71,26 @@ two transports depending on the host:
    including ~20 Hz VU-meter data. Plugin flow: the same widget JSON goes
    straight to the embedded webview in-process; the DAW never sees a pipe.
 
+## Audio I/O & channel counts
+
+There are **two** channel counts in the engine, and they must not be conflated:
+
+* **Instrument counts** (`CabbageProcessor::totalNumInputs` /
+  `totalNumOutputs`) — the `.csd`'s `nchnls`/`nchnls_i` (or `channelConfig`).
+  These size Csound's spin/spout buffers and set the interleave stride used by
+  `CabbageProcessor::process()`.
+* **Hardware counts** (`actualNumInputs` / `actualNumOutputs`) — what the audio
+  device actually offers, recorded by `setActualChannelCounts()` in the
+  standalone app (the plugin path is driven by the DAW instead).
+
+When the hardware offers **fewer inputs** than the instrument (e.g. a stereo
+`ins` instrument on a single mono microphone), the engine **up-mixes** by
+repeating the last available channel: a mono signal feeds both L and R, so the
+stereo-processing instrument keeps working with no noise. Missing *outputs* are
+simply skipped. The instrument counts are never clamped — reducing them would
+break the spin-buffer stride and leave channels uninitialised (audible as
+noise). See `process()` / `setActualChannelCounts()` in `CabbageProcessor.*`.
+
 ## Build targets (`CMakeLists.txt`, `CABBAGE_BUILD_TARGET`)
 
 Each target configures (and optionally builds) in its own `build/<Target>/`
@@ -196,3 +216,8 @@ plus meter data; transport is `sendJsonMessage()` (stdout, dev flow) or
   configure can pull new upstream code. Everything else is version-pinned.
 * AUv2 targets are macOS-only; on Linux the `WebViewProcess` target must build
   first (ordered explicitly via `add_dependencies`).
+* Channel counts: never clamp `totalNumInputs`/`totalNumOutputs` to the
+  hardware count — they size the Csound spin/spout buffers and set the
+  interleave stride. Record hardware counts in `actualNumInputs` /
+  `actualNumOutputs` and let `process()` up-mix missing inputs / skip missing
+  outputs (see "Audio I/O & channel counts").

@@ -238,6 +238,8 @@ private:
     int pos = 0;
     int totalNumOutputs = 0;
     int totalNumInputs = 0;
+    int actualNumInputs = 0;   // hardware input channels (0 = unset → use totalNumInputs)
+    int actualNumOutputs = 0;  // hardware output channels (0 = unset → use totalNumOutputs)
     std::atomic<bool> isIdleRunning;
     std::thread idleThread;
     int idleCounter = 0;
